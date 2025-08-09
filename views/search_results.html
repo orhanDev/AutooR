@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suchergebnisse - AutoWolfX</title>
+    <!-- Bootstrap CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="/">RentACar</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="/">Startseite</a>
+                        </li>
+                        <!-- Diğer menü öğeleri buraya eklenebilir -->
+                    </ul>
+                    <ul class="navbar-nav ms-auto" id="auth-links">
+                        <!-- Kimlik doğrulama linkleri JS ile yüklenecek -->
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container my-5">
+        <h2 class="mb-4">Suchergebnisse</h2>
+        <div class="row">
+            <!-- Filtreleme und Sorterungsfeld -->
+            <div class="col-lg-3">
+                <div class="card mb-4">
+                    <div class="card-header">Filter</div>
+                    <div class="card-body">
+                        <form id="filter-form">
+                            <div class="mb-3">
+                                <label for="brand-filter" class="form-label">Marke</label>
+                                <select class="form-select" id="brand-filter">
+                                    <option value="">Alle</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="model-filter" class="form-label">Modell</label>
+                                <select class="form-select" id="model-filter">
+                                    <option value="">Alle</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="transmission-filter" class="form-label">Getriebetyp</label>
+                                <select class="form-select" id="transmission-filter">
+                                    <option value="">Alle</option>
+                                   
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="fuel-filter" class="form-label">Kraftstofftyp</label>
+                                <select class="form-select" id="fuel-filter">
+                                    <option value="">Alle</option>
+                                   
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="capacity-filter" class="form-label">Sitzplätze</label>
+                                <select class="form-select" id="capacity-filter">
+                                    <option value="">Alle</option>
+                                                                </select>
+                            </div>
+                            <!-- Lokasyon Filtresi Eklendi -->
+                            <div class="mb-3">
+                                <label for="pickup-location-select" class="form-label">Abholort</label>
+                                <select class="form-select" id="pickup-location-select">
+                                    <option value="">Alle</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">Filtern</button>
+                            <button type="button" class="btn btn-secondary w-100 mt-2" id="clear-filters-btn">Filter löschen</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">Sortieren</div>
+                    <div class="card-body">
+                        <select class="form-select" id="sort-by">
+                            <option value="daily_rate_asc">Preis aufsteigend</option>
+                            <option value="daily_rate_desc">Preis absteigend</option>
+                            <option value="make_asc">Marke (A-Z)</option>
+                            <option value="make_desc">Marke (Z-A)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Suchergebnisse-Bereich -->
+            <div class="col-lg-9">
+                <div id="search-results-container" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                    <!-- Fahrzeugkarten werden per JavaScript geladen -->
+                    <div class="col"><p class="text-center">Suchergebnisse werden geladen...</p></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-light text-center py-3 mt-5">
+        <p>&copy; 2025 AutoWolfX. Alle Rechte vorbehalten.</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/auth.js"></script>
+    <script src="/js/search_results.js"></script>
+</body>
+</html>

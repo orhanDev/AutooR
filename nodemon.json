@@ -1,0 +1,17 @@
+{
+  "watch": [
+    "server.js",
+    "routes",
+    "db",
+    "middleware"
+  ],
+  "ext": "js,json",
+  "ignore": [
+    "public/*",
+    "views/*",
+    "node_modules/*",
+    "**/*.map"
+  ]
+}
+
+

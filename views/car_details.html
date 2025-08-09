@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Araç Detayları - Araba Kiralama Sitesi</title>
+    <!-- Bootstrap CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .car-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+        .feature-badge {
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container">
+                <a class="navbar-brand" href="/">RentACar</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/">Anasayfa</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Araçlar</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Hakkımızda</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">İletişim</a>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav" id="auth-links">
+                        <!-- Kayıt/Giriş/Çıkış bağlantıları JS ile yüklenecek -->
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container my-5">
+        <div class="row">
+            <div class="col-md-8">
+                <h1 id="car-title">Araç Detayları Yükleniyor...</h1>
+                <img id="car-image" src="https://via.placeholder.com/800x600?text=Araba" class="img-fluid mb-4 car-image" alt="Araç Resmi">
+
+                <p><strong>Marka:</strong> <span id="car-make"></span></p>
+                <p><strong>Model:</strong> <span id="car-model"></span></p>
+                <p><strong>Yıl:</strong> <span id="car-year"></span></p>
+                <p><strong>Plaka:</strong> <span id="car-license-plate"></span></p>
+                <p><strong>Günlük Fiyat:</strong> <span id="car-daily-rate"></span> TL</p>
+                <p><strong>Vites Tipi:</strong> <span id="car-transmission-type"></span></p>
+                <p><strong>Yakıt Tipi:</strong> <span id="car-fuel-type"></span></p>
+                <p><strong>Koltuk Kapasitesi:</strong> <span id="car-seating-capacity"></span></p>
+                <p><strong>Renk:</strong> <span id="car-color"></span></p>
+                <p><strong>Lokasyon:</strong> <span id="car-location-name"></span></p>
+                <p><strong>Açıklama:</strong> <span id="car-description"></span></p>
+
+                <h3 class="mt-4">Özellikler</h3>
+                <div id="car-features-badges" class="mb-4"></div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card shadow-sm p-3">
+                    <h4 class="card-title">Rezervasyon Yap</h4>
+                    <form id="reservation-form">
+                        <div class="mb-3">
+                            <label for="pickup-date" class="form-label">Teslim Alma Tarihi</label>
+                            <input type="date" class="form-control" id="pickup-date" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="pickup-time" class="form-label">Teslim Alma Saati</label>
+                            <input type="time" class="form-control" id="pickup-time" value="09:00" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="dropoff-date" class="form-label">Teslim Etme Tarihi</label>
+                            <input type="date" class="form-control" id="dropoff-date" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="dropoff-time" class="form-label">Teslim Etme Saati</label>
+                            <input type="time" class="form-control" id="dropoff-time" value="09:00" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="pickup-location" class="form-label">Teslim Alma Konumu</label>
+                            <select class="form-select" id="pickup-location" required>
+                                <option value="">Konum Seçin...</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="dropoff-location" class="form-label">Teslim Etme Konumu</label>
+                            <select class="form-select" id="dropoff-location" required>
+                                <option value="">Konum Seçin...</option>
+                            </select>
+                        </div>
+                        <p class="lead mt-3">Toplam Fiyat: <strong id="total-price">0.00 TL</strong></p>
+                        <button type="submit" class="btn btn-success w-100">Şimdi Rezervasyon Yap</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-light text-center py-3">
+        <p>&copy; 2025 Araba Kiralama Sitesi. Tüm Hakları Saklıdır.</p>
+    </footer>
+
+    <!-- Bootstrap JS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS for car details page -->
+    <script src="/js/car-details.js"></script>
+    <script src="/js/auth.js"></script> <!-- auth.js'i car-details.js'ten sonra ekle -->
+</body>
+</html>

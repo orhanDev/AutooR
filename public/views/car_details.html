@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fahrzeug Details - AutoWolfX</title>
+    
+    <!-- Bootstrap CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../css/style.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+    <link rel="icon" type="image/x-icon" href="../favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand text-white" href="/">AutoWolfXs</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Startseite</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/views/search_results.html">Fahrzeuge</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav" id="auth-links">
+                    <!-- Kayıt/Giriş/Çıkış bağlantıları JS ile yüklenecek -->
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- Filtre formu ve search_results.js kaldırıldı -->
+
+    <!-- Main Content -->
+    <main class="container my-5">
+        <div class="row">
+            <!-- Fahrzeug Bild -->
+            <div class="col-md-6 mb-4">
+                <div class="card">
+                    <img id="car-image" src="" class="card-img-top" alt="Fahrzeug Bild" style="height: 400px; object-fit: cover;">
+                </div>
+            </div>
+
+            <!-- Fahrzeug Details -->
+            <div class="col-md-6">
+                <h1 id="car-title" class="mb-4">Fahrzeug Details</h1>
+                
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Fahrzeug Informationen</h5>
+                        <div class="row">
+                            <div class="col-6">
+                                <p><strong>Marke:</strong> <span id="car-make"></span></p>
+                                <p><strong>Modell:</strong> <span id="car-model"></span></p>
+                                <p><strong>Jahr:</strong> <span id="car-year"></span></p>
+                                <p><strong>Kennzeichen:</strong> <span id="car-license-plate"></span></p>
+                            </div>
+                            <div class="col-6">
+                                <p><strong>Getriebe:</strong> <span id="car-transmission-type"></span></p>
+                                <p><strong>Kraftstoff:</strong> <span id="car-fuel-type"></span></p>
+                                <p><strong>Sitzplätze:</strong> <span id="car-seating-capacity"></span></p>
+                                <p><strong>Farbe:</strong> <span id="car-color"></span></p>
+                            </div>
+                        </div>
+                        <p><strong>Standort:</strong> <span id="car-location-name"></span></p>
+                        <p><strong>Tagessatz:</strong> <span id="car-daily-rate"></span> €</p>
+                    </div>
+                </div>
+
+                <!-- Beschreibung -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Beschreibung</h5>
+                        <p id="car-description"></p>
+                    </div>
+                </div>
+
+                <!-- Features -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Ausstattung</h5>
+                        <div id="car-features-badges"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white text-center py-4 mt-5">
+        <div class="container">
+            <p>&copy; 2025 AutoWolfX. Alle Rechte vorbehalten.</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="../js/car-details.js"></script>
+    <script src="../js/auth.js"></script>
+</body>
+</html>
