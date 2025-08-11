@@ -1,52 +1,37 @@
 const express = require('express');
+const { query } = require('../db/database');
 const router = express.Router();
-const db = require('../db/database');
-
-function normalizeDailyRate(row) {
-    // Eğer değer TL gibi çok yüksekse EUR görünümü için 10'a böl (geçici normalizasyon)
-    // 400 üzeri değerleri TL varsayıyoruz
-    const rate = Number(row.daily_rate);
-    if (!Number.isFinite(rate)) return row;
-    if (rate > 400) {
-        row.daily_rate = Number((rate / 10).toFixed(2));
-    }
-    return row;
-}
 
 // Tüm araçları getir
 router.get('/', async (req, res) => {
     try {
-        const result = await db.query('SELECT * FROM cars');
-        const rows = result.rows.map(r => normalizeDailyRate(r));
-        res.json(rows);
-    } catch (err) {
-        console.error(err.message);
-        res.status(500).send('Sunucu Hatası');
+        const result = await query('SELECT * FROM cars');
+        res.json(result.rows);
+    } catch (error) {
+        console.error('Araçlar getirilirken hata:', error);
+        res.status(500).json({ error: 'Sunucu hatası' });
     }
 });
 
-// Araçları arama kriterlerine göre getir
+// Arama kriterlerine göre araçları getir
 router.get('/search', async (req, res) => {
-    let { pickup_date, dropoff_date, pickup_time, dropoff_time, make, model, transmission_type, fuel_type, seating_capacity } = req.query;
-
-    console.log('Gelen sorgu parametreleri:', req.query); // Yeni log: Gelen tüm query parametrelerini gösterir
-
-    // Boş stringleri null'a çevir, UUID alanları için önemlidir
-    // pickup_location_id = pickup_location_id === '' ? null : pickup_location_id;
-    // dropoff_location_id = dropoff_location_id === '' ? null : dropoff_location_id;
-
     try {
-        // Tarih ve saat parametrelerinin geçerli olduğundan emin olun (geçici olarak yorum satırı)
-        // if (!pickup_date || !dropoff_date || !pickup_time || !dropoff_time) { // BU SATIR YORUM SATIRI YAPILDI
-        //     return res.status(400).json({ message: 'Teslim alma ve teslim etme tarih/saatleri gereklidir.' }); // BU SATIR YORUM SATIRI YAPILDI
-        // }
+        const { 
+            make, 
+            model, 
+            year, 
+            transmission_type, 
+            fuel_type, 
+            seating_capacity,
+            min_price,
+            max_price,
+            location_id,
+            pickup_date,
+            dropoff_date,
+            sort = 'price-low'
+        } = req.query;
 
-        // Tarih ve saatleri birleştirerek TIMESTAMP oluştur (geçici olarak yorum satırı)
-        // const pickupDateTime = `${pickup_date} ${pickup_time}`;
-        // const dropoffDateTime = `${dropoff_date} ${dropoff_time}`;
-
-        // SQL Sorgusu: Tüm araçları getiren temel sorgu
-        let query = `
+        let sqlQuery = `
             SELECT
                 c.*, l.name AS location_name
             FROM
@@ -56,104 +41,152 @@ router.get('/search', async (req, res) => {
             WHERE
                 c.is_available = TRUE
             `;
-        let params = [];
-        let paramIndex = 1;
 
-        // Lokasyon filtreleri
-        // pickup_location_id ve dropoff_location_id filtrelenmeyecek, tüm arabalar listelenecek.
-
-        // Tarih ve saat filtreleri
-        if (pickup_date && dropoff_date && pickup_time && dropoff_time) {
-            const pickupDateTime = `${pickup_date} ${pickup_time}`;
-            const dropoffDateTime = `${dropoff_date} ${dropoff_time}`;
-
-            // Rezervasyon çakışması kontrolü
-            // query += ` AND c.car_id NOT IN ( // BU SATIR YORUM SATIRI YAPILDI
-            //     SELECT car_id FROM reservations
-            //     WHERE (pickup_date::timestamp + pickup_time::interval, dropoff_date::timestamp + dropoff_time::interval) OVERLAPS (CAST($${paramIndex++} AS TIMESTAMP), CAST($${paramIndex++} AS TIMESTAMP))
-            // )`;
-            // params.push(pickupDateTime, dropoffDateTime); // BU SATIR YORUM SATIRI YAPILDI
-        }
+        const queryParams = [];
+        let paramCount = 1;
 
         // Marka filtresi
-        if (make) { // make parametresi boş değilse
-            query += ` AND c.make = $${paramIndex++}`;
-            params.push(make);
+        if (make) {
+            sqlQuery += ` AND LOWER(c.make) LIKE LOWER($${paramCount})`;
+            queryParams.push(`%${make}%`);
+            paramCount++;
         }
 
         // Model filtresi
-        if (model) { // model parametresi boş değilse
-            query += ` AND c.model = $${paramIndex++}`;
-            params.push(model);
+        if (model) {
+            sqlQuery += ` AND LOWER(c.model) LIKE LOWER($${paramCount})`;
+            queryParams.push(`%${model}%`);
+            paramCount++;
+        }
+
+        // Yıl filtresi
+        if (year) {
+            sqlQuery += ` AND c.year = $${paramCount}`;
+            queryParams.push(year);
+            paramCount++;
         }
 
         // Vites tipi filtresi
         if (transmission_type) {
-            query += ` AND c.transmission_type = $${paramIndex++}`;
-            params.push(transmission_type);
+            sqlQuery += ` AND c.transmission_type = $${paramCount}`;
+            queryParams.push(transmission_type);
+            paramCount++;
         }
 
         // Yakıt tipi filtresi
         if (fuel_type) {
-            query += ` AND c.fuel_type = $${paramIndex++}`;
-            params.push(fuel_type);
+            sqlQuery += ` AND c.fuel_type = $${paramCount}`;
+            queryParams.push(fuel_type);
+            paramCount++;
         }
 
         // Koltuk kapasitesi filtresi
         if (seating_capacity) {
-            query += ` AND c.seating_capacity = $${paramIndex++}`;
-            params.push(parseInt(seating_capacity)); // Sayısal değere dönüştür
+            sqlQuery += ` AND c.seating_capacity >= $${paramCount}`;
+            queryParams.push(seating_capacity);
+            paramCount++;
         }
 
-        query += ` LIMIT 100;`; // Limit performans için 100 olarak güncellendi.
+        // Fiyat aralığı filtresi
+        if (min_price) {
+            sqlQuery += ` AND c.daily_rate >= $${paramCount}`;
+            queryParams.push(min_price);
+            paramCount++;
+        }
 
-        console.log('Sorgu yürütülüyor:', query, params);
+        if (max_price) {
+            sqlQuery += ` AND c.daily_rate <= $${paramCount}`;
+            queryParams.push(max_price);
+            paramCount++;
+        }
 
-        const result = await db.query(query, params);
-        result.rows = result.rows.map(r => normalizeDailyRate(r));
-        console.log(`API sorgusundan ${result.rows.length} araç döndü.`); // Yeni log
+        // Lokasyon filtresi
+        if (location_id) {
+            sqlQuery += ` AND c.location_id = $${paramCount}`;
+            queryParams.push(location_id);
+            paramCount++;
+        }
+
+        // Tarih çakışması kontrolü (eğer tarih belirtilmişse)
+        if (pickup_date && dropoff_date) {
+            sqlQuery += `
+                AND NOT EXISTS (
+                    SELECT 1 FROM reservations r
+                    WHERE r.car_id = c.car_id
+                    AND r.status IN ('Beklemede', 'Onaylandı')
+                    AND (
+                        (r.pickup_date, r.dropoff_date) OVERLAPS (CAST($${paramCount} AS DATE), CAST($${paramCount + 1} AS DATE))
+                    )
+                )
+            `;
+            queryParams.push(pickup_date, dropoff_date);
+            paramCount += 2;
+        }
+
+        // Sıralama
+        switch (sort) {
+            case 'price-high':
+                sqlQuery += ' ORDER BY c.daily_rate DESC';
+                break;
+            case 'price-low':
+                sqlQuery += ' ORDER BY c.daily_rate ASC';
+                break;
+            case 'year-new':
+                sqlQuery += ' ORDER BY c.year DESC';
+                break;
+            case 'year-old':
+                sqlQuery += ' ORDER BY c.year ASC';
+                break;
+            default:
+                sqlQuery += ' ORDER BY c.daily_rate ASC';
+        }
+
+        sqlQuery += ' LIMIT 100;';
+
+        const result = await query(sqlQuery, queryParams);
+        console.log('API sorgusundan', result.rows.length, 'araç döndü.');
         res.json(result.rows);
-    } catch (err) {
-        console.error('Araç arama hatası:', err.message);
-        res.status(500).send('Sunucu Hatası');
+
+    } catch (error) {
+        console.error('Araç arama hatası:', error);
+        res.status(500).json({ error: 'Sunucu hatası' });
     }
 });
 
 // Belirli bir aracın detaylarını ve özelliklerini getir
 router.get('/:id', async (req, res) => {
-    const { id } = req.params;
-
     try {
-        // Aracı ve lokasyon adını getir
-        const carResult = await db.query(
-            `SELECT c.*, l.name AS location_name
+        const carId = req.params.id;
+
+        // Araç bilgilerini getir
+        const carResult = await query(`
+            SELECT c.*, l.name AS location_name
              FROM cars c
              JOIN locations l ON c.location_id = l.location_id
-             WHERE c.car_id = $1`,
-            [id]
-        );
+             WHERE c.car_id = $1
+        `, [carId]);
 
         if (carResult.rows.length === 0) {
-            return res.status(404).json({ message: 'Araç bulunamadı.' });
+            return res.status(404).json({ error: 'Araç bulunamadı' });
         }
 
-        const car = normalizeDailyRate(carResult.rows[0]);
+        const car = carResult.rows[0];
 
-        // Aracın özelliklerini getir
-        const featuresResult = await db.query(
-            `SELECT cf.feature_name
+        // Araç özelliklerini getir
+        const featuresResult = await query(`
+            SELECT cf.feature_name
              FROM car_carfeatures ccf
              JOIN car_features cf ON ccf.feature_id = cf.feature_id
-             WHERE ccf.car_id = $1`,
-            [id]
-        );
+             WHERE ccf.car_id = $1
+        `, [carId]);
 
         car.features = featuresResult.rows.map(row => row.feature_name);
 
         res.json(car);
-    } catch (err) {
-        console.error('Araç detayı çekilirken hata:', err.message);
-        res.status(500).send('Sunucu Hatası');
+
+    } catch (error) {
+        console.error('Araç detayları getirilirken hata:', error);
+        res.status(500).json({ error: 'Sunucu hatası' });
     }
 });
 

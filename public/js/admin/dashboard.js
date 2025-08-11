@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Yönetici yetkisini kontrol et
     if (!token) {
-        alert('Bu sayfayı görüntülemek için giriş yapmanız gerekiyor.');
+        alert('Sie müssen sich anmelden, um diese Seite anzuzeigen.');
         window.location.href = '/views/login.html';
         return;
     }
@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
 
             if (response.status === 403) {
-                alert('Yönetici yetkiniz bulunmamaktadır.');
+                alert('Sie haben keine Administratorberechtigung.');
                 window.location.href = '/';
                 return;
             }
@@ -35,18 +35,18 @@ document.addEventListener('DOMContentLoaded', async () => {
             document.getElementById('pending-reservations').textContent = data.pendingReservations;
 
         } catch (error) {
-            console.error('Admin dashboard verileri çekilirken hata:', error);
-            alert('Dashboard verileri yüklenemedi. Lütfen daha sonra tekrar deneyin.');
+            console.error('Fehler beim Abrufen der Admin-Dashboard-Daten:', error);
+            alert('Dashboard-Daten konnten nicht geladen werden. Bitte versuchen Sie es später erneut.');
         }
     }
 
     fetchAdminDashboardData();
 
-    // Çıkış yap linki
+    // Çıkış linki
     document.getElementById('admin-logout-link').addEventListener('click', (e) => {
         e.preventDefault();
         localStorage.removeItem('token');
-        alert('Başarıyla çıkış yapıldı.');
+        alert('Erfolgreich abgemeldet.');
         window.location.href = '/';
     });
 });

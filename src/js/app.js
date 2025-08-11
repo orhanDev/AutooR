@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
         targetElement.innerHTML = ''; // Önceki içeriği temizle
 
         if (cars.length === 0) {
-            targetElement.innerHTML = '<p class="text-center">Henüz hiç araç bulunmamaktadır.</p>';
+            targetElement.innerHTML = '<p class="text-center">Noch keine Fahrzeuge verfügbar.</p>';
             return;
         }
 
@@ -42,12 +42,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             const cars = await response.json();
-            popularCarsSectionTitle.textContent = 'Popüler Araçlar';
+            popularCarsSectionTitle.textContent = 'Beliebte Fahrzeuge';
             renderCars(cars, popularCarsSectionRow);
 
         } catch (error) {
-            console.error('Popüler araçlar çekilirken bir hata oluştu:', error);
-            popularCarsSectionRow.innerHTML = '<p class="text-danger text-center">Araçlar yüklenemedi. Lütfen daha sonra tekrar deneyin.</p>';
+            console.error('Fehler beim Abrufen der beliebten Fahrzeuge:', error);
+            popularCarsSectionRow.innerHTML = '<p class="text-danger text-center">Fahrzeuge konnten nicht geladen werden. Bitte versuchen Sie es später erneut.</p>';
         }
     }
 
@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 dropoffLocationSelect.innerHTML += option;
             });
         } catch (error) {
-            console.error('Lokasyonlar çekilirken bir hata oluştu:', error);
+            console.error('Fehler beim Abrufen der Standorte:', error);
             // Kullanıcıya hata mesajı gösterebilirsiniz
         }
     }
@@ -123,7 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Basit validasyon
         if (!pickupLocationId || !dropoffLocationId || !pickupDate || !dropoffDate) {
-            alert('Lütfen tüm arama alanlarını doldurun.');
+            alert('Bitte füllen Sie alle Suchfelder aus.');
             return;
         }
 
@@ -157,8 +157,8 @@ document.addEventListener('DOMContentLoaded', () => {
             renderCars(searchResults, popularCarsSectionRow);
 
         } catch (error) {
-            console.error('Araç aranırken bir hata oluştu:', error);
-            alert('Araç aranırken bir hata oluştu. Lütfen daha sonra tekrar deneyin.');
+            console.error('Fehler bei der Fahrzeugsuche:', error);
+            alert('Fehler bei der Fahrzeugsuche. Bitte versuchen Sie es später erneut.');
         }
     });
 });

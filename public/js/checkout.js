@@ -1,4 +1,4 @@
-// checkout.js – DE Labels, TR kod tabanında Almanca UI
+// checkout.js – Türkçe kod tabanında Türkçe UI
 document.addEventListener('DOMContentLoaded', async () => {
   // 5 dakikalık geri sayım
   try {

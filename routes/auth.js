@@ -1,133 +1,142 @@
 const express = require('express');
-const router = express.Router();
-const bcrypt = require('bcryptjs');
+const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const db = require('../db/database');
-const auth = require('../middleware/authMiddleware'); // auth middleware'i ekleniyor
+const { query } = require('../db/database');
+const authMiddleware = require('../middleware/authMiddleware');
 
-// Kayıt (Register)
+const router = express.Router();
+
+// Kayıt
 router.post('/register', async (req, res) => {
-    const { first_name, last_name, email, password, phone_number, address } = req.body;
-
     try {
-        // Kullanıcının zaten var olup olmadığını kontrol et
-        const existingUser = await db.query('SELECT * FROM users WHERE email = $1', [email]);
+        const { first_name, last_name, email, password, phone_number, address } = req.body;
+
+        // Email kontrolü
+        const existingUser = await query('SELECT * FROM users WHERE email = $1', [email]);
         if (existingUser.rows.length > 0) {
-            return res.status(400).json({ message: 'Bu e-posta adresi zaten kayıtlı.' });
+            return res.status(400).json({ error: 'E-Mail bereits registriert' });
         }
 
-        // Şifreyi hashle
-        const salt = await bcrypt.genSalt(10);
-        const password_hash = await bcrypt.hash(password, salt);
+        // Şifre hash'leme
+        const saltRounds = 10;
+        const passwordHash = await bcrypt.hash(password, saltRounds);
 
-        // Yeni kullanıcıyı veritabanına ekle
-        const newUser = await db.query(
-            'INSERT INTO users (first_name, last_name, email, password_hash, phone_number, address) VALUES ($1, $2, $3, $4, $5, $6) RETURNING user_id, email, first_name, last_name, is_admin;',
-            [first_name, last_name, email, password_hash, phone_number, address]
-        );
+        // Yeni kullanıcı oluşturma
+        const newUser = await query(`
+            INSERT INTO users (first_name, last_name, email, password_hash, phone_number, address)
+            VALUES ($1, $2, $3, $4, $5, $6)
+            RETURNING user_id, first_name, last_name, email, phone_number, address, is_admin, created_at
+        `, [first_name, last_name, email, passwordHash, phone_number, address]);
 
-        // JWT oluştur
-        const payload = {
-            user: {
-                id: newUser.rows[0].user_id,
-                is_admin: newUser.rows[0].is_admin
-            }
-        };
-
-        jwt.sign(
-            payload,
-            process.env.JWT_SECRET, // Ortam değişkeninden alınacak sır anahtarı
-            { expiresIn: '1h' }, // Token geçerlilik süresi
-            (err, token) => {
-                if (err) throw err;
-                res.status(201).json({ token });
-            }
-        );
-
-    } catch (err) {
-        console.error('Kayıt hatası:', err.message);
-        res.status(500).send('Sunucu Hatası');
-    }
-});
-
-// Giriş (Login)
-router.post('/login', async (req, res) => {
-    const { email, password } = req.body;
-
-    try {
-        // Kullanıcıyı e-posta ile bul
-        const userResult = await db.query('SELECT * FROM users WHERE email = $1', [email]);
-        if (userResult.rows.length === 0) {
-            return res.status(400).json({ message: 'Geçersiz kimlik bilgileri.' });
-        }
-
-        const user = userResult.rows[0];
-
-        // Şifreyi doğrula
-        const isMatch = await bcrypt.compare(password, user.password_hash);
-        if (!isMatch) {
-            return res.status(400).json({ message: 'Geçersiz kimlik bilgileri.' });
-        }
-
-        // JWT oluştur
-        const payload = {
-            user: {
-                id: user.user_id,
-                is_admin: user.is_admin
-            }
-        };
-
-        jwt.sign(
-            payload,
+        // JWT token oluşturma
+        const token = jwt.sign(
+            { userId: newUser.rows[0].user_id, email: newUser.rows[0].email },
             process.env.JWT_SECRET,
-            { expiresIn: '1h' },
-            (err, token) => {
-                if (err) throw err;
-                res.json({ token });
-            }
+            { expiresIn: '24h' }
         );
 
-    } catch (err) {
-        console.error('Giriş hatası:', err.message);
-        res.status(500).send('Sunucu Hatası');
+        res.status(201).json({
+            message: 'Registrierung erfolgreich',
+            user: { id: newUser.rows[0].user_id, email: newUser.rows[0].email }
+        });
+
+    } catch (error) {
+        console.error('Kayıt hatası:', error);
+        res.status(500).json({ error: 'Serverfehler' });
     }
 });
 
-// Kullanıcının kendi bilgilerini getir (korumalı rota)
-router.get('/user', auth, async (req, res) => {
+// Giriş
+router.post('/login', async (req, res) => {
     try {
-        // auth middleware'i sayesinde req.user mevcut
-        const user = await db.query(
-            'SELECT user_id, first_name, last_name, email, phone_number, address, payment_card_json, payment_paypal_json, payment_klarna_json, is_admin, created_at FROM users WHERE user_id = $1',
-            [req.user.id]
+        const { email, password } = req.body;
+
+        // Kullanıcıyı bul
+        const user = await query('SELECT * FROM users WHERE email = $1', [email]);
+        if (user.rows.length === 0) {
+            return res.status(401).json({ error: 'Ungültige Anmeldedaten' });
+        }
+
+        // Şifre kontrolü
+        const isValidPassword = await bcrypt.compare(password, user.rows[0].password_hash);
+        if (!isValidPassword) {
+            return res.status(401).json({ error: 'Ungültige Anmeldedaten' });
+        }
+
+        // JWT token oluşturma
+        const token = jwt.sign(
+            { userId: user.rows[0].user_id, email: user.rows[0].email },
+            process.env.JWT_SECRET,
+            { expiresIn: '24h' }
         );
+
+        res.json({
+            message: 'Anmeldung erfolgreich',
+            token,
+            user: { id: user.rows[0].user_id, email: user.rows[0].email }
+        });
+
+    } catch (error) {
+        console.error('Giriş hatası:', error);
+        res.status(500).json({ error: 'Serverfehler' });
+    }
+});
+
+// Kullanıcı bilgilerini getir (korumalı rota)
+router.get('/profile', authMiddleware, async (req, res) => {
+    try {
+        const userId = req.user.userId;
+
+        const user = await query(`
+            SELECT user_id, first_name, last_name, email, phone_number, address, 
+                   payment_card_json, payment_paypal_json, payment_klarna_json, 
+                   is_admin, created_at 
+            FROM users WHERE user_id = $1
+        `, [userId]);
 
         if (user.rows.length === 0) {
-            return res.status(404).json({ message: 'Kullanıcı bulunamadı.' });
+            return res.status(404).json({ error: 'Kullanıcı bulunamadı' });
         }
 
-        res.json(user.rows[0]);
-    } catch (err) {
-        console.error('Kullanıcı bilgileri çekilirken hata:', err.message);
-        res.status(500).send('Sunucu Hatası');
+        res.json({
+            message: 'Profil erfolgreich aktualisiert',
+            user: user.rows[0]
+        });
+
+    } catch (error) {
+        console.error('Kullanıcı bilgileri çekilirken hata:', error);
+        res.status(500).json({ error: 'Serverfehler' });
     }
 });
 
-// Kullanıcının kendi bilgilerini güncelle (korumalı rota)
-router.put('/user', auth, async (req, res) => {
-    const { first_name, last_name, phone_number, address, payment_card_json, payment_paypal_json, payment_klarna_json } = req.body;
+// Kullanıcı bilgilerini güncelle (korumalı rota)
+router.put('/profile', authMiddleware, async (req, res) => {
     try {
-        const result = await db.query(
-            'UPDATE users SET first_name = $1, last_name = $2, phone_number = $3, address = $4, payment_card_json = $5, payment_paypal_json = $6, payment_klarna_json = $7 WHERE user_id = $8 RETURNING user_id, first_name, last_name, email, phone_number, address, payment_card_json, payment_paypal_json, payment_klarna_json, is_admin, created_at',
-            [first_name, last_name, phone_number, address, payment_card_json || null, payment_paypal_json || null, payment_klarna_json || null, req.user.id]
-        );
-        if (result.rows.length === 0) {
-            return res.status(404).json({ message: 'Kullanıcı bulunamadı.' });
+        const userId = req.user.userId;
+        const { first_name, last_name, phone_number, address, payment_card_json, payment_paypal_json, payment_klarna_json } = req.body;
+
+        const updatedUser = await query(`
+            UPDATE users 
+            SET first_name = $1, last_name = $2, phone_number = $3, address = $4,
+                payment_card_json = $5, payment_paypal_json = $6, payment_klarna_json = $7
+            WHERE user_id = $8
+            RETURNING user_id, first_name, last_name, email, phone_number, address, 
+                      payment_card_json, payment_paypal_json, payment_klarna_json, 
+                      is_admin, created_at
+        `, [first_name, last_name, phone_number, address, payment_card_json, payment_paypal_json, payment_klarna_json, userId]);
+
+        if (updatedUser.rows.length === 0) {
+            return res.status(404).json({ error: 'Kullanıcı bulunamadı' });
         }
-        res.json(result.rows[0]);
-    } catch (err) {
-        console.error('Kullanıcı güncelleme hatası:', err.message);
-        res.status(500).send('Sunucu Hatası');
+
+        res.json({
+            message: 'Profil başarıyla güncellendi',
+            user: updatedUser.rows[0]
+        });
+
+    } catch (error) {
+        console.error('Profil güncelleme hatası:', error);
+        res.status(500).json({ error: 'Serverfehler' });
     }
 });
 

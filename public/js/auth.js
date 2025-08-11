@@ -19,17 +19,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             } catch (e) { userName = ''; }
 
-            authLinksContainer.innerHTML = `
-                <li class="nav-item">
-                    <a class="nav-link" href="/views/profile.html">Mein Profil</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#" id="logout-link">Abmelden</a>
-                </li>
-                <li class="nav-item d-flex align-items-center ms-2">
-                    <span class="fw-bold navbar-brand" style="font-size:1.1rem;">Willkommen ${userName ? userName : ''}</span>
-                </li>
-            `;
+                    authLinksContainer.innerHTML = `
+            <li class="nav-item">
+                <a class="nav-link" href="/views/profile.html">Mein Profil</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" id="logout-link">Abmelden</a>
+            </li>
+            <li class="nav-item d-flex align-items-center ms-3">
+                <span class="nav-link" style="color: #f39c12 !important; font-weight: 400; text-transform: capitalize;">Willkommen ${userName ? userName.charAt(0).toUpperCase() + userName.slice(1) : ''}</span>
+            </li>
+        `;
 
             document.getElementById('logout-link').addEventListener('click', (e) => {
                 e.preventDefault();
@@ -41,14 +41,14 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             const welcome = localStorage.getItem('welcome_name');
             if (welcome) {
-                authLinksContainer.innerHTML = `
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" id="logout-guest">Abmelden</a>
-                    </li>
-                    <li class="nav-item d-flex align-items-center ms-2">
-                        <span class="fw-bold navbar-brand" style="font-size:1.1rem;">Willkommen ${welcome}</span>
-                    </li>
-                `;
+                        authLinksContainer.innerHTML = `
+            <li class="nav-item">
+                <a class="nav-link" href="#" id="logout-guest">Abmelden</a>
+            </li>
+            <li class="nav-item d-flex align-items-center ms-3">
+                <span class="nav-link" style="color: #f39c12 !important; font-weight: 400; text-transform: capitalize;">Willkommen ${welcome ? welcome.charAt(0).toUpperCase() + welcome.slice(1) : ''}</span>
+            </li>
+        `;
                 document.getElementById('logout-guest').addEventListener('click', (e) => {
                     e.preventDefault();
                     localStorage.removeItem('welcome_name');

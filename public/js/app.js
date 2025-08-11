@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const pickupDateInput = document.getElementById('pickup-date');
     const dropoffDateInput = document.getElementById('dropoff-date');
 
-    // Mindest- und Standardwerte für Datumseingaben festlegen
+    // Mindest- und Standardwerte für Datumseingaben setzen
     const today = new Date();
     const tomorrow = new Date(today);
     tomorrow.setDate(today.getDate() + 1);
@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     pickupDateInput.value = formatDate(today);
     dropoffDateInput.value = formatDate(tomorrow);
 
-    // Wenn sich das Abholdatum ändert, aktualisiere das Rückgabedatum
+    // Wenn sich das Abholdatum ändert, das Rückgabedatum aktualisieren
     pickupDateInput.addEventListener('change', () => {
         const pickupDate = new Date(pickupDateInput.value);
         const newDropoffMinDate = new Date(pickupDate);
@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 
-    // Render Cars Helper Function
+    // Fahrzeuge Rendern Helper-Funktion
     function renderCars(cars, targetElement) {
         targetElement.innerHTML = '';
         if (cars.length === 0) {
@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             `;
             targetElement.innerHTML += carCard;
         });
-        // Yeni kartlar eklendikten sonra butonları doğru duruma getir
+        // Nach dem Hinzufügen neuer Karten die Buttons in den richtigen Zustand versetzen
         try { updateSelectButtonsState(); } catch (_) {}
     }
 
@@ -89,14 +89,14 @@ document.addEventListener('DOMContentLoaded', async () => {
                 throw new Error(`HTTP-Fehler! Status: ${response.status}`);
             }
             const cars = await response.json();
-            // Popüler: Tesla, Porsche, Mercedes gibi farklı markalardan örnekler seç
+            // Beliebt: Beispiele von verschiedenen Marken wie Tesla, Porsche, Mercedes auswählen
             const brandsOrder = ['Tesla', 'Porsche', 'Mercedes-Benz'];
             const picks = [];
             for (const b of brandsOrder) {
                 const found = cars.find(c => c.make === b);
                 if (found) picks.push(found);
             }
-            // Eğer bazı markalar yoksa kalanları tamamla
+            // Wenn einige Marken fehlen, den Rest ergänzen
             if (picks.length < 3) {
                 for (const c of cars) {
                     if (picks.length >= 3) break;
@@ -105,7 +105,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
             renderCars(picks.slice(0,3), popularCarsRow);
         } catch (error) {
-            console.error('Fehler beim Laden der beliebten Fahrzeuge:', error);
+            console.error('Fehler beim Laden beliebter Fahrzeuge:', error);
             popularCarsRow.innerHTML = '<div class="col-12"><p class="text-danger text-center">Beliebte Fahrzeuge konnten nicht geladen werden.</p></div>';
         }
     }
@@ -158,11 +158,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         window.location.href = `/views/search_results.html?${qp.toString()}`;
     });
 
-    // Initiale Daten laden
+    // Anfangsdaten laden
     fetchAndPopulateLocations();
     fetchAndDisplayPopularCars();
 
-    // Auswählen & Weiter butonunu, lokasyon ve saatler seçilmeden engelle
+    // Auswählen & Weiter Button blockieren, bis Standort und Zeiten ausgewählt sind
     function updateSelectButtonsState() {
         const pickupOk = !!pickupLocationSelect.value;
         const dropoffOk = !!dropoffLocationSelect.value;
@@ -195,7 +195,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('pickup-time').addEventListener('change', updateSelectButtonsState);
     document.getElementById('dropoff-time').addEventListener('change', updateSelectButtonsState);
 
-    // Dinamik kartlar render edildikten sonra linkleri yönlendir
+    // Nach dem Rendern dynamischer Karten die Links weiterleiten
     document.addEventListener('click', (e) => {
         const target = e.target.closest('.select-continue');
         if (!target) return;
@@ -205,6 +205,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         window.location.href = target.getAttribute('data-href');
     });
 
-    // ilk durumda
+    // im ersten Zustand
     updateSelectButtonsState();
 });

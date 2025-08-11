@@ -1,35 +1,41 @@
 const express = require('express');
-const router = express.Router();
 const nodemailer = require('nodemailer');
+const router = express.Router();
 
 // Gmail SMTP ayarları
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: 'orhancodes@gmail.com',
-        pass: 'cghcmrozlfmwnygu'
+        user: process.env.EMAIL_USER || 'your-email@gmail.com',
+        pass: process.env.EMAIL_PASS || 'your-app-password'
     }
 });
 
 router.post('/', async (req, res) => {
-    const { name, email, message } = req.body;
-    if (!name || !email || !message) {
-        return res.status(400).json({ message: 'Tüm alanlar zorunludur.' });
-    }
     try {
-        await transporter.sendMail({
-            from: 'orhancodes@gmail.com',
-            to: 'orhancodes@gmail.com',
-            subject: `AutoWolfXs İletişim Formu: ${name}`,
-            text: `Gönderen: ${name} <${email}>
+        const { name, email, subject, message } = req.body;
 
-Mesaj:
-${message}`
-        });
-        res.json({ message: 'Mesaj başarıyla gönderildi.' });
-    } catch (err) {
-        console.error('E-posta gönderme hatası:', err.message);
-        res.status(500).json({ message: 'Mesaj gönderilemedi.' });
+        const mailOptions = {
+            from: process.env.EMAIL_USER,
+            to: process.env.EMAIL_USER,
+            subject: 'Neue Kontaktanfrage von der Website',
+            html: `
+                <h2>Neue Kontaktanfrage</h2>
+                <p><strong>Name:</strong> ${name}</p>
+                <p><strong>E-Mail:</strong> ${email}</p>
+                <p><strong>Telefon:</strong> ${phone}</p>
+                <p><strong>Nachricht:</strong></p>
+                <p>${message}</p>
+            `
+        };
+
+        await transporter.sendMail(mailOptions);
+
+        res.json({ message: 'Nachricht erfolgreich gesendet' });
+
+    } catch (error) {
+        console.error('Email gönderilirken hata:', error);
+        res.status(500).json({ error: 'Fehler beim Senden der Nachricht' });
     }
 });
 

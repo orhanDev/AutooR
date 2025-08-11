@@ -1,17 +1,27 @@
 const express = require('express');
+const { query } = require('../db/database');
+const authMiddleware = require('../middleware/authMiddleware');
 const router = express.Router();
-const db = require('../db/database');
-const auth = require('../middleware/authMiddleware');
 
 // Yeni rezervasyon oluştur
-router.post('/', auth, async (req, res) => {
-    // user_id'yi artık req.user.id'den alıyoruz
-    const { car_id, pickup_location_id, dropoff_location_id, pickup_date, dropoff_date, pickup_time, dropoff_time, extras, total_price, status } = req.body;
-    const user_id = req.user.id;
-
+router.post('/', authMiddleware, async (req, res) => {
     try {
-        // Tarih çakışması kontrolü (detaylı kontrol burada da yapılabilir veya front-end'den gelen validasyon güvenilebilir)
-        const conflictCheckQuery = `
+        const {
+            car_id,
+            pickup_location_id,
+            dropoff_location_id,
+            pickup_date,
+            dropoff_date,
+            pickup_time,
+            dropoff_time,
+            extras,
+            total_price
+        } = req.body;
+
+        const user_id = req.user.userId;
+
+        // Tarih çakışması kontrolü
+        const conflictCheck = await query(`
             SELECT COUNT(*)
             FROM reservations
             WHERE car_id = $1
@@ -19,65 +29,57 @@ router.post('/', auth, async (req, res) => {
             AND (
                 (pickup_date, dropoff_date) OVERLAPS (CAST($2 AS DATE), CAST($3 AS DATE))
             );
-        `;
-        const conflictCheckResult = await db.query(conflictCheckQuery, [car_id, pickup_date, dropoff_date]);
+        `, [car_id, pickup_date, dropoff_date]);
 
-        if (conflictCheckResult.rows[0].count > 0) {
-            return res.status(409).json({ message: 'Seçilen tarihlerde araç müsait değil.' });
+        if (parseInt(conflictCheck.rows[0].count) > 0) {
+            return res.status(400).json({
+                error: 'Fahrzeug für die ausgewählten Daten nicht verfügbar'
+            });
         }
 
-        const query = `
+        // Rezervasyon oluştur
+        const result = await query(`
             INSERT INTO reservations (
                 user_id, car_id, pickup_location_id, dropoff_location_id,
                 pickup_date, dropoff_date, pickup_time, dropoff_time, extras, total_price, status
             ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *;
-        `;
-        const params = [
+        `, [
             user_id, car_id, pickup_location_id, dropoff_location_id,
-            pickup_date, dropoff_date, pickup_time, dropoff_time, extras || null, total_price, status
-        ];
+            pickup_date, dropoff_date, pickup_time, dropoff_time, extras, total_price, 'Beklemede'
+        ]);
 
-        const result = await db.query(query, params);
-        res.status(201).json(result.rows[0]);
-    } catch (err) {
-        console.error('Rezervasyon oluşturulurken hata:', err.message);
-        res.status(500).send('Sunucu Hatası');
+        res.status(201).json({
+            message: 'Reservierung erfolgreich erstellt',
+            reservation: result.rows[0]
+        });
+
+    } catch (error) {
+        console.error('Rezervasyon oluşturulurken hata:', error);
+        res.status(500).json({ error: 'Serverfehler' });
     }
 });
 
-// Kullanıcının kendi rezervasyonlarını getir
-router.get('/user', auth, async (req, res) => {
+// Kullanıcı rezervasyonlarını getir
+router.get('/user', authMiddleware, async (req, res) => {
     try {
-        const reservations = await db.query(
-            `SELECT 
-                r.reservation_id,
-                r.pickup_date,
-                r.dropoff_date,
-                r.pickup_time,
-                r.dropoff_time,
-                r.total_price,
-                r.status,
-                c.make,
-                c.model,
-                c.year,
-                c.license_plate,
-                c.image_url,
-                l_pickup.name AS pickup_location_name,
-                l_dropoff.name AS dropoff_location_name
+        const user_id = req.user.userId;
+
+        const result = await query(`
+            SELECT r.*, c.make, c.model, c.year, c.image_url,
+                   l1.name AS pickup_location_name, l2.name AS dropoff_location_name
             FROM reservations r
             JOIN cars c ON r.car_id = c.car_id
-            JOIN locations l_pickup ON r.pickup_location_id = l_pickup.location_id
-            JOIN locations l_dropoff ON r.dropoff_location_id = l_dropoff.location_id
+            LEFT JOIN locations l1 ON r.pickup_location_id = l1.location_id
+            LEFT JOIN locations l2 ON r.dropoff_location_id = l2.location_id
             WHERE r.user_id = $1
-            ORDER BY r.created_at DESC;`,
-            [req.user.id]
-        );
+            ORDER BY r.created_at DESC
+        `, [user_id]);
 
-        res.json(reservations.rows);
+        res.json(result.rows);
 
-    } catch (err) {
-        console.error('Kullanıcı rezervasyonları çekilirken hata:', err.message);
-        res.status(500).send('Sunucu Hatası');
+    } catch (error) {
+        console.error('Kullanıcı rezervasyonları getirilirken hata:', error);
+        res.status(500).json({ error: 'Serverfehler' });
     }
 });
 
