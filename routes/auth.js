@@ -15,7 +15,7 @@ router.post('/register', async (req, res) => {
         const existingUser = await query('SELECT * FROM users WHERE email = $1', [email]);
         if (existingUser.rows.length > 0) {
             return res.status(400).json({ error: 'E-Mail bereits registriert' });
-        }
+        } 
 
         // Şifre hash'leme
         const saltRounds = 10;
