@@ -15,74 +15,145 @@
     <div id="navbar-container">
         <!-- Navbar JavaScript ile yüklenecek -->
     </div>
+    
     <main class="container my-5">
-        <div class="row justify-content-center">
-            <div class="col-md-8 col-lg-6">
-                <div class="card">
-                    <div class="card-header text-center">
-                        <h4><i class="bi bi-person-circle"></i> Mein Profil</h4>
+        <!-- Profil Başlığı -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="d-flex align-items-center">
+                    <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 60px; height: 60px;">
+                        <i class="bi bi-person-fill fs-3"></i>
+                    </div>
+                    <div>
+                        <h2 class="mb-1" id="welcome-name">Willkommen</h2>
+                        <p class="text-muted mb-0">Verwalten Sie Ihre persönlichen Daten und Buchungen</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Sol Kolon - Profil Bilgileri -->
+            <div class="col-lg-4 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0"><i class="bi bi-person-gear me-2"></i>Persönliche Daten</h5>
                     </div>
                     <div class="card-body">
                         <form id="profile-form">
-                            <h5 class="mb-3">Persönliche Daten</h5>
                             <div class="mb-3">
-                                <label for="first_name" class="form-label">Vorname</label>
+                                <label for="first_name" class="form-label fw-semibold">Vorname *</label>
                                 <input type="text" id="first_name" class="form-control" required>
                             </div>
                             <div class="mb-3">
-                                <label for="last_name" class="form-label">Nachname</label>
+                                <label for="last_name" class="form-label fw-semibold">Nachname *</label>
                                 <input type="text" id="last_name" class="form-control" required>
                             </div>
                             <div class="mb-3">
-                                <label for="email" class="form-label">E-Mail</label>
-                                <input type="email" id="email" class="form-control" required disabled>
+                                <label for="email" class="form-label fw-semibold">E-Mail</label>
+                                <input type="email" id="email" class="form-control" disabled>
+                                <small class="text-muted">E-Mail-Adresse kann nicht geändert werden</small>
                             </div>
                             <div class="mb-3">
-                                <label for="phone_number" class="form-label">Telefonnummer</label>
-                                <input type="text" id="phone_number" class="form-control">
+                                <label for="phone_number" class="form-label fw-semibold">Telefonnummer</label>
+                                <input type="tel" id="phone_number" class="form-control" placeholder="+49 123 456789">
                             </div>
-                            <h5 class="mb-3 mt-4">Adresse</h5>
                             <div class="mb-3">
-                                <label for="address" class="form-label">Adresse</label>
-                                <textarea id="address" class="form-control" rows="2"></textarea>
+                                <label for="address" class="form-label fw-semibold">Adresse</label>
+                                <textarea id="address" class="form-control" rows="3" placeholder="Straße, Hausnummer, PLZ, Stadt"></textarea>
                             </div>
-                            <h5 class="mb-3 mt-4">Zahlungsinformationen</h5>
-                            <div class="mb-3">
-                                <label for="card_number" class="form-label">Kreditkartennummer</label>
-                                <input type="text" id="card_number" class="form-control" maxlength="19" placeholder="1234 5678 9012 3456">
-                            </div>
-                            <div class="mb-3 row">
-                                <div class="col-md-6">
-                                    <label for="card_expiry" class="form-label">Ablaufdatum</label>
-                                    <input type="text" id="card_expiry" class="form-control" maxlength="5" placeholder="MM/YY">
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="card_cvc" class="form-label">CVC</label>
-                                    <input type="text" id="card_cvc" class="form-control" maxlength="4" placeholder="123">
-                                </div>
-                            </div>
-                            <div class="d-grid mt-4">
+                            <div class="d-grid">
                                 <button type="submit" class="btn btn-primary">
-                                    <i class="bi bi-save"></i> Änderungen speichern
+                                    <i class="bi bi-save me-2"></i>Änderungen speichern
                                 </button>
                             </div>
                         </form>
                     </div>
                 </div>
+
+                <!-- Hesap Bilgileri -->
+                <div class="card mt-4 shadow-sm">
+                    <div class="card-header bg-light">
+                        <h6 class="mb-0"><i class="bi bi-shield-check me-2"></i>Konto-Informationen</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row text-center">
+                            <div class="col-6 border-end">
+                                <div class="text-primary fw-bold fs-4" id="total-bookings">0</div>
+                                <small class="text-muted">Buchungen</small>
+                            </div>
+                            <div class="col-6">
+                                <div class="text-success fw-bold fs-4" id="member-since">2025</div>
+                                <small class="text-muted">Mitglied seit</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sağ Kolon - Rezervasyon Geçmişi -->
+            <div class="col-lg-8">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0"><i class="bi bi-calendar-check me-2"></i>Meine Buchungen</h5>
+                        <div class="btn-group btn-group-sm" role="group">
+                            <button type="button" class="btn btn-outline-primary active" data-filter="all">Alle</button>
+                            <button type="button" class="btn btn-outline-primary" data-filter="active">Aktiv</button>
+                            <button type="button" class="btn btn-outline-primary" data-filter="completed">Abgeschlossen</button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div id="bookings-container">
+                            <div class="text-center py-5">
+                                <i class="bi bi-calendar-x text-muted" style="font-size: 3rem;"></i>
+                                <p class="text-muted mt-3">Noch keine Buchungen vorhanden</p>
+                                <a href="/" class="btn btn-primary">Jetzt Auto mieten</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hızlı Eylemler -->
+                <div class="row mt-4">
+                    <div class="col-md-6 mb-3">
+                        <div class="card text-center h-100 shadow-sm">
+                            <div class="card-body">
+                                <i class="bi bi-car-front text-primary mb-3" style="font-size: 2rem;"></i>
+                                <h6>Neue Buchung</h6>
+                                <p class="text-muted small">Buchen Sie Ihr nächstes Fahrzeug</p>
+                                <a href="/" class="btn btn-outline-primary btn-sm">Auto suchen</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="card text-center h-100 shadow-sm">
+                            <div class="card-body">
+                                <i class="bi bi-question-circle text-info mb-3" style="font-size: 2rem;"></i>
+                                <h6>Hilfe & Support</h6>
+                                <p class="text-muted small">Haben Sie Fragen?</p>
+                                <a href="/contact" class="btn btn-outline-info btn-sm">Kontakt</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </main>
+
     <footer class="bg-dark text-white text-center py-4 mt-5">
         <div class="container">
             <p>&copy; 2025 TurboMiete. Alle Rechte vorbehalten.</p>
         </div>
     </footer>
+    
     <footer class="text-center mt-5 mb-3" style="font-size: 0.9em; color: #888;">
-  Dieses Projekt wurde ausschließlich zu Portfoliozwecken erstellt. Es besteht keine Verbindung zu Tesla Inc., Mercedes-Benz, BMW, Audi, Porsche, Bentley, Rolls-Royce oder anderen genannten Marken.
-</footer>
+        Dieses Projekt wurde ausschließlich zu Portfoliozwecken erstellt. Es besteht keine Verbindung zu Tesla Inc., Mercedes-Benz, BMW, Audi, Porsche, Bentley, Rolls-Royce oder anderen genannten Marken.
+    </footer>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../js/navbar.js"></script> <!-- Ortak navbar için -->
+    <script src="../js/navbar.js"></script>
     <script src="../js/auth.js"></script>
+    
     <script>
     document.addEventListener('DOMContentLoaded', async function() {
         const token = localStorage.getItem('token');
@@ -91,35 +162,53 @@
             window.location.href = '/views/login.html';
             return;
         }
-        // Profil bilgilerini çek
+
+        // Profil bilgilerini çek ve doldur
         try {
             const res = await fetch('/api/auth/user', {
                 headers: { 'x-auth-token': token }
             });
             if (res.ok) {
                 const user = await res.json();
+                
+                // Form alanlarını doldur
                 document.getElementById('first_name').value = user.first_name || '';
                 document.getElementById('last_name').value = user.last_name || '';
                 document.getElementById('email').value = user.email || '';
                 document.getElementById('phone_number').value = user.phone_number || '';
                 document.getElementById('address').value = user.address || '';
+                
+                // Hoş geldin mesajı
+                document.getElementById('welcome-name').textContent = `Willkommen, ${user.first_name || 'Benutzer'}!`;
+                
+                // Üyelik tarihi
+                if (user.created_at) {
+                    const memberYear = new Date(user.created_at).getFullYear();
+                    document.getElementById('member-since').textContent = memberYear;
+                }
+                
             } else {
                 alert('Profil konnte nicht geladen werden.');
             }
         } catch (e) {
+            console.error('Profil yükleme hatası:', e);
             alert('Fehler beim Laden des Profils.');
         }
+
+        // Rezervasyonları çek
+        await loadUserBookings();
+
         // Profil güncelleme
         document.getElementById('profile-form').addEventListener('submit', async function(e) {
             e.preventDefault();
-            const first_name = document.getElementById('first_name').value;
-            const last_name = document.getElementById('last_name').value;
-            const phone_number = document.getElementById('phone_number').value;
-            const address = document.getElementById('address').value;
-            // Ödeme bilgileri (sadece frontendde tutulacak, backendde saklanmaz!)
-            // const card_number = document.getElementById('card_number').value;
-            // const card_expiry = document.getElementById('card_expiry').value;
-            // const card_cvc = document.getElementById('card_cvc').value;
+            
+            const formData = {
+                first_name: document.getElementById('first_name').value,
+                last_name: document.getElementById('last_name').value,
+                phone_number: document.getElementById('phone_number').value,
+                address: document.getElementById('address').value
+            };
+
             try {
                 const res = await fetch('/api/auth/user', {
                     method: 'PUT',
@@ -127,18 +216,127 @@
                         'Content-Type': 'application/json',
                         'x-auth-token': token
                     },
-                    body: JSON.stringify({ first_name, last_name, phone_number, address })
+                    body: JSON.stringify(formData)
                 });
+                
                 if (res.ok) {
-                    alert('Profil erfolgreich aktualisiert!');
+                    // Başarı mesajı göster
+                    const alertDiv = document.createElement('div');
+                    alertDiv.className = 'alert alert-success alert-dismissible fade show';
+                    alertDiv.innerHTML = `
+                        <i class="bi bi-check-circle me-2"></i>
+                        Profil erfolgreich aktualisiert!
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    `;
+                    document.querySelector('.card-body').insertBefore(alertDiv, document.getElementById('profile-form'));
+                    
+                    // 3 saniye sonra otomatik kaldır
+                    setTimeout(() => {
+                        if (alertDiv.parentNode) {
+                            alertDiv.remove();
+                        }
+                    }, 3000);
                 } else {
-                    alert('Profil konnte nicht aktualisiert werden.');
+                    throw new Error('Update failed');
                 }
             } catch (e) {
-                alert('Fehler beim Aktualisieren des Profils.');
+                console.error('Profil güncelleme hatası:', e);
+                alert('Profil konnte nicht aktualisiert werden.');
             }
         });
+
+        // Filtre butonları
+        document.querySelectorAll('[data-filter]').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('[data-filter]').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                // Burada filtreleme yapılabilir
+            });
+        });
     });
+
+    // Kullanıcı rezervasyonlarını yükle
+    async function loadUserBookings() {
+        try {
+            const token = localStorage.getItem('token');
+            const res = await fetch('/api/reservations/user', {
+                headers: { 'x-auth-token': token }
+            });
+            
+            if (res.ok) {
+                const bookings = await res.json();
+                displayBookings(bookings);
+                document.getElementById('total-bookings').textContent = bookings.length;
+            }
+        } catch (e) {
+            console.error('Rezervasyon yükleme hatası:', e);
+        }
+    }
+
+    // Rezervasyonları görüntüle
+    function displayBookings(bookings) {
+        const container = document.getElementById('bookings-container');
+        
+        if (!bookings || bookings.length === 0) {
+            container.innerHTML = `
+                <div class="text-center py-5">
+                    <i class="bi bi-calendar-x text-muted" style="font-size: 3rem;"></i>
+                    <p class="text-muted mt-3">Noch keine Buchungen vorhanden</p>
+                    <a href="/" class="btn btn-primary">Jetzt Auto mieten</a>
+                </div>
+            `;
+            return;
+        }
+
+        const bookingsHTML = bookings.map(booking => `
+            <div class="border rounded p-3 mb-3">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h6 class="mb-1">${booking.make} ${booking.model}</h6>
+                        <p class="text-muted small mb-1">
+                            <i class="bi bi-calendar me-1"></i>
+                            ${new Date(booking.pickup_date).toLocaleDateString('de-DE')} - 
+                            ${new Date(booking.dropoff_date).toLocaleDateString('de-DE')}
+                        </p>
+                        <p class="text-muted small mb-0">
+                            <i class="bi bi-geo-alt me-1"></i>
+                            ${booking.pickup_location_name || 'Berlin'}
+                        </p>
+                    </div>
+                    <div class="col-md-4 text-end">
+                        <span class="badge bg-${getStatusColor(booking.status)} mb-2">
+                            ${getStatusText(booking.status)}
+                        </span>
+                        <div class="fw-bold text-primary">€${booking.total_price}</div>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+
+        container.innerHTML = bookingsHTML;
+    }
+
+    // Durum rengi
+    function getStatusColor(status) {
+        switch(status) {
+            case 'Beklemede': return 'warning';
+            case 'Onaylandı': return 'success';
+            case 'Tamamlandı': return 'info';
+            case 'İptal': return 'danger';
+            default: return 'secondary';
+        }
+    }
+
+    // Durum metni
+    function getStatusText(status) {
+        switch(status) {
+            case 'Beklemede': return 'Wartend';
+            case 'Onaylandı': return 'Bestätigt';
+            case 'Tamamlandı': return 'Abgeschlossen';
+            case 'İptal': return 'Storniert';
+            default: return status;
+        }
+    }
     </script>
 </body>
 </html>

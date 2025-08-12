@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reservierung Bestätigt - TurboMiete</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-car"></i> TurboMiete
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Startseite</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/views/search_results.html">Fahrzeuge</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/views/about.html">Über uns</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/views/contact.html">Kontakt</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/views/profile.html">
+                            <i class="fas fa-user"></i> Mein Profil
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" id="logout-btn">
+                            <i class="fas fa-sign-out-alt"></i> Abmelden
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <!-- Success Message -->
+                <div class="card border-success mb-4">
+                    <div class="card-header bg-success text-white text-center">
+                        <i class="fas fa-check-circle fa-3x mb-3"></i>
+                        <h2 class="mb-0">Reservierung Bestätigt!</h2>
+                    </div>
+                    <div class="card-body text-center">
+                        <p class="lead text-success mb-4">
+                            Ihre Fahrzeugreservierung wurde erfolgreich bestätigt. 
+                            Vielen Dank für Ihr Vertrauen in TurboMiete!
+                        </p>
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle"></i>
+                            Eine Bestätigungs-E-Mail wurde an Ihre E-Mail-Adresse gesendet.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reservation Details -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h4 class="mb-0">
+                            <i class="fas fa-receipt"></i> Reservierungsdetails
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <div id="reservation-details">
+                            <!-- Reservation details will be loaded here -->
+                            <div class="text-center">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="visually-hidden">Laden...</span>
+                                </div>
+                                <p class="mt-2">Lade Reservierungsdetails...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Next Steps -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h4 class="mb-0">
+                            <i class="fas fa-list-check"></i> Nächste Schritte
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                                        <i class="fas fa-1"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-1">Bestätigungs-E-Mail prüfen</h6>
+                                        <small class="text-muted">Überprüfen Sie Ihren Posteingang</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                                        <i class="fas fa-2"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-1">Fahrzeug abholen</h6>
+                                        <small class="text-muted">Am vereinbarten Termin und Ort</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                                        <i class="fas fa-3"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-1">Fahrzeug zurückgeben</h6>
+                                        <small class="text-muted">Am vereinbarten Termin und Ort</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                                        <i class="fas fa-4"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-1">Bewertung abgeben</h6>
+                                        <small class="text-muted">Teilen Sie Ihre Erfahrung mit uns</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="card">
+                    <div class="card-body text-center">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <a href="/views/profile.html" class="btn btn-outline-primary btn-lg w-100">
+                                    <i class="fas fa-user"></i> Mein Profil anzeigen
+                                </a>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <a href="/views/search_results.html" class="btn btn-primary btn-lg w-100">
+                                    <i class="fas fa-car"></i> Weitere Fahrzeuge suchen
+                                </a>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <a href="/" class="btn btn-secondary">
+                                <i class="fas fa-home"></i> Zurück zur Startseite
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white text-center py-4 mt-5">
+        <div class="container">
+            <p>&copy; 2024 TurboMiete. Alle Rechte vorbehalten.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/reservation_confirmation.js"></script>
+</body>
+</html>

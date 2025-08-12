@@ -83,4 +83,32 @@ router.get('/user', authMiddleware, async (req, res) => {
     }
 });
 
+// Tek bir rezervasyonu ID ile getir
+router.get('/:id', authMiddleware, async (req, res) => {
+    try {
+        const reservation_id = req.params.id;
+        const user_id = req.user.userId;
+
+        const result = await query(`
+            SELECT r.*, c.make, c.model, c.year, c.license_plate, c.image_url,
+                   l1.name AS pickup_location_name, l2.name AS dropoff_location_name
+            FROM reservations r
+            JOIN cars c ON r.car_id = c.car_id
+            LEFT JOIN locations l1 ON r.pickup_location_id = l1.location_id
+            LEFT JOIN locations l2 ON r.dropoff_location_id = l2.location_id
+            WHERE r.reservation_id = $1 AND r.user_id = $2
+        `, [reservation_id, user_id]);
+
+        if (result.rows.length === 0) {
+            return res.status(404).json({ error: 'Reservierung nicht gefunden' });
+        }
+
+        res.json(result.rows[0]);
+
+    } catch (error) {
+        console.error('Rezervasyon getirilirken hata:', error);
+        res.status(500).json({ error: 'Serverfehler' });
+    }
+});
+
 module.exports = router;

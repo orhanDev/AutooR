@@ -213,7 +213,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (response.ok) {
                 alert('Ihre Reservierung wurde erfolgreich erstellt!');
                 console.log('Reservierung erfolgreich:', data);
-                window.location.href = `/reservation-confirmation.html?reservationId=${data.reservation_id}`;
+                window.location.href = `/views/reservation_confirmation.html?reservationId=${data.reservation_id}`;
             } else {
                 throw new Error(data.message || 'Beim Erstellen der Reservierung ist ein Fehler aufgetreten.');
             }

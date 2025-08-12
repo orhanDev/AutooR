@@ -69,15 +69,98 @@ router.get('/reservations', adminMiddleware, async (req, res) => {
     }
 });
 
-// Rezervasyon durumunu güncelle (sadece adminler)
-router.put('/reservations/:id/status', adminMiddleware, async (req, res) => {
+// Test rezervasyonları ekle (sadece adminler)
+router.post('/test-reservations', adminMiddleware, async (req, res) => {
     try {
-    const { id } = req.params;
-    const { status } = req.body;
+        const { user_id } = req.body;
+        
+        // Önce kullanıcının var olup olmadığını kontrol et
+        const userCheck = await query('SELECT user_id FROM users WHERE user_id = $1', [user_id]);
+        if (userCheck.rows.length === 0) {
+            return res.status(404).json({ error: 'Kullanıcı bulunamadı' });
+        }
+
+        // Mevcut araçları kontrol et
+        const carsCheck = await query('SELECT car_id FROM cars LIMIT 3');
+        if (carsCheck.rows.length === 0) {
+            return res.status(400).json({ error: 'Hiç araç bulunamadı' });
+        }
+
+        // Test rezervasyonları ekle
+        const testReservations = [
+            {
+                car_id: carsCheck.rows[0].car_id,
+                pickup_date: '2025-01-15',
+                dropoff_date: '2025-01-17',
+                pickup_time: '10:00:00',
+                dropoff_time: '18:00:00',
+                pickup_location_id: 1,
+                dropoff_location_id: 1,
+                total_price: 250.00,
+                status: 'Tamamlandı'
+            },
+            {
+                car_id: carsCheck.rows[1] ? carsCheck.rows[1].car_id : carsCheck.rows[0].car_id,
+                pickup_date: '2025-02-01',
+                dropoff_date: '2025-02-03',
+                pickup_time: '09:00:00',
+                dropoff_time: '17:00:00',
+                pickup_location_id: 2,
+                dropoff_location_id: 2,
+                total_price: 400.00,
+                status: 'Onaylandı'
+            },
+            {
+                car_id: carsCheck.rows[2] ? carsCheck.rows[2].car_id : carsCheck.rows[0].car_id,
+                pickup_date: '2025-01-20',
+                dropoff_date: '2025-01-22',
+                pickup_time: '14:00:00',
+                dropoff_time: '12:00:00',
+                pickup_location_id: 3,
+                dropoff_location_id: 3,
+                total_price: 390.00,
+                status: 'Beklemede'
+            }
+        ];
+
+        const insertedReservations = [];
+        
+        for (const reservation of testReservations) {
+            const result = await query(`
+                INSERT INTO reservations (
+                    user_id, car_id, pickup_date, dropoff_date, pickup_time, dropoff_time,
+                    pickup_location_id, dropoff_location_id, total_price, status
+                ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+                RETURNING reservation_id
+            `, [
+                user_id, reservation.car_id, reservation.pickup_date, reservation.dropoff_date,
+                reservation.pickup_time, reservation.dropoff_time, reservation.pickup_location_id,
+                reservation.dropoff_location_id, reservation.total_price, reservation.status
+            ]);
+            
+            insertedReservations.push(result.rows[0]);
+        }
+
+        res.status(201).json({
+            message: 'Test rezervasyonları başarıyla eklendi',
+            reservations: insertedReservations
+        });
+
+    } catch (error) {
+        console.error('Test rezervasyonları eklenirken hata:', error);
+        res.status(500).json({ error: 'Serverfehler' });
+    }
+});
+
+// Rezervasyon durumunu güncelle (sadece adminler)
+router.put('/reservations/:id', adminMiddleware, async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { status } = req.body;
 
         // Geçerli durumları kontrol et
         const validStatuses = ['Beklemede', 'Onaylandı', 'Reddedildi', 'Tamamlandı', 'İptal Edildi'];
-    if (!validStatuses.includes(status)) {
+        if (!validStatuses.includes(status)) {
             return res.status(400).json({ error: 'Geçersiz durum' });
         }
 
@@ -145,11 +228,10 @@ router.put('/cars/:id', adminMiddleware, async (req, res) => {
         } = req.body;
 
         const result = await query(`
-            UPDATE cars SET
-                make = $1, model = $2, year = $3, license_plate = $4,
-                daily_rate = $5, transmission_type = $6, fuel_type = $7,
-                seating_capacity = $8, color = $9, image_url = $10,
-                location_id = $11, description = $12, is_available = $13
+            UPDATE cars 
+            SET make = $1, model = $2, year = $3, license_plate = $4, daily_rate = $5,
+                transmission_type = $6, fuel_type = $7, seating_capacity = $8,
+                color = $9, image_url = $10, location_id = $11, description = $12, is_available = $13
             WHERE car_id = $14
             RETURNING *
         `, [make, model, year, license_plate, daily_rate,
@@ -177,7 +259,9 @@ router.delete('/cars/:id', adminMiddleware, async (req, res) => {
         const { id } = req.params;
 
         const result = await query(`
-            DELETE FROM cars WHERE car_id = $1 RETURNING *
+            DELETE FROM cars 
+            WHERE car_id = $1
+            RETURNING *
         `, [id]);
 
         if (result.rows.length === 0) {
@@ -191,6 +275,22 @@ router.delete('/cars/:id', adminMiddleware, async (req, res) => {
 
     } catch (error) {
         console.error('Araç silinirken hata:', error);
+        res.status(500).json({ error: 'Serverfehler' });
+    }
+});
+
+// Tüm araçları getir (sadece adminler)
+router.get('/cars', adminMiddleware, async (req, res) => {
+    try {
+        const result = await query(`
+            SELECT c.*, l.name as location_name
+            FROM cars c
+            LEFT JOIN locations l ON c.location_id = l.location_id
+            ORDER BY c.created_at DESC
+        `);
+        res.json(result.rows);
+    } catch (error) {
+        console.error('Araçlar getirilirken hata:', error);
         res.status(500).json({ error: 'Serverfehler' });
     }
 });
@@ -220,13 +320,12 @@ router.post('/locations', adminMiddleware, async (req, res) => {
 // Lokasyon güncelle
 router.put('/locations/:id', adminMiddleware, async (req, res) => {
     try {
-    const { id } = req.params;
-    const { name, address, city, state_province, zip_code, country } = req.body;
+        const { id } = req.params;
+        const { name, address, city, state_province, zip_code, country } = req.body;
 
         const result = await query(`
-            UPDATE locations SET
-                name = $1, address = $2, city = $3, state_province = $4,
-                zip_code = $5, country = $6
+            UPDATE locations 
+            SET name = $1, address = $2, city = $3, state_province = $4, zip_code = $5, country = $6
             WHERE location_id = $7
             RETURNING *
         `, [name, address, city, state_province, zip_code, country, id]);
@@ -246,26 +345,16 @@ router.put('/locations/:id', adminMiddleware, async (req, res) => {
     }
 });
 
-// Lokasyon sil
-router.delete('/locations/:id', adminMiddleware, async (req, res) => {
+// Tüm lokasyonları getir (sadece adminler)
+router.get('/locations', adminMiddleware, async (req, res) => {
     try {
-        const { id } = req.params;
-
         const result = await query(`
-            DELETE FROM locations WHERE location_id = $1 RETURNING *
-        `, [id]);
-
-        if (result.rows.length === 0) {
-            return res.status(404).json({ error: 'Lokasyon bulunamadı' });
-        }
-
-        res.json({
-            message: 'Lokasyon başarıyla silindi',
-            location: result.rows[0]
-        });
-
+            SELECT * FROM locations 
+            ORDER BY created_at DESC
+        `);
+        res.json(result.rows);
     } catch (error) {
-        console.error('Lokasyon silinirken hata:', error);
+        console.error('Lokasyonlar getirilirken hata:', error);
         res.status(500).json({ error: 'Serverfehler' });
     }
 });

@@ -109,6 +109,43 @@ router.get('/profile', authMiddleware, async (req, res) => {
     }
 });
 
+// Kullanıcı bilgilerini getir (token ile)
+router.get('/user', authMiddleware, async (req, res) => {
+    try {
+        console.log('=== /user endpoint çalışıyor ===');
+        console.log('req.user:', req.user);
+        
+        const userId = req.user.userId;
+        console.log('userId:', userId);
+
+        const user = await query(`
+            SELECT user_id, first_name, last_name, email, phone_number, address, 
+                   is_admin, created_at 
+            FROM users WHERE user_id = $1
+        `, [userId]);
+        
+        console.log('Database query sonucu:', user.rows);
+
+        if (user.rows.length === 0) {
+            console.log('Kullanıcı bulunamadı');
+            return res.status(404).json({ error: 'Kullanıcı bulunamadı' });
+        }
+
+        console.log('Kullanıcı bulundu:', user.rows[0]);
+        
+        res.json({
+            message: 'Kullanıcı bilgileri başarıyla getirildi',
+            user: user.rows[0]
+        });
+
+    } catch (error) {
+        console.error('=== /user endpoint hatası ===');
+        console.error('Hata detayı:', error);
+        console.error('Stack trace:', error.stack);
+        res.status(500).json({ error: 'Serverfehler', details: error.message });
+    }
+});
+
 // Kullanıcı bilgilerini güncelle (korumalı rota)
 router.put('/profile', authMiddleware, async (req, res) => {
     try {
