@@ -65,7 +65,7 @@ router.get('/user', authMiddleware, async (req, res) => {
         const user_id = req.user.userId;
 
         const result = await query(`
-            SELECT r.*, c.make, c.model, c.year, c.image_url,
+            SELECT r.*, c.make, c.model, c.year, c.license_plate, c.image_url,
                    l1.name AS pickup_location_name, l2.name AS dropoff_location_name
             FROM reservations r
             JOIN cars c ON r.car_id = c.car_id

@@ -4,8 +4,11 @@ module.exports = function (req, res, next) {
     console.log('AuthMiddleware çalışıyor...');
     console.log('Headers:', req.headers);
     
-    // Header'dan token'ı al
-    const token = req.header('x-auth-token');
+    // Header'dan token'ı al (x-auth-token veya Authorization: Bearer)
+    let token = req.header('x-auth-token');
+    if (!token && req.headers.authorization && req.headers.authorization.startsWith('Bearer ')) {
+        token = req.headers.authorization.substring('Bearer '.length);
+    }
     console.log('Token:', token);
 
     // Token yoksa hata döndür

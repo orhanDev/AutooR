@@ -84,10 +84,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const currentPath = window.location.pathname;
             const navLinks = navbarContainer.querySelectorAll('.nav-link');
             navLinks.forEach(link => {
-                if (link.getAttribute('href') === currentPath || 
-                    (currentPath.includes('search_results') && link.getAttribute('href').includes('search_results')) ||
-                    (currentPath.includes('about') && link.getAttribute('href').includes('about')) ||
-                    (currentPath.includes('contact') && link.getAttribute('href').includes('contact'))) {
+                const href = link.getAttribute('href');
+                if (href === currentPath || (href !== '/' && currentPath.startsWith(href))) {
                     link.classList.add('active');
                 }
             });

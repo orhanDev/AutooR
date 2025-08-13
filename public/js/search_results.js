@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     const urlParams = new URLSearchParams(window.location.search);
     
-    // URL'den parametreleri al
     const pickupLocationId = urlParams.get('pickup_location_id');
     const dropoffLocationId = urlParams.get('dropoff_location_id');
     const pickupDate = urlParams.get('pickup_date');
@@ -11,130 +10,181 @@ document.addEventListener('DOMContentLoaded', function() {
     const pickupLocationName = urlParams.get('pickup_location_name');
     const dropoffLocationName = urlParams.get('dropoff_location_name');
 
-    // Filtre elementlerini al
-    const fuelTypeFilter = document.getElementById('fuel-type');
-    const transmissionFilter = document.getElementById('transmission');
-    const priceRangeFilter = document.getElementById('price-range');
-    const brandFilter = document.getElementById('brand');
-    const applyFilterBtn = document.getElementById('apply-filters');
-    const resetFilterBtn = document.getElementById('reset-filters');
-    const resultsCount = document.getElementById('results-count');
+    // Filter and sorting elements
+    const brandFilter = document.getElementById('brand-filter');
+    const modelFilter = document.getElementById('model-filter');
+    const transmissionFilter = document.getElementById('transmission-filter');
+    const fuelFilter = document.getElementById('fuel-filter');
+    const capacityFilter = document.getElementById('capacity-filter');
+    const pickupLocationSelect = document.getElementById('pickup-location-select');
+    const clearFiltersBtn = document.getElementById('clear-filters-btn');
+    const sortBy = document.getElementById('sort-by');
+    const resultsContainer = document.getElementById('search-results-container');
+    const resultsCountEl = document.getElementById('results-count');
+    const summaryPickupEl = document.getElementById('summary-pickup');
+    const summaryDropoffEl = document.getElementById('summary-dropoff');
+    const summaryDatesEl = document.getElementById('summary-dates');
 
-    // Filtreleri uygula
-    applyFilterBtn.addEventListener('click', function() {
-        applyFilters();
+    // Fill summary bar
+    if (summaryPickupEl) summaryPickupEl.textContent = pickupLocationName || '—';
+    if (summaryDropoffEl) summaryDropoffEl.textContent = dropoffLocationName || '—';
+    if (summaryDatesEl) {
+        const pd = pickupDate || '';
+        const pt = pickupTime || '';
+        const dd = dropoffDate || '';
+        const dt = dropoffTime || '';
+        summaryDatesEl.textContent = `${pd}${pt ? ' ' + pt : ''} → ${dd}${dt ? ' ' + dt : ''}`.trim();
+    }
+
+    let allCars = [];
+
+    // Clear filters
+    clearFiltersBtn?.addEventListener('click', function() {
+        if (brandFilter) brandFilter.value = '';
+        if (modelFilter) modelFilter.value = '';
+        if (transmissionFilter) transmissionFilter.value = '';
+        if (fuelFilter) fuelFilter.value = '';
+        if (capacityFilter) capacityFilter.value = '';
+        if (pickupLocationSelect) pickupLocationSelect.value = '';
+        render();
     });
 
-    // Filtreleri sıfırla
-    resetFilterBtn.addEventListener('click', function() {
-        resetFilters();
+    // Auto-filter on change
+    [brandFilter, modelFilter, transmissionFilter, fuelFilter, capacityFilter, pickupLocationSelect, sortBy].forEach(el => {
+        if (el) el.addEventListener('change', render);
     });
 
-    // Filtreleri uygula
-    function applyFilters() {
-        const filters = {
-            fuelType: fuelTypeFilter.value,
-            transmission: transmissionFilter.value,
-            priceRange: priceRangeFilter.value,
-            brand: brandFilter.value
-        };
+    function populateFilterOptions(cars) {
+        const unique = (arr) => Array.from(new Set(arr.filter(Boolean)));
+        const makes = unique(cars.map(c => c.make));
+        const models = unique(cars.map(c => c.model));
+        const transmissions = unique(cars.map(c => c.transmission_type));
+        const fuels = unique(cars.map(c => c.fuel_type));
+        const capacities = unique(cars.map(c => c.seating_capacity));
 
-        // Filtreleri localStorage'a kaydet
-        localStorage.setItem('searchFilters', JSON.stringify(filters));
-        
-        // Sayfayı yenile
-        location.reload();
-    }
-
-    // Filtreleri sıfırla
-    function resetFilters() {
-        fuelTypeFilter.value = '';
-        transmissionFilter.value = '';
-        priceRangeFilter.value = '';
-        brandFilter.value = '';
-        
-        // localStorage'dan filtreleri temizle
-        localStorage.removeItem('searchFilters');
-        
-        // Sayfayı yenile
-        location.reload();
-    }
-
-    // Global olarak erişilebilir yap
-    window.resetFilters = resetFilters;
-
-    // Sayfa yüklendiğinde mevcut filtreleri yükle
-    function loadSavedFilters() {
-        const savedFilters = localStorage.getItem('searchFilters');
-        if (savedFilters) {
-            const filters = JSON.parse(savedFilters);
-            fuelTypeFilter.value = filters.fuelType || '';
-            transmissionFilter.value = filters.transmission || '';
-            priceRangeFilter.value = filters.priceRange || '';
-            brandFilter.value = filters.brand || '';
-        }
-    }
-
-    // Filtreleri yükle
-    loadSavedFilters();
-
-    // Araçları filtrele ve göster
-    function filterAndDisplayCars(cars) {
-        const savedFilters = localStorage.getItem('searchFilters');
-        if (!savedFilters) {
-            displayCars(cars);
-            return;
-        }
-
-        const filters = JSON.parse(savedFilters);
-        let filteredCars = cars;
-
-        // Marka filtresi
-        if (filters.brand) {
-            filteredCars = filteredCars.filter(car => car.make === filters.brand);
-        }
-
-        // Yakıt türü filtresi
-        if (filters.fuelType) {
-            filteredCars = filteredCars.filter(car => car.fuel_type === filters.fuelType);
-        }
-
-        // Vites filtresi
-        if (filters.transmission) {
-            filteredCars = filteredCars.filter(car => car.transmission_type === filters.transmission);
-        }
-
-        // Fiyat aralığı filtresi
-        if (filters.priceRange) {
-            const [min, max] = filters.priceRange.split('-').map(Number);
-            filteredCars = filteredCars.filter(car => {
-                const price = Number(car.daily_rate);
-                return price >= min && price <= max;
+        if (brandFilter && brandFilter.options.length <= 1) {
+            makes.sort().forEach(m => {
+                const opt = document.createElement('option');
+                opt.value = m;
+                opt.textContent = m;
+                brandFilter.appendChild(opt);
             });
         }
-
-        displayCars(filteredCars);
+        
+        if (modelFilter && modelFilter.options.length <= 1) {
+            models.sort().forEach(m => {
+                const opt = document.createElement('option');
+                opt.value = m;
+                opt.textContent = m;
+                modelFilter.appendChild(opt);
+            });
+        }
+        
+        if (transmissionFilter && transmissionFilter.options.length <= 1) {
+            transmissions.sort().forEach(t => {
+                const opt = document.createElement('option');
+                opt.value = t;
+                opt.textContent = t;
+                transmissionFilter.appendChild(opt);
+            });
+        }
+        
+        if (fuelFilter && fuelFilter.options.length <= 1) {
+            fuels.sort().forEach(f => {
+                const opt = document.createElement('option');
+                opt.value = f;
+                opt.textContent = f;
+                fuelFilter.appendChild(opt);
+            });
+        }
+        
+        if (capacityFilter && capacityFilter.options.length <= 1) {
+            capacities.sort((a,b)=>Number(a)-Number(b)).forEach(c => {
+                const opt = document.createElement('option');
+                opt.value = String(c);
+                opt.textContent = String(c);
+                capacityFilter.appendChild(opt);
+            });
+        }
     }
 
-    // Araçları göster
+    function applyFilters(cars) {
+        let filtered = cars.slice();
+        
+        if (brandFilter && brandFilter.value) {
+            filtered = filtered.filter(c => c.make === brandFilter.value);
+        }
+        
+        if (modelFilter && modelFilter.value) {
+            filtered = filtered.filter(c => c.model === modelFilter.value);
+        }
+        
+        if (transmissionFilter && transmissionFilter.value) {
+            filtered = filtered.filter(c => c.transmission_type === transmissionFilter.value);
+        }
+        
+        if (fuelFilter && fuelFilter.value) {
+            filtered = filtered.filter(c => c.fuel_type === fuelFilter.value);
+        }
+        
+        if (capacityFilter && capacityFilter.value) {
+            filtered = filtered.filter(c => Number(c.seating_capacity) >= Number(capacityFilter.value));
+        }
+        
+        if (pickupLocationSelect && pickupLocationSelect.value) {
+            filtered = filtered.filter(c => String(c.location_id) === String(pickupLocationSelect.value));
+        }
+        
+        return filtered;
+    }
+
+    function applySort(cars) {
+        const mode = sortBy ? sortBy.value : '';
+        const arr = cars.slice();
+        
+        switch (mode) {
+            case 'daily_rate_asc':
+                arr.sort((a,b) => Number(a.daily_rate) - Number(b.daily_rate));
+                break;
+            case 'daily_rate_desc':
+                arr.sort((a,b) => Number(b.daily_rate) - Number(a.daily_rate));
+                break;
+            case 'make_asc':
+                arr.sort((a,b) => String(a.make).localeCompare(String(b.make)));
+                break;
+            case 'make_desc':
+                arr.sort((a,b) => String(b.make).localeCompare(String(a.make)));
+                break;
+            default:
+                break;
+        }
+        return arr;
+    }
+
     function displayCars(cars) {
-        const carsContainer = document.getElementById('cars-container');
+        if (!resultsContainer) return;
         
-        // Sonuç sayısını güncelle
-        resultsCount.textContent = cars.length;
-        
-        if (cars.length === 0) {
-            showNoResults('Keine Fahrzeuge gefunden');
+        if (!cars || cars.length === 0) {
+            resultsContainer.innerHTML = `
+                <div class="col-12">
+                    <div class="text-center py-5">
+                        <i class="bi bi-search text-muted" style="font-size: 3rem;"></i>
+                        <h3 class="mt-3 text-muted">Keine Fahrzeuge gefunden</h3>
+                        <p class="text-muted">Versuchen Sie andere Filtereinstellungen oder ändern Sie Ihre Suchkriterien.</p>
+                        <button class="btn btn-filter" onclick="location.reload()">
+                            <i class="bi bi-arrow-clockwise me-2"></i>Filter zurücksetzen
+                        </button>
+                    </div>
+                </div>`;
+            if (resultsCountEl) resultsCountEl.textContent = '0';
             return;
         }
 
-        carsContainer.innerHTML = `
-            <div class="cars-grid">
-                ${cars.map((car, index) => {
-                    // Araç fotoğrafı için daha iyi fallback sistemi
+        if (resultsCountEl) resultsCountEl.textContent = String(cars.length);
+        
+        resultsContainer.innerHTML = cars.map((car, index) => {
                     let carImage = car.image_url;
                     if (!carImage || carImage === 'null' || carImage === '' || carImage === null) {
-                        // Araç markasına göre farklı fotoğraflar - mevcut fotoğraflarla eşleştir
                         const brandImages = {
                             'Tesla': '/images/cars/tesla-model-s.jpg',
                             'Porsche': '/images/cars/porsche-911-gt3.jpg',
@@ -148,7 +198,6 @@ document.addEventListener('DOMContentLoaded', function() {
                             'Kia': '/images/cars/kia-ev6-gt.jpg',
                             'Honda': '/images/cars/honda-civic-ehev.jpg'
                         };
-                        
                         carImage = brandImages[car.make] || `/images/cars/car${(index % 3) + 1}.jpg`;
                     }
                     
@@ -165,76 +214,90 @@ document.addEventListener('DOMContentLoaded', function() {
                     });
 
                     return `
+                <div class="col">
                         <div class="car-card">
-                            <div class="car-image-container">
-                                <img src="${carImage}" alt="${car.make} ${car.model}" class="car-image"
+                        <div class="position-relative">
+                            <img src="${carImage}" class="car-image" alt="${car.make} ${car.model}"
                                      onerror="this.onerror=null; this.src='/images/cars/car${(index % 3) + 1}.jpg';">
-                                <div class="car-price-badge">€${Number(car.daily_rate).toLocaleString('de-DE')}/Tag</div>
+                            <div class="car-price">€${Number(car.daily_rate).toLocaleString('de-DE')}/Tag</div>
                             </div>
-                            <div class="car-details">
-                                <h3 class="car-title">${car.make} ${car.model}</h3>
-                                <p class="car-year">${car.year}</p>
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title fw-bold mb-2">${car.make} ${car.model}</h5>
+                            <p class="text-muted mb-3">${car.year}</p>
+                            
                                 <div class="car-specs">
-                                    <div class="spec-item">
-                                        <i class="bi bi-gear spec-icon"></i>
-                                        <div class="spec-label">${car.transmission_type}</div>
+                                <div><i class="bi bi-gear"></i>${car.transmission_type}</div>
+                                <div><i class="bi bi-fuel-pump"></i>${car.fuel_type}</div>
+                                <div><i class="bi bi-people"></i>${car.seating_capacity}</div>
                                     </div>
-                                    <div class="spec-item">
-                                        <i class="bi bi-fuel-pump spec-icon"></i>
-                                        <div class="spec-label">${car.fuel_type}</div>
-                                    </div>
-                                    <div class="spec-item">
-                                        <i class="bi bi-people spec-icon"></i>
-                                        <div class="spec-label">${car.seating_capacity} Sitze</div>
-                                    </div>
-                                </div>
-                                <div class="car-location">
-                                    <i class="bi bi-geo-alt"></i> ${car.location_name}
-                                </div>
-                                <div class="car-actions">
-                                    <a href="/views/car_details.html?${qp.toString()}" class="btn btn-details">
-                                        <i class="bi bi-eye me-2"></i>
-                                        Details
+                            
+                            <p class="text-muted mb-3">
+                                <i class="bi bi-geo-alt text-warning"></i> ${car.location_name || ''}
+                            </p>
+                            
+                            <div class="mt-auto d-flex gap-2">
+                                <a href="/views/car_details.html?${qp.toString()}" class="btn btn-details flex-fill">
+                                    <i class="bi bi-eye me-2"></i>Details
                                     </a>
                                     <button class="btn btn-quick-book" onclick="quickBook('${car.car_id}')">
-                                        <i class="bi bi-calendar-check me-2"></i>
-                                        Schnell buchen
+                                    <i class="bi bi-calendar-check"></i>
                                     </button>
                                 </div>
                             </div>
                         </div>
-                    `;
-                }).join('')}
-            </div>
-        `;
+                </div>`;
+        }).join('');
     }
 
-    // Rezervasyon bulunamadı mesajı
-    function showNoResults(message) {
-        const container = document.getElementById('cars-container');
-        container.innerHTML = `
-            <div class="no-results">
-                <i class="bi bi-search"></i>
-                <h3>${message}</h3>
-                <p>Versuchen Sie andere Filtereinstellungen oder ändern Sie Ihre Suchkriterien.</p>
-                <button class="btn btn-primary-custom" onclick="resetFilters()">
-                    <i class="bi bi-arrow-clockwise me-2"></i>
-                    Filter zurücksetzen
-                </button>
-            </div>
-        `;
+    function render() {
+        let list = applyFilters(allCars);
+        list = applySort(list);
+        displayCars(list);
     }
 
-    // Hızlı rezervasyon
+    async function loadCars() {
+        try {
+            // Server-side search: only send dates (don't send location_id if it's UUID)
+            const qp = new URLSearchParams();
+            if (pickupDate) qp.set('pickup_date', pickupDate);
+            if (dropoffDate) qp.set('dropoff_date', dropoffDate);
+            // Only add location_id if it's numeric
+            if (pickupLocationId && /^\d+$/.test(pickupLocationId)) {
+                qp.set('location_id', pickupLocationId);
+            }
+            
+            const url = qp.toString() ? `/api/cars/search?${qp.toString()}` : '/api/cars';
+            const response = await fetch(url);
+            
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            
+            allCars = await response.json();
+            populateFilterOptions(allCars);
+            render();
+            
+        } catch (err) {
+            console.error('Fahrzeuge konnten nicht geladen werden:', err);
+            if (resultsContainer) {
+                resultsContainer.innerHTML = `
+                    <div class="col-12">
+                        <div class="alert alert-danger text-center">
+                            <i class="bi bi-exclamation-triangle me-2"></i>
+                            Fahrzeuge konnten nicht geladen werden. Bitte versuchen Sie es später erneut.
+            </div>
+                    </div>`;
+            }
+        }
+    }
+
+    // Quick book
     window.quickBook = function(carId) {
         const token = localStorage.getItem('token');
         if (!token) {
             alert('Bitte melden Sie sich an, um ein Fahrzeug zu buchen.');
-            window.location.href = 'login.html';
+            window.location.href = '/views/login.html';
             return;
         }
         
-        // Car details sayfasına yönlendir
         const qp = new URLSearchParams({
             pickup_location_id: pickupLocationId || '',
             dropoff_location_id: dropoffLocationId || '',
@@ -244,33 +307,11 @@ document.addEventListener('DOMContentLoaded', function() {
             dropoff_time: dropoffTime || '',
             pickup_location_name: pickupLocationName || '',
             dropoff_location_name: dropoffLocationName || '',
-            carId: carId
+            carId
         });
         
         window.location.href = `/views/car_details.html?${qp.toString()}`;
     };
 
-    // Araçları yükle
-    async function loadCars() {
-        try {
-            const response = await fetch('/api/cars');
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            const cars = await response.json();
-            filterAndDisplayCars(cars);
-        } catch (error) {
-            console.error('Araç yükleme hatası:', error);
-            document.getElementById('cars-container').innerHTML = `
-                <div class="error-message">
-                    <i class="bi bi-exclamation-triangle"></i>
-                    <h3>Fehler beim Laden der Fahrzeuge</h3>
-                    <p>Bitte versuchen Sie es später erneut.</p>
-                </div>
-            `;
-        }
-    }
-
-    // Araçları yükle
     loadCars();
 });

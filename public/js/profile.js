@@ -30,15 +30,23 @@ document.addEventListener('DOMContentLoaded', async () => {
                 throw new Error(`HTTP Fehler! Status: ${response.status}`);
             }
 
-            const user = await response.json();
+            const payload = await response.json();
+            const user = payload.user || payload;
 
             document.getElementById('user-first-name').textContent = user.first_name;
             document.getElementById('user-last-name').textContent = user.last_name;
             document.getElementById('user-email').textContent = user.email;
             document.getElementById('user-phone-number').textContent = user.phone_number || 'Nicht angegeben';
             document.getElementById('user-address').textContent = user.address || 'Nicht angegeben';
-            document.getElementById('user-created-at').textContent = new Date(user.created_at).toLocaleDateString();
+            const createdAtText = new Date(user.created_at).toLocaleDateString();
+            document.getElementById('user-created-at').textContent = createdAtText;
             document.getElementById('user-is-admin').textContent = user.is_admin ? 'Ja' : 'Nein';
+
+            // Üst özet bar
+            const summaryUser = document.getElementById('summary-user');
+            const summarySince = document.getElementById('summary-since');
+            if (summaryUser) summaryUser.textContent = `${user.first_name || ''} ${user.last_name || ''}`.trim();
+            if (summarySince) summarySince.textContent = createdAtText;
 
             // ödeme bilgilerini formlara doldur
             try {
@@ -135,7 +143,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             };
 
             try {
-                const resp = await fetch('/api/auth/user', {
+                const resp = await fetch('/api/auth/profile', {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json', 'x-auth-token': token },
                     body: JSON.stringify(body)

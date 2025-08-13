@@ -33,7 +33,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Serve images folder separately
 app.use('/images', express.static(path.join(__dirname, 'public', 'images')));
 
-// Favicon routes
+// Favicon routes (public altından zaten servis ediliyor; yedek olarak bırakıldı)
 app.get('/favicon.svg', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'favicon.svg'));
 });
@@ -101,7 +101,24 @@ app.get('/views/klarna_demo.html', (req, res) => {
     res.sendFile(path.join(__dirname, 'views', 'klarna_demo.html'));
 });
 
+// Profile page
+app.get('/views/profile.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'views', 'profile.html'));
+});
+
+// Car details page
+app.get('/views/car_details.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'views', 'car_details.html'));
+});
+
+// Reservation confirmation page
+app.get('/views/reservation_confirmation.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'views', 'reservation_confirmation.html'));
+});
+
+// Test navbar page kaldırıldı
+
 // Start server
 app.listen(PORT, () => {
-  console.log(`Server läuft auf http://localhost:${PORT}`);
+  console.log(`Server läuft auf http://localhost:3000`);
 });

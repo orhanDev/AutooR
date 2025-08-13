@@ -8,21 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const token = localStorage.getItem('token');
     console.log('Token localStorage\'dan:', token);
 
-    // Sayfa kapandığında otomatik çıkış yap
-    window.addEventListener('beforeunload', () => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('welcome_name');
-        localStorage.removeItem('user');
-    });
-
-    // Sayfa görünürlüğü değiştiğinde kontrol et
-    document.addEventListener('visibilitychange', () => {
-        if (document.visibilityState === 'hidden') {
-            localStorage.removeItem('token');
-            localStorage.removeItem('welcome_name');
-            localStorage.removeItem('user');
-        }
-    });
+    // Oturumu otomatik silme kaldırıldı; yalnızca explicit logout ile silinecek
 
     async function updateAuthLinks() {
         console.log('=== updateAuthLinks çalışıyor ===');

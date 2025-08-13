@@ -28,9 +28,9 @@ router.post('/register', async (req, res) => {
             RETURNING user_id, first_name, last_name, email, phone_number, address, is_admin, created_at
         `, [first_name, last_name, email, passwordHash, phone_number, address]);
 
-        // JWT token oluşturma
+        // JWT token oluşturma (is_admin dahil)
         const token = jwt.sign(
-            { userId: newUser.rows[0].user_id, email: newUser.rows[0].email },
+            { userId: newUser.rows[0].user_id, email: newUser.rows[0].email, is_admin: newUser.rows[0].is_admin },
             process.env.JWT_SECRET,
             { expiresIn: '24h' }
         );
@@ -63,9 +63,9 @@ router.post('/login', async (req, res) => {
             return res.status(401).json({ error: 'Ungültige Anmeldedaten' });
         }
 
-        // JWT token oluşturma
+        // JWT token oluşturma (is_admin dahil)
         const token = jwt.sign(
-            { userId: user.rows[0].user_id, email: user.rows[0].email },
+            { userId: user.rows[0].user_id, email: user.rows[0].email, is_admin: user.rows[0].is_admin },
             process.env.JWT_SECRET,
             { expiresIn: '24h' }
         );

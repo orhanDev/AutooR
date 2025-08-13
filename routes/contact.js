@@ -13,12 +13,12 @@ const transporter = nodemailer.createTransport({
 
 router.post('/', async (req, res) => {
     try {
-        const { name, email, subject, message } = req.body;
+        const { name, email, subject, message, phone } = req.body;
 
         const mailOptions = {
             from: process.env.EMAIL_USER,
             to: process.env.EMAIL_USER,
-            subject: 'Neue Kontaktanfrage von der Website',
+            subject: subject || 'Neue Kontaktanfrage von der Website',
             html: `
                 <h2>Neue Kontaktanfrage</h2>
                 <p><strong>Name:</strong> ${name}</p>

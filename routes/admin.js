@@ -1,10 +1,11 @@
 const express = require('express');
 const { query } = require('../db/database');
+const authMiddleware = require('../middleware/authMiddleware');
 const adminMiddleware = require('../middleware/adminMiddleware');
 const router = express.Router();
 
 // Admin panel ana sayfası veya istatistikler
-router.get('/dashboard', adminMiddleware, async (req, res) => {
+router.get('/dashboard', authMiddleware, adminMiddleware, async (req, res) => {
     try {
         // Toplam kullanıcı sayısı
         const userCount = await query('SELECT COUNT(*) FROM users');
@@ -38,7 +39,7 @@ router.get('/dashboard', adminMiddleware, async (req, res) => {
 });
 
 // Tüm kullanıcıları getir (sadece adminler)
-router.get('/users', adminMiddleware, async (req, res) => {
+router.get('/users', authMiddleware, adminMiddleware, async (req, res) => {
     try {
         const result = await query(`
             SELECT user_id, first_name, last_name, email, phone_number, address, is_admin, created_at 
@@ -53,7 +54,7 @@ router.get('/users', adminMiddleware, async (req, res) => {
 });
 
 // Tüm rezervasyonları getir (sadece adminler)
-router.get('/reservations', adminMiddleware, async (req, res) => {
+router.get('/reservations', authMiddleware, adminMiddleware, async (req, res) => {
     try {
         const result = await query(`
             SELECT r.*, u.first_name, u.last_name, u.email, c.make, c.model, c.year
@@ -70,7 +71,7 @@ router.get('/reservations', adminMiddleware, async (req, res) => {
 });
 
 // Test rezervasyonları ekle (sadece adminler)
-router.post('/test-reservations', adminMiddleware, async (req, res) => {
+router.post('/test-reservations', authMiddleware, adminMiddleware, async (req, res) => {
     try {
         const { user_id } = req.body;
         
@@ -153,7 +154,7 @@ router.post('/test-reservations', adminMiddleware, async (req, res) => {
 });
 
 // Rezervasyon durumunu güncelle (sadece adminler)
-router.put('/reservations/:id', adminMiddleware, async (req, res) => {
+router.put('/reservations/:id', authMiddleware, adminMiddleware, async (req, res) => {
     try {
         const { id } = req.params;
         const { status } = req.body;
@@ -187,7 +188,7 @@ router.put('/reservations/:id', adminMiddleware, async (req, res) => {
 });
 
 // Araç ekle (sadece adminler)
-router.post('/cars', adminMiddleware, async (req, res) => {
+router.post('/cars', authMiddleware, adminMiddleware, async (req, res) => {
     try {
         const {
             make, model, year, license_plate, daily_rate,
@@ -218,7 +219,7 @@ router.post('/cars', adminMiddleware, async (req, res) => {
 });
 
 // Araç güncelle (sadece adminler)
-router.put('/cars/:id', adminMiddleware, async (req, res) => {
+router.put('/cars/:id', authMiddleware, adminMiddleware, async (req, res) => {
     try {
         const { id } = req.params;
         const {
@@ -254,7 +255,7 @@ router.put('/cars/:id', adminMiddleware, async (req, res) => {
 });
 
 // Araç sil (sadece adminler)
-router.delete('/cars/:id', adminMiddleware, async (req, res) => {
+router.delete('/cars/:id', authMiddleware, adminMiddleware, async (req, res) => {
     try {
         const { id } = req.params;
 
@@ -280,7 +281,7 @@ router.delete('/cars/:id', adminMiddleware, async (req, res) => {
 });
 
 // Tüm araçları getir (sadece adminler)
-router.get('/cars', adminMiddleware, async (req, res) => {
+router.get('/cars', authMiddleware, adminMiddleware, async (req, res) => {
     try {
         const result = await query(`
             SELECT c.*, l.name as location_name
@@ -296,7 +297,7 @@ router.get('/cars', adminMiddleware, async (req, res) => {
 });
 
 // Yeni lokasyon ekle
-router.post('/locations', adminMiddleware, async (req, res) => {
+router.post('/locations', authMiddleware, adminMiddleware, async (req, res) => {
     try {
         const { name, address, city, state_province, zip_code, country } = req.body;
 
@@ -318,7 +319,7 @@ router.post('/locations', adminMiddleware, async (req, res) => {
 });
 
 // Lokasyon güncelle
-router.put('/locations/:id', adminMiddleware, async (req, res) => {
+router.put('/locations/:id', authMiddleware, adminMiddleware, async (req, res) => {
     try {
         const { id } = req.params;
         const { name, address, city, state_province, zip_code, country } = req.body;
@@ -346,7 +347,7 @@ router.put('/locations/:id', adminMiddleware, async (req, res) => {
 });
 
 // Tüm lokasyonları getir (sadece adminler)
-router.get('/locations', adminMiddleware, async (req, res) => {
+router.get('/locations', authMiddleware, adminMiddleware, async (req, res) => {
     try {
         const result = await query(`
             SELECT * FROM locations 
@@ -360,7 +361,7 @@ router.get('/locations', adminMiddleware, async (req, res) => {
 });
 
 // Yeni özellik ekle
-router.post('/features', adminMiddleware, async (req, res) => {
+router.post('/features', authMiddleware, adminMiddleware, async (req, res) => {
     try {
         const { feature_name } = req.body;
 
@@ -382,7 +383,7 @@ router.post('/features', adminMiddleware, async (req, res) => {
 });
 
 // Özellikleri güncelle
-router.put('/features/:id', adminMiddleware, async (req, res) => {
+router.put('/features/:id', authMiddleware, adminMiddleware, async (req, res) => {
     try {
     const { id } = req.params;
     const { feature_name } = req.body;
@@ -409,7 +410,7 @@ router.put('/features/:id', adminMiddleware, async (req, res) => {
 });
 
 // Özellik sil
-router.delete('/features/:id', adminMiddleware, async (req, res) => {
+router.delete('/features/:id', authMiddleware, adminMiddleware, async (req, res) => {
     try {
         const { id } = req.params;
 

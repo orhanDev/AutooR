@@ -25,7 +25,7 @@ async function loadReservationDetails(reservationId) {
     try {
         const response = await fetch(`/api/reservations/${reservationId}`, {
             headers: {
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
+                'x-auth-token': localStorage.getItem('token') || ''
             }
         });
 

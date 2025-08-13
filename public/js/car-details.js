@@ -35,6 +35,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     let currentCarDailyRate = 0;
 
+    // URL parametrelerinden tarih/saat bilgileri (özet bar için)
+    const pickup_date = urlParams.get('pickup_date');
+    const dropoff_date = urlParams.get('dropoff_date');
+    const pickup_time = urlParams.get('pickup_time');
+    const dropoff_time = urlParams.get('dropoff_time');
+
     // Fahrzeugdetails holen und Seite befüllen
     try {
         const response = await fetch(`/api/cars/${carId}`);
@@ -44,6 +50,15 @@ document.addEventListener('DOMContentLoaded', async () => {
         const car = await response.json();
 
         carTitle.textContent = `${car.make} ${car.model} Details`;
+        // Kurumsal üst özet bar
+        const sDates = [];
+        if (pickup_date) sDates.push(pickup_date + (pickup_time ? ' ' + pickup_time : ''));
+        if (dropoff_date) sDates.push(dropoff_date + (dropoff_time ? ' ' + dropoff_time : ''));
+        const summaryDates = sDates.length ? sDates.join(' → ') : '—';
+        const titleEl = document.getElementById('summary-title');
+        const datesEl = document.getElementById('summary-dates');
+        if (titleEl) titleEl.textContent = `${car.make} ${car.model}`;
+        if (datesEl) datesEl.textContent = summaryDates;
         // Araba resmini ayarla
         const carImageSrc = car.image_url || '/images/cars/car1.jpg';
         carImage.src = carImageSrc;
