@@ -43,7 +43,27 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         cars.forEach((car, index) => {
-            const carImage = car.image_url || `/images/cars/car${(index % 3) + 1}.jpg`;
+            // Araç fotoğrafı için daha iyi fallback sistemi
+            let carImage = car.image_url;
+            if (!carImage || carImage === 'null' || carImage === '' || carImage === null) {
+                // Araç markasına göre farklı fotoğraflar - mevcut fotoğraflarla eşleştir
+                const brandImages = {
+                    'Tesla': '/images/cars/tesla-model-s.jpg',
+                    'Porsche': '/images/cars/porsche-911-gt3.jpg',
+                    'Mercedes-Benz': '/images/cars/mercedes-s-class.jpg',
+                    'BMW': '/images/cars/bmw-m8.jpg',
+                    'Audi': '/images/cars/audi-a8.jpg',
+                    'Bentley': '/images/cars/bentley-continental.jpg',
+                    'Rolls-Royce': '/images/cars/rolls-royce-phantom.jpg',
+                    'Volkswagen': '/images/cars/volkswagen-golf8r.jpg',
+                    'Toyota': '/images/cars/toyota-corolla-hybrid.jpg',
+                    'Kia': '/images/cars/kia-ev6-gt.jpg',
+                    'Honda': '/images/cars/honda-civic-ehev.jpg'
+                };
+                
+                carImage = brandImages[car.make] || `/images/cars/car${(index % 3) + 1}.jpg`;
+            }
+            
             const qp = new URLSearchParams({
                 pickup_location_id: localStorage.getItem('pickup_location_id') || '',
                 dropoff_location_id: localStorage.getItem('dropoff_location_id') || '',
@@ -55,10 +75,13 @@ document.addEventListener('DOMContentLoaded', async () => {
                 dropoff_location_name: localStorage.getItem('dropoff_location_name') || '',
                 carId: car.car_id
             });
+            
             const carCard = `
                 <div class="col">
                     <div class="card h-100 shadow-sm">
-                        <img src="${carImage}" class="card-img-top" alt="${car.make} ${car.model}" style="height: 200px; object-fit: cover;" onerror="this.src='/images/cars/car${(index % 3) + 1}.jpg'; this.onerror=null;">
+                        <img src="${carImage}" class="card-img-top" alt="${car.make} ${car.model}" 
+                             style="height: 200px; object-fit: cover;" 
+                             onerror="this.onerror=null; this.src='/images/cars/car${(index % 3) + 1}.jpg';">
                         <div class="card-body d-flex flex-column">
                             <h5 class="card-title">${car.make} ${car.model}</h5>
                             <p class="card-text"><strong>Tagessatz:</strong> €${Number(car.daily_rate).toLocaleString('de-DE')}</p>
@@ -69,7 +92,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                                 <li><i class="bi bi-geo-alt me-1"></i> Standort: ${car.location_name}</li>
                             </ul>
                             <div class="mt-auto">
-                                <a href="#" class="btn btn-success btn-sm select-continue" data-href="/views/checkout.html?${qp.toString()}">Auswählen & Weiter</a>
+                                <a href="/views/car_details.html?${qp.toString()}" class="btn btn-success btn-sm">
+                                    <i class="bi bi-eye me-2"></i>Details anzeigen
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -134,28 +159,44 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    // Formular absenden (Suche)
-    carSearchForm.addEventListener('submit', (event) => {
-        event.preventDefault();
-
-        const pickupLocationId = pickupLocationSelect.value;
-        const dropoffLocationId = dropoffLocationSelect.value;
-        const pickupDate = pickupDateInput.value;
-        const dropoffDate = dropoffDateInput.value;
-        const pickupTime = document.getElementById('pickup-time').value;
-        const dropoffTime = document.getElementById('dropoff-time').value;
-
-        const qp = new URLSearchParams({
-            pickup_location_id: pickupLocationId,
-            dropoff_location_id: dropoffLocationId,
-            pickup_date: pickupDate,
-            dropoff_date: dropoffDate,
-            pickup_time: pickupTime,
-            dropoff_time: dropoffTime,
-            pickup_location_name: pickupLocationSelect.options[pickupLocationSelect.selectedIndex]?.text || '',
-            dropoff_location_name: dropoffLocationSelect.options[dropoffLocationSelect.selectedIndex]?.text || ''
-        });
-        window.location.href = `/views/search_results.html?${qp.toString()}`;
+    // Form submit handler
+    carSearchForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const pickupLocation = pickupLocationSelect.value;
+        const dropoffLocation = dropoffLocationSelect.value;
+        
+        // Sadece abholort ve rückgabeort zorunlu
+        if (!pickupLocation || !dropoffLocation) {
+            alert('Bitte wählen Sie Abholort und Rückgabeort aus.');
+            return;
+        }
+        
+        // Form verilerini localStorage'a kaydet
+        localStorage.setItem('pickup_location_id', pickupLocation);
+        localStorage.setItem('dropoff_location_id', dropoffLocation);
+        localStorage.setItem('pickup_date', pickupDateInput.value || '');
+        localStorage.setItem('dropoff_date', dropoffDateInput.value || '');
+        localStorage.setItem('pickup_time', pickupDateInput.value || ''); // Assuming pickup_time is pickup_date for simplicity here
+        localStorage.setItem('dropoff_time', dropoffDateInput.value || ''); // Assuming dropoff_time is dropoff_date for simplicity here
+        
+        // Lokasyon isimlerini kaydet
+        const pickupLocationName = pickupLocationSelect.options[pickupLocationSelect.selectedIndex].text;
+        const dropoffLocationName = dropoffLocationSelect.options[dropoffLocationSelect.selectedIndex].text;
+        localStorage.setItem('pickup_location_name', pickupLocationName);
+        localStorage.setItem('dropoff_location_name', dropoffLocationName);
+        
+        // Search results sayfasına yönlendir
+        window.location.href = '/views/search_results.html?' + new URLSearchParams({
+            pickup_location_id: pickupLocation,
+            dropoff_location_id: dropoffLocation,
+            pickup_date: pickupDateInput.value || '',
+            dropoff_date: dropoffDateInput.value || '',
+            pickup_time: pickupDateInput.value || '',
+            dropoff_time: dropoffDateInput.value || '',
+            pickup_location_name: pickupLocationName,
+            dropoff_location_name: dropoffLocationName
+        }).toString();
     });
 
     // Anfangsdaten laden

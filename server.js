@@ -71,6 +71,16 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
+// Login page
+app.get('/views/login.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'views', 'login.html'));
+});
+
+// Register page
+app.get('/views/register.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'views', 'register.html'));
+});
+
 // Checkout page
 app.get('/views/checkout.html', (req, res) => {
     res.sendFile(path.join(__dirname, 'views', 'checkout.html'));

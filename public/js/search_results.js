@@ -1,291 +1,276 @@
-document.addEventListener('DOMContentLoaded', () => {
-    console.log("search_results.js yüklendi ve DOM hazır.");
+document.addEventListener('DOMContentLoaded', function() {
+    const urlParams = new URLSearchParams(window.location.search);
     
-    // DOM elementlerini al
-    const filterForm = document.getElementById('filter-form');
-    const searchResultsContainer = document.getElementById('search-results');
-    const brandFilter = document.getElementById('brand-filter');
-    const modelFilter = document.getElementById('model-filter');
-    const transmissionFilter = document.getElementById('transmission-filter');
-    const fuelFilter = document.getElementById('fuel-filter');
-    const capacityFilter = document.getElementById('capacity-filter');
-    const sortBy = document.getElementById('sort-filter');
+    // URL'den parametreleri al
+    const pickupLocationId = urlParams.get('pickup_location_id');
+    const dropoffLocationId = urlParams.get('dropoff_location_id');
+    const pickupDate = urlParams.get('pickup_date');
+    const dropoffDate = urlParams.get('dropoff_date');
+    const pickupTime = urlParams.get('pickup_time');
+    const dropoffTime = urlParams.get('dropoff_time');
+    const pickupLocationName = urlParams.get('pickup_location_name');
+    const dropoffLocationName = urlParams.get('dropoff_location_name');
+
+    // Filtre elementlerini al
+    const fuelTypeFilter = document.getElementById('fuel-type');
+    const transmissionFilter = document.getElementById('transmission');
+    const priceRangeFilter = document.getElementById('price-range');
+    const brandFilter = document.getElementById('brand');
+    const applyFilterBtn = document.getElementById('apply-filters');
+    const resetFilterBtn = document.getElementById('reset-filters');
     const resultsCount = document.getElementById('results-count');
-    const loadingSpinner = document.getElementById('loading-spinner');
-    const noResults = document.getElementById('no-results');
 
-    let allCars = []; // Tüm araçlar
-    let currentSearchQueryParams = {};
+    // Filtreleri uygula
+    applyFilterBtn.addEventListener('click', function() {
+        applyFilters();
+    });
 
-    // URL'den parametreleri al ve formu doldur
-    function setFormValuesFromUrl() {
-        console.log("setFormValuesFromUrl çalışıyor.");
-        const params = new URLSearchParams(window.location.search);
-        currentSearchQueryParams = {};
-        
-        brandFilter.value = params.get('brand') || '';
-        modelFilter.value = params.get('model') || '';
-        transmissionFilter.value = params.get('transmission') || '';
-        fuelFilter.value = params.get('fuel') || '';
-        capacityFilter.value = params.get('capacity') || '';
-        sortBy.value = params.get('sort') || 'price-low';
+    // Filtreleri sıfırla
+    resetFilterBtn.addEventListener('click', function() {
+        resetFilters();
+    });
 
-        currentSearchQueryParams = {
-            brand: brandFilter.value,
-            model: modelFilter.value,
+    // Filtreleri uygula
+    function applyFilters() {
+        const filters = {
+            fuelType: fuelTypeFilter.value,
             transmission: transmissionFilter.value,
-            fuel: fuelFilter.value,
-            capacity: capacityFilter.value,
-            sort: sortBy.value,
-            pickup_location_id: params.get('pickup_location_id') || '',
-            dropoff_location_id: params.get('dropoff_location_id') || '',
-            pickup_date: params.get('pickup_date') || '',
-            dropoff_date: params.get('dropoff_date') || '',
-            pickup_time: params.get('pickup_time') || '',
-            dropoff_time: params.get('dropoff_time') || '',
-            pickup_location_name: params.get('pickup_location_name') || '',
-            dropoff_location_name: params.get('dropoff_location_name') || ''
+            priceRange: priceRangeFilter.value,
+            brand: brandFilter.value
         };
+
+        // Filtreleri localStorage'a kaydet
+        localStorage.setItem('searchFilters', JSON.stringify(filters));
         
-        console.log("URL'den alınan değerler:", currentSearchQueryParams);
+        // Sayfayı yenile
+        location.reload();
     }
 
-    // URL'yi filtre değerleriyle güncelle
-    function updateUrlWithFilters() {
-        console.log("updateUrlWithFilters çalışıyor.");
+    // Filtreleri sıfırla
+    function resetFilters() {
+        fuelTypeFilter.value = '';
+        transmissionFilter.value = '';
+        priceRangeFilter.value = '';
+        brandFilter.value = '';
         
-        const params = new URLSearchParams();
+        // localStorage'dan filtreleri temizle
+        localStorage.removeItem('searchFilters');
         
-        // Temel arama parametrelerini ekle
-        for (const key in currentSearchQueryParams) {
-            if (currentSearchQueryParams[key]) {
-                params.set(key, currentSearchQueryParams[key]);
-            }
+        // Sayfayı yenile
+        location.reload();
+    }
+
+    // Global olarak erişilebilir yap
+    window.resetFilters = resetFilters;
+
+    // Sayfa yüklendiğinde mevcut filtreleri yükle
+    function loadSavedFilters() {
+        const savedFilters = localStorage.getItem('searchFilters');
+        if (savedFilters) {
+            const filters = JSON.parse(savedFilters);
+            fuelTypeFilter.value = filters.fuelType || '';
+            transmissionFilter.value = filters.transmission || '';
+            priceRangeFilter.value = filters.priceRange || '';
+            brandFilter.value = filters.brand || '';
+        }
+    }
+
+    // Filtreleri yükle
+    loadSavedFilters();
+
+    // Araçları filtrele ve göster
+    function filterAndDisplayCars(cars) {
+        const savedFilters = localStorage.getItem('searchFilters');
+        if (!savedFilters) {
+            displayCars(cars);
+            return;
         }
 
-        // Form filtrelerini ekle
-        if (brandFilter.value) params.set('brand', brandFilter.value);
-        if (modelFilter.value) params.set('model', modelFilter.value);
-        if (transmissionFilter.value) params.set('transmission', transmissionFilter.value);
-        if (fuelFilter.value) params.set('fuel', fuelFilter.value);
-        if (capacityFilter.value) params.set('capacity', capacityFilter.value);
-        
-        params.set('sort', sortBy.value);
+        const filters = JSON.parse(savedFilters);
+        let filteredCars = cars;
 
-        const newUrl = window.location.pathname + '?' + params.toString();
-        console.log("Yeni URL:", newUrl);
-        window.history.pushState({}, '', newUrl);
-    }
-
-    // Marka filtresini doldur
-    function populateBrandFilter() {
-        const brands = [...new Set(allCars.map(car => car.make))].sort();
-        brandFilter.innerHTML = '<option value="">Alle Marken</option>' + 
-            brands.map(brand => `<option value="${brand}">${brand}</option>`).join('');
-        console.log("Marka filtresi dolduruldu:", brands.length, "marka");
-    }
-
-    // Model filtresini doldur
-    function populateModelFilter() {
-        const selectedBrand = brandFilter.value;
-        let models = [];
-
-        if (selectedBrand) {
-            // Seçili markaya ait modelleri göster
-            models = [...new Set(allCars.filter(car => car.make === selectedBrand).map(car => car.model))].sort();
-            console.log(`Seçili marka '${selectedBrand}' için modeller:`, models);
-        } else {
-            // Tüm modelleri göster
-            models = [...new Set(allCars.map(car => car.model))].sort();
-            console.log("Tüm modeller gösteriliyor:", models.length, "model");
+        // Marka filtresi
+        if (filters.brand) {
+            filteredCars = filteredCars.filter(car => car.make === filters.brand);
         }
 
-        modelFilter.innerHTML = '<option value="">Alle Modelle</option>' + 
-            models.map(model => `<option value="${model}">${model}</option>`).join('');
-        console.log("Model filtresi güncellendi");
+        // Yakıt türü filtresi
+        if (filters.fuelType) {
+            filteredCars = filteredCars.filter(car => car.fuel_type === filters.fuelType);
+        }
+
+        // Vites filtresi
+        if (filters.transmission) {
+            filteredCars = filteredCars.filter(car => car.transmission_type === filters.transmission);
+        }
+
+        // Fiyat aralığı filtresi
+        if (filters.priceRange) {
+            const [min, max] = filters.priceRange.split('-').map(Number);
+            filteredCars = filteredCars.filter(car => {
+                const price = Number(car.daily_rate);
+                return price >= min && price <= max;
+            });
+        }
+
+        displayCars(filteredCars);
     }
 
-    // Diğer filtreleri doldur
-    function populateOtherFilters() {
-        const transmissions = [...new Set(allCars.map(car => car.transmission_type))].sort();
-        transmissionFilter.innerHTML = '<option value="">Alle Getriebe</option>' + 
-            transmissions.map(t => `<option value="${t}">${t}</option>`).join('');
-
-        const fuels = [...new Set(allCars.map(car => car.fuel_type))].sort();
-        fuelFilter.innerHTML = '<option value="">Alle Kraftstoffe</option>' + 
-            fuels.map(f => `<option value="${f}">${f}</option>`).join('');
-
-        const capacities = [...new Set(allCars.map(car => car.seating_capacity))].sort((a,b) => a - b);
-        capacityFilter.innerHTML = '<option value="">Alle Sitzplätze</option>' + 
-            capacities.map(c => `<option value="${c}">${c} Personen</option>`).join('');
+    // Araçları göster
+    function displayCars(cars) {
+        const carsContainer = document.getElementById('cars-container');
         
-        console.log("Diğer filtreler dolduruldu");
-    }
+        // Sonuç sayısını güncelle
+        resultsCount.textContent = cars.length;
+        
+        if (cars.length === 0) {
+            showNoResults('Keine Fahrzeuge gefunden');
+            return;
+        }
 
-    // Araçları getir ve render et
-    async function fetchAndRenderCars(pushState = true) {
-        try {
-            console.log("fetchAndRenderCars çalışıyor. pushState:", pushState);
-            
-            // Loading göster
-            loadingSpinner.classList.remove('d-none');
-            noResults.classList.add('d-none');
-            
-            const filters = {
-                brand: brandFilter.value,
-                model: modelFilter.value,
-                transmission_type: transmissionFilter.value,
-                fuel_type: fuelFilter.value,
-                seating_capacity: capacityFilter.value,
-                sort: sortBy.value
-            };
-            
-            console.log("API'ye gönderilecek filtreler:", filters);
-
-            const params = new URLSearchParams();
-            for (const key in filters) {
-                if (filters[key]) {
-                    if (key === 'brand') {
-                        params.append('make', filters[key]);
-                    } else {
-                        params.append(key, filters[key]);
+        carsContainer.innerHTML = `
+            <div class="cars-grid">
+                ${cars.map((car, index) => {
+                    // Araç fotoğrafı için daha iyi fallback sistemi
+                    let carImage = car.image_url;
+                    if (!carImage || carImage === 'null' || carImage === '' || carImage === null) {
+                        // Araç markasına göre farklı fotoğraflar - mevcut fotoğraflarla eşleştir
+                        const brandImages = {
+                            'Tesla': '/images/cars/tesla-model-s.jpg',
+                            'Porsche': '/images/cars/porsche-911-gt3.jpg',
+                            'Mercedes-Benz': '/images/cars/mercedes-s-class.jpg',
+                            'BMW': '/images/cars/bmw-m8.jpg',
+                            'Audi': '/images/cars/audi-a8.jpg',
+                            'Bentley': '/images/cars/bentley-continental.jpg',
+                            'Rolls-Royce': '/images/cars/rolls-royce-phantom.jpg',
+                            'Volkswagen': '/images/cars/volkswagen-golf8r.jpg',
+                            'Toyota': '/images/cars/toyota-corolla-hybrid.jpg',
+                            'Kia': '/images/cars/kia-ev6-gt.jpg',
+                            'Honda': '/images/cars/honda-civic-ehev.jpg'
+                        };
+                        
+                        carImage = brandImages[car.make] || `/images/cars/car${(index % 3) + 1}.jpg`;
                     }
-                }
-            }
+                    
+                    const qp = new URLSearchParams({
+                        pickup_location_id: pickupLocationId || '',
+                        dropoff_location_id: dropoffLocationId || '',
+                        pickup_date: pickupDate || '',
+                        dropoff_date: dropoffDate || '',
+                        pickup_time: pickupTime || '',
+                        dropoff_time: dropoffTime || '',
+                        pickup_location_name: pickupLocationName || '',
+                        dropoff_location_name: dropoffLocationName || '',
+                        carId: car.car_id
+                    });
 
-            console.log("API URL parametreleri:", params.toString());
-            const response = await fetch('/api/cars/search?' + params.toString());
-            
-            if (!response.ok) {
-                throw new Error(`HTTP Fehler! Status: ${response.status}`);
-            }
-            
-            let cars = await response.json();
-            console.log("API'den gelen araç verisi:", cars.length, "araç");
-
-            // Sıralama uygula
-            cars = applySorting(cars, filters.sort);
-
-            // Loading gizle
-            loadingSpinner.classList.add('d-none');
-
-            // Sonuçları render et
-            if (cars.length === 0) {
-                searchResultsContainer.innerHTML = '';
-                noResults.classList.remove('d-none');
-                resultsCount.textContent = '0';
-            } else {
-                noResults.classList.add('d-none');
-                resultsCount.textContent = cars.length.toString();
-                const baseParams = new URLSearchParams(window.location.search);
-                searchResultsContainer.innerHTML = cars.map((car, index) => {
-                    const carImage = car.image_url || `/images/cars/car${(index % 3) + 1}.jpg`;
-                    const forwardParams = new URLSearchParams(baseParams);
-                    forwardParams.set('carId', car.car_id);
                     return `
-                        <div class="col-md-4 mb-3">
-                            <div class="card">
-                                <img src="${carImage}" class="card-img-top" alt="${car.make} ${car.model}" style="height: 200px; object-fit: cover;" onerror="this.src='/images/cars/car${(index % 3) + 1}.jpg'; this.onerror=null;">
-                                <div class="card-body">
-                                    <h5 class="card-title">${car.make} ${car.model}</h5>
-                                    <p class="card-text">${car.transmission_type} | ${car.fuel_type} | ${car.seating_capacity} Personen</p>
-                                    <p class="card-text">Tagespreis: €${Number(car.daily_rate).toLocaleString('de-DE')}</p>
-                                    <a href="/views/checkout.html?${forwardParams.toString()}" class="btn btn-success btn-sm">Auswählen & Weiter</a>
+                        <div class="car-card">
+                            <div class="car-image-container">
+                                <img src="${carImage}" alt="${car.make} ${car.model}" class="car-image"
+                                     onerror="this.onerror=null; this.src='/images/cars/car${(index % 3) + 1}.jpg';">
+                                <div class="car-price-badge">€${Number(car.daily_rate).toLocaleString('de-DE')}/Tag</div>
+                            </div>
+                            <div class="car-details">
+                                <h3 class="car-title">${car.make} ${car.model}</h3>
+                                <p class="car-year">${car.year}</p>
+                                <div class="car-specs">
+                                    <div class="spec-item">
+                                        <i class="bi bi-gear spec-icon"></i>
+                                        <div class="spec-label">${car.transmission_type}</div>
+                                    </div>
+                                    <div class="spec-item">
+                                        <i class="bi bi-fuel-pump spec-icon"></i>
+                                        <div class="spec-label">${car.fuel_type}</div>
+                                    </div>
+                                    <div class="spec-item">
+                                        <i class="bi bi-people spec-icon"></i>
+                                        <div class="spec-label">${car.seating_capacity} Sitze</div>
+                                    </div>
+                                </div>
+                                <div class="car-location">
+                                    <i class="bi bi-geo-alt"></i> ${car.location_name}
+                                </div>
+                                <div class="car-actions">
+                                    <a href="/views/car_details.html?${qp.toString()}" class="btn btn-details">
+                                        <i class="bi bi-eye me-2"></i>
+                                        Details
+                                    </a>
+                                    <button class="btn btn-quick-book" onclick="quickBook('${car.car_id}')">
+                                        <i class="bi bi-calendar-check me-2"></i>
+                                        Schnell buchen
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     `;
-                }).join('');
-            }
+                }).join('')}
+            </div>
+        `;
+    }
 
-            if (pushState) {
-                updateUrlWithFilters();
-            }
+    // Rezervasyon bulunamadı mesajı
+    function showNoResults(message) {
+        const container = document.getElementById('cars-container');
+        container.innerHTML = `
+            <div class="no-results">
+                <i class="bi bi-search"></i>
+                <h3>${message}</h3>
+                <p>Versuchen Sie andere Filtereinstellungen oder ändern Sie Ihre Suchkriterien.</p>
+                <button class="btn btn-primary-custom" onclick="resetFilters()">
+                    <i class="bi bi-arrow-clockwise me-2"></i>
+                    Filter zurücksetzen
+                </button>
+            </div>
+        `;
+    }
 
-        } catch (error) {
-            console.error('Fehler beim Abrufen der Suchergebnisse:', error);
-            loadingSpinner.classList.add('d-none');
-            searchResultsContainer.innerHTML = '<div class="col-12"><p class="text-danger text-center">Suchergebnisse konnten nicht geladen werden.</p></div>';
+    // Hızlı rezervasyon
+    window.quickBook = function(carId) {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            alert('Bitte melden Sie sich an, um ein Fahrzeug zu buchen.');
+            window.location.href = 'login.html';
+            return;
         }
-    }
-
-    // Sıralama uygula
-    function applySorting(cars, sortValue) {
-        return [...cars].sort((a, b) => {
-            switch (sortValue) {
-                case 'price-low': return a.daily_rate - b.daily_rate;
-                case 'price-high': return b.daily_rate - a.daily_rate;
-                case 'name-asc': return a.make.localeCompare(b.make);
-                case 'name-desc': return b.make.localeCompare(a.make);
-                default: return 0;
-            }
+        
+        // Car details sayfasına yönlendir
+        const qp = new URLSearchParams({
+            pickup_location_id: pickupLocationId || '',
+            dropoff_location_id: dropoffLocationId || '',
+            pickup_date: pickupDate || '',
+            dropoff_date: dropoffDate || '',
+            pickup_time: pickupTime || '',
+            dropoff_time: dropoffTime || '',
+            pickup_location_name: pickupLocationName || '',
+            dropoff_location_name: dropoffLocationName || '',
+            carId: carId
         });
-    }
+        
+        window.location.href = `/views/car_details.html?${qp.toString()}`;
+    };
 
-    // Event listener'ları ekle
-    filterForm.addEventListener('submit', (event) => {
-        event.preventDefault();
-        fetchAndRenderCars(true);
-    });
-
-    sortBy.addEventListener('change', () => {
-        fetchAndRenderCars(true);
-    });
-
-    // Marka filtresi değiştiğinde model filtresini güncelle
-    brandFilter.addEventListener('change', () => {
-        console.log('Markenfilter geändert, neuer Wert:', brandFilter.value);
-        modelFilter.value = ''; // Model filtresini sıfırla
-        populateModelFilter(); // Model filtresini güncelle
-        fetchAndRenderCars(true);
-    });
-
-    // Diğer filtreler değiştiğinde arama yap
-    modelFilter.addEventListener('change', () => { 
-        console.log('Modelfilter geändert, neuer Wert:', modelFilter.value);
-        fetchAndRenderCars(true); 
-    });
-    
-    transmissionFilter.addEventListener('change', () => { fetchAndRenderCars(true); });
-    fuelFilter.addEventListener('change', () => { fetchAndRenderCars(true); });
-    capacityFilter.addEventListener('change', () => { fetchAndRenderCars(true); });
-
-    // Browser back/forward butonları
-    window.addEventListener('popstate', (event) => {
-        setFormValuesFromUrl();
-        fetchAndRenderCars(false);
-    });
-
-    // Sayfa yüklendiğinde başlat
-    async function initialize() {
+    // Araçları yükle
+    async function loadCars() {
         try {
-            console.log("initialize çalışıyor...");
-            
-            // Tüm araçları al
             const response = await fetch('/api/cars');
             if (!response.ok) {
-                throw new Error(`HTTP Fehler! Status: ${response.status}`);
+                throw new Error(`HTTP error! status: ${response.status}`);
             }
-            
-            allCars = await response.json();
-            console.log("Tüm araçlar yüklendi:", allCars.length, "araç");
-
-            // Filtreleri doldur
-            populateBrandFilter();
-            populateModelFilter();
-            populateOtherFilters();
-
-            // URL'den değerleri al
-            setFormValuesFromUrl();
-
-            // İlk aramayı yap
-            fetchAndRenderCars(false);
-            
+            const cars = await response.json();
+            filterAndDisplayCars(cars);
         } catch (error) {
-            console.error('Fehler beim Initialisieren:', error);
+            console.error('Araç yükleme hatası:', error);
+            document.getElementById('cars-container').innerHTML = `
+                <div class="error-message">
+                    <i class="bi bi-exclamation-triangle"></i>
+                    <h3>Fehler beim Laden der Fahrzeuge</h3>
+                    <p>Bitte versuchen Sie es später erneut.</p>
+                </div>
+            `;
         }
     }
 
-    // Başlat
-    initialize();
+    // Araçları yükle
+    loadCars();
 });

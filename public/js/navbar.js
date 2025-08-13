@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <nav class="navbar navbar-expand-lg navbar-light bg-light">
                     <div class="container-fluid">
                         <a class="navbar-brand" href="/views/admin/dashboard.html">
-                            <i class="bi bi-car-front-fill me-2"></i>Admin Panel
+                            <i class="bi bi-lightning-charge-fill me-2 text-warning"></i>Admin Panel
                         </a>
                         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminNavbar" aria-controls="adminNavbar" aria-expanded="false" aria-label="Toggle navigation">
                             <span class="navbar-toggler-icon"></span>
@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
                 <div class="container">
                         <a class="navbar-brand text-white" href="/" style="font-weight:700;font-size:1.8rem;color:#f39c12 !important">
-                            <i class="bi bi-car-front-fill me-2"></i>TurboMiete
+                            <i class="bi bi-lightning-charge-fill me-2"></i>TurboMiete
                         </a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>

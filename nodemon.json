@@ -5,10 +5,8 @@
     "db",
     "middleware"
   ],
-  "ext": "js,json",
+  "ext": "js,json,html,css",
   "ignore": [
-    "public/*",
-    "views/*",
     "node_modules/*",
     "**/*.map"
   ]

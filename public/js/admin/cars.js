@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 headers: { 'x-auth-token': token } // Admin paneli için token gerekebilir
             });
             const locations = await locationsResponse.json();
-            locationSelect.innerHTML = '<option value="">Lokasyon Seçin...</option>';
+            locationSelect.innerHTML = '<option value="">Standort auswählen...</option>';
             locations.forEach(loc => {
                 locationSelect.innerHTML += `<option value="${loc.location_id}">${loc.name}</option>`;
             });
@@ -97,12 +97,12 @@ document.addEventListener('DOMContentLoaded', async () => {
                         <td>${car.make}</td>
                         <td>${car.model}</td>
                         <td>${car.year}</td>
-                        <td>${car.daily_rate} TL</td>
-                        <td>${car.location_name || car.location_id}</td> <!-- Lokasyon adını göster -->
-                        <td>${car.is_available ? 'Evet' : 'Hayır'}</td>
+                        <td>${car.daily_rate} €</td>
+                        <td>${car.location_name || car.location_id}</td> <!-- Standort adını göster -->
+                        <td>${car.is_available ? 'Ja' : 'Nein'}</td>
                         <td>
-                            <button class="btn btn-sm btn-info edit-car-btn" data-id="${car.car_id}">Düzenle</button>
-                            <button class="btn btn-sm btn-danger delete-car-btn" data-id="${car.car_id}">Sil</button>
+                            <button class="btn btn-sm btn-info edit-car-btn" data-id="${car.car_id}">Bearbeiten</button>
+                            <button class="btn btn-sm btn-danger delete-car-btn" data-id="${car.car_id}">Löschen</button>
                         </td>
                     </tr>
                 `;
@@ -113,8 +113,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             attachEventListeners();
 
         } catch (error) {
-            console.error('Araçlar çekilirken hata:', error);
-            carsTableBody.innerHTML = '<tr><td colspan="8" class="text-danger text-center">Araçlar yüklenemedi.</td></tr>';
+            console.error('Fahrzeuge konnten nicht geladen werden:', error);
+            carsTableBody.innerHTML = '<tr><td colspan="8" class="text-danger text-center">Fahrzeuge konnten nicht geladen werden.</td></tr>';
         }
     }
 
@@ -133,7 +133,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Düzenle butonuna tıklanınca
     async function handleEditClick(e) {
         const carId = e.target.dataset.id;
-        carModalLabel.textContent = 'Araç Düzenle';
+        carModalLabel.textContent = 'Fahrzeug bearbeiten';
         carForm.reset(); // Formu sıfırla
         carIdInput.value = carId;
 
@@ -168,15 +168,15 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             carModal.show();
         } catch (error) {
-            console.error('Araç detayları çekilirken hata:', error);
-            alert('Araç detayları yüklenemedi.');
+            console.error('Fehler beim Laden der Fahrzeugdetails:', error);
+            alert('Fahrzeugdetails konnten nicht geladen werden.');
         }
     }
 
     // Sil butonuna tıklanınca
     async function handleDeleteClick(e) {
         const carId = e.target.dataset.id;
-        if (confirm('Bu aracı silmek istediğinizden emin misiniz?')) {
+        if (confirm('Sind Sie sicher, dass Sie dieses Fahrzeug löschen möchten?')) {
             try {
                 const response = await fetch(`/api/admin/cars/${carId}`, {
                     method: 'DELETE',
@@ -185,21 +185,21 @@ document.addEventListener('DOMContentLoaded', async () => {
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
-                alert('Araç başarıyla silindi.');
+                alert('Fahrzeug wurde erfolgreich gelöscht.');
                 fetchCars(); // Listeyi yenile
             } catch (error) {
-                console.error('Araç silinirken hata:', error);
-                alert(`Araç silinirken bir hata oluştu: ${error.message}`);
+                console.error('Fehler beim Löschen des Fahrzeugs:', error);
+                alert(`Fehler beim Löschen des Fahrzeugs: ${error.message}`);
             }
         }
     }
 
     // Yeni Araç Ekle butonuna tıklanınca
     addCarBtn.addEventListener('click', () => {
-        carModalLabel.textContent = 'Yeni Araç Ekle';
+        carModalLabel.textContent = 'Neues Fahrzeug hinzufügen';
         carForm.reset(); // Formu sıfırla
         carIdInput.value = ''; // carId'yi boşalt
-        isAvailableCheckbox.checked = true; // Varsayılan olarak müsait
+        isAvailableCheckbox.checked = true; // Varsayılan olarak verfügbar
         document.querySelectorAll('.feature-checkbox').forEach(checkbox => checkbox.checked = false); // Tüm özellikleri sıfırla
         carModal.show();
     });
@@ -245,15 +245,15 @@ document.addEventListener('DOMContentLoaded', async () => {
             const data = await response.json();
 
             if (response.ok) {
-                alert(`Araç başarıyla ${id ? 'güncellendi' : 'eklendi'}!`);
+                alert(`Fahrzeug wurde erfolgreich ${id ? 'aktualisiert' : 'hinzugefügt'}!`);
                 carModal.hide();
                 fetchCars(); // Listeyi yenile
             } else {
-                throw new Error(data.message || `Araç ${id ? 'güncellenirken' : 'eklenirken'} bir hata oluştu.`);
+                throw new Error(data.message || `Fehler beim ${id ? 'Aktualisieren' : 'Hinzufügen'} des Fahrzeugs.`);
             }
         } catch (error) {
-            console.error(`Araç ${id ? 'güncelleme' : 'ekleme'} hatası:`, error);
-            alert(`Araç ${id ? 'güncellenirken' : 'eklenirken'} bir hata oluştu: ${error.message}`);
+            console.error(`Fehler beim ${id ? 'Aktualisieren' : 'Hinzufügen'} des Fahrzeugs:`, error);
+            alert(`Fehler beim ${id ? 'Aktualisieren' : 'Hinzufügen'} des Fahrzeugs: ${error.message}`);
         }
     });
 
@@ -265,7 +265,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('admin-logout-link').addEventListener('click', (e) => {
         e.preventDefault();
         localStorage.removeItem('token');
-        alert('Başarıyla çıkış yapıldı.');
+        alert('Erfolgreich abgemeldet.');
         window.location.href = '/';
     });
 });

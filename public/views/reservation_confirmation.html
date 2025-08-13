@@ -3,185 +3,601 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reservierung Bestätigt - TurboMiete</title>
+    <title>Buchungsbestätigung - TurboMiete</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="/css/style.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .confirmation-hero {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.6) 100%), 
+                        url('../images/hero-bg.jpg') no-repeat center center;
+            background-size: cover;
+            color: white;
+            padding: 100px 0;
+            text-align: center;
+            position: relative;
+        }
+        
+        .confirmation-hero::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at center, rgba(243, 156, 18, 0.1) 0%, rgba(0, 0, 0, 0) 70%);
+            pointer-events: none;
+        }
+        
+        .confirmation-hero h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .confirmation-hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .confirmation-content {
+            padding: 60px 0;
+        }
+        
+        .success-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        
+        .success-icon {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #28a745, #20c997);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            font-size: 3rem;
+            color: white;
+        }
+        
+        .success-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #28a745;
+            margin-bottom: 15px;
+        }
+        
+        .success-message {
+            font-size: 1.2rem;
+            color: #6c757d;
+            margin-bottom: 30px;
+        }
+        
+        .reservation-details {
+            background: #f8f9fa;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .reservation-details h3 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .reservation-details h3 i {
+            color: #f39c12;
+            margin-right: 15px;
+        }
+        
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .detail-item {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid #e9ecef;
+            transition: all 0.3s ease;
+        }
+        
+        .detail-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .detail-icon {
+            font-size: 2rem;
+            color: #f39c12;
+            margin-bottom: 15px;
+        }
+        
+        .detail-label {
+            font-size: 0.9rem;
+            color: #6c757d;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+        
+        .detail-value {
+            font-size: 1.2rem;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+        
+        .car-info {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .car-name {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+        
+        .car-specs {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .car-spec {
+            text-align: center;
+        }
+        
+        .car-spec-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .car-spec-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        .next-steps {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .next-steps h3 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .next-steps h3 i {
+            color: #f39c12;
+            margin-right: 15px;
+        }
+        
+        .step-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 25px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            border: 1px solid #e9ecef;
+        }
+        
+        .step-number {
+            background: linear-gradient(45deg, #f39c12, #e67e22);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin-right: 20px;
+            flex-shrink: 0;
+        }
+        
+        .step-content h4 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .step-content p {
+            color: #6c757d;
+            margin: 0;
+            line-height: 1.6;
+        }
+        
+        .action-buttons {
+            text-align: center;
+            margin-top: 40px;
+        }
+        
+        .btn-primary-custom {
+            background: linear-gradient(45deg, #f39c12, #e67e22);
+            border: none;
+            border-radius: 15px;
+            padding: 15px 30px;
+            font-weight: 600;
+            color: white;
+            margin: 0 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(243, 156, 18, 0.3);
+            background: linear-gradient(45deg, #e67e22, #f39c12);
+        }
+        
+        .btn-outline-custom {
+            background: transparent;
+            border: 2px solid #f39c12;
+            border-radius: 15px;
+            padding: 15px 30px;
+            font-weight: 600;
+            color: #f39c12;
+            margin: 0 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-outline-custom:hover {
+            background: #f39c12;
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .loading-spinner {
+            text-align: center;
+            padding: 60px 20px;
+        }
+        
+        .spinner-border {
+            width: 3rem;
+            height: 3rem;
+            color: #f39c12;
+        }
+        
+        .error-message {
+            text-align: center;
+            padding: 60px 20px;
+            color: #dc3545;
+        }
+        
+        .error-message i {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+        
+        .error-message h3 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+    </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
-            <a class="navbar-brand" href="/">
-                <i class="fas fa-car"></i> TurboMiete
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/">Startseite</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/views/search_results.html">Fahrzeuge</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/views/about.html">Über uns</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/views/contact.html">Kontakt</a>
-                    </li>
-                </ul>
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/views/profile.html">
-                            <i class="fas fa-user"></i> Mein Profil
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" id="logout-btn">
-                            <i class="fas fa-sign-out-alt"></i> Abmelden
-                        </a>
-                    </li>
-                </ul>
-            </div>
+    <header>
+        <div id="navbar-container">
+            <!-- Navbar JavaScript ile yüklenecek -->
         </div>
-    </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="confirmation-hero">
+        <div class="container">
+            <h1>Buchungsbestätigung</h1>
+            <p>Ihre Reservierung wurde erfolgreich bestätigt</p>
+        </div>
+    </section>
 
     <!-- Main Content -->
-    <main class="container my-5">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <!-- Success Message -->
-                <div class="card border-success mb-4">
-                    <div class="card-header bg-success text-white text-center">
-                        <i class="fas fa-check-circle fa-3x mb-3"></i>
-                        <h2 class="mb-0">Reservierung Bestätigt!</h2>
-                    </div>
-                    <div class="card-body text-center">
-                        <p class="lead text-success mb-4">
-                            Ihre Fahrzeugreservierung wurde erfolgreich bestätigt. 
-                            Vielen Dank für Ihr Vertrauen in TurboMiete!
-                        </p>
-                        <div class="alert alert-info">
-                            <i class="fas fa-info-circle"></i>
-                            Eine Bestätigungs-E-Mail wurde an Ihre E-Mail-Adresse gesendet.
-                        </div>
-                    </div>
+    <main class="confirmation-content">
+        <div class="container">
+            <!-- Success Card -->
+            <div class="success-card">
+                <div class="success-icon">
+                    <i class="bi bi-check-circle"></i>
                 </div>
+                <h2 class="success-title">Buchung erfolgreich!</h2>
+                <p class="success-message">Vielen Dank für Ihre Buchung. Eine Bestätigungs-E-Mail wurde an Ihre E-Mail-Adresse gesendet.</p>
+            </div>
 
-                <!-- Reservation Details -->
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h4 class="mb-0">
-                            <i class="fas fa-receipt"></i> Reservierungsdetails
-                        </h4>
-                    </div>
-                    <div class="card-body">
-                        <div id="reservation-details">
-                            <!-- Reservation details will be loaded here -->
-                            <div class="text-center">
-                                <div class="spinner-border text-primary" role="status">
-                                    <span class="visually-hidden">Laden...</span>
-                                </div>
-                                <p class="mt-2">Lade Reservierungsdetails...</p>
-                            </div>
+            <!-- Reservation Details -->
+            <div class="reservation-details">
+                <h3><i class="bi bi-calendar-check"></i> Buchungsdetails</h3>
+                <div id="reservation-container">
+                    <div class="loading-spinner">
+                        <div class="spinner-border" role="status">
+                            <span class="visually-hidden">Laden...</span>
                         </div>
+                        <p class="mt-3">Buchungsdetails werden geladen...</p>
                     </div>
                 </div>
+            </div>
 
-                <!-- Next Steps -->
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h4 class="mb-0">
-                            <i class="fas fa-list-check"></i> Nächste Schritte
-                        </h4>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <div class="d-flex align-items-center">
-                                    <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
-                                        <i class="fas fa-1"></i>
-                                    </div>
-                                    <div>
-                                        <h6 class="mb-1">Bestätigungs-E-Mail prüfen</h6>
-                                        <small class="text-muted">Überprüfen Sie Ihren Posteingang</small>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <div class="d-flex align-items-center">
-                                    <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
-                                        <i class="fas fa-2"></i>
-                                    </div>
-                                    <div>
-                                        <h6 class="mb-1">Fahrzeug abholen</h6>
-                                        <small class="text-muted">Am vereinbarten Termin und Ort</small>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <div class="d-flex align-items-center">
-                                    <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
-                                        <i class="fas fa-3"></i>
-                                    </div>
-                                    <div>
-                                        <h6 class="mb-1">Fahrzeug zurückgeben</h6>
-                                        <small class="text-muted">Am vereinbarten Termin und Ort</small>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <div class="d-flex align-items-center">
-                                    <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
-                                        <i class="fas fa-4"></i>
-                                    </div>
-                                    <div>
-                                        <h6 class="mb-1">Bewertung abgeben</h6>
-                                        <small class="text-muted">Teilen Sie Ihre Erfahrung mit uns</small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+            <!-- Next Steps -->
+            <div class="next-steps">
+                <h3><i class="bi bi-list-check"></i> Nächste Schritte</h3>
+                
+                <div class="step-item">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h4>Bestätigungs-E-Mail prüfen</h4>
+                        <p>Überprüfen Sie Ihren Posteingang auf eine Bestätigungs-E-Mail mit allen wichtigen Details zu Ihrer Buchung.</p>
                     </div>
                 </div>
+                
+                <div class="step-item">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h4>Fahrzeug abholen</h4>
+                        <p>Kommen Sie zum vereinbarten Termin und Standort, um Ihr Fahrzeug abzuholen. Vergessen Sie nicht Ihren Führerschein und Personalausweis.</p>
+                    </div>
+                </div>
+                
+                <div class="step-item">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h4>Fahrzeug zurückgeben</h4>
+                        <p>Geben Sie das Fahrzeug zum vereinbarten Termin und Standort zurück. Stellen Sie sicher, dass der Tank mindestens so voll ist wie bei der Abholung.</p>
+                    </div>
+                </div>
+                
+                <div class="step-item">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h4>Bewertung abgeben</h4>
+                        <p>Teilen Sie uns Ihre Erfahrungen mit und bewerten Sie unseren Service. Ihr Feedback hilft uns, unseren Service zu verbessern.</p>
+                    </div>
+                </div>
+            </div>
 
-                <!-- Action Buttons -->
-                <div class="card">
-                    <div class="card-body text-center">
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <a href="/views/profile.html" class="btn btn-outline-primary btn-lg w-100">
-                                    <i class="fas fa-user"></i> Mein Profil anzeigen
-                                </a>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <a href="/views/search_results.html" class="btn btn-primary btn-lg w-100">
-                                    <i class="fas fa-car"></i> Weitere Fahrzeuge suchen
-                                </a>
-                            </div>
-                        </div>
-                        <div class="mt-3">
-                            <a href="/" class="btn btn-secondary">
-                                <i class="fas fa-home"></i> Zurück zur Startseite
-                            </a>
-                        </div>
-                    </div>
-                </div>
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <a href="/" class="btn btn-primary-custom">
+                    <i class="bi bi-house me-2"></i>
+                    Zurück zur Startseite
+                </a>
+                <a href="/views/profile.html" class="btn btn-outline-custom">
+                    <i class="bi bi-person me-2"></i>
+                    Mein Profil
+                </a>
             </div>
         </div>
     </main>
 
-    <!-- Footer -->
-    <footer class="bg-dark text-white text-center py-4 mt-5">
+    <footer class="text-center py-4">
         <div class="container">
-            <p>&copy; 2024 TurboMiete. Alle Rechte vorbehalten.</p>
+            <p class="mb-2">&copy; 2025 TurboMiete - Premium Autovermietung. Alle Rechte vorbehalten.</p>
+            <p class="small text-muted mb-0">
+                Dieses Projekt wurde ausschließlich zu Portfoliozwecken erstellt. Es besteht keine Verbindung zu Tesla Inc., Mercedes-Benz, BMW, Audi, Porsche, Bentley, Rolls-Royce oder anderen genannten Marken.
+            </p>
         </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="/js/reservation_confirmation.js"></script>
+    <script src="../js/navbar.js"></script>
+    <script src="../js/auth.js"></script>
+    <script>
+        let reservationData = null;
+
+        // Sayfa yüklendiğinde
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const reservationId = urlParams.get('reservationId');
+            
+            if (!reservationId) {
+                showError('Keine Buchungs-ID angegeben');
+                return;
+            }
+            
+            loadReservationDetails(reservationId);
+        });
+
+        // Rezervasyon detaylarını yükle
+        async function loadReservationDetails(reservationId) {
+            try {
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    showError('Bitte melden Sie sich an, um Ihre Buchungsdetails zu sehen.');
+                    return;
+                }
+
+                const response = await fetch(`/api/reservations/${reservationId}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                reservationData = await response.json();
+                displayReservationDetails();
+            } catch (error) {
+                console.error('Rezervasyon yükleme hatası:', error);
+                showError('Fehler beim Laden der Buchungsdetails');
+            }
+        }
+
+        // Rezervasyon detaylarını göster
+        function displayReservationDetails() {
+            if (!reservationData) return;
+
+            const container = document.getElementById('reservation-container');
+            
+            container.innerHTML = `
+                <!-- Car Info -->
+                <div class="car-info">
+                    <h3 class="car-name">${reservationData.make} ${reservationData.model}</h3>
+                    <div class="car-specs">
+                        <div class="car-spec">
+                            <div class="car-spec-value">${reservationData.year}</div>
+                            <div class="car-spec-label">Baujahr</div>
+                        </div>
+                        <div class="car-spec">
+                            <div class="car-spec-value">${reservationData.transmission_type}</div>
+                            <div class="car-spec-label">Getriebe</div>
+                        </div>
+                        <div class="car-spec">
+                            <div class="car-spec-value">${reservationData.fuel_type}</div>
+                            <div class="car-spec-label">Kraftstoff</div>
+                        </div>
+                        <div class="car-spec">
+                            <div class="car-spec-value">${reservationData.seating_capacity}</div>
+                            <div class="car-spec-label">Sitze</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Details Grid -->
+                <div class="details-grid">
+                    <div class="detail-item">
+                        <div class="detail-icon">
+                            <i class="bi bi-calendar-event"></i>
+                        </div>
+                        <div class="detail-label">Abholdatum</div>
+                        <div class="detail-value">${formatDate(reservationData.pickup_date)}</div>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <div class="detail-icon">
+                            <i class="bi bi-clock"></i>
+                        </div>
+                        <div class="detail-label">Abholzeit</div>
+                        <div class="detail-value">${reservationData.pickup_time}</div>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <div class="detail-icon">
+                            <i class="bi bi-calendar-check"></i>
+                        </div>
+                        <div class="detail-label">Rückgabedatum</div>
+                        <div class="detail-value">${formatDate(reservationData.dropoff_date)}</div>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <div class="detail-icon">
+                            <i class="bi bi-clock-history"></i>
+                        </div>
+                        <div class="detail-label">Rückgabezeit</div>
+                        <div class="detail-value">${reservationData.dropoff_time}</div>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <div class="detail-icon">
+                            <i class="bi bi-geo-alt"></i>
+                        </div>
+                        <div class="detail-label">Abholort</div>
+                        <div class="detail-value">${reservationData.pickup_location_name || 'N/A'}</div>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <div class="detail-icon">
+                            <i class="bi bi-geo-alt-fill"></i>
+                        </div>
+                        <div class="detail-label">Rückgabeort</div>
+                        <div class="detail-value">${reservationData.dropoff_location_name || 'N/A'}</div>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <div class="detail-icon">
+                            <i class="bi bi-credit-card"></i>
+                        </div>
+                        <div class="detail-label">Geschätzte Kosten</div>
+                        <div class="detail-value">€${calculateTotalPrice()}</div>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <div class="detail-icon">
+                            <i class="bi bi-hash"></i>
+                        </div>
+                        <div class="detail-label">Buchungs-ID</div>
+                        <div class="detail-value">${reservationData.reservation_id}</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Hata mesajı göster
+        function showError(message) {
+            const container = document.getElementById('reservation-container');
+            container.innerHTML = `
+                <div class="error-message">
+                    <i class="bi bi-exclamation-triangle"></i>
+                    <h3>Fehler</h3>
+                    <p>${message}</p>
+                    <a href="/" class="btn btn-primary-custom mt-3">
+                        <i class="bi bi-house me-2"></i>
+                        Zurück zur Startseite
+                    </a>
+                </div>
+            `;
+        }
+
+        // Yardımcı fonksiyonlar
+        function formatDate(dateString) {
+            if (!dateString) return 'N/A';
+            const date = new Date(dateString);
+            return date.toLocaleDateString('de-DE');
+        }
+
+        function calculateTotalPrice() {
+            if (!reservationData || !reservationData.pickup_date || !reservationData.dropoff_date) return 0;
+            
+            const pickup = new Date(reservationData.pickup_date);
+            const dropoff = new Date(reservationData.dropoff_date);
+            const days = Math.ceil((dropoff - pickup) / (1000 * 60 * 60 * 24));
+            
+            // Günlük fiyat bilgisi yoksa varsayılan olarak 100€
+            const dailyRate = reservationData.daily_rate || 100;
+            return days * dailyRate;
+        }
+    </script>
 </body>
 </html>

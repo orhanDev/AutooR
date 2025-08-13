@@ -4,6 +4,8 @@ body {
   line-height: 1.6;
   color: #333;
   background-color: #f4f7f6;
+  margin: 0;
+  padding: 0;
 }
 
 /* Header-Stile */                /* Header Stilleri */
@@ -11,6 +13,8 @@ header {
   background-color: #343a40;
   padding: 15px 0;
   border-bottom: 1px solid rgb(74.8620689655, 83.5, 92.1379310345);
+  position: relative;
+  z-index: 1000;
 }
 
 .navbar-brand {
@@ -29,75 +33,354 @@ header {
 
 /* Hauptinhalt-Stile */           /* Main Content Stilleri */
 main {
-  padding-top: 40px;
+  padding-top: 0;
   padding-bottom: 40px;
 }
 
 #hero {
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0.35) 40%, rgba(0,0,0,0.55) 100%), url("/images/hero-bg.jpg") no-repeat center center/cover;
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.4) 50%, rgba(0, 0, 0, 0.7) 100%), 
+              url("../images/hero-bg.jpg") no-repeat center center;
+  background-size: cover;
+  background-attachment: fixed;
   color: #fff;
-  padding: 120px 0;
-  margin-bottom: 30px;
-  border-radius: 12px;
+  padding: 150px 0;
+  margin: 0;
+  border-radius: 0;
   position: relative;
   overflow: hidden;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+
+#hero::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(ellipse at center, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+  pointer-events: none;
+  z-index: 1;
+}
+
 #hero::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: radial-gradient(60% 60% at 50% 40%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 70%);
+  background: linear-gradient(45deg, rgba(243, 156, 18, 0.1) 0%, rgba(0, 0, 0, 0) 100%);
   pointer-events: none;
-  z-index: 0;
-}
-#hero h1 {
-  font-size: 3.5rem;
-  font-weight: bold;
-  margin-bottom: 20px;
-}
-#hero .lead {
-  font-size: 1.25rem;
-}
-#hero #car-search-form {
-  background-color: rgba(255, 255, 255, 0.95) !important;
-  padding: 30px !important;
-  border-radius: 8px !important;
-  max-width: 900px;
-  margin: 0 auto;
-  position: relative;
   z-index: 1;
 }
 
-#hero > * { position: relative; z-index: 1; }
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.hero-title {
+  font-size: 4.5rem;
+  font-weight: 900;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  position: relative;
+  z-index: 2;
+  letter-spacing: 2px;
+  color: #f39c12 !important;
+}
+
+.hero-title .bi-lightning-charge-fill {
+  color: #f39c12 !important;
+}
+
+.hero-subtitle {
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+  position: relative;
+  z-index: 2;
+  font-weight: 400;
+}
+
+.hero-description {
+  font-size: 1.2rem;
+  margin-bottom: 40px;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+  position: relative;
+  z-index: 2;
+  font-weight: 300;
+  opacity: 0.9;
+}
+
+#hero h1 {
+  font-size: 4.5rem;
+  font-weight: 900;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  position: relative;
+  z-index: 2;
+  letter-spacing: 2px;
+}
+
+#hero .lead {
+  font-size: 1.5rem;
+  margin-bottom: 40px;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+  position: relative;
+  z-index: 2;
+  font-weight: 300;
+}
+
+#hero #car-search-form {
+  background: rgba(255, 255, 255, 0.98) !important;
+  backdrop-filter: blur(10px);
+  padding: 40px !important;
+  border-radius: 20px !important;
+  max-width: 1000px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+#hero > * { 
+  position: relative; 
+  z-index: 2; 
+}
+
 #hero #car-search-form .form-label {
-  font-weight: bold;
+  font-weight: 600;
   color: #343a40;
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+}
+
+#hero #car-search-form .form-control,
+#hero #car-search-form .form-select {
+  border: 2px solid #e9ecef !important;
+  border-radius: 12px !important;
+  background-color: #ffffff !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+  color: #222;
+  transition: all 0.3s ease;
+  padding: 12px 16px;
+  font-size: 1rem;
+}
+
+#hero #car-search-form .form-control:focus,
+#hero #car-search-form .form-select:focus {
+  border-color: #f39c12 !important;
+  box-shadow: 0 0 0 3px rgba(243, 156, 18, 0.2) !important;
+  background-color: #fff !important;
+  outline: none !important;
+  transform: translateY(-2px);
+}
+
+#hero #car-search-form .btn-warning {
+  background: linear-gradient(45deg, #f39c12, #e67e22) !important;
+  border: none !important;
+  border-radius: 12px !important;
+  padding: 16px 32px !important;
+  font-size: 1.2rem !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 1px !important;
+  box-shadow: 0 8px 20px rgba(243, 156, 18, 0.4) !important;
+  transition: all 0.3s ease !important;
+}
+
+#hero #car-search-form .btn-warning:hover {
+  transform: translateY(-3px) !important;
+  box-shadow: 0 12px 25px rgba(243, 156, 18, 0.6) !important;
+  background: linear-gradient(45deg, #e67e22, #f39c12) !important;
+}
+
+.search-btn {
+  background: linear-gradient(45deg, #f39c12, #e67e22) !important;
+  border: none !important;
+  border-radius: 15px !important;
+  padding: 18px 36px !important;
+  font-size: 1.3rem !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 1px !important;
+  box-shadow: 0 10px 25px rgba(243, 156, 18, 0.4) !important;
+  transition: all 0.3s ease !important;
+}
+
+.search-btn:hover {
+  transform: translateY(-3px) !important;
+  box-shadow: 0 15px 30px rgba(243, 156, 18, 0.6) !important;
+  background: linear-gradient(45deg, #e67e22, #f39c12) !important;
+}
+
+/* Section Titles */
+.section-title {
+  font-size: 3rem;
+  font-weight: 800;
+  margin-bottom: 20px;
+  color: #2c3e50;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.section-subtitle {
+  font-size: 1.3rem;
+  color: #6c757d;
+  margin-bottom: 40px;
+  font-weight: 300;
+}
+
+#popular-cars {
+  padding: 80px 0;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+#popular-cars h2 {
+  font-size: 3rem;
+  font-weight: 800;
+  text-align: center;
+  margin-bottom: 50px;
+  color: #2c3e50;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 #popular-cars .card {
   border: none;
-  border-radius: 10px;
+  border-radius: 20px;
   overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s ease-in-out;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+  background: #fff;
+  margin-bottom: 30px;
 }
+
 #popular-cars .card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
 }
+
 #popular-cars .card .card-title {
   color: #2c3e50;
-  font-weight: bold;
+  font-weight: 700;
+  font-size: 1.3rem;
 }
+
 #popular-cars .card .card-text strong {
   color: #f39c12;
-  font-size: 1.2rem;
+  font-size: 1.4rem;
+  font-weight: 800;
 }
 
 #benefits {
-  background-color: #007bff;
+  background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
   color: white;
-  padding: 60px 0;
-  border-radius: 10px;
+  padding: 100px 0;
+  border-radius: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+#benefits::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  pointer-events: none;
+}
+
+#benefits h2 {
+  font-size: 3rem;
+  font-weight: 800;
+  margin-bottom: 30px;
+  position: relative;
+  z-index: 1;
+}
+
+#benefits p {
+  font-size: 1.3rem;
+  font-weight: 300;
+  position: relative;
+  z-index: 1;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Benefit Items */
+.benefit-item {
+  text-align: center;
+  padding: 30px 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.benefit-icon {
+  font-size: 3rem;
+  color: #f39c12;
+  margin-bottom: 20px;
+  display: block;
+}
+
+.benefit-item h4 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: #fff;
+}
+
+.benefit-item p {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
+}
+
+/* Features Section */
+#features {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+.feature-card {
+  background: #fff;
+  padding: 40px 20px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  height: 100%;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.feature-icon {
+  font-size: 2.5rem;
+  color: #007bff;
+  margin-bottom: 20px;
+  display: block;
+}
+
+.feature-card h5 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: #2c3e50;
+}
+
+.feature-card p {
+  font-size: 1rem;
+  color: #6c757d;
+  margin: 0;
+  line-height: 1.6;
 }
 
 /* Checkout alt kart genişliği uyumu */
@@ -119,37 +402,123 @@ main {
 .extras-group .form-check-label {
   cursor: pointer;
 }
-#benefits h2 {
-  font-size: 2.5rem;
-  font-weight: bold;
-  margin-bottom: 20px;
-}
 
 /* Footer-Stile */               /* Footer Stilleri */
 footer {
-  margin-top: 50px;
+  margin-top: 0;
   border-top: 1px solid #343a40;
-  background-color: #343a40;
-  padding: 30px 0;
+  background: linear-gradient(135deg, #343a40 0%, #2c3e50 100%);
+  padding: 50px 0;
   color: #e9ecef;
-}
-footer p {
-  margin-bottom: 0;
+  position: relative;
 }
 
+footer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, #f39c12 50%, transparent 100%);
+}
+
+footer p {
+  margin-bottom: 0;
+  font-size: 1.1rem;
+}
+
+/* Form elementleri için genel stiller */
 input.form-control, textarea.form-control, select.form-select {
   border: 2px solid #b0b0b0 !important;
-  border-radius: 6px !important;
+  border-radius: 12px !important;
   background-color: #fcfcfc !important;
-  box-shadow: none !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
   color: #222;
-  transition: border-color 0.2s;
+  transition: all 0.3s ease;
+  padding: 12px 16px;
+  font-size: 1rem;
 }
+
 input.form-control:focus, textarea.form-control:focus, select.form-select:focus {
   border-color: #f39c12 !important;
-  box-shadow: 0 0 0 2px rgba(243, 156, 18, 0.15) !important;
+  box-shadow: 0 0 0 3px rgba(243, 156, 18, 0.2) !important;
   background-color: #fff !important;
   outline: none !important;
+  transform: translateY(-2px);
+}
+
+/* Responsive tasarım için */
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 3rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 1.4rem;
+  }
+  
+  .hero-description {
+    font-size: 1.1rem;
+  }
+  
+  #hero h1 {
+    font-size: 3rem;
+  }
+  
+  #hero .lead {
+    font-size: 1.2rem;
+  }
+  
+  #hero #car-search-form {
+    padding: 30px 20px !important;
+    margin: 0 20px;
+  }
+  
+  #popular-cars h2,
+  #benefits h2 {
+    font-size: 2.5rem;
+  }
+  
+  .section-title {
+    font-size: 2.5rem;
+  }
+}
+
+@media (max-width: 576px) {
+  #hero {
+    padding: 100px 0;
+    min-height: 80vh;
+  }
+  
+  .hero-title {
+    font-size: 2.5rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 1.2rem;
+  }
+  
+  .hero-description {
+    font-size: 1rem;
+  }
+  
+  #hero h1 {
+    font-size: 2.5rem;
+  }
+  
+  #hero .lead {
+    font-size: 1.1rem;
+  }
+  
+  #hero #car-search-form {
+    padding: 25px 15px !important;
+    margin: 0 15px;
+  }
+  
+  .section-title {
+    font-size: 2rem;
+  }
 }
 
 /*# sourceMappingURL=style.css.map */

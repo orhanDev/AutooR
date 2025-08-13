@@ -2,6 +2,41 @@
 
 document.addEventListener('DOMContentLoaded', () => {
     const registerForm = document.getElementById('register-form');
+    const passwordInput = document.getElementById('password');
+    const showPasswordCheckbox = document.getElementById('show-password');
+
+    const firstNameInput = document.getElementById('first-name');
+    const lastNameInput = document.getElementById('last-name');
+    const emailInput = document.getElementById('email');
+    const termsAgreeCheckbox = document.getElementById('terms-agree');
+    const registerButton = registerForm.querySelector('button[type="submit"]');
+
+    function updateRegisterButtonState() {
+        const allRequiredFieldsFilled = 
+            firstNameInput.value.length >= 3 &&
+            lastNameInput.value.length >= 3 &&
+            emailInput.value.length > 0 &&
+            passwordInput.value.length > 0;
+        
+        registerButton.disabled = !(allRequiredFieldsFilled && termsAgreeCheckbox.checked);
+    }
+
+    // Initial state
+    updateRegisterButtonState();
+
+    firstNameInput.addEventListener('input', updateRegisterButtonState);
+    lastNameInput.addEventListener('input', updateRegisterButtonState);
+    emailInput.addEventListener('input', updateRegisterButtonState);
+    passwordInput.addEventListener('input', updateRegisterButtonState);
+    termsAgreeCheckbox.addEventListener('change', updateRegisterButtonState);
+
+    showPasswordCheckbox.addEventListener('change', () => {
+        if (showPasswordCheckbox.checked) {
+            passwordInput.type = 'text';
+        } else {
+            passwordInput.type = 'password';
+        }
+    });
 
     registerForm.addEventListener('submit', async (event) => {
         event.preventDefault();

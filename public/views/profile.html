@@ -4,339 +4,521 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mein Profil - TurboMiete</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/style.css">
-    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
-    <link rel="icon" type="image/x-icon" href="../favicon.ico">
-    <link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
+    <style>
+        .profile-hero {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.6) 100%), 
+                        url('../images/hero-bg.jpg') no-repeat center center;
+            background-size: cover;
+            color: white;
+            padding: 100px 0;
+            text-align: center;
+            position: relative;
+        }
+        
+        .profile-hero::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at center, rgba(243, 156, 18, 0.1) 0%, rgba(0, 0, 0, 0) 70%);
+            pointer-events: none;
+        }
+        
+        .profile-hero h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .profile-hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .profile-content {
+            padding: 60px 0;
+        }
+        
+        .profile-section {
+            margin-bottom: 60px;
+        }
+        
+        .profile-section h2 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .profile-section h2 i {
+            color: #f39c12;
+            margin-right: 15px;
+        }
+        
+        .profile-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+        }
+        
+        .profile-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #f39c12, #e67e22);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 3rem;
+            color: white;
+        }
+        
+        .profile-name {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .profile-email {
+            color: #6c757d;
+            font-size: 1.1rem;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .stat-item {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid #e9ecef;
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: #f39c12;
+            margin-bottom: 10px;
+        }
+        
+        .stat-label {
+            font-size: 1rem;
+            color: #6c757d;
+            font-weight: 500;
+        }
+        
+        .booking-item {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border: 1px solid #e9ecef;
+            transition: all 0.3s ease;
+        }
+        
+        .booking-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .booking-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .booking-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .booking-status {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        .status-active {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status-completed {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+        
+        .status-cancelled {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .booking-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .detail-item {
+            display: flex;
+            align-items: center;
+        }
+        
+        .detail-icon {
+            color: #f39c12;
+            margin-right: 8px;
+            font-size: 1.1rem;
+        }
+        
+        .detail-text {
+            color: #6c757d;
+            font-size: 0.95rem;
+        }
+        
+        .booking-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #f39c12;
+            text-align: right;
+        }
+        
+        .no-bookings {
+            text-align: center;
+            padding: 60px 20px;
+            color: #6c757d;
+        }
+        
+        .no-bookings i {
+            font-size: 4rem;
+            color: #dee2e6;
+            margin-bottom: 20px;
+        }
+        
+        .no-bookings h3 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #495057;
+        }
+        
+        .no-bookings p {
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+        }
+        
+        .btn-primary-custom {
+            background: linear-gradient(45deg, #f39c12, #e67e22);
+            border: none;
+            border-radius: 12px;
+            padding: 12px 30px;
+            font-weight: 600;
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(243, 156, 18, 0.3);
+            background: linear-gradient(45deg, #e67e22, #f39c12);
+        }
+        
+        .loading-spinner {
+            text-align: center;
+            padding: 60px 20px;
+        }
+        
+        .spinner-border {
+            width: 3rem;
+            height: 3rem;
+            color: #f39c12;
+        }
+    </style>
 </head>
 <body>
+    <header>
     <div id="navbar-container">
         <!-- Navbar JavaScript ile yüklenecek -->
     </div>
-    
-    <main class="container my-5">
-        <!-- Profil Başlığı -->
-        <div class="row mb-4">
-            <div class="col-12">
-                <div class="d-flex align-items-center">
-                    <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 60px; height: 60px;">
-                        <i class="bi bi-person-fill fs-3"></i>
-                    </div>
-                    <div>
-                        <h2 class="mb-1" id="welcome-name">Willkommen</h2>
-                        <p class="text-muted mb-0">Verwalten Sie Ihre persönlichen Daten und Buchungen</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+    </header>
 
-        <div class="row">
-            <!-- Sol Kolon - Profil Bilgileri -->
-            <div class="col-lg-4 mb-4">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-header bg-light">
-                        <h5 class="mb-0"><i class="bi bi-person-gear me-2"></i>Persönliche Daten</h5>
+    <!-- Hero Section -->
+    <section class="profile-hero">
+        <div class="container">
+            <h1>Mein Profil</h1>
+            <p>Verwalten Sie Ihre persönlichen Daten und Buchungen</p>
                     </div>
-                    <div class="card-body">
-                        <form id="profile-form">
-                            <div class="mb-3">
-                                <label for="first_name" class="form-label fw-semibold">Vorname *</label>
-                                <input type="text" id="first_name" class="form-control" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="last_name" class="form-label fw-semibold">Nachname *</label>
-                                <input type="text" id="last_name" class="form-control" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="email" class="form-label fw-semibold">E-Mail</label>
-                                <input type="email" id="email" class="form-control" disabled>
-                                <small class="text-muted">E-Mail-Adresse kann nicht geändert werden</small>
-                            </div>
-                            <div class="mb-3">
-                                <label for="phone_number" class="form-label fw-semibold">Telefonnummer</label>
-                                <input type="tel" id="phone_number" class="form-control" placeholder="+49 123 456789">
-                            </div>
-                            <div class="mb-3">
-                                <label for="address" class="form-label fw-semibold">Adresse</label>
-                                <textarea id="address" class="form-control" rows="3" placeholder="Straße, Hausnummer, PLZ, Stadt"></textarea>
-                            </div>
-                            <div class="d-grid">
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="bi bi-save me-2"></i>Änderungen speichern
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
+    </section>
 
-                <!-- Hesap Bilgileri -->
-                <div class="card mt-4 shadow-sm">
-                    <div class="card-header bg-light">
-                        <h6 class="mb-0"><i class="bi bi-shield-check me-2"></i>Konto-Informationen</h6>
-                    </div>
-                    <div class="card-body">
-                        <div class="row text-center">
-                            <div class="col-6 border-end">
-                                <div class="text-primary fw-bold fs-4" id="total-bookings">0</div>
-                                <small class="text-muted">Buchungen</small>
+    <!-- Main Content -->
+    <main class="profile-content">
+        <div class="container">
+            <!-- Profile Information -->
+            <section class="profile-section">
+                <div class="profile-card">
+                    <div class="profile-header">
+                        <div class="profile-avatar">
+                            <i class="bi bi-person"></i>
                             </div>
-                            <div class="col-6">
-                                <div class="text-success fw-bold fs-4" id="member-since">2025</div>
-                                <small class="text-muted">Mitglied seit</small>
+                        <h2 class="profile-name" id="user-name">Laden...</h2>
+                        <p class="profile-email" id="user-email">laden...</p>
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-number" id="total-bookings">0</div>
+                            <div class="stat-label">Gesamtbuchungen</div>
+                            </div>
+                        <div class="stat-item">
+                            <div class="stat-number" id="active-bookings">0</div>
+                            <div class="stat-label">Aktive Buchungen</div>
+                            </div>
+                        <div class="stat-item">
+                            <div class="stat-number" id="completed-bookings">0</div>
+                            <div class="stat-label">Abgeschlossene</div>
+                            </div>
+                        <div class="stat-item">
+                            <div class="stat-number" id="total-spent">€0</div>
+                            <div class="stat-label">Gesamtausgaben</div>
+                                </div>
+                                </div>
+                            </div>
+            </section>
 
-            <!-- Sağ Kolon - Rezervasyon Geçmişi -->
-            <div class="col-lg-8">
-                <div class="card shadow-sm">
-                    <div class="card-header bg-light d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0"><i class="bi bi-calendar-check me-2"></i>Meine Buchungen</h5>
-                        <div class="btn-group btn-group-sm" role="group">
-                            <button type="button" class="btn btn-outline-primary active" data-filter="all">Alle</button>
-                            <button type="button" class="btn btn-outline-primary" data-filter="active">Aktiv</button>
-                            <button type="button" class="btn btn-outline-primary" data-filter="completed">Abgeschlossen</button>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div id="bookings-container">
-                            <div class="text-center py-5">
-                                <i class="bi bi-calendar-x text-muted" style="font-size: 3rem;"></i>
-                                <p class="text-muted mt-3">Noch keine Buchungen vorhanden</p>
-                                <a href="/" class="btn btn-primary">Jetzt Auto mieten</a>
+            <!-- Bookings Section -->
+            <section class="profile-section">
+                <h2><i class="bi bi-calendar-check"></i> Meine Buchungen</h2>
+                <div id="bookings-container">
+                    <div class="loading-spinner">
+                        <div class="spinner-border" role="status">
+                            <span class="visually-hidden">Laden...</span>
                             </div>
-                        </div>
+                        <p class="mt-3">Buchungen werden geladen...</p>
                     </div>
                 </div>
-
-                <!-- Hızlı Eylemler -->
-                <div class="row mt-4">
-                    <div class="col-md-6 mb-3">
-                        <div class="card text-center h-100 shadow-sm">
-                            <div class="card-body">
-                                <i class="bi bi-car-front text-primary mb-3" style="font-size: 2rem;"></i>
-                                <h6>Neue Buchung</h6>
-                                <p class="text-muted small">Buchen Sie Ihr nächstes Fahrzeug</p>
-                                <a href="/" class="btn btn-outline-primary btn-sm">Auto suchen</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <div class="card text-center h-100 shadow-sm">
-                            <div class="card-body">
-                                <i class="bi bi-question-circle text-info mb-3" style="font-size: 2rem;"></i>
-                                <h6>Hilfe & Support</h6>
-                                <p class="text-muted small">Haben Sie Fragen?</p>
-                                <a href="/contact" class="btn btn-outline-info btn-sm">Kontakt</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            </section>
         </div>
     </main>
 
-    <footer class="bg-dark text-white text-center py-4 mt-5">
+    <footer class="text-center py-4">
         <div class="container">
-            <p>&copy; 2025 TurboMiete. Alle Rechte vorbehalten.</p>
+            <p class="mb-2">&copy; 2025 TurboMiete - Premium Autovermietung. Alle Rechte vorbehalten.</p>
+            <p class="small text-muted mb-0">
+                Dieses Projekt wurde ausschließlich zu Portfoliozwecken erstellt. Es besteht keine Verbindung zu Tesla Inc., Mercedes-Benz, BMW, Audi, Porsche, Bentley, Rolls-Royce oder anderen genannten Marken.
+            </p>
         </div>
-    </footer>
-    
-    <footer class="text-center mt-5 mb-3" style="font-size: 0.9em; color: #888;">
-        Dieses Projekt wurde ausschließlich zu Portfoliozwecken erstellt. Es besteht keine Verbindung zu Tesla Inc., Mercedes-Benz, BMW, Audi, Porsche, Bentley, Rolls-Royce oder anderen genannten Marken.
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../js/navbar.js"></script>
     <script src="../js/auth.js"></script>
-    
     <script>
-    document.addEventListener('DOMContentLoaded', async function() {
+        // Sayfa yüklendiğinde kullanıcı bilgilerini ve rezervasyonları yükle
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuth();
+            loadUserProfile();
+            loadUserBookings();
+        });
+
+        // Kullanıcı giriş yapmış mı kontrol et
+        function checkAuth() {
         const token = localStorage.getItem('token');
         if (!token) {
-            alert('Bitte melden Sie sich an.');
-            window.location.href = '/views/login.html';
+                alert('Bitte melden Sie sich an, um Ihr Profil zu sehen.');
+                window.location.href = 'login.html';
             return;
         }
-
-        // Profil bilgilerini çek ve doldur
-        try {
-            const res = await fetch('/api/auth/user', {
-                headers: { 'x-auth-token': token }
-            });
-            if (res.ok) {
-                const user = await res.json();
-                
-                // Form alanlarını doldur
-                document.getElementById('first_name').value = user.first_name || '';
-                document.getElementById('last_name').value = user.last_name || '';
-                document.getElementById('email').value = user.email || '';
-                document.getElementById('phone_number').value = user.phone_number || '';
-                document.getElementById('address').value = user.address || '';
-                
-                // Hoş geldin mesajı
-                document.getElementById('welcome-name').textContent = `Willkommen, ${user.first_name || 'Benutzer'}!`;
-                
-                // Üyelik tarihi
-                if (user.created_at) {
-                    const memberYear = new Date(user.created_at).getFullYear();
-                    document.getElementById('member-since').textContent = memberYear;
-                }
-                
-            } else {
-                alert('Profil konnte nicht geladen werden.');
-            }
-        } catch (e) {
-            console.error('Profil yükleme hatası:', e);
-            alert('Fehler beim Laden des Profils.');
         }
 
-        // Rezervasyonları çek
-        await loadUserBookings();
+        // Kullanıcı profilini yükle
+        async function loadUserProfile() {
+        try {
+                const token = localStorage.getItem('token');
+                const response = await fetch('/api/auth/user', {
+                headers: { 'x-auth-token': token }
+            });
+                
+                if (response.ok) {
+                    const userData = await response.json();
+                    const user = userData.user;
+                    
+                    document.getElementById('user-name').textContent = `${user.first_name} ${user.last_name}`;
+                    document.getElementById('user-email').textContent = user.email;
+            } else {
+                    throw new Error('Kullanıcı bilgileri alınamadı');
+                }
+            } catch (error) {
+                console.error('Profil yükleme hatası:', error);
+                alert('Profil yüklenirken bir hata oluştu.');
+            }
+        }
 
-        // Profil güncelleme
-        document.getElementById('profile-form').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const formData = {
-                first_name: document.getElementById('first_name').value,
-                last_name: document.getElementById('last_name').value,
-                phone_number: document.getElementById('phone_number').value,
-                address: document.getElementById('address').value
-            };
-
+        // Kullanıcı rezervasyonlarını yükle
+        async function loadUserBookings() {
             try {
-                const res = await fetch('/api/auth/user', {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'x-auth-token': token
-                    },
-                    body: JSON.stringify(formData)
+                const token = localStorage.getItem('token');
+                const response = await fetch('/api/reservations/user', {
+                    headers: { 'x-auth-token': token }
                 });
                 
-                if (res.ok) {
-                    // Başarı mesajı göster
-                    const alertDiv = document.createElement('div');
-                    alertDiv.className = 'alert alert-success alert-dismissible fade show';
-                    alertDiv.innerHTML = `
-                        <i class="bi bi-check-circle me-2"></i>
-                        Profil erfolgreich aktualisiert!
-                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                    `;
-                    document.querySelector('.card-body').insertBefore(alertDiv, document.getElementById('profile-form'));
-                    
-                    // 3 saniye sonra otomatik kaldır
-                    setTimeout(() => {
-                        if (alertDiv.parentNode) {
-                            alertDiv.remove();
-                        }
-                    }, 3000);
+                if (response.ok) {
+                    const bookings = await response.json();
+                    displayBookings(bookings);
+                    updateStats(bookings);
                 } else {
-                    throw new Error('Update failed');
+                    throw new Error('Rezervasyonlar alınamadı');
                 }
-            } catch (e) {
-                console.error('Profil güncelleme hatası:', e);
-                alert('Profil konnte nicht aktualisiert werden.');
+            } catch (error) {
+                console.error('Rezervasyon yükleme hatası:', error);
+                showNoBookings('Fehler beim Laden der Buchungen');
             }
-        });
+        }
 
-        // Filtre butonları
-        document.querySelectorAll('[data-filter]').forEach(btn => {
-            btn.addEventListener('click', function() {
-                document.querySelectorAll('[data-filter]').forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-                // Burada filtreleme yapılabilir
-            });
-        });
-    });
-
-    // Kullanıcı rezervasyonlarını yükle
-    async function loadUserBookings() {
-        try {
-            const token = localStorage.getItem('token');
-            const res = await fetch('/api/reservations/user', {
-                headers: { 'x-auth-token': token }
-            });
+        // Rezervasyonları göster
+        function displayBookings(bookings) {
+            const container = document.getElementById('bookings-container');
             
-            if (res.ok) {
-                const bookings = await res.json();
-                displayBookings(bookings);
-                document.getElementById('total-bookings').textContent = bookings.length;
+            if (bookings.length === 0) {
+                showNoBookings('Keine Buchungen gefunden');
+                return;
             }
-        } catch (e) {
-            console.error('Rezervasyon yükleme hatası:', e);
-        }
-    }
 
-    // Rezervasyonları görüntüle
-    function displayBookings(bookings) {
-        const container = document.getElementById('bookings-container');
-        
-        if (!bookings || bookings.length === 0) {
-            container.innerHTML = `
-                <div class="text-center py-5">
-                    <i class="bi bi-calendar-x text-muted" style="font-size: 3rem;"></i>
-                    <p class="text-muted mt-3">Noch keine Buchungen vorhanden</p>
-                    <a href="/" class="btn btn-primary">Jetzt Auto mieten</a>
-                </div>
-            `;
-            return;
-        }
-
-        const bookingsHTML = bookings.map(booking => `
-            <div class="border rounded p-3 mb-3">
-                <div class="row align-items-center">
-                    <div class="col-md-8">
-                        <h6 class="mb-1">${booking.make} ${booking.model}</h6>
-                        <p class="text-muted small mb-1">
-                            <i class="bi bi-calendar me-1"></i>
-                            ${new Date(booking.pickup_date).toLocaleDateString('de-DE')} - 
-                            ${new Date(booking.dropoff_date).toLocaleDateString('de-DE')}
-                        </p>
-                        <p class="text-muted small mb-0">
-                            <i class="bi bi-geo-alt me-1"></i>
-                            ${booking.pickup_location_name || 'Berlin'}
-                        </p>
-                    </div>
-                    <div class="col-md-4 text-end">
-                        <span class="badge bg-${getStatusColor(booking.status)} mb-2">
+            container.innerHTML = bookings.map(booking => `
+                <div class="booking-item">
+                    <div class="booking-header">
+                        <h3 class="booking-title">${booking.make} ${booking.model}</h3>
+                        <span class="booking-status ${getStatusClass(booking.status)}">
                             ${getStatusText(booking.status)}
                         </span>
-                        <div class="fw-bold text-primary">€${booking.total_price}</div>
+                    </div>
+                    
+                    <div class="booking-details">
+                        <div class="detail-item">
+                            <i class="bi bi-calendar-event detail-icon"></i>
+                            <span class="detail-text">${formatDate(booking.pickup_date)} - ${formatDate(booking.dropoff_date)}</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="bi bi-clock detail-icon"></i>
+                            <span class="detail-text">${booking.pickup_time} - ${booking.dropoff_time}</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="bi bi-geo-alt detail-icon"></i>
+                            <span class="detail-text">${booking.pickup_location_name || 'N/A'}</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="bi bi-calendar-check detail-icon"></i>
+                            <span class="detail-text">Buchungs-ID: ${booking.reservation_id}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="booking-price">
+                        €${calculateTotalPrice(booking)} gesamt
                     </div>
                 </div>
-            </div>
-        `).join('');
-
-        container.innerHTML = bookingsHTML;
-    }
-
-    // Durum rengi
-    function getStatusColor(status) {
-        switch(status) {
-            case 'Beklemede': return 'warning';
-            case 'Onaylandı': return 'success';
-            case 'Tamamlandı': return 'info';
-            case 'İptal': return 'danger';
-            default: return 'secondary';
+            `).join('');
         }
-    }
 
-    // Durum metni
-    function getStatusText(status) {
-        switch(status) {
-            case 'Beklemede': return 'Wartend';
-            case 'Onaylandı': return 'Bestätigt';
-            case 'Tamamlandı': return 'Abgeschlossen';
-            case 'İptal': return 'Storniert';
-            default: return status;
+        // İstatistikleri güncelle
+        function updateStats(bookings) {
+            const totalBookings = bookings.length;
+            const activeBookings = bookings.filter(b => b.status === 'active').length;
+            const completedBookings = bookings.filter(b => b.status === 'completed').length;
+            const totalSpent = bookings.reduce((sum, b) => sum + calculateTotalPrice(b), 0);
+            
+            document.getElementById('total-bookings').textContent = totalBookings;
+            document.getElementById('active-bookings').textContent = activeBookings;
+            document.getElementById('completed-bookings').textContent = completedBookings;
+            document.getElementById('total-spent').textContent = `€${totalSpent}`;
         }
-    }
+
+        // Rezervasyon bulunamadı mesajı
+        function showNoBookings(message) {
+            const container = document.getElementById('bookings-container');
+            container.innerHTML = `
+                <div class="no-bookings">
+                    <i class="bi bi-calendar-x"></i>
+                    <h3>${message}</h3>
+                    <p>Sie haben noch keine Fahrzeuge gebucht. Entdecken Sie unsere Flotte und buchen Sie Ihr erstes Fahrzeug!</p>
+                    <a href="/" class="btn btn-primary-custom">
+                        <i class="bi bi-car-front me-2"></i>
+                        Fahrzeuge durchsuchen
+                    </a>
+                </div>
+            `;
+        }
+
+        // Yardımcı fonksiyonlar
+        function getStatusClass(status) {
+            switch(status) {
+                case 'active': return 'status-active';
+                case 'completed': return 'status-completed';
+                case 'cancelled': return 'status-cancelled';
+                default: return 'status-active';
+            }
+        }
+
+        function getStatusText(status) {
+            switch(status) {
+                case 'active': return 'Aktiv';
+                case 'completed': return 'Abgeschlossen';
+                case 'cancelled': return 'Storniert';
+                default: return 'Aktiv';
+            }
+        }
+
+        function formatDate(dateString) {
+            if (!dateString) return 'N/A';
+            const date = new Date(dateString);
+            return date.toLocaleDateString('de-DE');
+        }
+
+        function calculateTotalPrice(booking) {
+            if (!booking.pickup_date || !booking.dropoff_date) return 0;
+            
+            const pickup = new Date(booking.pickup_date);
+            const dropoff = new Date(booking.dropoff_date);
+            const days = Math.ceil((dropoff - pickup) / (1000 * 60 * 60 * 24));
+            
+            // Günlük fiyat bilgisi yoksa varsayılan olarak 100€
+            const dailyRate = booking.daily_rate || 100;
+            return days * dailyRate;
+        }
     </script>
 </body>
 </html>

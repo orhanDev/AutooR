@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const button = document.getElementById('add-test-reservations');
 
         if (!userId) {
-            resultDiv.innerHTML = '<div class="alert alert-warning">Lütfen bir kullanıcı ID girin</div>';
+            resultDiv.innerHTML = '<div class="alert alert-warning">Bitte geben Sie eine Benutzer-ID ein</div>';
             return;
         }
 

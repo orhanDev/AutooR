@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yönetici Paneli - Araç Yönetimi</title>
+    <title>Admin Panel - Fahrzeugverwaltung</title>
     <!-- Bootstrap CSS CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
@@ -20,26 +20,26 @@
     </header>
 
     <main class="container my-5">
-        <h2>Araç Yönetimi</h2>
-        <button class="btn btn-primary mb-3" id="add-car-btn">Yeni Araç Ekle</button>
+        <h2>Fahrzeugverwaltung</h2>
+        <button class="btn btn-primary mb-3" id="add-car-btn">Neues Fahrzeug hinzufügen</button>
 
         <div class="table-responsive">
             <table class="table table-striped table-hover">
                 <thead>
                     <tr>
-                        <th>Plaka</th>
-                        <th>Marka</th>
-                        <th>Model</th>
-                        <th>Yıl</th>
-                        <th>Günlük Fiyat</th>
-                        <th>Lokasyon</th>
-                        <th>Müsait</th>
-                        <th>İşlemler</th>
+                        <th>Kennzeichen</th>
+                        <th>Marke</th>
+                        <th>Modell</th>
+                        <th>Jahr</th>
+                        <th>Tägliche Rate</th>
+                        <th>Standort</th>
+                        <th>Verfügbar</th>
+                        <th>Aktionen</th>
                     </tr>
                 </thead>
                 <tbody id="cars-table-body">
                     <!-- Araçlar JavaScript ile yüklenecek -->
-                    <tr><td colspan="8" class="text-center">Araçlar yükleniyor...</td></tr>
+                    <tr><td colspan="8" class="text-center">Fahrzeuge werden geladen...</td></tr>
                 </tbody>
             </table>
         </div>
@@ -49,7 +49,7 @@
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="carModalLabel">Yeni Araç Ekle</h5>
+                        <h5 class="modal-title" id="carModalLabel">Neues Fahrzeug hinzufügen</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -57,37 +57,37 @@
                             <input type="hidden" id="car-id">
                             <div class="row g-3">
                                 <div class="col-md-6">
-                                    <label for="make" class="form-label">Marka</label>
+                                    <label for="make" class="form-label">Marke</label>
                                     <input type="text" class="form-control" id="make" required>
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="model" class="form-label">Model</label>
+                                    <label for="model" class="form-label">Modell</label>
                                     <input type="text" class="form-control" id="model" required>
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="year" class="form-label">Yıl</label>
+                                    <label for="year" class="form-label">Jahr</label>
                                     <input type="number" class="form-control" id="year" required min="1900" max="2100">
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="license-plate" class="form-label">Plaka</label>
+                                    <label for="license-plate" class="form-label">Kennzeichen</label>
                                     <input type="text" class="form-control" id="license-plate" required>
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="daily-rate" class="form-label">Günlük Fiyat (TL)</label>
+                                    <label for="daily-rate" class="form-label">Tägliche Rate (€)</label>
                                     <input type="number" class="form-control" id="daily-rate" step="0.01" required min="0">
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="transmission-type" class="form-label">Vites Tipi</label>
+                                    <label for="transmission-type" class="form-label">Getriebetyp</label>
                                     <select class="form-select" id="transmission-type" required>
-                                        <option value="">Seçiniz...</option>
+                                        <option value="">Auswählen...</option>
                                         <option value="Otomatik">Otomatik</option>
                                         <option value="Manuel">Manuel</option>
                                     </select>
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="fuel-type" class="form-label">Yakıt Tipi</label>
+                                    <label for="fuel-type" class="form-label">Kraftstofftyp</label>
                                     <select class="form-select" id="fuel-type" required>
-                                        <option value="">Seçiniz...</option>
+                                        <option value="">Auswählen...</option>
                                         <option value="Benzin">Benzin</option>
                                         <option value="Dizel">Dizel</option>
                                         <option value="Elektrik">Elektrik</option>
@@ -95,26 +95,26 @@
                                     </select>
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="seating-capacity" class="form-label">Koltuk Kapasitesi</label>
+                                    <label for="seating-capacity" class="form-label">Sitzplätze</label>
                                     <input type="number" class="form-control" id="seating-capacity" required min="1">
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="color" class="form-label">Renk</label>
+                                    <label for="color" class="form-label">Farbe</label>
                                     <input type="text" class="form-control" id="color">
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="image-url" class="form-label">Resim URL</label>
+                                    <label for="image-url" class="form-label">Bild URL</label>
                                     <input type="url" class="form-control" id="image-url">
                                 </div>
                                 <div class="col-md-12">
-                                    <label for="location-id" class="form-label">Lokasyon</label>
+                                    <label for="location-id" class="form-label">Standort</label>
                                     <select class="form-select" id="location-id" required>
-                                        <option value="">Lokasyon Seçin...</option>
+                                        <option value="">Standort auswählen...</option>
                                         <!-- Lokasyonlar JavaScript ile yüklenecek -->
                                     </select>
                                 </div>
                                 <div class="col-md-12">
-                                    <label for="description" class="form-label">Açıklama</label>
+                                    <label for="description" class="form-label">Beschreibung</label>
                                     <textarea class="form-control" id="description" rows="3"></textarea>
                                 </div>
                                 <div class="col-md-12">
@@ -126,12 +126,12 @@
                                 </div>
                                 <div class="col-md-6 form-check form-switch mt-3 ms-2">
                                     <input class="form-check-input" type="checkbox" id="is-available" checked>
-                                    <label class="form-check-label" for="is-available">Müsait</label>
+                                    <label class="form-check-label" for="is-available">Verfügbar</label>
                                 </div>
                             </div>
                             <div class="modal-footer mt-4">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
-                                <button type="submit" class="btn btn-primary" id="save-car-btn">Kaydet</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Schließen</button>
+                                <button type="submit" class="btn btn-primary" id="save-car-btn">Speichern</button>
                             </div>
                         </form>
                     </div>
@@ -141,7 +141,7 @@
     </main>
 
     <footer class="bg-light text-center py-3 mt-5">
-        <p>&copy; 2025 Araba Kiralama Sitesi. Tüm Hakları Saklıdır.</p>
+        <p>&copy; 2025 Premium Autovermietung. Alle Rechte vorbehalten.</p>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

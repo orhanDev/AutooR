@@ -8,6 +8,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const token = localStorage.getItem('token');
     console.log('Token localStorage\'dan:', token);
 
+    // Sayfa kapandığında otomatik çıkış yap
+    window.addEventListener('beforeunload', () => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('welcome_name');
+        localStorage.removeItem('user');
+    });
+
+    // Sayfa görünürlüğü değiştiğinde kontrol et
+    document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'hidden') {
+            localStorage.removeItem('token');
+            localStorage.removeItem('welcome_name');
+            localStorage.removeItem('user');
+        }
+    });
+
     async function updateAuthLinks() {
         console.log('=== updateAuthLinks çalışıyor ===');
         
@@ -36,10 +52,22 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 } else {
                     console.error('Response not ok:', res.status, res.statusText);
+                    // Token geçersiz, temizle
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('welcome_name');
+                    localStorage.removeItem('user');
+                    showLoginLinks();
+                    return;
                 }
             } catch (e) { 
                 userName = ''; 
                 console.error('Error fetching user data:', e);
+                // Hata durumunda token'ı temizle
+                localStorage.removeItem('token');
+                localStorage.removeItem('welcome_name');
+                localStorage.removeItem('user');
+                showLoginLinks();
+                return;
             }
 
             // Sadece token varsa ve kullanıcı adı alınabildiyse "Willkommen" göster
@@ -53,33 +81,27 @@ document.addEventListener('DOMContentLoaded', () => {
                         <a class="nav-link" href="#" id="logout-link">Abmelden</a>
                     </li>
                     <li class="nav-item d-flex align-items-center ms-3">
-                        <span class="nav-link" style="color: #f39c12 !important; font-weight: 400; text-transform: capitalize;">Willkommen ${userName.charAt(0).toUpperCase() + userName.slice(1)}</span>
+                        <span class="nav-link" style="color: #f39c12 !important; font-weight: bold; text-transform: capitalize;">Willkommen ${userName.charAt(0).toUpperCase() + userName.slice(1)}</span>
                     </li>
                 `;
 
                 document.getElementById('logout-link').addEventListener('click', (e) => {
                     e.preventDefault();
-                    localStorage.removeItem('token');
-                    localStorage.removeItem('welcome_name');
-                    localStorage.removeItem('user');
-                    alert('Erfolgreich abgemeldet.');
-                    window.location.href = '/';
+                    logout();
                 });
             } else {
                 console.log('Kullanıcı adı alınamadı, giriş linkleri gösteriliyor');
-                // Token var ama kullanıcı bilgisi alınamadı - giriş yapmamış gibi davran
-                authLinksContainer.innerHTML = `
-                    <li class="nav-item">
-                        <a class="nav-link" href="/views/register.html">Registrieren</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/views/login.html">Anmelden</a>
-                    </li>
-                `;
+                showLoginLinks();
             }
         } else {
             console.log('Token yok, giriş linkleri gösteriliyor');
-            // Token yok - giriş yapmamış
+            showLoginLinks();
+        }
+    }
+
+    function showLoginLinks() {
+        console.log('showLoginLinks çalışıyor');
+        if (authLinksContainer) {
             authLinksContainer.innerHTML = `
                 <li class="nav-item">
                     <a class="nav-link" href="/views/register.html">Registrieren</a>
@@ -91,5 +113,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // Logout function
+    function logout() {
+        console.log('Logout çalışıyor');
+        localStorage.removeItem('token');
+        localStorage.removeItem('welcome_name');
+        localStorage.removeItem('user');
+        window.location.href = '/';
+    }
+
+    // Initial load
     updateAuthLinks();
 });

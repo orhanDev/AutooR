@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Autovermietung Webseite</title> <!-- Araba Kiralama Sitesi -->
+    <title>TurboMiete - Premium Autovermietung in Deutschland</title>
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
@@ -23,76 +23,214 @@
         </div>
     </header>
 
-    <main class="container my-5">
+    <main>
+        <!-- Hero Section with Background Car Image -->
         <section id="hero" class="text-center">
-            <h1>TurboMiete</h1>
-            <p class="lead">Ihre erste Wahl für Autovermietung in Deutschland</p>
-            <form id="car-search-form" class="mt-4 p-4 bg-white rounded shadow-sm">
-                <div class="row g-3">
-                    <div class="col-md-6">
-                        <label for="pickup-location" class="form-label">Abholort</label>
-                        <select class="form-select" id="pickup-location" required>
-                            <option value="">Bitte wählen Sie einen Ort...</option>
-                            <!-- Lokasyonlar JavaScript ile yüklenecek -->
-                        </select>
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    <i class="bi bi-lightning-charge-fill text-warning me-3"></i>
+                    TurboMiete
+                </h1>
+                <p class="hero-subtitle">Ihre erste Wahl für Premium Autovermietung in Deutschland</p>
+                <p class="hero-description">Entdecken Sie unsere exklusive Fahrzeugflotte mit erstklassigem Service</p>
+                
+                <!-- Enhanced Car Search Form -->
+                <form id="car-search-form" class="mt-5">
+                    <div class="row g-4">
+                        <div class="col-lg-6 col-md-6">
+                            <div class="form-group">
+                                <label for="pickup-location" class="form-label">Abholort *</label>
+                                <select id="pickup-location" class="form-select" required>
+                                    <option value="">Bitte wählen Sie einen Abholort aus</option>
+                                    <option value="1">Berlin Hauptbahnhof</option>
+                                    <option value="2">München Flughafen</option>
+                                    <option value="3">Hamburg Zentrum</option>
+                                    <option value="4">Köln Dom</option>
+                                    <option value="5">Frankfurt Flughafen</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6">
+                            <div class="form-group">
+                                <label for="dropoff-location" class="form-label">Rückgabeort *</label>
+                                <select id="dropoff-location" class="form-select" required>
+                                    <option value="">Bitte wählen Sie einen Rückgabeort aus</option>
+                                    <option value="1">Berlin Hauptbahnhof</option>
+                                    <option value="2">München Flughafen</option>
+                                    <option value="3">Hamburg Zentrum</option>
+                                    <option value="4">Köln Dom</option>
+                                    <option value="5">Frankfurt Flughafen</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6">
+                            <div class="form-group">
+                                <label for="pickup-date" class="form-label">Abholdatum</label>
+                                <input type="date" id="pickup-date" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6">
+                            <div class="form-group">
+                                <label for="pickup-time" class="form-label">Abholzeit</label>
+                                <select id="pickup-time" class="form-select">
+                                    <option value="">Bitte wählen Sie eine Abholzeit aus</option>
+                                    <option value="09:00">09:00</option>
+                                    <option value="10:00">10:00</option>
+                                    <option value="11:00">11:00</option>
+                                    <option value="12:00">12:00</option>
+                                    <option value="13:00">13:00</option>
+                                    <option value="14:00">14:00</option>
+                                    <option value="15:00">15:00</option>
+                                    <option value="16:00">16:00</option>
+                                    <option value="17:00">17:00</option>
+                                    <option value="18:00">18:00</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6">
+                            <div class="form-group">
+                                <label for="dropoff-date" class="form-label">Rückgabedatum</label>
+                                <input type="date" id="dropoff-date" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6">
+                            <div class="form-group">
+                                <label for="dropoff-time" class="form-label">Rückgabezeit</label>
+                                <select id="dropoff-time" class="form-select">
+                                    <option value="">Bitte wählen Sie eine Rückgabezeit aus</option>
+                                    <option value="09:00">09:00</option>
+                                    <option value="10:00">10:00</option>
+                                    <option value="11:00">11:00</option>
+                                    <option value="12:00">12:00</option>
+                                    <option value="13:00">13:00</option>
+                                    <option value="14:00">14:00</option>
+                                    <option value="15:00">15:00</option>
+                                    <option value="16:00">16:00</option>
+                                    <option value="17:00">17:00</option>
+                                    <option value="18:00">18:00</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-md-6">
-                        <label for="dropoff-location" class="form-label">Rückgabeort</label>
-                        <select class="form-select" id="dropoff-location" required>
-                            <option value="">Bitte wählen Sie einen Ort...</option>
-                            <!-- Lokasyonlar JavaScript ile yüklenecek -->
-                        </select>
+                    <div class="d-grid mt-5">
+                        <button type="submit" class="btn btn-warning btn-lg search-btn">
+                            <i class="bi bi-search me-2"></i>
+                            Verfügbare Fahrzeuge anzeigen
+                        </button>
                     </div>
-                    <div class="col-md-6">
-                        <label for="pickup-date" class="form-label">Abholdatum</label>
-                        <input type="date" class="form-control" id="pickup-date" required>
-                    </div>
-                    <div class="col-md-6">
-                        <label for="pickup-time" class="form-label">Abholzeit</label>
-                        <input type="time" class="form-control" id="pickup-time" value="09:00" required>
-                    </div>
-                    <div class="col-md-6">
-                        <label for="dropoff-date" class="form-label">Rückgabedatum</label>
-                        <input type="date" class="form-control" id="dropoff-date" required>
-                    </div>
-                    <div class="col-md-6">
-                        <label for="dropoff-time" class="form-label">Rückgabezeit</label>
-                        <input type="time" class="form-control" id="dropoff-time" value="09:00" required>
-                    </div>
-                </div>
-                <div class="d-grid mt-4">
-                    <button type="submit" class="btn btn-warning btn-lg" style="font-weight:600">Verfügbare Fahrzeuge anzeigen</button>
-                </div>
-            </form>
-        </section>
-
-        <section id="popular-cars" class="my-5">
-            <h2>Unsere beliebtesten Fahrzeuge</h2>
-            <div class="row">
-                <!-- Araç kartları gelecek -->
+                </form>
             </div>
         </section>
 
-        <section id="benefits" class="my-5 text-center">
-            <h2>Warum TurboMiete wählen?</h2>
-            <p>Professioneller Service, große Fahrzeugauswahl, faire Preise und 24/7 Kundensupport!</p>
+        <!-- Popular Cars Section -->
+        <section id="popular-cars" class="py-5">
+            <div class="container">
+                <div class="text-center mb-5">
+                    <h2 class="section-title">
+                        <i class="bi bi-star-fill text-warning me-3"></i>
+                        Unsere beliebtesten Fahrzeuge
+                    </h2>
+                    <p class="section-subtitle">Entdecken Sie unsere Premium-Fahrzeugflotte</p>
+                </div>
+                <div class="row" id="popular-cars-container">
+                    <!-- Araç kartları JavaScript ile yüklenecek -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Benefits Section -->
+        <section id="benefits" class="py-5">
+            <div class="container">
+                <div class="text-center">
+                    <h2 class="section-title">
+                        <i class="bi bi-award-fill text-warning me-3"></i>
+                        Warum TurboMiete wählen?
+                    </h2>
+                    <div class="row mt-5">
+                        <div class="col-lg-4 col-md-6 mb-4">
+                            <div class="benefit-item">
+                                <i class="bi bi-shield-check benefit-icon"></i>
+                                <h4>Premium Service</h4>
+                                <p>Professioneller Kundenservice rund um die Uhr</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-6 mb-4">
+                            <div class="benefit-item">
+                                <i class="bi bi-car-front benefit-icon"></i>
+                                <h4>Große Fahrzeugauswahl</h4>
+                                <p>Von Kompaktwagen bis Luxusfahrzeuge</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-6 mb-4">
+                            <div class="benefit-item">
+                                <i class="bi bi-currency-euro benefit-icon"></i>
+                                <h4>Faire Preise</h4>
+                                <p>Transparente Preisgestaltung ohne versteckte Kosten</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section id="features" class="py-5 bg-light">
+            <div class="container">
+                <div class="text-center mb-5">
+                    <h2 class="section-title">
+                        <i class="bi bi-gear-fill text-primary me-3"></i>
+                        Unsere Services
+                    </h2>
+                </div>
+                <div class="row">
+                    <div class="col-lg-3 col-md-6 mb-4">
+                        <div class="feature-card text-center">
+                            <i class="bi bi-credit-card feature-icon"></i>
+                            <h5>Flexible Zahlung</h5>
+                            <p>Verschiedene Zahlungsoptionen verfügbar</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 mb-4">
+                        <div class="feature-card text-center">
+                            <i class="bi bi-clock feature-icon"></i>
+                            <h5>24/7 Support</h5>
+                            <p>Immer für Sie da, wann immer Sie uns brauchen</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 mb-4">
+                        <div class="feature-card text-center">
+                            <i class="bi bi-map feature-icon"></i>
+                            <h5>Deutschlandweit</h5>
+                            <p>Verfügbar in allen großen Städten</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 mb-4">
+                        <div class="feature-card text-center">
+                            <i class="bi bi-patch-check feature-icon"></i>
+                            <h5>Qualitätsgarantie</h5>
+                            <p>Alle Fahrzeuge sind sorgfältig gewartet</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </section>
     </main>
 
-    <footer class="bg-light text-center py-3">
-        <p>&copy; 2025 TurboMiete - Autovermietung. Alle Rechte vorbehalten.</p>
+    <!-- Footer -->
+    <footer class="text-center py-4">
+        <div class="container">
+            <p class="mb-2">&copy; 2025 TurboMiete - Premium Autovermietung. Alle Rechte vorbehalten.</p>
+            <p class="small text-muted mb-0">
+                Dieses Projekt wurde ausschließlich zu Portfoliozwecken erstellt. Es besteht keine Verbindung zu Tesla Inc., Mercedes-Benz, BMW, Audi, Porsche, Bentley, Rolls-Royce oder anderen genannten Marken.
+            </p>
+        </div>
     </footer>
 
-    <footer class="text-center mt-5 mb-3" style="font-size: 0.9em; color: #888;">
-        Dieses Projekt wurde ausschließlich zu Portfoliozwecken erstellt. Es besteht keine Verbindung zu Tesla Inc., Mercedes-Benz, BMW, Audi, Porsche, Bentley, Rolls-Royce oder anderen genannten Marken.
-    </footer>  
-
- <!-- Bootstrap JS CDN -->
+    <!-- Bootstrap JS CDN -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Custom JS -->
-    <script src="js/navbar.js"></script> <!-- Ortak navbar için -->
-    <script src="js/app.js"></script> <!-- Ana sayfa mantığı için (lokasyonları yükleme vb.) -->
-    <script src="js/auth.js"></script> <!-- Kullanıcı girişi kontrolü için -->
-    <!-- search_results.js i buradan kaldırdim -->
-    </body>
-    </html>
+    <script src="js/navbar.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/auth.js"></script>
+</body>
+</html>
