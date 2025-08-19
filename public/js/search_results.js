@@ -106,6 +106,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 capacityFilter.appendChild(opt);
             });
         }
+
+        // Populate pickup location filter from local dataset
+        if (pickupLocationSelect && pickupLocationSelect.options.length <= 1) {
+            const locs = Array.isArray(window.LOCAL_LOCATIONS) ? window.LOCAL_LOCATIONS : [];
+            locs.forEach(loc => {
+                const opt = document.createElement('option');
+                opt.value = String(loc.location_id);
+                opt.textContent = loc.name;
+                pickupLocationSelect.appendChild(opt);
+            });
+        }
     }
 
     function applyFilters(cars) {
@@ -257,24 +268,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     async function loadCars() {
         try {
-            // Server-side search: only send dates (don't send location_id if it's UUID)
-            const qp = new URLSearchParams();
-            if (pickupDate) qp.set('pickup_date', pickupDate);
-            if (dropoffDate) qp.set('dropoff_date', dropoffDate);
-            // Only add location_id if it's numeric
-            if (pickupLocationId && /^\d+$/.test(pickupLocationId)) {
-                qp.set('location_id', pickupLocationId);
-            }
-            
-            const url = qp.toString() ? `/api/cars/search?${qp.toString()}` : '/api/cars';
-            const response = await fetch(url);
-            
-            if (!response.ok) throw new Error(`HTTP ${response.status}`);
-            
-            allCars = await response.json();
+            const cars = Array.isArray(window.LOCAL_CARS) && window.LOCAL_CARS.length ? window.LOCAL_CARS.slice() : [];
+            allCars = cars;
             populateFilterOptions(allCars);
             render();
-            
         } catch (err) {
             console.error('Fahrzeuge konnten nicht geladen werden:', err);
             if (resultsContainer) {
@@ -283,7 +280,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         <div class="alert alert-danger text-center">
                             <i class="bi bi-exclamation-triangle me-2"></i>
                             Fahrzeuge konnten nicht geladen werden. Bitte versuchen Sie es später erneut.
-            </div>
+                        </div>
                     </div>`;
             }
         }

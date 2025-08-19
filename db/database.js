@@ -12,4 +12,8 @@ const pool = new Pool({
 
 module.exports = {
   query: (text, params) => pool.query(text, params),
+  /**
+   * Gracefully close the underlying PostgreSQL pool
+   */
+  end: () => pool.end()
 };

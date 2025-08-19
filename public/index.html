@@ -3,234 +3,311 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TurboMiete - Premium Autovermietung in Deutschland</title>
+    <title>Autar - Premium Autovermietung</title>
+    
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
-    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
-    <!-- Bootstrap CSS CDN -->
+    
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Flatpickr CSS for date picker -->
+    <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-
-    <header>
-        <div id="navbar-container">
-            <!-- Navbar JavaScript ile yüklenecek -->
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold fs-3 text-dark" href="/">
+                <i class="bi bi-car-front text-warning me-2"></i>
+                Autar
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    
+                                         <li class="nav-item">
+                         <a class="nav-link fw-medium" href="/fahrzeuge">Fahrzeuge</a>
+                     </li>
+                     <li class="nav-item">
+                         <a class="nav-link fw-medium" href="/ueber-uns">Über uns</a>
+                     </li>
+                     <li class="nav-item">
+                         <a class="nav-link fw-medium" href="/kontakt">Kontakt</a>
+                     </li>
+                    <li class="nav-item ms-2">
+                        <a class="btn btn-warning fw-medium" href="/login">Anmelden</a>
+                    </li>
+                </ul>
+            </div>
         </div>
-    </header>
+    </nav>
 
-    <main>
-        <!-- Hero Section with Background Car Image -->
-        <section id="hero" class="text-center">
-            <div class="hero-content">
-                <h1 class="hero-title">
-                    <i class="bi bi-lightning-charge-fill text-warning me-3"></i>
-                    TurboMiete
-                </h1>
-                <p class="hero-subtitle">Ihre erste Wahl für Premium Autovermietung in Deutschland</p>
-                <p class="hero-description">Entdecken Sie unsere exklusive Fahrzeugflotte mit erstklassigem Service</p>
+    <!-- Hero Section -->
+    <section id="hero" class="hero-section">
+        <div class="hero-overlay"></div>
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-12 col-xl-10">
+                    <div class="filters-card">
+                        <form id="car-search-form">
+                            <div class="row g-3 align-items-end">
+                                <div class="col-12 col-md-6 col-lg-3">
+                                    <label class="form-label text-white-50">Abholort</label>
+                                    <select id="pickup-location" class="form-select" required>
+                                        <option value="">Standort wählen</option>
+                                        <option value="1">Berlin Hauptbahnhof</option>
+                                        <option value="2">München Flughafen</option>
+                                        <option value="3">Hamburg Zentrum</option>
+                                        <option value="4">Köln Dom</option>
+                                        <option value="5">Frankfurt Flughafen</option>
+                                    </select>
+                                </div>
+                                <div class="col-12 col-md-6 col-lg-3">
+                                    <label class="form-label text-white-50">Rückgabeort</label>
+                                    <select id="dropoff-location" class="form-select" required>
+                                        <option value="">Standort wählen</option>
+                                        <option value="1">Berlin Hauptbahnhof</option>
+                                        <option value="2">München Flughafen</option>
+                                        <option value="3">Hamburg Zentrum</option>
+                                        <option value="4">Köln Dom</option>
+                                        <option value="5">Frankfurt Flughafen</option>
+                                    </select>
+                                </div>
+                                <div class="col-6 col-md-3 col-lg-2">
+                                    <label class="form-label text-white-50">Abholdatum</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text calendar-trigger" data-target="pickup-date"><i class="bi bi-calendar3 text-warning"></i></span>
+                                        <input type="text" id="pickup-date" class="form-control" inputmode="numeric" pattern="\d{2}\.\d{2}\.\d{4}" maxlength="10" placeholder="tt.mm.jjjj" required>
+                                        <div class="invalid-feedback"><i class="bi bi-exclamation-triangle me-1"></i>Bitte TT.MM.JJJJ eingeben</div>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-3 col-lg-2">
+                                    <label class="form-label text-white-50">Rückgabedatum</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text calendar-trigger" data-target="dropoff-date"><i class="bi bi-calendar3 text-warning"></i></span>
+                                        <input type="text" id="dropoff-date" class="form-control" inputmode="numeric" pattern="\d{2}\.\d{2}\.\d{4}" maxlength="10" placeholder="tt.mm.jjjj" required>
+                                        <div class="invalid-feedback"><i class="bi bi-exclamation-triangle me-1"></i>Bitte TT.MM.JJJJ eingeben</div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-12 col-lg-2">
+                                    <button type="submit" class="btn btn-warning w-100">
+                                        <i class="bi bi-search me-1"></i>
+                                        Suchen
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+         <!-- Popular Vehicles Section -->
+     <section id="vehicles" class="py-5">
+         <div class="container">
+             <div class="section-header text-center mb-4">
+                 <h2 class="section-title">Unsere beliebtesten Fahrzeuge</h2>
+                 <p class="section-subtitle">Entdecken Sie unsere Premium-Fahrzeugflotte</p>
+             </div>
+             
+             <div class="row g-4" id="popular-cars-container">
+                 <!-- Vehicles will be loaded here -->
+             </div>
+         </div>
+     </section>
+
+     <!-- Features Section -->
+     <section class="py-5 bg-light">
+         <div class="container">
+             <div class="row g-4">
+                 <div class="col-lg-3 col-md-6">
+                     <div class="text-center p-4">
+                         <div class="feature-icon bg-warning rounded-circle d-inline-flex align-items-center justify-content-center mb-3">
+                             <i class="bi bi-shield-check text-white fs-4"></i>
+                         </div>
+                         <h5 class="fw-bold">Sicher & Zuverlässig</h5>
+                         <p class="text-muted">Alle Fahrzeuge sind sorgfältig gewartet und versichert</p>
+                     </div>
+                 </div>
+                 
+                 <div class="col-lg-3 col-md-6">
+                     <div class="text-center p-4">
+                         <div class="feature-icon bg-warning rounded-circle d-inline-flex align-items-center justify-content-center mb-3">
+                             <i class="bi bi-clock text-white fs-4"></i>
+                         </div>
+                         <h5 class="fw-bold">24/7 Support</h5>
+                         <p class="text-muted">Unser Kundenservice ist rund um die Uhr für Sie da</p>
+                     </div>
+                 </div>
+                 
+                 <div class="col-lg-3 col-md-6">
+                     <div class="text-center p-4">
+                         <div class="feature-icon bg-warning rounded-circle d-inline-flex align-items-center justify-content-center mb-3">
+                             <i class="bi bi-credit-card text-white fs-4"></i>
+                         </div>
+                         <h5 class="fw-bold">Flexible Zahlung</h5>
+                         <p class="text-muted">Verschiedene Zahlungsoptionen ohne versteckte Kosten</p>
+                     </div>
+                 </div>
+                 
+                 <div class="col-lg-3 col-md-6">
+                     <div class="text-center p-4">
+                         <div class="feature-icon bg-warning rounded-circle d-inline-flex align-items-center justify-content-center mb-3">
+                             <i class="bi bi-geo-alt text-white fs-4"></i>
+                         </div>
+                         <h5 class="fw-bold">Deutschlandweit</h5>
+                         <p class="text-muted">Verfügbar in allen großen Städten und Flughäfen</p>
+                     </div>
+                 </div>
+             </div>
+         </div>
+     </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-5 bg-light">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <h2 class="display-6 fw-bold mb-4">Warum Autar?</h2>
+                    <p class="lead mb-4">
+                        Seit über 10 Jahren sind wir Ihr vertrauensvoller Partner für Premium-Autovermietung in Deutschland.
+                    </p>
+                    <div class="row g-3">
+                        <div class="col-6">
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-check-circle-fill text-warning fs-4 me-3"></i>
+                                <span class="fw-medium">Premium Fahrzeuge</span>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-check-circle-fill text-warning fs-4 me-3"></i>
+                                <span class="fw-medium">Faire Preise</span>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-check-circle-fill text-warning fs-4 me-3"></i>
+                                <span class="fw-medium">Flexible Buchung</span>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-check-circle-fill text-warning fs-4 me-3"></i>
+                                <span class="fw-medium">24/7 Support</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="bg-white rounded-4 p-4 shadow">
+                        <div class="row text-center g-3">
+                            <div class="col-6">
+                                <div class="p-3">
+                                    <h3 class="fw-bold text-warning">500+</h3>
+                                    <p class="text-muted mb-0">Fahrzeuge</p>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="p-3">
+                                    <h3 class="fw-bold text-warning">50+</h3>
+                                    <p class="text-muted mb-0">Standorte</p>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="p-3">
+                                    <h3 class="fw-bold text-warning">10K+</h3>
+                                    <p class="text-muted mb-0">Kunden</p>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="p-3">
+                                    <h3 class="fw-bold text-warning">4.8★</h3>
+                                    <p class="text-muted mb-0">Bewertung</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-5">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="display-6 fw-bold mb-3">Kontakt</h2>
+                <p class="lead text-muted">Haben Sie Fragen? Wir helfen Ihnen gerne weiter</p>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <div class="text-center p-4">
+                        <div class="bg-warning rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                            <i class="bi bi-telephone text-white fs-4"></i>
+                        </div>
+                        <h5 class="fw-bold">Telefon</h5>
+                        <p class="text-muted mb-0">+49 30 123 456 789</p>
+                    </div>
+                </div>
                 
-                <!-- Enhanced Car Search Form -->
-                <form id="car-search-form" class="mt-5">
-                    <div class="row g-4">
-                        <div class="col-lg-6 col-md-6">
-                            <div class="form-group">
-                                <label for="pickup-location" class="form-label">Abholort *</label>
-                                <select id="pickup-location" class="form-select" required>
-                                    <option value="">Bitte wählen Sie einen Abholort aus</option>
-                                    <option value="1">Berlin Hauptbahnhof</option>
-                                    <option value="2">München Flughafen</option>
-                                    <option value="3">Hamburg Zentrum</option>
-                                    <option value="4">Köln Dom</option>
-                                    <option value="5">Frankfurt Flughafen</option>
-                                </select>
-                            </div>
+                <div class="col-lg-4">
+                    <div class="text-center p-4">
+                        <div class="bg-warning rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                            <i class="bi bi-envelope text-white fs-4"></i>
                         </div>
-                        <div class="col-lg-6 col-md-6">
-                            <div class="form-group">
-                                <label for="dropoff-location" class="form-label">Rückgabeort *</label>
-                                <select id="dropoff-location" class="form-select" required>
-                                    <option value="">Bitte wählen Sie einen Rückgabeort aus</option>
-                                    <option value="1">Berlin Hauptbahnhof</option>
-                                    <option value="2">München Flughafen</option>
-                                    <option value="3">Hamburg Zentrum</option>
-                                    <option value="4">Köln Dom</option>
-                                    <option value="5">Frankfurt Flughafen</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6">
-                            <div class="form-group">
-                                <label for="pickup-date" class="form-label">Abholdatum</label>
-                                <input type="date" id="pickup-date" class="form-control">
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6">
-                            <div class="form-group">
-                                <label for="pickup-time" class="form-label">Abholzeit</label>
-                                <select id="pickup-time" class="form-select">
-                                    <option value="">Bitte wählen Sie eine Abholzeit aus</option>
-                                    <option value="09:00">09:00</option>
-                                    <option value="10:00">10:00</option>
-                                    <option value="11:00">11:00</option>
-                                    <option value="12:00">12:00</option>
-                                    <option value="13:00">13:00</option>
-                                    <option value="14:00">14:00</option>
-                                    <option value="15:00">15:00</option>
-                                    <option value="16:00">16:00</option>
-                                    <option value="17:00">17:00</option>
-                                    <option value="18:00">18:00</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6">
-                            <div class="form-group">
-                                <label for="dropoff-date" class="form-label">Rückgabedatum</label>
-                                <input type="date" id="dropoff-date" class="form-control">
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6">
-                            <div class="form-group">
-                                <label for="dropoff-time" class="form-label">Rückgabezeit</label>
-                                <select id="dropoff-time" class="form-select">
-                                    <option value="">Bitte wählen Sie eine Rückgabezeit aus</option>
-                                    <option value="09:00">09:00</option>
-                                    <option value="10:00">10:00</option>
-                                    <option value="11:00">11:00</option>
-                                    <option value="12:00">12:00</option>
-                                    <option value="13:00">13:00</option>
-                                    <option value="14:00">14:00</option>
-                                    <option value="15:00">15:00</option>
-                                    <option value="16:00">16:00</option>
-                                    <option value="17:00">17:00</option>
-                                    <option value="18:00">18:00</option>
-                                </select>
-                            </div>
-                        </div>
+                        <h5 class="fw-bold">E-Mail</h5>
+                        <p class="text-muted mb-0">info@autar.de</p>
                     </div>
-                    <div class="d-grid mt-5">
-                        <button type="submit" class="btn btn-warning btn-lg search-btn">
-                            <i class="bi bi-search me-2"></i>
-                            Verfügbare Fahrzeuge anzeigen
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </section>
-
-        <!-- Popular Cars Section -->
-        <section id="popular-cars" class="py-5">
-            <div class="container">
-                <div class="text-center mb-5">
-                    <h2 class="section-title">
-                        <i class="bi bi-star-fill text-warning me-3"></i>
-                        Unsere beliebtesten Fahrzeuge
-                    </h2>
-                    <p class="section-subtitle">Entdecken Sie unsere Premium-Fahrzeugflotte</p>
                 </div>
-                <div class="row" id="popular-cars-container">
-                    <!-- Araç kartları JavaScript ile yüklenecek -->
-                </div>
-            </div>
-        </section>
-
-        <!-- Benefits Section -->
-        <section id="benefits" class="py-5">
-            <div class="container">
-                <div class="text-center">
-                    <h2 class="section-title">
-                        <i class="bi bi-award-fill text-warning me-3"></i>
-                        Warum TurboMiete wählen?
-                    </h2>
-                    <div class="row mt-5">
-                        <div class="col-lg-4 col-md-6 mb-4">
-                            <div class="benefit-item">
-                                <i class="bi bi-shield-check benefit-icon"></i>
-                                <h4>Premium Service</h4>
-                                <p>Professioneller Kundenservice rund um die Uhr</p>
-                            </div>
+                
+                <div class="col-lg-4">
+                    <div class="text-center p-4">
+                        <div class="bg-warning rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                            <i class="bi bi-geo-alt text-white fs-4"></i>
                         </div>
-                        <div class="col-lg-4 col-md-6 mb-4">
-                            <div class="benefit-item">
-                                <i class="bi bi-car-front benefit-icon"></i>
-                                <h4>Große Fahrzeugauswahl</h4>
-                                <p>Von Kompaktwagen bis Luxusfahrzeuge</p>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6 mb-4">
-                            <div class="benefit-item">
-                                <i class="bi bi-currency-euro benefit-icon"></i>
-                                <h4>Faire Preise</h4>
-                                <p>Transparente Preisgestaltung ohne versteckte Kosten</p>
-                            </div>
-                        </div>
+                        <h5 class="fw-bold">Adresse</h5>
+                        <p class="text-muted mb-0">Berliner Str. 123, 10115 Berlin</p>
                     </div>
                 </div>
             </div>
-        </section>
-
-        <!-- Features Section -->
-        <section id="features" class="py-5 bg-light">
-            <div class="container">
-                <div class="text-center mb-5">
-                    <h2 class="section-title">
-                        <i class="bi bi-gear-fill text-primary me-3"></i>
-                        Unsere Services
-                    </h2>
-                </div>
-                <div class="row">
-                    <div class="col-lg-3 col-md-6 mb-4">
-                        <div class="feature-card text-center">
-                            <i class="bi bi-credit-card feature-icon"></i>
-                            <h5>Flexible Zahlung</h5>
-                            <p>Verschiedene Zahlungsoptionen verfügbar</p>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 mb-4">
-                        <div class="feature-card text-center">
-                            <i class="bi bi-clock feature-icon"></i>
-                            <h5>24/7 Support</h5>
-                            <p>Immer für Sie da, wann immer Sie uns brauchen</p>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 mb-4">
-                        <div class="feature-card text-center">
-                            <i class="bi bi-map feature-icon"></i>
-                            <h5>Deutschlandweit</h5>
-                            <p>Verfügbar in allen großen Städten</p>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 mb-4">
-                        <div class="feature-card text-center">
-                            <i class="bi bi-patch-check feature-icon"></i>
-                            <h5>Qualitätsgarantie</h5>
-                            <p>Alle Fahrzeuge sind sorgfältig gewartet</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
+        </div>
+    </section>
 
     <!-- Footer -->
-    <footer class="text-center py-4">
+    <footer class="bg-dark text-white py-4">
         <div class="container">
-            <p class="mb-2">&copy; 2025 TurboMiete - Premium Autovermietung. Alle Rechte vorbehalten.</p>
-            <p class="small text-muted mb-0">
-                Dieses Projekt wurde ausschließlich zu Portfoliozwecken erstellt. Es besteht keine Verbindung zu Tesla Inc., Mercedes-Benz, BMW, Audi, Porsche, Bentley, Rolls-Royce oder anderen genannten Marken.
-            </p>
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <p class="mb-0">&copy; 2025 Autar. Alle Rechte vorbehalten.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="mb-0 small text-muted">
+                        Portfolio-Projekt - Keine Verbindung zu genannten Marken
+                    </p>
+                </div>
+            </div>
         </div>
     </footer>
 
-    <!-- Bootstrap JS CDN -->
+    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Flatpickr JS and German locale -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/de.js"></script>
     <!-- Custom JS -->
-    <script src="js/navbar.js"></script>
+    <script src="js/data/cars.js"></script>
     <script src="js/app.js"></script>
-    <script src="js/auth.js"></script>
 </body>
 </html>

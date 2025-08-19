@@ -1,55 +1,101 @@
-// public/js/login.js
+// Login page JavaScript
 
 document.addEventListener('DOMContentLoaded', () => {
     const loginForm = document.getElementById('login-form');
-
-    loginForm.addEventListener('submit', async (event) => {
-        event.preventDefault();
-
-        const email = document.getElementById('email').value;
+    const alertContainer = document.getElementById('alert-container');
+    
+    if (loginForm) {
+        loginForm.addEventListener('submit', handleLogin);
+    }
+    
+    async function handleLogin(e) {
+        e.preventDefault();
+        
+        const email = document.getElementById('email').value.trim();
         const password = document.getElementById('password').value;
-
-        // Form submit butonunu devre dışı bırak
-        const submitButton = loginForm.querySelector('button[type="submit"]');
-        submitButton.disabled = true;
-        submitButton.textContent = 'Anmelden...';
-
+        
+        // Basic validation
+        if (!email || !password) {
+            showAlert('Bitte füllen Sie alle Felder aus.', 'danger');
+            return;
+        }
+        
+        // Email validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            showAlert('Bitte geben Sie eine gültige E-Mail-Adresse ein.', 'danger');
+            return;
+        }
+        
         try {
+            // Show loading state
+            const submitBtn = loginForm.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="bi bi-hourglass-split me-2"></i>Anmeldung läuft...';
+            submitBtn.disabled = true;
+            
             const response = await fetch('/api/auth/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({
-                    email,
-                    password
-                }),
+                body: JSON.stringify({ email, password })
             });
-
+            
             const data = await response.json();
-
+            
             if (response.ok) {
-                // Token ve kullanıcı bilgilerini localStorage'a kaydet
+                // Store user data and token
                 localStorage.setItem('token', data.token);
-                if (data.user) {
-                    localStorage.setItem('user', JSON.stringify(data.user));
-                }
+                localStorage.setItem('user', JSON.stringify(data.user));
                 
-                console.log('Giriş başarılı:', data);
-                alert('Anmeldung erfolgreich! Sie werden zur Startseite weitergeleitet.');
+                showAlert('Anmeldung erfolgreich! Sie werden weitergeleitet...', 'success');
                 
-                // Başarılı girişten sonra ana sayfaya yönlendir
-                window.location.href = '/';
+                // Redirect to home page after 2 seconds
+                setTimeout(() => {
+                    window.location.href = '/';
+                }, 2000);
             } else {
-                throw new Error(data.error || data.message || 'Beim Anmelden ist ein Fehler aufgetreten.');
+                showAlert(data.error || 'Anmeldung fehlgeschlagen. Überprüfen Sie Ihre Anmeldedaten.', 'danger');
             }
         } catch (error) {
-            console.error('Anmeldefehler:', error);
-            alert(`Beim Anmelden ist ein Fehler aufgetreten: ${error.message}`);
+            console.error('Login error:', error);
+            showAlert('Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.', 'danger');
         } finally {
-            // Form submit butonunu tekrar aktif et
-            submitButton.disabled = false;
-            submitButton.textContent = 'Anmelden';
+            // Reset button state
+            const submitBtn = loginForm.querySelector('button[type="submit"]');
+            submitBtn.innerHTML = '<i class="bi bi-box-arrow-in-right me-2"></i>Anmelden';
+            submitBtn.disabled = false;
         }
-    });
+    }
+    
+    function showAlert(message, type) {
+        // Remove existing alerts
+        alertContainer.innerHTML = '';
+        
+        // Create new alert
+        const alertDiv = document.createElement('div');
+        alertDiv.className = `alert alert-${type} alert-dismissible fade show`;
+        alertDiv.innerHTML = `
+            <i class="bi bi-${type === 'success' ? 'check-circle' : 'exclamation-triangle'} me-2"></i>
+            ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `;
+        
+        alertContainer.appendChild(alertDiv);
+        
+        // Auto-dismiss after 5 seconds
+        setTimeout(() => {
+            if (alertDiv.parentNode) {
+                alertDiv.remove();
+            }
+        }, 5000);
+    }
+    
+    // Check if user is already logged in
+    const token = localStorage.getItem('token');
+    if (token) {
+        // User is already logged in, redirect to home
+        window.location.href = '/';
+    }
 });

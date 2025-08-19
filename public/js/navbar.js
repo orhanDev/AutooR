@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
                 <div class="container">
                         <a class="navbar-brand text-white" href="/" style="font-weight:700;font-size:1.8rem;color:#f39c12 !important">
-                            <i class="bi bi-lightning-charge-fill me-2"></i>TurboMiete
+                            <i class="bi bi-lightning-charge-fill me-2"></i>Autar
                         </a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
