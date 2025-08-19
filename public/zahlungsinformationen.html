@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zahlungsinformationen - Autar</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        :root {
+            --primary-red: #dc3545;
+            --primary-red-dark: #c82333;
+            --secondary-gray: #6c757d;
+            --light-gray: #f8f9fa;
+            --border-gray: #dee2e6;
+            --success-green: #28a745;
+            --warning-orange: #ffc107;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            margin-top: 76px;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: rgba(255, 255, 255, 0.95) !important;
+            backdrop-filter: blur(10px);
+        }
+
+        .navbar-brand {
+            color: #333 !important;
+        }
+
+        .nav-link {
+            color: #666 !important;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-red) !important;
+        }
+
+        .btn-warning {
+            background: #ffc107;
+            border-color: #ffc107;
+            color: #000;
+        }
+
+        .btn-warning:hover {
+            background: #ffca2c;
+            border-color: #ffca2c;
+            color: #000;
+        }
+
+
+
+        /* Main Content */
+        .main-content {
+            padding: 20px 0;
+        }
+
+        .payment-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Equal height columns */
+        .left-column, .right-column {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .left-column {
+            height: fit-content;
+        }
+
+        .right-column {
+            height: 100%;
+        }
+
+        .payment-methods {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Car Card */
+        .car-card {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            border: 1px solid var(--border-gray);
+        }
+
+        .car-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 0;
+        }
+
+        .car-image {
+            width: 100%;
+            height: 120px;
+            border-radius: 8px;
+            object-fit: cover;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        }
+
+        .car-info h3 {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 6px;
+        }
+
+        .car-specs {
+            display: flex;
+            gap: 12px;
+            color: #666;
+            font-size: 12px;
+            flex-wrap: wrap;
+        }
+
+        .car-spec {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            white-space: nowrap;
+        }
+
+        .car-spec i {
+            color: var(--primary-red);
+            font-size: 11px;
+        }
+
+        /* Order Summary - Compact */
+        .order-summary {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            border: 1px solid var(--border-gray);
+        }
+
+        .summary-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--primary-red);
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 0;
+            font-size: 13px;
+        }
+
+        .summary-item:last-child {
+            border-top: 2px solid #f0f0f0;
+            margin-top: 8px;
+            padding-top: 12px;
+            font-weight: bold;
+            font-size: 15px;
+            color: var(--primary-red);
+        }
+
+        .summary-label {
+            color: #666;
+            display: flex;
+            align-items: center;
+        }
+
+        .summary-label i {
+            color: var(--primary-red);
+            font-size: 14px;
+            width: 16px;
+            text-align: center;
+        }
+
+        .summary-value {
+            font-weight: 500;
+            color: #333;
+        }
+
+        /* Payment Methods - Radio Style */
+        .payment-methods {
+            background: white;
+            border-radius: 12px;
+            padding: 35px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            border: 1px solid var(--border-gray);
+        }
+
+        .payment-title {
+            font-size: 28px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 30px;
+            padding-bottom: 25px;
+            border-bottom: 2px solid var(--primary-red);
+        }
+
+        .payment-option {
+            border: 2px solid var(--border-gray);
+            border-radius: 8px;
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .payment-option:hover {
+            border-color: var(--primary-red);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .payment-option.selected {
+            border-color: var(--primary-red);
+            background: linear-gradient(135deg, #fff5f5 0%, #fff 100%);
+            box-shadow: 0 8px 25px rgba(220, 53, 69, 0.15);
+        }
+
+        .payment-radio {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border-gray);
+            border-radius: 50%;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .payment-option.selected .payment-radio {
+            border-color: var(--primary-red);
+            background: var(--primary-red);
+        }
+
+        .payment-option.selected .payment-radio::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+        }
+
+        .payment-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .payment-icon.klarna {
+            background: linear-gradient(135deg, #ffb3c7 0%, #ff6b9d 100%);
+        }
+
+        .payment-icon.paypal {
+            background: linear-gradient(135deg, #0070ba 0%, #1546a0 100%);
+        }
+
+        .payment-icon.credit-card {
+            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+        }
+
+        .payment-icon.cash {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        }
+
+        .payment-content {
+            flex: 1;
+        }
+
+        .payment-name {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 3px;
+        }
+
+        .payment-description {
+            color: #666;
+            font-size: 12px;
+            line-height: 1.3;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn-back {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-back:hover {
+            background: #5a6268;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .btn-pay {
+            background: var(--primary-red);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-pay:hover {
+            background: var(--primary-red-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-pay:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 20px 0;
+            }
+
+            .payment-container {
+                padding: 0 15px;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .car-header {
+                flex-direction: column;
+                text-align: center;
+                gap: 10px;
+            }
+
+            .car-specs {
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+
+            .car-image {
+                height: 100px;
+            }
+
+            .payment-option {
+                flex-direction: column;
+                text-align: center;
+                gap: 10px;
+            }
+
+            .left-column, .right-column {
+                height: auto;
+            }
+
+            .payment-methods {
+                height: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold fs-3 text-dark" href="/">
+                <i class="bi bi-car-front text-warning me-2"></i>
+                Autar
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link fw-medium" href="/fahrzeuge">Fahrzeuge</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fw-medium" href="/ueber-uns">Über uns</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fw-medium" href="/kontakt">Kontakt</a>
+                    </li>
+                    <li class="nav-item ms-2">
+                        <a class="btn btn-warning fw-medium" href="/login">Anmelden</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+
+    <!-- Main Content -->
+    <section class="main-content">
+        <div class="container">
+            <div class="payment-container">
+                <div class="row">
+                    <!-- Left Column - Car Card and Order Summary -->
+                    <div class="col-lg-6 left-column">
+                        <!-- Car Card -->
+                        <div class="car-card">
+                            <img id="car-image" class="car-image" src="" alt="Fahrzeug">
+                            <div class="car-header">
+                                <div class="car-info">
+                                    <h3 id="car-title">Fahrzeug wird geladen...</h3>
+                                    <div class="car-specs">
+                                        <span class="car-spec">
+                                            <i class="bi bi-gear"></i>
+                                            <span id="car-transmission">-</span>
+                                        </span>
+                                        <span class="car-spec">
+                                            <i class="bi bi-fuel-pump"></i>
+                                            <span id="car-fuel">-</span>
+                                        </span>
+                                        <span class="car-spec">
+                                            <i class="bi bi-people"></i>
+                                            <span id="car-seats">-</span>
+                                        </span>
+                                        <span class="car-spec">
+                                            <i class="bi bi-speedometer2"></i>
+                                            <span id="car-power">-</span>
+                                        </span>
+                                        <span class="car-spec">
+                                            <i class="bi bi-car-front"></i>
+                                            <span id="car-type">-</span>
+                                        </span>
+                                        <span class="car-spec">
+                                            <i class="bi bi-calendar-check"></i>
+                                            <span id="car-year">-</span>
+                                        </span>
+                                        <span class="car-spec">
+                                            <i class="bi bi-palette"></i>
+                                            <span id="car-color">-</span>
+                                        </span>
+                                        <span class="car-spec">
+                                            <i class="bi bi-thermometer-half"></i>
+                                            <span id="car-climate">-</span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Order Summary -->
+                        <div class="order-summary">
+                            <h3 class="summary-title">
+                                <i class="bi bi-receipt me-2"></i>
+                                Ihre Bestellung
+                            </h3>
+                            <div id="order-details">
+                                <!-- Order details will be loaded here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column - Payment Methods -->
+                    <div class="col-lg-6 right-column">
+                        <div class="payment-methods">
+                            <h3 class="payment-title">Zahlungsmethode wählen</h3>
+                            
+                            <div class="payment-option" onclick="selectPaymentMethod('klarna')" id="payment-klarna">
+                                <div class="payment-radio"></div>
+                                <div class="payment-icon klarna">
+                                    <i class="bi bi-credit-card"></i>
+                                </div>
+                                <div class="payment-content">
+                                    <div class="payment-name">Klarna</div>
+                                    <div class="payment-description">Sofort, Rechnung oder Ratenzahlung - Sie entscheiden</div>
+                                </div>
+                            </div>
+
+                            <div class="payment-option" onclick="selectPaymentMethod('paypal')" id="payment-paypal">
+                                <div class="payment-radio"></div>
+                                <div class="payment-icon paypal">
+                                    <i class="bi bi-paypal"></i>
+                                </div>
+                                <div class="payment-content">
+                                    <div class="payment-name">PayPal</div>
+                                    <div class="payment-description">Schnell und sicher mit Ihrem PayPal-Konto</div>
+                                </div>
+                            </div>
+
+                            <div class="payment-option" onclick="selectPaymentMethod('credit-card')" id="payment-credit-card">
+                                <div class="payment-radio"></div>
+                                <div class="payment-icon credit-card">
+                                    <i class="bi bi-credit-card-2-front"></i>
+                                </div>
+                                <div class="payment-content">
+                                    <div class="payment-name">Kreditkarte</div>
+                                    <div class="payment-description">Visa, Mastercard, American Express</div>
+                                </div>
+                            </div>
+
+                            <div class="payment-option" onclick="selectPaymentMethod('cash')" id="payment-cash">
+                                <div class="payment-radio"></div>
+                                <div class="payment-icon cash">
+                                    <i class="bi bi-cash-coin"></i>
+                                </div>
+                                <div class="payment-content">
+                                    <div class="payment-name">Barzahlung</div>
+                                    <div class="payment-description">Zahlung bei Abholung des Fahrzeugs</div>
+                                </div>
+                            </div>
+
+                            <!-- Action Buttons -->
+                            <div class="action-buttons">
+                                <a href="/fahrzeuge" class="btn-back">
+                                    <i class="bi bi-arrow-left"></i>
+                                    Zurück
+                                </a>
+                                <button class="btn-pay" onclick="processPayment()" disabled id="pay-button">
+                                    <i class="bi bi-lock"></i>
+                                    Jetzt sicher bezahlen
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="js/data/cars.js"></script>
+    <script src="js/zahlungsinformationen.js"></script>
+</body>
+</html>

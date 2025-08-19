@@ -77,6 +77,14 @@ app.get('/fahrzeuge', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'fahrzeuge.html'));
 });
 
+// Zahlungsinformationen page
+app.get('/zahlungsinformationen', (req, res) => {
+    console.log('Zahlungsinformationen route accessed');
+    res.sendFile(path.join(__dirname, 'public', 'zahlungsinformationen.html'));
+});
+
+
+
 // Über uns page
 app.get('/ueber-uns', (req, res) => {
     console.log('Über uns route accessed');

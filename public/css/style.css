@@ -25,6 +25,7 @@ body {
     line-height: 1.6;
     color: var(--text-dark);
     background-color: var(--white);
+    margin-top: 25vh;
 }
 
 /* Navigation */
@@ -32,6 +33,11 @@ body {
     backdrop-filter: blur(10px);
     background-color: rgba(255, 255, 255, 0.95) !important;
     transition: all 0.3s ease;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1001;
 }
 
 .navbar-brand {
@@ -72,21 +78,27 @@ body {
 .hero-section {
     background: linear-gradient(135deg, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.35)), 
                 url('/images/hero-bg.jpg') center center / cover no-repeat;
-    min-height: 50vh;
-    position: relative;
+    min-height: 25vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 96px 0 48px 0;
+    padding: 96px 0 24px 0;
 }
 .filters-card {
     background: rgba(0,0,0,0.55);
     border: 1px solid rgba(255,255,255,0.15);
     border-radius: 12px;
-    padding: 16px;
+    padding: 12px;
     box-shadow: var(--shadow);
     position: relative;
     z-index: 2;
+    width: 100%;
+    max-width: 1200px;
 }
 
 .filters-card .form-control,
@@ -119,11 +131,28 @@ body {
 .hero-section-small {
     background: linear-gradient(135deg, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.4)), 
                 url('/images/hero-bg.jpg') center/cover no-repeat;
-    min-height: 50vh;
+    min-height: 25vh;
     position: relative;
     display: flex;
     align-items: center;
     padding-top: 80px;
+}
+
+/* Responsive adjustments for hero section */
+@media (max-width: 768px) {
+    .hero-section {
+        min-height: 20vh;
+        padding: 80px 0 16px 0;
+    }
+    
+    body {
+        margin-top: 20vh;
+    }
+    
+    .filters-card {
+        padding: 8px;
+        margin: 0 8px;
+    }
 }
 
 .hero-overlay {

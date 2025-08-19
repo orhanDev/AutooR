@@ -2,45 +2,216 @@
 
 document.addEventListener('DOMContentLoaded', () => {
     // Filter elements
-    const brandFilter = document.getElementById('brand-filter');
-    const modelFilter = document.getElementById('model-filter');
-    const transmissionFilter = document.getElementById('transmission-filter');
-    const fuelFilter = document.getElementById('fuel-filter');
-    const seatsFilter = document.getElementById('seats-filter');
-    const priceFilter = document.getElementById('price-filter');
-    const priceValue = document.getElementById('price-value');
+    const vehicleTypeFilter = document.getElementById('vehicle-type-filter');
+    const vehicleModelFilter = document.getElementById('vehicle-model-filter');
+    const fuelTypeFilter = document.getElementById('fuel-type-filter');
     const sortFilter = document.getElementById('sort-filter');
-    const resetFiltersBtn = document.getElementById('reset-filters');
+    const transmissionFilter = document.getElementById('transmission-filter');
+    const priceSlider = document.getElementById('price-slider');
+    const priceDisplay = document.getElementById('price-display');
     const vehiclesContainer = document.getElementById('vehicles-container');
-    const vehicleCount = document.getElementById('vehicle-count');
+    const searchSummary = document.getElementById('search-summary');
+    const searchDetails = document.getElementById('search-details');
+
+    // Options elements
+    const insuranceOptions = document.getElementById('insurance-options');
+    const productOptions = document.getElementById('product-options');
+    const continueButton = document.getElementById('continue-button');
 
     let allVehicles = [];
     let filteredVehicles = [];
+    let searchData = null;
+    let selectedVehicle = null;
+    let selectedInsurance = null;
+    let selectedProducts = [];
+
+    // Insurance options data
+    const insuranceData = [
+        {
+            id: 'basic',
+            title: 'Basis-Versicherung',
+            price: 15,
+            description: 'Grundlegende Haftpflichtversicherung mit Selbstbeteiligung',
+            features: [
+                'Haftpflichtversicherung inklusive',
+                'Selbstbeteiligung: €1.000',
+                'Diebstahlschutz',
+                'Unfallschutz'
+            ]
+        },
+        {
+            id: 'comfort',
+            title: 'Komfort-Versicherung',
+            price: 25,
+            description: 'Erweiterte Versicherung mit reduzierter Selbstbeteiligung',
+            features: [
+                'Haftpflichtversicherung inklusive',
+                'Selbstbeteiligung: €500',
+                'Diebstahlschutz',
+                'Unfallschutz',
+                'Glasbruchschutz',
+                'Reifen- und Felgenschutz'
+            ]
+        },
+        {
+            id: 'premium',
+            title: 'Premium-Versicherung',
+            price: 35,
+            description: 'Vollständige Versicherung ohne Selbstbeteiligung',
+            features: [
+                'Haftpflichtversicherung inklusive',
+                'Keine Selbstbeteiligung',
+                'Vollkasko-Versicherung',
+                'Diebstahlschutz',
+                'Unfallschutz',
+                'Glasbruchschutz',
+                'Reifen- und Felgenschutz',
+                'Personenschutz'
+            ]
+        }
+    ];
+
+    // Product options data
+    const productData = [
+        {
+            id: 'gps',
+            title: 'GPS-Navigation',
+            price: 12,
+            description: 'Professionelle GPS-Navigation mit Live-Verkehrsdaten'
+        },
+        {
+            id: 'child-seat',
+            title: 'Kindersitz',
+            price: 15,
+            description: 'Sicherer Kindersitz für Kinder bis 36kg'
+        },
+        {
+            id: 'roof-rack',
+            title: 'Dachgepäckträger',
+            price: 20,
+            description: 'Zusätzlicher Stauraum für Gepäck und Sportausrüstung'
+        },
+        {
+            id: 'winter-tires',
+            title: 'Winterreifen',
+            price: 25,
+            description: 'Sichere Winterreifen für kalte Jahreszeiten'
+        },
+        {
+            id: 'additional-driver',
+            title: 'Zusätzlicher Fahrer',
+            price: 18,
+            description: 'Berechtigung für einen zusätzlichen Fahrer'
+        },
+        {
+            id: 'baby-seat',
+            title: 'Babyschale',
+            price: 18,
+            description: 'Sichere Babyschale für Kinder bis 13kg oder 15 Monate'
+        }
+    ];
+
+    // Location names mapping
+    const locationNames = {
+        '1': 'Berlin Hauptbahnhof',
+        '2': 'München Flughafen',
+        '3': 'Hamburg Zentrum',
+        '4': 'Köln Dom',
+        '5': 'Frankfurt Flughafen'
+    };
 
     // Initialize page
+    loadSearchData();
     initializeFilters();
     loadVehicles();
+    
+    // Check if elements exist before loading options
+    if (insuranceOptions) {
+        console.log('Insurance options element found');
+        loadInsuranceOptions();
+    } else {
+        console.error('Insurance options element not found');
+    }
+    
+    if (productOptions) {
+        console.log('Product options element found');
+        loadProductOptions();
+    } else {
+        console.error('Product options element not found');
+    }
+    
+    loadSavedSelections();
+    
+    // Update select styles on page load
+    updateSelectStyle();
 
     // Filter event listeners
-    brandFilter.addEventListener('change', filterVehicles);
-    modelFilter.addEventListener('change', filterVehicles);
-    transmissionFilter.addEventListener('change', filterVehicles);
-    fuelFilter.addEventListener('change', filterVehicles);
-    seatsFilter.addEventListener('change', filterVehicles);
-    priceFilter.addEventListener('input', updatePriceValue);
-    priceFilter.addEventListener('change', filterVehicles);
+    vehicleTypeFilter.addEventListener('change', filterVehicles);
+    vehicleModelFilter.addEventListener('change', filterVehicles);
+    fuelTypeFilter.addEventListener('change', filterVehicles);
     sortFilter.addEventListener('change', filterVehicles);
-    resetFiltersBtn.addEventListener('click', resetFilters);
+    transmissionFilter.addEventListener('change', filterVehicles);
+    priceSlider.addEventListener('input', updatePriceDisplay);
+    priceSlider.addEventListener('change', filterVehicles);
+
+    // Add change event listeners for select styling
+    vehicleTypeFilter.addEventListener('change', updateSelectStyle);
+    vehicleModelFilter.addEventListener('change', updateSelectStyle);
+    fuelTypeFilter.addEventListener('change', updateSelectStyle);
+    sortFilter.addEventListener('change', updateSelectStyle);
+    transmissionFilter.addEventListener('change', updateSelectStyle);
+
+    // Load search data from localStorage
+    function loadSearchData() {
+        const storedData = localStorage.getItem('searchData');
+        if (storedData) {
+            try {
+                searchData = JSON.parse(storedData);
+                displaySearchSummary();
+            } catch (e) {
+                console.error('Error parsing search data:', e);
+            }
+        }
+    }
+
+    // Display search summary
+    function displaySearchSummary() {
+        if (!searchData) return;
+
+        const pickupLocation = locationNames[searchData.pickupLocation] || searchData.pickupLocation;
+        const dropoffLocation = locationNames[searchData.dropoffLocation] || searchData.dropoffLocation;
+
+        searchDetails.innerHTML = `
+            <div class="search-detail">
+                <i class="bi bi-calendar3"></i>
+                <span>${searchData.pickupDate} - 08:00 > ${searchData.dropoffDate} - 08:00</span>
+                <i class="bi bi-arrow-right"></i>
+                <i class="bi bi-geo-alt"></i>
+                <span>${pickupLocation} - ${dropoffLocation}</span>
+            </div>
+        `;
+
+        searchSummary.style.display = 'block';
+    }
 
     // Initialize filters with data
     function initializeFilters() {
-        // Get unique brands
+        // Get unique vehicle types (brands)
         const brands = [...new Set(LOCAL_CARS.map(car => car.make))].sort();
         brands.forEach(brand => {
             const option = document.createElement('option');
             option.value = brand;
             option.textContent = brand;
-            brandFilter.appendChild(option);
+            vehicleTypeFilter.appendChild(option);
+        });
+
+        // Get unique vehicle models
+        const models = [...new Set(LOCAL_CARS.map(car => car.model))].sort();
+        models.forEach(model => {
+            const option = document.createElement('option');
+            option.value = model;
+            option.textContent = model;
+            vehicleModelFilter.appendChild(option);
         });
     }
 
@@ -49,56 +220,193 @@ document.addEventListener('DOMContentLoaded', () => {
         allVehicles = LOCAL_CARS;
         filteredVehicles = [...allVehicles];
         displayVehicles();
-        updateModelFilter();
     }
 
-    // Update model filter based on selected brand
-    function updateModelFilter() {
-        const selectedBrand = brandFilter.value;
-        modelFilter.innerHTML = '<option value="">Alle Modelle</option>';
+    // Load insurance options
+    function loadInsuranceOptions() {
+        console.log('Loading insurance options...');
+        console.log('Insurance data:', insuranceData);
         
-        if (selectedBrand) {
-            const models = [...new Set(
-                LOCAL_CARS
-                    .filter(car => car.make === selectedBrand)
-                    .map(car => car.model)
-            )].sort();
-            
-            models.forEach(model => {
-                const option = document.createElement('option');
-                option.value = model;
-                option.textContent = model;
-                modelFilter.appendChild(option);
-            });
+        insuranceOptions.innerHTML = insuranceData.map(insurance => `
+            <div class="insurance-item" onclick="selectInsurance('${insurance.id}')" id="insurance-${insurance.id}">
+                <div class="insurance-radio"></div>
+                <div class="insurance-content">
+                    <div class="insurance-title">${insurance.title}</div>
+                    <div class="insurance-price">€${insurance.price}/Tag</div>
+                </div>
+            </div>
+        `).join('');
+        
+        console.log('Insurance options loaded');
+    }
+
+    // Load product options
+    function loadProductOptions() {
+        console.log('Loading product options...');
+        console.log('Product data:', productData);
+        
+        productOptions.innerHTML = productData.map(product => `
+            <div class="product-item" onclick="toggleProduct('${product.id}')" id="product-${product.id}">
+                <div class="product-checkbox"></div>
+                <div class="product-content">
+                    <div class="product-title">${product.title}</div>
+                    <div class="product-price">€${product.price}/Tag</div>
+                </div>
+            </div>
+        `).join('');
+        
+        console.log('Product options loaded');
+    }
+
+    // Load saved selections from localStorage
+    function loadSavedSelections() {
+        console.log('Loading saved selections...');
+        
+        // Load vehicle selection
+        const savedVehicle = localStorage.getItem('selectedVehicle');
+        if (savedVehicle) {
+            try {
+                const vehicleData = JSON.parse(savedVehicle);
+                selectedVehicle = LOCAL_CARS.find(car => car.car_id == vehicleData.car_id);
+                if (selectedVehicle) {
+                    console.log('Loaded vehicle selection:', selectedVehicle.make, selectedVehicle.model);
+                    highlightSelectedVehicle();
+                }
+            } catch (e) {
+                console.error('Error parsing saved vehicle:', e);
+                selectedVehicle = null;
+            }
         }
+        
+        // Load insurance selection
+        const savedInsurance = localStorage.getItem('selectedInsurance');
+        if (savedInsurance) {
+            try {
+                selectedInsurance = JSON.parse(savedInsurance);
+                console.log('Loaded insurance selection:', selectedInsurance);
+            } catch (e) {
+                selectedInsurance = null;
+                console.error('Error parsing saved insurance:', e);
+            }
+        }
+        
+        // Load product selections
+        const savedProducts = localStorage.getItem('selectedProducts');
+        if (savedProducts) {
+            try {
+                selectedProducts = JSON.parse(savedProducts);
+                console.log('Loaded product selections:', selectedProducts);
+            } catch (e) {
+                selectedProducts = [];
+                console.error('Error parsing saved products:', e);
+            }
+        }
+        
+        // Update UI
+        highlightSelectedInsurance();
+        highlightSelectedProducts();
+        updateTotalPrice();
+        updateContinueButton();
+    }
+
+    // Highlight selected vehicle
+    function highlightSelectedVehicle() {
+        console.log('Highlighting vehicle, selected:', selectedVehicle);
+        
+        // Remove all highlights
+        document.querySelectorAll('.vehicle-card').forEach(card => {
+            card.style.border = '1px solid var(--border-gray)';
+        });
+
+        // Highlight selected vehicle
+        if (selectedVehicle) {
+            const vehicleCard = document.querySelector(`[onclick*="selectVehicle(${selectedVehicle.car_id})"]`).closest('.vehicle-card');
+            if (vehicleCard) {
+                vehicleCard.style.border = '2px solid var(--primary-red)';
+                console.log('Vehicle card highlighted:', vehicleCard);
+            } else {
+                console.error('Vehicle card not found for:', selectedVehicle.car_id);
+            }
+        }
+    }
+
+    // Highlight selected insurance
+    function highlightSelectedInsurance() {
+        console.log('Highlighting insurance, selected:', selectedInsurance);
+        
+        document.querySelectorAll('.insurance-item').forEach(item => {
+            item.classList.remove('selected');
+        });
+
+        if (selectedInsurance) {
+            const insuranceItem = document.getElementById(`insurance-${selectedInsurance.id}`);
+            if (insuranceItem) {
+                insuranceItem.classList.add('selected');
+                console.log('Insurance item highlighted:', insuranceItem);
+            } else {
+                console.error('Insurance item not found:', `insurance-${selectedInsurance.id}`);
+            }
+        }
+    }
+
+    // Highlight selected products
+    function highlightSelectedProducts() {
+        console.log('Highlighting products, selected:', selectedProducts);
+        
+        document.querySelectorAll('.product-item').forEach(item => {
+            item.classList.remove('selected');
+        });
+
+        selectedProducts.forEach(product => {
+            const productItem = document.getElementById(`product-${product.id}`);
+            if (productItem) {
+                productItem.classList.add('selected');
+                console.log('Product item highlighted:', productItem);
+            } else {
+                console.error('Product item not found:', `product-${product.id}`);
+            }
+        });
+    }
+
+    // Update price display
+    function updatePriceDisplay() {
+        const price = priceSlider.value;
+        priceDisplay.textContent = `Bis €${price}/Tag`;
+    }
+
+    // Update select styling based on selection
+    function updateSelectStyle() {
+        const selects = [vehicleTypeFilter, vehicleModelFilter, fuelTypeFilter, sortFilter, transmissionFilter];
+        
+        selects.forEach(select => {
+            if (select.value && select.value !== '') {
+                select.style.background = '#ff6b35';
+                select.style.color = 'white';
+            } else {
+                select.style.background = 'white';
+                select.style.color = '#333';
+            }
+        });
     }
 
     // Filter vehicles based on selected criteria
     function filterVehicles() {
-        const selectedBrand = brandFilter.value;
-        const selectedModel = modelFilter.value;
+        const selectedType = vehicleTypeFilter.value;
+        const selectedModel = vehicleModelFilter.value;
+        const selectedFuel = fuelTypeFilter.value;
         const selectedTransmission = transmissionFilter.value;
-        const selectedFuel = fuelFilter.value;
-        const selectedSeats = seatsFilter.value;
-        const maxPrice = parseInt(priceFilter.value);
+        const maxPrice = parseInt(priceSlider.value);
         const sortBy = sortFilter.value;
-
-        // Update model filter when brand changes
-        if (brandFilter.dataset.lastValue !== selectedBrand) {
-            brandFilter.dataset.lastValue = selectedBrand;
-            updateModelFilter();
-        }
 
         // Apply filters
         filteredVehicles = allVehicles.filter(vehicle => {
-            const brandMatch = !selectedBrand || vehicle.make === selectedBrand;
+            const typeMatch = !selectedType || vehicle.make === selectedType;
             const modelMatch = !selectedModel || vehicle.model === selectedModel;
-            const transmissionMatch = !selectedTransmission || vehicle.transmission_type === selectedTransmission;
             const fuelMatch = !selectedFuel || vehicle.fuel_type === selectedFuel;
-            const seatsMatch = !selectedSeats || vehicle.seating_capacity.toString() === selectedSeats;
+            const transmissionMatch = !selectedTransmission || vehicle.transmission_type === selectedTransmission;
             const priceMatch = vehicle.daily_rate <= maxPrice;
 
-            return brandMatch && modelMatch && transmissionMatch && fuelMatch && seatsMatch && priceMatch;
+            return typeMatch && modelMatch && fuelMatch && transmissionMatch && priceMatch;
         });
 
         // Apply sorting
@@ -106,6 +414,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Display results
         displayVehicles();
+        highlightSelectedVehicle();
     }
 
     // Sort vehicles
@@ -123,10 +432,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Display vehicles in grid
+    // Display vehicles in grid - Smaller Size
     function displayVehicles() {
-        vehicleCount.textContent = filteredVehicles.length;
-        
         if (filteredVehicles.length === 0) {
             vehiclesContainer.innerHTML = `
                 <div class="col-12 text-center py-5">
@@ -140,33 +447,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
         vehiclesContainer.innerHTML = filteredVehicles.map(vehicle => `
             <div class="col-lg-4 col-md-6 col-sm-6">
-                <div class="vehicle-card h-100">
-                    <div class="vehicle-image" style="background-image: url('${vehicle.image_url}')"></div>
-                    <div class="vehicle-details">
+                <div class="vehicle-card" onclick="selectVehicle(${vehicle.car_id})">
+                    <div class="vehicle-image-container">
+                        <img src="${vehicle.image_url}" alt="${vehicle.make} ${vehicle.model}" class="vehicle-image">
+                        ${vehicle.daily_rate > 150 ? '<div class="popular-badge">Beliebt</div>' : ''}
+                        <div class="price-badge">
+                            <span class="price">€${vehicle.daily_rate}</span>
+                            <span class="unit">/Tag</span>
+                        </div>
+                    </div>
+                    <div class="vehicle-content">
                         <h5 class="vehicle-title">${vehicle.make} ${vehicle.model}</h5>
                         <div class="vehicle-specs">
-                            <span class="vehicle-spec">
-                                <i class="bi bi-gear text-warning"></i>
-                                ${vehicle.transmission_type}
-                            </span>
-                            <span class="vehicle-spec">
-                                <i class="bi bi-fuel-pump text-warning"></i>
-                                ${vehicle.fuel_type}
-                            </span>
-                            <span class="vehicle-spec">
-                                <i class="bi bi-people text-warning"></i>
-                                ${vehicle.seating_capacity} Sitze
-                            </span>
+                            <div class="vehicle-spec">
+                                <i class="bi bi-gear"></i>
+                                <span>${vehicle.transmission_type}</span>
+                            </div>
+                            <div class="vehicle-spec">
+                                <i class="bi bi-fuel-pump"></i>
+                                <span>${vehicle.fuel_type}</span>
+                            </div>
+                            <div class="vehicle-spec">
+                                <i class="bi bi-people"></i>
+                                <span>${vehicle.seating_capacity}</span>
                         </div>
-                        <div class="vehicle-price">
-                            €${vehicle.daily_rate} <small>/ Tag</small>
                         </div>
-                        <div class="d-grid gap-2">
-                            <button class="btn btn-outline-warning btn-sm" onclick="viewVehicleDetails(${vehicle.car_id})">
-                                <i class="bi bi-info-circle me-1"></i>Details
-                            </button>
-                            <button class="btn btn-warning btn-sm" onclick="selectVehicle(${vehicle.car_id})">
-                                <i class="bi bi-car-front me-1"></i>Jetzt mieten
+                        <div class="vehicle-buttons">
+                            <button class="btn-rent" onclick="event.stopPropagation(); selectVehicle(${vehicle.car_id})">
+                                <i class="bi bi-bag-check"></i>
+                                Mieten
                             </button>
                         </div>
                     </div>
@@ -175,35 +484,254 @@ document.addEventListener('DOMContentLoaded', () => {
         `).join('');
     }
 
-    // Update price value display
-    function updatePriceValue() {
-        priceValue.textContent = `€${priceFilter.value}`;
-    }
-
-    // Reset all filters
-    function resetFilters() {
-        brandFilter.value = '';
-        modelFilter.value = '';
-        transmissionFilter.value = '';
-        fuelFilter.value = '';
-        seatsFilter.value = '';
-        priceFilter.value = '600';
-        sortFilter.value = 'name';
-        
-        updatePriceValue();
-        updateModelFilter();
-        filterVehicles();
-    }
-
     // Select vehicle function
     window.selectVehicle = function(carId) {
-        localStorage.setItem('selectedCarId', carId);
-        window.location.href = `/reservation`;
+        console.log('Vehicle clicked:', carId);
+        
+        const vehicle = LOCAL_CARS.find(car => car.car_id == carId);
+        if (vehicle) {
+            selectedVehicle = vehicle;
+            console.log('Vehicle selected:', selectedVehicle.make, selectedVehicle.model);
+            
+            // Store vehicle data in correct format
+            const vehicleData = {
+                car_id: vehicle.car_id,
+                make: vehicle.make,
+                model: vehicle.model,
+                daily_rate: vehicle.daily_rate
+            };
+            localStorage.setItem('selectedVehicle', JSON.stringify(vehicleData));
+            
+            highlightSelectedVehicle();
+            updateTotalPrice();
+            updateContinueButton();
+        } else {
+            console.error('Vehicle not found:', carId);
+        }
     };
 
-    // View vehicle details function
-    window.viewVehicleDetails = function(carId) {
-        localStorage.setItem('selectedCarId', carId);
-        window.location.href = `/vehicle-details/${carId}`;
+    // Select insurance function (toggle)
+    window.selectInsurance = function(insuranceId) {
+        console.log('Insurance clicked:', insuranceId); // Debug log
+        
+        // If clicking the same insurance, deselect it
+        if (selectedInsurance && selectedInsurance.id === insuranceId) {
+            selectedInsurance = null;
+            localStorage.removeItem('selectedInsurance');
+            console.log('Insurance deselected');
+        } else {
+            // Select the clicked insurance
+            selectedInsurance = insuranceData.find(ins => ins.id === insuranceId);
+            
+            // Store insurance data in correct format
+            if (selectedInsurance) {
+                const insuranceData = {
+                    id: selectedInsurance.id,
+                    name: selectedInsurance.title,
+                    daily_rate: selectedInsurance.price
+                };
+                localStorage.setItem('selectedInsurance', JSON.stringify(insuranceData));
+                console.log('Insurance selected:', insuranceId);
+            }
+        }
+        
+        highlightSelectedInsurance();
+        updateTotalPrice();
+        updateContinueButton();
     };
+
+    // Toggle product function
+    window.toggleProduct = function(productId) {
+        console.log('Product clicked:', productId); // Debug log
+        
+        const index = selectedProducts.findIndex(p => p.id === productId);
+        if (index > -1) {
+            selectedProducts.splice(index, 1);
+            console.log('Product removed:', productId);
+        } else {
+            const product = productData.find(prod => prod.id === productId);
+            if (product) {
+                const productData = {
+                    id: product.id,
+                    name: product.title,
+                    daily_rate: product.price
+                };
+                selectedProducts.push(productData);
+                console.log('Product added:', productId);
+            }
+        }
+        localStorage.setItem('selectedProducts', JSON.stringify(selectedProducts));
+        highlightSelectedProducts();
+        updateTotalPrice();
+        updateContinueButton();
+    };
+
+    // Update total price
+    function updateTotalPrice() {
+        let total = 0;
+        
+        // Add vehicle price
+        if (selectedVehicle) {
+            total += selectedVehicle.daily_rate;
+        }
+        
+        // Add insurance price
+        if (selectedInsurance) {
+            total += selectedInsurance.daily_rate;
+        }
+        
+        // Add product prices
+        selectedProducts.forEach(product => {
+            total += product.daily_rate;
+        });
+        
+        // Update button display
+        const buttonTotalPrice = document.getElementById('button-total-price');
+        if (buttonTotalPrice) {
+            buttonTotalPrice.textContent = `Gesamtbetrag: €${total}`;
+        }
+        
+        // Update total price display in search summary
+        const totalPriceDisplay = document.getElementById('total-price-display');
+        if (totalPriceDisplay) {
+            totalPriceDisplay.textContent = `Gesamtbetrag: €${total}`;
+        }
+    }
+
+    // Update continue button
+    function updateContinueButton() {
+        if (continueButton) {
+            if (selectedVehicle && selectedInsurance) {
+                continueButton.disabled = false;
+            } else {
+                continueButton.disabled = true;
+            }
+        } else {
+            console.warn('Continue button not found');
+        }
+    }
+
+    // Continue to payment function
+    window.continueToPayment = function() {
+        if (selectedVehicle && selectedInsurance) {
+            // Store search data
+            if (searchData) {
+                localStorage.setItem('searchData', JSON.stringify(searchData));
+            }
+            
+            // Redirect to payment page
+            window.location.href = '/zahlungsinformationen';
+        }
+    };
+
+
+
+
+
+    // Clear all selections (for testing)
+    window.clearAllSelections = function() {
+        console.log('Clearing all selections...');
+        selectedVehicle = null;
+        selectedInsurance = null;
+        selectedProducts = [];
+        localStorage.removeItem('selectedVehicle');
+        localStorage.removeItem('selectedInsurance');
+        localStorage.removeItem('selectedProducts');
+        localStorage.removeItem('searchData');
+        
+        // Update UI
+        highlightSelectedVehicle();
+        highlightSelectedInsurance();
+        highlightSelectedProducts();
+        updateTotalPrice();
+        updateContinueButton();
+        
+        console.log('All selections cleared');
+    };
+
+    // Show success notification function
+    function showSuccessNotification(message) {
+        // Remove existing notifications
+        const existingNotification = document.querySelector('.custom-notification');
+        if (existingNotification) {
+            existingNotification.remove();
+        }
+        
+        // Create notification element
+        const notification = document.createElement('div');
+        notification.className = 'custom-notification alert alert-dismissible fade show';
+        notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 9999;
+            max-width: 750px;
+            width: auto;
+            background: #ff6b35;
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+            border: none;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 500;
+            padding: 8px 40px;
+            animation: slideDown 0.3s ease-out;
+        `;
+        
+        notification.innerHTML = `
+            <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+                <i class="bi bi-check-circle" style="font-size: 1.2rem;"></i>
+                <span>${message}</span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" style="margin-left: 10px; font-size: 0.8rem; opacity: 0.7;"></button>
+            </div>
+        `;
+        
+        // Add CSS animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideDown {
+                from {
+                    opacity: 0;
+                    transform: translateX(-50%) translateY(-20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateX(-50%) translateY(0);
+                }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // Add to page
+        document.body.appendChild(notification);
+        
+        // Auto remove after 6 seconds
+        setTimeout(() => {
+            if (notification.parentNode) {
+                notification.style.animation = 'slideUp 0.3s ease-out';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.remove();
+                    }
+                }, 300);
+            }
+        }, 6000);
+        
+        // Add slideUp animation
+        const slideUpStyle = document.createElement('style');
+        slideUpStyle.textContent = `
+            @keyframes slideUp {
+                from {
+                    opacity: 1;
+                    transform: translateX(-50%) translateY(0);
+                }
+                to {
+                    opacity: 0;
+                    transform: translateX(-50%) translateY(-20px);
+                }
+            }
+        `;
+        document.head.appendChild(slideUpStyle);
+    }
 });

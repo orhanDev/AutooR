@@ -40,6 +40,24 @@ document.addEventListener('DOMContentLoaded', () => {
     pickupDateInput.value = '';
     dropoffDateInput.value = '';
 
+    // Clear old search data when page loads
+    function clearOldSearchData() {
+        // Clear localStorage search data to force fresh selection
+        localStorage.removeItem('searchData');
+        
+        // Reset form fields
+        pickupLocationSelect.value = '';
+        dropoffLocationSelect.value = '';
+        pickupDateInput.value = '';
+        dropoffDateInput.value = '';
+        
+        // Remove any validation classes
+        pickupLocationSelect.classList.remove('is-invalid');
+        dropoffLocationSelect.classList.remove('is-invalid');
+        pickupDateInput.classList.remove('is-invalid');
+        dropoffDateInput.classList.remove('is-invalid');
+    }
+
     // Initialize Flatpickr for consistent calendar UI
     if (window.flatpickr) {
         // de locale
@@ -53,6 +71,14 @@ document.addEventListener('DOMContentLoaded', () => {
             defaultDate: null,
             minDate: today,
             disableMobile: true,
+            autoFillDefaultTime: false,
+            clickOpens: true,
+            allowInvalidPreload: false,
+            disable: [
+                function(date) {
+                    return date < today;
+                }
+            ],
             onChange: function(selectedDates) {
                 if (selectedDates && selectedDates[0]) {
                     pickupDateInput.value = formatGermanDate(selectedDates[0]);
@@ -61,6 +87,12 @@ document.addEventListener('DOMContentLoaded', () => {
                         const min = new Date(selectedDates[0].getFullYear(), selectedDates[0].getMonth(), selectedDates[0].getDate() + 1);
                         fpDropoff.set('minDate', min);
                     }
+                }
+            },
+            onOpen: function() {
+                // Close other calendar if open
+                if (fpDropoff && fpDropoff.isOpen) {
+                    fpDropoff.close();
                 }
             }
         });
@@ -71,10 +103,25 @@ document.addEventListener('DOMContentLoaded', () => {
             defaultDate: null,
             minDate: tomorrow,
             disableMobile: true,
+            autoFillDefaultTime: false,
+            clickOpens: true,
+            allowInvalidPreload: false,
+            disable: [
+                function(date) {
+                    const pu = parseGermanDate(pickupDateInput.value) || today;
+                    const min = new Date(pu.getFullYear(), pu.getMonth(), pu.getDate() + 1);
+                    return date < min;
+                }
+            ],
             onOpen: function() {
                 const pu = parseGermanDate(pickupDateInput.value) || today;
                 const min = new Date(pu.getFullYear(), pu.getMonth(), pu.getDate() + 1);
                 this.set('minDate', min);
+                
+                // Close other calendar if open
+                if (fpPickup && fpPickup.isOpen) {
+                    fpPickup.close();
+                }
             },
             onChange: function(selectedDates) {
                 if (selectedDates && selectedDates[0]) {
@@ -190,13 +237,54 @@ document.addEventListener('DOMContentLoaded', () => {
     // Form submission with front-end required checks
     carSearchForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        const pickupOk = validateGermanDateStrict?.(pickupDateInput) ?? true;
-        const dropOk = validateGermanDateStrict?.(dropoffDateInput) ?? true;
+        console.log('Form submitted!');
+        
+        // Simple validation - check if dates are in correct format and locations are selected
+        const pickupDateValid = parseGermanDate(pickupDateInput.value) !== null;
+        const dropoffDateValid = parseGermanDate(dropoffDateInput.value) !== null;
         const locOk = Boolean(pickupLocationSelect.value) && Boolean(dropoffLocationSelect.value);
-        if (!pickupOk || !dropOk || !locOk) {
-            // Mark select invalid if empty without shifting layout
-            if (!pickupLocationSelect.value) pickupLocationSelect.classList.add('is-invalid'); else pickupLocationSelect.classList.remove('is-invalid');
-            if (!dropoffLocationSelect.value) dropoffLocationSelect.classList.add('is-invalid'); else dropoffLocationSelect.classList.remove('is-invalid');
+        
+        console.log('Validation results:', { pickupDateValid, dropoffDateValid, locOk });
+        
+        if (!pickupDateValid || !dropoffDateValid || !locOk) {
+            console.log('Validation failed, not redirecting');
+            // Mark fields as invalid (only red border, no message)
+            if (!pickupDateValid) {
+                pickupDateInput.classList.add('is-invalid');
+                pickupDateInput.style.borderColor = '#dc3545';
+                pickupDateInput.setCustomValidity('Bitte gültiges Abholdatum eingeben');
+            } else {
+                pickupDateInput.classList.remove('is-invalid');
+                pickupDateInput.style.borderColor = '';
+                pickupDateInput.setCustomValidity('');
+            }
+            if (!dropoffDateValid) {
+                dropoffDateInput.classList.add('is-invalid');
+                dropoffDateInput.style.borderColor = '#dc3545';
+                dropoffDateInput.setCustomValidity('Bitte gültiges Rückgabedatum eingeben');
+            } else {
+                dropoffDateInput.classList.remove('is-invalid');
+                dropoffDateInput.style.borderColor = '';
+                dropoffDateInput.setCustomValidity('');
+            }
+            if (!pickupLocationSelect.value) {
+                pickupLocationSelect.classList.add('is-invalid');
+                pickupLocationSelect.style.borderColor = '#dc3545';
+                pickupLocationSelect.setCustomValidity('Bitte wählen Sie einen Abholort aus');
+            } else {
+                pickupLocationSelect.classList.remove('is-invalid');
+                pickupLocationSelect.style.borderColor = '';
+                pickupLocationSelect.setCustomValidity('');
+            }
+            if (!dropoffLocationSelect.value) {
+                dropoffLocationSelect.classList.add('is-invalid');
+                dropoffLocationSelect.style.borderColor = '#dc3545';
+                dropoffLocationSelect.setCustomValidity('Bitte wählen Sie einen Rückgabeort aus');
+            } else {
+                dropoffLocationSelect.classList.remove('is-invalid');
+                dropoffLocationSelect.style.borderColor = '';
+                dropoffLocationSelect.setCustomValidity('');
+            }
             return;
         }
 
@@ -207,11 +295,48 @@ document.addEventListener('DOMContentLoaded', () => {
             dropoffDate: dropoffDateInput.value
         };
 
+        console.log('Form data:', formData);
+        console.log('Redirecting to /fahrzeuge...');
+        
         localStorage.setItem('searchData', JSON.stringify(formData));
-        window.location.href = '/search_results';
+        window.location.href = '/fahrzeuge';
     });
 
-    // Load popular vehicles
+    // Clear validation styling when user starts typing/selecting
+    pickupDateInput.addEventListener('input', () => {
+        if (parseGermanDate(pickupDateInput.value) !== null) {
+            pickupDateInput.classList.remove('is-invalid');
+            pickupDateInput.style.borderColor = '';
+            pickupDateInput.setCustomValidity('');
+        }
+    });
+    
+    dropoffDateInput.addEventListener('input', () => {
+        if (parseGermanDate(dropoffDateInput.value) !== null) {
+            dropoffDateInput.classList.remove('is-invalid');
+            dropoffDateInput.style.borderColor = '';
+            dropoffDateInput.setCustomValidity('');
+        }
+    });
+    
+    pickupLocationSelect.addEventListener('change', () => {
+        if (pickupLocationSelect.value) {
+            pickupLocationSelect.classList.remove('is-invalid');
+            pickupLocationSelect.style.borderColor = '';
+            pickupLocationSelect.setCustomValidity('');
+        }
+    });
+    
+    dropoffLocationSelect.addEventListener('change', () => {
+        if (dropoffLocationSelect.value) {
+            dropoffLocationSelect.classList.remove('is-invalid');
+            dropoffLocationSelect.style.borderColor = '';
+            dropoffLocationSelect.setCustomValidity('');
+        }
+    });
+
+    // Clear old search data and load popular vehicles
+    clearOldSearchData();
     loadPopularVehicles();
 });
 
@@ -240,10 +365,7 @@ function loadPopularVehicles() {
                         <span class="vehicle-spec" title="Sitze"><i class="bi bi-people text-warning"></i>${car.seating_capacity}</span>
                     </div>
                     <div class="vehicle-actions d-flex gap-2 mt-3">
-                        <a class="btn btn-outline-secondary flex-fill btn-details" href="/car_details?car_id=${car.car_id}">
-                            <i class="bi bi-eye me-1"></i>Details
-                        </a>
-                        <button class="btn btn-warning flex-fill" onclick="selectVehicle(${car.car_id})">
+                        <button class="btn btn-warning flex-fill" onclick="rentVehicle(${car.car_id})">
                             <i class="bi bi-bag-check me-1"></i>Mieten
                         </button>
                     </div>
@@ -253,13 +375,121 @@ function loadPopularVehicles() {
     `).join('');
 }
 
-// Select vehicle function
-function selectVehicle(carId) {
+
+
+// Rent vehicle function
+function rentVehicle(carId) {
     // Store selected car ID
     localStorage.setItem('selectedCarId', carId);
+    localStorage.setItem('actionType', 'rent');
     
-    // Redirect to car details page
-    window.location.href = `/car_details?car_id=${carId}`;
+    // Check if search data exists
+    const searchData = localStorage.getItem('searchData');
+    
+    if (!searchData) {
+        // No search data - show notification and scroll to form
+        showNotification('Bitte wählen Sie zuerst Abhol- und Rückgabeort sowie Datum aus, bevor Sie ein Fahrzeug mieten.', 'warning');
+        
+        // Scroll to search form
+        const searchForm = document.getElementById('car-search-form');
+        if (searchForm) {
+            searchForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            
+            // Highlight the form briefly
+            searchForm.style.boxShadow = '0 0 20px rgba(220, 53, 69, 0.3)';
+            setTimeout(() => {
+                searchForm.style.boxShadow = '';
+            }, 3000);
+        }
+        
+        return;
+    }
+    
+    // Search data exists - redirect to fahrzeuge page
+    window.location.href = '/fahrzeuge';
+}
+
+// Show notification function
+function showNotification(message, type = 'info') {
+    // Remove existing notifications
+    const existingNotification = document.querySelector('.custom-notification');
+    if (existingNotification) {
+        existingNotification.remove();
+    }
+    
+    // Create notification element
+    const notification = document.createElement('div');
+    notification.className = `custom-notification alert alert-${type === 'warning' ? 'warning' : 'info'} alert-dismissible fade show`;
+    notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 9999;
+        max-width: 500px;
+        width: 90%;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        border: none;
+        border-radius: 12px;
+        text-align: center;
+        font-weight: 500;
+        animation: slideDown 0.3s ease-out;
+    `;
+    
+    notification.innerHTML = `
+        <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+            <i class="bi bi-${type === 'warning' ? 'exclamation-triangle' : 'info-circle'}" style="font-size: 1.2rem;"></i>
+            <span>${message}</span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" style="margin-left: 10px;"></button>
+        </div>
+    `;
+    
+    // Add CSS animation
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+    `;
+    document.head.appendChild(style);
+    
+    // Add to page
+    document.body.appendChild(notification);
+    
+    // Auto remove after 6 seconds
+    setTimeout(() => {
+        if (notification.parentNode) {
+            notification.style.animation = 'slideUp 0.3s ease-out';
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.remove();
+                }
+            }, 300);
+        }
+    }, 6000);
+    
+    // Add slideUp animation
+    const slideUpStyle = document.createElement('style');
+    slideUpStyle.textContent = `
+        @keyframes slideUp {
+            from {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateX(-50%) translateY(-20px);
+            }
+        }
+    `;
+    document.head.appendChild(slideUpStyle);
 }
 
 // Smooth scrolling for navigation links
@@ -285,6 +515,17 @@ window.addEventListener('scroll', () => {
     } else {
         navbar.style.backgroundColor = 'rgba(255, 255, 255, 0.95)';
         navbar.style.boxShadow = 'none';
+    }
+});
+
+// Clear search data when clicking on logo (home page)
+document.addEventListener('DOMContentLoaded', () => {
+    const logoLink = document.querySelector('.navbar-brand');
+    if (logoLink) {
+        logoLink.addEventListener('click', () => {
+            // Clear search data when going to home page
+            localStorage.removeItem('searchData');
+        });
     }
 });
 
