@@ -524,7 +524,7 @@ body {
 
 .vehicles-section {
     padding-top: 160px;
-    padding-bottom: 2rem;
+    padding-bottom: 0.5rem;
 }
 
 /* Vehicle Cards */
@@ -614,6 +614,10 @@ body {
     padding: 1rem;
 }
 
+.vehicle-content {
+    padding: 1rem;
+}
+
 .vehicle-title {
     font-size: 1.1rem;
     font-weight: 700;
@@ -682,7 +686,141 @@ body {
 /* Footer */
 footer {
     background-color: var(--dark-gray) !important;
+    margin-top: -100px; /* Footer'ı yukarı kaldır */
 }
+
+/* Fahrzeuge2 sayfası için özel stiller */
+body[data-page="fahrzeuge2"] .filters-section {
+    display: none !important;
+}
+
+body[data-page="fahrzeuge2"] {
+    overflow: hidden !important;
+}
+
+body[data-page="fahrzeuge2"] html {
+    overflow: hidden !important;
+}
+
+body[data-page="fahrzeuge2"] .vehicle-card {
+    min-height: 420px !important;
+    height: 420px !important;
+    display: flex;
+    flex-direction: column;
+}
+
+body[data-page="fahrzeuge2"] .vehicle-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+body[data-page="fahrzeuge2"] .vehicle-title {
+    text-align: center;
+}
+
+body[data-page="fahrzeuge2"] .vehicle-image-container {
+    height: 100%;
+    width: 100%;
+}
+
+body[data-page="fahrzeuge2"] .vehicle-image {
+    height: 100% !important;
+    width: 100% !important;
+    object-fit: cover;
+    border-radius: 0.75rem;
+}
+
+body[data-page="fahrzeuge2"] .options-sidebar {
+    min-height: 410px !important;
+    padding: 0.95rem !important;
+    border: 3px solid #ff6b35 !important;
+    box-shadow: 0 8px 25px rgba(255, 107, 53, 0.3) !important;
+}
+
+body[data-page="fahrzeuge2"] .options-sidebar .options-title {
+    font-size: 1.6rem !important;
+    font-weight: 700 !important;
+}
+
+body[data-page="fahrzeuge2"] .options-sidebar .form-check-label {
+    font-size: 1.1rem !important;
+    font-weight: 500 !important;
+}
+
+body[data-page="fahrzeuge2"] .search-detail {
+    background: #ff6b35 !important;
+    border: 2px solid #ff6b35 !important;
+    border-radius: 0.5rem !important;
+    padding: 1rem !important;
+    font-weight: bold !important;
+    color: white !important;
+}
+
+body[data-page="fahrzeuge2"] .search-detail i {
+    font-weight: bold !important;
+    color: white !important;
+}
+
+
+
+body[data-page="fahrzeuge2"] .search-summary h6 {
+    font-size: 1.2rem !important;
+    font-weight: 700 !important;
+    color: #333 !important;
+}
+
+body[data-page="fahrzeuge2"] .search-summary p {
+    font-size: 1.1rem !important;
+    font-weight: 600 !important;
+    color: #333 !important;
+    margin-bottom: 0.5rem !important;
+}
+
+.filters-section {
+    position: relative !important;
+    z-index: 1000 !important;
+}
+
+.filters-section .form-select {
+    position: relative !important;
+    z-index: 1001 !important;
+}
+
+.filters-section .form-select:focus {
+    z-index: 1002 !important;
+}
+
+.filters-section .dropdown-menu {
+    z-index: 1003 !important;
+    max-height: 200px !important;
+    overflow-y: auto !important;
+    border: 1px solid #ced4da !important;
+    border-radius: 4px !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) !important;
+    background: white !important;
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: 100% !important;
+}
+
+.filters-section .dropdown-item {
+    padding: 0.5rem 1rem !important;
+    border-bottom: 1px solid #f8f9fa !important;
+}
+
+.filters-section .dropdown-item:hover {
+    background-color: #f8f9fa !important;
+}
+
+.filters-section .dropdown-item.active {
+    background-color: #007bff !important;
+    color: white !important;
+}
+
+
 
 /* Utility Classes */
 .text-warning {

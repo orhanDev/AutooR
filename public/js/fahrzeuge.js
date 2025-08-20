@@ -1,14 +1,13 @@
 // Fahrzeuge page JavaScript
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Filter elements
-    const vehicleTypeFilter = document.getElementById('vehicle-type-filter');
-    const vehicleModelFilter = document.getElementById('vehicle-model-filter');
-    const fuelTypeFilter = document.getElementById('fuel-type-filter');
-    const sortFilter = document.getElementById('sort-filter');
-    const transmissionFilter = document.getElementById('transmission-filter');
-    const priceSlider = document.getElementById('price-slider');
-    const priceDisplay = document.getElementById('price-display');
+
+    // Sayfa tipini belirle ve body'ye data-page attribute'u ekle
+    const currentPath = window.location.pathname;
+    if (currentPath === '/fahrzeuge2') {
+        document.body.setAttribute('data-page', 'fahrzeuge2');
+    }
+
     const vehiclesContainer = document.getElementById('vehicles-container');
     const searchSummary = document.getElementById('search-summary');
     const searchDetails = document.getElementById('search-details');
@@ -32,6 +31,14 @@ document.addEventListener('DOMContentLoaded', () => {
     let selectedVehicle = null;
     let selectedInsurance = null;
     let selectedProducts = [];
+
+    // Filter elements
+    const vehicleTypeFilter = document.getElementById('vehicle-type-filter');
+    const vehicleModelFilter = document.getElementById('vehicle-model-filter');
+    const fuelTypeFilter = document.getElementById('fuel-type-filter');
+    const sortFilter = document.getElementById('sort-filter');
+    const transmissionFilter = document.getElementById('transmission-filter');
+    const priceFilter = document.getElementById('price-filter');
 
     // Insurance options data
     const insuranceData = [
@@ -139,10 +146,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const newUrl = window.location.pathname;
         window.history.replaceState({}, document.title, newUrl);
     }
-    
+
     // Initialize page
     loadSearchData();
-    initializeFilters();
     loadVehicles();
     initializeDateLocationSelector();
     
@@ -163,27 +169,75 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Only load saved selections if we're not clearing
     if (shouldClear !== '1') {
-        loadSavedSelections();
+    loadSavedSelections();
     }
     
-    // Update select styles on page load
-    updateSelectStyle();
+    // Initialize filters
+    initializeFilters();
+    
+    // Initialize filter event listeners
+    function initializeFilters() {
+        // Vehicle type filter
+        vehicleTypeFilter.addEventListener('change', applyFilters);
+        
+        // Vehicle model filter
+        vehicleModelFilter.addEventListener('change', applyFilters);
+        
+        // Fuel type filter
+        fuelTypeFilter.addEventListener('change', applyFilters);
+        
+        // Sort filter
+        sortFilter.addEventListener('change', applyFilters);
+        
+        // Transmission filter
+        transmissionFilter.addEventListener('change', applyFilters);
+        
+        // Price filter
+        priceFilter.addEventListener('change', applyFilters);
+    }
+    
+    // Apply filters function
+    function applyFilters() {
+        let filtered = [...LOCAL_CARS];
+        
+        // Vehicle type filter
+        if (vehicleTypeFilter.value) {
+            filtered = filtered.filter(vehicle => vehicle.type === vehicleTypeFilter.value);
+        }
+        
+        // Vehicle model filter
+        if (vehicleModelFilter.value) {
+            filtered = filtered.filter(vehicle => vehicle.make.toLowerCase() === vehicleModelFilter.value);
+        }
+        
+        // Fuel type filter
+        if (fuelTypeFilter.value) {
+            filtered = filtered.filter(vehicle => vehicle.fuel_type.toLowerCase() === fuelTypeFilter.value);
+        }
+        
+        // Transmission filter
+        if (transmissionFilter.value) {
+            filtered = filtered.filter(vehicle => vehicle.transmission.toLowerCase() === transmissionFilter.value);
+        }
+        
+        // Price filter
+        const maxPrice = parseInt(priceFilter.value);
+        filtered = filtered.filter(vehicle => vehicle.daily_rate <= maxPrice);
+        
+        // Sort
+        if (sortFilter.value === 'price-low') {
+            filtered.sort((a, b) => a.daily_rate - b.daily_rate);
+        } else if (sortFilter.value === 'price-high') {
+            filtered.sort((a, b) => b.daily_rate - a.daily_rate);
+        } else if (sortFilter.value === 'name') {
+            filtered.sort((a, b) => `${a.make} ${a.model}`.localeCompare(`${b.make} ${b.model}`));
+        }
+        
+        filteredVehicles = filtered;
+        displayVehicles();
+    }
+    
 
-    // Filter event listeners
-    vehicleTypeFilter.addEventListener('change', filterVehicles);
-    vehicleModelFilter.addEventListener('change', filterVehicles);
-    fuelTypeFilter.addEventListener('change', filterVehicles);
-    sortFilter.addEventListener('change', filterVehicles);
-    transmissionFilter.addEventListener('change', filterVehicles);
-    priceSlider.addEventListener('input', updatePriceDisplay);
-    priceSlider.addEventListener('change', filterVehicles);
-
-    // Add change event listeners for select styling
-    vehicleTypeFilter.addEventListener('change', updateSelectStyle);
-    vehicleModelFilter.addEventListener('change', updateSelectStyle);
-    fuelTypeFilter.addEventListener('change', updateSelectStyle);
-    sortFilter.addEventListener('change', updateSelectStyle);
-    transmissionFilter.addEventListener('change', updateSelectStyle);
 
     // Initialize date and location selector
     function initializeDateLocationSelector() {
@@ -344,7 +398,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 searchData = JSON.parse(storedData);
                 // Only display search summary on /fahrzeuge2 page
                 if (window.location.pathname === '/fahrzeuge2') {
-                    displaySearchSummary();
+                displaySearchSummary();
                 } else {
                     // On /fahrzeuge page, show date/location selector
                     dateLocationSelector.style.display = 'block';
@@ -516,10 +570,10 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Load the vehicle
         if (vehicleData && vehicleData.car_id) {
-            selectedVehicle = LOCAL_CARS.find(car => car.car_id == vehicleData.car_id);
-            if (selectedVehicle) {
-                console.log('Loaded vehicle selection:', selectedVehicle.make, selectedVehicle.model);
-                highlightSelectedVehicle();
+                selectedVehicle = LOCAL_CARS.find(car => car.car_id == vehicleData.car_id);
+                if (selectedVehicle) {
+                    console.log('Loaded vehicle selection:', selectedVehicle.make, selectedVehicle.model);
+                    highlightSelectedVehicle();
             } else {
                 console.error('Vehicle not found for car_id:', vehicleData.car_id);
             }
@@ -650,7 +704,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const selectedModel = vehicleModelFilter.value;
         const selectedFuel = fuelTypeFilter.value;
         const selectedTransmission = transmissionFilter.value;
-        const maxPrice = parseInt(priceSlider.value);
+        const maxPrice = parseInt(priceFilter.value);
         const sortBy = sortFilter.value;
 
         // Apply filters
@@ -687,8 +741,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Display vehicles in grid - Smaller Size
+    // Display vehicles in grid
     function displayVehicles() {
+        // Check if we're on fahrzeuge2 page
+        const isFahrzeuge2 = window.location.pathname === '/fahrzeuge2';
+        
         if (filteredVehicles.length === 0) {
             vehiclesContainer.innerHTML = `
                 <div class="col-12 text-center py-5">
@@ -700,8 +757,36 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        vehiclesContainer.innerHTML = filteredVehicles.map(vehicle => `
-            <div class="col-lg-4 col-md-6 col-sm-6">
+        // For fahrzeuge2, show only one vehicle
+        if (isFahrzeuge2) {
+            // Get selected vehicle from localStorage (from homepage)
+            const selectedVehicleData = localStorage.getItem('selectedVehicle');
+            let vehicleToShow;
+            
+            if (selectedVehicleData) {
+                const selectedVehicle = JSON.parse(selectedVehicleData);
+                // Find the vehicle in LOCAL_CARS by car_id
+                vehicleToShow = LOCAL_CARS.find(car => car.car_id == selectedVehicle.car_id);
+            }
+            
+            // If no selected vehicle found, use first vehicle
+            if (!vehicleToShow) {
+                vehicleToShow = filteredVehicles[0] || LOCAL_CARS[0];
+            }
+            
+            vehiclesContainer.innerHTML = `
+                <div class="col-12">
+                    <div class="vehicle-card" onclick="selectVehicle(${vehicleToShow.car_id})">
+                        <div class="vehicle-image-container">
+                            <img src="${vehicleToShow.image_url}" alt="${vehicleToShow.make} ${vehicleToShow.model}" class="vehicle-image">
+                        </div>
+                    </div>
+                </div>
+            `;
+        } else {
+            // For fahrzeuge, show all vehicles in grid
+                    vehiclesContainer.innerHTML = filteredVehicles.map(vehicle => `
+                <div class="col-lg-4 col-md-6 mb-4">
                 <div class="vehicle-card" onclick="selectVehicle(${vehicle.car_id})">
                     <div class="vehicle-image-container">
                         <img src="${vehicle.image_url}" alt="${vehicle.make} ${vehicle.model}" class="vehicle-image">
@@ -714,22 +799,22 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="vehicle-content">
                         <h5 class="vehicle-title">${vehicle.make} ${vehicle.model}</h5>
                         <div class="vehicle-specs">
-                            <div class="vehicle-spec">
+                                <span class="vehicle-spec">
                                 <i class="bi bi-gear"></i>
-                                <span>${vehicle.transmission_type}</span>
-                            </div>
-                            <div class="vehicle-spec">
+                                    ${vehicle.transmission}
+                                </span>
+                                <span class="vehicle-spec">
                                 <i class="bi bi-fuel-pump"></i>
-                                <span>${vehicle.fuel_type}</span>
-                            </div>
-                            <div class="vehicle-spec">
+                                    ${vehicle.fuel_type}
+                                </span>
+                                <span class="vehicle-spec">
                                 <i class="bi bi-people"></i>
-                                <span>${vehicle.seating_capacity}</span>
+                                    ${vehicle.seats}
+                                </span>
                         </div>
-                        </div>
-                        <div class="vehicle-buttons">
-                            <button class="btn-rent" onclick="event.stopPropagation(); selectVehicle(${vehicle.car_id})">
-                                <i class="bi bi-bag-check"></i>
+                            <div class="vehicle-actions">
+                                <button class="btn btn-warning btn-sm">
+                                    <i class="bi bi-car-front"></i>
                                 Mieten
                             </button>
                         </div>
@@ -737,27 +822,33 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             </div>
         `).join('');
+        }
     }
 
     // Select vehicle function
     window.selectVehicle = function(carId) {
         console.log('Vehicle clicked:', carId);
         
-        // Remove selected class from all vehicle cards
-        document.querySelectorAll('.vehicle-card').forEach(card => {
-            card.classList.remove('selected');
-            card.style.border = '1px solid var(--border-gray)';
-            card.style.transform = 'none';
-            card.style.boxShadow = 'none';
-        });
+        // Check if we're on fahrzeuge2 page - if so, don't add selection styling
+        const isFahrzeuge2 = window.location.pathname === '/fahrzeuge2';
         
-        // Add selected class to clicked vehicle card
-        const clickedCard = document.querySelector(`.vehicle-card[onclick*="selectVehicle(${carId})"]`);
-        if (clickedCard) {
-            clickedCard.classList.add('selected');
-            clickedCard.style.border = '3px solid #ff6b35';
-            clickedCard.style.transform = 'translateY(-8px)';
-            clickedCard.style.boxShadow = '0 8px 25px rgba(0, 0, 0, 0.15)';
+        if (!isFahrzeuge2) {
+            // Remove selected class from all vehicle cards
+            document.querySelectorAll('.vehicle-card').forEach(card => {
+                card.classList.remove('selected');
+                card.style.border = '1px solid var(--border-gray)';
+                card.style.transform = 'none';
+                card.style.boxShadow = 'none';
+            });
+            
+            // Add selected class to clicked vehicle card
+            const clickedCard = document.querySelector(`.vehicle-card[onclick*="selectVehicle(${carId})"]`);
+            if (clickedCard) {
+                clickedCard.classList.add('selected');
+                clickedCard.style.border = '3px solid #ff6b35';
+                clickedCard.style.transform = 'translateY(-8px)';
+                clickedCard.style.boxShadow = '0 8px 25px rgba(0, 0, 0, 0.15)';
+            }
         }
         
         // Check if search data is available

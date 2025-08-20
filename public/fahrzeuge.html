@@ -38,6 +38,8 @@
             overflow: visible;
             min-height: 100vh;
         }
+        
+
 
         /* Navbar */
         .navbar {
@@ -1122,6 +1124,74 @@
         </div>
     </section>
 
+    <!-- Filters Section -->
+    <section class="filters-section" id="filters-section">
+        <div class="container">
+            <div class="row g-3">
+                <div class="col-md-2 col-sm-6">
+                    <label class="filter-label">Fahrzeugtyp</label>
+                    <select class="form-select filter-select" id="vehicle-type-filter">
+                        <option value="">Alle Fahrzeuge</option>
+                        <option value="compact">Kompakt</option>
+                        <option value="sedan">Limousine</option>
+                        <option value="suv">SUV</option>
+                        <option value="luxury">Luxus</option>
+                        <option value="electric">Elektrisch</option>
+                    </select>
+                </div>
+                <div class="col-md-2 col-sm-6">
+                    <label class="filter-label">Modell</label>
+                    <select class="form-select filter-select" id="vehicle-model-filter">
+                        <option value="">Alle Modelle</option>
+                        <option value="audi">Audi</option>
+                        <option value="bmw">BMW</option>
+                        <option value="mercedes">Mercedes</option>
+                        <option value="porsche">Porsche</option>
+                        <option value="tesla">Tesla</option>
+                        <option value="volkswagen">Volkswagen</option>
+                    </select>
+                </div>
+                <div class="col-md-2 col-sm-6">
+                    <label class="filter-label">Kraftstoff</label>
+                    <select class="form-select filter-select" id="fuel-type-filter">
+                        <option value="">Alle</option>
+                        <option value="benzin">Benzin</option>
+                        <option value="diesel">Diesel</option>
+                        <option value="hybrid">Hybrid</option>
+                        <option value="elektrisch">Elektrisch</option>
+                    </select>
+                </div>
+                <div class="col-md-2 col-sm-6">
+                    <label class="filter-label">Sortieren</label>
+                    <select class="form-select filter-select" id="sort-filter">
+                        <option value="price-low">Niedrigster Preis</option>
+                        <option value="price-high">Höchster Preis</option>
+                        <option value="name">Name A-Z</option>
+                        <option value="popularity">Beliebtheit</option>
+                    </select>
+                </div>
+                <div class="col-md-2 col-sm-6">
+                    <label class="filter-label">Getriebe</label>
+                    <select class="form-select filter-select" id="transmission-filter">
+                        <option value="">Alle</option>
+                        <option value="automatik">Automatik</option>
+                        <option value="manuell">Manuell</option>
+                    </select>
+                </div>
+                <div class="col-md-2 col-sm-6">
+                    <label class="filter-label">Preisbereich</label>
+                    <select class="form-select filter-select" id="price-filter">
+                        <option value="600">Bis €600/Tag</option>
+                        <option value="500">Bis €500/Tag</option>
+                        <option value="400">Bis €400/Tag</option>
+                        <option value="300">Bis €300/Tag</option>
+                        <option value="200">Bis €200/Tag</option>
+                        <option value="100">Bis €100/Tag</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- Search Summary -->
     <section class="search-summary" id="search-summary" style="display: none;">
@@ -1140,76 +1210,22 @@
         </div>
     </section>
 
-    <!-- Filters -->
-    <section class="filters-section">
-        <div class="container">
-            <div class="row align-items-center g-2">
-                <div class="col-md-2 col-sm-6">
-                    <div class="filter-item">
-                        <label class="filter-label">Fahrzeugtyp:</label>
-                        <select id="vehicle-type-filter" class="filter-select">
-                            <option value="">Alle Fahrzeuge</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-2 col-sm-6">
-                    <div class="filter-item">
-                        <label class="filter-label">Modell:</label>
-                        <select id="vehicle-model-filter" class="filter-select">
-                            <option value="">Alle Modelle</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-2 col-sm-6">
-                    <div class="filter-item">
-                        <label class="filter-label">Kraftstoff:</label>
-                        <select id="fuel-type-filter" class="filter-select">
-                            <option value="">Alle</option>
-                            <option value="Benzin">Benzin</option>
-                            <option value="Diesel">Diesel</option>
-                            <option value="Elektrisch">Elektrisch</option>
-                            <option value="Hybrid">Hybrid</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-2 col-sm-6">
-                    <div class="filter-item">
-                        <label class="filter-label">Sortieren:</label>
-                        <select id="sort-filter" class="filter-select">
-                            <option value="price-low">Niedrigster Preis</option>
-                            <option value="price-high">Höchster Preis</option>
-                            <option value="name">Name A-Z</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-2 col-sm-6">
-                    <div class="filter-item">
-                        <label class="filter-label">Getriebe:</label>
-                        <select id="transmission-filter" class="filter-select">
-                            <option value="">Alle</option>
-                            <option value="Automatik">Automatik</option>
-                            <option value="Manuell">Manuell</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-2 col-sm-6">
-                    <div class="filter-item">
-                        <label class="filter-label" for="price-slider">Preisbereich:</label>
-                        <div class="price-slider-container">
-                            <input type="range" id="price-slider" class="price-slider" min="0" max="600" value="600" step="50">
-                            <div class="price-display" id="price-display">Bis €600/Tag</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+
 
     <!-- Main Content -->
     <section class="py-4 main-content" style="background-color: #F4E4E0;">
         <div class="container">
             <div class="row">
-                <!-- Left Sidebar - Insurance and Products -->
+                <!-- Left Side - Vehicles -->
+                <div class="col-lg-8">
+                    <div class="vehicles-scroll-container">
+                        <div class="row g-3" id="vehicles-container">
+                            <!-- Vehicles will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Sidebar - Insurance and Products -->
                 <div class="col-lg-4">
                     <div class="options-sidebar">
                         <!-- Insurance Section -->
@@ -1226,15 +1242,6 @@
                             <div id="product-options">
                                 <!-- Product options will be loaded here -->
                             </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Right Side - Vehicles -->
-                <div class="col-lg-8">
-                    <div class="vehicles-scroll-container">
-                        <div class="row g-3" id="vehicles-container">
-                            <!-- Vehicles will be loaded here -->
                         </div>
                     </div>
                 </div>
