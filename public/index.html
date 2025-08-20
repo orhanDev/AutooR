@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Autar - Premium Autovermietung</title>
+    <title>AUTOR - Premium Autovermietung</title>
     
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
@@ -26,10 +26,17 @@
             --border-gray: #dee2e6;
         }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f5f5f5;
-        }
+                          html {
+             background-color: #F4E4E0;
+             min-height: 100vh;
+         }
+
+         body {
+             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+             background-color: #F4E4E0;
+             margin-top: 76px;
+             min-height: 100vh;
+         }
 
         /* Navbar */
         .navbar {
@@ -74,6 +81,297 @@
          .form-select option[value=""] {
              color: #6c757d;
          }
+
+         /* Override hero section to match fahrzeuge page exactly */
+         .hero-section {
+             background: transparent !important;
+             background-image: none !important;
+             padding: 10px 0 !important;
+             margin-top: 76px !important;
+             border-bottom: none !important;
+             min-height: auto !important;
+             position: static !important;
+             top: auto !important;
+             left: auto !important;
+             right: auto !important;
+             z-index: auto !important;
+             display: block !important;
+             align-items: initial !important;
+             justify-content: initial !important;
+         }
+
+         .hero-section .filters-card {
+             background: white !important;
+             border-radius: 6px !important;
+             padding: 12px !important;
+             border: 1px solid #dee2e6 !important;
+             box-shadow: 0 1px 3px rgba(0,0,0,0.05) !important;
+         }
+
+         .hero-section .form-label {
+             font-size: 11px !important;
+             font-weight: 600 !important;
+             color: #ff6b35 !important;
+             margin-bottom: 4px !important;
+             display: block !important;
+         }
+
+         .hero-section .form-select,
+         .hero-section .form-control {
+             border: 1px solid #ced4da !important;
+             border-radius: 4px !important;
+             background: white !important;
+             color: #333 !important;
+             font-size: 11px !important;
+             font-weight: 500 !important;
+             height: 30px !important;
+             padding: 4px 8px !important;
+         }
+
+         .hero-section .form-select:focus,
+         .hero-section .form-control:focus {
+             outline: none !important;
+             border-color: #ff6b35 !important;
+             box-shadow: 0 0 0 0.1rem rgba(255, 107, 53, 0.15) !important;
+         }
+
+         .hero-section .input-group-text {
+             background: white !important;
+             border: 1px solid #ced4da !important;
+             border-right: none !important;
+             cursor: pointer !important;
+             color: #6c757d !important;
+             font-size: 11px !important;
+             height: 30px !important;
+             display: flex !important;
+             align-items: center !important;
+         }
+
+         .hero-section .form-control {
+             border-left: none !important;
+         }
+
+         .hero-section .input-group {
+             height: 30px !important;
+         }
+
+         .hero-section .btn-warning {
+             background: #ff6b35 !important;
+             border-color: #ff6b35 !important;
+             color: white !important;
+             font-size: 11px !important;
+             font-weight: 600 !important;
+             padding: 4px 12px !important;
+             height: 30px !important;
+         }
+
+         .hero-section .btn-warning:hover {
+             background: #e55a2b !important;
+             border-color: #e55a2b !important;
+             color: white !important;
+         }
+
+         /* Responsive adjustments */
+         @media (max-width: 768px) {
+             .hero-section {
+                 margin-top: 60px !important;
+                 padding: 8px 0 !important;
+             }
+             
+             .hero-section .filters-card {
+                 padding: 10px !important;
+             }
+             
+             .hero-section .form-label {
+                 font-size: 10px !important;
+                 margin-bottom: 3px !important;
+             }
+             
+             .hero-section .form-select,
+             .hero-section .form-control {
+                 font-size: 10px !important;
+                 height: 28px !important;
+                 padding: 3px 6px !important;
+             }
+             
+             .hero-section .btn-warning {
+                 font-size: 10px !important;
+                 padding: 3px 10px !important;
+                 height: 28px !important;
+             }
+             
+             .hero-section .input-group-text {
+                 height: 28px !important;
+             }
+             
+             .hero-section .input-group {
+                 height: 28px !important;
+             }
+         }
+
+                                                                                                                                                               /* Highlight for all form selectors */
+             .hero-section .form-select.highlight,
+             .form-select.highlight,
+             #pickup-location.highlight,
+             select#pickup-location.highlight,
+             #dropoff-location.highlight,
+             select#dropoff-location.highlight,
+             #pickup-date.highlight,
+             input#pickup-date.highlight,
+             #dropoff-date.highlight,
+             input#dropoff-date.highlight {
+                 border: 2px solid #ff6b35 !important;
+                 box-shadow: 0 0 8px rgba(255, 107, 53, 0.2) !important;
+                 padding: 2px 6px !important;
+             }
+
+             /* Highlight for input groups (date inputs) */
+             .hero-section .input-group.highlight .form-control,
+             .input-group.highlight .form-control {
+                 border: 2px solid #ff6b35 !important;
+                 box-shadow: 0 0 8px rgba(255, 107, 53, 0.2) !important;
+                 padding: 2px 6px !important;
+             }
+
+             .hero-section .input-group.highlight .input-group-text,
+             .input-group.highlight .input-group-text {
+                 border: 2px solid #ff6b35 !important;
+                 border-right: 2px solid #ff6b35 !important;
+                 box-shadow: 0 0 8px rgba(255, 107, 53, 0.2) !important;
+             }
+
+         /* Vehicle card hover effects */
+         .vehicle-card {
+             transition: all 0.3s ease;
+             cursor: pointer;
+         }
+
+         .vehicle-card:hover {
+             transform: translateY(-8px);
+             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+             border: 2px solid #ff6b35;
+             border-radius: 8px;
+         }
+
+         .vehicle-card:hover .vehicle-image {
+             border-radius: 6px 6px 0 0;
+         }
+
+         .vehicle-card:hover .vehicle-details {
+             border-radius: 0 0 6px 6px;
+         }
+
+         /* Selected vehicle card - stays elevated and highlighted */
+         .vehicle-card.selected {
+             transform: translateY(-8px);
+             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+             border: 2px solid #ff6b35;
+             border-radius: 8px;
+         }
+
+         .vehicle-card.selected .vehicle-image {
+             border-radius: 6px 6px 0 0;
+         }
+
+         .vehicle-card.selected .vehicle-details {
+             border-radius: 0 0 6px 6px;
+         }
+
+         /* When hovering over selected card, maintain the selected state */
+         .vehicle-card.selected:hover {
+             transform: translateY(-8px);
+             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+             border: 2px solid #ff6b35;
+             border-radius: 8px;
+         }
+
+         /* 4 vehicles per row on homepage - FORCE 4 PER ROW */
+         #popular-cars-container .col-lg-3 {
+             flex: 0 0 25% !important;
+             max-width: 25% !important;
+             width: 25% !important;
+             min-width: 25% !important;
+         }
+
+         #popular-cars-container .col-md-6 {
+             flex: 0 0 50% !important;
+             max-width: 50% !important;
+             width: 50% !important;
+             min-width: 50% !important;
+         }
+
+         #popular-cars-container .col-12 {
+             flex: 0 0 100% !important;
+             max-width: 100% !important;
+             width: 100% !important;
+             min-width: 100% !important;
+         }
+
+         /* Force row to display 4 items */
+         #popular-cars-container .row {
+             display: flex !important;
+             flex-wrap: wrap !important;
+             margin: 0 !important;
+         }
+
+         /* Ensure container is full width */
+         #popular-cars-container {
+             width: 100% !important;
+             max-width: 100% !important;
+         }
+
+         /* Override any Bootstrap container constraints */
+         #vehicles .container {
+             max-width: 100% !important;
+             width: 100% !important;
+         }
+
+         /* Force all Bootstrap grid overrides */
+         @media (min-width: 992px) {
+             #popular-cars-container .col-lg-3 {
+                 flex: 0 0 25% !important;
+                 max-width: 25% !important;
+                 width: 25% !important;
+                 min-width: 25% !important;
+             }
+         }
+
+         @media (min-width: 768px) and (max-width: 991px) {
+             #popular-cars-container .col-md-6 {
+                 flex: 0 0 50% !important;
+                 max-width: 50% !important;
+                 width: 50% !important;
+                 min-width: 50% !important;
+             }
+         }
+
+         @media (max-width: 767px) {
+             #popular-cars-container .col-12 {
+                 flex: 0 0 100% !important;
+                 max-width: 100% !important;
+                 width: 100% !important;
+                 min-width: 100% !important;
+             }
+         }
+
+         /* Override Bootstrap's default grid system completely */
+         #popular-cars-container * {
+             box-sizing: border-box !important;
+         }
+
+         /* Force specific grid layout */
+         #popular-cars-container .row > * {
+             padding-left: 0.5rem !important;
+             padding-right: 0.5rem !important;
+         }
+
+         /* Ensure no other CSS interferes */
+         #popular-cars-container .col-lg-3,
+         #popular-cars-container .col-md-6,
+         #popular-cars-container .col-12 {
+             float: none !important;
+             display: block !important;
+         }
     </style>
 </head>
 <body>
@@ -82,29 +380,22 @@
         <div class="container">
             <a class="navbar-brand fw-bold fs-3 text-dark" href="/">
                 <i class="bi bi-car-front text-warning me-2"></i>
-                Autar
+                AUT<span class="text-warning">OR</span>
             </a>
             
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link fw-medium" href="/fahrzeuge">Fahrzeuge</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link fw-medium" href="/ueber-uns">Über uns</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link fw-medium" href="/kontakt">Kontakt</a>
-                    </li>
-                    <li class="nav-item ms-2">
-                        <a class="btn btn-warning fw-medium" href="/login">Anmelden</a>
-                    </li>
-                </ul>
-            </div>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                                            <a class="btn btn-warning fw-medium text-white" href="/fahrzeuge?clear=1">Autos</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ms-auto" id="auth-buttons-container">
+            </ul>
+        </div>
         </div>
     </nav>
 
@@ -118,7 +409,7 @@
                                                  <form id="car-search-form" novalidate>
                             <div class="row g-3 align-items-end">
                                 <div class="col-12 col-md-6 col-lg-3">
-                                    <label class="form-label text-white-50">Abholort</label>
+                                    <label class="form-label">Abholort</label>
                                                                          <select id="pickup-location" class="form-select" required lang="de">
                                          <option value="">Standort wählen</option>
                                         <option value="1">Berlin Hauptbahnhof</option>
@@ -129,7 +420,7 @@
                                     </select>
                                 </div>
                                 <div class="col-12 col-md-6 col-lg-3">
-                                    <label class="form-label text-white-50">Rückgabeort</label>
+                                    <label class="form-label">Rückgabeort</label>
                                                                          <select id="dropoff-location" class="form-select" required lang="de">
                                          <option value="">Standort wählen</option>
                                         <option value="1">Berlin Hauptbahnhof</option>
@@ -140,14 +431,14 @@
                                     </select>
                                 </div>
                                 <div class="col-6 col-md-3 col-lg-2">
-                                    <label class="form-label text-white-50">Abholdatum</label>
+                                    <label class="form-label">Abholdatum</label>
                                     <div class="input-group">
                                         <span class="input-group-text calendar-trigger" data-target="pickup-date"><i class="bi bi-calendar3 text-warning"></i></span>
                                         <input type="text" id="pickup-date" class="form-control" inputmode="numeric" pattern="\d{2}\.\d{2}\.\d{4}" maxlength="10" placeholder="tt.mm.jjjj" autocomplete="off" required>
                                     </div>
                                 </div>
                                 <div class="col-6 col-md-3 col-lg-2">
-                                    <label class="form-label text-white-50">Rückgabedatum</label>
+                                    <label class="form-label">Rückgabedatum</label>
                                     <div class="input-group">
                                         <span class="input-group-text calendar-trigger" data-target="dropoff-date"><i class="bi bi-calendar3 text-warning"></i></span>
                                         <input type="text" id="dropoff-date" class="form-control" inputmode="numeric" pattern="\d{2}\.\d{2}\.\d{4}" maxlength="10" placeholder="tt.mm.jjjj" autocomplete="off" required>
@@ -232,7 +523,7 @@
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-6">
-                    <h3 class="fw-bold mb-2">Warum Autar?</h3>
+                    <h3 class="fw-bold mb-2">Warum AUTOR?</h3>
                     <p class="mb-3">
                         Seit über 10 Jahren sind wir Ihr vertrauensvoller Partner für Premium-Autovermietung in Deutschland.
                     </p>
@@ -297,54 +588,14 @@
         </div>
     </section>
 
-    <!-- Contact Section -->
-    <section id="contact" class="py-3">
-        <div class="container">
-            <div class="text-center mb-3">
-                <h3 class="fw-bold mb-1">Kontakt</h3>
-                <p class="text-muted small">Haben Sie Fragen? Wir helfen Ihnen gerne weiter</p>
-            </div>
-            
-            <div class="row g-2">
-                <div class="col-lg-4">
-                    <div class="text-center p-2">
-                        <div class="bg-warning rounded-circle d-inline-flex align-items-center justify-content-center mb-2" style="width: 40px; height: 40px;">
-                            <i class="bi bi-telephone text-white fs-6"></i>
-                        </div>
-                        <h6 class="fw-bold mb-1">Telefon</h6>
-                        <p class="text-muted small mb-0">+49 30 123 456 789</p>
-                    </div>
-                </div>
-                
-                <div class="col-lg-4">
-                    <div class="text-center p-2">
-                        <div class="bg-warning rounded-circle d-inline-flex align-items-center justify-content-center mb-2" style="width: 40px; height: 40px;">
-                            <i class="bi bi-envelope text-white fs-6"></i>
-                        </div>
-                        <h6 class="fw-bold mb-1">E-Mail</h6>
-                        <p class="text-muted small mb-0">info@autar.de</p>
-                    </div>
-                </div>
-                
-                <div class="col-lg-4">
-                    <div class="text-center p-2">
-                        <div class="bg-warning rounded-circle d-inline-flex align-items-center justify-content-center mb-2" style="width: 40px; height: 40px;">
-                            <i class="bi bi-geo-alt text-white fs-6"></i>
-                        </div>
-                        <h6 class="fw-bold mb-1">Adresse</h6>
-                        <p class="text-muted small mb-0">Berliner Str. 123, 10115 Berlin</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+
 
     <!-- Footer -->
     <footer class="bg-dark text-white py-4">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-md-6">
-                    <p class="mb-0">&copy; 2025 Autar. Alle Rechte vorbehalten.</p>
+                    <p class="mb-0">&copy; 2025 AUTOR. Alle Rechte vorbehalten.</p>
                 </div>
                 <div class="col-md-6 text-md-end">
                     <p class="mb-0 small text-muted">
@@ -363,5 +614,6 @@
     <!-- Custom JS -->
     <script src="js/data/cars.js"></script>
     <script src="js/app.js"></script>
+    <script src="js/navbar.js"></script>
 </body>
 </html>

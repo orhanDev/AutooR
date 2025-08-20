@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fahrer Informationen - AUTOR</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        :root {
+            --primary-red: #dc3545;
+            --primary-red-dark: #c82333;
+            --secondary-gray: #6c757d;
+            --light-gray: #f8f9fa;
+            --border-gray: #dee2e6;
+            --success-green: #28a745;
+            --warning-orange: #ffc107;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #F4E4E0;
+            margin-top: 76px;
+            min-height: 100vh;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: rgba(255, 255, 255, 0.95) !important;
+            backdrop-filter: blur(10px);
+        }
+
+        .navbar-brand {
+            color: #333 !important;
+        }
+
+        .nav-link {
+            color: #666 !important;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-red) !important;
+        }
+
+        .btn-warning {
+            background: #ffc107;
+            border-color: #ffc107;
+            color: #000;
+        }
+
+                 .btn-warning:hover {
+             background: #ffca2c;
+             border-color: #ffca2c;
+             color: #000;
+         }
+
+                 .btn-outline-warning {
+            background: #ff6b35;
+            border-color: #ff6b35;
+            color: white;
+        }
+
+        .btn-outline-warning:hover {
+            background: #e55a2b;
+            border-color: #e55a2b;
+            color: white;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 40px 0;
+            min-height: calc(100vh - 76px);
+        }
+
+        .driver-form-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            border: 1px solid var(--border-gray);
+        }
+
+                 .form-title {
+             font-size: 24px;
+             font-weight: 600;
+             color: #333;
+             margin-bottom: 30px;
+             text-align: center;
+             letter-spacing: 0.3px;
+         }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .form-control {
+            border: 2px solid var(--border-gray);
+            border-radius: 8px;
+            padding: 12px 15px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-red);
+            box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+        }
+
+        .phone-input-group {
+            display: flex;
+            align-items: center;
+            border: 2px solid var(--border-gray);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .phone-input-group:focus-within {
+            border-color: var(--primary-red);
+            box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+        }
+
+        .country-selector {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 15px;
+            background: #f8f9fa;
+            border-right: 2px solid var(--border-gray);
+            cursor: pointer;
+            min-width: 120px;
+            position: relative;
+        }
+
+        .country-flag {
+            width: 20px;
+            height: 15px;
+            border-radius: 2px;
+            background-size: cover;
+            background-position: center;
+            font-size: 16px;
+            line-height: 15px;
+            text-align: center;
+        }
+
+        /* German flag */
+        .flag-de {
+            background: linear-gradient(to bottom, #000 0%, #000 33.33%, #dd0000 33.33%, #dd0000 66.66%, #ffce00 66.66%, #ffce00 100%);
+        }
+
+        /* Austrian flag */
+        .flag-at {
+            background: linear-gradient(to bottom, #ed2939 0%, #ed2939 33.33%, #fff 33.33%, #fff 66.66%, #ed2939 66.66%, #ed2939 100%);
+        }
+
+        /* Swiss flag */
+        .flag-ch {
+            background: #ff0000;
+            position: relative;
+        }
+
+        .flag-ch::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 8px;
+            height: 8px;
+            background: #fff;
+            border-radius: 50%;
+        }
+
+        /* Dutch flag */
+        .flag-nl {
+            background: linear-gradient(to bottom, #ae1c28 0%, #ae1c28 33.33%, #fff 33.33%, #fff 66.66%, #21468b 66.66%, #21468b 100%);
+        }
+
+        /* Belgian flag */
+        .flag-be {
+            background: linear-gradient(to right, #000 0%, #000 33.33%, #fdda24 33.33%, #fdda24 66.66%, #ed2939 66.66%, #ed2939 100%);
+        }
+
+        /* French flag */
+        .flag-fr {
+            background: linear-gradient(to right, #002395 0%, #002395 33.33%, #fff 33.33%, #fff 66.66%, #ed2939 66.66%, #ed2939 100%);
+        }
+
+        /* Italian flag */
+        .flag-it {
+            background: linear-gradient(to right, #009246 0%, #009246 33.33%, #fff 33.33%, #fff 66.66%, #ce2b37 66.66%, #ce2b37 100%);
+        }
+
+        /* Spanish flag */
+        .flag-es {
+            background: linear-gradient(to bottom, #c60b1e 0%, #c60b1e 25%, #ffc400 25%, #ffc400 75%, #c60b1e 75%, #c60b1e 100%);
+        }
+
+        /* British flag */
+        .flag-gb {
+            background: #012169;
+            position: relative;
+        }
+
+        /* US flag */
+        .flag-us {
+            background: linear-gradient(to bottom, #b22234 0%, #b22234 7.69%, #fff 7.69%, #fff 15.38%, #3c3b6e 15.38%, #3c3b6e 23.07%, #fff 23.07%, #fff 30.76%, #b22234 30.76%, #b22234 38.45%, #fff 38.45%, #fff 46.14%, #3c3b6e 46.14%, #3c3b6e 53.83%, #fff 53.83%, #fff 61.52%, #b22234 61.52%, #b22234 69.21%, #fff 69.21%, #fff 76.9%, #3c3b6e 76.9%, #3c3b6e 84.59%, #fff 84.59%, #fff 92.28%, #b22234 92.28%, #b22234 100%);
+        }
+
+        /* Turkish flag */
+        .flag-tr {
+            background: #e30a17;
+            position: relative;
+        }
+
+        .flag-tr::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 6px;
+            height: 6px;
+            background: #fff;
+            border-radius: 50%;
+        }
+
+        .country-code {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .country-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid var(--border-gray);
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            z-index: 1000;
+            max-height: 200px;
+            overflow-y: auto;
+            display: none;
+        }
+
+        .country-dropdown.show {
+            display: block;
+        }
+
+        .country-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 15px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .country-option:hover {
+            background-color: #f8f9fa;
+        }
+
+        .country-option.selected {
+            background-color: #e3f2fd;
+        }
+
+        .country-option .country-flag {
+            width: 20px;
+            height: 15px;
+            border-radius: 2px;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .country-option .country-code {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .country-option .country-name {
+            font-size: 12px;
+            color: #666;
+            margin-left: auto;
+        }
+
+        .phone-input {
+            flex: 1;
+            border: none;
+            padding: 12px 15px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .privacy-notice {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 30px 0;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #555;
+        }
+
+        .privacy-link {
+            color: var(--primary-red);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .privacy-link:hover {
+            text-decoration: underline;
+        }
+
+        .email-subscription {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin: 25px 0;
+        }
+
+        .form-check-input {
+            margin-top: 2px;
+        }
+
+        .subscription-text {
+            font-size: 14px;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        .legal-text {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 25px 0;
+            font-size: 12px;
+            line-height: 1.6;
+            color: #666;
+        }
+
+        .legal-links {
+            margin-top: 15px;
+        }
+
+        .legal-links a {
+            color: var(--primary-red);
+            text-decoration: none;
+            font-weight: 600;
+            margin-right: 20px;
+        }
+
+        .legal-links a:hover {
+            text-decoration: underline;
+        }
+
+                 .checkbox-section {
+             margin: 30px 0;
+         }
+
+         .checkbox-item {
+             display: flex;
+             align-items: flex-start;
+             gap: 12px;
+             margin-bottom: 20px;
+             padding: 15px;
+             background: #f8f9fa;
+             border-radius: 8px;
+             border: 1px solid #e9ecef;
+         }
+
+         .checkbox-item:last-child {
+             margin-bottom: 0;
+         }
+
+         .form-check-input {
+             margin-top: 2px;
+             width: 18px;
+             height: 18px;
+             border: 2px solid #6c757d;
+             border-radius: 3px;
+         }
+
+         .form-check-input:checked {
+             background-color: #dc3545;
+             border-color: #dc3545;
+         }
+
+         .checkbox-label {
+             font-size: 14px;
+             color: #333;
+             line-height: 1.5;
+             font-weight: 500;
+             flex: 1;
+             margin: 0;
+         }
+
+         .checkbox-note {
+             font-size: 12px;
+             color: #666;
+             font-style: italic;
+             margin-top: 8px;
+             margin-left: 30px;
+         }
+
+                   .submit-button {
+              background: #ff6b35;
+              color: white;
+              border: none;
+              padding: 18px 30px;
+              border-radius: 8px;
+              font-weight: 700;
+              font-size: 16px;
+              transition: all 0.3s ease;
+              width: 100%;
+              margin-top: 30px;
+              text-transform: uppercase;
+              letter-spacing: 0.5px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              gap: 10px;
+          }
+
+          .submit-button:hover {
+              background: #e55a2b;
+              transform: translateY(-2px);
+              box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+          }
+
+         .submit-button:disabled {
+             background: #ccc;
+             cursor: not-allowed;
+             transform: none;
+             box-shadow: none;
+         }
+
+         .submit-button i {
+             font-size: 18px;
+         }
+
+                 /* Credit Card Modal Styles */
+         .credit-card-overlay {
+             position: fixed;
+             top: 0;
+             left: 0;
+             width: 100%;
+             height: 100%;
+             background: rgba(0, 0, 0, 0.5);
+             display: flex;
+             align-items: center;
+             justify-content: center;
+             z-index: 10000;
+         }
+
+         .credit-card-modal {
+             background: white;
+             border-radius: 12px;
+             padding: 30px;
+             max-width: 500px;
+             width: 90%;
+             max-height: 90vh;
+             overflow-y: auto;
+             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+         }
+
+         .modal-header {
+             display: flex;
+             justify-content: space-between;
+             align-items: center;
+             margin-bottom: 25px;
+             padding-bottom: 15px;
+             border-bottom: 1px solid var(--border-gray);
+         }
+
+         .modal-header h3 {
+             margin: 0;
+             color: #333;
+             font-weight: 600;
+         }
+
+         .close-btn {
+             background: none;
+             border: none;
+             font-size: 20px;
+             color: #666;
+             cursor: pointer;
+             padding: 5px;
+             border-radius: 50%;
+             transition: all 0.3s ease;
+         }
+
+         .close-btn:hover {
+             background: #f8f9fa;
+             color: #333;
+         }
+
+         .payment-actions {
+             display: flex;
+             gap: 15px;
+             margin-top: 25px;
+             justify-content: flex-end;
+         }
+
+         .payment-actions .btn {
+             padding: 12px 25px;
+             font-weight: 600;
+             border-radius: 8px;
+         }
+
+         .btn-success {
+             background: #28a745;
+             border-color: #28a745;
+         }
+
+         .btn-success:hover {
+             background: #218838;
+             border-color: #1e7e34;
+         }
+
+         .btn-secondary {
+             background: #6c757d;
+             border-color: #6c757d;
+         }
+
+         .btn-secondary:hover {
+             background: #5a6268;
+             border-color: #545b62;
+         }
+
+         /* Responsive */
+         @media (max-width: 768px) {
+             .driver-form-container {
+                 margin: 20px;
+                 padding: 30px 20px;
+             }
+
+             .form-title {
+                 font-size: 24px;
+             }
+
+             .phone-input-group {
+                 flex-direction: column;
+             }
+
+             .country-selector {
+                 border-right: none;
+                 border-bottom: 2px solid var(--border-gray);
+                 justify-content: center;
+             }
+
+             .credit-card-modal {
+                 margin: 20px;
+                 padding: 20px;
+             }
+
+             .payment-actions {
+                 flex-direction: column;
+             }
+         }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold fs-3 text-dark" href="/">
+                <i class="bi bi-car-front text-warning me-2"></i>
+                AUT<span class="text-warning">OR</span>
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+                                             <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                                            <a class="btn btn-warning fw-medium text-white" href="/fahrzeuge?clear=1">Autos</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ms-auto" id="auth-buttons-container">
+            </ul>
+        </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <section class="main-content">
+        <div class="container">
+            <div class="driver-form-container">
+                                 <h1 class="form-title">Fahrer Informationen</h1>
+                
+                <form id="driver-form">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="first-name" class="form-label">Vorname *</label>
+                                <input type="text" class="form-control" id="first-name" name="firstName" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="last-name" class="form-label">Nachname *</label>
+                                <input type="text" class="form-control" id="last-name" name="lastName" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone" class="form-label">Telefonnummer *</label>
+                        <div class="phone-input-group">
+                            <div class="country-selector" onclick="toggleCountryDropdown()">
+                                <div class="country-flag flag-de" id="selected-flag"></div>
+                                <span class="country-code" id="selected-code">+49</span>
+                                <i class="bi bi-chevron-down"></i>
+                                <div class="country-dropdown" id="country-dropdown">
+                                    <div class="country-option" data-code="+49" data-flag="flag-de" data-name="Deutschland">
+                                        <div class="country-flag flag-de"></div>
+                                        <span class="country-code">+49</span>
+                                        <span class="country-name">Deutschland</span>
+                                    </div>
+                                    <div class="country-option" data-code="+43" data-flag="flag-at" data-name="Österreich">
+                                        <div class="country-flag flag-at"></div>
+                                        <span class="country-code">+43</span>
+                                        <span class="country-name">Österreich</span>
+                                    </div>
+                                    <div class="country-option" data-code="+41" data-flag="flag-ch" data-name="Schweiz">
+                                        <div class="country-flag flag-ch"></div>
+                                        <span class="country-code">+41</span>
+                                        <span class="country-name">Schweiz</span>
+                                    </div>
+                                    <div class="country-option" data-code="+31" data-flag="flag-nl" data-name="Niederlande">
+                                        <div class="country-flag flag-nl"></div>
+                                        <span class="country-code">+31</span>
+                                        <span class="country-name">Niederlande</span>
+                                    </div>
+                                    <div class="country-option" data-code="+32" data-flag="flag-be" data-name="Belgien">
+                                        <div class="country-flag flag-be"></div>
+                                        <span class="country-code">+32</span>
+                                        <span class="country-name">Belgien</span>
+                                    </div>
+                                    <div class="country-option" data-code="+33" data-flag="flag-fr" data-name="Frankreich">
+                                        <div class="country-flag flag-fr"></div>
+                                        <span class="country-code">+33</span>
+                                        <span class="country-name">Frankreich</span>
+                                    </div>
+                                    <div class="country-option" data-code="+39" data-flag="flag-it" data-name="Italien">
+                                        <div class="country-flag flag-it"></div>
+                                        <span class="country-code">+39</span>
+                                        <span class="country-name">Italien</span>
+                                    </div>
+                                    <div class="country-option" data-code="+34" data-flag="flag-es" data-name="Spanien">
+                                        <div class="country-flag flag-es"></div>
+                                        <span class="country-code">+34</span>
+                                        <span class="country-name">Spanien</span>
+                                    </div>
+                                    <div class="country-option" data-code="+44" data-flag="flag-gb" data-name="Großbritannien">
+                                        <div class="country-flag flag-gb"></div>
+                                        <span class="country-code">+44</span>
+                                        <span class="country-name">Großbritannien</span>
+                                    </div>
+                                    <div class="country-option" data-code="+1" data-flag="flag-us" data-name="USA">
+                                        <div class="country-flag flag-us"></div>
+                                        <span class="country-code">+1</span>
+                                        <span class="country-name">USA</span>
+                                    </div>
+                                    <div class="country-option" data-code="+90" data-flag="flag-tr" data-name="Türkei">
+                                        <div class="country-flag flag-tr"></div>
+                                        <span class="country-code">+90</span>
+                                        <span class="country-name">Türkei</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="tel" class="phone-input" id="phone" name="phone" placeholder="Telefonnummer eingeben" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email" class="form-label">E-Mail *</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                    </div>
+
+                                         <div class="checkbox-section">
+                         <div class="checkbox-item">
+                             <input type="checkbox" class="form-check-input" id="terms-checkbox" name="termsCheckbox" required>
+                             <label for="terms-checkbox" class="checkbox-label">
+                                 Ich habe die Mietbedingungen gelesen und akzeptiere sie.
+                             </label>
+                         </div>
+
+                                                   <div class="checkbox-item">
+                              <input type="checkbox" class="form-check-input" id="billing-checkbox" name="billingCheckbox">
+                              <label for="billing-checkbox" class="checkbox-label">
+                                  Ich möchte meine Rechnungsinformationen im Namen des Unternehmens bearbeiten
+                              </label>
+                          </div>
+
+                          <div class="checkbox-item">
+                              <input type="checkbox" class="form-check-input" id="data-processing-checkbox" name="dataProcessingCheckbox">
+                              <label for="data-processing-checkbox" class="checkbox-label">
+                                  Ich stimme der Datenverarbeitung zu
+                              </label>
+                          </div>
+
+                          <div class="checkbox-item">
+                              <input type="checkbox" class="form-check-input" id="connected-car-checkbox" name="connectedCarCheckbox">
+                              <label for="connected-car-checkbox" class="checkbox-label">
+                                  Ich bin mit der Connected Car-Datenverarbeitung einverstanden
+                              </label>
+                          </div>
+
+                         <div class="checkbox-item">
+                             <input type="checkbox" class="form-check-input" id="member-checkbox" name="memberCheckbox">
+                             <label for="member-checkbox" class="checkbox-label">
+                                 Ich möchte weiterhin Mitglied bleiben.
+                             </label>
+                         </div>
+                     </div>
+
+                                                               <button type="submit" class="submit-button" id="submit-button">
+                        ZAHLUNG ABSCHLIESSEN <i class="bi bi-credit-card"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="js/fahrer-informationen.js"></script>
+    <script src="js/navbar.js"></script>
+</body>
+</html>

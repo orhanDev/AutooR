@@ -17,13 +17,13 @@ document.addEventListener('DOMContentLoaded', () => {
         let value = e.target.value.replace(/\D/g, ''); // Remove non-digits
         
         if (value.length > 0) {
-            // Format as 0123 45678901
-            if (value.length <= 4) {
+            // Format as ... ......... (3 digits area code + 9 digits number)
+            if (value.length <= 3) {
                 value = value;
-            } else if (value.length <= 11) {
-                value = value.slice(0, 4) + ' ' + value.slice(4);
+            } else if (value.length <= 12) {
+                value = value.slice(0, 3) + ' ' + value.slice(3);
             } else {
-                value = value.slice(0, 4) + ' ' + value.slice(4, 11);
+                value = value.slice(0, 3) + ' ' + value.slice(3, 12);
             }
         }
         

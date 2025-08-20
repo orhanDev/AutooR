@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const carYear = document.getElementById('car-year');
     const carColor = document.getElementById('car-color');
     const carClimate = document.getElementById('car-climate');
+    const carOverlayPrice = document.getElementById('car-overlay-price');
     const orderDetails = document.getElementById('order-details');
     const payButton = document.getElementById('pay-button');
 
@@ -109,12 +110,35 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+        console.log('Loading car details for:', selectedVehicle);
+
+        // Try to get car_id from different possible sources
+        let carId = null;
+        
         if (selectedVehicle && selectedVehicle.car_id) {
-            const car = window.LOCAL_CARS.find(c => c.car_id === selectedVehicle.car_id);
+            carId = selectedVehicle.car_id;
+        } else if (selectedVehicle && selectedVehicle.id) {
+            carId = selectedVehicle.id;
+        } else {
+            // Try to get from URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            carId = urlParams.get('car_id');
+        }
+
+        console.log('Car ID found:', carId);
+
+        if (carId) {
+            const car = window.LOCAL_CARS.find(c => c.car_id == carId);
             
             if (car) {
+                console.log('Car found:', car);
                 carImage.src = car.image_url || '/images/cars/default-car.jpg';
                 carTitle.textContent = `${car.make} ${car.model}`;
+                
+                // Set overlay price
+                if (carOverlayPrice) {
+                    carOverlayPrice.textContent = `€${car.daily_rate}/Tag`;
+                }
                 
                 // Set car specifications with fallbacks
                 carTransmission.textContent = car.transmission_type || 'Automatik';
@@ -125,7 +149,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 carYear.textContent = car.year || '2023';
                 carColor.textContent = car.color || 'Weiß';
                 carClimate.textContent = car.air_conditioning ? 'Ja' : 'Nein';
+            } else {
+                console.error('Car not found for ID:', carId);
+                // Show default car info
+                carImage.src = '/images/cars/default-car.jpg';
+                carTitle.textContent = 'Fahrzeug nicht gefunden';
             }
+        } else {
+            console.error('No car ID found in localStorage or URL');
+            // Show default car info
+            carImage.src = '/images/cars/default-car.jpg';
+            carTitle.textContent = 'Fahrzeug wird geladen...';
         }
     }
 
@@ -139,9 +173,22 @@ document.addEventListener('DOMContentLoaded', () => {
         let totalPrice = 0;
         let summaryHTML = '';
 
-        // Car rental
+        // Try to get car_id from different possible sources
+        let carId = null;
+        
         if (selectedVehicle && selectedVehicle.car_id) {
-            const car = window.LOCAL_CARS.find(c => c.car_id === selectedVehicle.car_id);
+            carId = selectedVehicle.car_id;
+        } else if (selectedVehicle && selectedVehicle.id) {
+            carId = selectedVehicle.id;
+        } else {
+            // Try to get from URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            carId = urlParams.get('car_id');
+        }
+
+        // Car rental
+        if (carId) {
+            const car = window.LOCAL_CARS.find(c => c.car_id == carId);
             if (car) {
                 const days = parseInt(searchData.days) || 1;
                 const carPrice = car.daily_rate * days;
@@ -253,17 +300,11 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Show success message
-        alert('Zahlung erfolgreich verarbeitet! Ihre Reservierung ist bestätigt.');
+        // Store selected payment method
+        localStorage.setItem('selectedPaymentMethod', selectedPaymentMethod);
         
-        // Clear localStorage
-        localStorage.removeItem('selectedVehicle');
-        localStorage.removeItem('searchData');
-        localStorage.removeItem('selectedInsurance');
-        localStorage.removeItem('selectedProducts');
-        
-        // Redirect to home page
-        window.location.href = '/';
+        // Redirect to driver information page
+        window.location.href = '/fahrer-informationen';
     };
 
 });

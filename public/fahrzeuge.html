@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fahrzeuge - Autar</title>
+    <title>Fahrzeuge - AUTOR</title>
     
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
@@ -11,6 +11,8 @@
     
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Flatpickr CSS for date picker -->
+    <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
     <!-- Custom CSS -->
@@ -24,11 +26,17 @@
             --border-gray: #dee2e6;
         }
 
+        html {
+            background-color: #F4E4E0;
+            min-height: 100vh;
+        }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f5f5f5;
+            background-color: #F4E4E0;
             margin-top: 76px;
-            overflow: hidden;
+            overflow: visible;
+            min-height: 100vh;
         }
 
         /* Navbar */
@@ -39,7 +47,7 @@
             top: 0;
             left: 0;
             right: 0;
-            z-index: 1001;
+            z-index: 9999;
         }
 
         .navbar-brand {
@@ -67,22 +75,139 @@
             color: #000;
         }
 
+        .btn-outline-warning {
+            background: #ff6b35;
+            border-color: #ff6b35;
+            color: white;
+        }
+
+        .btn-outline-warning:hover {
+            background: #e55a2b;
+            border-color: #e55a2b;
+            color: white;
+        }
 
 
 
+
+
+        /* Date and Location Selector */
+        .date-location-selector {
+            background: #F4E4E0;
+            padding: 10px 0;
+            margin-top: 76px;
+            border-bottom: 1px solid var(--border-gray);
+        }
+
+        .date-location-selector .filters-card {
+            background: white;
+            border-radius: 6px;
+            padding: 12px;
+            border: 1px solid var(--border-gray);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .date-location-selector .form-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: #ff6b35;
+            margin-bottom: 4px;
+            display: block;
+        }
+
+        .date-location-selector .form-select,
+        .date-location-selector .form-control {
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            background: white;
+            color: #333;
+            font-size: 11px;
+            font-weight: 500;
+            height: 30px;
+            padding: 4px 8px;
+        }
+
+        .date-location-selector .form-select:focus,
+        .date-location-selector .form-control:focus {
+            outline: none;
+            border-color: #ff6b35;
+            box-shadow: 0 0 0 0.1rem rgba(255, 107, 53, 0.15);
+        }
+
+        .date-location-selector .input-group-text {
+            background: #f8f9fa;
+            border: 1px solid #ced4da;
+            border-right: none;
+            cursor: pointer;
+            color: #6c757d;
+            font-size: 11px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+        }
+
+        .date-location-selector .form-control {
+            border-left: none;
+        }
+
+        .date-location-selector .input-group {
+            height: 30px;
+        }
+
+        .date-location-selector .btn-warning {
+            background: #ff6b35;
+            border-color: #ff6b35;
+            color: white;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 4px 12px;
+            height: 30px;
+        }
+
+        /* Highlight animation for all selectors */
+        .pickup-location-highlight.highlight,
+        .dropoff-location-highlight.highlight,
+        .pickup-date-highlight.highlight,
+        .dropoff-date-highlight.highlight {
+            animation: borderBlink 1.5s infinite;
+        }
+
+        @keyframes borderBlink {
+            0%, 50% {
+                border: 2px solid #ff6b35;
+                box-shadow: 0 0 10px rgba(255, 107, 53, 0.5);
+            }
+            51%, 100% {
+                border: 1px solid #ced4da;
+                box-shadow: none;
+            }
+        }
+
+        .date-location-selector .btn-warning:hover {
+            background: #e55a2b;
+            border-color: #e55a2b;
+            color: white;
+        }
+
+        /* Main Content - Add more space for elevated cards */
+        .main-content {
+            margin-top: 0px;
+            padding-top: 5px;
+        }
 
         /* Search Summary */
         .search-summary {
-            background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
-            padding: 10px 0 10px 0;
-            border-bottom: 1px solid var(--border-gray);
+            background: white;
+            padding: 8px 0;
+            border-bottom: 1px solid #dee2e6;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
 
         .search-summary-row {
             display: flex;
             align-items: center;
-            justify-content: flex-start;
-            gap: 20px;
+            justify-content: space-between;
+            gap: 15px;
         }
 
         .search-details {
@@ -94,58 +219,50 @@
         }
 
         .search-detail {
-            display: inline-flex;
+            display: flex;
             align-items: center;
-            gap: 8px;
-            padding: 8px 16px;
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 6px;
-            backdrop-filter: blur(5px);
-            font-size: 14px;
-            color: #2c3e50;
-            font-weight: 600;
-            margin: 0 10px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            gap: 6px;
+            padding: 6px 12px;
+            background: #f8f9fa;
+            border-radius: 4px;
+            font-size: 12px;
+            color: #495057;
+            font-weight: 500;
+            border: 1px solid #dee2e6;
         }
 
         .total-price-display {
-            background: linear-gradient(135deg, #ffc107 0%, #ffca2c 100%);
-            color: #dc3545;
-            padding: 8px 32px;
-            border-radius: 6px;
-            font-size: 16px;
+            background: #ffc107;
+            color: #212529;
+            padding: 6px 16px;
+            border-radius: 4px;
+            font-size: 14px;
             font-weight: 600;
-            border: 1px solid rgba(255, 193, 7, 0.3);
+            border: 1px solid #ffc107;
             white-space: nowrap;
-            min-width: 200px;
             text-align: center;
         }
 
         .btn-weiter {
-            background: linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%);
+            background: #ff6b35;
             border: none;
             color: white;
-            padding: 8px 32px;
-            border-radius: 6px;
-            font-size: 16px;
+            padding: 6px 16px;
+            border-radius: 4px;
+            font-size: 14px;
             font-weight: 600;
-            box-shadow: 0 2px 8px rgba(255, 107, 53, 0.3);
             transition: all 0.3s ease;
             white-space: nowrap;
-            min-width: 150px;
         }
 
         .btn-weiter:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(255, 107, 53, 0.4);
+            background: #e55a2b;
             color: white;
         }
 
         .btn-weiter:disabled {
-            background: #ccc;
+            background: #6c757d;
             cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
         }
 
         /* Filters */
@@ -153,6 +270,8 @@
             background: rgba(255, 255, 255, 0.3);
             padding: 10px 0 10px 0;
             border-bottom: 1px solid var(--border-gray);
+            overflow: visible;
+            z-index: 1000;
         }
 
         .filters-section .row {
@@ -174,6 +293,8 @@
             height: 100%;
             justify-content: flex-end;
             min-height: 80px;
+            overflow: visible;
+            z-index: 1001;
         }
 
         .filter-label {
@@ -212,6 +333,7 @@
             align-items: center;
             margin-bottom: 0;
             transition: all 0.3s ease;
+            z-index: 1002;
         }
 
         .filter-select:focus {
@@ -297,26 +419,28 @@
             border-radius: 12px;
             padding: 15px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-            height: auto;
+            height: fit-content;
             overflow: visible;
             position: sticky;
-            top: 20px;
+            top: 100px;
+            max-height: calc(100vh - 120px);
+            overflow-y: auto;
         }
 
         .options-section {
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         .options-section:last-child {
-            margin-bottom: 15px;
+            margin-bottom: 10px;
         }
 
         .options-title {
             font-size: 14px;
             font-weight: bold;
             color: #333;
-            margin-bottom: 8px;
-            padding-bottom: 6px;
+            margin-bottom: 6px;
+            padding-bottom: 4px;
             border-bottom: 2px solid var(--primary-red);
         }
 
@@ -325,7 +449,7 @@
             display: flex;
             align-items: center;
             gap: 6px;
-            padding: 4px 0;
+            padding: 3px 0;
             border-bottom: 1px solid #eee;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -397,8 +521,8 @@
         .product-item {
             display: flex;
             align-items: center;
-            gap: 8px;
-            padding: 6px 0;
+            gap: 6px;
+            padding: 3px 0;
             border-bottom: 1px solid #eee;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -467,9 +591,10 @@
 
         /* Vehicles Scroll Container */
         .vehicles-scroll-container {
-            height: calc(100vh - 200px);
-            overflow-y: auto;
-            padding-right: 10px;
+            height: auto;
+            overflow-y: visible;
+            padding-right: 0;
+            padding-top: 0px;
         }
 
         /* Vehicle Cards - Smaller Size */
@@ -487,6 +612,30 @@
         .vehicle-card:hover {
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             transform: translateY(-2px);
+        }
+
+        /* Selected vehicle card - stays elevated and highlighted */
+        .vehicle-card.selected {
+            transform: translateY(-8px) !important;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
+            border: 3px solid #ff6b35 !important;
+            border-radius: 8px !important;
+        }
+
+        .vehicle-card.selected .vehicle-image-container {
+            border-radius: 6px 6px 0 0;
+        }
+
+        .vehicle-card.selected .vehicle-content {
+            border-radius: 0 0 6px 6px;
+        }
+
+        /* When hovering over selected card, maintain the selected state */
+        .vehicle-card.selected:hover {
+            transform: translateY(-8px) !important;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
+            border: 3px solid #ff6b35 !important;
+            border-radius: 8px !important;
         }
 
         .vehicle-image-container {
@@ -697,25 +846,102 @@
             font-size: 18px;
         }
 
-        /* Floating Privacy Button */
-        .privacy-button {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            background: #007bff;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            padding: 10px;
+
+
+        /* Footer Styles */
+        .footer-section {
+            background: #333;
+            color: #fff;
+            padding: 15px 0 10px 0;
+            margin-top: 30px;
+            border-top: 2px solid #ff6b35;
+        }
+
+        .footer-content {
+            text-align: center;
+        }
+
+        .footer-warning {
+            margin-bottom: 10px;
+        }
+
+        .footer-warning p {
             font-size: 12px;
-            cursor: pointer;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            line-height: 1.4;
+            color: #ccc;
+            margin: 0;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .footer-warning strong {
+            color: #fff;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .footer-link {
+            color: #ff6b35;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 12px;
+            transition: color 0.3s ease;
+        }
+
+        .footer-link:hover {
+            color: #e55a2b;
+            text-decoration: underline;
+        }
+
+        .footer-separator {
+            color: #666;
+            font-weight: 600;
         }
 
         /* Responsive */
         @media (max-width: 768px) {
             body {
                 margin-top: 60px;
+            }
+            
+            .date-location-selector {
+                margin-top: 60px;
+                padding: 8px 0;
+            }
+            
+            .date-location-selector .filters-card {
+                padding: 10px;
+            }
+            
+            .date-location-selector .form-label {
+                font-size: 10px;
+                margin-bottom: 3px;
+            }
+            
+            .date-location-selector .form-select,
+            .date-location-selector .form-control {
+                font-size: 10px;
+                height: 28px;
+                padding: 3px 6px;
+            }
+            
+            .date-location-selector .btn-warning {
+                font-size: 10px;
+                padding: 3px 10px;
+                height: 28px;
+            }
+            
+            .date-location-selector .input-group-text {
+                height: 28px;
+            }
+            
+            .date-location-selector .input-group {
+                height: 28px;
             }
             
             .reservation-steps {
@@ -738,6 +964,12 @@
                 flex-direction: column;
                 align-items: center;
                 gap: 10px;
+            }
+            
+            .btn-outline-warning {
+                margin-bottom: 10px;
+                font-size: 10px !important;
+                padding: 3px 8px !important;
             }
             
             .filter-item {
@@ -763,6 +995,7 @@
                 height: auto;
                 overflow-y: visible;
                 top: auto;
+                max-height: none;
             }
 
             .vehicles-scroll-container {
@@ -812,38 +1045,88 @@
         <div class="container">
             <a class="navbar-brand fw-bold fs-3 text-dark" href="/">
                 <i class="bi bi-car-front text-warning me-2"></i>
-                Autar
+                AUT<span class="text-warning">OR</span>
             </a>
             
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link fw-medium" href="/fahrzeuge">Fahrzeuge</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link fw-medium" href="/ueber-uns">Über uns</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link fw-medium" href="/kontakt">Kontakt</a>
-                    </li>
-                    <li class="nav-item ms-2">
-                        <a class="btn btn-warning fw-medium" href="/login">Anmelden</a>
-                    </li>
-                </ul>
-            </div>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                                            <a class="btn btn-warning fw-medium text-white" href="/fahrzeuge?clear=1">Autos</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ms-auto" id="auth-buttons-container">
+            </ul>
+        </div>
         </div>
     </nav>
 
+    <!-- Date and Location Selector -->
+    <section class="date-location-selector" id="date-location-selector" style="display: none;">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-12 col-xl-10">
+                    <div class="filters-card">
+                        <form id="date-location-form" novalidate>
+                            <div class="row g-3 align-items-end">
+                                <div class="col-12 col-md-6 col-lg-3">
+                                    <label class="form-label">Abholort</label>
+                                    <select id="pickup-location-selector" class="form-select pickup-location-highlight" required lang="de">
+                                        <option value="">Standort wählen</option>
+                                        <option value="1">Berlin Hauptbahnhof</option>
+                                        <option value="2">München Flughafen</option>
+                                        <option value="3">Hamburg Zentrum</option>
+                                        <option value="4">Köln Dom</option>
+                                        <option value="5">Frankfurt Flughafen</option>
+                                    </select>
+                                </div>
+                                <div class="col-12 col-md-6 col-lg-3">
+                                    <label class="form-label">Rückgabeort</label>
+                                    <select id="dropoff-location-selector" class="form-select dropoff-location-highlight" required lang="de">
+                                        <option value="">Standort wählen</option>
+                                        <option value="1">Berlin Hauptbahnhof</option>
+                                        <option value="2">München Flughafen</option>
+                                        <option value="3">Hamburg Zentrum</option>
+                                        <option value="4">Köln Dom</option>
+                                        <option value="5">Frankfurt Flughafen</option>
+                                    </select>
+                                </div>
+                                <div class="col-6 col-md-3 col-lg-2">
+                                    <label class="form-label">Abholdatum</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text calendar-trigger-selector" data-target="pickup-date-selector"><i class="bi bi-calendar3 text-warning"></i></span>
+                                        <input type="text" id="pickup-date-selector" class="form-control pickup-date-highlight" inputmode="numeric" pattern="\d{2}\.\d{2}\.\d{4}" maxlength="10" placeholder="tt.mm.jjjj" autocomplete="off" required>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-3 col-lg-2">
+                                    <label class="form-label">Rückgabedatum</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text calendar-trigger-selector" data-target="dropoff-date-selector"><i class="bi bi-calendar3 text-warning"></i></span>
+                                        <input type="text" id="dropoff-date-selector" class="form-control dropoff-date-highlight" inputmode="numeric" pattern="\d{2}\.\d{2}\.\d{4}" maxlength="10" placeholder="tt.mm.jjjj" autocomplete="off" required>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-12 col-lg-2">
+                                    <button type="submit" class="btn btn-warning w-100">
+                                        <i class="bi bi-search me-1"></i>
+                                        Aktualisieren
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
 
     <!-- Search Summary -->
     <section class="search-summary" id="search-summary" style="display: none;">
         <div class="container">
-            <div class="search-summary-row" style="margin-left: -15px;">
+            <div class="search-summary-row">
                 <div class="search-details" id="search-details">
                     <!-- Search details will be populated here -->
                 </div>
@@ -923,7 +1206,7 @@
     </section>
 
     <!-- Main Content -->
-    <section class="py-4 main-content">
+    <section class="py-4 main-content" style="background-color: #F4E4E0;">
         <div class="container">
             <div class="row">
                 <!-- Left Sidebar - Insurance and Products -->
@@ -959,16 +1242,29 @@
         </div>
     </section>
 
-    <!-- Floating Privacy Button -->
-    <button class="privacy-button">
-        <i class="bi bi-shield-check me-1"></i>
-        Datenschutz - Bedingungen
-    </button>
+    <!-- Footer -->
+    <footer class="footer-section">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-warning">
+                    <p><strong>© 2025 Alle Rechte vorbehalten.</strong> Dies ist eine Beispiel-Website für Übungszwecke vorbereitet. Es ist keine echte Autovermietungs-Website.</p>
+                </div>
+                <div class="footer-links">
+                    <a href="#" class="footer-link">Datenschutz</a>
+                    <span class="footer-separator">-</span>
+                    <a href="#" class="footer-link">Bedingungen</a>
+                </div>
+            </div>
+        </div>
+    </footer>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Flatpickr JS for date picker -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <!-- Custom JS -->
     <script src="js/data/cars.js"></script>
     <script src="js/fahrzeuge.js"></script>
+    <script src="js/navbar.js"></script>
 </body>
 </html>

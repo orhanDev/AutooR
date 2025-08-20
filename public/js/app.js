@@ -1,4 +1,4 @@
-// Autar - Modern Car Rental JavaScript
+// AUTOR - Modern Car Rental JavaScript
 
 document.addEventListener('DOMContentLoaded', () => {
     // Form elements
@@ -296,10 +296,10 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         console.log('Form data:', formData);
-        console.log('Redirecting to /fahrzeuge...');
+        console.log('Redirecting to /fahrzeuge2...');
         
         localStorage.setItem('searchData', JSON.stringify(formData));
-        window.location.href = '/fahrzeuge';
+        window.location.href = '/fahrzeuge2';
     });
 
     // Clear validation styling when user starts typing/selecting
@@ -338,6 +338,17 @@ document.addEventListener('DOMContentLoaded', () => {
     // Clear old search data and load popular vehicles
     clearOldSearchData();
     loadPopularVehicles();
+    
+    // Check if there's a previously selected vehicle and highlight it
+    const selectedCarId = localStorage.getItem('selectedCarId');
+    if (selectedCarId) {
+        setTimeout(() => {
+            const selectedCard = document.querySelector(`.vehicle-card[onclick*="rentVehicle(${selectedCarId})"]`);
+            if (selectedCard) {
+                selectedCard.classList.add('selected');
+            }
+        }, 100); // Small delay to ensure cards are loaded
+    }
 });
 
 // Load popular vehicles from local data
@@ -349,8 +360,8 @@ function loadPopularVehicles() {
     const popularVehicles = LOCAL_CARS.slice(0, 12);
 
     container.innerHTML = popularVehicles.map(car => `
-        <div class="col-lg-4 col-md-6 mb-4">
-            <div class="vehicle-card h-100">
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="vehicle-card h-100" onclick="rentVehicle(${car.car_id})">
                 <div class="vehicle-image" style="background-image: url('${car.image_url}')">
                     <div class="vehicle-badges">
                         <span class="badge bg-warning text-dark fw-semibold">Beliebt</span>
@@ -365,7 +376,7 @@ function loadPopularVehicles() {
                         <span class="vehicle-spec" title="Sitze"><i class="bi bi-people text-warning"></i>${car.seating_capacity}</span>
                     </div>
                     <div class="vehicle-actions d-flex gap-2 mt-3">
-                        <button class="btn btn-warning flex-fill" onclick="rentVehicle(${car.car_id})">
+                        <button class="btn btn-warning flex-fill" onclick="event.stopPropagation(); rentVehicle(${car.car_id})">
                             <i class="bi bi-bag-check me-1"></i>Mieten
                         </button>
                     </div>
@@ -379,34 +390,110 @@ function loadPopularVehicles() {
 
 // Rent vehicle function
 function rentVehicle(carId) {
-    // Store selected car ID
+    // Find the car data
+    const car = LOCAL_CARS.find(c => c.car_id == carId);
+    
+    // Store selected vehicle data in the correct format
+    if (car) {
+        const vehicleData = {
+            car_id: car.car_id,
+            make: car.make,
+            model: car.model,
+            daily_rate: car.daily_rate
+        };
+        localStorage.setItem('selectedVehicle', JSON.stringify(vehicleData));
+    }
+    
     localStorage.setItem('selectedCarId', carId);
     localStorage.setItem('actionType', 'rent');
+    
+    // Remove selected class from all vehicle cards
+    document.querySelectorAll('.vehicle-card').forEach(card => {
+        card.classList.remove('selected');
+    });
+    
+    // Add selected class to clicked vehicle card
+    const clickedCard = document.querySelector(`.vehicle-card[onclick*="rentVehicle(${carId})"]`);
+    if (clickedCard) {
+        clickedCard.classList.add('selected');
+    }
     
     // Check if search data exists
     const searchData = localStorage.getItem('searchData');
     
     if (!searchData) {
-        // No search data - show notification and scroll to form
-        showNotification('Bitte wählen Sie zuerst Abhol- und Rückgabeort sowie Datum aus, bevor Sie ein Fahrzeug mieten.', 'warning');
+        // No search data - highlight pickup location selector
+        highlightPickupLocation();
         
-        // Scroll to search form
-        const searchForm = document.getElementById('car-search-form');
-        if (searchForm) {
-            searchForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            
-            // Highlight the form briefly
-            searchForm.style.boxShadow = '0 0 20px rgba(220, 53, 69, 0.3)';
-            setTimeout(() => {
-                searchForm.style.boxShadow = '';
-            }, 3000);
-        }
+        // Smooth scroll to top of the page
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
         
         return;
     }
     
-    // Search data exists - redirect to fahrzeuge page
-    window.location.href = '/fahrzeuge';
+    // Search data exists - redirect to fahrzeuge2 page
+    window.location.href = '/fahrzeuge2';
+}
+
+// Highlight pickup location function
+function highlightPickupLocation() {
+    const pickupLocationSelect = document.getElementById('pickup-location');
+    const dropoffLocationSelect = document.getElementById('dropoff-location');
+    const pickupDateGroup = document.querySelector('#pickup-date').closest('.input-group');
+    const dropoffDateGroup = document.querySelector('#dropoff-date').closest('.input-group');
+    
+    console.log('highlightPickupLocation called');
+    
+    if (pickupLocationSelect) {
+        // Add highlight class to pickup location
+        pickupLocationSelect.classList.add('highlight');
+        console.log('Pickup location highlight added');
+        
+        // Remove highlight after 5 seconds
+        setTimeout(() => {
+            pickupLocationSelect.classList.remove('highlight');
+            console.log('Pickup location highlight removed');
+        }, 5000);
+    }
+    
+    if (dropoffLocationSelect) {
+        // Add highlight class to dropoff location
+        dropoffLocationSelect.classList.add('highlight');
+        console.log('Dropoff location highlight added');
+        
+        // Remove highlight after 5 seconds
+        setTimeout(() => {
+            dropoffLocationSelect.classList.remove('highlight');
+            console.log('Dropoff location highlight removed');
+        }, 5000);
+    }
+    
+    if (pickupDateGroup) {
+        // Add highlight class to pickup date group
+        pickupDateGroup.classList.add('highlight');
+        console.log('Pickup date group highlight added');
+        
+        // Remove highlight after 5 seconds
+        setTimeout(() => {
+            pickupDateGroup.classList.remove('highlight');
+            console.log('Pickup date group highlight removed');
+        }, 5000);
+    }
+    
+    if (dropoffDateGroup) {
+        // Add highlight class to dropoff date group
+        dropoffDateGroup.classList.add('highlight');
+        console.log('Dropoff date group highlight added');
+        
+        // Remove highlight after 5 seconds
+        setTimeout(() => {
+            dropoffDateGroup.classList.remove('highlight');
+            console.log('Dropoff date group highlight removed');
+        }, 5000);
+    }
 }
 
 // Show notification function

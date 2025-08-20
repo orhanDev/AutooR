@@ -13,6 +13,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const searchSummary = document.getElementById('search-summary');
     const searchDetails = document.getElementById('search-details');
 
+    // Date and location selector elements
+    const dateLocationSelector = document.getElementById('date-location-selector');
+    const dateLocationForm = document.getElementById('date-location-form');
+    const pickupLocationSelector = document.getElementById('pickup-location-selector');
+    const dropoffLocationSelector = document.getElementById('dropoff-location-selector');
+    const pickupDateSelector = document.getElementById('pickup-date-selector');
+    const dropoffDateSelector = document.getElementById('dropoff-date-selector');
+
     // Options elements
     const insuranceOptions = document.getElementById('insurance-options');
     const productOptions = document.getElementById('product-options');
@@ -120,10 +128,23 @@ document.addEventListener('DOMContentLoaded', () => {
         '5': 'Frankfurt Flughafen'
     };
 
+    // Check if we should clear selections (coming from Autos button)
+    const urlParams = new URLSearchParams(window.location.search);
+    const shouldClear = urlParams.get('clear');
+    
+    if (shouldClear === '1') {
+        console.log('Clearing all selections as requested by Autos button');
+        clearAllSelections();
+        // Remove the clear parameter from URL to prevent clearing on refresh
+        const newUrl = window.location.pathname;
+        window.history.replaceState({}, document.title, newUrl);
+    }
+    
     // Initialize page
     loadSearchData();
     initializeFilters();
     loadVehicles();
+    initializeDateLocationSelector();
     
     // Check if elements exist before loading options
     if (insuranceOptions) {
@@ -140,7 +161,10 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error('Product options element not found');
     }
     
-    loadSavedSelections();
+    // Only load saved selections if we're not clearing
+    if (shouldClear !== '1') {
+        loadSavedSelections();
+    }
     
     // Update select styles on page load
     updateSelectStyle();
@@ -161,16 +185,176 @@ document.addEventListener('DOMContentLoaded', () => {
     sortFilter.addEventListener('change', updateSelectStyle);
     transmissionFilter.addEventListener('change', updateSelectStyle);
 
+    // Initialize date and location selector
+    function initializeDateLocationSelector() {
+        // Date helpers (dd.mm.yyyy)
+        function parseGermanDate(str) {
+            const m = /^(\d{2})\.(\d{2})\.(\d{4})$/.exec(String(str || '').trim());
+            if (!m) return null;
+            const day = Number(m[1]);
+            const month = Number(m[2]) - 1;
+            const year = Number(m[3]);
+            const d = new Date(year, month, day);
+            if (d.getFullYear() !== year || d.getMonth() !== month || d.getDate() !== day) return null;
+            return d;
+        }
+
+        function formatGermanDate(date) {
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const year = date.getFullYear();
+            return `${day}.${month}.${year}`;
+        }
+
+        const today = new Date();
+        const tomorrow = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
+
+        // Initialize Flatpickr for date selectors
+        if (window.flatpickr) {
+            // de locale
+            if (window.flatpickr.l10ns && window.flatpickr.l10ns.de) {
+                window.flatpickr.localize(window.flatpickr.l10ns.de);
+            }
+
+            const fpPickupSelector = window.flatpickr(pickupDateSelector, {
+                dateFormat: 'd.m.Y',
+                allowInput: true,
+                defaultDate: null,
+                minDate: today,
+                disableMobile: true,
+                autoFillDefaultTime: false,
+                clickOpens: true,
+                allowInvalidPreload: false,
+                disable: [
+                    function(date) {
+                        return date < today;
+                    }
+                ],
+                onChange: function(selectedDates) {
+                    if (selectedDates && selectedDates[0]) {
+                        pickupDateSelector.value = formatGermanDate(selectedDates[0]);
+                        ensureValidDateInputs();
+                        if (fpDropoffSelector) {
+                            const min = new Date(selectedDates[0].getFullYear(), selectedDates[0].getMonth(), selectedDates[0].getDate() + 1);
+                            fpDropoffSelector.set('minDate', min);
+                        }
+                    }
+                }
+            });
+
+            const fpDropoffSelector = window.flatpickr(dropoffDateSelector, {
+                dateFormat: 'd.m.Y',
+                allowInput: true,
+                defaultDate: null,
+                minDate: tomorrow,
+                disableMobile: true,
+                autoFillDefaultTime: false,
+                clickOpens: true,
+                allowInvalidPreload: false,
+                disable: [
+                    function(date) {
+                        const pu = parseGermanDate(pickupDateSelector.value) || today;
+                        const min = new Date(pu.getFullYear(), pu.getMonth(), pu.getDate() + 1);
+                        return date < min;
+                    }
+                ],
+                onChange: function(selectedDates) {
+                    if (selectedDates && selectedDates[0]) {
+                        dropoffDateSelector.value = formatGermanDate(selectedDates[0]);
+                    }
+                }
+            });
+
+            // Open Flatpickr on calendar icon click
+            document.querySelectorAll('.calendar-trigger-selector').forEach(trigger => {
+                trigger.addEventListener('click', () => {
+                    const targetId = trigger.getAttribute('data-target');
+                    const input = document.getElementById(targetId);
+                    if (!input) return;
+                    input.focus();
+                    if (targetId === 'pickup-date-selector' && fpPickupSelector) fpPickupSelector.open();
+                    if (targetId === 'dropoff-date-selector' && fpDropoffSelector) fpDropoffSelector.open();
+                });
+            });
+        }
+
+        // Form submission
+        dateLocationForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Clear previous highlights
+            clearAllHighlights();
+            
+            // Check fields in order and highlight the first missing one
+            if (!pickupLocationSelector.value) {
+                highlightField(pickupLocationSelector, 'pickup-location-highlight');
+                return;
+            }
+            
+            if (!dropoffLocationSelector.value) {
+                highlightField(dropoffLocationSelector, 'dropoff-location-highlight');
+                return;
+            }
+            
+            const pickupDateValid = parseGermanDate(pickupDateSelector.value) !== null;
+            if (!pickupDateValid) {
+                highlightField(pickupDateSelector, 'pickup-date-highlight');
+                return;
+            }
+            
+            const dropoffDateValid = parseGermanDate(dropoffDateSelector.value) !== null;
+            if (!dropoffDateValid) {
+                highlightField(dropoffDateSelector, 'dropoff-date-highlight');
+                return;
+            }
+
+            // All fields are valid
+            const formData = {
+                pickupLocation: pickupLocationSelector.value,
+                dropoffLocation: dropoffLocationSelector.value,
+                pickupDate: pickupDateSelector.value,
+                dropoffDate: dropoffDateSelector.value
+            };
+
+            localStorage.setItem('searchData', JSON.stringify(formData));
+            searchData = formData;
+            displaySearchSummary();
+            dateLocationSelector.style.display = 'none';
+            
+            // Show success message
+            showSuccessNotification('Reisedaten erfolgreich aktualisiert!');
+        });
+
+        function ensureValidDateInputs() {
+            const pu = parseGermanDate(pickupDateSelector.value);
+            if (!pu) return;
+            const minDrop = new Date(pu.getFullYear(), pu.getMonth(), pu.getDate() + 1);
+            const dr = parseGermanDate(dropoffDateSelector.value);
+            if (!dr || dr <= pu) {
+                dropoffDateSelector.value = formatGermanDate(minDrop);
+            }
+        }
+    }
+
     // Load search data from localStorage
     function loadSearchData() {
         const storedData = localStorage.getItem('searchData');
         if (storedData) {
             try {
                 searchData = JSON.parse(storedData);
-                displaySearchSummary();
+                // Only display search summary on /fahrzeuge2 page
+                if (window.location.pathname === '/fahrzeuge2') {
+                    displaySearchSummary();
+                } else {
+                    // On /fahrzeuge page, show date/location selector
+                    dateLocationSelector.style.display = 'block';
+                }
             } catch (e) {
                 console.error('Error parsing search data:', e);
             }
+        } else {
+            // No search data - show date/location selector
+            dateLocationSelector.style.display = 'block';
         }
     }
 
@@ -192,6 +376,11 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
 
         searchSummary.style.display = 'block';
+        
+        // Hide date/location selector when search data is available
+        if (dateLocationSelector) {
+            dateLocationSelector.style.display = 'none';
+        }
     }
 
     // Initialize filters with data
@@ -258,24 +447,84 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('Product options loaded');
     }
 
+    // Clear all selections (used when coming from Autos button)
+    function clearAllSelections() {
+        console.log('Clearing all selections...');
+        
+        // Clear localStorage
+        localStorage.removeItem('selectedVehicle');
+        localStorage.removeItem('selectedCarId');
+        localStorage.removeItem('selectedInsurance');
+        localStorage.removeItem('selectedProducts');
+        
+        // Reset variables
+        selectedVehicle = null;
+        selectedInsurance = null;
+        selectedProducts = [];
+        
+        // Clear UI highlights
+        document.querySelectorAll('.vehicle-card').forEach(card => {
+            card.classList.remove('selected');
+            card.style.border = '1px solid var(--border-gray)';
+            card.style.transform = 'none';
+            card.style.boxShadow = 'none';
+        });
+        
+        // Clear insurance highlights
+        document.querySelectorAll('.insurance-item').forEach(item => {
+            item.classList.remove('selected');
+        });
+        
+        // Clear product highlights
+        document.querySelectorAll('.product-item').forEach(item => {
+            item.classList.remove('selected');
+        });
+        
+        // Update UI
+        updateTotalPrice();
+        updateContinueButton();
+        
+        console.log('All selections cleared');
+    }
+
     // Load saved selections from localStorage
     function loadSavedSelections() {
         console.log('Loading saved selections...');
         
-        // Load vehicle selection
+        // Load vehicle selection - try multiple sources
+        let vehicleData = null;
+        
+        // First try selectedVehicle
         const savedVehicle = localStorage.getItem('selectedVehicle');
         if (savedVehicle) {
             try {
-                const vehicleData = JSON.parse(savedVehicle);
-                selectedVehicle = LOCAL_CARS.find(car => car.car_id == vehicleData.car_id);
-                if (selectedVehicle) {
-                    console.log('Loaded vehicle selection:', selectedVehicle.make, selectedVehicle.model);
-                    highlightSelectedVehicle();
-                }
+                vehicleData = JSON.parse(savedVehicle);
+                console.log('Found selectedVehicle data:', vehicleData);
             } catch (e) {
-                console.error('Error parsing saved vehicle:', e);
-                selectedVehicle = null;
+                console.error('Error parsing selectedVehicle:', e);
             }
+        }
+        
+        // If no selectedVehicle, try selectedCarId
+        if (!vehicleData) {
+            const selectedCarId = localStorage.getItem('selectedCarId');
+            if (selectedCarId) {
+                console.log('Found selectedCarId:', selectedCarId);
+                vehicleData = { car_id: selectedCarId };
+            }
+        }
+        
+        // Load the vehicle
+        if (vehicleData && vehicleData.car_id) {
+            selectedVehicle = LOCAL_CARS.find(car => car.car_id == vehicleData.car_id);
+            if (selectedVehicle) {
+                console.log('Loaded vehicle selection:', selectedVehicle.make, selectedVehicle.model);
+                highlightSelectedVehicle();
+            } else {
+                console.error('Vehicle not found for car_id:', vehicleData.car_id);
+            }
+        } else {
+            console.log('No vehicle data found in localStorage');
         }
         
         // Load insurance selection
@@ -313,16 +562,22 @@ document.addEventListener('DOMContentLoaded', () => {
     function highlightSelectedVehicle() {
         console.log('Highlighting vehicle, selected:', selectedVehicle);
         
-        // Remove all highlights
+        // Remove all highlights and selected classes
         document.querySelectorAll('.vehicle-card').forEach(card => {
+            card.classList.remove('selected');
             card.style.border = '1px solid var(--border-gray)';
+            card.style.transform = 'none';
+            card.style.boxShadow = 'none';
         });
 
         // Highlight selected vehicle
         if (selectedVehicle) {
             const vehicleCard = document.querySelector(`[onclick*="selectVehicle(${selectedVehicle.car_id})"]`).closest('.vehicle-card');
             if (vehicleCard) {
-                vehicleCard.style.border = '2px solid var(--primary-red)';
+                vehicleCard.classList.add('selected');
+                vehicleCard.style.border = '3px solid #ff6b35';
+                vehicleCard.style.transform = 'translateY(-8px)';
+                vehicleCard.style.boxShadow = '0 8px 25px rgba(0, 0, 0, 0.15)';
                 console.log('Vehicle card highlighted:', vehicleCard);
             } else {
                 console.error('Vehicle card not found for:', selectedVehicle.car_id);
@@ -488,6 +743,30 @@ document.addEventListener('DOMContentLoaded', () => {
     window.selectVehicle = function(carId) {
         console.log('Vehicle clicked:', carId);
         
+        // Remove selected class from all vehicle cards
+        document.querySelectorAll('.vehicle-card').forEach(card => {
+            card.classList.remove('selected');
+            card.style.border = '1px solid var(--border-gray)';
+            card.style.transform = 'none';
+            card.style.boxShadow = 'none';
+        });
+        
+        // Add selected class to clicked vehicle card
+        const clickedCard = document.querySelector(`.vehicle-card[onclick*="selectVehicle(${carId})"]`);
+        if (clickedCard) {
+            clickedCard.classList.add('selected');
+            clickedCard.style.border = '3px solid #ff6b35';
+            clickedCard.style.transform = 'translateY(-8px)';
+            clickedCard.style.boxShadow = '0 8px 25px rgba(0, 0, 0, 0.15)';
+        }
+        
+        // Check if search data is available
+        if (!searchData) {
+            // Show date/location selector and highlight pickup location
+            highlightPickupLocation();
+            return;
+        }
+        
         const vehicle = LOCAL_CARS.find(car => car.car_id == carId);
         if (vehicle) {
             selectedVehicle = vehicle;
@@ -521,16 +800,16 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log('Insurance deselected');
         } else {
             // Select the clicked insurance
-            selectedInsurance = insuranceData.find(ins => ins.id === insuranceId);
+            const insurance = insuranceData.find(ins => ins.id === insuranceId);
             
             // Store insurance data in correct format
-            if (selectedInsurance) {
-                const insuranceData = {
-                    id: selectedInsurance.id,
-                    name: selectedInsurance.title,
-                    daily_rate: selectedInsurance.price
+            if (insurance) {
+                selectedInsurance = {
+                    id: insurance.id,
+                    name: insurance.title,
+                    daily_rate: insurance.price
                 };
-                localStorage.setItem('selectedInsurance', JSON.stringify(insuranceData));
+                localStorage.setItem('selectedInsurance', JSON.stringify(selectedInsurance));
                 console.log('Insurance selected:', insuranceId);
             }
         }
@@ -551,12 +830,12 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             const product = productData.find(prod => prod.id === productId);
             if (product) {
-                const productData = {
+                const newProduct = {
                     id: product.id,
                     name: product.title,
                     daily_rate: product.price
                 };
-                selectedProducts.push(productData);
+                selectedProducts.push(newProduct);
                 console.log('Product added:', productId);
             }
         }
@@ -570,31 +849,46 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateTotalPrice() {
         let total = 0;
         
+        console.log('Updating total price...');
+        console.log('Selected vehicle:', selectedVehicle);
+        console.log('Selected insurance:', selectedInsurance);
+        console.log('Selected products:', selectedProducts);
+        
         // Add vehicle price
-        if (selectedVehicle) {
-            total += selectedVehicle.daily_rate;
+        if (selectedVehicle && selectedVehicle.daily_rate) {
+            const vehiclePrice = parseFloat(selectedVehicle.daily_rate) || 0;
+            total += vehiclePrice;
+            console.log('Vehicle price added:', vehiclePrice);
         }
         
         // Add insurance price
-        if (selectedInsurance) {
-            total += selectedInsurance.daily_rate;
+        if (selectedInsurance && selectedInsurance.daily_rate) {
+            const insurancePrice = parseFloat(selectedInsurance.daily_rate) || 0;
+            total += insurancePrice;
+            console.log('Insurance price added:', insurancePrice);
         }
         
         // Add product prices
         selectedProducts.forEach(product => {
-            total += product.daily_rate;
+            if (product && product.daily_rate) {
+                const productPrice = parseFloat(product.daily_rate) || 0;
+                total += productPrice;
+                console.log('Product price added:', productPrice);
+            }
         });
+        
+        console.log('Total price calculated:', total);
         
         // Update button display
         const buttonTotalPrice = document.getElementById('button-total-price');
         if (buttonTotalPrice) {
-            buttonTotalPrice.textContent = `Gesamtbetrag: €${total}`;
+            buttonTotalPrice.textContent = `Gesamtbetrag: €${total.toFixed(2)}`;
         }
         
         // Update total price display in search summary
         const totalPriceDisplay = document.getElementById('total-price-display');
         if (totalPriceDisplay) {
-            totalPriceDisplay.textContent = `Gesamtbetrag: €${total}`;
+            totalPriceDisplay.textContent = `Gesamtbetrag: €${total.toFixed(2)}`;
         }
     }
 
@@ -610,6 +904,8 @@ document.addEventListener('DOMContentLoaded', () => {
             console.warn('Continue button not found');
         }
     }
+
+
 
     // Continue to payment function
     window.continueToPayment = function() {
@@ -648,6 +944,57 @@ document.addEventListener('DOMContentLoaded', () => {
         
         console.log('All selections cleared');
     };
+
+
+
+    // Highlight field function
+    function highlightField(field, highlightClass) {
+        if (field) {
+            // Add highlight class
+            field.classList.add('highlight');
+            
+            // Remove highlight after 5 seconds
+            setTimeout(() => {
+                field.classList.remove('highlight');
+            }, 5000);
+        }
+    }
+
+    // Clear all highlights function
+    function clearAllHighlights() {
+        const fields = [
+            document.getElementById('pickup-location-selector'),
+            document.getElementById('dropoff-location-selector'),
+            document.getElementById('pickup-date-selector'),
+            document.getElementById('dropoff-date-selector')
+        ];
+        
+        fields.forEach(field => {
+            if (field) {
+                field.classList.remove('highlight');
+            }
+        });
+    }
+
+    // Highlight pickup location function
+    function highlightPickupLocation() {
+        if (!dateLocationSelector) return;
+        
+        // Show the date/location selector
+        dateLocationSelector.style.display = 'block';
+        
+        // Get the pickup location selector
+        const pickupLocationSelector = document.getElementById('pickup-location-selector');
+        if (pickupLocationSelector) {
+            // Add highlight class
+            pickupLocationSelector.classList.add('highlight');
+            
+            // Remove highlight after 5 seconds
+            setTimeout(() => {
+                pickupLocationSelector.classList.remove('highlight');
+            }, 5000);
+        }
+    }
 
     // Show success notification function
     function showSuccessNotification(message) {
@@ -733,5 +1080,21 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         `;
         document.head.appendChild(slideUpStyle);
+    }
+    
+    // Check if there's a previously selected vehicle and highlight it
+    const selectedVehicleData = localStorage.getItem('selectedVehicle');
+    if (selectedVehicleData) {
+        try {
+            const vehicleData = JSON.parse(selectedVehicleData);
+            setTimeout(() => {
+                const selectedCard = document.querySelector(`.vehicle-card[onclick*="selectVehicle(${vehicleData.car_id})"]`);
+                if (selectedCard) {
+                    selectedCard.classList.add('selected');
+                }
+            }, 100); // Small delay to ensure cards are loaded
+        } catch (e) {
+            console.error('Error parsing selected vehicle data:', e);
+        }
     }
 });
