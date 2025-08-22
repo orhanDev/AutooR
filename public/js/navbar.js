@@ -44,7 +44,7 @@ function updateNavbar() {
             // On register page - show only login button
             authButtonsContainer.innerHTML = `
                 <li class="nav-item ms-2">
-                    <a class="btn btn-warning fw-medium" href="/login">Anmelden</a>
+                    <a class="btn btn-outline-warning fw-medium" href="/login">Anmelden</a>
                 </li>
             `;
         } else if (currentPage === '/login') {
@@ -59,7 +59,7 @@ function updateNavbar() {
                     <a class="btn btn-outline-warning fw-medium" href="/register">Registrieren</a>
                 </li>
                 <li class="nav-item ms-2">
-                    <a class="btn btn-warning fw-medium" href="/login">Anmelden</a>
+                    <a class="btn btn-outline-warning fw-medium" href="/login">Anmelden</a>
                 </li>
             `;
         }

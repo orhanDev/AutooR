@@ -231,6 +231,13 @@ document.addEventListener('DOMContentLoaded', async () => {
   openSummary();
 
   document.getElementById('btn-secure-checkout').addEventListener('click', () => {
+    // Check if terms checkbox is checked
+    const termsCheckbox = document.getElementById('terms-accepted');
+    if (!termsCheckbox || !termsCheckbox.checked) {
+      alert('Bitte markieren Sie dieses Feld, um fortzufahren');
+      return;
+    }
+    
     proceedToReview();
   });
 

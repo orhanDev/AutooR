@@ -151,7 +151,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 <!-- Terms -->
                                 <div class="col-12">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="paymentTerms" required>
+                                        <input class="form-check-input" type="checkbox" id="paymentTerms">
                                         <label class="form-check-label" for="paymentTerms">
                                             Ich akzeptiere die <a href="#" class="text-warning">Zahlungsbedingungen</a> und 
                                             <a href="#" class="text-warning">Datenschutzerklärung</a> *
@@ -345,6 +345,13 @@ document.addEventListener('DOMContentLoaded', () => {
     
     async function handlePaymentSubmit() {
         try {
+            // Check if terms checkbox is checked
+            const termsCheckbox = document.getElementById('paymentTerms');
+            if (!termsCheckbox || !termsCheckbox.checked) {
+                alert('Bitte markieren Sie dieses Feld, um fortzufahren');
+                return;
+            }
+            
             const formData = new FormData(document.getElementById('payment-form'));
             const paymentData = {
                 paymentMethod: formData.get('paymentMethod'),

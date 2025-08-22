@@ -131,32 +131,33 @@ body {
 }
 
 .btn-warning {
-    background-color: var(--primary-orange) !important;
-    border-color: var(--primary-orange) !important;
-    color: var(--white) !important;
+    background-color: #FFA000 !important;
+    border-color: #FFA000 !important;
+    color: #ffffff !important;
     font-weight: 600;
     transition: all 0.3s ease;
 }
 
 .btn-warning:hover {
-    background-color: var(--primary-orange-dark) !important;
-    border-color: var(--primary-orange-dark) !important;
+    background-color: #E68900 !important;
+    border-color: #E68900 !important;
+    color: #ffffff !important;
     transform: translateY(-2px);
     box-shadow: var(--shadow-lg);
 }
 
 .btn-outline-warning {
-    background: #ff6b35;
-    border-color: #ff6b35;
-    color: white;
+    background: #FFA000;
+    border-color: #FFA000;
+    color: #ffffff;
     font-weight: 600;
     transition: all 0.3s ease;
 }
 
 .btn-outline-warning:hover {
-    background: #e55a2b;
-    border-color: #e55a2b;
-    color: white;
+    background: #E68900;
+    border-color: #E68900;
+    color: #ffffff;
     transform: translateY(-2px);
     box-shadow: var(--shadow-lg);
 }
@@ -170,12 +171,12 @@ body {
 }
 
         .btn-outline-danger:hover {
-            background: #ff6b35;
-            border-color: #ff6b35;
-            color: white;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
-        }
+    background: #FFA000;
+    border-color: #FFA000;
+    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 160, 0, 0.3);
+}
 
         /* Navbar link styles */
         .navbar .nav-link {
@@ -754,9 +755,11 @@ body[data-page="fahrzeuge2"] .search-detail {
     background: #ff6b35 !important;
     border: 2px solid #ff6b35 !important;
     border-radius: 0.5rem !important;
-    padding: 1rem !important;
+    padding: 0.5rem 1.5rem !important;
     font-weight: bold !important;
     color: white !important;
+    width: 101% !important;
+    margin-right: -0.5% !important;
 }
 
 body[data-page="fahrzeuge2"] .search-detail i {

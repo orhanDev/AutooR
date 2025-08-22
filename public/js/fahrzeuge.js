@@ -422,7 +422,7 @@ document.addEventListener('DOMContentLoaded', () => {
         searchDetails.innerHTML = `
             <div class="search-detail">
                 <i class="bi bi-calendar3"></i>
-                <span>${searchData.pickupDate} - 08:00 > ${searchData.dropoffDate} - 08:00</span>
+                <span>${searchData.pickupDate} - 08:00 <span class="arrow-symbol">></span> ${searchData.dropoffDate} - 08:00</span>
                 <i class="bi bi-arrow-right"></i>
                 <i class="bi bi-geo-alt"></i>
                 <span>${pickupLocation} - ${dropoffLocation}</span>

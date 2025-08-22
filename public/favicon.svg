@@ -1,3 +1,26 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 16 16">
-  <path fill="#f39c12" d="M8.812 4.002a.5.5 0 0 1 .578.002l3.5 3a.5.5 0 0 1 .096.643l-2 4a.5.5 0 0 1-.73.194L7.402 9.25l-1.504 1.406a.5.5 0 0 1-.73-.194l-2-4a.5.5 0 0 1 .096-.643l3.5-3a.5.5 0 0 1 .812.002zM4.562 4.002a.5.5 0 0 1 .578-.002l3.5 3a.5.5 0 0 1 .096.643l-2 4a.5.5 0 0 1-.73.194L3.152 9.25l-1.504 1.406a.5.5 0 0 1-.73-.194l-2-4a.5.5 0 0 1 .096-.643l3.5-3z"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+  <!-- Car body -->
+  <path fill="#ff6b35" d="M6 18h20v4H6z"/>
+  
+  <!-- Car roof -->
+  <path fill="#ff6b35" d="M10 14h12v4H10z"/>
+  
+  <!-- Car hood -->
+  <path fill="#ff6b35" d="M8 16h16v2H8z"/>
+  
+  <!-- Headlights -->
+  <circle fill="#fff" cx="10" cy="17" r="1"/>
+  <circle fill="#fff" cx="22" cy="17" r="1"/>
+  
+  <!-- Grille -->
+  <rect fill="#333" x="14" y="16" width="4" height="1"/>
+  
+  <!-- Windows -->
+  <rect fill="#87ceeb" x="11" y="14" width="10" height="2"/>
+  
+  <!-- Wheels -->
+  <circle fill="#333" cx="10" cy="20" r="2"/>
+  <circle fill="#333" cx="22" cy="20" r="2"/>
+  <circle fill="#666" cx="10" cy="20" r="1"/>
+  <circle fill="#666" cx="22" cy="20" r="1"/>
 </svg>

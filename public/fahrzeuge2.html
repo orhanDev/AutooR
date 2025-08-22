@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fahrzeuge - AUTOR</title>
+    <title>Fahrzeuge2 - AUTOR</title>
     
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
@@ -37,15 +37,22 @@
             margin-top: 76px;
             overflow-x: hidden;
             min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
         
 
 
         /* Navbar */
         .navbar {
-             background: #FFF8E1 !important;
-             backdrop-filter: blur(15px);
-             box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.9) !important;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 9999;
         }
 
         .navbar-brand {
@@ -62,29 +69,28 @@
         }
 
         .btn-warning {
-              background: #F5F5F5 !important;
-              border-color: #F5F5F5 !important;
-              color: #000 !important;
+            background: #FFA000 !important;
+            border-color: #FFA000 !important;
+            color: #ffffff !important;
         }
 
         .btn-warning:hover {
-              background: #E0E0E0 !important;
-              border-color: #E0E0E0 !important;
-              color: #000 !important;
-          }
+            background: #E68900 !important;
+            border-color: #E68900 !important;
+            color: #ffffff !important;
+        }
 
-                     /* Vehicle card Mieten button */
-           .vehicle-card .btn-warning {
-               background: #FFA000 !important;
-               border-color: #FFA000 !important;
-               color: #ffffff !important;
-           }
+        .btn-outline-warning {
+            background: #ff6b35;
+            border-color: #ff6b35;
+            color: white;
+        }
 
-           .vehicle-card .btn-warning:hover {
-               background: #E68900 !important;
-               border-color: #E68900 !important;
-               color: #ffffff !important;
-           }
+        .btn-outline-warning:hover {
+            background: #e55a2b;
+            border-color: #e55a2b;
+            color: white;
+        }
 
                     /* Autos button styling to match Registrieren button */
             .navbar .btn-outline-warning[href="/fahrzeuge?clear=1"] {
@@ -103,45 +109,35 @@
                 box-shadow: var(--shadow-lg);
             }
 
-            .navbar .btn-outline-warning[href="/fahrzeuge?clear=1"]:hover {
-                background: #E68900;
-                border-color: #E68900;
-                color: #ffffff;
-                transform: translateY(-2px);
-                box-shadow: var(--shadow-lg);
-            }
-
 
 
 
 
         /* Date and Location Selector */
         .date-location-selector {
-            background: #FFFFFF;
+            background: #F4E4E0;
             padding: 10px 0;
             margin-top: 76px;
             border-bottom: 1px solid var(--border-gray);
         }
 
         .date-location-selector .filters-card {
-            background: #FFF8E1;
+            background: white;
             border-radius: 6px;
             padding: 12px;
             border: 1px solid var(--border-gray);
             box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
 
-
-
         .date-location-selector .form-label {
             font-size: 11px;
             font-weight: 600;
-            color: #000000;
+            color: #ff6b35;
             margin-bottom: 4px;
             display: block;
         }
 
-                 .date-location-selector .form-select,
+        .date-location-selector .form-select,
         .date-location-selector .form-control {
             border: 1px solid #ced4da;
             border-radius: 4px;
@@ -153,14 +149,14 @@
             padding: 4px 8px;
         }
 
-                 .date-location-selector .form-select:focus,
+        .date-location-selector .form-select:focus,
         .date-location-selector .form-control:focus {
             outline: none;
             border-color: #ff6b35;
             box-shadow: 0 0 0 0.1rem rgba(255, 107, 53, 0.15);
         }
 
-                 .date-location-selector .input-group-text {
+        .date-location-selector .input-group-text {
             background: #f8f9fa;
             border: 1px solid #ced4da;
             border-right: none;
@@ -172,7 +168,7 @@
             align-items: center;
         }
 
-                 .date-location-selector .form-control {
+        .date-location-selector .form-control {
             border-left: none;
         }
 
@@ -180,15 +176,14 @@
             height: 30px;
         }
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       .date-location-selector .btn-warning {
-            background: #FFA000 !important;
-            border-color: #FFA000 !important;
-            color: #ffffff !important;
-            font-size: 14px;
+        .date-location-selector .btn-warning {
+            background: #F5F5F5 !important;
+            border-color: #F5F5F5 !important;
+            color: #000 !important;
+            font-size: 11px;
             font-weight: 600;
             padding: 4px 12px;
-            height: 50px;
-            margin-top: -10px;
+            height: 30px;
         }
 
         /* Highlight animation for all selectors */
@@ -210,17 +205,11 @@
             }
         }
 
-                                                   .date-location-selector .btn-warning:hover {
-            background: #E68900 !important;
-            border-color: #E68900 !important;
-            color: #ffffff !important;
+        .date-location-selector .btn-warning:hover {
+            background: #A0A0A0 !important;
+            border-color: #A0A0A0 !important;
+            color: #000 !important;
         }
-
-        .date-location-selector .btn-warning i {
-            font-size: 16px !important;
-        }
-
-           
 
         /* Main Content - Add more space for elevated cards */
         .main-content {
@@ -300,7 +289,7 @@
 
         /* Filters */
         .filters-section {
-            background: #FFF8E1;
+            background: rgba(255, 255, 255, 0.3);
             padding: 10px 0 10px 0;
             border-bottom: 1px solid var(--border-gray);
             overflow: visible;
@@ -309,7 +298,6 @@
 
         .filters-section .row {
             align-items: stretch;
-            margin-top: 1px;
         }
 
         .filters-section .col-md-2,
@@ -344,7 +332,6 @@
             align-items: center;
             justify-content: center;
             line-height: 1;
-            background: #FFF8E1;
         }
 
         .filter-label[for="price-slider"] {
@@ -450,7 +437,7 @@
 
         /* Left Sidebar - Insurance and Products */
         .options-sidebar {
-            background: #FFF8E1;
+            background: white;
             border-radius: 12px;
             padding: 15px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.08);
@@ -477,7 +464,6 @@
             margin-bottom: 6px;
             padding-bottom: 4px;
             border-bottom: 2px solid var(--primary-red);
-            background: #FFF8E1;
         }
 
         /* Insurance List Items */
@@ -643,12 +629,6 @@
             height: 100%;
             position: relative;
             cursor: pointer;
-            display: block;
-        }
-
-        /* First vehicle card background */
-        .vehicle-card:first-child {
-            background: #E0E0E0;
         }
 
         .vehicle-card:hover {
@@ -904,6 +884,10 @@
              margin-right: -50vw;
              z-index: 1;
          }
+        
+        .main-content {
+            flex: 1;
+        }
 
                  .footer-content {
              display: flex;
@@ -917,14 +901,15 @@
              padding: 0 15px;
          }
 
-                 .footer-text {
-             color: #ffffff;
-         }
+        .footer-text {
+            color: #ccc;
+        }
 
         .footer-link {
             color: #ff6b35;
             text-decoration: none;
             font-weight: 600;
+            font-size: 12px;
             transition: color 0.3s ease;
         }
 
@@ -933,224 +918,224 @@
             text-decoration: underline;
         }
 
-                 .footer-separator {
-             color: #ffffff;
-             font-weight: 600;
-         }
+        .footer-separator {
+            color: #666;
+            font-weight: 600;
+        }
 
-         /* Responsive Design */
-         @media (max-width: 1200px) {
-             .date-location-selector {
-                 margin-top: 60px !important;
-             }
-             
-             .filters-card {
-                 padding: 15px !important;
-             }
-             
-             .form-label {
-                 font-size: 12px !important;
-             }
-             
-             .form-select, .form-control {
-                 font-size: 14px !important;
-                 padding: 8px 12px !important;
-             }
-             
-             .filter-select {
-                 font-size: 12px !important;
-                 padding: 6px 8px !important;
-             }
-             
-             .filter-label {
-                 font-size: 11px !important;
-             }
-         }
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .date-location-selector {
+                margin-top: 60px !important;
+            }
+            
+            .filters-card {
+                padding: 15px !important;
+            }
+            
+            .form-label {
+                font-size: 12px !important;
+            }
+            
+            .form-select, .form-control {
+                font-size: 14px !important;
+                padding: 8px 12px !important;
+            }
+            
+            .filter-select {
+                font-size: 12px !important;
+                padding: 6px 8px !important;
+            }
+            
+            .filter-label {
+                font-size: 11px !important;
+            }
+        }
 
-         @media (max-width: 992px) {
-             .date-location-selector {
-                 margin-top: 60px !important;
-             }
-             
-             .filters-card {
-                 padding: 12px !important;
-             }
-             
-             .form-label {
-                 font-size: 11px !important;
-                 margin-bottom: 4px !important;
-             }
-             
-             .form-select, .form-control {
-                 font-size: 13px !important;
-                 padding: 6px 10px !important;
-                 height: 35px !important;
-             }
-             
-             .filter-select {
-                 font-size: 11px !important;
-                 padding: 5px 6px !important;
-                 height: 32px !important;
-             }
-             
-             .filter-label {
-                 font-size: 10px !important;
-             }
-             
-             .btn-warning {
-                 font-size: 12px !important;
-                 padding: 6px 12px !important;
-             }
-             
-             .vehicle-card {
-                 margin-bottom: 15px !important;
-             }
-             
-             .vehicle-title {
-                 font-size: 14px !important;
-             }
-             
-             .vehicle-specs {
-                 font-size: 11px !important;
-             }
-         }
+        @media (max-width: 992px) {
+            .date-location-selector {
+                margin-top: 60px !important;
+            }
+            
+            .filters-card {
+                padding: 12px !important;
+            }
+            
+            .form-label {
+                font-size: 11px !important;
+                margin-bottom: 4px !important;
+            }
+            
+            .form-select, .form-control {
+                font-size: 13px !important;
+                padding: 6px 10px !important;
+                height: 35px !important;
+            }
+            
+            .filter-select {
+                font-size: 11px !important;
+                padding: 5px 6px !important;
+                height: 32px !important;
+            }
+            
+            .filter-label {
+                font-size: 10px !important;
+            }
+            
+            .btn-warning {
+                font-size: 12px !important;
+                padding: 6px 12px !important;
+            }
+            
+            .vehicle-card {
+                margin-bottom: 15px !important;
+            }
+            
+            .vehicle-title {
+                font-size: 14px !important;
+            }
+            
+            .vehicle-specs {
+                font-size: 11px !important;
+            }
+        }
 
-         @media (max-width: 768px) {
-             body {
-                 margin-top: 60px !important;
-             }
-             
-             .navbar-brand {
-                 font-size: 1.5rem !important;
-             }
-             
-             .date-location-selector {
-                 margin-top: 60px !important;
-                 padding: 8px 0 !important;
-             }
-             
-             .filters-card {
-                 padding: 10px !important;
-             }
-             
-             .form-label {
-                 font-size: 10px !important;
-                 margin-bottom: 3px !important;
-             }
-             
-             .form-select, .form-control {
-                 font-size: 12px !important;
-                 padding: 5px 8px !important;
-                 height: 32px !important;
-             }
-             
-             .filter-select {
-                 font-size: 10px !important;
-                 padding: 4px 5px !important;
-                 height: 30px !important;
-             }
-             
-             .filter-label {
-                 font-size: 9px !important;
-             }
-             
-             .btn-warning {
-                 font-size: 11px !important;
-                 padding: 5px 10px !important;
-                 height: 32px !important;
-             }
-             
-             .vehicle-card {
-                 margin-bottom: 10px !important;
-             }
-             
-             .vehicle-title {
-                 font-size: 13px !important;
-             }
-             
-             .vehicle-specs {
-                 font-size: 10px !important;
-             }
-             
-             .options-sidebar {
-                 margin-bottom: 20px !important;
-                 position: static !important;
-                 height: auto !important;
-                 overflow-y: visible !important;
-                 top: auto !important;
-                 max-height: none !important;
-             }
-             
-             .vehicles-scroll-container {
-                 height: auto !important;
-                 overflow-y: visible !important;
-             }
-             
-             .footer-content {
-                 font-size: 10px !important;
-                 gap: 6px !important;
-                 padding: 0 10px !important;
-             }
-         }
+        @media (max-width: 768px) {
+            body {
+                margin-top: 60px !important;
+            }
+            
+            .navbar-brand {
+                font-size: 1.5rem !important;
+            }
+            
+            .date-location-selector {
+                margin-top: 60px !important;
+                padding: 8px 0 !important;
+            }
+            
+            .filters-card {
+                padding: 10px !important;
+            }
+            
+            .form-label {
+                font-size: 10px !important;
+                margin-bottom: 3px !important;
+            }
+            
+            .form-select, .form-control {
+                font-size: 12px !important;
+                padding: 5px 8px !important;
+                height: 32px !important;
+            }
+            
+            .filter-select {
+                font-size: 10px !important;
+                padding: 4px 5px !important;
+                height: 30px !important;
+            }
+            
+            .filter-label {
+                font-size: 9px !important;
+            }
+            
+            .btn-warning {
+                font-size: 11px !important;
+                padding: 5px 10px !important;
+                height: 32px !important;
+            }
+            
+            .vehicle-card {
+                margin-bottom: 10px !important;
+            }
+            
+            .vehicle-title {
+                font-size: 13px !important;
+            }
+            
+            .vehicle-specs {
+                font-size: 10px !important;
+            }
+            
+            .options-sidebar {
+                margin-bottom: 20px !important;
+                position: static !important;
+                height: auto !important;
+                overflow-y: visible !important;
+                top: auto !important;
+                max-height: none !important;
+            }
+            
+            .vehicles-scroll-container {
+                height: auto !important;
+                overflow-y: visible !important;
+            }
+            
+            .footer-content {
+                font-size: 10px !important;
+                gap: 6px !important;
+                padding: 0 10px !important;
+            }
+        }
 
-         @media (max-width: 576px) {
-             .date-location-selector {
-                 margin-top: 60px !important;
-             }
-             
-             .filters-card {
-                 padding: 8px !important;
-             }
-             
-             .form-label {
-                 font-size: 9px !important;
-                 margin-bottom: 2px !important;
-             }
-             
-             .form-select, .form-control {
-                 font-size: 11px !important;
-                 padding: 4px 6px !important;
-                 height: 30px !important;
-             }
-             
-             .filter-select {
-                 font-size: 9px !important;
-                 padding: 3px 4px !important;
-                 height: 28px !important;
-             }
-             
-             .filter-label {
-                 font-size: 8px !important;
-             }
-             
-             .btn-warning {
-                 font-size: 10px !important;
-                 padding: 4px 8px !important;
-                 height: 30px !important;
-             }
-             
-             .vehicle-card {
-                 margin-bottom: 8px !important;
-             }
-             
-             .vehicle-title {
-                 font-size: 12px !important;
-             }
-             
-             .vehicle-specs {
-                 font-size: 9px !important;
-             }
-             
-             .footer-content {
-                 font-size: 9px !important;
-                 gap: 4px !important;
-                 padding: 0 8px !important;
-                 flex-direction: column !important;
-             }
-             
-             .footer-separator {
-                 display: none !important;
-             }
+        @media (max-width: 576px) {
+            .date-location-selector {
+                margin-top: 60px !important;
+            }
+            
+            .filters-card {
+                padding: 8px !important;
+            }
+            
+            .form-label {
+                font-size: 9px !important;
+                margin-bottom: 2px !important;
+            }
+            
+            .form-select, .form-control {
+                font-size: 11px !important;
+                padding: 4px 6px !important;
+                height: 30px !important;
+            }
+            
+            .filter-select {
+                font-size: 9px !important;
+                padding: 3px 4px !important;
+                height: 28px !important;
+            }
+            
+            .filter-label {
+                font-size: 8px !important;
+            }
+            
+            .btn-warning {
+                font-size: 10px !important;
+                padding: 4px 8px !important;
+                height: 30px !important;
+            }
+            
+            .vehicle-card {
+                margin-bottom: 8px !important;
+            }
+            
+            .vehicle-title {
+                font-size: 12px !important;
+            }
+            
+            .vehicle-specs {
+                font-size: 9px !important;
+            }
+            
+            .footer-content {
+                font-size: 9px !important;
+                gap: 4px !important;
+                padding: 0 8px !important;
+                flex-direction: column !important;
+            }
+            
+            .footer-separator {
+                display: none !important;
+            }
         }
 
         /* Responsive */
@@ -1302,18 +1287,19 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             
-            <div class="collapse navbar-collapse" id="navbarNav">
+                    <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
+                                    <li class="nav-item">
                         <a class="btn btn-outline-warning fw-medium" href="/fahrzeuge?clear=1">Autos</a>
                     </li>
-                </ul>
+            </ul>
             <ul class="navbar-nav ms-auto" id="auth-buttons-container">
-                </ul>
-            </div>
+            </ul>
+        </div>
         </div>
     </nav>
 
+    <main class="main-content">
     <!-- Date and Location Selector -->
     <section class="date-location-selector" id="date-location-selector" style="display: none;">
         <div class="container">
@@ -1332,7 +1318,7 @@
                                         <option value="4">Köln Dom</option>
                                         <option value="5">Frankfurt Flughafen</option>
                                     </select>
-                </div>
+                                </div>
                                 <div class="col-12 col-md-6 col-lg-3">
                                     <label class="form-label">Rückgabeort</label>
                                     <select id="dropoff-location-selector" class="form-select dropoff-location-highlight" required lang="de">
@@ -1343,7 +1329,7 @@
                                         <option value="4">Köln Dom</option>
                                         <option value="5">Frankfurt Flughafen</option>
                                     </select>
-                </div>
+                                </div>
                                 <div class="col-6 col-md-3 col-lg-2">
                                     <label class="form-label">Abholdatum</label>
                                     <div class="input-group">
@@ -1362,7 +1348,7 @@
                                     <button type="submit" class="btn btn-warning w-100">
                                         <i class="bi bi-search me-1"></i>
                                         Aktualisieren
-                </button>
+                                    </button>
                                 </div>
                             </div>
                         </form>
@@ -1379,52 +1365,52 @@
                 <div class="col-md-2 col-sm-6">
                     <label class="filter-label">Fahrzeugtyp</label>
                     <select class="form-select filter-select" id="vehicle-type-filter">
-                            <option value="">Alle Fahrzeuge</option>
+                        <option value="">Alle Fahrzeuge</option>
                         <option value="compact">Kompakt</option>
                         <option value="sedan">Limousine</option>
                         <option value="suv">SUV</option>
                         <option value="luxury">Luxus</option>
                         <option value="electric">Elektrisch</option>
-                        </select>
+                    </select>
                 </div>
                 <div class="col-md-2 col-sm-6">
                     <label class="filter-label">Modell</label>
                     <select class="form-select filter-select" id="vehicle-model-filter">
-                            <option value="">Alle Modelle</option>
+                        <option value="">Alle Modelle</option>
                         <option value="audi">Audi</option>
                         <option value="bmw">BMW</option>
                         <option value="mercedes">Mercedes</option>
                         <option value="porsche">Porsche</option>
                         <option value="tesla">Tesla</option>
                         <option value="volkswagen">Volkswagen</option>
-                        </select>
+                    </select>
                 </div>
                 <div class="col-md-2 col-sm-6">
                     <label class="filter-label">Kraftstoff</label>
                     <select class="form-select filter-select" id="fuel-type-filter">
-                            <option value="">Alle</option>
+                        <option value="">Alle</option>
                         <option value="benzin">Benzin</option>
                         <option value="diesel">Diesel</option>
                         <option value="hybrid">Hybrid</option>
                         <option value="elektrisch">Elektrisch</option>
-                        </select>
+                    </select>
                 </div>
                 <div class="col-md-2 col-sm-6">
                     <label class="filter-label">Sortieren</label>
                     <select class="form-select filter-select" id="sort-filter">
-                            <option value="price-low">Niedrigster Preis</option>
-                            <option value="price-high">Höchster Preis</option>
-                            <option value="name">Name A-Z</option>
+                        <option value="price-low">Niedrigster Preis</option>
+                        <option value="price-high">Höchster Preis</option>
+                        <option value="name">Name A-Z</option>
                         <option value="popularity">Beliebtheit</option>
-                        </select>
+                    </select>
                 </div>
                 <div class="col-md-2 col-sm-6">
                     <label class="filter-label">Getriebe</label>
                     <select class="form-select filter-select" id="transmission-filter">
-                            <option value="">Alle</option>
+                        <option value="">Alle</option>
                         <option value="automatik">Automatik</option>
                         <option value="manuell">Manuell</option>
-                        </select>
+                    </select>
                 </div>
                 <div class="col-md-2 col-sm-6">
                     <label class="filter-label">Preisbereich</label>
@@ -1436,9 +1422,9 @@
                         <option value="200">Bis €200/Tag</option>
                         <option value="100">Bis €100/Tag</option>
                     </select>
-                        </div>
-                    </div>
                 </div>
+            </div>
+        </div>
     </section>
 
     <!-- Search Summary -->
@@ -1461,7 +1447,7 @@
 
 
     <!-- Main Content -->
-    <section class="py-4 main-content" style="background-color: #ffffff;">
+    <section class="py-4 main-content" style="background-color: #F4E4E0;">
         <div class="container">
             <div class="row">
                 <!-- Left Side - Vehicles -->
@@ -1493,9 +1479,10 @@
                         </div>
                     </div>
                 </div>
-                        </div>
-                    </div>
+            </div>
+        </div>
     </section>
+    </main>
 
     <!-- Footer -->
     <footer class="footer-section">
@@ -1506,8 +1493,8 @@
                 <a href="#" class="footer-link">Datenschutz</a>
                 <span class="footer-separator">-</span>
                 <a href="#" class="footer-link">Bedingungen</a>
-                </div>
             </div>
+        </div>
     </footer>
 
     <!-- Bootstrap JS -->

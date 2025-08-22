@@ -2,11 +2,11 @@
 
 document.addEventListener('DOMContentLoaded', () => {
     // Form elements
-    const carSearchForm = document.getElementById('car-search-form');
-    const pickupLocationSelect = document.getElementById('pickup-location');
-    const dropoffLocationSelect = document.getElementById('dropoff-location');
-    const pickupDateInput = document.getElementById('pickup-date');
-    const dropoffDateInput = document.getElementById('dropoff-date');
+    const carSearchForm = document.getElementById('date-location-form');
+    const pickupLocationSelect = document.getElementById('pickup-location-selector');
+    const dropoffLocationSelect = document.getElementById('dropoff-location-selector');
+    const pickupDateInput = document.getElementById('pickup-date-selector');
+    const dropoffDateInput = document.getElementById('dropoff-date-selector');
     // Flatpickr instances
     let fpPickup = null;
     let fpDropoff = null;
@@ -145,6 +145,27 @@ document.addEventListener('DOMContentLoaded', () => {
     pickupDateInput.addEventListener('change', ensureValidDateInputs);
     dropoffDateInput.addEventListener('change', ensureValidDateInputs);
 
+    // Close date picker when clicking outside
+    document.addEventListener('click', function(event) {
+        // Check if click is outside the date picker elements
+        const isPickupInput = pickupDateInput.contains(event.target);
+        const isDropoffInput = dropoffDateInput.contains(event.target);
+        const isPickupCalendar = event.target.closest('.flatpickr-calendar') && 
+                                pickupDateInput.classList.contains('active');
+        const isDropoffCalendar = event.target.closest('.flatpickr-calendar') && 
+                                 dropoffDateInput.classList.contains('active');
+        
+        // If click is outside both inputs and their calendars, close any open pickers
+        if (!isPickupInput && !isDropoffInput && !isPickupCalendar && !isDropoffCalendar) {
+            if (fpPickup && fpPickup.isOpen) {
+                fpPickup.close();
+            }
+            if (fpDropoff && fpDropoff.isOpen) {
+                fpDropoff.close();
+            }
+        }
+    });
+
     // Enforce dd.mm.yyyy format while typing and auto-insert dots
     function normalizeGermanDateInput(e) {
         const input = e.target;
@@ -170,9 +191,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!m) {
             // Clear invalid formats (e.g., MMDDYYYY) and show feedback
             input.classList.add('is-invalid');
-            input.setCustomValidity('Bitte TT.MM.JJJJ verwenden');
             input.value = '';
-            input.reportValidity();
             return;
         }
         let dayNum = parseInt(m[1], 10);
@@ -185,23 +204,18 @@ document.addEventListener('DOMContentLoaded', () => {
         // Strict validation: invalid month/day → clear and mark invalid
         if (monthNum < 1 || monthNum > 12) {
             input.classList.add('is-invalid');
-            input.setCustomValidity('Bitte TT.MM.JJJJ verwenden (gültiger Monat)');
             input.value = '';
-            input.reportValidity();
             return;
         }
         const maxDay = new Date(yearNum, monthNum, 0).getDate();
         if (dayNum < 1 || dayNum > maxDay) {
             input.classList.add('is-invalid');
-            input.setCustomValidity('Bitte TT.MM.JJJJ verwenden (gültiger Tag)');
             input.value = '';
-            input.reportValidity();
             return;
         }
 
         input.value = `${String(dayNum).padStart(2, '0')}.${String(monthNum).padStart(2, '0')}.${String(yearNum).padStart(4, '0')}`;
         input.classList.remove('is-invalid');
-        input.setCustomValidity('');
         if (input === pickupDateInput) ensureValidDateInputs();
     }
 
@@ -223,7 +237,7 @@ document.addEventListener('DOMContentLoaded', () => {
     dropoffDateInput.addEventListener('keydown', handleEnterValidation);
 
     // Open Flatpickr on calendar icon click (and focus input)
-    document.querySelectorAll('.calendar-trigger').forEach(trigger => {
+            document.querySelectorAll('.calendar-trigger-selector').forEach(trigger => {
         trigger.addEventListener('click', () => {
             const targetId = trigger.getAttribute('data-target');
             const input = document.getElementById(targetId);
@@ -252,38 +266,30 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!pickupDateValid) {
                 pickupDateInput.classList.add('is-invalid');
                 pickupDateInput.style.borderColor = '#dc3545';
-                pickupDateInput.setCustomValidity('Bitte gültiges Abholdatum eingeben');
             } else {
                 pickupDateInput.classList.remove('is-invalid');
                 pickupDateInput.style.borderColor = '';
-                pickupDateInput.setCustomValidity('');
             }
             if (!dropoffDateValid) {
                 dropoffDateInput.classList.add('is-invalid');
                 dropoffDateInput.style.borderColor = '#dc3545';
-                dropoffDateInput.setCustomValidity('Bitte gültiges Rückgabedatum eingeben');
             } else {
                 dropoffDateInput.classList.remove('is-invalid');
                 dropoffDateInput.style.borderColor = '';
-                dropoffDateInput.setCustomValidity('');
             }
             if (!pickupLocationSelect.value) {
                 pickupLocationSelect.classList.add('is-invalid');
                 pickupLocationSelect.style.borderColor = '#dc3545';
-                pickupLocationSelect.setCustomValidity('Bitte wählen Sie einen Abholort aus');
             } else {
                 pickupLocationSelect.classList.remove('is-invalid');
                 pickupLocationSelect.style.borderColor = '';
-                pickupLocationSelect.setCustomValidity('');
             }
             if (!dropoffLocationSelect.value) {
                 dropoffLocationSelect.classList.add('is-invalid');
                 dropoffLocationSelect.style.borderColor = '#dc3545';
-                dropoffLocationSelect.setCustomValidity('Bitte wählen Sie einen Rückgabeort aus');
             } else {
                 dropoffLocationSelect.classList.remove('is-invalid');
                 dropoffLocationSelect.style.borderColor = '';
-                dropoffLocationSelect.setCustomValidity('');
             }
             return;
         }
@@ -307,7 +313,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (parseGermanDate(pickupDateInput.value) !== null) {
             pickupDateInput.classList.remove('is-invalid');
             pickupDateInput.style.borderColor = '';
-            pickupDateInput.setCustomValidity('');
         }
     });
     
@@ -315,7 +320,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (parseGermanDate(dropoffDateInput.value) !== null) {
             dropoffDateInput.classList.remove('is-invalid');
             dropoffDateInput.style.borderColor = '';
-            dropoffDateInput.setCustomValidity('');
         }
     });
     
@@ -323,7 +327,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (pickupLocationSelect.value) {
             pickupLocationSelect.classList.remove('is-invalid');
             pickupLocationSelect.style.borderColor = '';
-            pickupLocationSelect.setCustomValidity('');
         }
     });
     
@@ -331,7 +334,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (dropoffLocationSelect.value) {
             dropoffLocationSelect.classList.remove('is-invalid');
             dropoffLocationSelect.style.borderColor = '';
-            dropoffLocationSelect.setCustomValidity('');
         }
     });
 
@@ -637,5 +639,50 @@ function animateOnScroll() {
     });
 }
 
-// Initialize animations
-animateOnScroll();
+    // Load popular cars
+    function loadPopularCars() {
+        if (!popularCarsContainer) return;
+        
+        // Get first 8 cars from the data
+        const popularCars = window.LOCAL_CARS.slice(0, 8);
+        
+        popularCarsContainer.innerHTML = popularCars.map(car => `
+            <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="vehicle-card" data-car-id="${car.car_id}">
+                    <div class="vehicle-image" style="background-image: url('${car.image_url}')"></div>
+                    <div class="vehicle-details">
+                        <h5 class="vehicle-title">${car.make} ${car.model}</h5>
+                        <div class="vehicle-specs">
+                            <span class="spec-item"><i class="bi bi-calendar3"></i> ${car.year}</span>
+                            <span class="spec-item"><i class="bi bi-gear"></i> ${car.transmission_type}</span>
+                            <span class="spec-item"><i class="bi bi-fuel-pump"></i> ${car.fuel_type}</span>
+                            <span class="spec-item"><i class="bi bi-people"></i> ${car.seating_capacity}</span>
+                        </div>
+                        <div class="vehicle-price">
+                            <span class="price-amount">€${car.daily_rate}</span>
+                            <span class="price-unit">/Tag</span>
+                        </div>
+                        <div class="vehicle-location">
+                            <i class="bi bi-geo-alt"></i> ${car.location_name}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+        
+        // Add click event to vehicle cards
+        document.querySelectorAll('.vehicle-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const carId = card.getAttribute('data-car-id');
+                window.location.href = `/vehicle-details.html?id=${carId}`;
+            });
+        });
+    }
+    
+    // Load popular cars on page load
+    loadPopularCars();
+
+    // Initialize animations
+    animateOnScroll();
+
+

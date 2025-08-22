@@ -78,7 +78,7 @@ app.get('/fahrzeuge', (req, res) => {
 });
 
 app.get('/fahrzeuge2', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'fahrzeuge.html'));
+    res.sendFile(path.join(__dirname, 'public', 'fahrzeuge2.html'));
 });
 
 // Zahlungsinformationen page

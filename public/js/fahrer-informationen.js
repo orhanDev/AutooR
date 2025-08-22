@@ -108,21 +108,85 @@ function validateField(event) {
 
 // Show field error
 function showFieldError(field, message) {
-    field.style.borderColor = '#dc3545';
-    field.style.boxShadow = '0 0 0 0.2rem rgba(220, 53, 69, 0.25)';
-    
-    // Remove existing error message
-    const existingError = field.parentNode.querySelector('.error-message');
-    if (existingError) {
-        existingError.remove();
+    // For checkbox fields, show a tooltip-style error
+    if (field.type === 'checkbox') {
+        // Remove existing error tooltip
+        const existingError = document.querySelector('.checkbox-error-tooltip');
+        if (existingError) {
+            existingError.remove();
+        }
+        
+        // Create tooltip error
+        const tooltip = document.createElement('div');
+        tooltip.className = 'checkbox-error-tooltip';
+        tooltip.textContent = message;
+        tooltip.style.cssText = `
+            position: absolute;
+            background: #dc3545;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            white-space: nowrap;
+            box-shadow: 0 2px 8px rgba(220, 53, 69, 0.3);
+            z-index: 1000;
+            margin-left: 20px;
+            margin-top: -5px;
+        `;
+        
+        // Add arrow to tooltip
+        const arrow = document.createElement('div');
+        arrow.style.cssText = `
+            position: absolute;
+            left: -5px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0;
+            height: 0;
+            border-top: 5px solid transparent;
+            border-bottom: 5px solid transparent;
+            border-right: 5px solid #dc3545;
+        `;
+        tooltip.appendChild(arrow);
+        
+        // Position tooltip next to checkbox
+        const checkboxContainer = field.closest('.checkbox-item');
+        if (checkboxContainer) {
+            checkboxContainer.style.position = 'relative';
+            checkboxContainer.appendChild(tooltip);
+        }
+        
+        // Highlight checkbox
+        field.style.borderColor = '#dc3545';
+        field.style.boxShadow = '0 0 0 0.2rem rgba(220, 53, 69, 0.25)';
+        
+        // Auto remove after 5 seconds
+        setTimeout(() => {
+            if (tooltip.parentNode) {
+                tooltip.remove();
+                field.style.borderColor = '';
+                field.style.boxShadow = '';
+            }
+        }, 5000);
+    } else {
+        // For regular input fields
+        field.style.borderColor = '#dc3545';
+        field.style.boxShadow = '0 0 0 0.2rem rgba(220, 53, 69, 0.25)';
+        
+        // Remove existing error message
+        const existingError = field.parentNode.querySelector('.error-message');
+        if (existingError) {
+            existingError.remove();
+        }
+        
+        // Add error message
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'error-message text-danger mt-1';
+        errorDiv.style.fontSize = '12px';
+        errorDiv.textContent = message;
+        field.parentNode.appendChild(errorDiv);
     }
-    
-    // Add error message
-    const errorDiv = document.createElement('div');
-    errorDiv.className = 'error-message text-danger mt-1';
-    errorDiv.style.fontSize = '12px';
-    errorDiv.textContent = message;
-    field.parentNode.appendChild(errorDiv);
 }
 
 // Clear field error
@@ -191,12 +255,12 @@ function setupFormSubmission() {
              }
          });
 
-         // Check if terms checkbox is checked (required)
-         const termsCheckbox = document.getElementById('terms-checkbox');
-         if (!termsCheckbox.checked) {
-             showFieldError(termsCheckbox, 'Sie müssen die Mietbedingungen akzeptieren');
-             isValid = false;
-         }
+                 // Check if terms checkbox is checked (required)
+        const termsCheckbox = document.getElementById('terms-checkbox');
+        if (!termsCheckbox.checked) {
+            showFieldError(termsCheckbox, 'Bitte markieren Sie dieses Feld, um fortzufahren');
+            isValid = false;
+        }
         
         if (!isValid) {
             console.log('Form validation failed');

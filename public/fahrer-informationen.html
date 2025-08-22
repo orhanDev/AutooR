@@ -28,15 +28,16 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #F4E4E0;
+            background-color: #ffffff;
             margin-top: 76px;
             min-height: 100vh;
         }
 
         /* Navbar */
         .navbar {
-            background: rgba(255, 255, 255, 0.95) !important;
-            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.9) !important;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
         }
 
         .navbar-brand {
@@ -52,17 +53,17 @@
             color: var(--primary-red) !important;
         }
 
-        .btn-warning {
-            background: #ffc107;
-            border-color: #ffc107;
-            color: #000;
+                .btn-warning {
+            background: #FFA000 !important;
+            border-color: #FFA000 !important;
+            color: #ffffff !important;
         }
 
-                 .btn-warning:hover {
-             background: #ffca2c;
-             border-color: #ffca2c;
-             color: #000;
-         }
+        .btn-warning:hover {
+            background: #E68900 !important;
+            border-color: #E68900 !important;
+            color: #ffffff !important;
+        }
 
                  .btn-outline-warning {
             background: #ff6b35;
@@ -75,6 +76,23 @@
             border-color: #e55a2b;
             color: white;
         }
+
+                    /* Autos button styling to match Registrieren button */
+            .navbar .btn-outline-warning[href="/fahrzeuge?clear=1"] {
+                background: #FFA000;
+                border-color: #FFA000;
+                color: #ffffff;
+                font-weight: 600;
+                transition: all 0.3s ease;
+            }
+
+            .navbar .btn-outline-warning[href="/fahrzeuge?clear=1"]:hover {
+                background: #E68900;
+                border-color: #E68900;
+                color: #ffffff;
+                transform: translateY(-2px);
+                box-shadow: var(--shadow-lg);
+            }
 
         /* Main Content */
         .main-content {
@@ -580,13 +598,13 @@
          }
     </style>
 </head>
-<body>
+<body style="overflow-x: hidden;">
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top shadow-sm">
         <div class="container">
-            <a class="navbar-brand fw-bold fs-3 text-dark" href="/">
+            <a class="navbar-brand fw-bold fs-3" href="/" style="text-decoration: none;">
                 <i class="bi bi-car-front text-warning me-2"></i>
-                AUT<span class="text-warning">OR</span>
+                <span style="color: #ff6b35; text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000; font-family: 'Explorer Print Sans Bold', sans-serif;">AUTOR</span>
             </a>
             
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -595,9 +613,9 @@
             
                                              <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto">
-                <li class="nav-item">
-                                            <a class="btn btn-warning fw-medium text-white" href="/fahrzeuge?clear=1">Autos</a>
-                </li>
+                                    <li class="nav-item">
+                        <a class="btn btn-outline-warning fw-medium" href="/fahrzeuge?clear=1">Autos</a>
+                    </li>
             </ul>
             <ul class="navbar-nav ms-auto" id="auth-buttons-container">
             </ul>
@@ -702,12 +720,12 @@
                     </div>
 
                                          <div class="checkbox-section">
-                         <div class="checkbox-item">
-                             <input type="checkbox" class="form-check-input" id="terms-checkbox" name="termsCheckbox" required>
-                             <label for="terms-checkbox" class="checkbox-label">
-                                 Ich habe die Mietbedingungen gelesen und akzeptiere sie.
-                             </label>
-                         </div>
+                                                 <div class="checkbox-item">
+                            <input type="checkbox" class="form-check-input" id="terms-checkbox" name="termsCheckbox">
+                            <label for="terms-checkbox" class="checkbox-label">
+                                Ich habe die Mietbedingungen gelesen und akzeptiere sie.
+                            </label>
+                        </div>
 
                                                    <div class="checkbox-item">
                               <input type="checkbox" class="form-check-input" id="billing-checkbox" name="billingCheckbox">
