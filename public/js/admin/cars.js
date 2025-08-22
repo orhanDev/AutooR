@@ -101,8 +101,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                         <td>${car.location_name || car.location_id}</td> <!-- Standort adını göster -->
                         <td>${car.is_available ? 'Ja' : 'Nein'}</td>
                         <td>
-                            <button class="btn btn-sm btn-info edit-car-btn" data-id="${car.car_id}">Bearbeiten</button>
-                            <button class="btn btn-sm btn-danger delete-car-btn" data-id="${car.car_id}">Löschen</button>
+                            <button class="nav-link-text btn-sm edit-car-btn" data-id="${car.car_id}">Bearbeiten</button>
+                            <button class="nav-link-text btn-sm delete-car-btn" data-id="${car.car_id}">Löschen</button>
                         </td>
                     </tr>
                 `;

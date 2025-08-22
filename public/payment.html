@@ -70,9 +70,23 @@
                  margin-top: 60px !important;
              }
              
-             .navbar-brand {
-                 font-size: 1.5rem !important;
-             }
+                         .navbar-brand {
+                font-size: 1.5rem !important;
+                color: #000000 !important;
+            }
+            
+            .navbar-brand i,
+            .navbar-brand span {
+                color: #000000 !important;
+            }
+            
+            .navbar-brand .bi-car-front {
+                color: #000000 !important;
+            }
+            
+            .navbar-brand .text-warning {
+                color: #000000 !important;
+            }
              
              .py-5 {
                  padding: 20px 0 !important;
@@ -108,8 +122,8 @@
     <nav class="navbar navbar-expand-lg navbar-light fixed-top shadow-sm" style="background: rgba(255, 255, 255, 0.9) !important; backdrop-filter: blur(15px); box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);">
         <div class="container">
             <a class="navbar-brand fw-bold fs-3" href="/" style="text-decoration: none;">
-                <i class="bi bi-car-front text-warning me-2"></i>
-                <span style="color: #ff6b35; text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000; font-family: 'Explorer Print Sans Bold', sans-serif;">AUTOR</span>
+                <i class="bi bi-car-front me-2" style="color: #000000;"></i>
+                <span style="color: #000000; font-family: 'Explorer Print Sans Bold', sans-serif;">AUTOR</span>
             </a>
             
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -122,7 +136,7 @@
 
 
                     <li class="nav-item ms-2">
-                        <a class="btn btn-warning fw-medium" href="/login">Anmelden</a>
+                        <a class="nav-link-text" href="/login">Anmelden</a>
                     </li>
                 </ul>
             </div>

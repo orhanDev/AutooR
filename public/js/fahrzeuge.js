@@ -785,7 +785,7 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
         } else {
             // For fahrzeuge, show all vehicles in grid
-                    vehiclesContainer.innerHTML = filteredVehicles.map(vehicle => `
+        vehiclesContainer.innerHTML = filteredVehicles.map(vehicle => `
                 <div class="col-lg-4 col-md-6 mb-4">
                 <div class="vehicle-card" onclick="selectVehicle(${vehicle.car_id})">
                     <div class="vehicle-image-container">
@@ -797,8 +797,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         </div>
                     </div>
                     <div class="vehicle-content">
-                        <h5 class="vehicle-title">${vehicle.make} ${vehicle.model}</h5>
-                        <div class="vehicle-specs">
+                        <h5 class="vehicle-title" style="text-align: left; margin-bottom: 8px;">${vehicle.make} ${vehicle.model}</h5>
+                        <div class="vehicle-specs" style="display: flex; justify-content: space-between; gap: 8px;">
                                 <span class="vehicle-spec">
                                 <i class="bi bi-gear"></i>
                                     ${vehicle.transmission}
@@ -813,7 +813,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 </span>
                         </div>
                             <div class="vehicle-actions">
-                                <button class="btn btn-warning btn-sm">
+                                <button class="nav-link-text btn-sm">
                                     <i class="bi bi-car-front"></i>
                                 Mieten
                             </button>

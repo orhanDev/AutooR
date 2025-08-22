@@ -130,11 +130,11 @@ document.addEventListener('DOMContentLoaded', () => {
                         
                         <!-- Action Buttons -->
                         <div class="d-grid gap-3">
-                            <button class="btn btn-warning btn-lg fw-bold" onclick="startReservation(${vehicle.car_id})">
+                            <button class="nav-link-text btn-lg fw-bold" onclick="startReservation(${vehicle.car_id})">
                                 <i class="bi bi-calendar-check me-2"></i>
                                 Jetzt reservieren
                             </button>
-                            <button class="btn btn-outline-warning" onclick="window.history.back()">
+                            <button class="nav-link-text" onclick="window.history.back()">
                                 <i class="bi bi-arrow-left me-2"></i>
                                 Zurück zur Übersicht
                             </button>
@@ -261,7 +261,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <i class="bi bi-exclamation-triangle text-warning" style="font-size: 3rem;"></i>
                 <h4 class="mt-3 text-muted">${message}</h4>
                 <p class="text-muted">Das Fahrzeug konnte nicht geladen werden.</p>
-                <a href="/fahrzeuge" class="btn btn-warning">
+                <a href="/fahrzeuge" class="nav-link-text">
                     <i class="bi bi-arrow-left me-2"></i>
                     Zurück zu den Fahrzeugen
                 </a>

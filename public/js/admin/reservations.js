@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                             <span class="badge bg-${getStatusBadgeClass(reservation.status)}">${getDisplayStatus(reservation.status)}</span>
                         </td>
                         <td>
-                            <button class="btn btn-sm btn-warning status-change-btn" data-id="${reservation.reservation_id}" data-current-status="${reservation.status}">Durum Değiştir</button>
+                            <button class="nav-link-text btn-sm status-change-btn" data-id="${reservation.reservation_id}" data-current-status="${reservation.status}">Durum Değiştir</button>
                         </td>
                     </tr>
                 `;

@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             <h5 class="card-title">${car.make} ${car.model} (${car.year})</h5>
                             <p class="card-text">Tagespreis: <strong>€${Number(car.daily_rate).toLocaleString('de-DE')}</strong></p>
                             <p class="card-text"><small class="text-muted">Getriebe: ${car.transmission_type} | Kraftstoff: ${car.fuel_type} | Sitze: ${car.seating_capacity}</small></p>
-                            <a href="/views/checkout.html?carId=${car.car_id}" class="btn btn-success mt-2 select-continue" data-car-id="${car.car_id}">Auswählen & Weiter</a>
+                            <a href="/views/checkout.html?carId=${car.car_id}" class="nav-link-text mt-2 select-continue" data-car-id="${car.car_id}">Auswählen & Weiter</a>
                         </div>
                     </div>
                 </div>

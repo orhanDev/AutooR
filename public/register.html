@@ -44,7 +44,20 @@
         }
 
         .navbar-brand {
-            color: #333 !important;
+            color: #000000 !important;
+        }
+        
+        .navbar-brand i,
+        .navbar-brand span {
+            color: #000000 !important;
+        }
+        
+        .navbar-brand .bi-car-front {
+            color: #000000 !important;
+        }
+        
+        .navbar-brand .text-warning {
+            color: #000000 !important;
         }
 
         .nav-link {
@@ -790,8 +803,8 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top shadow-sm">
         <div class="container">
             <a class="navbar-brand fw-bold fs-3" href="/" style="text-decoration: none;">
-                <i class="bi bi-car-front text-warning me-2"></i>
-                <span style="color: #ff6b35; text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000; font-family: 'Explorer Print Sans Bold', sans-serif;">AUTOR</span>
+                <i class="bi bi-car-front me-2" style="color: #000000;"></i>
+                <span style="color: #000000; font-family: 'Explorer Print Sans Bold', sans-serif;">AUTOR</span>
             </a>
             
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -801,7 +814,7 @@
                                              <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto">
                                     <li class="nav-item">
-                        <a class="btn btn-outline-warning fw-medium" href="/fahrzeuge?clear=1">Autos</a>
+                        <a class="nav-link-text" href="/fahrzeuge?clear=1" style="margin-left: 15px;">Autos</a>
                     </li>
             </ul>
             <ul class="navbar-nav ms-auto" id="auth-buttons-container">
@@ -950,7 +963,7 @@
                         </div>
                     </div>
 
-                                    <button type="submit" class="register-button btn-disabled" id="register-button" disabled>
+                                    <button type="submit" class="nav-link-text" id="register-button" disabled>
                     KONTO ERSTELLEN <i class="bi bi-person-plus"></i>
                 </button>
                 </form>

@@ -45,8 +45,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                     <tr>
                         <td>${location.name}</td>
                         <td>
-                            <button class="btn btn-sm btn-info edit-location-btn" data-id="${location.location_id}">Düzenle</button>
-                            <button class="btn btn-sm btn-danger delete-location-btn" data-id="${location.location_id}">Sil</button>
+                            <button class="nav-link-text btn-sm edit-location-btn" data-id="${location.location_id}">Düzenle</button>
+                            <button class="nav-link-text btn-sm delete-location-btn" data-id="${location.location_id}">Sil</button>
                         </td>
                     </tr>
                 `;

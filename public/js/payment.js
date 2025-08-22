@@ -161,7 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 
                                 <!-- Submit Button -->
                                 <div class="col-12">
-                                    <button type="submit" class="btn btn-warning btn-lg w-100 fw-bold">
+                                    <button type="submit" class="nav-link-text btn-lg w-100 fw-bold">
                                         <i class="bi bi-lock me-2"></i>
                                         Sichere Zahlung - €${totalPrice}
                                     </button>
@@ -397,7 +397,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <i class="bi bi-exclamation-triangle text-warning" style="font-size: 3rem;"></i>
                 <h4 class="mt-3 text-muted">${message}</h4>
                 <p class="text-muted">Die Zahlungsseite konnte nicht geladen werden.</p>
-                <a href="/reservation" class="btn btn-warning">
+                <a href="/reservation" class="nav-link-text">
                     <i class="bi bi-arrow-left me-2"></i>
                     Zurück zur Reservierung
                 </a>

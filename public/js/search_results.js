@@ -182,7 +182,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         <i class="bi bi-search text-muted" style="font-size: 3rem;"></i>
                         <h3 class="mt-3 text-muted">Keine Fahrzeuge gefunden</h3>
                         <p class="text-muted">Versuchen Sie andere Filtereinstellungen oder ändern Sie Ihre Suchkriterien.</p>
-                        <button class="btn btn-filter" onclick="location.reload()">
+                        <button class="nav-link-text" onclick="location.reload()">
                             <i class="bi bi-arrow-clockwise me-2"></i>Filter zurücksetzen
                         </button>
                     </div>
@@ -247,10 +247,10 @@ document.addEventListener('DOMContentLoaded', function() {
                             </p>
                             
                             <div class="mt-auto d-flex gap-2">
-                                <a href="/views/car_details.html?${qp.toString()}" class="btn btn-details flex-fill">
+                                <a href="/views/car_details.html?${qp.toString()}" class="nav-link-text flex-fill">
                                     <i class="bi bi-eye me-2"></i>Details
                                     </a>
-                                    <button class="btn btn-quick-book" onclick="quickBook('${car.car_id}')">
+                                    <button class="nav-link-text" onclick="quickBook('${car.car_id}')">
                                     <i class="bi bi-calendar-check"></i>
                                     </button>
                                 </div>

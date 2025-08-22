@@ -45,8 +45,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                     <tr>
                         <td>${feature.feature_name}</td>
                         <td>
-                            <button class="btn btn-sm btn-info edit-feature-btn" data-id="${feature.feature_id}">Düzenle</button>
-                            <button class="btn btn-sm btn-danger delete-feature-btn" data-id="${feature.feature_id}">Sil</button>
+                            <button class="nav-link-text btn-sm edit-feature-btn" data-id="${feature.feature_id}">Düzenle</button>
+                            <button class="nav-link-text btn-sm delete-feature-btn" data-id="${feature.feature_id}">Sil</button>
                         </td>
                     </tr>
                 `;

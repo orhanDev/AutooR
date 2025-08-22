@@ -52,8 +52,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                         <td>${user.is_admin ? 'Evet' : 'Hayır'}</td>
                         <td>${new Date(user.created_at).toLocaleDateString()}</td>
                         <td>
-                            <button class="btn btn-sm btn-info edit-user-btn" data-id="${user.user_id}">Düzenle</button>
-                            <button class="btn btn-sm btn-danger delete-user-btn" data-id="${user.user_id}">Sil</button>
+                            <button class="nav-link-text btn-sm edit-user-btn" data-id="${user.user_id}">Düzenle</button>
+                            <button class="nav-link-text btn-sm delete-user-btn" data-id="${user.user_id}">Sil</button>
                         </td>
                     </tr>
                 `;

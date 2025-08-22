@@ -452,8 +452,8 @@ function setupCountryDropdown() {
                          <input type="text" id="card-holder" class="form-control" placeholder="Max Mustermann" required>
                      </div>
                      <div class="payment-actions">
-                         <button type="button" class="btn btn-secondary" onclick="closeCreditCardForm()">Abbrechen</button>
-                         <button type="submit" class="btn btn-success">Zahlung bestätigen</button>
+                         <button type="button" class="nav-link-text" onclick="closeCreditCardForm()">Abbrechen</button>
+                         <button type="submit" class="nav-link-text">Zahlung bestätigen</button>
                      </div>
                  </form>
              </div>
@@ -503,7 +503,7 @@ function setupCountryDropdown() {
 
  // Process credit card payment
  function processCreditCardPayment() {
-     const submitBtn = document.querySelector('#credit-card-form .btn-success');
+     const submitBtn = document.querySelector('#credit-card-form .nav-link-text[type="submit"]');
      submitBtn.disabled = true;
      submitBtn.innerHTML = '<i class="bi bi-hourglass-split me-2"></i>Zahlung wird verarbeitet...';
      
