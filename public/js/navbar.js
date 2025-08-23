@@ -28,11 +28,11 @@ function updateNavbar() {
         console.log('User is logged in, showing welcome message');
         // User is logged in - show welcome message and logout button
         authButtonsContainer.innerHTML = `
-            <li class="nav-item" style="margin-left: -60px;">
-                <span class="nav-link text-dark fw-medium" style="font-weight: 600; font-size: 0.9rem; letter-spacing: 1px; color: #ffffff;">Willkommen ${currentUser.firstName}</span>
+            <li class="nav-item">
+                <span class="nav-link">Willkommen ${currentUser.firstName}</span>
             </li>
-            <li class="nav-item" style="margin-left: 10px;">
-                <a class="nav-link premium-nav-link" href="#" onclick="logout()" style="font-weight: 600; font-size: 0.9rem; letter-spacing: 1px; text-transform: uppercase; color: #ffffff; transition: all 0.3s ease; position: relative; padding: 8px 16px; border-radius: 20px; background: rgba(255, 160, 0, 0.2); border: 1px solid rgba(255, 160, 0, 0.3);">Abmelden</a>
+            <li class="nav-item">
+                <a class="nav-link" href="#" onclick="logout()">Abmelden</a>
             </li>
         `;
     } else {
@@ -43,8 +43,8 @@ function updateNavbar() {
             console.log('On register page, showing only login button');
             // On register page - show only login button
             authButtonsContainer.innerHTML = `
-                <li class="nav-item" style="margin-left: -60px;">
-                    <a class="nav-link premium-nav-link" href="/login" style="font-weight: 600; font-size: 0.9rem; letter-spacing: 1px; text-transform: uppercase; color: #ffffff; transition: all 0.3s ease; position: relative; padding: 8px 16px; border-radius: 20px; background: rgba(255, 160, 0, 0.2); border: 1px solid rgba(255, 160, 0, 0.3);">Anmelden</a>
+                <li class="nav-item">
+                    <a class="nav-link" href="/login">Anmelden</a>
                 </li>
             `;
         } else if (currentPage === '/login') {
@@ -55,11 +55,11 @@ function updateNavbar() {
             console.log('Not on register or login page, showing login/register buttons');
             // Not on register or login page - show login/register buttons
             authButtonsContainer.innerHTML = `
-                <li class="nav-item" style="margin-left: -60px;">
-                    <a class="nav-link premium-nav-link" href="/register" style="font-weight: 600; font-size: 0.9rem; letter-spacing: 1px; text-transform: uppercase; color: #ffffff; transition: all 0.3s ease; position: relative; padding: 8px 16px; border-radius: 20px; background: rgba(255, 160, 0, 0.2); border: 1px solid rgba(255, 160, 0, 0.3);">Registrieren</a>
+                <li class="nav-item">
+                    <a class="nav-link" href="/register">Registrieren</a>
                 </li>
-                <li class="nav-item" style="margin-left: 10px;">
-                    <a class="nav-link premium-nav-link" href="/login" style="font-weight: 600; font-size: 0.9rem; letter-spacing: 1px; text-transform: uppercase; color: #ffffff; transition: all 0.3s ease; position: relative; padding: 8px 16px; border-radius: 20px; background: rgba(255, 160, 0, 0.2); border: 1px solid rgba(255, 160, 0, 0.3);">Anmelden</a>
+                <li class="nav-item">
+                    <a class="nav-link" href="/login">Anmelden</a>
                 </li>
             `;
         }

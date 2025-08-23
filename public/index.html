@@ -11,744 +11,415 @@
     
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Flatpickr CSS for date picker -->
-    <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/style.css">
+    
     <style>
+        /* Porsche-inspired Modern Design */
         :root {
-            --primary-red: #dc3545;
-            --primary-red-dark: #c82333;
-            --secondary-gray: #6c757d;
-            --light-gray: #f8f9fa;
-            --border-gray: #dee2e6;
+            --porsche-black: #000000;
+            --porsche-white: #ffffff;
+            --porsche-red: #d5001c;
+            --porsche-gray: #f8f9fa;
+            --porsche-dark-gray: #212529;
+            --porsche-light-gray: #6c757d;
+            --porsche-gold: #d4af37;
         }
-
-                                            html {
-             background-color: #ffffff;
-             min-height: 100vh;
+        
+        * {
+            font-family: 'Inter', sans-serif;
         }
-
+        
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-             background-color: #ffffff;
-             margin-top: 76px;
-             min-height: 100vh;
-             overflow-x: hidden;
+            background: var(--porsche-white);
+            color: var(--porsche-dark-gray);
+            line-height: 1.6;
+            overflow-x: hidden;
         }
-
-        /* Navbar */
-                .navbar {
-             background: #C1CDCD !important;
-             backdrop-filter: blur(15px);
-             box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
-         }
-
-        .navbar-brand {
-            color: #333 !important;
-        }
-
-        .nav-link {
-            color: #666 !important;
+        
+        /* Modern Navbar */
+        .navbar {
+            background: rgba(255, 255, 255, 0.98) !important;
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            padding: 1rem 0;
             transition: all 0.3s ease;
         }
-
+        
+        .navbar-brand {
+            font-weight: 800;
+            font-size: 1.8rem;
+            color: var(--porsche-black) !important;
+        }
+        
+        .navbar-brand i {
+            color: var(--porsche-red) !important;
+        }
+        
+        .nav-link {
+            font-weight: 500;
+            color: var(--porsche-dark-gray) !important;
+            margin: 0 0.5rem;
+            transition: color 0.3s ease;
+        }
+        
         .nav-link:hover {
-            color: var(--primary-red) !important;
+            color: var(--porsche-red) !important;
         }
-
-                  .btn-warning {
-              background: #F5F5F5 !important;
-              border-color: #F5F5F5 !important;
-              color: #000 !important;
-          }
-
-          .btn-warning:hover {
-              background: #C1CDCD !important;
-              border-color: #C1CDCD !important;
-              color: #000 !important;
-          }
-
-                     /* Vehicle card Mieten button */
-           .vehicle-card .btn-warning {
-               background: #FFA000 !important;
-               border-color: #FFA000 !important;
-               color: #ffffff !important;
-           }
-
-           .vehicle-card .btn-warning:hover {
-               background: #E68900 !important;
-               border-color: #E68900 !important;
-               color: #ffffff !important;
-           }
-
-                       /* Autos button styling to match Registrieren button */
-            .navbar .btn-outline-warning[href="/fahrzeuge?clear=1"] {
-                background: #FFA000;
-                border-color: #FFA000;
-                color: #ffffff;
-                font-weight: 600;
-                transition: all 0.3s ease;
-            }
-
-            .navbar .btn-outline-warning[href="/fahrzeuge?clear=1"]:hover {
-                background: #E68900;
-                border-color: #E68900;
-                color: #ffffff;
-                transform: translateY(-2px);
-                box-shadow: var(--shadow-lg);
-            }
-         
-         /* German validation messages */
-         .form-select:invalid {
-            color: #333;
-         }
-         
-         .form-select option {
-             color: #000;
-         }
-         
-         .form-select option[value=""] {
-            color: #6c757d;
+        
+        .btn-outline-primary {
+            border: 2px solid var(--porsche-red);
+            color: var(--porsche-red);
+            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            transition: all 0.3s ease;
         }
-
-        /* Date Location Selector */
-        .date-location-selector {
-            background: #ffffff;
-            padding: 20px 0;
-            margin-top: 0;
-            border-bottom: 1px solid #9E9E9E;
-            position: fixed;
-            top: 72px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 103;
+        
+        .btn-outline-primary:hover {
+            background: var(--porsche-red);
+            color: var(--porsche-white);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(213, 0, 28, 0.3);
+        }
+        
+        /* Hero Section */
+        .hero-section {
+            background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
+            color: var(--porsche-white);
+            padding: 120px 0 80px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.3;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .hero-title {
+            font-size: 4rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(45deg, var(--porsche-white), var(--porsche-gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.25rem;
+            font-weight: 400;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        
+        /* Search Form */
+        .search-form {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .form-label {
+            font-weight: 600;
+            color: var(--porsche-dark-gray);
+            margin-bottom: 0.5rem;
+        }
+        
+        .form-control, .form-select {
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 0.75rem 1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: var(--porsche-red);
+            box-shadow: 0 0 0 0.2rem rgba(213, 0, 28, 0.25);
+        }
+        
+        .btn-primary {
+            background: var(--porsche-red);
+            border: none;
+            border-radius: 12px;
+            padding: 0.75rem 2rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background: #b30016;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(213, 0, 28, 0.3);
+        }
+        
+        /* Section Headers */
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--porsche-black);
+            margin-bottom: 1rem;
+        }
+        
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: var(--porsche-light-gray);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        /* Car Cards */
+        .car-card {
+            background: var(--porsche-white);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .car-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        }
+        
+        .car-image {
+            height: 200px;
+            background: linear-gradient(45deg, #f8f9fa, #e9ecef);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .car-image img {
             width: 100%;
-            max-width: 1295px;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .price-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: var(--porsche-red);
+            color: var(--porsche-white);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+        
+        .car-details {
+            padding: 1.5rem;
+        }
+        
+        .car-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--porsche-black);
+            margin-bottom: 0.5rem;
+        }
+        
+        .car-specs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .spec-item {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-size: 0.9rem;
+            color: var(--porsche-light-gray);
+        }
+        
+        .spec-item i {
+            color: var(--porsche-red);
+        }
+        
+        /* Features Section */
+        .features-section {
+            background: var(--porsche-gray);
+            padding: 80px 0;
+        }
+        
+        .feature-card {
+            background: var(--porsche-white);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--porsche-red);
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
+            margin: 0 auto 1rem;
+            color: var(--porsche-white);
+            font-size: 1.5rem;
         }
-
-        .date-location-selector .filters-card {
-            background: white;
-            border-radius: 6px;
-            padding: 12px;
-            border: 1px solid var(--border-gray);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        
+        .feature-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--porsche-black);
+            margin-bottom: 0.5rem;
         }
-
-                  .date-location-selector .form-label {
-             font-size: 11px;
-             font-weight: 600;
-             color: #000000;
-             margin-bottom: 4px;
-             display: block;
-         }
-
-         .date-location-selector .form-select,
-        .date-location-selector .form-control {
-            border: 1px solid #000000;
-            border-radius: 4px;
-            background: white;
-            color: #000000;
-            font-size: 11px;
+        
+        .feature-description {
+            color: var(--porsche-light-gray);
+            line-height: 1.6;
+        }
+        
+        /* Stats Section */
+        .stats-section {
+            background: var(--porsche-black);
+            color: var(--porsche-white);
+            padding: 80px 0;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 2rem;
+        }
+        
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--porsche-red);
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            font-size: 1.1rem;
             font-weight: 500;
-            height: 30px;
-            padding: 4px 8px;
+            opacity: 0.9;
         }
-
-                 /* Filters card background color */
-         .date-location-selector .filters-card {
-             background: #E0EEEE !important;
-         }
-
-        .date-location-selector .form-select:invalid {
-            color: #000000;
+        
+        /* About Section */
+        .about-section {
+            padding: 80px 0;
+            background: var(--porsche-white);
         }
-
-         .date-location-selector .form-select:focus,
-         .date-location-selector .form-control:focus {
-             outline: none;
-             border-color: #000000;
-             box-shadow: 0 0 0 0.1rem rgba(0, 0, 0, 0.15);
-         }
-
-         .date-location-selector .input-group-text {
-             background: #000000;
-             border: 1px solid #000000;
-             border-right: none;
-             cursor: pointer;
-             color: #ffffff;
-             font-size: 11px;
-             height: 30px;
-             display: flex;
-             align-items: center;
-         }
-
-         .date-location-selector .form-control {
-             border-left: none;
-             border-color: #000000;
-         }
-
-         .date-location-selector .input-group {
-             height: 30px;
-         }
-
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               .date-location-selector .btn-warning {
-                 background: #FFA000 !important;
-                 border-color: #FFA000 !important;
-                 color: #ffffff !important;
-                 font-size: 14px;
-                 font-weight: 600;
-                 padding: 4px 12px;
-                 height: 50px;
-                 margin-top: -10px;
-             }
-
-                                           .date-location-selector .btn-warning:hover {
-                background: #E68900 !important;
-                border-color: #E68900 !important;
-                color: #ffffff !important;
+        
+        .about-content {
+            max-width: 600px;
+        }
+        
+        .about-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--porsche-black);
+            margin-bottom: 1.5rem;
+        }
+        
+        .about-text {
+            font-size: 1.1rem;
+            color: var(--porsche-light-gray);
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+        
+        .benefit-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .benefit-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+        
+        .benefit-item i {
+            color: var(--porsche-red);
+            font-size: 1.2rem;
+        }
+        
+        /* Footer */
+        .footer {
+            background: var(--porsche-black);
+            color: var(--porsche-white);
+            padding: 40px 0;
+            text-align: center;
+        }
+        
+        .footer-content {
+            opacity: 0.8;
+        }
+        
+        .footer-link {
+            color: var(--porsche-white);
+            text-decoration: none;
+            margin: 0 1rem;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-link:hover {
+            color: var(--porsche-red);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
             }
-
-           .date-location-selector .btn-warning i {
-               font-size: 16px !important;
-           }
-
-         /* Responsive adjustments */
-         @media (max-width: 768px) {
-             .hero-section {
-                 margin-top: 60px !important;
-                 padding: 8px 0 !important;
-             }
-             
-             .hero-section .filters-card {
-                 padding: 10px !important;
-             }
-             
-             .hero-section .form-label {
-                 font-size: 10px !important;
-                 margin-bottom: 3px !important;
-             }
-             
-             .hero-section .form-select,
-             .hero-section .form-control {
-                 font-size: 10px !important;
-                 height: 28px !important;
-                 padding: 3px 6px !important;
-             }
-             
-             .hero-section .btn-warning {
-                 font-size: 10px !important;
-                 padding: 3px 10px !important;
-                 height: 28px !important;
-             }
-             
-             .hero-section .input-group-text {
-                 height: 28px !important;
-             }
-             
-             .hero-section .input-group {
-                 height: 28px !important;
-             }
-         }
-
-                                                                                                                                                               /* Highlight for all form selectors */
-             .hero-section .form-select.highlight,
-             .form-select.highlight,
-             #pickup-location.highlight,
-             select#pickup-location.highlight,
-             #dropoff-location.highlight,
-             select#dropoff-location.highlight,
-             #pickup-date.highlight,
-             input#pickup-date.highlight,
-             #dropoff-date.highlight,
-             input#dropoff-date.highlight {
-                 border: 2px solid #ff6b35 !important;
-                 box-shadow: 0 0 8px rgba(255, 107, 53, 0.2) !important;
-                 padding: 2px 6px !important;
-             }
-
-             /* Highlight for input groups (date inputs) */
-             .hero-section .input-group.highlight .form-control,
-             .input-group.highlight .form-control {
-                 border: 2px solid #ff6b35 !important;
-                 box-shadow: 0 0 8px rgba(255, 107, 53, 0.2) !important;
-                 padding: 2px 6px !important;
-             }
-
-             .hero-section .input-group.highlight .input-group-text,
-             .input-group.highlight .input-group-text {
-                 border: 2px solid #ff6b35 !important;
-                 border-right: 2px solid #ff6b35 !important;
-                 box-shadow: 0 0 8px rgba(255, 107, 53, 0.2) !important;
-             }
-
-                   /* Vehicle card hover effects - Smaller size like fahrzeuge page */
-          .vehicle-card {
-              transition: all 0.3s ease;
-              cursor: pointer;
-              background: white;
-              border: 1px solid #dee2e6;
-              border-radius: 8px;
-              overflow: hidden;
-              height: 100%;
-              position: relative;
-          }
-
-          /* First vehicle card background */
-          .vehicle-card:first-child {
-              background: #C1CDCD;
-          }
-
-         .vehicle-card:hover {
-             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-             transform: translateY(-2px);
-         }
-
-         /* Selected vehicle card - stays elevated and highlighted */
-         .vehicle-card.selected {
-             transform: translateY(-8px) !important;
-             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
-             border: 3px solid #ff6b35 !important;
-             border-radius: 8px !important;
-         }
-
-         .vehicle-card.selected .vehicle-image {
-             border-radius: 6px 6px 0 0;
-         }
-
-         .vehicle-card.selected .vehicle-details {
-             border-radius: 0 0 6px 6px;
-         }
-
-         /* When hovering over selected card, maintain the selected state */
-         .vehicle-card.selected:hover {
-             transform: translateY(-8px) !important;
-             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
-             border: 3px solid #ff6b35 !important;
-             border-radius: 8px !important;
-         }
-
-         /* Vehicle image - smaller size like fahrzeuge page */
-         .vehicle-image {
-             height: 150px !important;
-             background-size: cover;
-             background-position: center;
-             position: relative;
-             border-radius: 8px 8px 0 0;
-         }
-
-         /* Vehicle details - smaller padding like fahrzeuge page */
-         .vehicle-details {
-             padding: 12px !important;
-         }
-
-         /* 4 vehicles per row on homepage - FORCE 4 PER ROW */
-         #popular-cars-container .col-lg-3 {
-             flex: 0 0 25% !important;
-             max-width: 25% !important;
-             width: 25% !important;
-             min-width: 25% !important;
-         }
-
-         #popular-cars-container .col-md-6 {
-             flex: 0 0 50% !important;
-             max-width: 50% !important;
-             width: 50% !important;
-             min-width: 50% !important;
-         }
-
-         #popular-cars-container .col-12 {
-             flex: 0 0 100% !important;
-             max-width: 100% !important;
-             width: 100% !important;
-             min-width: 100% !important;
-         }
-
-         /* Force row to display 4 items */
-         #popular-cars-container .row {
-             display: flex !important;
-             flex-wrap: wrap !important;
-             margin: 0 !important;
-         }
-
-         /* Ensure container is full width */
-         #popular-cars-container {
-             width: 100% !important;
-             max-width: 100% !important;
-         }
-
-         /* Override any Bootstrap container constraints - align with navbar */
-         #vehicles .container {
-             max-width: 1265px !important;
-             margin: 0 auto !important;
-             padding-left: 0 !important;
-             padding-right: 0 !important;
-         }
-         
-         /* Also ensure the row inside has proper negative margins */
-         #vehicles .container .row {
-             margin-left: 0 !important;
-             margin-right: 0 !important;
-         }
-
-         /* Force all Bootstrap grid overrides */
-         @media (min-width: 992px) {
-             #popular-cars-container .col-lg-3 {
-                 flex: 0 0 25% !important;
-                 max-width: 25% !important;
-                 width: 25% !important;
-                 min-width: 25% !important;
-             }
-         }
-
-         @media (min-width: 768px) and (max-width: 991px) {
-             #popular-cars-container .col-md-6 {
-                 flex: 0 0 50% !important;
-                 max-width: 50% !important;
-                 width: 50% !important;
-                 min-width: 50% !important;
-             }
-         }
-
-         @media (max-width: 767px) {
-             #popular-cars-container .col-12 {
-                 flex: 0 0 100% !important;
-                 max-width: 100% !important;
-                 width: 100% !important;
-                 min-width: 100% !important;
-             }
-         }
-
-         /* Override Bootstrap's default grid system completely */
-         #popular-cars-container * {
-             box-sizing: border-box !important;
-         }
-
-         /* Force specific grid layout */
-         #popular-cars-container .row > * {
-             padding-left: 0.5rem !important;
-             padding-right: 0.5rem !important;
-         }
-
-         /* Ensure no other CSS interferes */
-         #popular-cars-container .col-lg-3,
-         #popular-cars-container .col-md-6,
-         #popular-cars-container .col-12 {
-             float: none !important;
-             display: block !important;
-         }
-
-         /* Footer Styles */
-         .footer-section {
-             background: #333;
-             color: #ffffff;
-             padding: 8px 0;
-             margin-top: 30px;
-             width: 100vw;
-             position: relative;
-             left: 50%;
-             right: 50%;
-             margin-left: -50vw;
-             margin-right: -50vw;
-             z-index: 1;
-         }
-
-         .footer-content {
-             display: flex;
-             justify-content: center;
-             align-items: center;
-             gap: 8px;
-             font-size: 11px;
-             flex-wrap: wrap;
-             text-align: center;
-             background: #333;
-             padding: 0 15px;
-         }
-
-         .footer-text {
-             color: #ffffff;
-         }
-
-         .footer-link {
-             color: #ff6b35;
-             text-decoration: none;
-             font-weight: 600;
-             transition: color 0.3s ease;
-         }
-
-         .footer-link:hover {
-             color: #e55a2b;
-             text-decoration: underline;
-         }
-
-         .footer-separator {
-             color: #ffffff;
-             font-weight: 600;
-         }
-
-         /* Responsive Design */
-         /* Large screens - extend date input fields */
-         @media (min-width: 1400px) {
-             .hero-section .col-lg-2 {
-                 flex: 0 0 auto !important;
-                 width: 18% !important;
-                 max-width: 200px !important;
-             }
-             
-             .hero-section .col-lg-2 .form-control {
-                 min-width: 180px !important;
-             }
-             
-             .hero-section .filters-card {
-                 padding: 20px 30px !important;
-             }
-             
-
-         }
-         
-         @media (max-width: 1200px) {
-             .hero-section {
-                 margin-top: 150px !important;
-             }
-             
-             #vehicles {
-                 margin-top: 250px !important;
-             }
-             
-             .filters-card {
-                 padding: 15px !important;
-             }
-             
-             .form-label {
-                 font-size: 12px !important;
-             }
-             
-             .form-select, .form-control {
-                 font-size: 14px !important;
-                 padding: 8px 12px !important;
-             }
-         }
-
-         /* Medium-large screens - ensure date fields have enough space */
-         @media (min-width: 1200px) and (max-width: 1399px) {
-             .hero-section .col-lg-2 {
-                 flex: 0 0 auto !important;
-                 width: 16% !important;
-                 max-width: 180px !important;
-             }
-             
-             .hero-section .col-lg-2 .form-control {
-                 min-width: 160px !important;
-             }
-             
-
-         }
-         
-         @media (max-width: 992px) {
-             .hero-section {
-                 margin-top: 120px !important;
-             }
-             
-             #vehicles {
-                 margin-top: 200px !important;
-             }
-             
-             .filters-card {
-                 padding: 12px !important;
-             }
-             
-             .form-label {
-                 font-size: 11px !important;
-                 margin-bottom: 4px !important;
-             }
-             
-             .form-select, .form-control {
-                 font-size: 13px !important;
-                 padding: 6px 10px !important;
-                 height: 35px !important;
-             }
-             
-             .btn-warning {
-                 font-size: 12px !important;
-                 padding: 6px 12px !important;
-             }
-             
-             .section-title {
-                 font-size: 24px !important;
-             }
-         }
-
-         @media (max-width: 768px) {
-             body {
-                 margin-top: 60px !important;
-             }
-             
-             .navbar-brand {
-                 font-size: 1.5rem !important;
-             }
-             
-             .hero-section {
-                 margin-top: 80px !important;
-                 padding: 8px 0 !important;
-             }
-             
-             #vehicles {
-                 margin-top: 150px !important;
-                 padding: 20px 0 !important;
-             }
-             
-             .filters-card {
-                 padding: 10px !important;
-             }
-             
-             .form-label {
-                 font-size: 10px !important;
-                 margin-bottom: 3px !important;
-             }
-             
-             .form-select, .form-control {
-                 font-size: 12px !important;
-                 padding: 5px 8px !important;
-                 height: 32px !important;
-             }
-             
-             .btn-warning {
-                 font-size: 11px !important;
-                 padding: 5px 10px !important;
-                 height: 32px !important;
-             }
-             
-             .section-title {
-                 font-size: 20px !important;
-                 margin-bottom: 15px !important;
-             }
-             
-             .vehicle-card {
-                 margin-bottom: 15px !important;
-             }
-             
-             .vehicle-title {
-                 font-size: 14px !important;
-             }
-             
-             .vehicle-specs {
-                 font-size: 11px !important;
-             }
-             
-             .feature-icon {
-                 width: 35px !important;
-                 height: 35px !important;
-             }
-             
-             .feature-icon i {
-                 font-size: 14px !important;
-             }
-             
-             h6.fw-bold {
-                 font-size: 14px !important;
-             }
-             
-             .text-muted.small {
-                 font-size: 11px !important;
-             }
-             
-             .footer-content {
-                 font-size: 10px !important;
-                 gap: 6px !important;
-                 padding: 0 10px !important;
-             }
-         }
-
-         @media (max-width: 576px) {
-             .hero-section {
-                 margin-top: 60px !important;
-             }
-             
-             #vehicles {
-                 margin-top: 120px !important;
-                 padding: 15px 0 !important;
-             }
-             
-             .filters-card {
-                 padding: 8px !important;
-             }
-             
-             .form-label {
-                 font-size: 9px !important;
-                 margin-bottom: 2px !important;
-             }
-             
-             .form-select, .form-control {
-                 font-size: 11px !important;
-                 padding: 4px 6px !important;
-                 height: 30px !important;
-             }
-             
-             .btn-warning {
-                 font-size: 10px !important;
-                 padding: 4px 8px !important;
-                 height: 30px !important;
-             }
-             
-             .section-title {
-                 font-size: 18px !important;
-                 margin-bottom: 10px !important;
-             }
-             
-             .vehicle-card {
-                 margin-bottom: 10px !important;
-             }
-             
-             .vehicle-title {
-                 font-size: 13px !important;
-             }
-             
-             .vehicle-specs {
-                 font-size: 10px !important;
-             }
-             
-             .feature-icon {
-                 width: 30px !important;
-                 height: 30px !important;
-             }
-             
-             .feature-icon i {
-                 font-size: 12px !important;
-             }
-             
-             h6.fw-bold {
-                 font-size: 12px !important;
-             }
-             
-             .text-muted.small {
-                 font-size: 10px !important;
-             }
-             
-             .footer-content {
-                 font-size: 9px !important;
-                 gap: 4px !important;
-                 padding: 0 8px !important;
-                 flex-direction: column !important;
-             }
-             
-             .footer-separator {
-                 display: none !important;
-             }
-         }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .search-form {
+                padding: 1.5rem;
+            }
+        }
     </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top shadow-sm">
+    <!-- Modern Navbar -->
+    <nav class="navbar navbar-expand-lg fixed-top">
         <div class="container">
-            <a class="navbar-brand fw-bold fs-3" href="/" style="text-decoration: none;">
-                <i class="bi bi-car-front text-warning me-2"></i>
-                <span style="color: #ff6b35; text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000; font-family: 'Explorer Print Sans Bold', sans-serif;">AUTOR</span>
+            <a class="navbar-brand" href="/">
+                AUTOR
             </a>
             
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -756,226 +427,290 @@
             </button>
             
             <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav me-auto">
+                <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="btn btn-outline-warning fw-medium" href="/fahrzeuge?clear=1">Autos</a>
+                        <a class="nav-link" href="/fahrzeuge">Fahrzeuge</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/standorte">Standorte</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/kontakt">Kontakt</a>
                     </li>
                 </ul>
-            <ul class="navbar-nav ms-auto" id="auth-buttons-container">
+                <ul class="navbar-nav ms-auto" id="auth-buttons-container">
+                    <!-- Auth buttons will be loaded here -->
                 </ul>
             </div>
         </div>
     </nav>
 
-                                       <main class="main-content">
-
-    <!-- Date Location Selector Section -->
-    <section class="date-location-selector" id="date-location-selector">
+    <!-- Hero Section - Porsche Style -->
+    <section class="hero-section-porsche">
+        <div class="hero-background">
+            <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80" alt="Premium Car" class="hero-car-image">
+            <div class="hero-overlay"></div>
+        </div>
         <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-12 col-xl-10">
-                    <div class="filters-card">
-                        <form id="date-location-form" novalidate>
-                            <div class="row g-3 align-items-end">
-                                <div class="col-12 col-md-6 col-lg-3">
-                                    <label class="form-label">Abholort</label>
-                                    <select id="pickup-location-selector" class="form-select pickup-location-highlight" required lang="de">
-                                        <option value="">Standort wählen</option>
-                                        <option value="1">Berlin Hauptbahnhof</option>
-                                        <option value="2">München Flughafen</option>
-                                        <option value="3">Hamburg Zentrum</option>
-                                        <option value="4">Köln Dom</option>
-                                        <option value="5">Frankfurt Flughafen</option>
-                                    </select>
-                                </div>
-                                <div class="col-12 col-md-6 col-lg-3">
-                                    <label class="form-label">Rückgabeort</label>
-                                    <select id="dropoff-location-selector" class="form-select dropoff-location-highlight" required lang="de">
-                                        <option value="">Standort wählen</option>
-                                        <option value="1">Berlin Hauptbahnhof</option>
-                                        <option value="2">München Flughafen</option>
-                                        <option value="3">Hamburg Zentrum</option>
-                                        <option value="4">Köln Dom</option>
-                                        <option value="5">Frankfurt Flughafen</option>
-                                    </select>
-                                </div>
-                                <div class="col-6 col-md-3 col-lg-2">
-                                    <label class="form-label">Abholdatum</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text calendar-trigger-selector" data-target="pickup-date-selector"><i class="bi bi-calendar3 text-warning"></i></span>
-                                        <input type="text" id="pickup-date-selector" class="form-control pickup-date-highlight" inputmode="numeric" pattern="\d{2}\.\d{2}\.\d{4}" maxlength="10" placeholder="tt.mm.jjjj" autocomplete="off" required>
-                                    </div>
-                                </div>
-                                <div class="col-6 col-md-3 col-lg-2">
-                                    <label class="form-label">Rückgabedatum</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text calendar-trigger-selector" data-target="dropoff-date-selector"><i class="bi bi-calendar3 text-warning"></i></span>
-                                        <input type="text" id="dropoff-date-selector" class="form-control dropoff-date-highlight" inputmode="numeric" pattern="\d{2}\.\d{2}\.\d{4}" maxlength="10" placeholder="tt.mm.jjjj" autocomplete="off" required>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-12 col-lg-2">
-                                    <button type="submit" class="btn btn-warning w-100">
-                                        <i class="bi bi-search me-1"></i>
-                                        Aktualisieren
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
+            <div class="hero-content-porsche">
+                <h1 class="hero-title-porsche">Die Exklusivität der Mobilität.</h1>
+                <p class="hero-subtitle-porsche">Entdecken Sie unsere Premium-Fahrzeugflotte.</p>
+                <div class="hero-cta-porsche">
+                    <a href="/fahrzeuge" class="btn-porsche">
+                        Fahrzeuge entdecken
+                        <i class="bi bi-arrow-right ms-2"></i>
+                    </a>
+                </div>
+                <div class="scroll-indicator">
+                    <i class="bi bi-chevron-down"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Popular Cars Section -->
+    <section class="popular-cars-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Unsere Exklusivsten Fahrzeuge</h2>
+                <p class="section-subtitle">Entdecken Sie unsere handverlesene Sammlung der weltweit luxuriösesten Automobile</p>
+            </div>
+            <div class="row" id="popular-cars-container">
+                <!-- Car cards will be loaded here by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Warum AUTOR wählen?</h2>
+                <p class="section-subtitle">Wir bieten Ihnen den besten Service für Ihre Mobilitätsbedürfnisse</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-lg-3 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-shield-check"></i>
+                        </div>
+                        <h5 class="feature-title">Sicher & Zuverlässig</h5>
+                        <p class="feature-description">Alle Fahrzeuge sind sorgfältig gewartet und vollständig versichert</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-clock"></i>
+                        </div>
+                        <h5 class="feature-title">24/7 Support</h5>
+                        <p class="feature-description">Unser Kundenservice ist rund um die Uhr für Sie da</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-credit-card"></i>
+                        </div>
+                        <h5 class="feature-title">Flexible Zahlung</h5>
+                        <p class="feature-description">Verschiedene Zahlungsoptionen ohne versteckte Kosten</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-geo-alt"></i>
+                        </div>
+                        <h5 class="feature-title">Deutschlandweit</h5>
+                        <p class="feature-description">Verfügbar in allen großen Städten und Flughäfen</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-         <!-- Popular Vehicles Section -->
-     <section id="vehicles" class="py-5" style="margin-top: 150px; z-index: 1;">
-         <div style="max-width: 1150px; margin: 0 auto; padding: 0 15px;">
-                           <div class="section-header text-center mb-4">
-                  <h2 class="section-title">Unsere beliebtesten Fahrzeuge</h2>
-              </div>
-             
-             <div class="row g-4" id="popular-cars-container">
-                 <!-- Vehicles will be loaded here -->
-             </div>
-         </div>
-     </section>
-
-                    <!-- Features Section -->
-      <section class="py-3" style="background: #E0EEEE;">
+    <!-- Stats Section -->
+    <section class="stats-section">
         <div class="container">
-            <div class="row g-2">
+            <div class="row">
                 <div class="col-lg-3 col-md-6">
-                    <div class="text-center p-2">
-                        <div class="feature-icon bg-warning rounded-circle d-inline-flex align-items-center justify-content-center mb-2" style="width: 40px; height: 40px;">
-                            <i class="bi bi-shield-check text-white fs-6"></i>
-                        </div>
-                        <h6 class="fw-bold mb-1">Sicher & Zuverlässig</h6>
-                        <p class="text-muted small mb-0">Alle Fahrzeuge sind sorgfältig gewartet und versichert</p>
+                    <div class="stat-item">
+                        <div class="stat-number">500+</div>
+                        <div class="stat-label">Fahrzeuge</div>
                     </div>
                 </div>
-                
                 <div class="col-lg-3 col-md-6">
-                    <div class="text-center p-2">
-                        <div class="feature-icon bg-warning rounded-circle d-inline-flex align-items-center justify-content-center mb-2" style="width: 40px; height: 40px;">
-                            <i class="bi bi-clock text-white fs-6"></i>
-                        </div>
-                        <h6 class="fw-bold mb-1">24/7 Support</h6>
-                        <p class="text-muted small mb-0">Unser Kundenservice ist rund um die Uhr für Sie da</p>
+                    <div class="stat-item">
+                        <div class="stat-number">50+</div>
+                        <div class="stat-label">Standorte</div>
                     </div>
                 </div>
-                
                 <div class="col-lg-3 col-md-6">
-                    <div class="text-center p-2">
-                        <div class="feature-icon bg-warning rounded-circle d-inline-flex align-items-center justify-content-center mb-2" style="width: 40px; height: 40px;">
-                            <i class="bi bi-credit-card text-white fs-6"></i>
-                        </div>
-                        <h6 class="fw-bold mb-1">Flexible Zahlung</h6>
-                        <p class="text-muted small mb-0">Verschiedene Zahlungsoptionen ohne versteckte Kosten</p>
+                    <div class="stat-item">
+                        <div class="stat-number">10K+</div>
+                        <div class="stat-label">Zufriedene Kunden</div>
                     </div>
                 </div>
-                
                 <div class="col-lg-3 col-md-6">
-                    <div class="text-center p-2">
-                        <div class="feature-icon bg-warning rounded-circle d-inline-flex align-items-center justify-content-center mb-2" style="width: 40px; height: 40px;">
-                            <i class="bi bi-geo-alt text-white fs-6"></i>
-                        </div>
-                        <h6 class="fw-bold mb-1">Deutschlandweit</h6>
-                        <p class="text-muted small mb-0">Verfügbar in allen großen Städten und Flughäfen</p>
+                    <div class="stat-item">
+                        <div class="stat-number">4.8★</div>
+                        <div class="stat-label">Bewertung</div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-                   <!-- About Section -->
-      <section id="about" class="py-3" style="background: #E0EEEE;">
+    <!-- About Section -->
+    <section class="about-section">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-6">
-                    <h3 class="fw-bold mb-2">Warum AUTOR?</h3>
-                    <p class="mb-3">
-                        Seit über 10 Jahren sind wir Ihr vertrauensvoller Partner für Premium-Autovermietung in Deutschland.
-                    </p>
-                    <div class="row g-2">
-                        <div class="col-6">
-                            <div class="d-flex align-items-center">
-                                <i class="bi bi-check-circle-fill text-warning fs-6 me-2"></i>
-                                <span class="small">Premium Fahrzeuge</span>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="d-flex align-items-center">
-                                <i class="bi bi-check-circle-fill text-warning fs-6 me-2"></i>
-                                <span class="small">Faire Preise</span>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="d-flex align-items-center">
-                                <i class="bi bi-check-circle-fill text-warning fs-6 me-2"></i>
-                                <span class="small">Flexible Buchung</span>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="d-flex align-items-center">
-                                <i class="bi bi-check-circle-fill text-warning fs-6 me-2"></i>
-                                <span class="small">24/7 Support</span>
-                            </div>
-                        </div>
+                    <div class="about-content">
+                        <h2 class="about-title">Über AUTOR</h2>
+                        <p class="about-text">
+                            Seit über 10 Jahren sind wir Ihr vertrauensvoller Partner für Premium-Autovermietung in Deutschland. 
+                            Wir bieten Ihnen eine exklusive Auswahl an hochwertigen Fahrzeugen für jeden Anlass.
+                        </p>
+                        <ul class="benefit-list">
+                            <li class="benefit-item">
+                                <i class="bi bi-check-circle-fill"></i>
+                                <span>Premium Fahrzeuge der neuesten Generation</span>
+                            </li>
+                            <li class="benefit-item">
+                                <i class="bi bi-check-circle-fill"></i>
+                                <span>Faire und transparente Preise</span>
+                            </li>
+                            <li class="benefit-item">
+                                <i class="bi bi-check-circle-fill"></i>
+                                <span>Flexible Buchungsoptionen</span>
+                            </li>
+                            <li class="benefit-item">
+                                <i class="bi bi-check-circle-fill"></i>
+                                <span>Persönlicher Kundenservice</span>
+                            </li>
+                        </ul>
                     </div>
                 </div>
-                                 <div class="col-lg-6">
-                     <div class="bg-white rounded-3 p-3 shadow-sm" style="background: #FFECB3 !important;">
-                        <div class="row text-center g-2">
-                            <div class="col-6">
-                                <div class="p-2">
-                                    <h4 class="fw-bold text-warning mb-1">500+</h4>
-                                    <p class="text-muted small mb-0">Fahrzeuge</p>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="p-2">
-                                    <h4 class="fw-bold text-warning mb-1">50+</h4>
-                                    <p class="text-muted small mb-0">Standorte</p>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="p-2">
-                                    <h4 class="fw-bold text-warning mb-1">10K+</h4>
-                                    <p class="text-muted small mb-0">Kunden</p>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="p-2">
-                                    <h4 class="fw-bold text-warning mb-1">4.8★</h4>
-                                    <p class="text-muted small mb-0">Bewertung</p>
-                                </div>
-                            </div>
-                        </div>
+                <div class="col-lg-6">
+                    <div class="text-center">
+                        <img src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                             alt="Premium Car" class="img-fluid rounded-4" style="max-width: 100%; height: auto;">
                     </div>
                 </div>
             </div>
         </div>
     </section>
-    </main>
 
     <!-- Footer -->
-    <footer class="footer-section">
+    <footer class="footer">
         <div class="container">
             <div class="footer-content">
-                <span class="footer-text">© 2025 Alle Rechte vorbehalten. Dies ist eine Beispiel-Website für Übungszwecke vorbereitet. Es ist keine echte Autovermietungs-Website.</span>
-                <span class="footer-separator">-</span>
-                <a href="#" class="footer-link">Datenschutz</a>
-                <span class="footer-separator">-</span>
-                <a href="#" class="footer-link">Bedingungen</a>
+                <p class="mb-3">© 2025 AUTOR. Alle Rechte vorbehalten.</p>
+                <div>
+                    <a href="#" class="footer-link">Datenschutz</a>
+                    <a href="#" class="footer-link">AGB</a>
+                    <a href="#" class="footer-link">Impressum</a>
+                    <a href="#" class="footer-link">Kontakt</a>
+                </div>
             </div>
         </div>
     </footer>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Flatpickr JS and German locale -->
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/de.js"></script>
+    
+    <!-- Fallback Car Data -->
+    <script>
+        // Fallback car data in case cars.js doesn't load
+        if (!window.LOCAL_CARS) {
+            console.log('Loading fallback car data...');
+            window.LOCAL_CARS = [
+                {
+                    car_id: 101,
+                    make: 'Porsche',
+                    model: '911 GT3 RS',
+                    daily_rate: 899,
+                    transmission_type: 'Automatik',
+                    fuel_type: 'Benzin',
+                    seating_capacity: 2,
+                    image_url: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80'
+                },
+                {
+                    car_id: 102,
+                    make: 'Ferrari',
+                    model: 'SF90 Stradale',
+                    daily_rate: 1299,
+                    transmission_type: 'Automatik',
+                    fuel_type: 'Hybrid',
+                    seating_capacity: 2,
+                    image_url: 'https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80'
+                },
+                {
+                    car_id: 103,
+                    make: 'Lamborghini',
+                    model: 'Aventador SVJ',
+                    daily_rate: 1499,
+                    transmission_type: 'Automatik',
+                    fuel_type: 'Benzin',
+                    seating_capacity: 2,
+                    image_url: 'https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80'
+                },
+                {
+                    car_id: 104,
+                    make: 'Rolls-Royce',
+                    model: 'Phantom',
+                    daily_rate: 1899,
+                    transmission_type: 'Automatik',
+                    fuel_type: 'Benzin',
+                    seating_capacity: 4,
+                    image_url: 'https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80'
+                },
+                {
+                    car_id: 105,
+                    make: 'Bentley',
+                    model: 'Continental GT',
+                    daily_rate: 999,
+                    transmission_type: 'Automatik',
+                    fuel_type: 'Benzin',
+                    seating_capacity: 4,
+                    image_url: 'https://images.unsplash.com/photo-1555215695-3004980ad54e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80'
+                },
+                {
+                    car_id: 106,
+                    make: 'McLaren',
+                    model: '720S',
+                    daily_rate: 1199,
+                    transmission_type: 'Automatik',
+                    fuel_type: 'Benzin',
+                    seating_capacity: 2,
+                    image_url: 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80'
+                },
+                {
+                    car_id: 107,
+                    make: 'Aston Martin',
+                    model: 'DBS Superleggera',
+                    daily_rate: 1099,
+                    transmission_type: 'Automatik',
+                    fuel_type: 'Benzin',
+                    seating_capacity: 4,
+                    image_url: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80'
+                },
+                {
+                    car_id: 108,
+                    make: 'Bugatti',
+                    model: 'Chiron',
+                    daily_rate: 2999,
+                    transmission_type: 'Automatik',
+                    fuel_type: 'Benzin',
+                    seating_capacity: 2,
+                    image_url: 'https://images.unsplash.com/photo-1618843479618-39b0ee30618c?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80'
+                }
+            ];
+            console.log('Fallback car data loaded:', window.LOCAL_CARS.length, 'cars');
+        }
+    </script>
+    
     <!-- Custom JS -->
     <script src="js/data/cars.js"></script>
     <script src="js/app.js"></script>

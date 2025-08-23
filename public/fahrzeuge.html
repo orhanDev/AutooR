@@ -15,599 +15,489 @@
     <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/style.css">
     <style>
-        :root {
-            --primary-red: #dc3545;
-            --primary-red-dark: #c82333;
-            --secondary-gray: #6c757d;
-            --light-gray: #f8f9fa;
-            --border-gray: #dee2e6;
-        }
-
-        html {
-            background-color: #F4E4E0;
-            min-height: 100vh;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #ffffff;
-            margin-top: 76px;
-            overflow-x: hidden;
-            min-height: 100vh;
+        /* Additional styles for fahrzeuge page */
+        .search-form {
+            background: transparent !important;
+            backdrop-filter: none !important;
+            border: none !important;
+            border-radius: 0 !important;
+            padding: 0 !important;
+            box-shadow: none !important;
+            margin-top: 3rem;
+            position: relative;
+            width: 100%;
+            max-width: 1800px;
+            margin-left: auto;
+            margin-right: auto;
         }
         
-
-
-        /* Navbar */
-                .navbar {
-             background: #C1CDCD !important;
-             backdrop-filter: blur(15px);
-             box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
-         }
-
-        .navbar-brand {
-            color: #000000 !important;
+        .search-form form {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border-radius: 16px;
+            padding: 2rem 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
         }
         
-        .navbar-brand i,
-        .navbar-brand span {
-            color: #000000 !important;
+        .search-form form::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.3) 50%, transparent 100%);
         }
         
-        .navbar-brand .bi-car-front {
-            color: #000000 !important;
+        .search-form .form-label {
+            font-size: 0.6rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 0.4rem;
+            position: relative;
+            display: block !important;
+            text-align: left !important;
+            justify-content: flex-start !important;
+            align-items: flex-start !important;
+            width: auto !important;
         }
         
-        .navbar-brand .text-warning {
-            color: #000000 !important;
+        .search-form .form-label::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, #d5001c 0%, transparent 100%);
         }
-
-        .nav-link {
-            color: #666 !important;
-            transition: all 0.3s ease;
-        }
-
-        .nav-link:hover {
-            color: var(--primary-red) !important;
-        }
-
-        .btn-warning {
-              background: #F5F5F5 !important;
-              border-color: #F5F5F5 !important;
-              color: #000 !important;
-        }
-
-        .btn-warning:hover {
-              background: #C1CDCD !important;
-              border-color: #C1CDCD !important;
-              color: #000 !important;
-          }
-
-                     /* Vehicle card Mieten button */
-           .vehicle-card .btn-warning {
-               background: #FFA000 !important;
-               border-color: #FFA000 !important;
-               color: #ffffff !important;
-           }
-
-           .vehicle-card .btn-warning:hover {
-               background: #E68900 !important;
-               border-color: #E68900 !important;
-               color: #ffffff !important;
-           }
-
-                    /* Autos button styling to match Registrieren button */
-            .navbar .btn-outline-warning[href="/fahrzeuge?clear=1"] {
-                background: #FFA000;
-                border-color: #FFA000;
-                color: #ffffff;
-                font-weight: 600;
-                transition: all 0.3s ease;
-            }
-
-            .navbar .btn-outline-warning[href="/fahrzeuge?clear=1"]:hover {
-                background: #E68900;
-                border-color: #E68900;
-                color: #ffffff;
-                transform: translateY(-2px);
-                box-shadow: var(--shadow-lg);
-            }
-
-            .navbar .btn-outline-warning[href="/fahrzeuge?clear=1"]:hover {
-                background: #E68900;
-                border-color: #E68900;
-                color: #ffffff;
-                transform: translateY(-2px);
-                box-shadow: var(--shadow-lg);
-            }
-
-
-
-
-
-        /* Date and Location Selector */
-        .date-location-selector {
-            background: #FFFFFF;
-            padding: 10px 0;
-            margin-top: 76px;
-            border-bottom: 1px solid var(--border-gray);
-        }
-
-        .date-location-selector .filters-card {
-            background: #E0EEEE;
+        
+        .search-form .form-select,
+        .search-form .form-control {
+            border: 1px solid rgba(255, 255, 255, 0.3);
             border-radius: 6px;
-            padding: 12px;
-            border: 1px solid var(--border-gray);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            padding: 0.6rem 0.5rem;
+            font-size: 0.7rem;
+            font-weight: 400;
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            height: 38px;
+            min-width: 80px;
+            max-width: 120px;
+            text-align: left !important;
+            text-align-last: left !important;
+            direction: ltr !important;
+            width: 120px !important;
+            display: block !important;
         }
-
-
-
-        .date-location-selector .form-label {
-            font-size: 11px;
-            font-weight: 600;
-            color: #000000;
-            margin-bottom: 4px;
-            display: block;
+        
+        .search-form .form-select::placeholder,
+        .search-form .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+            text-align: left !important;
+            direction: ltr !important;
         }
-
-                 .date-location-selector .form-select,
-        .date-location-selector .form-control {
-            border: 1px solid #ced4da;
-            border-radius: 4px;
-            background: white;
-            color: #333;
-            font-size: 11px;
-            font-weight: 500;
-            height: 30px;
-            padding: 4px 8px;
+        
+        .search-form .form-select:hover,
+        .search-form .form-control:hover {
+            border-color: rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.2);
         }
-
-                 .date-location-selector .form-select:focus,
-        .date-location-selector .form-control:focus {
+        
+        .search-form .form-select:focus,
+        .search-form .form-control:focus {
+            border-color: #d5001c;
+            background: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 0 0 2px rgba(213, 0, 28, 0.2);
             outline: none;
-            border-color: #ff6b35;
-            box-shadow: 0 0 0 0.1rem rgba(255, 107, 53, 0.15);
         }
-
-                 .date-location-selector .input-group-text {
-            background: #f8f9fa;
-            border: 1px solid #ced4da;
+        
+        .search-form .input-group-text {
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.3);
             border-right: none;
-            cursor: pointer;
-            color: #6c757d;
-            font-size: 11px;
-            height: 30px;
-            display: flex;
-            align-items: center;
+            color: white;
+            border-radius: 6px 0 0 6px;
+            padding: 0.6rem 0.8rem;
+            font-size: 0.9rem;
+            backdrop-filter: blur(10px);
+            height: 38px;
         }
-
-                 .date-location-selector .form-control {
+        
+        .search-form .input-group .form-control {
             border-left: none;
+            border-radius: 0 6px 6px 0;
+            min-width: 80px;
+            max-width: 100px;
+            text-align: left !important;
+            text-align-last: left !important;
+            direction: ltr !important;
+            width: 100px !important;
+            display: block !important;
         }
-
-        .date-location-selector .input-group {
-            height: 30px;
-        }
-
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       .date-location-selector .btn-warning {
-            background: #FFA000 !important;
-            border-color: #FFA000 !important;
-            color: #ffffff !important;
-            font-size: 14px;
-            font-weight: 600;
-            padding: 4px 12px;
-            height: 50px;
-            margin-top: -10px;
-        }
-
-        /* Highlight animation for all selectors */
-        .pickup-location-highlight.highlight,
-        .dropoff-location-highlight.highlight,
-        .pickup-date-highlight.highlight,
-        .dropoff-date-highlight.highlight {
-            animation: borderBlink 1.5s infinite;
-        }
-
-        @keyframes borderBlink {
-            0%, 50% {
-                border: 2px solid #ff6b35;
-                box-shadow: 0 0 10px rgba(255, 107, 53, 0.5);
-            }
-            51%, 100% {
-                border: 1px solid #ced4da;
-                box-shadow: none;
-            }
-        }
-
-                                                   .date-location-selector .btn-warning:hover {
-            background: #E68900 !important;
-            border-color: #E68900 !important;
-            color: #ffffff !important;
-        }
-
-        .date-location-selector .btn-warning i {
-            font-size: 16px !important;
-        }
-
-           
-
-        /* Main Content - Add more space for elevated cards */
-        .main-content {
-            margin-top: 0px;
-            padding-top: 5px;
-        }
-
-        /* Search Summary */
-        .search-summary {
-            background: white;
-            padding: 8px 0;
-            border-bottom: 1px solid #dee2e6;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-
-        .search-summary-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 15px;
-        }
-
-        .search-details {
-            display: flex;
-            align-items: center;
-            font-weight: 500;
-            flex: 1;
-            padding: 0;
-        }
-
-        .search-detail {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            padding: 6px 12px;
-            background: #f8f9fa;
-            border-radius: 4px;
-            font-size: 12px;
-            color: #495057;
-            font-weight: 500;
-            border: 1px solid #dee2e6;
-        }
-
-        .total-price-display {
-            background: #ffc107;
-            color: #212529;
-            padding: 6px 16px;
-            border-radius: 4px;
-            font-size: 14px;
-            font-weight: 600;
-            border: 1px solid #ffc107;
-            white-space: nowrap;
-            text-align: center;
-        }
-
-        .btn-weiter {
-            background: #ff6b35;
+        
+        .search-form .btn-search {
+            background: transparent;
+            color: rgba(255, 255, 255, 0.9);
             border: none;
-            color: white;
-            padding: 6px 16px;
             border-radius: 4px;
-            font-size: 14px;
-            font-weight: 600;
+            padding: 0.5rem;
+            font-size: 0.7rem;
+            font-weight: 300;
+            text-transform: uppercase;
+            letter-spacing: 1px;
             transition: all 0.3s ease;
-            white-space: nowrap;
+            height: 38px;
+            min-width: 38px;
+            max-width: 38px;
+            width: 38px !important;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 2.5rem;
+            margin-bottom: 0.5rem;
         }
+        
 
-        .btn-weiter:hover {
-            background: #e55a2b;
+        
+        .search-form .btn-search:hover {
+            background: rgba(255, 255, 255, 0.1);
             color: white;
+            border-radius: 4px;
+            transform: scale(1.1);
         }
+        
 
-        .btn-weiter:disabled {
-            background: #6c757d;
-            cursor: not-allowed;
+        
+
+        
+        .search-form .btn-search i {
+            font-size: 1.5rem;
+            transition: transform 0.3s ease;
         }
-
-        /* Filters */
+        
+        /* Bootstrap col sınıflarını düzelt - yan yana sıralama için */
+        .search-form .col-12,
+        .search-form .col-md-6,
+        .search-form .col-lg-3,
+        .search-form .col-6,
+        .search-form .col-md-3,
+        .search-form .col-lg-2,
+        .search-form .col-md-12 {
+            text-align: left !important;
+            display: flex !important;
+            flex-direction: column !important;
+            width: auto !important;
+            flex: 0 0 auto !important;
+            margin-right: 0 !important;
+            margin-left: 0 !important;
+            padding-left: 0 !important;
+            min-width: 120px !important;
+        }
+        
+        .search-form .row {
+            text-align: center !important;
+            justify-content: space-between !important;
+            display: flex !important;
+            flex-direction: row !important;
+            flex-wrap: nowrap !important;
+            align-items: end !important;
+            gap: 0 !important;
+            margin-left: 0 !important;
+            padding-left: 0 !important;
+        }
+        
+        .search-form .btn-search:hover i {
+            transform: translateX(2px);
+        }
+        
+        /* Filters Section */
         .filters-section {
-            background: #E0EEEE;
-            padding: 10px 0 10px 0;
-            border-bottom: 1px solid var(--border-gray);
-            overflow: visible;
-            z-index: 1000;
+            background: #f8f9fa;
+            padding: 2rem 0;
+            border-bottom: 1px solid #e9ecef;
         }
-
-        .filters-section .row {
-            align-items: stretch;
-            margin-top: 1px;
-        }
-
-        .filters-section .col-md-2,
-        .filters-section .col-sm-6 {
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-        }
-
-        .filter-item {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-            margin-bottom: 0;
-            height: 100%;
-            justify-content: flex-end;
-            min-height: 80px;
-            overflow: visible;
-            z-index: 1001;
-        }
-
-        .filter-label {
-            font-size: 12px;
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 8px;
-            text-align: center;
-            height: 20px;
-            min-height: 20px;
-            max-height: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            line-height: 1;
-            background: #E0EEEE;
-        }
-
-        .filter-label[for="price-slider"] {
-            margin-bottom: 0px;
-        }
-
-        .filter-select {
-            border: 2px solid #ff6b35;
-            border-radius: 5px;
-            padding: 6px 8px;
+        
+        .filter-card {
             background: white;
-            color: #333;
-            width: 100%;
-            font-size: 12px;
-            font-weight: 500;
-            height: 35px;
-            min-height: 35px;
-            max-height: 35px;
-            line-height: 1;
-            display: flex;
-            align-items: center;
-            margin-bottom: 0;
-            transition: all 0.3s ease;
-            z-index: 1002;
-        }
-
-        .filter-select:focus {
-            outline: none;
-        }
-
-        .filter-select:focus option {
-            background: white;
-            color: #333;
-        }
-
-        .filter-select option {
-            background: white;
-            color: #333;
-        }
-
-        /* Price Slider */
-        .price-slider-container {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            height: 100%;
-            justify-content: flex-end;
-            min-height: 55px;
-        }
-
-        .price-slider {
-            width: 100%;
-            height: 6px;
-            border-radius: 3px;
-            background: #ddd;
-            outline: none;
-            -webkit-appearance: none;
-            appearance: none;
-            margin: 0;
-            padding: 0;
-        }
-
-        .price-slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            background: #ff6b35;
-            cursor: pointer;
-            border: 2px solid white;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        }
-
-        .price-slider::-moz-range-thumb {
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            background: #ff6b35;
-            cursor: pointer;
-            border: 2px solid white;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        }
-
-        .price-display {
-            font-size: 11px;
-            font-weight: 600;
-            color: #333;
-            text-align: center;
-            background: rgba(255, 255, 255, 0.8);
-            padding: 4px 8px;
-            border-radius: 4px;
-            border: 2px solid #ff6b35;
-            height: 35px;
-            min-height: 35px;
-            max-height: 35px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            line-height: 1;
-            margin-bottom: 0;
-        }
-
-        /* Left Sidebar - Insurance and Products */
-        .options-sidebar {
-            background: #E0EEEE;
             border-radius: 12px;
-            padding: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e9ecef;
+        }
+        
+        .filter-label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #212529;
+            margin-bottom: 0.75rem;
+        }
+        
+        .filter-select {
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            font-size: 0.9rem;
+            font-weight: 400;
+            background: white;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        
+        .filter-select:focus {
+            border-color: #d5001c;
+            box-shadow: 0 0 0 3px rgba(213, 0, 28, 0.1);
+            outline: none;
+        }
+        
+        /* Vehicles Section */
+        .vehicles-section {
+            padding: 4rem 0;
+            background: white;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 300;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: #212529;
+            margin-bottom: 1rem;
+        }
+        
+        .section-subtitle {
+            font-size: 1.1rem;
+            font-weight: 300;
+            color: #6c757d;
+            letter-spacing: 1px;
+        }
+        
+        /* Porsche Style Car Cards */
+        .car-card {
+            background: white;
+            border: none;
+            border-radius: 0;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            position: relative;
+            height: 420px;
+            margin-bottom: 2rem;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .car-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .car-image {
+            position: relative;
+            height: 280px;
+            overflow: hidden;
+            background: #f8f9fa;
+            flex-shrink: 0;
+        }
+        
+        .car-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: all 0.3s ease;
+        }
+        
+        .car-card:hover .car-image img {
+            transform: scale(1.05);
+        }
+        
+        .price-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: #000000;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            z-index: 2;
+        }
+        
+        .car-details {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            background: white;
+            min-height: 140px;
+        }
+        
+        .car-name {
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: #212529;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        
+        .car-specs {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            flex: 1;
+        }
+        
+        .spec-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.25rem;
+            text-align: center;
+        }
+        
+        .spec-item i {
+            font-size: 1.2rem;
+            color: #d5001c;
+            margin-bottom: 0.25rem;
+        }
+        
+        .spec-item span {
+            font-size: 0.7rem;
+            font-weight: 500;
+            color: #6c757d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .car-cta {
+            margin-top: auto;
+        }
+        
+        .btn-view-details {
+            background: #000000;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 0.75rem 1.5rem;
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: block;
+            text-align: center;
+        }
+        
+        .btn-view-details:hover {
+            background: #d5001c;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Sidebar */
+        .options-sidebar {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
             height: fit-content;
-            overflow: visible;
             position: sticky;
-            top: 100px;
-            max-height: calc(100vh - 120px);
+            top: 120px;
+            max-height: calc(100vh - 140px);
             overflow-y: auto;
         }
-
-        .options-section {
-            margin-bottom: 15px;
-        }
-
-        .options-section:last-child {
-            margin-bottom: 10px;
-        }
-
+        
         .options-title {
-            font-size: 14px;
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 6px;
-            padding-bottom: 4px;
-            border-bottom: 2px solid var(--primary-red);
-            background: #E0EEEE;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #212529;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 2px solid #d5001c;
+            padding-bottom: 0.5rem;
         }
-
-        /* Insurance List Items */
-        .insurance-item {
+        
+        .insurance-item, .product-item {
             display: flex;
             align-items: center;
-            gap: 6px;
-            padding: 3px 0;
-            border-bottom: 1px solid #eee;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid #e9ecef;
             cursor: pointer;
             transition: all 0.3s ease;
-            user-select: none;
         }
-
-        .insurance-item:last-child {
+        
+        .insurance-item:last-child, .product-item:last-child {
             border-bottom: none;
         }
-
-        .insurance-item:hover {
-            background: #f8f9fa;
+        
+        .insurance-item:hover, .product-item:hover {
+            background: rgba(213, 0, 28, 0.05);
+            border-radius: 8px;
+            padding-left: 1rem;
+            padding-right: 1rem;
+            margin-left: -1rem;
+            margin-right: -1rem;
         }
-
-        .insurance-item.selected {
-            background: #fff5f5;
-        }
-
-        .insurance-item:active {
-            transform: scale(0.98);
-        }
-
-        .insurance-radio {
-            width: 14px;
-            height: 14px;
-            border: 2px solid #ccc;
+        
+        .insurance-radio, .product-checkbox {
+            width: 18px;
+            height: 18px;
+            border: 2px solid #6c757d;
             border-radius: 50%;
             position: relative;
             flex-shrink: 0;
+            transition: all 0.3s ease;
         }
-
-        .insurance-item.selected .insurance-radio {
-            border-color: #ff6b35;
-            background: #ff6b35;
+        
+        .product-checkbox {
+            border-radius: 4px;
         }
-
+        
+        .insurance-item.selected .insurance-radio,
+        .product-item.selected .product-checkbox {
+            border-color: #d5001c;
+            background: #d5001c;
+        }
+        
         .insurance-item.selected .insurance-radio::after {
             content: '';
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 4px;
-            height: 4px;
+            width: 6px;
+            height: 6px;
             background: white;
             border-radius: 50%;
         }
-
-        .insurance-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex: 1;
-        }
-
-        .insurance-title {
-            font-size: 13px;
-            font-weight: 500;
-            color: #333;
-        }
-
-        .insurance-price {
-            font-size: 13px;
-            font-weight: bold;
-            color: #ff6b35;
-        }
-
-        /* Product List Items */
-        .product-item {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            padding: 3px 0;
-            border-bottom: 1px solid #eee;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            user-select: none;
-        }
-
-        .product-item:last-child {
-            border-bottom: none;
-        }
-
-        .product-item:hover {
-            background: #f8f9fa;
-        }
-
-        .product-item.selected {
-            background: #fff5f5;
-        }
-
-        .product-item:active {
-            transform: scale(0.98);
-        }
-
-        .product-checkbox {
-            width: 14px;
-            height: 14px;
-            border: 2px solid #ccc;
-            border-radius: 3px;
-            position: relative;
-            flex-shrink: 0;
-        }
-
-        .product-item.selected .product-checkbox {
-            border-color: #ff6b35;
-            background: #ff6b35;
-        }
-
+        
         .product-item.selected .product-checkbox::after {
             content: '✓';
             position: absolute;
@@ -615,700 +505,116 @@
             left: 50%;
             transform: translate(-50%, -50%);
             color: white;
-            font-size: 9px;
+            font-size: 12px;
             font-weight: bold;
         }
-
-        .product-content {
+        
+        .insurance-content, .product-content {
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex: 1;
         }
-
-        .product-title {
-            font-size: 13px;
+        
+        .insurance-title, .product-title {
+            font-size: 0.9rem;
             font-weight: 500;
-            color: #333;
+            color: #212529;
         }
-
-        .product-price {
-            font-size: 13px;
-            font-weight: bold;
-            color: #ff6b35;
-        }
-
-        /* Vehicles Scroll Container */
-        .vehicles-scroll-container {
-            height: auto;
-            overflow-y: visible;
-            padding-right: 0;
-            padding-top: 0px;
-        }
-
-        /* Vehicle Cards - Smaller Size */
-        .vehicle-card {
-            background: white;
-            border: 1px solid var(--border-gray);
-            border-radius: 8px;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            height: 100%;
-            position: relative;
-            cursor: pointer;
-            display: block;
-        }
-
-        /* First vehicle card background */
-        .vehicle-card:first-child {
-            background: #C1CDCD;
-        }
-
-        .vehicle-card:hover {
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            transform: translateY(-2px);
-        }
-
-        /* Selected vehicle card - stays elevated and highlighted */
-        .vehicle-card.selected {
-            transform: translateY(-8px) !important;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
-            border: 3px solid #ff6b35 !important;
-            border-radius: 8px !important;
-        }
-
-        .vehicle-card.selected .vehicle-image-container {
-            border-radius: 6px 6px 0 0;
-        }
-
-        .vehicle-card.selected .vehicle-content {
-            border-radius: 0 0 6px 6px;
-        }
-
-        /* When hovering over selected card, maintain the selected state */
-        .vehicle-card.selected:hover {
-            transform: translateY(-8px) !important;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
-            border: 3px solid #ff6b35 !important;
-            border-radius: 8px !important;
-        }
-
-        .vehicle-image-container {
-            position: relative;
-            width: 100%;
-            height: 150px;
-            overflow: hidden;
-        }
-
-        .vehicle-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            background-color: #f8f9fa;
-        }
-
-        /* Popular Badge */
-        .popular-badge {
-            position: absolute;
-            top: 8px;
-            left: 8px;
-            background: #ff6b35;
-            color: white;
-            padding: 3px 6px;
-            border-radius: 3px;
-            font-size: 9px;
+        
+        .insurance-price, .product-price {
+            font-size: 0.9rem;
             font-weight: 600;
-            z-index: 2;
+            color: #d5001c;
         }
-
-        /* Price Badge */
-        .price-badge {
-            position: absolute;
-            bottom: 8px;
-            right: 8px;
-            background: #ff6b35;
-            border: 1px solid #ff6b35;
-            border-radius: 3px;
-            padding: 4px 8px;
-            font-weight: bold;
-            font-size: 12px;
+        
+        /* Footer */
+        .footer-section {
+            background: #212529;
             color: white;
-            z-index: 2;
+            padding: 2rem 0;
+            margin-top: 4rem;
         }
-
-        .price-badge .price {
-            font-size: 14px;
-            font-weight: bold;
-        }
-
-        .price-badge .unit {
-            font-size: 9px;
-            font-weight: normal;
-        }
-
-        .vehicle-content {
-            padding: 12px;
-        }
-
-        .vehicle-title {
-            font-size: 14px;
-            font-weight: bold;
-            margin-bottom: 10px;
-            color: #333;
+        
+        .footer-content {
             text-align: center;
+            font-size: 0.9rem;
+            font-weight: 300;
+            letter-spacing: 0.5px;
         }
-
-        .vehicle-specs {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 15px;
-            font-size: 10px;
-            color: #666;
-        }
-
-        .vehicle-spec {
-            display: flex;
-            align-items: center;
-            gap: 3px;
-        }
-
-        .vehicle-spec i {
-            color: var(--primary-red);
-            font-size: 12px;
-        }
-
-        .vehicle-buttons {
-            display: flex;
-            gap: 8px;
-        }
-
-        .btn-rent {
-            flex: 1;
-            background: #ff6b35;
-            color: white;
-            border: none;
-            padding: 8px 10px;
-            border-radius: 4px;
-            font-size: 11px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 4px;
-            cursor: pointer;
-        }
-
-        .btn-rent:hover {
-            background: #e55a2b;
-            transform: translateY(-1px);
-        }
-
-
-
-        /* Continue Button */
-        .btn-continue {
-            background: var(--primary-red);
-            color: white;
-            border: none;
-            padding: 20px 25px;
-            border-radius: 12px;
-            font-weight: 600;
-            font-size: 16px;
-            transition: all 0.3s ease;
-            width: 100%;
-            margin-top: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            min-height: 80px;
-            box-shadow: 0 4px 15px rgba(220, 53, 69, 0.2);
-        }
-
-        .btn-continue:hover {
-            background: var(--primary-red-dark);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(220, 53, 69, 0.3);
-        }
-
-        .btn-continue:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-
-        .btn-continue .fw-bold {
-            font-size: 20px;
-            margin-bottom: 8px;
-            text-align: center;
-        }
-
-        .btn-continue .text-white-75 {
-            font-size: 16px;
-            font-weight: 500;
-            margin-bottom: 4px;
-            text-align: center;
-        }
-
-        .btn-continue .bi-arrow-right {
-            font-size: 24px;
-        }
-
-        /* Compact Continue Button for Search Summary */
-        .btn-continue-compact {
-            background: linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%);
-            border: none;
-            color: white;
-            padding: 12px 20px;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 600;
-            box-shadow: 0 2px 8px rgba(255, 107, 53, 0.3);
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            width: auto;
-            min-width: 300px;
-            max-width: 400px;
-            min-height: 60px;
-        }
-
-        .btn-continue-compact:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(255, 107, 53, 0.4);
-            color: white;
-        }
-
-        .btn-continue-compact:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-
-        .btn-continue-compact .fw-bold {
-            font-size: 16px;
-        }
-
-        .btn-continue-compact .text-white-75 {
-            font-size: 12px;
-            opacity: 0.9;
-        }
-
-        .btn-continue-compact .bi-arrow-right {
-            font-size: 18px;
-        }
-
-
-
-        /* Footer Styles */
-                 .footer-section {
-             background: #333;
-             color: #ffffff;
-             padding: 8px 0;
-             margin-top: 30px;
-             width: 100vw;
-             position: relative;
-             left: 50%;
-             right: 50%;
-             margin-left: -50vw;
-             margin-right: -50vw;
-             z-index: 1;
-         }
-
-                 .footer-content {
-             display: flex;
-             justify-content: center;
-             align-items: center;
-             gap: 8px;
-             font-size: 11px;
-             flex-wrap: wrap;
-             text-align: center;
-             background: #333;
-             padding: 0 15px;
-         }
-
-                 .footer-text {
-             color: #ffffff;
-         }
-
+        
         .footer-link {
-            color: #ff6b35;
+            color: #d5001c;
             text-decoration: none;
-            font-weight: 600;
+            font-weight: 500;
             transition: color 0.3s ease;
         }
-
+        
         .footer-link:hover {
-            color: #e55a2b;
-            text-decoration: underline;
+            color: white;
         }
-
-                 .footer-separator {
-             color: #ffffff;
-             font-weight: 600;
-         }
-
-         /* Responsive Design */
-         @media (max-width: 1200px) {
-             .date-location-selector {
-                 margin-top: 60px !important;
-             }
-             
-             .filters-card {
-                 padding: 15px !important;
-             }
-             
-             .form-label {
-                 font-size: 12px !important;
-             }
-             
-             .form-select, .form-control {
-                 font-size: 14px !important;
-                 padding: 8px 12px !important;
-             }
-             
-             .filter-select {
-                 font-size: 12px !important;
-                 padding: 6px 8px !important;
-             }
-             
-             .filter-label {
-                 font-size: 11px !important;
-             }
-         }
-
-         @media (max-width: 992px) {
-             .date-location-selector {
-                 margin-top: 60px !important;
-             }
-             
-             .filters-card {
-                 padding: 12px !important;
-             }
-             
-             .form-label {
-                 font-size: 11px !important;
-                 margin-bottom: 4px !important;
-             }
-             
-             .form-select, .form-control {
-                 font-size: 13px !important;
-                 padding: 6px 10px !important;
-                 height: 35px !important;
-             }
-             
-             .filter-select {
-                 font-size: 11px !important;
-                 padding: 5px 6px !important;
-                 height: 32px !important;
-             }
-             
-             .filter-label {
-                 font-size: 10px !important;
-             }
-             
-             .btn-warning {
-                 font-size: 12px !important;
-                 padding: 6px 12px !important;
-             }
-             
-             .vehicle-card {
-                 margin-bottom: 15px !important;
-             }
-             
-             .vehicle-title {
-                 font-size: 14px !important;
-             }
-             
-             .vehicle-specs {
-                 font-size: 11px !important;
-             }
-         }
-
-         @media (max-width: 768px) {
-             body {
-                 margin-top: 60px !important;
-             }
-             
-             .navbar-brand {
-                 font-size: 1.5rem !important;
-             }
-             
-             .date-location-selector {
-                 margin-top: 60px !important;
-                 padding: 8px 0 !important;
-             }
-             
-             .filters-card {
-                 padding: 10px !important;
-             }
-             
-             .form-label {
-                 font-size: 10px !important;
-                 margin-bottom: 3px !important;
-             }
-             
-             .form-select, .form-control {
-                 font-size: 12px !important;
-                 padding: 5px 8px !important;
-                 height: 32px !important;
-             }
-             
-             .filter-select {
-                 font-size: 10px !important;
-                 padding: 4px 5px !important;
-                 height: 30px !important;
-             }
-             
-             .filter-label {
-                 font-size: 9px !important;
-             }
-             
-             .btn-warning {
-                 font-size: 11px !important;
-                 padding: 5px 10px !important;
-                 height: 32px !important;
-             }
-             
-             .vehicle-card {
-                 margin-bottom: 10px !important;
-             }
-             
-             .vehicle-title {
-                 font-size: 13px !important;
-             }
-             
-             .vehicle-specs {
-                 font-size: 10px !important;
-             }
-             
-             .options-sidebar {
-                 margin-bottom: 20px !important;
-                 position: static !important;
-                 height: auto !important;
-                 overflow-y: visible !important;
-                 top: auto !important;
-                 max-height: none !important;
-             }
-             
-             .vehicles-scroll-container {
-                 height: auto !important;
-                 overflow-y: visible !important;
-             }
-             
-             .footer-content {
-                 font-size: 10px !important;
-                 gap: 6px !important;
-                 padding: 0 10px !important;
-             }
-         }
-
-         @media (max-width: 576px) {
-             .date-location-selector {
-                 margin-top: 60px !important;
-             }
-             
-             .filters-card {
-                 padding: 8px !important;
-             }
-             
-             .form-label {
-                 font-size: 9px !important;
-                 margin-bottom: 2px !important;
-             }
-             
-             .form-select, .form-control {
-                 font-size: 11px !important;
-                 padding: 4px 6px !important;
-                 height: 30px !important;
-             }
-             
-             .filter-select {
-                 font-size: 9px !important;
-                 padding: 3px 4px !important;
-                 height: 28px !important;
-             }
-             
-             .filter-label {
-                 font-size: 8px !important;
-             }
-             
-             .btn-warning {
-                 font-size: 10px !important;
-                 padding: 4px 8px !important;
-                 height: 30px !important;
-             }
-             
-             .vehicle-card {
-                 margin-bottom: 8px !important;
-             }
-             
-             .vehicle-title {
-                 font-size: 12px !important;
-             }
-             
-             .vehicle-specs {
-                 font-size: 9px !important;
-             }
-             
-             .footer-content {
-                 font-size: 9px !important;
-                 gap: 4px !important;
-                 padding: 0 8px !important;
-                 flex-direction: column !important;
-             }
-             
-             .footer-separator {
-                 display: none !important;
-             }
-        }
-
-        /* Responsive */
+        
+        /* Responsive Design */
         @media (max-width: 768px) {
-            body {
-                margin-top: 60px;
+            .hero-title-porsche {
+                font-size: 2.5rem;
             }
             
-            .date-location-selector {
-                margin-top: 60px;
-                padding: 8px 0;
+            .hero-subtitle-porsche {
+                font-size: 1rem;
             }
             
-            .date-location-selector .filters-card {
-                padding: 10px;
+            .search-form {
+                padding: 1.5rem;
             }
             
-            .date-location-selector .form-label {
-                font-size: 10px;
-                margin-bottom: 3px;
+            .section-title {
+                font-size: 2rem;
             }
             
-            .date-location-selector .form-select,
-            .date-location-selector .form-control {
-                font-size: 10px;
-                height: 28px;
-                padding: 3px 6px;
-            }
-            
-            .date-location-selector .btn-warning {
-                font-size: 10px;
-                padding: 3px 10px;
-                height: 28px;
-            }
-            
-            .date-location-selector .input-group-text {
-                height: 28px;
-            }
-            
-            .date-location-selector .input-group {
-                height: 28px;
-            }
-            
-            .reservation-steps {
-                top: 60px;
-            }
-            
-            .search-summary {
-                top: 100px;
-            }
-            
-            .filters-section {
-                top: 160px;
-            }
-            
-            .main-content {
-                margin-top: 200px !important;
-            }
-            
-            .search-details {
-                flex-direction: column;
-                align-items: center;
-                gap: 10px;
-            }
-            
-            .btn-outline-warning {
-                margin-bottom: 10px;
-                font-size: 10px !important;
-                padding: 3px 8px !important;
-            }
-            
-            .filter-item {
-                margin-bottom: 8px;
-            }
-
-            .filter-label {
-                font-size: 11px;
-            }
-
-            .filter-select {
-                padding: 5px 6px;
-                font-size: 11px;
-            }
-
-            .vehicle-buttons {
-                flex-direction: column;
-            }
-
             .options-sidebar {
-                margin-bottom: 20px;
                 position: static;
-                height: auto;
-                overflow-y: visible;
-                top: auto;
-                max-height: none;
+                margin-top: 2rem;
             }
-
-            .vehicles-scroll-container {
-                height: auto;
-                overflow-y: visible;
+            
+            .car-card {
+                height: 380px;
             }
-
-            .btn-continue {
-                min-height: 70px;
-                padding: 15px 20px;
+            
+            .car-image {
+                height: 240px;
             }
-
-            .btn-continue .fw-bold {
-                font-size: 18px;
+        }
+        
+        @media (max-width: 576px) {
+            .hero-title-porsche {
+                font-size: 2rem;
             }
-
-            .btn-continue .text-white-75 {
-                font-size: 14px;
+            
+            .search-form {
+                padding: 1rem;
             }
-
-            .btn-continue .bi-arrow-right {
-                font-size: 20px;
+            
+            .filter-card {
+                padding: 1rem;
             }
-
-            .btn-continue-compact {
-                min-height: 50px;
-                padding: 10px 15px;
+            
+            .car-card {
+                height: 360px;
             }
-
-            .btn-continue-compact .fw-bold {
-                font-size: 14px;
-            }
-
-            .btn-continue-compact .text-white-75 {
-                font-size: 11px;
-            }
-
-            .btn-continue-compact .bi-arrow-right {
-                font-size: 16px;
+            
+            .car-image {
+                height: 220px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top shadow-sm">
+    <!-- Modern Navbar -->
+    <nav class="navbar navbar-expand-lg fixed-top">
         <div class="container">
-            <a class="navbar-brand fw-bold fs-3" href="/" style="text-decoration: none;">
-                <i class="bi bi-car-front me-2" style="color: #000000;"></i>
-                <span style="color: #000000; font-family: 'Explorer Print Sans Bold', sans-serif;">AUTOR</span>
+            <a class="navbar-brand" href="/">
+                AUTOR
             </a>
             
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -1316,173 +622,175 @@
             </button>
             
             <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav me-auto">
+                <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link-text" href="/fahrzeuge?clear=1" style="margin-left: 15px;">Autos</a>
+                        <a class="nav-link" href="/fahrzeuge">Fahrzeuge</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/standorte">Standorte</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/kontakt">Kontakt</a>
                     </li>
                 </ul>
-            <ul class="navbar-nav ms-auto" id="auth-buttons-container">
+                <ul class="navbar-nav ms-auto" id="auth-buttons-container">
+                    <!-- Auth buttons will be loaded here -->
                 </ul>
             </div>
         </div>
     </nav>
 
-    <!-- Date and Location Selector -->
-    <section class="date-location-selector" id="date-location-selector" style="display: none;">
+    <!-- Hero Section - Porsche Style -->
+    <section class="hero-section-porsche">
+        <div class="hero-background">
+            <img src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80" alt="Premium Car" class="hero-car-image">
+            <div class="hero-overlay"></div>
+        </div>
         <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-12 col-xl-10">
-                    <div class="filters-card">
-                        <form id="date-location-form" novalidate>
-                            <div class="row g-3 align-items-end">
-                                <div class="col-12 col-md-6 col-lg-3">
-                                    <label class="form-label">Abholort</label>
-                                    <select id="pickup-location-selector" class="form-select pickup-location-highlight" required lang="de">
-                                        <option value="">Standort wählen</option>
-                                        <option value="1">Berlin Hauptbahnhof</option>
-                                        <option value="2">München Flughafen</option>
-                                        <option value="3">Hamburg Zentrum</option>
-                                        <option value="4">Köln Dom</option>
-                                        <option value="5">Frankfurt Flughafen</option>
-                                    </select>
-                </div>
-                                <div class="col-12 col-md-6 col-lg-3">
-                                    <label class="form-label">Rückgabeort</label>
-                                    <select id="dropoff-location-selector" class="form-select dropoff-location-highlight" required lang="de">
-                                        <option value="">Standort wählen</option>
-                                        <option value="1">Berlin Hauptbahnhof</option>
-                                        <option value="2">München Flughafen</option>
-                                        <option value="3">Hamburg Zentrum</option>
-                                        <option value="4">Köln Dom</option>
-                                        <option value="5">Frankfurt Flughafen</option>
-                                    </select>
-                </div>
-                                <div class="col-6 col-md-3 col-lg-2">
-                                    <label class="form-label">Abholdatum</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text calendar-trigger-selector" data-target="pickup-date-selector"><i class="bi bi-calendar3 text-warning"></i></span>
-                                        <input type="text" id="pickup-date-selector" class="form-control pickup-date-highlight" inputmode="numeric" pattern="\d{2}\.\d{2}\.\d{4}" maxlength="10" placeholder="tt.mm.jjjj" autocomplete="off" required>
-                                    </div>
-                                </div>
-                                <div class="col-6 col-md-3 col-lg-2">
-                                    <label class="form-label">Rückgabedatum</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text calendar-trigger-selector" data-target="dropoff-date-selector"><i class="bi bi-calendar3 text-warning"></i></span>
-                                        <input type="text" id="dropoff-date-selector" class="form-control dropoff-date-highlight" inputmode="numeric" pattern="\d{2}\.\d{2}\.\d{4}" maxlength="10" placeholder="tt.mm.jjjj" autocomplete="off" required>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-12 col-lg-2">
-                                    <button type="submit" class="nav-link-text w-100">
-                                        <i class="bi bi-search me-1"></i>
-                                        Aktualisieren
-                                    </button>
+            <div class="hero-content-porsche">
+                <h1 class="hero-title-porsche">Unsere Fahrzeugflotte</h1>
+                <p class="hero-subtitle-porsche">Entdecken Sie unsere exklusive Sammlung von Premium-Fahrzeugen</p>
+                
+                <!-- Search Form -->
+                <div class="search-form">
+                    <form id="date-location-form" novalidate>
+                        <div class="row g-3 align-items-end">
+                            <div class="col-12 col-md-6 col-lg-3">
+                                <label class="form-label">Abholort</label>
+                                <select id="pickup-location-selector" class="form-select" required>
+                                    <option value="">Standort wählen</option>
+                                    <option value="1">Berlin Hauptbahnhof</option>
+                                    <option value="2">München Flughafen</option>
+                                    <option value="3">Hamburg Zentrum</option>
+                                    <option value="4">Köln Dom</option>
+                                    <option value="5">Frankfurt Flughafen</option>
+                                </select>
+                            </div>
+                            <div class="col-12 col-md-6 col-lg-3">
+                                <label class="form-label">Rückgabeort</label>
+                                <select id="dropoff-location-selector" class="form-select" required>
+                                    <option value="">Standort wählen</option>
+                                    <option value="1">Berlin Hauptbahnhof</option>
+                                    <option value="2">München Flughafen</option>
+                                    <option value="3">Hamburg Zentrum</option>
+                                    <option value="4">Köln Dom</option>
+                                    <option value="5">Frankfurt Flughafen</option>
+                                </select>
+                            </div>
+                            <div class="col-6 col-md-3 col-lg-2">
+                                <label class="form-label">Abholdatum</label>
+                                <div class="input-group">
+                                    <span class="input-group-text" data-target="pickup-date-selector">
+                                        <i class="bi bi-calendar3"></i>
+                                    </span>
+                                    <input type="text" id="pickup-date-selector" class="form-control" placeholder="tt.mm.jjjj" required>
                                 </div>
                             </div>
-                        </form>
-                    </div>
+                            <div class="col-6 col-md-3 col-lg-2">
+                                <label class="form-label">Rückgabedatum</label>
+                                <div class="input-group">
+                                    <span class="input-group-text" data-target="dropoff-date-selector">
+                                        <i class="bi bi-calendar3"></i>
+                                    </span>
+                                    <input type="text" id="dropoff-date-selector" class="form-control" placeholder="tt.mm.jjjj" required>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-12 col-lg-2">
+                                <button type="submit" class="btn-search w-100">
+                                    <i class="bi bi-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Filters Section -->
-    <section class="filters-section" id="filters-section">
+    <section class="filters-section">
         <div class="container">
-            <div class="row g-3">
-                <div class="col-md-2 col-sm-6">
-                    <label class="filter-label">Fahrzeugtyp</label>
-                    <select class="form-select filter-select" id="vehicle-type-filter">
+            <div class="filter-card">
+                <div class="row g-3">
+                    <div class="col-md-2 col-sm-6">
+                        <label class="filter-label">Fahrzeugtyp</label>
+                        <select class="filter-select" id="vehicle-type-filter">
                             <option value="">Alle Fahrzeuge</option>
-                        <option value="compact">Kompakt</option>
-                        <option value="sedan">Limousine</option>
-                        <option value="suv">SUV</option>
-                        <option value="luxury">Luxus</option>
-                        <option value="electric">Elektrisch</option>
+                            <option value="compact">Kompakt</option>
+                            <option value="sedan">Limousine</option>
+                            <option value="suv">SUV</option>
+                            <option value="luxury">Luxus</option>
+                            <option value="electric">Elektrisch</option>
                         </select>
-                </div>
-                <div class="col-md-2 col-sm-6">
-                    <label class="filter-label">Modell</label>
-                    <select class="form-select filter-select" id="vehicle-model-filter">
-                            <option value="">Alle Modelle</option>
-                        <option value="audi">Audi</option>
-                        <option value="bmw">BMW</option>
-                        <option value="mercedes">Mercedes</option>
-                        <option value="porsche">Porsche</option>
-                        <option value="tesla">Tesla</option>
-                        <option value="volkswagen">Volkswagen</option>
+                    </div>
+                    <div class="col-md-2 col-sm-6">
+                        <label class="filter-label">Marke</label>
+                        <select class="filter-select" id="vehicle-model-filter">
+                            <option value="">Alle Marken</option>
+                            <option value="audi">Audi</option>
+                            <option value="bmw">BMW</option>
+                            <option value="mercedes">Mercedes</option>
+                            <option value="porsche">Porsche</option>
+                            <option value="tesla">Tesla</option>
+                            <option value="volkswagen">Volkswagen</option>
                         </select>
-                </div>
-                <div class="col-md-2 col-sm-6">
-                    <label class="filter-label">Kraftstoff</label>
-                    <select class="form-select filter-select" id="fuel-type-filter">
+                    </div>
+                    <div class="col-md-2 col-sm-6">
+                        <label class="filter-label">Kraftstoff</label>
+                        <select class="filter-select" id="fuel-type-filter">
                             <option value="">Alle</option>
-                        <option value="benzin">Benzin</option>
-                        <option value="diesel">Diesel</option>
-                        <option value="hybrid">Hybrid</option>
-                        <option value="elektrisch">Elektrisch</option>
+                            <option value="benzin">Benzin</option>
+                            <option value="diesel">Diesel</option>
+                            <option value="hybrid">Hybrid</option>
+                            <option value="elektrisch">Elektrisch</option>
                         </select>
-                </div>
-                <div class="col-md-2 col-sm-6">
-                    <label class="filter-label">Sortieren</label>
-                    <select class="form-select filter-select" id="sort-filter">
+                    </div>
+                    <div class="col-md-2 col-sm-6">
+                        <label class="filter-label">Sortieren</label>
+                        <select class="filter-select" id="sort-filter">
                             <option value="price-low">Niedrigster Preis</option>
                             <option value="price-high">Höchster Preis</option>
                             <option value="name">Name A-Z</option>
-                        <option value="popularity">Beliebtheit</option>
+                            <option value="popularity">Beliebtheit</option>
                         </select>
-                </div>
-                <div class="col-md-2 col-sm-6">
-                    <label class="filter-label">Getriebe</label>
-                    <select class="form-select filter-select" id="transmission-filter">
+                    </div>
+                    <div class="col-md-2 col-sm-6">
+                        <label class="filter-label">Getriebe</label>
+                        <select class="filter-select" id="transmission-filter">
                             <option value="">Alle</option>
-                        <option value="automatik">Automatik</option>
-                        <option value="manuell">Manuell</option>
+                            <option value="automatik">Automatik</option>
+                            <option value="manuell">Manuell</option>
                         </select>
-                </div>
-                <div class="col-md-2 col-sm-6">
-                    <label class="filter-label">Preisbereich</label>
-                    <select class="form-select filter-select" id="price-filter">
-                        <option value="600">Bis €600/Tag</option>
-                        <option value="500">Bis €500/Tag</option>
-                        <option value="400">Bis €400/Tag</option>
-                        <option value="300">Bis €300/Tag</option>
-                        <option value="200">Bis €200/Tag</option>
-                        <option value="100">Bis €100/Tag</option>
-                    </select>
-                        </div>
+                    </div>
+                    <div class="col-md-2 col-sm-6">
+                        <label class="filter-label">Preisbereich</label>
+                        <select class="filter-select" id="price-filter">
+                            <option value="600">Bis €600/Tag</option>
+                            <option value="500">Bis €500/Tag</option>
+                            <option value="400">Bis €400/Tag</option>
+                            <option value="300">Bis €300/Tag</option>
+                            <option value="200">Bis €200/Tag</option>
+                            <option value="100">Bis €100/Tag</option>
+                        </select>
                     </div>
                 </div>
-    </section>
-
-    <!-- Search Summary -->
-    <section class="search-summary" id="search-summary" style="display: none;">
-        <div class="container">
-            <div class="search-summary-row">
-                <div class="search-details" id="search-details">
-                    <!-- Search details will be populated here -->
-                </div>
-                <div class="total-price-display" id="total-price-display">
-                    Gesamtbetrag: €0
-                </div>
-                <button class="nav-link-text" onclick="continueToPayment()" disabled id="continue-button">
-                    Weiter <i class="bi bi-arrow-right"></i>
-                </button>
             </div>
         </div>
     </section>
 
-
-
-    <!-- Main Content -->
-    <section class="py-4 main-content" style="background-color: #ffffff;">
-        <div class="container" style="max-width: 1265px !important; margin: 0 auto !important; padding-left: 80px !important; padding-right: 80px !important;">
+    <!-- Vehicles Section -->
+    <section class="vehicles-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Verfügbare Fahrzeuge</h2>
+                <p class="section-subtitle">Wählen Sie aus unserer exklusiven Sammlung</p>
+            </div>
+            
             <div class="row">
                 <!-- Left Side - Vehicles -->
                 <div class="col-lg-8">
-                    <div class="vehicles-scroll-container">
-                        <div class="row g-3" id="vehicles-container">
-                            <!-- Vehicles will be loaded here -->
-                        </div>
+                    <div class="row" id="vehicles-container">
+                        <!-- Vehicles will be loaded here -->
                     </div>
                 </div>
 
@@ -1506,21 +814,21 @@
                         </div>
                     </div>
                 </div>
-                        </div>
-                    </div>
+            </div>
+        </div>
     </section>
 
     <!-- Footer -->
     <footer class="footer-section">
         <div class="container">
             <div class="footer-content">
-                <span class="footer-text">© 2025 Alle Rechte vorbehalten. Dies ist eine Beispiel-Website für Übungszwecke vorbereitet. Es ist keine echte Autovermietungs-Website.</span>
-                <span class="footer-separator">-</span>
+                <span>© 2025 Alle Rechte vorbehalten. Dies ist eine Beispiel-Website für Übungszwecke vorbereitet. Es ist keine echte Autovermietungs-Website.</span>
+                <span class="mx-2">-</span>
                 <a href="#" class="footer-link">Datenschutz</a>
-                <span class="footer-separator">-</span>
+                <span class="mx-2">-</span>
                 <a href="#" class="footer-link">Bedingungen</a>
-                </div>
             </div>
+        </div>
     </footer>
 
     <!-- Bootstrap JS -->
