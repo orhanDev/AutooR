@@ -27,9 +27,9 @@ function loadPopularCars() {
     
     if (!popularCarsContainer) {
         console.error('popularCarsContainer not found');
-        return;
-    }
-    
+            return;
+        }
+
     console.log('popularCarsContainer found:', popularCarsContainer);
     
     // Force clear any existing data and use our luxury cars
@@ -296,19 +296,19 @@ document.addEventListener('DOMContentLoaded', function() {
     
     internalLinks.forEach(link => {
         link.addEventListener('click', function(e) {
-            e.preventDefault();
+        e.preventDefault();
             
             const targetId = this.getAttribute('href').substring(1);
             const targetElement = document.getElementById(targetId);
             
             if (targetElement) {
                 targetElement.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-            }
-        });
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
     });
+});
 });
 
 // Add loading states to buttons
@@ -399,15 +399,15 @@ document.addEventListener('DOMContentLoaded', function() {
     // Trigger animation when stats section is visible
     const statsSection = document.querySelector('.stats-section');
     if (statsSection) {
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
                     animateStats();
                     observer.unobserve(entry.target);
-                }
-            });
+            }
         });
-        
+    });
+
         observer.observe(statsSection);
     }
 });

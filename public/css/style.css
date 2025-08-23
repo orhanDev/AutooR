@@ -50,11 +50,16 @@ html, body {
 .navbar-brand::after {
     content: '';
     position: absolute;
-    bottom: -5px;
+    bottom: -2px;
     left: 0;
-    width: 100%;
+    width: 0;
     height: 1px;
-    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.5) 50%, transparent 100%);
+    background: #d5001c;
+    transition: width 0.3s ease;
+}
+
+.navbar-brand:hover::after {
+    width: 100%;
 }
 
 .navbar-brand i {
@@ -75,24 +80,21 @@ html, body {
 
 .navbar-nav .nav-link:hover {
     color: white !important;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 4px;
 }
 
 .navbar-nav .nav-link::after {
     content: '';
     position: absolute;
-    bottom: 0;
-    left: 50%;
+    bottom: -2px;
+    left: 0;
     width: 0;
-    height: 2px;
+    height: 1px;
     background: #d5001c;
-    transition: all 0.3s ease;
-    transform: translateX(-50%);
+    transition: width 0.3s ease;
 }
 
 .navbar-nav .nav-link:hover::after {
-    width: 80%;
+    width: 100%;
 }
 
 .navbar-toggler {
@@ -248,11 +250,18 @@ html, body {
     padding: 0.75rem 1rem;
     font-weight: 500;
     transition: all 0.3s ease;
+    color: #000000;
 }
 
 .form-control:focus, .form-select:focus {
     border-color: #d5001c;
     box-shadow: 0 0 0 0.2rem rgba(213, 0, 28, 0.25);
+}
+
+/* Select option'ları için siyah yazı rengi */
+.form-select option {
+    color: #000000;
+    background-color: #ffffff;
 }
 
 .form-label {
@@ -776,7 +785,7 @@ html, body {
     }
     
     .hero-subtitle {
-        font-size: 1rem;
+    font-size: 1rem;
         margin-bottom: 1.5rem;
     }
     
@@ -872,6 +881,7 @@ html, body {
 
 .hero-cta-porsche {
     margin-bottom: 4rem;
+    margin-top: 3rem;
 }
 
 .btn-porsche {
@@ -970,9 +980,10 @@ html, body {
 
 /* Popular Cars Section - Modern & Luxury */
 .popular-cars-section {
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-    padding: 80px 0;
+    background: linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%);
+    padding: 120px 0 80px 0;
     position: relative;
+    overflow: hidden;
 }
 
 .popular-cars-section::before {
@@ -982,11 +993,21 @@ html, body {
     left: 0;
     right: 0;
     bottom: 0;
-    background-image: 
-        linear-gradient(90deg, rgba(0,0,0,0.02) 1px, transparent 1px),
-        linear-gradient(rgba(0,0,0,0.02) 1px, transparent 1px);
-    background-size: 50px 50px;
+    background: 
+        radial-gradient(circle at 20% 50%, rgba(255,255,255,0.03) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255,255,255,0.02) 0%, transparent 50%),
+        linear-gradient(135deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.6) 100%);
     pointer-events: none;
+}
+
+.popular-cars-section::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
 }
 
 .section-header {
@@ -1016,19 +1037,39 @@ html, body {
 
 /* Modern Car Cards */
 .car-card {
-    background: white;
-    border-radius: 20px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
+    backdrop-filter: blur(20px);
+    border-radius: 24px;
     overflow: hidden;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
-    transition: all 0.4s ease;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     position: relative;
     height: 100%;
-    border: 1px solid rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    z-index: 2;
 }
 
 .car-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
+    transform: translateY(-15px) scale(1.02);
+    box-shadow: 0 40px 80px rgba(0, 0, 0, 0.4);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.car-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 1;
+}
+
+.car-card:hover::before {
+    opacity: 1;
 }
 
 .car-image {
@@ -1076,19 +1117,22 @@ html, body {
 }
 
 .car-details {
-    padding: 30px;
+    padding: 2rem;
     display: flex;
     flex-direction: column;
     height: calc(100% - 250px);
+    position: relative;
+    z-index: 3;
 }
 
 .car-name {
     font-size: 1.4rem;
     font-weight: 600;
-    color: #1a1a1a;
+    color: white;
     margin-bottom: 1rem;
     letter-spacing: 1px;
     line-height: 1.3;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .car-specs {
@@ -1103,13 +1147,15 @@ html, body {
     align-items: center;
     gap: 8px;
     font-size: 0.9rem;
-    color: #666;
+    color: rgba(255, 255, 255, 0.8);
     font-weight: 400;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .spec-item i {
     color: #d5001c;
     font-size: 1rem;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .car-cta {
@@ -1191,7 +1237,7 @@ html, body {
 }
 
 .section-title {
-    font-size: 2.5rem;
+        font-size: 2.5rem;
     font-weight: 300;
     color: #1a1a1a;
     margin-bottom: 1rem;

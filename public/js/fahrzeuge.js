@@ -12,6 +12,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const dropoffLocationSelector = document.getElementById('dropoff-location-selector');
     const pickupDateSelector = document.getElementById('pickup-date-selector');
     const dropoffDateSelector = document.getElementById('dropoff-date-selector');
+    const pickupTimeSelector = document.getElementById('pickup-time');
+    const dropoffTimeSelector = document.getElementById('dropoff-time');
 
     // Filter elements
     const vehicleTypeFilter = document.getElementById('vehicle-type-filter');
@@ -147,12 +149,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Initialize Flatpickr for date selectors
         if (window.flatpickr) {
-            if (window.flatpickr.l10ns && window.flatpickr.l10ns.de) {
-                window.flatpickr.localize(window.flatpickr.l10ns.de);
-            }
+            // Custom German locale
+            const germanLocale = {
+                weekdays: {
+                    shorthand: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
+                    longhand: ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag']
+                },
+                months: {
+                    shorthand: ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'],
+                    longhand: ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember']
+                },
+                firstDayOfWeek: 1,
+                rangeSeparator: ' bis ',
+                weekAbbreviation: 'KW',
+                amPM: ['AM', 'PM'],
+                yearAriaLabel: 'Jahr',
+                monthAriaLabel: 'Monat',
+                hourAriaLabel: 'Stunde',
+                minuteAriaLabel: 'Minute',
+                time_24hr: true
+            };
 
             const fpPickupSelector = window.flatpickr(pickupDateSelector, {
-                dateFormat: 'd.m.Y',
+                dateFormat: 'd/m/Y',
                 allowInput: true,
                 defaultDate: null,
                 minDate: today,
@@ -160,6 +179,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 autoFillDefaultTime: false,
                 clickOpens: true,
                 allowInvalidPreload: false,
+                locale: germanLocale,
                 disable: [
                     function(date) {
                         return date < today;
@@ -167,7 +187,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 ],
                 onChange: function(selectedDates) {
                     if (selectedDates && selectedDates[0]) {
-                        pickupDateSelector.value = formatGermanDate(selectedDates[0]);
+                        const day = String(selectedDates[0].getDate()).padStart(2, '0');
+                        const month = String(selectedDates[0].getMonth() + 1).padStart(2, '0');
+                        const year = selectedDates[0].getFullYear();
+                        pickupDateSelector.value = `${day}/${month}/${year}`;
                         if (fpDropoffSelector) {
                             const min = new Date(selectedDates[0].getFullYear(), selectedDates[0].getMonth(), selectedDates[0].getDate() + 1);
                             fpDropoffSelector.set('minDate', min);
@@ -177,7 +200,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             const fpDropoffSelector = window.flatpickr(dropoffDateSelector, {
-                dateFormat: 'd.m.Y',
+                dateFormat: 'd/m/Y',
                 allowInput: true,
                 defaultDate: null,
                 minDate: tomorrow,
@@ -185,6 +208,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 autoFillDefaultTime: false,
                 clickOpens: true,
                 allowInvalidPreload: false,
+                locale: germanLocale,
                 disable: [
                     function(date) {
                         const pu = parseGermanDate(pickupDateSelector.value) || today;
@@ -194,7 +218,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 ],
                 onChange: function(selectedDates) {
                     if (selectedDates && selectedDates[0]) {
-                        dropoffDateSelector.value = formatGermanDate(selectedDates[0]);
+                        const day = String(selectedDates[0].getDate()).padStart(2, '0');
+                        const month = String(selectedDates[0].getMonth() + 1).padStart(2, '0');
+                        const year = selectedDates[0].getFullYear();
+                        dropoffDateSelector.value = `${day}/${month}/${year}`;
                     }
                 }
             });
@@ -208,6 +235,24 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (input.id === 'pickup-date-selector' && fpPickupSelector) fpPickupSelector.open();
                     if (input.id === 'dropoff-date-selector' && fpDropoffSelector) fpDropoffSelector.open();
                 });
+            });
+        }
+
+        // Swap locations functionality
+        const swapIcon = document.querySelector('.swap-icon');
+        if (swapIcon) {
+            swapIcon.addEventListener('click', () => {
+                const pickupLocation = pickupLocationSelector.value;
+                const dropoffLocation = dropoffLocationSelector.value;
+                
+                pickupLocationSelector.value = dropoffLocation;
+                dropoffLocationSelector.value = pickupLocation;
+                
+                // Add animation effect
+                swapIcon.style.transform = 'rotate(180deg)';
+                setTimeout(() => {
+                    swapIcon.style.transform = 'rotate(0deg)';
+                }, 300);
             });
         }
 
@@ -235,7 +280,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 pickupLocation: pickupLocationSelector.value,
                 dropoffLocation: dropoffLocationSelector.value,
                 pickupDate: pickupDateSelector.value,
-                dropoffDate: dropoffDateSelector.value
+                dropoffDate: dropoffDateSelector.value,
+                pickupTime: pickupTimeSelector.value,
+                dropoffTime: dropoffTimeSelector.value
             };
 
             localStorage.setItem('searchData', JSON.stringify(formData));
@@ -248,13 +295,13 @@ document.addEventListener('DOMContentLoaded', () => {
         // Use luxury cars data like in homepage
         allVehicles = [
             { car_id: 101, make: 'Porsche', model: '911 GT3 RS', daily_rate: 299, transmission_type: 'Automatik', fuel_type: 'Benzin', seating_capacity: 2, image_url: '/images/cars/porsche-911-gt3.jpg' },
-            { car_id: 102, make: 'Ferrari', model: 'SF90 Stradale', daily_rate: 289, transmission_type: 'Automatik', fuel_type: 'Hybrid', seating_capacity: 2, image_url: '/images/cars/ferrari-sf90.jpg' },
-            { car_id: 103, make: 'Lamborghini', model: 'Aventador SVJ', daily_rate: 279, transmission_type: 'Automatik', fuel_type: 'Benzin', seating_capacity: 2, image_url: '/images/cars/lamborghini-aventador.jpg' },
+            { car_id: 102, make: 'Tesla', model: 'Model S', daily_rate: 289, transmission_type: 'Automatik', fuel_type: 'Elektrisch', seating_capacity: 5, image_url: '/images/cars/tesla-model-s.jpg' },
+            { car_id: 103, make: 'BMW', model: 'M8', daily_rate: 279, transmission_type: 'Automatik', fuel_type: 'Benzin', seating_capacity: 4, image_url: '/images/cars/bmw-m8.jpg' },
             { car_id: 104, make: 'Rolls-Royce', model: 'Phantom', daily_rate: 269, transmission_type: 'Automatik', fuel_type: 'Benzin', seating_capacity: 4, image_url: '/images/cars/rolls-royce-phantom.jpg' },
             { car_id: 105, make: 'Bentley', model: 'Continental GT', daily_rate: 259, transmission_type: 'Automatik', fuel_type: 'Benzin', seating_capacity: 4, image_url: '/images/cars/bentley-continental.jpg' },
-            { car_id: 106, make: 'McLaren', model: '720S', daily_rate: 249, transmission_type: 'Automatik', fuel_type: 'Benzin', seating_capacity: 2, image_url: '/images/cars/mclaren-720s.jpg' },
-            { car_id: 107, make: 'Aston Martin', model: 'DBS Superleggera', daily_rate: 239, transmission_type: 'Automatik', fuel_type: 'Benzin', seating_capacity: 4, image_url: '/images/cars/aston-martin-dbs.jpg' },
-            { car_id: 108, make: 'Bugatti', model: 'Chiron', daily_rate: 229, transmission_type: 'Automatik', fuel_type: 'Benzin', seating_capacity: 2, image_url: '/images/cars/bugatti-chiron.jpg' },
+            { car_id: 106, make: 'Mercedes', model: 'AMG GT', daily_rate: 249, transmission_type: 'Automatik', fuel_type: 'Benzin', seating_capacity: 2, image_url: '/images/cars/mercedes-amg-gt.jpg' },
+            { car_id: 107, make: 'Audi', model: 'A8', daily_rate: 239, transmission_type: 'Automatik', fuel_type: 'Hybrid', seating_capacity: 5, image_url: '/images/cars/audi-a8.jpg' },
+            { car_id: 108, make: 'BMW', model: 'X7', daily_rate: 229, transmission_type: 'Automatik', fuel_type: 'Hybrid', seating_capacity: 7, image_url: '/images/cars/bmw-x7.jpg' },
             { car_id: 109, make: 'Porsche', model: 'Taycan', daily_rate: 219, transmission_type: 'Automatik', fuel_type: 'Elektrisch', seating_capacity: 4, image_url: '/images/cars/porsche-taycan.jpg' },
             { car_id: 110, make: 'Porsche', model: 'Cayenne', daily_rate: 209, transmission_type: 'Automatik', fuel_type: 'Benzin', seating_capacity: 5, image_url: '/images/cars/porsche-cayenne.jpg' },
             { car_id: 111, make: 'Rolls-Royce', model: 'Cullinan', daily_rate: 199, transmission_type: 'Automatik', fuel_type: 'Benzin', seating_capacity: 5, image_url: '/images/cars/rolls-royce-cullinan.jpg' },

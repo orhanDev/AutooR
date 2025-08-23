@@ -20,6 +20,17 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/style.css">
     <style>
+        /* Porsche-inspired Modern Design */
+        :root {
+            --porsche-black: #000000;
+            --porsche-white: #ffffff;
+            --porsche-red: #d5001c;
+            --porsche-gray: #f8f9fa;
+            --porsche-dark-gray: #212529;
+            --porsche-light-gray: #6c757d;
+            --porsche-gold: #d4af37;
+        }
+        
         /* Additional styles for fahrzeuge page */
         .search-form {
             background: transparent !important;
@@ -46,7 +57,7 @@
             position: relative;
             overflow: hidden;
         }
-        
+
         .search-form form::before {
             content: '';
             position: absolute;
@@ -79,7 +90,7 @@
             left: 0;
             width: 100%;
             height: 1px;
-            background: linear-gradient(90deg, #d5001c 0%, transparent 100%);
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.3) 0%, transparent 100%);
         }
         
         .search-form .form-select,
@@ -118,9 +129,9 @@
         
         .search-form .form-select:focus,
         .search-form .form-control:focus {
-            border-color: #d5001c;
+            border-color: rgba(255, 255, 255, 0.8);
             background: rgba(255, 255, 255, 0.25);
-            box-shadow: 0 0 0 2px rgba(213, 0, 28, 0.2);
+            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3);
             outline: none;
         }
         
@@ -150,34 +161,25 @@
         
         .search-form .btn-search {
             background: transparent;
-            color: rgba(255, 255, 255, 0.9);
-            border: none;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 0.75rem 1.5rem;
             border-radius: 4px;
-            padding: 0.5rem;
-            font-size: 0.7rem;
-            font-weight: 300;
+            font-size: 0.9rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
             text-transform: uppercase;
-            letter-spacing: 1px;
             transition: all 0.3s ease;
-            height: 38px;
-            min-width: 38px;
-            max-width: 38px;
-            width: 38px !important;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-left: 2.5rem;
-            margin-bottom: 0.5rem;
         }
         
 
         
         .search-form .btn-search:hover {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.2);
             color: white;
-            border-radius: 4px;
-            transform: scale(1.1);
+            border-color: rgba(255, 255, 255, 0.7);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
         }
         
 
@@ -185,8 +187,8 @@
 
         
         .search-form .btn-search i {
-            font-size: 1.5rem;
-            transition: transform 0.3s ease;
+            margin-right: 0.5rem;
+            font-size: 1rem;
         }
         
         /* Bootstrap col sınıflarını düzelt - yan yana sıralama için */
@@ -219,10 +221,1053 @@
             margin-left: 0 !important;
             padding-left: 0 !important;
         }
-        
-        .search-form .btn-search:hover i {
-            transform: translateX(2px);
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .search-container {
+                margin: 0.25rem;
+                padding: 0.75rem;
+            border-radius: 6px;
+            }
+            
+            .search-title {
+                font-size: 1.8rem;
+                letter-spacing: 1px;
+            }
+            
+            .search-subtitle {
+                font-size: 1rem;
+            }
+            
+            .search-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .field-input {
+                padding: 0.875rem 1rem;
+                font-size: 0.9rem;
+            }
+            
+            .search-button {
+                padding: 1rem 1.5rem;
+                font-size: 1rem;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .car-card {
+                height: auto;
+                min-height: 400px;
+            }
+            
+            .car-image {
+                height: 200px;
+            }
+            
+            .car-specs {
+            flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .options-sidebar {
+                position: static;
+                margin-top: 2rem;
+            }
         }
+
+        /* Perfect Search Form */
+        .perfect-search-form {
+            position: relative;
+            z-index: 10;
+            margin-top: 2rem;
+            padding: 0;
+        }
+        
+        /* Override hero content for search form */
+        .hero-content-porsche {
+            max-width: none !important;
+            margin: 0 !important;
+            padding: 0 20px !important;
+            text-align: left !important;
+        }
+        
+        .search-row {
+            display: flex;
+            align-items: end;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding-left: 100px;
+            margin-left: 50px;
+            padding-right: 100px;
+            margin-right: 50px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .search-row-bottom {
+            margin-top: 1.5rem;
+            justify-content: center;
+            padding-left: 100px;
+            margin-left: 50px;
+            padding-right: 100px;
+            margin-right: 50px;
+            max-width: 1000px;
+            margin: 1.5rem auto 0 auto;
+        }
+
+        .search-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            min-width: 120px;
+            flex: 0.8;
+        }
+        
+        .search-item.search-button {
+            background: transparent !important;
+            border-radius: 0 !important;
+            padding: 0 !important;
+        }
+        
+        /* Abholdatum'u daha daralt */
+        .search-item:nth-child(3) {
+            flex: 0.4;
+            min-width: 100px;
+        }
+        
+        /* Abholdatum yazı boyutunu küçült */
+        .search-item:nth-child(3) select,
+        .search-item:nth-child(3) input {
+            font-size: 0.75rem;
+            padding: 0.75rem 0.5rem;
+        }
+        
+        /* Abholdatum label yazısını küçült */
+        .search-item:nth-child(3) label {
+            font-size: 0.85rem;
+        }
+        
+        /* Rückgabedatum'u daha daralt */
+        .search-item:nth-child(5) {
+            flex: 0.4;
+            min-width: 100px;
+        }
+        
+        /* Rückgabedatum yazı boyutunu küçült */
+        .search-item:nth-child(5) select,
+        .search-item:nth-child(5) input {
+            font-size: 0.75rem;
+            padding: 0.75rem 0.5rem;
+        }
+        
+        /* Rückgabedatum label yazısını küçült */
+        .search-item:nth-child(5) label {
+            font-size: 0.85rem;
+        }
+        
+        /* Zeit select'lerini daralt */
+        .search-item:nth-child(4),
+        .search-item:nth-child(6) {
+            flex: 0.25;
+            min-width: 60px;
+            max-width: 80px;
+        }
+        
+        /* Zeit select yazılarını küçült */
+        .search-item:nth-child(4) select,
+        .search-item:nth-child(6) select {
+            font-size: 0.75rem;
+            padding: 0.875rem 0.5rem;
+            min-height: 44px;
+        }
+        
+        /* Standort wählen alanlarını daralt */
+        .search-item:nth-child(1),
+        .search-item:nth-child(2) {
+            flex: 0.5;
+        }
+        
+        .search-item label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: white;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+            margin: 0;
+        }
+        
+        .search-item select,
+        .search-item input {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            border-radius: 8px;
+            font-size: 0.7rem;
+            color: white;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            min-height: 44px;
+            border-right: 2px solid rgba(255, 255, 255, 0.8);
+        }
+        
+        .search-item select:focus,
+        .search-item input:focus {
+            outline: none;
+            border-color: white;
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.2);
+        }
+        
+        .search-item select:hover,
+        .search-item input:hover {
+            border-color: white;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .search-item select::placeholder,
+        .search-item input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* Select option'ları için özel styling */
+        .search-item select option {
+            background: #2a2a2a;
+            color: white;
+            font-size: 0.65rem;
+            padding: 8px 12px;
+            border: none;
+            border-right: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .search-item select option:checked {
+            background: #333333;
+            color: white;
+        }
+
+        .search-item select option:hover {
+            background: #404040;
+            color: white;
+        }
+        
+        .search-button {
+            flex: 1;
+            min-width: 100%;
+            max-width: 100%;
+            background: transparent;
+            border-radius: 0;
+            padding: 0;
+        }
+        
+        .search-button button {
+            width: 100%;
+            padding: 0.4rem;
+            background: rgba(128, 128, 128, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 400;
+            text-transform: none;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+            min-height: 36px;
+            backdrop-filter: blur(20px);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .search-button button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(192, 192, 192, 0.2), transparent);
+            transition: left 0.6s ease;
+        }
+        
+        .search-button button:hover::before {
+            left: 100%;
+        }
+        
+        .search-button button:hover {
+            background: rgba(160, 160, 160, 0.2);
+            border-color: rgba(255, 255, 255, 1);
+            transform: translateY(-1px);
+            box-shadow: 0 8px 32px rgba(128, 128, 128, 0.2);
+        }
+        
+        .search-button button:active {
+            transform: translateY(0);
+            box-shadow: 0 4px 16px rgba(34, 197, 94, 0.15);
+        }
+        
+        .search-button button:active {
+            transform: translateY(0);
+        }
+        
+        .search-button i {
+            font-size: 1.25rem;
+        }
+        
+        /* Modern Filters - Ultra Luxury Porsche Style */
+        .filters-section {
+            padding: 4rem 0;
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 50%, #0f0f0f 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .filters-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            pointer-events: none;
+        }
+
+        .filter-card-modern {
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(30px);
+            border-radius: 24px;
+            padding: 3rem;
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.5),
+                0 0 0 1px rgba(255, 255, 255, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .filter-card-modern::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+        }
+
+        .filter-row {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: nowrap;
+            align-items: end;
+            position: relative;
+            z-index: 1;
+        }
+
+        .filter-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            flex: 1;
+            min-width: 140px;
+            position: relative;
+        }
+
+        .filter-item::after {
+            content: '';
+            position: absolute;
+            bottom: -1rem;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+        }
+
+        .filter-label-modern {
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.9);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 0;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        .filter-label-modern::before {
+            content: '';
+            position: absolute;
+            left: -0.5rem;
+            top: 50%;
+            width: 2px;
+            height: 0;
+            background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+            transition: height 0.3s ease;
+        }
+
+        .filter-item:hover .filter-label-modern::before {
+            height: 1rem;
+            transform: translateY(-50%);
+        }
+
+        .filter-select-modern {
+            width: 100%;
+            padding: 1rem 1.25rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            font-size: 0.8rem;
+            color: white;
+            background: rgba(0, 0, 0, 0.4);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            min-height: 48px;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+            border-right: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .filter-select-modern::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .filter-select-modern:hover::before {
+            left: 100%;
+        }
+
+        .filter-select-modern:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.6);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 
+                0 0 0 3px rgba(255, 255, 255, 0.1),
+                0 8px 32px rgba(0, 0, 0, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .filter-select-modern:hover {
+            border-color: rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.12);
+            transform: translateY(-1px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .filter-select-modern option {
+            background: #1a1a1a;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.75rem;
+            padding: 12px 16px;
+            border: none;
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .filter-select-modern option:checked {
+            background: linear-gradient(135deg, #333333, #555555);
+            color: white;
+            font-weight: 600;
+        }
+
+        .filter-select-modern option:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        /* Modern Navbar - Anasayfa ile aynı */
+        .navbar {
+            background: rgba(255, 255, 255, 0.98) !important;
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            padding: 1rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-brand {
+            font-weight: 800;
+            font-size: 1.8rem;
+            color: var(--porsche-black) !important;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .navbar-brand i {
+            color: var(--porsche-red) !important;
+        }
+        
+        .navbar-brand::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: white;
+            transition: width 0.3s ease;
+        }
+        
+        .navbar-brand:hover::after {
+            width: 100%;
+        }
+
+        .nav-link {
+            font-weight: 500;
+            color: var(--porsche-dark-gray) !important;
+            margin: 0 0.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: white;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .btn-outline-primary {
+            border: 2px solid var(--porsche-red);
+            color: var(--porsche-red);
+            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-outline-primary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--porsche-white);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 255, 255, 0.2);
+        }
+        
+
+        
+        .search-form-modern {
+            position: relative;
+        }
+        
+        .search-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 1rem;
+            align-items: end;
+            justify-content: space-between;
+            width: 100%;
+        }
+        
+        /* Tüm select'ler eşit genişlikte olsun */
+        .field-input {
+            width: 100% !important;
+            min-width: 100% !important;
+            max-width: 100% !important;
+        }
+        
+        /* Rückgabedatum sağa yasla */
+        .search-field:nth-child(4) {
+            justify-self: end;
+        }
+        
+        .search-field {
+            position: relative;
+        }
+        
+        .field-label {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-size: 0.7rem;
+            font-weight: 500;
+            color: #666666;
+            margin-bottom: 0.25rem;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        
+        .field-label i {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.8rem;
+        }
+        
+        .field-input {
+            width: 100%;
+            padding: 0.5rem 0.75rem;
+            border: 1px solid #e9ecef;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            background: white;
+            color: #333333;
+            transition: all 0.3s ease;
+            font-weight: 400;
+        }
+        
+        /* Modern Select Styling */
+        .field-input[data-type="select"] {
+            background: linear-gradient(135deg, #f8f9fa, #ffffff);
+            border: 1px solid #dee2e6;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .field-input[data-type="select"]:hover {
+            border-color: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 4px 8px rgba(255, 255, 255, 0.2);
+            transform: translateY(-1px);
+        }
+        
+        .field-input[data-type="select"]:focus {
+            border-color: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.2);
+            background: linear-gradient(135deg, #ffffff, #f8f9fa);
+        }
+        
+        /* Select Options Styling */
+        .field-input option {
+            font-size: 0.75rem;
+            padding: 0.5rem;
+            background: white;
+            color: #333333;
+        }
+        
+        .field-input option:hover {
+            background: #f8f9fa;
+        }
+
+        .field-input option:checked {
+            background: linear-gradient(135deg, #333333, #555555);
+            color: white;
+        }
+        
+        .field-input:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.2);
+        }
+        
+        .field-input::placeholder {
+            color: #999999;
+        }
+        
+        .date-input-wrapper {
+            position: relative;
+        }
+        
+        .date-icon {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.8);
+            pointer-events: none;
+        }
+        
+        /* Select Icon */
+        .select-wrapper {
+            position: relative;
+        }
+        
+        .select-icon {
+            position: absolute;
+            right: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.8);
+            pointer-events: none;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+        }
+        
+        .field-input[data-type="select"]:focus + .select-icon {
+            transform: translateY(-50%) rotate(180deg);
+            color: rgba(255, 255, 255, 1);
+        }
+        
+        .search-button-field {
+            grid-column: 1 / 6;
+        }
+        
+        @media (max-width: 768px) {
+            .search-button-field {
+                grid-column: 1 / -1;
+            }
+        }
+        
+        .search-button {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: linear-gradient(135deg, #000000, #333333);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.25rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .search-button:hover {
+            background: linear-gradient(135deg, #333333, #555555);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3);
+        }
+        
+        .search-button:active {
+            transform: translateY(0);
+        }
+        
+        .search-button i {
+            font-size: 1.2rem;
+        }
+        
+        /* Flatpickr Dark Theme Styling */
+        .flatpickr-calendar {
+            background: #2d3748 !important;
+            border: 1px solid #4a5568 !important;
+            border-radius: 6px !important;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3) !important;
+            color: white !important;
+            font-family: inherit !important;
+            width: 200px !important;
+            max-width: 200px !important;
+            font-size: 0.7rem !important;
+            transform: scale(0.85) !important;
+            transform-origin: top left !important;
+        }
+        
+        .flatpickr-months {
+            background: #1a202c !important;
+            border-radius: 6px 6px 0 0 !important;
+            padding: 6px 0 !important;
+        }
+        
+        .flatpickr-month {
+            color: white !important;
+        }
+        
+        .flatpickr-current-month {
+            color: white !important;
+            font-weight: 600 !important;
+            font-size: 0.8rem !important;
+        }
+        
+        .flatpickr-monthDropdown-months {
+            background: #1a202c !important;
+            color: white !important;
+            border: none !important;
+        }
+        
+        .flatpickr-weekdays {
+            background: #2d3748 !important;
+            padding: 6px 0 !important;
+        }
+        
+        .flatpickr-weekday {
+            color: #a0aec0 !important;
+            font-weight: 500 !important;
+            font-size: 0.6rem !important;
+        }
+        
+        .flatpickr-days {
+            background: #2d3748 !important;
+            padding: 6px !important;
+        }
+        
+        .flatpickr-day {
+            color: white !important;
+            border-radius: 3px !important;
+            margin: 1px !important;
+            height: 24px !important;
+            line-height: 24px !important;
+            font-size: 0.7rem !important;
+        }
+        
+        .flatpickr-day:hover {
+            background: #4a5568 !important;
+            color: white !important;
+        }
+        
+        .flatpickr-day.selected {
+            background: #3182ce !important;
+            color: white !important;
+            border: 2px solid #63b3ed !important;
+        }
+        
+        .flatpickr-day.today {
+            background: #2b6cb0 !important;
+            color: white !important;
+        }
+        
+        .flatpickr-day.prevMonthDay,
+        .flatpickr-day.nextMonthDay {
+            color: #718096 !important;
+        }
+        
+        .flatpickr-months .flatpickr-prev-month,
+        .flatpickr-months .flatpickr-next-month {
+            color: white !important;
+            fill: white !important;
+            padding: 6px !important;
+        }
+        
+        .flatpickr-months .flatpickr-prev-month:hover,
+        .flatpickr-months .flatpickr-next-month:hover {
+            color: #63b3ed !important;
+            fill: #63b3ed !important;
+        }
+        
+        .flatpickr-calendar.arrowTop:before,
+        .flatpickr-calendar.arrowTop:after {
+            border-bottom-color: #2d3748 !important;
+        }
+        
+        .flatpickr-calendar.arrowBottom:before,
+        .flatpickr-calendar.arrowBottom:after {
+            border-top-color: #2d3748 !important;
+        }
+
+        /* Navbar Responsive */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 0.5rem 0;
+            }
+            
+            .navbar-brand {
+                font-size: 1.2rem;
+            }
+            
+            .navbar-nav {
+            text-align: center;
+                margin-top: 1rem;
+            }
+            
+            .navbar-nav .nav-link {
+                padding: 0.5rem 0;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            }
+            
+            .navbar-nav .nav-link:last-child {
+                border-bottom: none;
+            }
+            
+            .navbar-toggler {
+                border: 1px solid rgba(255, 255, 255, 0.3);
+            }
+            
+            .navbar-toggler-icon {
+                background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.9%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero-section-porsche {
+                min-height: auto;
+                padding: 0;
+                background: linear-gradient(135deg, #000000, #1a1a1a);
+            position: relative;
+            }
+            
+            .hero-content {
+                text-align: center;
+                padding: 2rem 0.5rem 1rem 0.5rem;
+                background: none;
+            }
+            
+            .hero-content h1 {
+                font-size: 1.2rem;
+                margin-bottom: 0.5rem;
+            color: white;
+                text-shadow: none;
+                line-height: 1.3;
+            }
+            
+            .hero-content p {
+                font-size: 0.7rem;
+                margin-bottom: 0;
+                color: #cccccc;
+                text-shadow: none;
+                line-height: 1.4;
+            }
+            
+            .search-form {
+                position: static;
+                margin: 0 0.5rem 1rem 0.5rem;
+                padding: 0.75rem;
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: none;
+                border-radius: 6px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+                z-index: 100 !important;
+                position: relative !important;
+                display: none;
+            }
+            
+            .search-form.active {
+                display: block;
+            }
+            
+            .search-toggle-btn {
+                position: fixed;
+                bottom: 1rem;
+                right: 1rem;
+                background: #000000;
+            color: white;
+            border: none;
+                border-radius: 50%;
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+                z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+                transition: all 0.3s ease;
+            }
+            
+            .search-toggle-btn:hover {
+                background: #333333;
+                transform: scale(1.1);
+            }
+            
+            .search-toggle-btn.active {
+                background: #555555;
+            }
+            
+            .search-form .row {
+                gap: 0.5rem !important;
+            }
+            
+            .search-form .col-12,
+            .search-form .col-md-6,
+            .search-form .col-lg-3,
+            .search-form .col-6,
+            .search-form .col-md-3,
+            .search-form .col-lg-2,
+            .search-form .col-md-12 {
+                width: 100% !important;
+                min-width: 100% !important;
+                max-width: 100% !important;
+                margin-bottom: 0;
+                flex: 1 1 100% !important;
+            }
+            
+            .search-form .btn-search {
+                padding: 0.5rem !important;
+                font-size: 0.7rem !important;
+                background: #22c55e !important;
+                color: white !important;
+                border: none !important;
+                height: auto !important;
+            }
+            
+            .search-form .btn-search:hover {
+                background: #555555 !important;
+                color: white !important;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+            }
+            
+            .search-form label {
+                color: #333333 !important;
+                font-size: 0.6rem !important;
+                font-weight: 600 !important;
+                margin-bottom: 0.25rem !important;
+            }
+            
+            .search-form input,
+            .search-form select {
+                background: white !important;
+                border: 1px solid #dddddd !important;
+                color: #333333 !important;
+                font-size: 0.7rem !important;
+                width: 100% !important;
+                min-width: 100% !important;
+                max-width: 100% !important;
+                box-sizing: border-box !important;
+                position: relative !important;
+                z-index: 10 !important;
+                padding: 0.4rem 0.5rem !important;
+                height: auto !important;
+            }
+            
+            /* Dropdown menüler için */
+            .search-form select:focus {
+                z-index: 1000 !important;
+            }
+            
+            /* Flatpickr takvim için */
+            .flatpickr-calendar {
+                z-index: 9999 !important;
+                position: fixed !important;
+                top: auto !important;
+                left: auto !important;
+            }
+            
+
+            
+            /* Input focus durumunda */
+            .search-form input:focus {
+                z-index: 1000 !important;
+            }
+            
+            .search-form input::placeholder {
+                color: #999999 !important;
+            }
+            
+            .section-title {
+                font-size: 1.5rem;
+            }
+            
+            .car-card {
+                min-height: 350px;
+            }
+            
+            .car-image {
+                height: 180px;
+            }
+            
+            .car-details {
+                padding: 1rem;
+            }
+            
+            .car-name {
+                font-size: 1rem;
+            }
+            
+            .spec-item span {
+                font-size: 0.6rem;
+            }
+        }
+        
+
         
         /* Filters Section */
         .filters-section {
@@ -260,8 +1305,8 @@
         }
         
         .filter-select:focus {
-            border-color: #d5001c;
-            box-shadow: 0 0 0 3px rgba(213, 0, 28, 0.1);
+            border-color: #333333;
+            box-shadow: 0 0 0 3px rgba(51, 51, 51, 0.1);
             outline: none;
         }
         
@@ -319,7 +1364,7 @@
             background: #f8f9fa;
             flex-shrink: 0;
         }
-        
+
         .car-image img {
             width: 100%;
             height: 100%;
@@ -345,7 +1390,7 @@
             letter-spacing: 1px;
             z-index: 2;
         }
-        
+
         .car-details {
             padding: 1.5rem;
             display: flex;
@@ -362,14 +1407,14 @@
             margin-bottom: 1rem;
             text-align: center;
         }
-        
+
         .car-specs {
             display: flex;
             justify-content: space-between;
             margin-bottom: 1.5rem;
             flex: 1;
         }
-        
+
         .spec-item {
             display: flex;
             flex-direction: column;
@@ -413,7 +1458,7 @@
         }
         
         .btn-view-details:hover {
-            background: #d5001c;
+            background: #333333;
             color: white;
             transform: translateY(-2px);
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
@@ -439,7 +1484,7 @@
             margin-bottom: 1.5rem;
             text-transform: uppercase;
             letter-spacing: 1px;
-            border-bottom: 2px solid #d5001c;
+            border-bottom: 2px solid #333333;
             padding-bottom: 0.5rem;
         }
         
@@ -458,7 +1503,7 @@
         }
         
         .insurance-item:hover, .product-item:hover {
-            background: rgba(213, 0, 28, 0.05);
+            background: rgba(51, 51, 51, 0.05);
             border-radius: 8px;
             padding-left: 1rem;
             padding-right: 1rem;
@@ -482,8 +1527,8 @@
         
         .insurance-item.selected .insurance-radio,
         .product-item.selected .product-checkbox {
-            border-color: #d5001c;
-            background: #d5001c;
+            border-color: #333333;
+            background: #333333;
         }
         
         .insurance-item.selected .insurance-radio::after {
@@ -512,7 +1557,7 @@
         .insurance-content, .product-content {
             display: flex;
             justify-content: space-between;
-            align-items: center;
+                align-items: center;
             flex: 1;
         }
         
@@ -525,7 +1570,7 @@
         .insurance-price, .product-price {
             font-size: 0.9rem;
             font-weight: 600;
-            color: #d5001c;
+            color: #333333;
         }
         
         /* Footer */
@@ -544,7 +1589,7 @@
         }
         
         .footer-link {
-            color: #d5001c;
+            color: #333333;
             text-decoration: none;
             font-weight: 500;
             transition: color 0.3s ease;
@@ -564,14 +1609,28 @@
                 font-size: 1rem;
             }
             
-            .search-form {
-                padding: 1.5rem;
+            .perfect-search-form {
+                padding: 0 1rem;
+            }
+            
+            .search-row {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .search-item {
+                min-width: 100%;
+                flex: none;
+            }
+            
+            .search-button {
+                min-width: 100%;
             }
             
             .section-title {
                 font-size: 2rem;
             }
-            
+
             .options-sidebar {
                 position: static;
                 margin-top: 2rem;
@@ -584,6 +1643,19 @@
             .car-image {
                 height: 240px;
             }
+
+            .filter-row {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .filter-item {
+                min-width: 100%;
+            }
+
+            .filter-card-modern {
+                padding: 1.5rem;
+            }
         }
         
         @media (max-width: 576px) {
@@ -591,8 +1663,23 @@
                 font-size: 2rem;
             }
             
-            .search-form {
-                padding: 1rem;
+            .perfect-search-form {
+                padding: 0 0.5rem;
+            }
+            
+            .search-item label {
+                font-size: 0.8rem;
+            }
+            
+            .search-item select,
+            .search-item input {
+                padding: 0.75rem;
+                font-size: 0.85rem;
+            }
+            
+            .search-button button {
+                padding: 0.75rem 1rem;
+                font-size: 0.85rem;
             }
             
             .filter-card {
@@ -643,78 +1730,115 @@
     <!-- Hero Section - Porsche Style -->
     <section class="hero-section-porsche">
         <div class="hero-background">
-            <img src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80" alt="Premium Car" class="hero-car-image">
+            <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80" alt="Premium Car" class="hero-car-image">
             <div class="hero-overlay"></div>
         </div>
-        <div class="container">
-            <div class="hero-content-porsche">
-                <h1 class="hero-title-porsche">Unsere Fahrzeugflotte</h1>
-                <p class="hero-subtitle-porsche">Entdecken Sie unsere exklusive Sammlung von Premium-Fahrzeugen</p>
-                
-                <!-- Search Form -->
-                <div class="search-form">
-                    <form id="date-location-form" novalidate>
-                        <div class="row g-3 align-items-end">
-                            <div class="col-12 col-md-6 col-lg-3">
-                                <label class="form-label">Abholort</label>
-                                <select id="pickup-location-selector" class="form-select" required>
-                                    <option value="">Standort wählen</option>
-                                    <option value="1">Berlin Hauptbahnhof</option>
-                                    <option value="2">München Flughafen</option>
-                                    <option value="3">Hamburg Zentrum</option>
-                                    <option value="4">Köln Dom</option>
-                                    <option value="5">Frankfurt Flughafen</option>
-                                </select>
-                            </div>
-                            <div class="col-12 col-md-6 col-lg-3">
-                                <label class="form-label">Rückgabeort</label>
-                                <select id="dropoff-location-selector" class="form-select" required>
-                                    <option value="">Standort wählen</option>
-                                    <option value="1">Berlin Hauptbahnhof</option>
-                                    <option value="2">München Flughafen</option>
-                                    <option value="3">Hamburg Zentrum</option>
-                                    <option value="4">Köln Dom</option>
-                                    <option value="5">Frankfurt Flughafen</option>
-                                </select>
-                            </div>
-                            <div class="col-6 col-md-3 col-lg-2">
-                                <label class="form-label">Abholdatum</label>
-                                <div class="input-group">
-                                    <span class="input-group-text" data-target="pickup-date-selector">
-                                        <i class="bi bi-calendar3"></i>
-                                    </span>
-                                    <input type="text" id="pickup-date-selector" class="form-control" placeholder="tt.mm.jjjj" required>
-                                </div>
-                            </div>
-                            <div class="col-6 col-md-3 col-lg-2">
-                                <label class="form-label">Rückgabedatum</label>
-                                <div class="input-group">
-                                    <span class="input-group-text" data-target="dropoff-date-selector">
-                                        <i class="bi bi-calendar3"></i>
-                                    </span>
-                                    <input type="text" id="dropoff-date-selector" class="form-control" placeholder="tt.mm.jjjj" required>
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-12 col-lg-2">
-                                <button type="submit" class="btn-search w-100">
-                                    <i class="bi bi-search"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </form>
+        <div class="hero-content-porsche">
+            <!-- Perfect Search Form -->
+            <div class="perfect-search-form">
+            <form id="date-location-form" novalidate>
+                <div class="search-row">
+                    <!-- Pick-up Location -->
+                    <div class="search-item">
+                        <label>Abholort</label>
+                        <select id="pickup-location-selector" required>
+                            <option value="">Standort wählen</option>
+                            <option value="1">Berlin</option>
+                            <option value="2">München</option>
+                            <option value="3">Hamburg</option>
+                            <option value="4">Köln</option>
+                            <option value="5">Frankfurt</option>
+                        </select>
+                    </div>
+
+                    <!-- Drop-off Location -->
+                    <div class="search-item">
+                        <label>Rückgabeort</label>
+                        <select id="dropoff-location-selector" required>
+                            <option value="">Standort wählen</option>
+                            <option value="1">Berlin</option>
+                            <option value="2">München</option>
+                            <option value="3">Hamburg</option>
+                            <option value="4">Köln</option>
+                            <option value="5">Frankfurt</option>
+                        </select>
+                    </div>
+
+                    <!-- Pick-up Date -->
+                    <div class="search-item">
+                        <label>Abholdatum</label>
+                        <input type="text" id="pickup-date-selector" placeholder="TT.MM.JJJJ" readonly required>
                 </div>
+
+                    <!-- Pick-up Time -->
+                    <div class="search-item">
+                        <label>Zeit</label>
+                        <select id="pickup-time">
+                            <option value="08:00">08:00</option>
+                            <option value="09:00">09:00</option>
+                            <option value="10:00" selected>10:00</option>
+                            <option value="11:00">11:00</option>
+                            <option value="12:00">12:00</option>
+                            <option value="13:00">13:00</option>
+                            <option value="14:00">14:00</option>
+                            <option value="15:00">15:00</option>
+                            <option value="16:00">16:00</option>
+                            <option value="17:00">17:00</option>
+                            <option value="18:00">18:00</option>
+                        </select>
+                </div>
+
+                    <!-- Drop-off Date -->
+                    <div class="search-item">
+                        <label>Rückgabedatum</label>
+                        <input type="text" id="dropoff-date-selector" placeholder="TT.MM.JJJJ" readonly required>
+                    </div>
+
+                    <!-- Drop-off Time -->
+                    <div class="search-item">
+                        <label>Zeit</label>
+                        <select id="dropoff-time">
+                            <option value="08:00">08:00</option>
+                            <option value="09:00">09:00</option>
+                            <option value="10:00" selected>10:00</option>
+                            <option value="11:00">11:00</option>
+                            <option value="12:00">12:00</option>
+                            <option value="13:00">13:00</option>
+                            <option value="14:00">14:00</option>
+                            <option value="15:00">15:00</option>
+                            <option value="16:00">16:00</option>
+                            <option value="17:00">17:00</option>
+                            <option value="18:00">18:00</option>
+                        </select>
+                    </div>
+
+                </div>
+                
+                <!-- Search Button - Alt satır -->
+                <div class="search-row search-row-bottom">
+                    <div class="search-item search-button">
+                        <button type="submit">
+                            <i class="bi bi-search"></i>
+                </button>
+                    </div>
+                </div>
+            </form>
             </div>
+            
+
         </div>
     </section>
 
-    <!-- Filters Section -->
+
+
+    <!-- Filters Section - Modern Porsche Style -->
     <section class="filters-section">
         <div class="container">
-            <div class="filter-card">
-                <div class="row g-3">
-                    <div class="col-md-2 col-sm-6">
-                        <label class="filter-label">Fahrzeugtyp</label>
-                        <select class="filter-select" id="vehicle-type-filter">
+            <div class="filter-card-modern">
+                <div class="filter-row">
+                    <div class="filter-item">
+                        <label class="filter-label-modern">Fahrzeugtyp</label>
+                        <select class="filter-select-modern" id="vehicle-type-filter">
                             <option value="">Alle Fahrzeuge</option>
                             <option value="compact">Kompakt</option>
                             <option value="sedan">Limousine</option>
@@ -723,9 +1847,9 @@
                             <option value="electric">Elektrisch</option>
                         </select>
                     </div>
-                    <div class="col-md-2 col-sm-6">
-                        <label class="filter-label">Marke</label>
-                        <select class="filter-select" id="vehicle-model-filter">
+                    <div class="filter-item">
+                        <label class="filter-label-modern">Marke</label>
+                        <select class="filter-select-modern" id="vehicle-model-filter">
                             <option value="">Alle Marken</option>
                             <option value="audi">Audi</option>
                             <option value="bmw">BMW</option>
@@ -735,9 +1859,9 @@
                             <option value="volkswagen">Volkswagen</option>
                         </select>
                     </div>
-                    <div class="col-md-2 col-sm-6">
-                        <label class="filter-label">Kraftstoff</label>
-                        <select class="filter-select" id="fuel-type-filter">
+                    <div class="filter-item">
+                        <label class="filter-label-modern">Kraftstoff</label>
+                        <select class="filter-select-modern" id="fuel-type-filter">
                             <option value="">Alle</option>
                             <option value="benzin">Benzin</option>
                             <option value="diesel">Diesel</option>
@@ -745,34 +1869,24 @@
                             <option value="elektrisch">Elektrisch</option>
                         </select>
                     </div>
-                    <div class="col-md-2 col-sm-6">
-                        <label class="filter-label">Sortieren</label>
-                        <select class="filter-select" id="sort-filter">
+                    <div class="filter-item">
+                        <label class="filter-label-modern">Sortieren</label>
+                        <select class="filter-select-modern" id="sort-filter">
                             <option value="price-low">Niedrigster Preis</option>
                             <option value="price-high">Höchster Preis</option>
                             <option value="name">Name A-Z</option>
                             <option value="popularity">Beliebtheit</option>
                         </select>
                     </div>
-                    <div class="col-md-2 col-sm-6">
-                        <label class="filter-label">Getriebe</label>
-                        <select class="filter-select" id="transmission-filter">
+                    <div class="filter-item">
+                        <label class="filter-label-modern">Getriebe</label>
+                        <select class="filter-select-modern" id="transmission-filter">
                             <option value="">Alle</option>
                             <option value="automatik">Automatik</option>
                             <option value="manuell">Manuell</option>
                         </select>
                     </div>
-                    <div class="col-md-2 col-sm-6">
-                        <label class="filter-label">Preisbereich</label>
-                        <select class="filter-select" id="price-filter">
-                            <option value="600">Bis €600/Tag</option>
-                            <option value="500">Bis €500/Tag</option>
-                            <option value="400">Bis €400/Tag</option>
-                            <option value="300">Bis €300/Tag</option>
-                            <option value="200">Bis €200/Tag</option>
-                            <option value="100">Bis €100/Tag</option>
-                        </select>
-                    </div>
+
                 </div>
             </div>
         </div>
@@ -814,8 +1928,8 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
+                        </div>
+                    </div>
     </section>
 
     <!-- Footer -->
@@ -827,8 +1941,8 @@
                 <a href="#" class="footer-link">Datenschutz</a>
                 <span class="mx-2">-</span>
                 <a href="#" class="footer-link">Bedingungen</a>
+                </div>
             </div>
-        </div>
     </footer>
 
     <!-- Bootstrap JS -->
@@ -839,5 +1953,116 @@
     <script src="js/data/cars.js"></script>
     <script src="js/fahrzeuge.js"></script>
     <script src="js/navbar.js"></script>
+    
+    <script>
+        // Porsche-style search form functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize date pickers
+            const pickupDateInput = document.getElementById('pickup-date-selector');
+            const dropoffDateInput = document.getElementById('dropoff-date-selector');
+            
+            if (window.flatpickr) {
+                // German localization
+                const germanLocale = {
+                    weekdays: {
+                        shorthand: ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"],
+                        longhand: ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"]
+                    },
+                    months: {
+                        shorthand: ["Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"],
+                        longhand: ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"]
+                    },
+                    firstDayOfWeek: 1,
+                    rangeSeparator: " bis ",
+                    weekAbbreviation: "KW",
+                    amPM: ["AM", "PM"],
+                    yearAriaLabel: "Jahr",
+                    monthAriaLabel: "Monat",
+                    hourAriaLabel: "Stunde",
+                    minuteAriaLabel: "Minute",
+                    time_24hr: true
+                };
+                
+                window.flatpickr.localize(germanLocale);
+                
+                const today = new Date();
+                const tomorrow = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
+                
+                // Pickup date picker
+                const pickupPicker = window.flatpickr(pickupDateInput, {
+                    dateFormat: 'd.m.Y',
+                    allowInput: true,
+                    minDate: today,
+                    disableMobile: true,
+                    locale: germanLocale,
+                    onChange: function(selectedDates) {
+                        if (selectedDates && selectedDates[0]) {
+                            const minDropoff = new Date(selectedDates[0].getFullYear(), selectedDates[0].getMonth(), selectedDates[0].getDate() + 1);
+                            dropoffPicker.set('minDate', minDropoff);
+                        }
+                    }
+                });
+                
+                // Dropoff date picker
+                const dropoffPicker = window.flatpickr(dropoffDateInput, {
+                    dateFormat: 'd.m.Y',
+                    allowInput: true,
+                    minDate: tomorrow,
+                    disableMobile: true,
+                    locale: germanLocale
+                });
+                
+                // Calendar icon click handlers
+                document.querySelectorAll('.date-icon').forEach(icon => {
+                    icon.addEventListener('click', function() {
+                        const input = this.parentElement.querySelector('input');
+                        if (input.id === 'pickup-date-selector') {
+                            pickupPicker.open();
+                        } else if (input.id === 'dropoff-date-selector') {
+                            dropoffPicker.open();
+                        }
+                    });
+                });
+            }
+            
+            // Form submission
+            const form = document.getElementById('date-location-form');
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Validate form
+                const pickupLocation = document.getElementById('pickup-location-selector').value;
+                const dropoffLocation = document.getElementById('dropoff-location-selector').value;
+                const pickupDate = pickupDateInput.value;
+                const dropoffDate = dropoffDateInput.value;
+                
+                if (!pickupLocation || !dropoffLocation || !pickupDate || !dropoffDate) {
+                    alert('Bitte füllen Sie alle Felder aus.');
+                    return;
+                }
+                
+                // Store search data
+                const formData = {
+                    pickupLocation: pickupLocation,
+                    dropoffLocation: dropoffLocation,
+                    pickupDate: pickupDate,
+                    dropoffDate: dropoffDate
+                };
+                
+                localStorage.setItem('searchData', JSON.stringify(formData));
+                
+                // Show success message
+                const button = document.querySelector('.search-button');
+                const originalText = button.innerHTML;
+                button.innerHTML = '<i class="bi bi-check-circle"></i><span>Gesucht!</span>';
+                button.style.background = 'linear-gradient(135deg, #28a745, #20c997)';
+                
+                setTimeout(() => {
+                    button.innerHTML = originalText;
+                    button.style.background = 'linear-gradient(135deg, #000000, #333333)';
+                }, 2000);
+            });
+        });
+    </script>
 </body>
 </html>
