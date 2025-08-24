@@ -54,7 +54,7 @@ html, body {
     left: 0;
     width: 0;
     height: 1px;
-    background: #d5001c;
+    background: #B10000;
     transition: width 0.3s ease;
 }
 
@@ -63,7 +63,7 @@ html, body {
 }
 
 .navbar-brand i {
-    color: #d5001c;
+    color: #B10000;
     margin-right: 0.5rem;
 }
 
@@ -89,7 +89,7 @@ html, body {
     left: 0;
     width: 0;
     height: 1px;
-    background: #d5001c;
+    background: #B10000;
     transition: width 0.3s ease;
 }
 
@@ -173,7 +173,7 @@ html, body {
     left: 50%;
     width: 0;
     height: 2px;
-    background: #d5001c;
+    background: #B10000;
     transition: all 0.3s ease;
     transform: translateX(-50%);
 }
@@ -196,8 +196,8 @@ html, body {
 
 /* Button Styles */
 .btn-warning {
-    background-color: #d5001c !important;
-    border-color: #d5001c !important;
+    background-color: #B10000 !important;
+    border-color: #B10000 !important;
     color: #ffffff !important;
     font-weight: 600;
     transition: all 0.3s ease;
@@ -213,15 +213,15 @@ html, body {
 
 .btn-outline-warning {
     background: transparent;
-    border-color: #d5001c;
-    color: #d5001c;
+    border-color: #B10000;
+    color: #B10000;
     font-weight: 600;
     transition: all 0.3s ease;
 }
 
 .btn-outline-warning:hover {
-    background: #d5001c;
-    border-color: #d5001c;
+    background: #B10000;
+    border-color: #B10000;
     color: #ffffff;
     transform: translateY(-2px);
     box-shadow: 0 8px 25px rgba(213, 0, 28, 0.3);
@@ -236,8 +236,8 @@ html, body {
 }
 
 .btn-outline-danger:hover {
-    background: #d5001c;
-    border-color: #d5001c;
+    background: #B10000;
+    border-color: #B10000;
     color: #ffffff;
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(213, 0, 28, 0.3);
@@ -254,7 +254,7 @@ html, body {
 }
 
 .form-control:focus, .form-select:focus {
-    border-color: #d5001c;
+    border-color: #B10000;
     box-shadow: 0 0 0 0.2rem rgba(213, 0, 28, 0.25);
 }
 
@@ -327,7 +327,7 @@ html, body {
     position: absolute;
     top: 1rem;
     right: 1rem;
-    background: #d5001c;
+    background: #B10000;
     color: #ffffff;
     padding: 0.5rem 1rem;
     border-radius: 50px;
@@ -369,7 +369,7 @@ html, body {
 }
 
 .spec-item i {
-    color: #d5001c;
+    color: #B10000;
     font-size: 1rem;
 }
 
@@ -397,7 +397,7 @@ html, body {
 .feature-icon {
     width: 60px;
     height: 60px;
-    background: #d5001c;
+    background: #B10000;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -460,7 +460,7 @@ html, body {
 .stat-number {
     font-size: 3rem;
     font-weight: 800;
-    color: #d5001c;
+    color: #B10000;
     margin-bottom: 0.5rem;
 }
 
@@ -508,7 +508,7 @@ html, body {
 }
 
 .benefit-item i {
-    color: #d5001c;
+    color: #B10000;
     font-size: 1.2rem;
 }
 
@@ -532,7 +532,7 @@ html, body {
 }
 
 .footer-link:hover {
-    color: #d5001c;
+    color: #B10000;
 }
 
 /* Responsive Design */
@@ -565,11 +565,11 @@ html, body {
 
 /* Utility Classes */
 .text-warning {
-    color: #d5001c !important;
+    color: #B10000 !important;
 }
 
 .bg-warning {
-    background-color: #d5001c !important;
+    background-color: #B10000 !important;
 }
 
 /* Animation Classes */
@@ -598,7 +598,7 @@ html, body {
     width: 20px;
     height: 20px;
     margin: -10px 0 0 -10px;
-    border: 2px solid #d5001c;
+    border: 2px solid #B10000;
     border-top: 2px solid transparent;
     border-radius: 50%;
     animation: spin 1s linear infinite;
@@ -741,7 +741,7 @@ html, body {
 
 /* Update existing button styles to match Porsche */
 .btn-primary {
-    background: #d5001c;
+    background: #B10000;
     border: none;
     color: white;
     font-weight: 300;
@@ -757,7 +757,7 @@ html, body {
 }
 
 .btn-danger {
-    background: #d5001c;
+    background: #B10000;
     border: none;
     color: white;
     font-weight: 300;
@@ -822,8 +822,9 @@ html, body {
     height: 100vh;
     overflow: hidden;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
+    z-index: 1;
 }
 
 .hero-background {
@@ -854,12 +855,16 @@ html, body {
 
 .hero-content-porsche {
     position: relative;
-    z-index: 3;
+    z-index: 2;
     text-align: center;
     color: white;
-    max-width: 800px;
+    max-width: none;
     margin: 0 auto;
     padding: 0 20px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
 }
 
 .hero-title-porsche {
@@ -981,9 +986,10 @@ html, body {
 /* Popular Cars Section - Modern & Luxury */
 .popular-cars-section {
     background: linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%);
-    padding: 120px 0 80px 0;
+    padding: 20px 0 80px 0;
     position: relative;
     overflow: hidden;
+    z-index: 0;
 }
 
 .popular-cars-section::before {
@@ -1012,7 +1018,7 @@ html, body {
 
 .section-header {
     text-align: center;
-    margin-bottom: 60px;
+    margin-bottom: 15px;
     position: relative;
     z-index: 2;
 }
@@ -1047,6 +1053,7 @@ html, body {
     height: 100%;
     border: 1px solid rgba(255, 255, 255, 0.1);
     z-index: 2;
+    min-height: 280px;
 }
 
 .car-card:hover {
@@ -1074,7 +1081,7 @@ html, body {
 
 .car-image {
     position: relative;
-    height: 250px;
+    height: 190px;
     overflow: hidden;
     background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
 }
@@ -1117,12 +1124,13 @@ html, body {
 }
 
 .car-details {
-    padding: 2rem;
+    padding: 0.5rem 1rem 0rem 1rem;
     display: flex;
     flex-direction: column;
-    height: calc(100% - 250px);
+    height: calc(100% - 190px);
     position: relative;
     z-index: 3;
+    min-height: 90px;
 }
 
 .car-name {
@@ -1153,7 +1161,7 @@ html, body {
 }
 
 .spec-item i {
-    color: #d5001c;
+    color: #B10000;
     font-size: 1rem;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
@@ -1164,7 +1172,7 @@ html, body {
 
 .btn-view-details {
     width: 100%;
-    background: linear-gradient(135deg, #d5001c 0%, #b30016 100%);
+    background: linear-gradient(135deg, #B10000 0%, #b30016 100%);
     color: white;
     border: none;
     padding: 15px 25px;
@@ -1190,7 +1198,7 @@ html, body {
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .popular-cars-section {
-        padding: 60px 0;
+        padding: 15px 0;
     }
     
     .section-title {
@@ -1373,7 +1381,59 @@ html, body {
 }
 
 /* Responsive adjustments */
+@media (max-width: 1200px) {
+    .hero-section-porsche {
+        height: 100vh;
+    }
+    
+    .hero-content-porsche {
+        padding: 0 30px;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+    }
+    
+    .search-row {
+        flex-direction: column !important;
+        gap: 0.5rem !important;
+        padding: 0 10px !important;
+        max-width: 100% !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        width: calc(100% - 20px) !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+    
+    .search-item {
+        flex: 1 !important;
+        min-width: 100% !important;
+    }
+    
+    .hero-cta-porsche {
+        margin-top: 1rem !important;
+        margin-bottom: 2rem !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        width: calc(100% - 20px) !important;
+        max-width: 100% !important;
+    }
+    
+    .btn-porsche-luxury {
+        max-width: 100% !important;
+    }
+}
+
 @media (max-width: 768px) {
+    .hero-section-porsche {
+        height: 80vh;
+    }
+    
+    .hero-content-porsche {
+        padding: 0 20px;
+    }
+    
     .popular-cars-section {
         padding: 80px 0;
     }

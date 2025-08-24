@@ -152,9 +152,9 @@ function loadPopularCars() {
                         </div>
                     </div>
                     <div class="car-cta">
-                        <a href="/vehicle-details?id=${car.car_id}" class="btn-view-details">
-                            Details anzeigen
-                        </a>
+                        <button class="btn-rent-now">
+                            Jetzt mieten
+                        </button>
                     </div>
                 </div>
             </div>

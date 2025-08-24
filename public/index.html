@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8">
@@ -13,8 +13,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
-    <!-- Flatpickr CSS for date picker -->
-    <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
+    <!-- Bootstrap Datepicker CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" rel="stylesheet">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- Custom CSS -->
@@ -23,9 +23,9 @@
     <style>
         /* Porsche-inspired Modern Design */
         :root {
-            --porsche-black: #000000;
+            --porsche-black: #B10000;
             --porsche-white: #ffffff;
-            --porsche-red: #d5001c;
+            --porsche-red: #B10000;
             --porsche-gray: #f8f9fa;
             --porsche-dark-gray: #212529;
             --porsche-light-gray: #6c757d;
@@ -67,7 +67,7 @@
             left: 0;
             width: 0;
             height: 1px;
-            background: #d5001c;
+            background: #B10000;
             transition: width 0.3s ease;
         }
         
@@ -94,7 +94,7 @@
             left: 0;
             width: 0;
             height: 1px;
-            background: #d5001c;
+            background: #B10000;
             transition: width 0.3s ease;
         }
         
@@ -163,35 +163,44 @@
         /* Perfect Search Form */
         .perfect-search-form {
             position: relative;
-            z-index: 10;
-            margin-top: 2rem;
+            z-index: 3;
+            margin-top: 0;
+            margin-bottom: 1rem;
             padding: 0;
+            width: 100%;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
         }
         
         /* Override hero content for search form */
         .hero-content-porsche {
             max-width: none !important;
             margin: 0 !important;
-            padding: 450px 20px 0 20px !important;
+            padding: 0 50px 2rem 50px !important;
             text-align: left !important;
+            position: relative;
+            z-index: 2;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
         }
         
         .search-row {
-            display: flex;
-            align-items: end;
-            gap: 1rem;
-            flex-wrap: wrap;
-            justify-content: center;
-            padding-left: 100px;
-            margin-left: 50px;
-            padding-right: 100px;
-            margin-right: 50px;
-            max-width: 1000px;
-            margin: 0 auto;
+            display: flex !important;
+            align-items: end !important;
+            gap: 1rem !important;
+            flex-wrap: wrap !important;
+            justify-content: center !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            max-width: 1200px !important;
+            width: 100% !important;
         }
 
         .search-row-bottom {
-            display: none;
+            display: flex;
         }
 
         .search-item {
@@ -199,7 +208,7 @@
             flex-direction: column;
             gap: 0;
             min-width: 120px;
-            flex: 0.8;
+            flex: 1;
         }
         
         .search-item.search-button {
@@ -214,7 +223,7 @@
         .search-item.search-button button {
             width: 100%;
             height: 38px;
-            background: linear-gradient(135deg, #d5001c, #b30016);
+            background: linear-gradient(135deg, #B10000, #b30016);
             border: none;
             border-radius: 8px;
             color: white;
@@ -294,183 +303,451 @@
         
 
         
+        /* New Search Form Styling */
+        .search-item {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        
+        .search-item:not(:has(#pickup-time)):not(:has(#dropoff-time)) {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .search-item:has(#pickup-time),
+        .search-item:has(#dropoff-time) {
+            flex: 2;
+            width: 240px;
+        }
+
+        .search-item label {
+            display: block;
+            color: #3B82F6;
+            font-size: 0.75rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .select-wrapper,
+        .date-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
         .search-item select,
         .search-item input {
             width: 100%;
-            padding: 0.5rem 1rem;
+            padding: 0.75rem 4rem 0.75rem 0;
             border: none;
-            border-bottom: 2px solid rgba(255, 255, 255, 0.8);
-            border-radius: 8px;
-            font-size: 0.8rem;
-            color: white;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
+            border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 0;
+            font-size: 14px;
+            color: #ffffff;
+            background: transparent;
             transition: all 0.3s ease;
-            min-height: 38px;
+            min-height: 42px;
             font-weight: 500;
             text-align: left;
-        }
-        
-        .search-item select:focus,
-        .search-item input:focus {
-            outline: none;
-            border-bottom-color: white;
-            background: transparent;
-            box-shadow: none;
-        }
-        
-        .search-item select:hover,
-        .search-item input:hover {
-            border-bottom-color: white;
-            background: transparent;
-        }
-        
-        .search-item select::placeholder,
-        .search-item input::placeholder {
-            color: #ffffff;
-            font-weight: 500;
-        }
-        
-        /* Select placeholder styling - modern beyaz renk */
-        .search-item select {
-            color: #ffffff;
-            font-size: 0.8rem;
-            font-weight: 500;
-        }
-        
-        .search-item select option {
-            color: #333333;
-            font-size: 0.75rem;
-        }
-        
-        .search-item select option:first-child {
-            color: #ffffff;
-            font-size: 0.8rem;
-            font-weight: 500;
-        }
-        
-        /* Input placeholder styling - modern beyaz renk */
-        .search-item input[type="text"] {
-            color: #ffffff;
-            font-size: 0.8rem;
-            font-weight: 500;
-        }
-        
-        .search-item input[type="text"]::placeholder {
-            color: #ffffff;
-            font-size: 0.8rem;
-            font-weight: 500;
-        }
-
-        /* Modern Porsche-style Select Styling */
-        .search-item select {
             appearance: none;
             -webkit-appearance: none;
             -moz-appearance: none;
-            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
-            background-repeat: no-repeat;
-            background-position: right 12px center;
-            background-size: 16px;
-            padding-right: 40px;
-            cursor: pointer;
+        }
+        
+        /* Select dropdown yukarı açılması için */
+        .search-item select {
+            direction: ltr !important;
+            text-align: left !important;
+        }
+
+        .search-item select:focus,
+        .search-item input:focus {
+            outline: none;
+            border-bottom-color: #B10000;
+            background: transparent;
+            box-shadow: none;
+        }
+
+        .search-item select:hover,
+        .search-item input:hover {
+            border-bottom-color: rgba(255, 255, 255, 0.8);
+            background: transparent;
+        }
+
+        .search-item select::placeholder,
+        .search-item input::placeholder {
+            color: #ffffff;
+            font-weight: 400;
+            font-size: 14px;
+        }
+        
+        /* Daha güçlü placeholder seçicileri */
+        input::placeholder,
+        select::placeholder {
+            color: #6c757d !important;
+        }
+        
+        /* Browser-specific placeholder override */
+        ::-webkit-input-placeholder {
+            color: #6c757d !important;
+        }
+        
+        ::-moz-placeholder {
+            color: #6c757d !important;
+        }
+        
+        :-ms-input-placeholder {
+            color: #6c757d !important;
+        }
+        
+        :-moz-placeholder {
+            color: #6c757d !important;
+        }
+        
+        /* Abholdatum ve Rückgabedatum için özel placeholder */
+        #pickup-date-selector::placeholder,
+        #dropoff-date-selector::placeholder {
+            color: #ffffff !important;
+            font-weight: 400;
+            font-size: 14px;
+        }
+        
+        /* Bootstrap Datepicker input placeholder override */
+        .form-control::placeholder {
+            color: #ffffff !important;
+        }
+        
+        /* En güçlü placeholder override */
+        .search-item .date-wrapper .form-control::placeholder {
+            color: #ffffff !important;
+        }
+        
+        /* Flatpickr input placeholder override */
+        .flatpickr-input::placeholder {
+            color: #ffffff !important;
+        }
+        
+        /* Tüm input placeholder'ları için en güçlü seçici */
+        .search-item input[type="text"]::placeholder {
+            color: #ffffff !important;
+        }
+        
+        /* CSS Custom Property ile placeholder rengi */
+        .search-item input[type="text"] {
+            --placeholder-color: #ffffff !important;
+        }
+        
+        .search-item input[type="text"]::placeholder {
+            color: var(--placeholder-color) !important;
+        }
+        
+        /* Bootstrap Datepicker için özel placeholder override */
+        .datepicker-dropdown .datepicker table tr td.active {
+            background: #1967D2 !important;
+        }
+        
+        /* En güçlü placeholder override - tüm input'lar için */
+        input[type="text"]::placeholder {
+            color: #ffffff !important;
+            opacity: 1 !important;
+        }
+        
+        /* Bootstrap form-control için özel override */
+        .form-control::placeholder {
+            color: #ffffff !important;
+            opacity: 1 !important;
+        }
+        
+        /* Date input'ları için özel override */
+        #pickup-date-selector::placeholder,
+        #dropoff-date-selector::placeholder {
+            color: #ffffff !important;
+            opacity: 1 !important;
+        }
+
+        /* Arrow and Calendar Icons */
+        .select-arrow,
+        .date-icon {
+            position: absolute;
+            right: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.875rem;
+            pointer-events: none;
             transition: all 0.3s ease;
         }
 
-        .search-item select:hover {
-            background-color: rgba(255, 255, 255, 0.05);
-            border-bottom-color: rgba(255, 255, 255, 0.9);
+        .search-item select:hover + .select-arrow,
+        .search-item input:hover + .date-icon {
+            color: rgba(255, 255, 255, 0.9);
         }
 
-        .search-item select:focus {
-            background-color: rgba(255, 255, 255, 0.1);
-            border-bottom-color: #d5001c;
-            box-shadow: 0 4px 12px rgba(213, 0, 28, 0.2);
+        .search-item select:focus + .select-arrow,
+        .search-item input:focus + .date-icon {
+            color: #B10000;
         }
 
-        /* Select Option Styling - Browser kısıtlamaları nedeniyle sınırlı */
+        /* Select Options Styling - Dark red background */
+        .search-item select option {
+            background: #B60706 !important;
+            color: #ffffff !important;
+            font-size: 14px !important;
+            padding: 0.75rem 1rem !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            margin: 2px 0 !important;
+            text-align: left !important;
+            direction: ltr !important;
+            border-radius: 8px !important;
+            backdrop-filter: blur(10px) !important;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+            transition: all 0.3s ease !important;
+        }
+
+
+
+        .search-item select option:checked {
+            background: #8a0012 !important;
+            color: #ffffff !important;
+            font-weight: 600 !important;
+            font-size: 14px !important;
+            border: 1px solid rgba(255, 255, 255, 0.3) !important;
+            backdrop-filter: blur(10px) !important;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+        }
+
+        .search-item select option:hover {
+            background: #4D0602 !important;
+            color: #ffffff !important;
+            font-size: 14px !important;
+            transform: translateX(4px) !important;
+            border: 1px solid rgba(255, 255, 255, 0.3) !important;
+            backdrop-filter: blur(10px) !important;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+            transition: all 0.3s ease !important;
+        }
+        
+        /* Browser-specific hover override */
+        select option:hover {
+            background: #4D0602 !important;
+            color: #ffffff !important;
+            font-size: 14px !important;
+            border: 1px solid rgba(255, 255, 255, 0.3) !important;
+            backdrop-filter: blur(10px) !important;
+        }
+        
+        /* En güçlü hover seçici */
+        option:hover {
+            background: #4D0602 !important;
+            color: #ffffff !important;
+            font-size: 14px !important;
+            border: 1px solid rgba(255, 255, 255, 0.3) !important;
+            backdrop-filter: blur(10px) !important;
+        }
+        
+        /* Daha güçlü hover override */
+        .search-item select option:hover,
+        select option:hover,
+        option:hover,
+        .form-select option:hover,
+        .dropdown-item:hover {
+            background-color: #4D0602 !important;
+            background: #4D0602 !important;
+            color: #ffffff !important;
+            font-size: 14px !important;
+        }
+        
+        /* CSS Custom Property ile hover rengi */
         .search-item select {
-            text-align-last: left !important;
+            --option-hover-bg: #4D0602 !important;
+        }
+        
+        .search-item select option:hover {
+            background: var(--option-hover-bg) !important;
+            background-color: var(--option-hover-bg) !important;
+        }
+        
+        /* En güçlü hover override - tüm olası seçiciler */
+        .search-item select option:hover,
+        .search-item select option:focus,
+        .search-item select option:active,
+        select option:hover,
+        select option:focus,
+        select option:active,
+        option:hover,
+        option:focus,
+        option:active,
+        .form-select option:hover,
+        .form-select option:focus,
+        .form-select option:active,
+        .dropdown-item:hover,
+        .dropdown-item:focus,
+        .dropdown-item:active {
+            background-color: #4D0602 !important;
+            background: #4D0602 !important;
+            color: #ffffff !important;
+            font-size: 14px !important;
+        }
+        
+        /* Inline style override için */
+        .search-item select option[style*="background"]:hover {
+            background-color: #4D0602 !important;
+            background: #4D0602 !important;
+        }
+        
+        /* Option metin yönünü düzeltmek için */
+        .search-item select option {
             direction: ltr !important;
             text-align: left !important;
         }
         
-        .search-item select option {
-            text-align: left !important;
-            padding-left: 8px !important;
-            background: #2a2a2a !important;
+        /* Seçili option için özel stil */
+        .search-item select option[value=""] {
+            background: #4D0804 !important;
             color: #ffffff !important;
-            margin-left: 0 !important;
-            margin-right: 0 !important;
-            padding-right: 0 !important;
+            font-size: 14px !important;
         }
-
+        
+        /* Daha güçlü seçici */
         .search-item select option:first-child {
-            background: #d5001c !important;
+            background: #4D0804 !important;
+            color: #ffffff !important;
+            font-size: 14px !important;
+        }
+        
+        /* En güçlü seçici - tüm select option'ları için */
+        select option:first-child {
+            background: #4D0804 !important;
+            color: #ffffff !important;
+            font-size: 14px !important;
+        }
+        
+        /* Browser-specific override */
+        select option[value=""] {
+            background: #4D0804 !important;
+            color: #ffffff !important;
+            font-size: 14px !important;
+        }
+
+
+
+        /* Bootstrap Datepicker Styling */
+        .datepicker {
+            background: #B60706 !important;
+            border: 1px solid #4a5568 !important;
+            border-radius: 8px !important;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+            padding: 8px !important;
+            font-family: 'Inter', sans-serif !important;
+        }
+        
+        .datepicker table {
+            width: 100% !important;
+        }
+        
+        .datepicker table tr td,
+        .datepicker table tr th {
+            text-align: center !important;
+            border-radius: 4px !important;
+            border: none !important;
+            padding: 4px 1px !important;
+            font-size: 9px !important;
+        }
+        
+        .datepicker table tr th {
+            background: #B60706 !important;
             color: #ffffff !important;
             font-weight: 600 !important;
-            border-bottom: 2px solid rgba(255, 255, 255, 0.2) !important;
+            font-size: 8px !important;
         }
-
-        .search-item select option:checked {
-            background: #d5001c !important;
+        
+        .datepicker .datepicker-switch {
+            background: #B60706 !important;
             color: #ffffff !important;
             font-weight: 600 !important;
-            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.2) !important;
         }
-
-        .search-item select option:hover {
-            background: #b30016 !important;
+        
+        .datepicker table tr td {
+            background: transparent !important;
             color: #ffffff !important;
-            transform: translateX(4px) !important;
-            box-shadow: 0 2px 8px rgba(213, 0, 28, 0.3) !important;
+            cursor: pointer !important;
+            transition: all 0.2s ease !important;
+        }
+        
+        .datepicker table tr td:hover {
+            background: #1967D2 !important;
+            color: #ffffff !important;
+        }
+        
+        .datepicker table tr td.active {
+            background: #1967D2 !important;
+            color: #ffffff !important;
+        }
+        
+        .datepicker table tr td.active:hover {
+            background: #1565C0 !important;
+            color: #ffffff !important;
+        }
+        
+        .datepicker table tr td.today {
+            background: #4a5568 !important;
+            color: #ffffff !important;
+            font-weight: 600 !important;
+        }
+        
+        .datepicker table tr td.old,
+        .datepicker table tr td.new {
+            color: #a0aec0 !important;
+        }
+        
+        .datepicker table tr td.old:hover,
+        .datepicker table tr td.new:hover {
+            background: #4a5568 !important;
+            color: #a0aec0 !important;
+        }
+        
+        .datepicker .datepicker-switch {
+            font-weight: 600 !important;
+            color: #ffffff !important;
+            font-size: 11px !important;
+            background: #4C0705 !important;
+            padding: 4px 8px !important;
+            border-radius: 4px !important;
+        }
+        
+        .datepicker .datepicker-days table thead tr:first-child {
+            background: #03010A !important;
+        }
+        
+        .datepicker .datepicker-days table thead tr:first-child th {
+            background: #03010A !important;
+            color: #ffffff !important;
+            border: none !important;
+            padding: 4px 1px !important;
+        }
+        
+        .datepicker .datepicker-days table thead tr:first-child th:first-child,
+        .datepicker .datepicker-days table thead tr:first-child th:last-child {
+            background: #03010A !important;
+            color: #ffffff !important;
+        }
+        
+        .datepicker .prev,
+        .datepicker .next {
+            color: #a0aec0 !important;
+            font-weight: 600 !important;
+            font-size: 10px !important;
+        }
+        
+        .datepicker .prev:hover,
+        .datepicker .next:hover {
+            background: #4a5568 !important;
+            color: #ffffff !important;
         }
 
-        /* Select placeholder styling */
-        .search-item select:invalid {
-            color: #ffffff;
-        }
 
-        .search-item select:invalid option {
-            color: #ffffff;
-        }
-
-        .search-item select:invalid option:first-child {
-            color: #ffffff;
-        }
-
-
-
-        /* Flatpickr Calendar Positioning */
-        .flatpickr-calendar {
-            margin-top: 0px !important;
-            z-index: 9999 !important;
-            position: absolute !important;
-            width: 100% !important;
-            min-width: 280px !important;
-        }
-
-        .flatpickr-calendar .flatpickr-days {
-            width: 100% !important;
-        }
-
-        .flatpickr-calendar .dayContainer {
-            width: 100% !important;
-            min-width: 280px !important;
-        }
-
-        /* Disabled dates styling */
-        .flatpickr-day.disabled {
-            color: rgba(57, 57, 57, 0.3) !important;
-            background: transparent !important;
-            border-color: transparent !important;
-            cursor: not-allowed !important;
-        }
-
-        .flatpickr-day.disabled:hover {
-            background: transparent !important;
-            color: rgba(57, 57, 57, 0.3) !important;
-        }
-
+        
         /* Custom scrollbar for select dropdown */
         .search-item select::-webkit-scrollbar {
             width: 6px;
@@ -482,13 +759,15 @@
         }
 
         .search-item select::-webkit-scrollbar-thumb {
-            background: #d5001c;
+            background: #B10000;
             border-radius: 3px;
         }
 
         .search-item select::-webkit-scrollbar-thumb:hover {
             background: #b30016;
         }
+        
+
         
         .search-button {
             flex: 1;
@@ -559,7 +838,7 @@
 
         /* Flatpickr Dark Theme Styling */
         .flatpickr-calendar {
-            background: #2d3748 !important;
+            background: #B60706 !important;
             border: 1px solid #4a5568 !important;
             border-radius: 6px !important;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3) !important;
@@ -573,7 +852,7 @@
         }
         
         .flatpickr-months {
-            background: #1a202c !important;
+            background: #8a0012 !important;
             border-radius: 6px 6px 0 0 !important;
             padding: 6px 0 !important;
         }
@@ -583,105 +862,19 @@
         }
         
         .flatpickr-current-month {
+            background: #B60706 !important;
             color: white !important;
             font-weight: 600 !important;
             font-size: 0.8rem !important;
         }
         
-        .flatpickr-monthDropdown-months {
-            background: #1a202c !important;
-            color: white !important;
-            border: none !important;
-        }
-        
-        .flatpickr-weekdays {
-            background: #2d3748 !important;
-            padding: 6px 0 !important;
-        }
-        
-        .flatpickr-weekday {
-            color: #a0aec0 !important;
-            font-weight: 500 !important;
-            font-size: 0.6rem !important;
-        }
-        
-        .flatpickr-days {
-            background: #2d3748 !important;
-            padding: 6px !important;
-        }
-        
-        .flatpickr-day {
-            color: white !important;
-            border-radius: 3px !important;
-            margin: 1px !important;
-            height: 24px !important;
-            line-height: 24px !important;
-            font-size: 0.7rem !important;
-        }
-        
-        .flatpickr-day:hover {
-            background: #4a5568 !important;
-            color: white !important;
-        }
-        
-        .flatpickr-day.selected {
-            background: #3182ce !important;
-            color: white !important;
-            border: 2px solid #63b3ed !important;
-        }
-        
-        .flatpickr-day.today {
-            background: #2b6cb0 !important;
-            color: white !important;
-        }
-        
-        .flatpickr-day.prevMonthDay,
-        .flatpickr-day.nextMonthDay {
-            color: #718096 !important;
-        }
-        
-        .flatpickr-months .flatpickr-prev-month,
-        .flatpickr-months .flatpickr-next-month {
-            color: white !important;
-            fill: white !important;
-            padding: 6px !important;
-        }
-        
-        .flatpickr-months .flatpickr-prev-month:hover,
-        .flatpickr-months .flatpickr-next-month:hover {
-            color: #63b3ed !important;
-            fill: #63b3ed !important;
-        }
-        
-        .flatpickr-calendar.arrowTop:before,
-        .flatpickr-calendar.arrowTop:after {
-            border-bottom-color: #2d3748 !important;
-        }
-        
-        .flatpickr-calendar.arrowBottom:before,
-        .flatpickr-calendar.arrowBottom:after {
-            border-top-color: #2d3748 !important;
-        }
-        
-        /* Fix for calendar visibility */
-        .flatpickr-calendar {
-            visibility: hidden !important;
-            opacity: 0 !important;
-            position: absolute !important;
-            z-index: -1 !important;
-        }
-        
-        .flatpickr-calendar.open {
-            visibility: visible !important;
-            opacity: 1 !important;
-            z-index: 9999 !important;
-        }
+
         
         /* Luxury Porsche Button */
         .btn-porsche-luxury {
             display: inline-block;
             position: relative;
-            background: linear-gradient(135deg, #d5001c, #b30016);
+            background: linear-gradient(135deg, #B10000, #b30016);
             border: 1px solid rgba(255,255,255,0.3);
             border-radius: 50px;
             padding: 0;
@@ -705,6 +898,7 @@
             padding: 12px 40px;
             position: relative;
             z-index: 2;
+            justify-content: center;
         }
         
         .btn-text {
@@ -757,6 +951,42 @@
         }
         
         /* Responsive */
+        @media (max-width: 1200px) {
+            .hero-content-porsche {
+                padding: 250px 30px 0 30px !important;
+            }
+            
+            .perfect-search-form {
+                max-width: 100% !important;
+                padding: 0 20px !important;
+            }
+            
+            .search-row {
+                flex-direction: column !important;
+                gap: 0.5rem !important;
+                padding: 0 !important;
+                max-width: 100% !important;
+                width: 100% !important;
+                margin: 0 !important;
+            }
+            
+            .search-item {
+                flex: 1 !important;
+                min-width: 100% !important;
+            }
+            
+            .hero-cta-porsche {
+                margin-top: 1rem !important;
+                margin-bottom: 2rem !important;
+                max-width: 100% !important;
+                padding: 0 20px !important;
+            }
+            
+            .btn-porsche-luxury {
+                max-width: 100% !important;
+            }
+        }
+        
         @media (max-width: 768px) {
             .btn-content {
                 padding: 15px 30px;
@@ -842,24 +1072,27 @@
             margin: 0 auto;
         }
         
-        /* Car Cards */
+        /* Car Cards - Porsche Style */
         .car-card {
-            background: var(--porsche-white);
-            border-radius: 20px;
+            background: linear-gradient(135deg, #1a202c, #2d3748);
+            border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-            border: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            height: 240px;
         }
         
         .car-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 25px 80px rgba(213, 0, 28, 0.2);
+            border-color: rgba(213, 0, 28, 0.3);
         }
         
         .car-image {
-            height: 200px;
-            background: linear-gradient(45deg, #f8f9fa, #e9ecef);
+            height: 140px;
+            background: linear-gradient(45deg, #1a1a1a, #2d2d2d);
             position: relative;
             overflow: hidden;
         }
@@ -868,53 +1101,117 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transition: all 0.4s ease;
+        }
+        
+        .car-card:hover .car-image img {
+            transform: scale(1.1);
         }
         
         .price-badge {
             position: absolute;
-            top: 1rem;
-            right: 1rem;
-            background: var(--porsche-red);
-            color: var(--porsche-white);
-            padding: 0.5rem 1rem;
-            border-radius: 50px;
+            top: 0.6rem;
+            right: 0.6rem;
+            background: linear-gradient(135deg, #B10000, #b30016);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
             font-weight: 700;
-            font-size: 0.9rem;
+            font-size: 0.7rem;
+            box-shadow: 0 2px 8px rgba(213, 0, 28, 0.3);
         }
         
         .car-details {
-            padding: 1.5rem;
+            padding: 0.5rem 1rem 0rem 1rem;
+            height: 90px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 90px;
+            max-height: 90px;
+            background: linear-gradient(135deg, #1a202c, #2d3748);
         }
         
         .car-name {
-            font-size: 1.25rem;
+            font-size: 0.75rem;
             font-weight: 700;
-            color: var(--porsche-black);
-            margin-bottom: 0.5rem;
+            color: #ffffff !important;
+            margin-bottom: 0.4rem;
+            line-height: 1.1;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            height: 1.2rem;
         }
         
         .car-specs {
             display: flex;
-            gap: 1rem;
-            margin-bottom: 1rem;
+            gap: 0.4rem;
+            margin-bottom: 0.5rem;
+            flex-wrap: nowrap;
+            overflow: hidden;
         }
         
         .spec-item {
             display: flex;
             align-items: center;
-            gap: 0.25rem;
-            font-size: 0.9rem;
-            color: var(--porsche-light-gray);
+            gap: 0.15rem;
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.8);
+            white-space: nowrap;
+            flex-shrink: 0;
         }
         
         .spec-item i {
-            color: var(--porsche-red);
+            color: #B10000;
         }
         
-        /* Features Section */
-        .features-section {
+        .car-cta {
+            display: flex;
+            gap: 0.3rem;
+            margin-top: auto;
+        }
+        
+
+        
+        .btn-rent-now {
+            background: linear-gradient(135deg, #B10000, #b30016);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 0.4rem 0.4rem;
+            font-weight: 600;
+            font-size: 0.65rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            width: 100%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .btn-rent-now:hover {
+            background: linear-gradient(135deg, #b30016, #8a0012);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(213, 0, 28, 0.4);
+        }
+        
+        /* Features & Stats Section */
+        .features-stats-section {
             background: var(--porsche-gray);
-            padding: 80px 0;
+            padding: 60px 0;
+            position: relative;
+            z-index: 0;
+        }
+        
+        .features-part {
+            margin-bottom: 2rem;
+        }
+        
+        .stats-part {
+            padding-top: 1rem;
         }
         
         .feature-card {
@@ -961,7 +1258,7 @@
         .stats-section {
             background: var(--porsche-black);
             color: var(--porsche-white);
-            padding: 80px 0;
+            padding: 40px 0;
         }
         
         .stat-item {
@@ -1095,96 +1392,117 @@
     </nav>
 
     <!-- Hero Section - Porsche Style -->
-    <section class="hero-section-porsche">
+    <section class="hero-section-porsche" style="position: relative; z-index: 1;">
         <div class="hero-background">
             <img src="images/cars/porsche911targa4s202106_Nero_AI_Image_Upscaler_Photo_Face.jpeg" alt="Porsche 911 Targa 4S" class="hero-car-image">
         <div class="hero-overlay"></div>
         </div>
-        <div class="hero-content-porsche">
+        <div class="hero-content-porsche" style="padding-top: 0; margin-top: 0; transform: translateY(0); position: relative; z-index: 2; height: 100vh; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 2rem;">
             <!-- Perfect Search Form -->
-            <div class="perfect-search-form">
-            <form id="date-location-form" novalidate>
-                <div class="search-row">
-                    <!-- Pick-up Location -->
-                    <div class="search-item">
-                        <select id="pickup-location-selector" required>
-                            <option value="1">Berlin</option>
-                            <option value="2">München</option>
-                            <option value="3">Hamburg</option>
-                            <option value="4">Köln</option>
-                            <option value="5">Frankfurt</option>
-                        </select>
-                    </div>
+            <div class="perfect-search-form" style="width: 100%; max-width: 1200px; margin: 0 auto; position: relative; left: 50%; transform: translateX(-50%);">
+                <form id="date-location-form" novalidate>
+                    <div class="search-row" style="display: flex; gap: 1rem; flex-wrap: wrap; width: 100%;">
+                        <!-- Pick-up Location -->
+                        <div class="search-item">
+                            <div class="select-wrapper">
+                                <select id="pickup-location-selector" required>
+                                    <option value="" selected>Abholort</option>
+                                    <option value="1">Berlin</option>
+                                    <option value="2">München</option>
+                                    <option value="3">Hamburg</option>
+                                    <option value="4">Köln</option>
+                                    <option value="5">Frankfurt</option>
+                                </select>
+                                <i class="bi bi-chevron-up select-arrow"></i>
+                            </div>
+                        </div>
 
-                    <!-- Drop-off Location -->
-                    <div class="search-item">
-                        <select id="dropoff-location-selector" required>
-                            <option value="1">Berlin</option>
-                            <option value="2">München</option>
-                            <option value="3">Hamburg</option>
-                            <option value="4">Köln</option>
-                            <option value="5">Frankfurt</option>
-                        </select>
-                    </div>
+                        <!-- Drop-off Location -->
+                        <div class="search-item">
+                            <div class="select-wrapper">
+                                <select id="dropoff-location-selector" required>
+                                    <option value="">Rückgabeort</option>
+                                    <option value="1">Berlin</option>
+                                    <option value="2">München</option>
+                                    <option value="3">Hamburg</option>
+                                    <option value="4">Köln</option>
+                                    <option value="5">Frankfurt</option>
+                                </select>
+                                <i class="bi bi-chevron-up select-arrow"></i>
+                            </div>
+                        </div>
 
-                    <!-- Pick-up Date -->
-                    <div class="search-item">
-                        <input type="text" id="pickup-date-selector" placeholder="Abholdatum" required>
-                    </div>
+                        <!-- Pick-up Date -->
+                        <div class="search-item">
+                            <div class="date-wrapper">
+                                <input type="text" id="pickup-date-selector" placeholder="Abholdatum" required class="form-control">
+                                <i class="bi bi-chevron-up select-arrow"></i>
+                            </div>
+                        </div>
 
-                    <!-- Pick-up Time -->
-                    <div class="search-item">
-                        <select id="pickup-time">
-                            <option value="08:00">08:00</option>
-                            <option value="09:00">09:00</option>
-                            <option value="10:00">10:00</option>
-                            <option value="11:00">11:00</option>
-                            <option value="12:00">12:00</option>
-                            <option value="13:00">13:00</option>
-                            <option value="14:00">14:00</option>
-                            <option value="15:00">15:00</option>
-                            <option value="16:00">16:00</option>
-                            <option value="17:00">17:00</option>
-                            <option value="18:00">18:00</option>
-                        </select>
-                    </div>
+                        <!-- Pick-up Time -->
+                        <div class="search-item">
+                            <div class="select-wrapper">
+                                <select id="pickup-time" required>
+                                    <option value="">Zeit</option>
+                                    <option value="08:00">08:00</option>
+                                    <option value="09:00">09:00</option>
+                                    <option value="10:00">10:00</option>
+                                    <option value="11:00">11:00</option>
+                                    <option value="12:00">12:00</option>
+                                    <option value="13:00">13:00</option>
+                                    <option value="14:00">14:00</option>
+                                    <option value="15:00">15:00</option>
+                                    <option value="16:00">16:00</option>
+                                    <option value="17:00">17:00</option>
+                                    <option value="18:00">18:00</option>
+                                </select>
+                                <i class="bi bi-chevron-up select-arrow"></i>
+                            </div>
+                        </div>
 
-                    <!-- Drop-off Date -->
-                    <div class="search-item">
-                        <input type="text" id="dropoff-date-selector" placeholder="Rückgabedatum" required>
-                    </div>
+                        <!-- Drop-off Date -->
+                        <div class="search-item">
+                            <div class="date-wrapper">
+                                <input type="text" id="dropoff-date-selector" placeholder="Rückgabedatum" required class="form-control">
+                                <i class="bi bi-chevron-up select-arrow"></i>
+                            </div>
+                        </div>
 
-                    <!-- Drop-off Time -->
-                    <div class="search-item">
-                        <select id="dropoff-time">
-                            <option value="08:00">08:00</option>
-                            <option value="09:00">09:00</option>
-                            <option value="10:00">10:00</option>
-                            <option value="11:00">11:00</option>
-                            <option value="12:00">12:00</option>
-                            <option value="13:00">13:00</option>
-                            <option value="14:00">14:00</option>
-                            <option value="15:00">15:00</option>
-                            <option value="16:00">16:00</option>
-                            <option value="17:00">17:00</option>
-                            <option value="18:00">18:00</option>
-                        </select>
-                    </div>
+                        <!-- Drop-off Time -->
+                        <div class="search-item">
+                            <div class="select-wrapper">
+                                <select id="dropoff-time" required>
+                                    <option value="">Zeit</option>
+                                    <option value="08:00">08:00</option>
+                                    <option value="09:00">09:00</option>
+                                    <option value="10:00">10:00</option>
+                                    <option value="11:00">11:00</option>
+                                    <option value="12:00">12:00</option>
+                                    <option value="13:00">13:00</option>
+                                    <option value="14:00">14:00</option>
+                                    <option value="15:00">15:00</option>
+                                    <option value="16:00">16:00</option>
+                                    <option value="17:00">17:00</option>
+                                    <option value="18:00">18:00</option>
+                                </select>
+                                <i class="bi bi-chevron-up select-arrow"></i>
+                            </div>
+                        </div>
 
-                    <!-- Search Button - Üst satırda -->
-                    <div class="search-item search-button">
-                        <button type="submit">
-                            <i class="bi bi-search"></i>
-                        </button>
+                        <!-- Search Button -->
+                        <div class="search-item search-button">
+                            <button type="submit">
+                                <i class="bi bi-search"></i>
+                            </button>
+                        </div>
                     </div>
-
-                </div>
-                        </form>
-                    </div>
+                </form>
+            </div>
             
             <!-- Unsere Exklusivsten Fahrzeuge Button -->
-            <div class="hero-cta-porsche" style="margin-top: 1rem; display: flex; justify-content: center;">
-                <a href="#popular-cars-section" class="btn-porsche-luxury">
+            <div class="hero-cta-porsche" style="margin-top: 0; margin-bottom: 0; display: flex; justify-content: center; width: 100%; max-width: 1200px; margin-left: auto; margin-right: auto; position: relative; left: 50%; transform: translateX(-50%);">
+                <a href="#popular-cars-section" class="btn-porsche-luxury" style="width: 100%; max-width: 1200px;">
                     <div class="btn-content">
                         <span class="btn-text">Unsere Exklusivsten Fahrzeuge</span>
                         <div class="btn-icon">
@@ -1198,7 +1516,7 @@
     </section>
 
     <!-- Popular Cars Section -->
-    <section id="popular-cars-section" class="popular-cars-section">
+    <section id="popular-cars-section" class="popular-cars-section" style="margin-top: 0; padding-top: 1rem; position: relative; z-index: 0;">
          <div class="container">
             <div class="row" id="popular-cars-container">
                 <!-- Car cards will be loaded here by JavaScript -->
@@ -1206,80 +1524,81 @@
          </div>
      </section>
 
-         <!-- Features Section -->
-    <section class="features-section">
+         <!-- Features & Stats Section -->
+    <section class="features-stats-section" style="position: relative; z-index: 0;">
         <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Warum AUTOR wählen?</h2>
-                <p class="section-subtitle">Wir bieten Ihnen den besten Service für Ihre Mobilitätsbedürfnisse</p>
+            <!-- Features -->
+            <div class="features-part">
+                <div class="section-header">
+                    <h2 class="section-title">Warum AUTOR wählen?</h2>
+                    <p class="section-subtitle">Wir bieten Ihnen den besten Service für Ihre Mobilitätsbedürfnisse</p>
+                </div>
+                <div class="row g-4">
+                    <div class="col-lg-3 col-md-6">
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="bi bi-shield-check"></i>
+                            </div>
+                            <h5 class="feature-title">Sicher & Zuverlässig</h5>
+                            <p class="feature-description">Alle Fahrzeuge sind sorgfältig gewartet und vollständig versichert</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="bi bi-clock"></i>
+                            </div>
+                            <h5 class="feature-title">24/7 Support</h5>
+                            <p class="feature-description">Unser Kundenservice ist rund um die Uhr für Sie da</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="bi bi-credit-card"></i>
+                            </div>
+                            <h5 class="feature-title">Flexible Zahlung</h5>
+                            <p class="feature-description">Verschiedene Zahlungsoptionen ohne versteckte Kosten</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="bi bi-geo-alt"></i>
+                            </div>
+                            <h5 class="feature-title">Deutschlandweit</h5>
+                            <p class="feature-description">Verfügbar in allen großen Städten und Flughäfen</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="row g-4">
-                <div class="col-lg-3 col-md-6">
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="bi bi-shield-check"></i>
+            
+            <!-- Stats -->
+            <div class="stats-part">
+                <div class="row">
+                    <div class="col-lg-3 col-md-6">
+                        <div class="stat-item">
+                            <div class="stat-number">500+</div>
+                            <div class="stat-label">Fahrzeuge</div>
                         </div>
-                        <h5 class="feature-title">Sicher & Zuverlässig</h5>
-                        <p class="feature-description">Alle Fahrzeuge sind sorgfältig gewartet und vollständig versichert</p>
                     </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="bi bi-clock"></i>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="stat-item">
+                            <div class="stat-number">50+</div>
+                            <div class="stat-label">Standorte</div>
                         </div>
-                        <h5 class="feature-title">24/7 Support</h5>
-                        <p class="feature-description">Unser Kundenservice ist rund um die Uhr für Sie da</p>
                     </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="bi bi-credit-card"></i>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="stat-item">
+                            <div class="stat-number">10K+</div>
+                            <div class="stat-label">Zufriedene Kunden</div>
                         </div>
-                        <h5 class="feature-title">Flexible Zahlung</h5>
-                        <p class="feature-description">Verschiedene Zahlungsoptionen ohne versteckte Kosten</p>
                     </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="bi bi-geo-alt"></i>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="stat-item">
+                            <div class="stat-number">4.8★</div>
+                            <div class="stat-label">Bewertung</div>
                         </div>
-                        <h5 class="feature-title">Deutschlandweit</h5>
-                        <p class="feature-description">Verfügbar in allen großen Städten und Flughäfen</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Stats Section -->
-    <section class="stats-section">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-3 col-md-6">
-                    <div class="stat-item">
-                        <div class="stat-number">500+</div>
-                        <div class="stat-label">Fahrzeuge</div>
-                            </div>
-                        </div>
-                <div class="col-lg-3 col-md-6">
-                    <div class="stat-item">
-                        <div class="stat-number">50+</div>
-                        <div class="stat-label">Standorte</div>
-                            </div>
-                        </div>
-                <div class="col-lg-3 col-md-6">
-                    <div class="stat-item">
-                        <div class="stat-number">10K+</div>
-                        <div class="stat-label">Zufriedene Kunden</div>
-                            </div>
-                        </div>
-                <div class="col-lg-3 col-md-6">
-                    <div class="stat-item">
-                        <div class="stat-number">4.8★</div>
-                        <div class="stat-label">Bewertung</div>
                     </div>
                 </div>
             </div>
@@ -1342,12 +1661,14 @@
         </div>
     </footer>
 
+    <!-- jQuery (required for Bootstrap Datepicker) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
-    <!-- Flatpickr for Date Selection -->
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <script src="https://npmcdn.com/flatpickr/dist/l10n/de.js"></script>
+    <!-- Bootstrap Datepicker JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.de.min.js"></script>
     
     <!-- Fallback Car Data -->
     <script>
@@ -1445,147 +1766,93 @@
     <script src="js/app.js"></script>
     <script src="js/navbar.js"></script>
     
-    <!-- Flatpickr Initialization -->
+    <!-- Search Form Functionality -->
     <script>
-        // Porsche-style search form functionality
         document.addEventListener('DOMContentLoaded', function() {
-            // Initialize date pickers
+            // Force placeholder colors
             const pickupDateInput = document.getElementById('pickup-date-selector');
             const dropoffDateInput = document.getElementById('dropoff-date-selector');
             
-            if (window.flatpickr) {
-                // German localization
-                const germanLocale = {
-                    weekdays: {
-                        shorthand: ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"],
-                        longhand: ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"]
-                    },
-                    months: {
-                        shorthand: ["Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"],
-                        longhand: ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"]
-                    },
-                    firstDayOfWeek: 1,
-                    rangeSeparator: " bis ",
-                    weekAbbreviation: "KW",
-                    amPM: ["AM", "PM"],
-                    yearAriaLabel: "Jahr",
-                    monthAriaLabel: "Monat",
-                    hourAriaLabel: "Stunde",
-                    minuteAriaLabel: "Minute",
-                    time_24hr: true
-                };
-                
-                window.flatpickr.localize(germanLocale);
-                
+            // Select hover rengini zorla değiştir
+            forceSelectHoverColor();
+            
+
+            
+            if ($.fn.datepicker) {
                 const today = new Date();
                 const tomorrow = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
                 
                 // Pickup date picker
-                const pickupPicker = window.flatpickr(pickupDateInput, {
-                    dateFormat: 'd.m.Y',
-                    allowInput: true,
-                    minDate: "today",
-                    disableMobile: true,
-                    locale: germanLocale,
-                    position: "above",
-                    showMonths: 1,
-                    disable: [
-                        function(date) {
-                            return date < new Date().setHours(0, 0, 0, 0);
-                        }
-                    ],
-                    onChange: function(selectedDates) {
-                        if (selectedDates && selectedDates[0]) {
-                            const minDropoff = new Date(selectedDates[0].getFullYear(), selectedDates[0].getMonth(), selectedDates[0].getDate() + 1);
-                            dropoffPicker.set('minDate', minDropoff);
-                        }
+                $(pickupDateInput).datepicker({
+                    format: 'dd.mm.yyyy',
+                    language: 'de',
+                    autoclose: false,
+                    todayHighlight: true,
+                    startDate: today,
+                    orientation: 'top auto',
+                    templates: {
+                        leftArrow: '&laquo;',
+                        rightArrow: '&raquo;'
+                    },
+                    onSelect: function(dateText, inst) {
+                        const selectedDate = new Date(inst.selectedYear, inst.selectedMonth, inst.selectedDay);
+                        const minDropoff = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate() + 1);
+                        $(dropoffDateInput).datepicker('setStartDate', minDropoff);
                     }
                 });
                 
                 // Dropoff date picker
-                const dropoffPicker = window.flatpickr(dropoffDateInput, {
-                    dateFormat: 'd.m.Y',
-                    allowInput: true,
-                    minDate: "today",
-                    disableMobile: true,
-                    locale: germanLocale,
-                    position: "above",
-                    showMonths: 1,
-                    disable: [
-                        function(date) {
-                            return date < new Date().setHours(0, 0, 0, 0);
-                        }
-                    ]
-                });
-                
-                // Calendar icon click handlers
-                document.querySelectorAll('.date-icon').forEach(icon => {
-                    icon.addEventListener('click', function() {
-                        const input = this.parentElement.querySelector('input');
-                        if (input.id === 'pickup-date-selector') {
-                            pickupPicker.open();
-                        } else if (input.id === 'dropoff-date-selector') {
-                            dropoffPicker.open();
-                        }
-                    });
+                $(dropoffDateInput).datepicker({
+                    format: 'dd.mm.yyyy',
+                    language: 'de',
+                    autoclose: false,
+                    todayHighlight: true,
+                    startDate: tomorrow,
+                    orientation: 'top auto',
+                    templates: {
+                        leftArrow: '&laquo;',
+                        rightArrow: '&raquo;'
+                    }
                 });
             }
-            
-            // Select placeholder functionality
-            function setupSelectPlaceholders() {
-                const locationSelects = ['pickup-location-selector', 'dropoff-location-selector'];
-                const timeSelects = ['pickup-time', 'dropoff-time'];
-                
-                // Setup location selects
-                locationSelects.forEach(selectId => {
-                    const select = document.getElementById(selectId);
-                    const placeholder = selectId.includes('pickup') ? 'Abholort' : 'Rückgabeort';
-                    
-                    // Add placeholder option
-                    const placeholderOption = document.createElement('option');
-                    placeholderOption.value = '';
-                    placeholderOption.textContent = placeholder;
-                    placeholderOption.disabled = true;
-                    placeholderOption.selected = true;
-                    select.insertBefore(placeholderOption, select.firstChild);
-                    
-                    // Handle change events
-                    select.addEventListener('change', function() {
-                        if (this.value === '') {
-                            this.style.color = '#ffffff';
-                        } else {
-                            this.style.color = '#ffffff';
-                        }
-                    });
-                });
-                
-                // Setup time selects
-                timeSelects.forEach(selectId => {
-                    const select = document.getElementById(selectId);
-                    
-                    // Add placeholder option
-                    const placeholderOption = document.createElement('option');
-                    placeholderOption.value = '';
-                    placeholderOption.textContent = 'Zeit';
-                    placeholderOption.disabled = true;
-                    placeholderOption.selected = true;
-                    select.insertBefore(placeholderOption, select.firstChild);
-                    
-                    // Handle change events
-                    select.addEventListener('change', function() {
-                        if (this.value === '') {
-                            this.style.color = '#ffffff';
-                        } else {
-                            this.style.color = '#ffffff';
-                        }
-                    });
-                });
-            }
-            
-            // Initialize select placeholders
-            setupSelectPlaceholders();
             
 
+            
+
+            
+            // Select hover rengini zorla değiştir
+            function forceSelectHoverColor() {
+                const selects = document.querySelectorAll('.search-item select');
+                
+                selects.forEach(select => {
+                    // Mouse over event
+                    select.addEventListener('mouseover', function() {
+                        const options = this.querySelectorAll('option');
+                        options.forEach(option => {
+                            option.style.backgroundColor = '#4D0602';
+                            option.style.color = '#ffffff';
+                        });
+                    });
+                    
+                    // Mouse enter event
+                    select.addEventListener('mouseenter', function() {
+                        const options = this.querySelectorAll('option');
+                        options.forEach(option => {
+                            option.style.backgroundColor = '#4D0602';
+                            option.style.color = '#ffffff';
+                        });
+                    });
+                    
+                    // Focus event
+                    select.addEventListener('focus', function() {
+                        const options = this.querySelectorAll('option');
+                        options.forEach(option => {
+                            option.style.backgroundColor = '#4D0602';
+                            option.style.color = '#ffffff';
+                        });
+                    });
+                });
+            }
             
             // Form submission
             const form = document.getElementById('date-location-form');
@@ -1621,7 +1888,7 @@
                 
                 setTimeout(() => {
                     button.innerHTML = originalText;
-                    button.style.background = 'linear-gradient(135deg, #d5001c, #b30016)';
+                    button.style.background = 'linear-gradient(135deg, #B10000, #b30016)';
                 }, 2000);
             });
         });
