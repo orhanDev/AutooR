@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8">
@@ -13,8 +13,125 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
-    <!-- Bootstrap Datepicker CSS -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" rel="stylesheet">
+    <!-- Custom Calendar CSS -->
+    <style>
+        .custom-calendar {
+            position: absolute;
+            bottom: 100%;
+            left: 0;
+            right: 0;
+            background: #191919;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            padding: 12px;
+            display: none;
+            font-family: 'Inter', sans-serif;
+            margin-bottom: 8px;
+            min-width: 280px;
+        }
+        
+        .custom-calendar.show {
+            display: block;
+        }
+        
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            color: #ffffff;
+        }
+        
+        .calendar-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .calendar-nav {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .calendar-nav-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            color: #ffffff;
+            padding: 4px 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 12px;
+        }
+        
+        .calendar-nav-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .calendar-weekdays {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 2px;
+            margin-bottom: 6px;
+        }
+        
+        .calendar-weekday {
+            text-align: center;
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 500;
+            padding: 6px 2px;
+            white-space: nowrap;
+        }
+        
+        .calendar-days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 2px;
+        }
+        
+        .calendar-day {
+            text-align: center;
+            padding: 6px 2px;
+            font-size: 11px;
+            color: #ffffff;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            min-height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .calendar-day:hover:not(.disabled) {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .calendar-day.selected {
+            background: rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            font-weight: 600;
+        }
+        
+        .calendar-day.disabled {
+            color: rgba(255, 255, 255, 0.3);
+            cursor: not-allowed;
+        }
+        
+        .calendar-day.other-month {
+            color: rgba(255, 255, 255, 0.4);
+        }
+        
+        .calendar-day.today {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+    </style>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- Custom CSS -->
@@ -166,9 +283,9 @@
             z-index: 3;
             margin-top: 0;
             margin-bottom: 1rem;
-            padding: 0;
+            padding: 0 4rem;
             width: 100%;
-            max-width: 1200px;
+            max-width: none;
             margin-left: auto;
             margin-right: auto;
         }
@@ -177,7 +294,7 @@
         .hero-content-porsche {
             max-width: none !important;
             margin: 0 !important;
-            padding: 0 50px 2rem 50px !important;
+            padding: 0 0 2rem 0 !important;
             text-align: left !important;
             position: relative;
             z-index: 2;
@@ -191,11 +308,11 @@
             display: flex !important;
             align-items: end !important;
             gap: 1rem !important;
-            flex-wrap: wrap !important;
-            justify-content: center !important;
-            padding: 0 !important;
+            flex-wrap: nowrap !important;
+            justify-content: space-between !important;
+            padding: 0 2rem !important;
             margin: 0 !important;
-            max-width: 1200px !important;
+            max-width: none !important;
             width: 100% !important;
         }
 
@@ -209,42 +326,58 @@
             gap: 0;
             min-width: 120px;
             flex: 1;
+            margin: 0 0.5rem;
         }
         
         .search-item.search-button {
             background: transparent !important;
             border-radius: 0 !important;
             padding: 0 !important;
-            flex: 0.15;
-            min-width: 50px;
-            max-width: 60px;
+            flex: 0 0 auto !important;
+            width: 40px !important;
+            display: inline-block !important;
         }
         
         .search-item.search-button button {
-            width: 100%;
-            height: 38px;
-            background: linear-gradient(135deg, #B10000, #b30016);
-            border: none;
-            border-radius: 8px;
-            color: white;
-            font-size: 1rem;
+            width: 100px;
+            height: 36px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            color: #ffffff;
+            font-size: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
         }
         
         .search-item.search-button button:hover {
-            background: linear-gradient(135deg, #b30016, #8a0012);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(213, 0, 28, 0.3);
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-1px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .search-item.search-button button:focus {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.5);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+        }
+        
+        .search-item.search-button button:hover i {
+            color: #ffffff;
+            font-weight: bold;
         }
         
         /* Abholdatum'u daha daralt */
         .search-item:nth-child(3) {
-            flex: 0.4;
-            min-width: 100px;
+            flex: 0 0 auto !important;
+            width: 80px !important;
+            display: inline-block !important;
         }
         
         /* Abholdatum yazı boyutunu küçült */
@@ -262,8 +395,9 @@
         
         /* Rückgabedatum'u daha daralt */
         .search-item:nth-child(5) {
-            flex: 0.4;
-            min-width: 100px;
+            flex: 0 0 auto !important;
+            width: 80px !important;
+            display: inline-block !important;
         }
         
         /* Rückgabedatum yazı boyutunu küçült */
@@ -282,9 +416,9 @@
         /* Zeit select'lerini daralt */
         .search-item:nth-child(4),
         .search-item:nth-child(6) {
-            flex: 0.25;
-            min-width: 60px;
-            max-width: 80px;
+            flex: 0 0 auto !important;
+            width: 60px !important;
+            display: inline-block !important;
         }
         
         /* Zeit select yazılarını küçült */
@@ -310,14 +444,16 @@
         }
         
         .search-item:not(:has(#pickup-time)):not(:has(#dropoff-time)) {
-            flex: 1;
-            min-width: 0;
+            flex: 0 0 auto !important;
+            width: 90px !important;
+            display: inline-block !important;
         }
         
         .search-item:has(#pickup-time),
         .search-item:has(#dropoff-time) {
-            flex: 2;
-            width: 240px;
+            flex: 0 0 auto !important;
+            width: 140px !important;
+            display: inline-block !important;
         }
 
         .search-item label {
@@ -335,7 +471,7 @@
             position: relative;
             width: 100%;
         }
-
+        
         .search-item select,
         .search-item input {
             width: 100%;
@@ -360,7 +496,7 @@
             direction: ltr !important;
             text-align: left !important;
         }
-
+        
         .search-item select:focus,
         .search-item input:focus {
             outline: none;
@@ -368,13 +504,13 @@
             background: transparent;
             box-shadow: none;
         }
-
+        
         .search-item select:hover,
         .search-item input:hover {
             border-bottom-color: rgba(255, 255, 255, 0.8);
             background: transparent;
         }
-
+        
         .search-item select::placeholder,
         .search-item input::placeholder {
             color: #ffffff;
@@ -590,6 +726,166 @@
             font-size: 14px !important;
         }
         
+        /* Modern Luxury Select Styling - Porsche/Ferrari Style */
+        .search-item select {
+            background: rgba(255, 255, 255, 0.1) !important;
+            backdrop-filter: blur(20px) !important;
+            border: 1px solid rgba(255, 255, 255, 0.2) !important;
+            border-radius: 12px !important;
+            color: #ffffff !important;
+            font-size: 14px !important;
+            font-weight: 400 !important;
+            padding: 8px 16px !important;
+            min-height: 36px !important;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+            appearance: none !important;
+            -webkit-appearance: none !important;
+            -moz-appearance: none !important;
+        }
+        
+        .search-item select:hover {
+            background: rgba(255, 255, 255, 0.15) !important;
+            border-color: rgba(255, 255, 255, 0.3) !important;
+            transform: translateY(-1px) !important;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
+        }
+        
+        .search-item select:focus {
+            background: rgba(255, 255, 255, 0.2) !important;
+            border-color: rgba(255, 255, 255, 0.5) !important;
+            outline: none !important;
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1) !important;
+        }
+        
+        /* Modern Select Options */
+        .search-item select option {
+            background: rgba(0, 0, 0, 0.9) !important;
+            backdrop-filter: blur(20px) !important;
+            color: #ffffff !important;
+            font-size: 14px !important;
+            font-weight: 400 !important;
+            padding: 12px 16px !important;
+            border: none !important;
+            text-transform: capitalize !important;
+        }
+        
+        .search-item select option:hover {
+            background: rgba(255, 255, 255, 0.1) !important;
+            color: #ffffff !important;
+        }
+        
+        .search-item select option:checked {
+            background: rgba(255, 255, 255, 0.2) !important;
+            color: #ffffff !important;
+        }
+        
+        /* Select Arrow Styling */
+        .select-arrow {
+            color: rgba(255, 255, 255, 0.7) !important;
+            font-size: 12px !important;
+            transition: all 0.3s ease !important;
+        }
+        
+        .search-item select:hover + .select-arrow {
+            color: rgba(255, 255, 255, 0.9) !important;
+            transform: translateY(-1px) !important;
+        }
+        
+        /* Modern Date Input Styling - Porsche/Ferrari Style */
+        .search-item input[type="text"] {
+            background: rgba(255, 255, 255, 0.1) !important;
+            backdrop-filter: blur(20px) !important;
+            border: 1px solid rgba(255, 255, 255, 0.2) !important;
+            border-radius: 12px !important;
+            color: #ffffff !important;
+            font-size: 14px !important;
+            font-weight: 400 !important;
+            padding: 8px 16px !important;
+            min-height: 36px !important;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        }
+        
+        .search-item input[type="text"]:hover {
+            background: rgba(255, 255, 255, 0.15) !important;
+            border-color: rgba(255, 255, 255, 0.3) !important;
+            transform: translateY(-1px) !important;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
+        }
+        
+        .search-item input[type="text"]:focus {
+            background: rgba(255, 255, 255, 0.2) !important;
+            border-color: rgba(255, 255, 255, 0.5) !important;
+            outline: none !important;
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1) !important;
+        }
+        
+        /* Date Input Placeholder Styling */
+        .search-item input[type="text"]::placeholder {
+            color: rgba(255, 255, 255, 0.6) !important;
+            font-weight: 400 !important;
+        }
+        
+        .search-item input[type="text"]:focus::placeholder {
+            color: rgba(255, 255, 255, 0.8) !important;
+        }
+        
+        /* Date Input Error Styling */
+        .search-item input[type="text"].date-error {
+            border-color: #ff4757 !important;
+            background: rgba(255, 71, 87, 0.1) !important;
+            box-shadow: 0 0 0 3px rgba(255, 71, 87, 0.2) !important;
+        }
+        
+        .date-error-icon {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #ff4757;
+            font-size: 16px;
+            display: none;
+            z-index: 10;
+        }
+        
+        .date-error-icon.show {
+            display: block;
+        }
+        
+        /* Date Input Success Styling */
+        .search-item input[type="text"].date-success {
+            border-color: #2ed573 !important;
+            background: rgba(46, 213, 115, 0.1) !important;
+            box-shadow: 0 0 0 3px rgba(46, 213, 115, 0.2) !important;
+        }
+        
+        /* Label Icon Styling */
+        .search-item label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .search-item label:hover {
+            color: #ffffff;
+        }
+        
+        .label-icon {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.7);
+            transition: all 0.3s ease;
+        }
+        
+        .search-item label:hover .label-icon {
+            color: rgba(255, 255, 255, 0.9);
+            transform: scale(1.1);
+        }
+        
         /* Inline style override için */
         .search-item select option[style*="background"]:hover {
             background-color: #4D0602 !important;
@@ -608,7 +904,7 @@
             color: #ffffff !important;
             font-size: 14px !important;
         }
-        
+
         /* Daha güçlü seçici */
         .search-item select option:first-child {
             background: #4D0804 !important;
@@ -661,13 +957,13 @@
             font-weight: 600 !important;
             font-size: 8px !important;
         }
-        
+
         .datepicker .datepicker-switch {
             background: #B60706 !important;
             color: #ffffff !important;
             font-weight: 600 !important;
         }
-        
+
         .datepicker table tr td {
             background: transparent !important;
             color: #ffffff !important;
@@ -711,7 +1007,7 @@
             font-weight: 600 !important;
             color: #ffffff !important;
             font-size: 11px !important;
-            background: #4C0705 !important;
+            background: #1967D2 !important;
             padding: 4px 8px !important;
             border-radius: 4px !important;
         }
@@ -747,7 +1043,7 @@
         }
 
 
-        
+
         /* Custom scrollbar for select dropdown */
         .search-item select::-webkit-scrollbar {
             width: 6px;
@@ -874,28 +1170,29 @@
         .btn-porsche-luxury {
             display: inline-block;
             position: relative;
-            background: linear-gradient(135deg, #B10000, #b30016);
-            border: 1px solid rgba(255,255,255,0.3);
-            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
             padding: 0;
             text-decoration: none;
             overflow: hidden;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 8px 32px rgba(213, 0, 28, 0.3);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
         }
         
         .btn-porsche-luxury:hover {
-            transform: translateY(-3px) scale(1.02);
-            background: linear-gradient(135deg, #b30016, #8a0012);
-            box-shadow: 0 20px 60px rgba(213, 0, 28, 0.4);
-            border-color: rgba(255,255,255,0.6);
+            transform: translateY(-1px);
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
         }
         
         .btn-content {
             display: flex;
             align-items: center;
             gap: 15px;
-            padding: 12px 40px;
+            padding: 16px 40px;
             position: relative;
             z-index: 2;
             justify-content: center;
@@ -916,8 +1213,8 @@
             justify-content: center;
             width: 24px;
             height: 24px;
-            background: rgba(255,255,255,0.2);
-            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
             transition: all 0.3s ease;
         }
         
@@ -928,12 +1225,13 @@
         }
         
         .btn-porsche-luxury:hover .btn-icon {
-            background: rgba(255,255,255,0.3);
-            transform: scale(1.1);
+            background: #B10000;
+            transform: scale(1.05);
         }
         
         .btn-porsche-luxury:hover .btn-icon i {
-            transform: translateY(2px);
+            transform: translateY(1px);
+            color: #ffffff;
         }
         
         .btn-glow {
@@ -1081,7 +1379,7 @@
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             border: 1px solid rgba(255, 255, 255, 0.1);
             position: relative;
-            height: 240px;
+            height: 180px;
         }
         
         .car-card:hover {
@@ -1091,7 +1389,7 @@
         }
         
         .car-image {
-            height: 140px;
+            height: 120px;
             background: linear-gradient(45deg, #1a1a1a, #2d2d2d);
             position: relative;
             overflow: hidden;
@@ -1122,13 +1420,13 @@
         }
         
         .car-details {
-            padding: 0.5rem 1rem 0rem 1rem;
-            height: 90px;
+            padding: 0.1rem 1rem 0.05rem 1rem;
+            height: 60px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            min-height: 90px;
-            max-height: 90px;
+            min-height: 60px;
+            max-height: 60px;
             background: linear-gradient(135deg, #1a202c, #2d3748);
         }
         
@@ -1136,7 +1434,7 @@
             font-size: 0.75rem;
             font-weight: 700;
             color: #ffffff !important;
-            margin-bottom: 0.4rem;
+            margin-bottom: 0.2rem;
             line-height: 1.1;
             overflow: hidden;
             white-space: nowrap;
@@ -1146,8 +1444,8 @@
         
         .car-specs {
             display: flex;
-            gap: 0.4rem;
-            margin-bottom: 0.5rem;
+            gap: 0.3rem;
+            margin-bottom: 0.1rem;
             flex-wrap: nowrap;
             overflow: hidden;
         }
@@ -1397,128 +1695,250 @@
             <img src="images/cars/porsche911targa4s202106_Nero_AI_Image_Upscaler_Photo_Face.jpeg" alt="Porsche 911 Targa 4S" class="hero-car-image">
         <div class="hero-overlay"></div>
         </div>
-        <div class="hero-content-porsche" style="padding-top: 0; margin-top: 0; transform: translateY(0); position: relative; z-index: 2; height: 100vh; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 2rem;">
+        <div class="hero-content-porsche" style="padding-top: 0; margin-top: 0; transform: translateY(0); position: relative; z-index: 2; height: 100vh; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 8rem;">
             <!-- Perfect Search Form -->
-            <div class="perfect-search-form" style="width: 100%; max-width: 1200px; margin: 0 auto; position: relative; left: 50%; transform: translateX(-50%);">
-                <form id="date-location-form" novalidate>
-                    <div class="search-row" style="display: flex; gap: 1rem; flex-wrap: wrap; width: 100%;">
-                        <!-- Pick-up Location -->
-                        <div class="search-item">
-                            <div class="select-wrapper">
-                                <select id="pickup-location-selector" required>
-                                    <option value="" selected>Abholort</option>
-                                    <option value="1">Berlin</option>
-                                    <option value="2">München</option>
-                                    <option value="3">Hamburg</option>
-                                    <option value="4">Köln</option>
-                                    <option value="5">Frankfurt</option>
-                                </select>
+            <div class="perfect-search-form">
+            <form id="date-location-form" novalidate>
+                    <div class="search-row" style="display: flex !important; gap: 1rem !important; flex-wrap: nowrap !important; width: 100%; flex-direction: row !important; justify-content: center;">
+                    <!-- Pick-up Location -->
+                    <div class="search-item">
+                            <label for="pickup-location-selector" style="color: rgba(255, 255, 255, 0.9); font-weight: 300; font-size: 0.6rem; letter-spacing: 1px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.5rem;">
+                                <i class="bi bi-pin-map-fill label-icon"></i>
+                                Abholort
+                            </label>
+                            <div class="select-wrapper" style="width: 100%; display: flex; align-items: center;">
+                        <select id="pickup-location-selector" required style="width: 100%; height: 0.2rem;">
+                                    <option value="" selected></option>
+                            <option value="1">Berlin</option>
+                            <option value="2">München</option>
+                            <option value="3">Hamburg</option>
+                            <option value="4">Köln</option>
+                            <option value="5">Frankfurt</option>
+                        </select>
                                 <i class="bi bi-chevron-up select-arrow"></i>
                             </div>
-                        </div>
+                    </div>
 
-                        <!-- Drop-off Location -->
-                        <div class="search-item">
-                            <div class="select-wrapper">
-                                <select id="dropoff-location-selector" required>
-                                    <option value="">Rückgabeort</option>
-                                    <option value="1">Berlin</option>
-                                    <option value="2">München</option>
-                                    <option value="3">Hamburg</option>
-                                    <option value="4">Köln</option>
-                                    <option value="5">Frankfurt</option>
-                                </select>
+                    <!-- Drop-off Location -->
+                    <div class="search-item">
+                            <label for="dropoff-location-selector" style="color: rgba(255, 255, 255, 0.9); font-weight: 300; font-size: 0.6rem; letter-spacing: 1px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.5rem;">
+                                <i class="bi bi-pin-map label-icon"></i>
+                                Rückgabeort
+                            </label>
+                            <div class="select-wrapper" style="width: 100%; display: flex; align-items: center;">
+                        <select id="dropoff-location-selector" required style="width: 100%; height: 0.2rem;">
+                                    <option value=""></option>
+                            <option value="1">Berlin</option>
+                            <option value="2">München</option>
+                            <option value="3">Hamburg</option>
+                            <option value="4">Köln</option>
+                            <option value="5">Frankfurt</option>
+                        </select>
                                 <i class="bi bi-chevron-up select-arrow"></i>
                             </div>
-                        </div>
+                    </div>
 
-                        <!-- Pick-up Date -->
-                        <div class="search-item">
-                            <div class="date-wrapper">
-                                <input type="text" id="pickup-date-selector" placeholder="Abholdatum" required class="form-control">
+                    <!-- Pick-up Date -->
+                    <div class="search-item">
+                            <label for="pickup-date-selector" style="color: rgba(255, 255, 255, 0.9); font-weight: 300; font-size: 0.6rem; letter-spacing: 1px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.5rem;">
+                                <i class="bi bi-calendar-range-fill label-icon"></i>
+                                Abholdatum
+                            </label>
+                            <div class="date-wrapper" style="position: relative; width: 100%; display: flex; align-items: center;">
+                                <input type="text" id="pickup-date-selector" placeholder="" required class="form-control" readonly style="width: 100%; height: 0.2rem;">
                                 <i class="bi bi-chevron-up select-arrow"></i>
+                                <i class="bi bi-exclamation-triangle-fill date-error-icon" id="pickup-date-error"></i>
+                                <div class="custom-calendar" id="pickup-calendar">
+                                    <div class="calendar-header">
+                                        <div class="calendar-title" id="pickup-calendar-title">December 2024</div>
+                                        <div class="calendar-nav">
+                                            <button class="calendar-nav-btn" id="pickup-prev-month">
+                                                <i class="bi bi-chevron-left"></i>
+                                            </button>
+                                            <button class="calendar-nav-btn" id="pickup-next-month">
+                                                <i class="bi bi-chevron-right"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="calendar-weekdays">
+                                        <div class="calendar-weekday">Mo</div>
+                                        <div class="calendar-weekday">Di</div>
+                                        <div class="calendar-weekday">Mi</div>
+                                        <div class="calendar-weekday">Do</div>
+                                        <div class="calendar-weekday">Fr</div>
+                                        <div class="calendar-weekday">Sa</div>
+                                        <div class="calendar-weekday">So</div>
+                                    </div>
+                                    <div class="calendar-days" id="pickup-calendar-days"></div>
+                                </div>
                             </div>
-                        </div>
+                    </div>
 
-                        <!-- Pick-up Time -->
-                        <div class="search-item">
-                            <div class="select-wrapper">
-                                <select id="pickup-time" required>
-                                    <option value="">Zeit</option>
-                                    <option value="08:00">08:00</option>
-                                    <option value="09:00">09:00</option>
-                                    <option value="10:00">10:00</option>
-                                    <option value="11:00">11:00</option>
-                                    <option value="12:00">12:00</option>
-                                    <option value="13:00">13:00</option>
-                                    <option value="14:00">14:00</option>
-                                    <option value="15:00">15:00</option>
-                                    <option value="16:00">16:00</option>
-                                    <option value="17:00">17:00</option>
-                                    <option value="18:00">18:00</option>
-                                </select>
+                    <!-- Pick-up Time -->
+                    <div class="search-item">
+                            <label for="pickup-time" style="color: rgba(255, 255, 255, 0.9); font-weight: 300; font-size: 0.6rem; letter-spacing: 1px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.5rem;">
+                                <i class="bi bi-alarm-fill label-icon"></i>
+                                Zeit
+                            </label>
+                            <div class="select-wrapper" style="width: 100%; display: flex; align-items: center;">
+                                <select id="pickup-time" required style="width: 100%; height: 0.2rem;">
+                                    <option value=""></option>
+                            <option value="08:00">08:00</option>
+                            <option value="09:00">09:00</option>
+                            <option value="10:00">10:00</option>
+                            <option value="11:00">11:00</option>
+                            <option value="12:00">12:00</option>
+                            <option value="13:00">13:00</option>
+                            <option value="14:00">14:00</option>
+                            <option value="15:00">15:00</option>
+                            <option value="16:00">16:00</option>
+                            <option value="17:00">17:00</option>
+                            <option value="18:00">18:00</option>
+                        </select>
                                 <i class="bi bi-chevron-up select-arrow"></i>
                             </div>
-                        </div>
+                    </div>
 
-                        <!-- Drop-off Date -->
-                        <div class="search-item">
-                            <div class="date-wrapper">
-                                <input type="text" id="dropoff-date-selector" placeholder="Rückgabedatum" required class="form-control">
+                    <!-- Drop-off Date -->
+                    <div class="search-item">
+                            <label for="dropoff-date-selector" style="color: rgba(255, 255, 255, 0.9); font-weight: 300; font-size: 0.6rem; letter-spacing: 1px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.5rem;">
+                                <i class="bi bi-calendar-range label-icon" style="display: inline; margin-right: 0.3rem;"></i>
+                                Rückgabedatum
+                            </label>
+                            <div class="date-wrapper" style="position: relative; width: 100%; display: flex; align-items: center;">
+                                <input type="text" id="dropoff-date-selector" placeholder="" required class="form-control" readonly style="width: 100%; height: 0.2rem;">
                                 <i class="bi bi-chevron-up select-arrow"></i>
+                                <i class="bi bi-exclamation-triangle-fill date-error-icon" id="dropoff-date-error"></i>
+                                <div class="custom-calendar" id="dropoff-calendar">
+                                    <div class="calendar-header">
+                                        <div class="calendar-title" id="dropoff-calendar-title">December 2024</div>
+                                        <div class="calendar-nav">
+                                            <button class="calendar-nav-btn" id="dropoff-prev-month">
+                                                <i class="bi bi-chevron-left"></i>
+                                            </button>
+                                            <button class="calendar-nav-btn" id="dropoff-next-month">
+                                                <i class="bi bi-chevron-right"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="calendar-weekdays">
+                                        <div class="calendar-weekday">Mo</div>
+                                        <div class="calendar-weekday">Di</div>
+                                        <div class="calendar-weekday">Mi</div>
+                                        <div class="calendar-weekday">Do</div>
+                                        <div class="calendar-weekday">Fr</div>
+                                        <div class="calendar-weekday">Sa</div>
+                                        <div class="calendar-weekday">So</div>
+                                    </div>
+                                    <div class="calendar-days" id="dropoff-calendar-days"></div>
+                                </div>
                             </div>
-                        </div>
+                    </div>
 
-                        <!-- Drop-off Time -->
-                        <div class="search-item">
-                            <div class="select-wrapper">
-                                <select id="dropoff-time" required>
-                                    <option value="">Zeit</option>
-                                    <option value="08:00">08:00</option>
-                                    <option value="09:00">09:00</option>
-                                    <option value="10:00">10:00</option>
-                                    <option value="11:00">11:00</option>
-                                    <option value="12:00">12:00</option>
-                                    <option value="13:00">13:00</option>
-                                    <option value="14:00">14:00</option>
-                                    <option value="15:00">15:00</option>
-                                    <option value="16:00">16:00</option>
-                                    <option value="17:00">17:00</option>
-                                    <option value="18:00">18:00</option>
-                                </select>
+                    <!-- Drop-off Time -->
+                    <div class="search-item">
+                            <label for="dropoff-time" style="color: rgba(255, 255, 255, 0.9); font-weight: 300; font-size: 0.6rem; letter-spacing: 1px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.5rem;">
+                                <i class="bi bi-alarm label-icon"></i>
+                                Zeit
+                            </label>
+                            <div class="select-wrapper" style="width: 100%; display: flex; align-items: center;">
+                                <select id="dropoff-time" required style="width: 100%; height: 0.2rem;">
+                                    <option value=""></option>
+                            <option value="08:00">08:00</option>
+                            <option value="09:00">09:00</option>
+                            <option value="10:00">10:00</option>
+                            <option value="11:00">11:00</option>
+                            <option value="12:00">12:00</option>
+                            <option value="13:00">13:00</option>
+                            <option value="14:00">14:00</option>
+                            <option value="15:00">15:00</option>
+                            <option value="16:00">16:00</option>
+                            <option value="17:00">17:00</option>
+                            <option value="18:00">18:00</option>
+                        </select>
                                 <i class="bi bi-chevron-up select-arrow"></i>
                             </div>
-                        </div>
+                    </div>
 
                         <!-- Search Button -->
-                        <div class="search-item search-button">
-                            <button type="submit">
-                                <i class="bi bi-search"></i>
-                            </button>
-                        </div>
+                    <div class="search-item search-button">
+                        <button type="submit">
+                            <i class="bi bi-search"></i>
+                        </button>
                     </div>
-                </form>
-            </div>
-            
-            <!-- Unsere Exklusivsten Fahrzeuge Button -->
-            <div class="hero-cta-porsche" style="margin-top: 0; margin-bottom: 0; display: flex; justify-content: center; width: 100%; max-width: 1200px; margin-left: auto; margin-right: auto; position: relative; left: 50%; transform: translateX(-50%);">
-                <a href="#popular-cars-section" class="btn-porsche-luxury" style="width: 100%; max-width: 1200px;">
-                    <div class="btn-content">
-                        <span class="btn-text">Unsere Exklusivsten Fahrzeuge</span>
-                        <div class="btn-icon">
-                            <i class="bi bi-arrow-down"></i>
                 </div>
+                        </form>
                     </div>
-                    <div class="btn-glow"></div>
-                </a>
-            </div>
+                    
+                    <!-- Minimal Discover Button -->
+                    <div class="discover-button-container" style="text-align: center; margin-top: 0.2rem;">
+                        <button class="discover-button" style="
+                            background: rgba(255, 255, 255, 0.1);
+                            backdrop-filter: blur(20px);
+                            border: 1px solid rgba(255, 255, 255, 0.2);
+                            border-radius: 25px;
+                            color: rgba(255, 255, 255, 0.9);
+                            font-size: 0.8rem;
+                            font-weight: 400;
+                            padding: 8px 20px;
+                            cursor: pointer;
+                            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                            display: inline-flex;
+                            align-items: center;
+                            gap: 8px;
+                            letter-spacing: 1px;
+                            text-transform: uppercase;
+                            font-family: 'Inter', sans-serif;
+                        ">
+                            <span>Entdecken</span>
+                            <i class="bi bi-chevron-down" style="font-size: 0.7rem; transition: transform 0.3s ease;"></i>
+                        </button>
+                    </div>
+                    
+                    <style>
+                        .discover-button:hover {
+                            background: rgba(255, 255, 255, 0.15);
+                            border-color: rgba(255, 255, 255, 0.3);
+                            transform: translateY(-2px);
+                            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+                        }
+                        
+                        .discover-button:hover i {
+                            transform: translateY(2px);
+                        }
+                        
+                        .discover-button:active {
+                            transform: translateY(0);
+                        }
+                    </style>
+                    
+                    <script>
+                        document.querySelector('.discover-button').addEventListener('click', function() {
+                            document.getElementById('popular-cars-section').scrollIntoView({ 
+                                behavior: 'smooth',
+                                block: 'start'
+                            });
+                        });
+                    </script>
+            
+
         </div>
     </section>
 
     <!-- Popular Cars Section -->
-    <section id="popular-cars-section" class="popular-cars-section" style="margin-top: 0; padding-top: 1rem; position: relative; z-index: 0;">
-         <div class="container">
-            <div class="row" id="popular-cars-container">
+                    <section id="popular-cars-section" class="popular-cars-section" style="margin-top: 0; padding-top: 0; position: relative; z-index: 0;">
+            <div class="container" style="padding-top: 0; padding-bottom: 0;">
+                <div class="row mb-0">
+                    <div class="col-12 text-center">
+                        <h2 class="section-title" style="font-size: 2.5rem; font-weight: 600; color: #333; margin-bottom: 0; font-family: 'Inter', sans-serif;">
+                            Unsere Exklusivsten Fahrzeuge
+                        </h2>
+                        <p class="section-subtitle" style="font-size: 1.1rem; color: #666; font-weight: 400; font-family: 'Inter', sans-serif; margin-bottom: 0;">
+                            Entdecken Sie unsere Premium-Flotte
+                        </p>
+                    </div>
+                </div>
+                <div class="row" id="popular-cars-container" style="margin-top: 0;">
                 <!-- Car cards will be loaded here by JavaScript -->
              </div>
          </div>
@@ -1529,75 +1949,75 @@
         <div class="container">
             <!-- Features -->
             <div class="features-part">
-                <div class="section-header">
-                    <h2 class="section-title">Warum AUTOR wählen?</h2>
-                    <p class="section-subtitle">Wir bieten Ihnen den besten Service für Ihre Mobilitätsbedürfnisse</p>
+            <div class="section-header">
+                <h2 class="section-title">Warum AUTOR wählen?</h2>
+                <p class="section-subtitle">Wir bieten Ihnen den besten Service für Ihre Mobilitätsbedürfnisse</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-lg-3 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-shield-check"></i>
+                        </div>
+                        <h5 class="feature-title">Sicher & Zuverlässig</h5>
+                        <p class="feature-description">Alle Fahrzeuge sind sorgfältig gewartet und vollständig versichert</p>
+                    </div>
                 </div>
-                <div class="row g-4">
-                    <div class="col-lg-3 col-md-6">
-                        <div class="feature-card">
-                            <div class="feature-icon">
-                                <i class="bi bi-shield-check"></i>
-                            </div>
-                            <h5 class="feature-title">Sicher & Zuverlässig</h5>
-                            <p class="feature-description">Alle Fahrzeuge sind sorgfältig gewartet und vollständig versichert</p>
+                <div class="col-lg-3 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-clock"></i>
                         </div>
+                        <h5 class="feature-title">24/7 Support</h5>
+                        <p class="feature-description">Unser Kundenservice ist rund um die Uhr für Sie da</p>
                     </div>
-                    <div class="col-lg-3 col-md-6">
-                        <div class="feature-card">
-                            <div class="feature-icon">
-                                <i class="bi bi-clock"></i>
-                            </div>
-                            <h5 class="feature-title">24/7 Support</h5>
-                            <p class="feature-description">Unser Kundenservice ist rund um die Uhr für Sie da</p>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-credit-card"></i>
                         </div>
+                        <h5 class="feature-title">Flexible Zahlung</h5>
+                        <p class="feature-description">Verschiedene Zahlungsoptionen ohne versteckte Kosten</p>
                     </div>
-                    <div class="col-lg-3 col-md-6">
-                        <div class="feature-card">
-                            <div class="feature-icon">
-                                <i class="bi bi-credit-card"></i>
-                            </div>
-                            <h5 class="feature-title">Flexible Zahlung</h5>
-                            <p class="feature-description">Verschiedene Zahlungsoptionen ohne versteckte Kosten</p>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-geo-alt"></i>
                         </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <div class="feature-card">
-                            <div class="feature-icon">
-                                <i class="bi bi-geo-alt"></i>
-                            </div>
-                            <h5 class="feature-title">Deutschlandweit</h5>
-                            <p class="feature-description">Verfügbar in allen großen Städten und Flughäfen</p>
-                        </div>
+                        <h5 class="feature-title">Deutschlandweit</h5>
+                        <p class="feature-description">Verfügbar in allen großen Städten und Flughäfen</p>
                     </div>
                 </div>
             </div>
-            
+        </div>
+
             <!-- Stats -->
             <div class="stats-part">
-                <div class="row">
-                    <div class="col-lg-3 col-md-6">
-                        <div class="stat-item">
-                            <div class="stat-number">500+</div>
-                            <div class="stat-label">Fahrzeuge</div>
+            <div class="row">
+                <div class="col-lg-3 col-md-6">
+                    <div class="stat-item">
+                        <div class="stat-number">500+</div>
+                        <div class="stat-label">Fahrzeuge</div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <div class="stat-item">
-                            <div class="stat-number">50+</div>
-                            <div class="stat-label">Standorte</div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="stat-item">
+                        <div class="stat-number">50+</div>
+                        <div class="stat-label">Standorte</div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <div class="stat-item">
-                            <div class="stat-number">10K+</div>
-                            <div class="stat-label">Zufriedene Kunden</div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="stat-item">
+                        <div class="stat-number">10K+</div>
+                        <div class="stat-label">Zufriedene Kunden</div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <div class="stat-item">
-                            <div class="stat-number">4.8★</div>
-                            <div class="stat-label">Bewertung</div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="stat-item">
+                        <div class="stat-number">4.8★</div>
+                        <div class="stat-label">Bewertung</div>
                         </div>
                     </div>
                 </div>
@@ -1666,9 +2086,7 @@
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
-    <!-- Bootstrap Datepicker JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.de.min.js"></script>
+
     
     <!-- Fallback Car Data -->
     <script>
@@ -1773,86 +2191,255 @@
             const pickupDateInput = document.getElementById('pickup-date-selector');
             const dropoffDateInput = document.getElementById('dropoff-date-selector');
             
-            // Select hover rengini zorla değiştir
-            forceSelectHoverColor();
-            
 
             
-            if ($.fn.datepicker) {
-                const today = new Date();
-                const tomorrow = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
-                
-                // Pickup date picker
-                $(pickupDateInput).datepicker({
-                    format: 'dd.mm.yyyy',
-                    language: 'de',
-                    autoclose: false,
-                    todayHighlight: true,
-                    startDate: today,
-                    orientation: 'top auto',
-                    templates: {
-                        leftArrow: '&laquo;',
-                        rightArrow: '&raquo;'
-                    },
-                    onSelect: function(dateText, inst) {
-                        const selectedDate = new Date(inst.selectedYear, inst.selectedMonth, inst.selectedDay);
-                        const minDropoff = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate() + 1);
-                        $(dropoffDateInput).datepicker('setStartDate', minDropoff);
-                    }
-                });
-                
-                // Dropoff date picker
-                $(dropoffDateInput).datepicker({
-                    format: 'dd.mm.yyyy',
-                    language: 'de',
-                    autoclose: false,
-                    todayHighlight: true,
-                    startDate: tomorrow,
-                    orientation: 'top auto',
-                    templates: {
-                        leftArrow: '&laquo;',
-                        rightArrow: '&raquo;'
-                    }
-                });
-            }
+
             
 
             
 
             
-            // Select hover rengini zorla değiştir
-            function forceSelectHoverColor() {
+
+            
+            // Modern Select and Input Enhancement
+            function enhanceFormElements() {
                 const selects = document.querySelectorAll('.search-item select');
+                const inputs = document.querySelectorAll('.search-item input[type="text"]');
                 
                 selects.forEach(select => {
-                    // Mouse over event
-                    select.addEventListener('mouseover', function() {
-                        const options = this.querySelectorAll('option');
-                        options.forEach(option => {
-                            option.style.backgroundColor = '#4D0602';
-                            option.style.color = '#ffffff';
-                        });
-                    });
-                    
-                    // Mouse enter event
-                    select.addEventListener('mouseenter', function() {
-                        const options = this.querySelectorAll('option');
-                        options.forEach(option => {
-                            option.style.backgroundColor = '#4D0602';
-                            option.style.color = '#ffffff';
-                        });
-                    });
-                    
-                    // Focus event
+                    // Add smooth transitions
                     select.addEventListener('focus', function() {
-                        const options = this.querySelectorAll('option');
-                        options.forEach(option => {
-                            option.style.backgroundColor = '#4D0602';
-                            option.style.color = '#ffffff';
-                        });
+                        this.style.transform = 'translateY(-2px)';
+                    });
+                    
+                    select.addEventListener('blur', function() {
+                        this.style.transform = 'translateY(0)';
+                    });
+                });
+                
+                inputs.forEach(input => {
+                    // Add smooth transitions
+                    input.addEventListener('focus', function() {
+                        this.style.transform = 'translateY(-2px)';
+                    });
+                    
+                    input.addEventListener('blur', function() {
+                        this.style.transform = 'translateY(0)';
                     });
                 });
             }
+            
+            // Initialize enhanced form elements
+            enhanceFormElements();
+            
+            // Date Format Validation and Auto-Conversion
+            function validateAndFormatDate(input, errorIcon) {
+                const value = input.value.trim();
+                
+                // Remove all non-numeric characters
+                const numbersOnly = value.replace(/\D/g, '');
+                
+                if (numbersOnly.length === 8) {
+                    // Check if it's a valid date format (DDMMYYYY)
+                    const day = parseInt(numbersOnly.substring(0, 2));
+                    const month = parseInt(numbersOnly.substring(2, 4));
+                    const year = parseInt(numbersOnly.substring(4, 8));
+                    
+                    // Validate date
+                    const date = new Date(year, month - 1, day);
+                    const isValidDate = date.getDate() === day && 
+                                       date.getMonth() === month - 1 && 
+                                       date.getFullYear() === year &&
+                                       year >= 2024 && year <= 2030;
+                    
+                    if (isValidDate) {
+                        // Format as DD.MM.YYYY
+                        const formattedDate = `${day.toString().padStart(2, '0')}.${month.toString().padStart(2, '0')}.${year}`;
+                        input.value = formattedDate;
+                        input.classList.remove('date-error');
+                        input.classList.add('date-success');
+                        errorIcon.classList.remove('show');
+                        
+                        // Remove success class after 2 seconds
+                        setTimeout(() => {
+                            input.classList.remove('date-success');
+                        }, 2000);
+                        } else {
+                        // Invalid date
+                        input.classList.add('date-error');
+                        input.classList.remove('date-success');
+                        errorIcon.classList.add('show');
+                    }
+                } else if (numbersOnly.length > 0 && numbersOnly.length !== 8) {
+                    // Wrong length
+                    input.classList.add('date-error');
+                    input.classList.remove('date-success');
+                    errorIcon.classList.add('show');
+                } else {
+                    // Empty or valid format
+                    input.classList.remove('date-error', 'date-success');
+                    errorIcon.classList.remove('show');
+                }
+            }
+            
+            // Custom Calendar System
+            class CustomCalendar {
+                constructor(inputId, calendarId, titleId, daysId, prevBtnId, nextBtnId) {
+                    this.input = document.getElementById(inputId);
+                    this.calendar = document.getElementById(calendarId);
+                    this.title = document.getElementById(titleId);
+                    this.daysContainer = document.getElementById(daysId);
+                    this.prevBtn = document.getElementById(prevBtnId);
+                    this.nextBtn = document.getElementById(nextBtnId);
+                    
+                    this.currentDate = new Date();
+                    this.selectedDate = null;
+                    this.isOpen = false;
+                    
+                    this.init();
+                }
+                
+                init() {
+                    this.renderCalendar();
+                    this.bindEvents();
+                }
+                
+                bindEvents() {
+                    // Toggle calendar on input click
+                    this.input.addEventListener('click', () => {
+                        console.log('Input clicked:', this.input.id);
+                        this.toggleCalendar();
+                    });
+                    
+                    // Navigation buttons
+                    this.prevBtn.addEventListener('click', () => {
+                        this.currentDate.setMonth(this.currentDate.getMonth() - 1);
+                        this.renderCalendar();
+                    });
+                    
+                    this.nextBtn.addEventListener('click', () => {
+                        this.currentDate.setMonth(this.currentDate.getMonth() + 1);
+                        this.renderCalendar();
+                    });
+                    
+                    // Close calendar when clicking outside
+                    document.addEventListener('click', (e) => {
+                        if (!this.calendar.contains(e.target) && !this.input.contains(e.target)) {
+                            this.closeCalendar();
+                        }
+                    });
+                }
+                
+                toggleCalendar() {
+                    if (this.isOpen) {
+                        this.closeCalendar();
+                        } else {
+                        this.openCalendar();
+                    }
+                }
+                
+                openCalendar() {
+                    this.calendar.classList.add('show');
+                    this.isOpen = true;
+                }
+                
+                closeCalendar() {
+                    this.calendar.classList.remove('show');
+                    this.isOpen = false;
+                }
+                
+                renderCalendar() {
+                    const year = this.currentDate.getFullYear();
+                    const month = this.currentDate.getMonth();
+                    
+                    // Update title
+                    const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
+                                      'July', 'August', 'September', 'October', 'November', 'December'];
+                    this.title.textContent = `${monthNames[month]} ${year}`;
+                    
+                    // Get first day of month and number of days
+                    const firstDay = new Date(year, month, 1);
+                    const lastDay = new Date(year, month + 1, 0);
+                    const startDate = new Date(firstDay);
+                    startDate.setDate(startDate.getDate() - firstDay.getDay() + 1); // Start from Monday
+                    
+                    let html = '';
+                    const today = new Date();
+                    
+                    for (let i = 0; i < 42; i++) {
+                        const currentDate = new Date(startDate);
+                        currentDate.setDate(startDate.getDate() + i);
+                        
+                        const isCurrentMonth = currentDate.getMonth() === month;
+                        const isToday = currentDate.toDateString() === today.toDateString();
+                        const isDisabled = currentDate < new Date(today.getFullYear(), today.getMonth(), today.getDate());
+                        const isSelected = this.selectedDate && currentDate.toDateString() === this.selectedDate.toDateString();
+                        
+                        let classes = 'calendar-day';
+                        if (!isCurrentMonth) classes += ' other-month';
+                        if (isToday) classes += ' today';
+                        if (isDisabled) classes += ' disabled';
+                        if (isSelected) classes += ' selected';
+                        
+                        html += `<div class="${classes}" data-date="${currentDate.toISOString()}">${currentDate.getDate()}</div>`;
+                    }
+                    
+                    this.daysContainer.innerHTML = html;
+                    
+                    // Add event listeners to calendar days
+                    this.daysContainer.querySelectorAll('.calendar-day:not(.disabled)').forEach(day => {
+                        day.addEventListener('click', () => {
+                            this.selectDate(day);
+                    });
+                });
+            }
+            
+                selectDate(element) {
+                    const dateString = element.dataset.date;
+                    const selectedDate = new Date(dateString);
+                    
+                    // Format date as DD.MM.YYYY
+                    const day = selectedDate.getDate().toString().padStart(2, '0');
+                    const month = (selectedDate.getMonth() + 1).toString().padStart(2, '0');
+                    const year = selectedDate.getFullYear();
+                    
+                    this.input.value = `${day}.${month}.${year}`;
+                    this.selectedDate = selectedDate;
+                    
+                    // Update visual selection
+                    document.querySelectorAll('.calendar-day').forEach(day => {
+                        day.classList.remove('selected');
+                    });
+                    element.classList.add('selected');
+                    
+                    this.closeCalendar();
+                }
+            }
+            
+            // Initialize calendars
+            console.log('Initializing calendars...');
+            
+            const pickupCalendar = new CustomCalendar(
+                'pickup-date-selector', 
+                'pickup-calendar', 
+                'pickup-calendar-title', 
+                'pickup-calendar-days',
+                'pickup-prev-month',
+                'pickup-next-month'
+            );
+            
+            const dropoffCalendar = new CustomCalendar(
+                'dropoff-date-selector', 
+                'dropoff-calendar', 
+                'dropoff-calendar-title', 
+                'dropoff-calendar-days',
+                'dropoff-prev-month',
+                'dropoff-next-month'
+            );
+            
+            console.log('Calendars initialized:', pickupCalendar, dropoffCalendar);
+            
+
             
             // Form submission
             const form = document.getElementById('date-location-form');

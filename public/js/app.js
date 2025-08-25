@@ -125,7 +125,7 @@ function loadPopularCars() {
     console.log('First car:', popularCars[0]);
     
     const carsHTML = popularCars.map(car => `
-        <div class="col-lg-3 col-md-6 mb-4">
+        <div class="col-lg-3 col-md-6">
             <div class="car-card">
                 <div class="car-image">
                     <img src="${car.image_url}" 
