@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anmelden - AUTOR</title>
+    <title>Anmelden - AuTor</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
     <link href="/css/style.css" rel="stylesheet">
@@ -16,7 +16,11 @@
         }
 
         body {
-            background: #ffffff !important;
+            background-image: url('images/cars/überunsfotom.jpeg') !important;
+            background-size: cover !important;
+            background-position: center !important;
+            background-attachment: fixed !important;
+            background-repeat: no-repeat !important;
             min-height: 100vh;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
@@ -24,6 +28,18 @@
             overflow: hidden;
             display: flex;
             flex-direction: column;
+        }
+        
+        /* Overlay for better readability */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: -1;
         }
 
         .main-content {
@@ -481,28 +497,9 @@
 </head>
 <body style="overflow-x: hidden;">
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light fixed-top shadow-sm" style="background: rgba(255, 255, 255, 0.9) !important; backdrop-filter: blur(15px); box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);">
-        <div class="container">
-            <a class="navbar-brand fw-bold fs-3" href="/" style="text-decoration: none;">
-                <i class="bi bi-car-front me-2" style="color: #000000;"></i>
-                <span style="color: #000000; font-family: 'Explorer Print Sans Bold', sans-serif;">AUTOR</span>
-            </a>
-            
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link-text" href="/fahrzeuge?clear=1" style="margin-left: 15px;">Autos</a>
-                    </li>
-                </ul>
-                <ul class="navbar-nav ms-auto" id="auth-buttons-container">
-                </ul>
-            </div>
-        </div>
-    </nav>
+    <div id="navbar-container">
+        <!-- Navbar JavaScript ile yüklenecek -->
+    </div>
 
     <main class="main-content">
         <!-- Main Content -->

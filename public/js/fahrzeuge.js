@@ -2,6 +2,7 @@
 
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Fahrzeuge page loaded');
+    console.log('Vehicles container from fahrzeuge.js:', document.getElementById('vehicles-container'));
 
     // Get DOM elements
     const vehiclesContainer = document.getElementById('vehicles-container');
@@ -14,6 +15,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const dropoffDateSelector = document.getElementById('dropoff-date-selector');
     const pickupTimeSelector = document.getElementById('pickup-time');
     const dropoffTimeSelector = document.getElementById('dropoff-time');
+    
+    console.log('DOM elements found:');
+    console.log('vehiclesContainer:', vehiclesContainer);
+    console.log('insuranceOptions:', insuranceOptions);
+    console.log('productOptions:', productOptions);
 
     // Filter elements
     const vehicleTypeFilter = document.getElementById('vehicle-type-filter');
@@ -125,6 +131,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initialize date and location selector
     function initializeDateLocationSelector() {
+        // Check if date elements exist before initializing flatpickr
+        const pickupDateInput = document.getElementById('pickup-date-selector');
+        const dropoffDateInput = document.getElementById('dropoff-date-selector');
+        
+        // If date inputs don't exist, skip flatpickr initialization
+        if (!pickupDateInput || !dropoffDateInput) {
+            console.log('Date inputs not found, skipping flatpickr initialization');
+            return;
+        }
+        
         // Date helpers
         function parseGermanDate(str) {
             const m = /^(\d{2})\.(\d{2})\.(\d{4})$/.exec(String(str || '').trim());
@@ -148,7 +164,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const tomorrow = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
 
         // Initialize Flatpickr for date selectors
-        if (window.flatpickr) {
+        if (window.flatpickr && pickupDateInput && dropoffDateInput) {
             // Custom German locale
             const germanLocale = {
                 weekdays: {
@@ -170,7 +186,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 time_24hr: true
             };
 
-            const fpPickupSelector = window.flatpickr(pickupDateSelector, {
+            const fpPickupSelector = window.flatpickr(pickupDateInput, {
                 dateFormat: 'd/m/Y',
                 allowInput: true,
                 defaultDate: null,
@@ -199,7 +215,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
 
-            const fpDropoffSelector = window.flatpickr(dropoffDateSelector, {
+            const fpDropoffSelector = window.flatpickr(dropoffDateInput, {
                 dateFormat: 'd/m/Y',
                 allowInput: true,
                 defaultDate: null,
@@ -256,64 +272,126 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        // Form submission
-        dateLocationForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            
-            // Validate form
-            if (!pickupLocationSelector.value || !dropoffLocationSelector.value || 
-                !pickupDateSelector.value || !dropoffDateSelector.value) {
-                showNotification('Bitte füllen Sie alle Felder aus.', 'error');
-                return;
-            }
+        // Form submission - only if form exists
+        if (dateLocationForm) {
+            dateLocationForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                // Validate form
+                if (!pickupLocationSelector.value || !dropoffLocationSelector.value || 
+                    !pickupDateSelector.value || !dropoffDateSelector.value) {
+                    showNotification('Bitte füllen Sie alle Felder aus.', 'error');
+                    return;
+                }
 
-            const pickupDateValid = parseGermanDate(pickupDateSelector.value) !== null;
-            const dropoffDateValid = parseGermanDate(dropoffDateSelector.value) !== null;
-            
-            if (!pickupDateValid || !dropoffDateValid) {
-                showNotification('Bitte geben Sie gültige Daten ein.', 'error');
-                return;
-            }
+                const pickupDateValid = parseGermanDate(pickupDateSelector.value) !== null;
+                const dropoffDateValid = parseGermanDate(dropoffDateSelector.value) !== null;
+                
+                if (!pickupDateValid || !dropoffDateValid) {
+                    showNotification('Bitte geben Sie gültige Daten ein.', 'error');
+                    return;
+                }
 
-            // Store search data
-            const formData = {
-                pickupLocation: pickupLocationSelector.value,
-                dropoffLocation: dropoffLocationSelector.value,
-                pickupDate: pickupDateSelector.value,
-                dropoffDate: dropoffDateSelector.value,
-                pickupTime: pickupTimeSelector.value,
-                dropoffTime: dropoffTimeSelector.value
-            };
+                // Store search data
+                const formData = {
+                    pickupLocation: pickupLocationSelector.value,
+                    dropoffLocation: dropoffLocationSelector.value,
+                    pickupDate: pickupDateSelector.value,
+                    dropoffDate: dropoffDateSelector.value,
+                    pickupTime: pickupTimeSelector.value,
+                    dropoffTime: dropoffTimeSelector.value
+                };
 
-            localStorage.setItem('searchData', JSON.stringify(formData));
-            showNotification('Reisedaten erfolgreich gespeichert!', 'success');
-        });
+                localStorage.setItem('searchData', JSON.stringify(formData));
+                showNotification('Reisedaten erfolgreich gespeichert!', 'success');
+            });
+        }
+    }
+
+    // Search function - called when search button is clicked
+    window.performSearch = function() {
+        console.log('Search button clicked!');
+        
+        // Apply filters
+        const filteredResults = applyFilters();
+        
+        // Update filtered vehicles
+        filteredVehicles = filteredResults;
+        
+        // Display filtered vehicles
+        displayVehicles();
+        
+        // Scroll to vehicles section
+        const vehiclesSection = document.querySelector('.vehicles-section');
+        if (vehiclesSection) {
+            vehiclesSection.scrollIntoView({ 
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+        
+        // Show notification
+        const resultCount = filteredVehicles.length;
+        if (resultCount === 0) {
+            showNotification('Keine Fahrzeuge gefunden. Bitte versuchen Sie andere Filtereinstellungen.', 'info');
+        } else {
+            showNotification(`${resultCount} Fahrzeug(e) gefunden!`, 'success');
+        }
+        
+        console.log('Search completed. Found vehicles:', resultCount);
     }
 
     // Load vehicles
     function loadVehicles() {
-        // Use luxury cars data like in homepage
-        allVehicles = [
-            { car_id: 101, make: 'Porsche', model: '911 GT3 RS', daily_rate: 299, transmission_type: 'Automatik', fuel_type: 'Benzin', seating_capacity: 2, image_url: '/images/cars/porsche-911-gt3.jpg' },
-            { car_id: 102, make: 'Tesla', model: 'Model S', daily_rate: 289, transmission_type: 'Automatik', fuel_type: 'Elektrisch', seating_capacity: 5, image_url: '/images/cars/tesla-model-s.jpg' },
-            { car_id: 103, make: 'BMW', model: 'M8', daily_rate: 279, transmission_type: 'Automatik', fuel_type: 'Benzin', seating_capacity: 4, image_url: '/images/cars/bmw-m8.jpg' },
-            { car_id: 104, make: 'Rolls-Royce', model: 'Phantom', daily_rate: 269, transmission_type: 'Automatik', fuel_type: 'Benzin', seating_capacity: 4, image_url: '/images/cars/rolls-royce-phantom.jpg' },
-            { car_id: 105, make: 'Bentley', model: 'Continental GT', daily_rate: 259, transmission_type: 'Automatik', fuel_type: 'Benzin', seating_capacity: 4, image_url: '/images/cars/bentley-continental.jpg' },
-            { car_id: 106, make: 'Mercedes', model: 'AMG GT', daily_rate: 249, transmission_type: 'Automatik', fuel_type: 'Benzin', seating_capacity: 2, image_url: '/images/cars/mercedes-amg-gt.jpg' },
-            { car_id: 107, make: 'Audi', model: 'A8', daily_rate: 239, transmission_type: 'Automatik', fuel_type: 'Hybrid', seating_capacity: 5, image_url: '/images/cars/audi-a8.jpg' },
-            { car_id: 108, make: 'BMW', model: 'X7', daily_rate: 229, transmission_type: 'Automatik', fuel_type: 'Hybrid', seating_capacity: 7, image_url: '/images/cars/bmw-x7.jpg' },
-            { car_id: 109, make: 'Porsche', model: 'Taycan', daily_rate: 219, transmission_type: 'Automatik', fuel_type: 'Elektrisch', seating_capacity: 4, image_url: '/images/cars/porsche-taycan.jpg' },
-            { car_id: 110, make: 'Porsche', model: 'Cayenne', daily_rate: 209, transmission_type: 'Automatik', fuel_type: 'Benzin', seating_capacity: 5, image_url: '/images/cars/porsche-cayenne.jpg' },
-            { car_id: 111, make: 'Rolls-Royce', model: 'Cullinan', daily_rate: 199, transmission_type: 'Automatik', fuel_type: 'Benzin', seating_capacity: 5, image_url: '/images/cars/rolls-royce-cullinan.jpg' },
-            { car_id: 112, make: 'Bentley', model: 'Bentayga', daily_rate: 189, transmission_type: 'Automatik', fuel_type: 'Benzin', seating_capacity: 5, image_url: '/images/cars/bentley-bentayga.jpg' }
-        ];
+        console.log('Loading vehicles...');
         
+        // Try to use cars from cars.js first, fallback to hardcoded data
+        if (window.LOCAL_CARS && window.LOCAL_CARS.length > 0) {
+            console.log('Using cars from cars.js');
+            allVehicles = window.LOCAL_CARS.map(car => ({
+                car_id: car.car_id,
+                make: car.make,
+                model: car.model,
+                daily_rate: car.daily_rate,
+                transmission_type: car.transmission_type,
+                fuel_type: car.fuel_type,
+                seating_capacity: car.seating_capacity,
+                image_url: car.image_url
+            }));
+        } else {
+            console.log('Using hardcoded cars data');
+            // Use luxury cars data like in homepage
+            allVehicles = [
+                { car_id: 101, make: 'Porsche', model: '911 GT3 RS', daily_rate: 299, transmission_type: 'Automatik', fuel_type: 'Benzin', seating_capacity: 2, image_url: '/images/cars/porsche-911-gt3.jpg' },
+                { car_id: 102, make: 'Tesla', model: 'Model S', daily_rate: 289, transmission_type: 'Automatik', fuel_type: 'Elektrisch', seating_capacity: 5, image_url: '/images/cars/tesla-model-s.jpg' },
+                { car_id: 103, make: 'BMW', model: 'M8', daily_rate: 279, transmission_type: 'Automatik', fuel_type: 'Benzin', seating_capacity: 4, image_url: '/images/cars/bmw-m8.jpg' },
+                { car_id: 104, make: 'Rolls-Royce', model: 'Phantom', daily_rate: 269, transmission_type: 'Automatik', fuel_type: 'Benzin', seating_capacity: 4, image_url: '/images/cars/rolls-royce-phantom.jpg' },
+                { car_id: 105, make: 'Bentley', model: 'Continental GT', daily_rate: 259, transmission_type: 'Automatik', fuel_type: 'Benzin', seating_capacity: 4, image_url: '/images/cars/bentley-continental.jpg' },
+                { car_id: 106, make: 'Mercedes', model: 'AMG GT', daily_rate: 249, transmission_type: 'Automatik', fuel_type: 'Benzin', seating_capacity: 2, image_url: '/images/cars/mercedes-amg-gt.jpg' },
+                { car_id: 107, make: 'Audi', model: 'A8', daily_rate: 239, transmission_type: 'Automatik', fuel_type: 'Hybrid', seating_capacity: 5, image_url: '/images/cars/audi-a8.jpg' },
+                { car_id: 108, make: 'BMW', model: 'X7', daily_rate: 229, transmission_type: 'Automatik', fuel_type: 'Hybrid', seating_capacity: 7, image_url: '/images/cars/bmw-x7.jpg' },
+                { car_id: 109, make: 'Porsche', model: 'Taycan', daily_rate: 219, transmission_type: 'Automatik', fuel_type: 'Elektrisch', seating_capacity: 4, image_url: '/images/cars/porsche-taycan.jpg' },
+                { car_id: 110, make: 'Porsche', model: 'Cayenne', daily_rate: 209, transmission_type: 'Automatik', fuel_type: 'Benzin', seating_capacity: 5, image_url: '/images/cars/porsche-cayenne.jpg' },
+                { car_id: 111, make: 'Rolls-Royce', model: 'Cullinan', daily_rate: 199, transmission_type: 'Automatik', fuel_type: 'Benzin', seating_capacity: 5, image_url: '/images/cars/rolls-royce-cullinan.jpg' },
+                { car_id: 112, make: 'Bentley', model: 'Bentayga', daily_rate: 189, transmission_type: 'Automatik', fuel_type: 'Benzin', seating_capacity: 5, image_url: '/images/cars/bentley-bentayga.jpg' }
+            ];
+        }
+        
+        console.log('Loaded vehicles:', allVehicles.length);
         filteredVehicles = [...allVehicles];
+        
+        // Apply default sorting (Name A-Z)
+        filteredVehicles.sort((a, b) => `${a.make} ${a.model}`.localeCompare(`${b.make} ${b.model}`));
+        
         displayVehicles();
     }
 
     // Display vehicles
     function displayVehicles() {
+        console.log('Displaying vehicles...');
+        console.log('Filtered vehicles count:', filteredVehicles.length);
+        console.log('Vehicles container:', vehiclesContainer);
+        
         if (filteredVehicles.length === 0) {
             vehiclesContainer.innerHTML = `
                 <div class="col-12 text-center py-5">
@@ -325,42 +403,61 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        vehiclesContainer.innerHTML = filteredVehicles.map(vehicle => `
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="car-card" onclick="selectVehicle(${vehicle.car_id})">
-                    <div class="car-image">
-                        <img src="${vehicle.image_url}" 
-                             alt="${vehicle.make} ${vehicle.model}" 
-                             onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1503376780353-7e6692767b70?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80'; this.style.opacity='0.9';">
-                        <div class="price-badge">
-                            €${vehicle.daily_rate}/Tag
+        const carsHTML = filteredVehicles.map(vehicle => `
+            <div class="car-card" data-car-id="${vehicle.car_id}" style="width: 31%; margin: 0.5rem; flex: 0 0 calc(31% - 0.5rem);">
+                <div class="car-image">
+                    <img src="${vehicle.image_url}" 
+                         alt="${vehicle.make} ${vehicle.model}" 
+                         onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1503376780353-7e6692767b70?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80'; this.style.opacity='0.9';">
+                    <div class="price-badge">
+                        €${vehicle.daily_rate}/Tag
+                    </div>
+                </div>
+                <div class="car-details">
+                    <h5 class="car-name">${vehicle.make} ${vehicle.model}</h5>
+                    <div class="car-specs">
+                        <div class="spec-item">
+                            <i class="bi bi-people"></i>
+                            <span>${vehicle.seating_capacity} Sitze</span>
+                        </div>
+                        <div class="spec-item">
+                            <i class="bi bi-gear"></i>
+                            <span>${vehicle.transmission_type}</span>
+                        </div>
+                        <div class="spec-item">
+                            <i class="bi bi-fuel-pump"></i>
+                            <span>${vehicle.fuel_type}</span>
                         </div>
                     </div>
-                    <div class="car-details">
-                        <h5 class="car-name">${vehicle.make} ${vehicle.model}</h5>
-                        <div class="car-specs">
-                            <div class="spec-item">
-                                <i class="bi bi-people"></i>
-                                <span>${vehicle.seating_capacity} Sitze</span>
-                            </div>
-                            <div class="spec-item">
-                                <i class="bi bi-gear"></i>
-                                <span>${vehicle.transmission_type}</span>
-                            </div>
-                            <div class="spec-item">
-                                <i class="bi bi-fuel-pump"></i>
-                                <span>${vehicle.fuel_type}</span>
-                            </div>
-                        </div>
-                        <div class="car-cta">
-                            <a href="/vehicle-details?id=${vehicle.car_id}" class="btn-view-details">
-                                Details anzeigen
-                            </a>
-                        </div>
+                    <div class="car-cta">
+                        <button class="btn-rent-now">
+                            Jetzt mieten
+                        </button>
                     </div>
                 </div>
             </div>
         `).join('');
+        
+        vehiclesContainer.innerHTML = carsHTML;
+        
+        // Add click events to car cards
+        const carCards = document.querySelectorAll('.car-card');
+        console.log('Car cards found:', carCards.length);
+        
+        carCards.forEach(card => {
+            card.addEventListener('click', function(e) {
+                // Don't trigger if clicking on the button
+                if (e.target.tagName === 'BUTTON' || e.target.closest('button')) {
+                    return;
+                }
+                
+                // Select the vehicle
+                const carId = this.dataset.carId;
+                if (carId) {
+                    selectVehicle(parseInt(carId));
+                }
+            });
+        });
     }
 
     // Load insurance options
@@ -391,53 +488,106 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initialize filters
     function initializeFilters() {
+        console.log('Initializing filters...');
         // Add event listeners to all filters
         [vehicleTypeFilter, vehicleModelFilter, fuelTypeFilter, sortFilter, transmissionFilter, priceFilter].forEach(filter => {
             if (filter) {
-                filter.addEventListener('change', applyFilters);
+                // Remove the automatic filter application on change
+                // filter.addEventListener('change', applyFilters);
+                console.log('Filter found:', filter.id);
+            } else {
+                console.log('Filter not found');
             }
         });
+        
+        // Add click event listener to search button
+        const searchButton = document.getElementById('search-vehicles-btn');
+        if (searchButton) {
+            searchButton.addEventListener('click', window.performSearch);
+            console.log('Search button event listener added');
+        } else {
+            console.log('Search button not found');
+        }
     }
 
     // Apply filters
     function applyFilters() {
+        console.log('Applying filters...');
         let filtered = [...allVehicles];
         
-        // Vehicle type filter
-        if (vehicleTypeFilter.value) {
-            filtered = filtered.filter(vehicle => vehicle.make.toLowerCase() === vehicleTypeFilter.value.toLowerCase());
+        // Vehicle type filter (Fahrzeugtyp)
+        if (vehicleTypeFilter && vehicleTypeFilter.value) {
+            console.log('Vehicle type filter:', vehicleTypeFilter.value);
+            if (vehicleTypeFilter.value === 'compact') {
+                filtered = filtered.filter(vehicle => 
+                    vehicle.make.toLowerCase() === 'bmw' || 
+                    vehicle.make.toLowerCase() === 'audi' ||
+                    vehicle.make.toLowerCase() === 'volkswagen'
+                );
+            } else if (vehicleTypeFilter.value === 'sedan') {
+                filtered = filtered.filter(vehicle => 
+                    vehicle.make.toLowerCase() === 'bmw' || 
+                    vehicle.make.toLowerCase() === 'mercedes' ||
+                    vehicle.make.toLowerCase() === 'audi'
+                );
+            } else if (vehicleTypeFilter.value === 'suv') {
+                filtered = filtered.filter(vehicle => 
+                    vehicle.make.toLowerCase() === 'bmw' || 
+                    vehicle.make.toLowerCase() === 'porsche' ||
+                    vehicle.make.toLowerCase() === 'bentley'
+                );
+            } else if (vehicleTypeFilter.value === 'luxury') {
+                filtered = filtered.filter(vehicle => 
+                    vehicle.make.toLowerCase() === 'rolls-royce' || 
+                    vehicle.make.toLowerCase() === 'bentley' ||
+                    vehicle.make.toLowerCase() === 'mercedes'
+                );
+            } else if (vehicleTypeFilter.value === 'electric') {
+                filtered = filtered.filter(vehicle => 
+                    vehicle.fuel_type.toLowerCase() === 'elektrisch' ||
+                    vehicle.make.toLowerCase() === 'tesla'
+                );
+            }
         }
         
-        // Vehicle model filter
-        if (vehicleModelFilter.value) {
-            filtered = filtered.filter(vehicle => vehicle.model.toLowerCase().includes(vehicleModelFilter.value.toLowerCase()));
+        // Vehicle model filter (Marke)
+        if (vehicleModelFilter && vehicleModelFilter.value) {
+            console.log('Vehicle model filter:', vehicleModelFilter.value);
+            filtered = filtered.filter(vehicle => vehicle.make.toLowerCase() === vehicleModelFilter.value.toLowerCase());
         }
         
-        // Fuel type filter
-        if (fuelTypeFilter.value) {
+        // Fuel type filter (Kraftstoff)
+        if (fuelTypeFilter && fuelTypeFilter.value) {
+            console.log('Fuel type filter:', fuelTypeFilter.value);
             filtered = filtered.filter(vehicle => vehicle.fuel_type.toLowerCase() === fuelTypeFilter.value.toLowerCase());
         }
         
-        // Transmission filter
-        if (transmissionFilter.value) {
+        // Transmission filter (Getriebe)
+        if (transmissionFilter && transmissionFilter.value) {
+            console.log('Transmission filter:', transmissionFilter.value);
             filtered = filtered.filter(vehicle => vehicle.transmission_type.toLowerCase() === transmissionFilter.value.toLowerCase());
         }
         
-        // Price filter
-        const maxPrice = parseInt(priceFilter.value);
-        filtered = filtered.filter(vehicle => vehicle.daily_rate <= maxPrice);
-        
-        // Sort
-        if (sortFilter.value === 'price-low') {
-            filtered.sort((a, b) => a.daily_rate - b.daily_rate);
-        } else if (sortFilter.value === 'price-high') {
-            filtered.sort((a, b) => b.daily_rate - a.daily_rate);
-        } else if (sortFilter.value === 'name') {
-            filtered.sort((a, b) => `${a.make} ${a.model}`.localeCompare(`${b.make} ${b.model}`));
+        // Sort filter (Sortieren)
+        if (sortFilter && sortFilter.value) {
+            console.log('Sort filter:', sortFilter.value);
+            if (sortFilter.value === 'price-low') {
+                filtered.sort((a, b) => a.daily_rate - b.daily_rate);
+            } else if (sortFilter.value === 'price-high') {
+                filtered.sort((a, b) => b.daily_rate - a.daily_rate);
+            } else if (sortFilter.value === 'name') {
+                filtered.sort((a, b) => `${a.make} ${a.model}`.localeCompare(`${b.make} ${b.model}`));
+            } else if (sortFilter.value === 'popularity') {
+                // Sort by popularity (we can use car_id as a simple popularity indicator)
+                filtered.sort((a, b) => a.car_id - b.car_id);
+            }
         }
         
+        console.log('Filtered vehicles count:', filtered.length);
         filteredVehicles = filtered;
-        displayVehicles();
+        
+        // Don't display vehicles immediately, wait for search button click
+        return filtered;
     }
 
     // Clear all selections

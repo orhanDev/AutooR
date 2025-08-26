@@ -14,7 +14,7 @@ module.exports = function (req, res, next) {
     // Token yoksa hata döndür
     if (!token) {
         console.log('Token bulunamadı');
-        return res.status(401).json({ message: 'Token nicht gefunden, Autorisierung verweigert.' });
+        return res.status(401).json({ message: 'Token nicht gefunden, AuTorisierung verweigert.' });
     }
 
     try {

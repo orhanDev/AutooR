@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AUTOR - Premium Autovermietung</title>
+    <title>AuTor - Premium Autovermietung</title>
     
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
@@ -154,86 +154,30 @@
         }
 
         body {
-            background: var(--porsche-white);
+            background-image: url('images/cars/überunsfotom.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            min-height: 100vh;
             color: var(--porsche-dark-gray);
             line-height: 1.6;
             overflow-x: hidden;
         }
         
-        /* Modern Navbar */
-        .navbar {
-            background: rgba(255, 255, 255, 0.98) !important;
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-            padding: 1rem 0;
-            transition: all 0.3s ease;
-        }
-
-        .navbar-brand {
-            font-weight: 800;
-            font-size: 1.8rem;
-            color: var(--porsche-black) !important;
-            position: relative;
-            transition: all 0.3s ease;
-        }
-        
-        .navbar-brand::after {
+        /* Overlay for better readability */
+        body::before {
             content: '';
-            position: absolute;
-            bottom: -2px;
+            position: fixed;
+            top: 0;
             left: 0;
-            width: 0;
-            height: 1px;
-            background: #B10000;
-            transition: width 0.3s ease;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: -1;
         }
         
-        .navbar-brand:hover::after {
-            width: 100%;
-        }
-        
-        .navbar-brand i {
-            color: var(--porsche-red) !important;
-        }
 
-        .nav-link {
-            font-weight: 500;
-            color: var(--porsche-dark-gray) !important;
-            margin: 0 0.5rem;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-        
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 0;
-            height: 1px;
-            background: #B10000;
-            transition: width 0.3s ease;
-        }
-        
-        .nav-link:hover::after {
-            width: 100%;
-        }
-        
-        .btn-outline-primary {
-            border: 2px solid var(--porsche-red);
-            color: var(--porsche-red);
-            font-weight: 600;
-            padding: 0.75rem 1.5rem;
-            border-radius: 50px;
-            transition: all 0.3s ease;
-        }
-        
-        .btn-outline-primary:hover {
-            background: var(--porsche-red);
-            color: var(--porsche-white);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(213, 0, 28, 0.3);
-        }
         
         /* Hero Section */
         .hero-section {
@@ -1618,7 +1562,7 @@
         /* About Section */
         .about-section {
             padding: 80px 0;
-            background: #2d3748;
+            background: #0f1419;
         }
         
         .about-content {
@@ -1709,59 +1653,41 @@
 </head>
 <body>
     <!-- Modern Navbar -->
-    <nav class="navbar navbar-expand-lg fixed-top">
-        <div class="container">
-            <a class="navbar-brand" href="/">
-                AUTOR
-            </a>
-            
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/fahrzeuge">Fahrzeuge</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/standorte">Standorte</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/kontakt">Kontakt</a>
-                    </li>
-                </ul>
-                <ul class="navbar-nav ms-auto" id="auth-buttons-container">
-                    <!-- Auth buttons will be loaded here -->
-                </ul>
-            </div>
-        </div>
-    </nav>
+    <div id="navbar-container">
+        <!-- Navbar JavaScript ile yüklenecek -->
+    </div>
 
     <!-- Hero Section - Porsche Style -->
     <section class="hero-section-porsche" style="position: relative; z-index: 1;">
         <div class="hero-background">
-            <img src="images/cars/porschem.jpg" alt="Porsche" class="hero-car-image">
-        <div class="hero-overlay"></div>
+            <img src="images/cars/überunsfotom.jpg" alt="Premium Car" class="hero-car-image">
+            <div class="hero-overlay" style="
+                background: rgba(0, 0, 0, 0.8);
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                z-index: 1;
+            "></div>
         </div>
-        <div class="hero-content-porsche" style="padding-top: 0; margin-top: 0; transform: translateY(0); position: relative; z-index: 2; height: 100vh; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 8rem;">
+        <div class="hero-content-porsche" style="padding-top: 0; margin-top: 0; transform: translateY(0); position: relative; z-index: 2; height: 100vh; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 6rem;">
             <!-- Perfect Search Form -->
             <div class="perfect-search-form" style="
-                background: rgba(255, 255, 255, 0.1);
-                backdrop-filter: blur(20px);
-                border: 1px solid rgba(255, 255, 255, 0.2);
+                background: transparent;
+                border: none;
                 border-radius: 20px;
                 padding: 1rem 1rem 0.5rem 1rem;
-                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+                box-shadow: none;
             ">
             <form id="date-location-form" novalidate>
                     <div class="search-row" style="display: flex !important; gap: 1rem !important; flex-wrap: nowrap !important; width: 100%; flex-direction: row !important; justify-content: center;">
-                    <!-- Pick-up Location -->
+                                        <!-- Pick-up Location -->
                     <div class="search-item">
-                            <label for="pickup-location-selector" style="color: rgba(255, 255, 255, 0.9); font-weight: 300; font-size: 0.6rem; letter-spacing: 1px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.5rem;">
-                                <i class="bi bi-pin-map-fill label-icon"></i>
-                                Abholort
-                            </label>
+                        <label for="pickup-location-selector" style="color: rgba(255, 255, 255, 0.9); font-weight: 300; font-size: 0.6rem; letter-spacing: 1px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.5rem;">
+                            <i class="bi bi-pin-map-fill label-icon"></i>
+                            Abholort
+                        </label>
                             <div class="select-wrapper" style="width: 100%; display: flex; align-items: center;">
                         <select id="pickup-location-selector" required style="width: 100%; height: 0.2rem;">
                                     <option value="" selected></option>
@@ -1775,12 +1701,12 @@
                             </div>
                     </div>
 
-                    <!-- Drop-off Location -->
+                                        <!-- Drop-off Location -->
                     <div class="search-item">
-                            <label for="dropoff-location-selector" style="color: rgba(255, 255, 255, 0.9); font-weight: 300; font-size: 0.6rem; letter-spacing: 1px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.5rem;">
-                                <i class="bi bi-pin-map label-icon"></i>
-                                Rückgabeort
-                            </label>
+                        <label for="dropoff-location-selector" style="color: rgba(255, 255, 255, 0.9); font-weight: 300; font-size: 0.6rem; letter-spacing: 1px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.5rem;">
+                            <i class="bi bi-pin-map label-icon"></i>
+                            Rückgabeort
+                        </label>
                             <div class="select-wrapper" style="width: 100%; display: flex; align-items: center;">
                         <select id="dropoff-location-selector" required style="width: 100%; height: 0.2rem;">
                                     <option value=""></option>
@@ -1984,7 +1910,7 @@
     <!-- Popular Cars Section -->
                     <section id="popular-cars-section" class="popular-cars-section" style="margin-top: 0; padding-top: 0; position: relative; z-index: 0;">
             <div class="container" style="padding-top: 0; padding-bottom: 0;">
-                <div class="row mb-0" style="margin-top: 3rem;">
+                <div class="row mb-0" style="margin-top: 5rem;">
                     <div class="col-12 text-center">
                         <h2 class="section-title" style="font-size: 2.5rem; font-weight: 600; color: #718096; margin-bottom: 0; font-family: 'Inter', sans-serif;">
                             Unsere Exklusivsten Fahrzeuge
@@ -1994,7 +1920,7 @@
                         </p>
                     </div>
                 </div>
-                <div class="row" id="popular-cars-container" style="margin-top: 1rem; display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem;">
+                <div class="row" id="popular-cars-container" style="margin-top: 4rem; display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem;">
                 <!-- Car cards will be loaded here by JavaScript -->
              </div>
          </div>
@@ -2006,7 +1932,7 @@
             <!-- Features -->
             <div class="features-part">
             <div class="section-header">
-                <h2 class="section-title" style="color: #718096;">Warum AUTOR wählen?</h2>
+                                        <h2 class="section-title" style="color: #718096;">Warum AuTor wählen?</h2>
                 <p class="section-subtitle">Wir bieten Ihnen den besten Service für Ihre Mobilitätsbedürfnisse</p>
             </div>
             <div class="row g-4">
@@ -2087,7 +2013,7 @@
             <div class="row align-items-center">
                 <div class="col-lg-6">
                     <div class="about-content">
-                        <h2 class="about-title">Über AUTOR</h2>
+                        <h2 class="about-title">Über AuTor</h2>
                         <p class="about-text">
                             Seit über 10 Jahren sind wir Ihr vertrauensvoller Partner für Premium-Autovermietung in Deutschland. 
                             Wir bieten Ihnen eine exklusive Auswahl an hochwertigen Fahrzeugen für jeden Anlass.
@@ -2114,8 +2040,8 @@
                         </div>
                 <div class="col-lg-6">
                     <div class="text-center">
-                        <img src="images/cars/otom.webp" 
-                             alt="Premium Car" class="img-fluid rounded-4" style="max-width: 100%; height: auto;">
+                        <img src="images/cars/autor.png" 
+                             alt="AuTor" class="img-fluid rounded-4" style="max-width: 100%; height: auto;">
                     </div>
                 </div>
             </div>
@@ -2126,7 +2052,7 @@
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
-                <p class="mb-3">© 2025 AUTOR. Alle Rechte vorbehalten.</p>
+                <p class="mb-3">© 2025 AuTor. Alle Rechte vorbehalten.</p>
                 <div>
                     <a href="#" class="footer-link">Datenschutz</a>
                     <a href="#" class="footer-link">AGB</a>
@@ -2565,6 +2491,103 @@
             console.log('Calendars initialized:', pickupCalendar, dropoffCalendar);
             
 
+            
+            // Porsche-style search button animations
+            const searchButton = document.querySelector('.search-button button');
+            if (searchButton) {
+                // Hover efekti
+                searchButton.addEventListener('mouseenter', function() {
+                    this.style.transform = 'scale(1.05) translateY(-2px)';
+                    this.style.boxShadow = '0 8px 25px rgba(255, 255, 255, 0.3)';
+                    this.style.background = 'rgba(255, 255, 255, 0.25)';
+                    this.style.borderColor = 'rgba(255, 255, 255, 0.6)';
+                });
+                
+                searchButton.addEventListener('mouseleave', function() {
+                    this.style.transform = 'scale(1) translateY(0)';
+                    this.style.boxShadow = 'none';
+                    this.style.background = 'rgba(255, 255, 255, 0.15)';
+                    this.style.borderColor = 'rgba(255, 255, 255, 0.3)';
+                });
+                
+                // Tıklama efekti
+                searchButton.addEventListener('click', function(e) {
+                    // Tıklama animasyonu
+                    this.style.transform = 'scale(0.95)';
+                    this.style.background = 'rgba(255, 255, 255, 0.4)';
+                    
+                    setTimeout(() => {
+                        this.style.transform = 'scale(1.05) translateY(-2px)';
+                        this.style.background = 'rgba(255, 255, 255, 0.25)';
+                    }, 150);
+                    
+                    setTimeout(() => {
+                        this.style.transform = 'scale(1) translateY(0)';
+                        this.style.background = 'rgba(255, 255, 255, 0.15)';
+                    }, 300);
+                    
+                    // Porsche-style arama fonksiyonu
+                    performPorscheSearch();
+                });
+            }
+            
+            // Porsche-style arama fonksiyonu
+            function performPorscheSearch() {
+                const pickupLocation = document.getElementById('pickup-location-selector').value;
+                const dropoffLocation = document.getElementById('dropoff-location-selector').value;
+                const pickupDate = pickupDateInput.value;
+                const dropoffDate = dropoffDateInput.value;
+                
+                // Arama parametrelerini konsola yazdır (geliştirme için)
+                console.log('Porsche Search Parameters:', {
+                    pickupLocation,
+                    dropoffLocation,
+                    pickupDate,
+                    dropoffDate
+                });
+                
+                // Burada gerçek arama fonksiyonu eklenebilir
+                // Örneğin: searchVehicles(pickupLocation, dropoffLocation, pickupDate, dropoffDate);
+                
+                // Porsche-style başarı mesajı
+                showPorscheNotification('Arama başlatıldı...', 'success');
+            }
+            
+            // Porsche-style bildirim fonksiyonu
+            function showPorscheNotification(message, type) {
+                const notification = document.createElement('div');
+                notification.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background: ${type === 'success' ? 'rgba(40, 167, 69, 0.9)' : 'rgba(220, 53, 69, 0.9)'};
+                    color: white;
+                    padding: 1rem 1.5rem;
+                    border-radius: 8px;
+                    font-weight: 500;
+                    z-index: 10000;
+                    backdrop-filter: blur(10px);
+                    border: 1px solid rgba(255, 255, 255, 0.2);
+                    transform: translateX(100%);
+                    transition: transform 0.3s ease;
+                `;
+                notification.textContent = message;
+                
+                document.body.appendChild(notification);
+                
+                // Animasyon
+                setTimeout(() => {
+                    notification.style.transform = 'translateX(0)';
+                }, 100);
+                
+                // Otomatik kaldırma
+                setTimeout(() => {
+                    notification.style.transform = 'translateX(100%)';
+                    setTimeout(() => {
+                        document.body.removeChild(notification);
+                    }, 300);
+                }, 3000);
+            }
             
             // Form submission
             const form = document.getElementById('date-location-form');

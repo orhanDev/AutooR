@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (!response.ok) {
                 if (response.status === 401) {
                     // auth.js leitet bereits weiter, hier nur Protokollierung
-                    console.error('Autorisierungsfehler bei den Reservierungen.');
+                    console.error('AuTorisierungsfehler bei den Reservierungen.');
                     return;
                 }
                 throw new Error(`HTTP Fehler! Status: ${response.status}`);

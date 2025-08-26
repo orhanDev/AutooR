@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fahrer Informationen - AUTOR</title>
+    <title>Fahrer Informationen - AuTor</title>
     
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
@@ -28,9 +28,25 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #ffffff;
+            background-image: url('images/cars/überunsfotom.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
             margin-top: 76px;
             min-height: 100vh;
+        }
+        
+        /* Overlay for better readability */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: -1;
         }
 
         /* Navbar */
@@ -617,7 +633,7 @@
         <div class="container">
             <a class="navbar-brand fw-bold fs-3" href="/" style="text-decoration: none;">
                 <i class="bi bi-car-front me-2" style="color: #000000;"></i>
-                <span style="color: #000000; font-family: 'Explorer Print Sans Bold', sans-serif;">AUTOR</span>
+                <span style="color: #000000; font-family: 'Explorer Print Sans Bold', sans-serif;">AuTor</span>
             </a>
             
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
