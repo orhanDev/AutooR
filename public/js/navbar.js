@@ -88,6 +88,80 @@ function addNavbarCSS() {
             text-transform: none;
         }
         
+        .navbar-brand::before {
+            display: none !important;
+            content: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+        }
+        
+        /* Hide any Premium Car text */
+        .navbar-brand::before,
+        .navbar-brand::after {
+            content: none !important;
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+        }
+        
+        /* Remove any additional text elements */
+        .navbar-brand span,
+        .navbar-brand div,
+        .navbar-brand p {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+        }
+        
+        /* Force only AuTor text to be visible */
+        .navbar-brand {
+            font-weight: 800 !important;
+            font-size: 1.8rem !important;
+            color: #B10000 !important;
+            text-decoration: none !important;
+            background: none !important;
+            border: none !important;
+            box-shadow: none !important;
+        }
+        
+        /* Nuclear option - hide everything except AuTor */
+        .navbar-brand * {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+            content: none !important;
+        }
+        
+        /* Ensure only AuTor text is visible */
+        .navbar-brand:not(:empty) {
+            content: "AuTor" !important;
+        }
+        
+        /* Ensure only AuTor text is visible */
+        .navbar-brand {
+            font-weight: 800;
+            font-size: 1.8rem;
+            color: #B10000 !important;
+            position: relative;
+            transition: all 0.3s ease;
+            text-transform: none;
+        }
+        
+        .navbar-brand::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.8);
+            transition: width 0.3s ease;
+        }
+        
+        .navbar-brand:hover::after {
+            width: 100%;
+        }
+        
         .navbar-brand::after {
             content: '';
             position: absolute;
