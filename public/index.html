@@ -154,7 +154,7 @@
         }
 
         body {
-            background-image: url('images/cars/lexusbg.jpg');
+            background-image: url('images/cars/überunsfotom.jpeg');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -181,11 +181,12 @@
         
         /* Hero Section */
         .hero-section {
-            background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%);
             color: var(--porsche-white);
             padding: 120px 0 80px;
             position: relative;
             overflow: hidden;
+            transform: translateY(-2rem) !important;
         }
         
         .hero-section::before {
@@ -225,13 +226,63 @@
         .perfect-search-form {
             position: relative;
             z-index: 3;
-            margin-top: 0;
+            margin-top: -2rem !important;
             margin-bottom: 1rem;
             padding: 0 4rem;
             width: 100%;
             max-width: none;
             margin-left: auto;
             margin-right: auto;
+            transform: translateY(-2rem) !important;
+        }
+        
+        /* Popular Cars Section - Fix positioning */
+        #popular-cars-section {
+            margin-top: 0 !important;
+            padding-top: 0 !important;
+            position: relative;
+            z-index: 0;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%);
+        }
+        
+        /* Features section positioning */
+        .features-stats-section {
+            margin-top: 0 !important;
+            margin-bottom: -5rem !important;
+            padding-top: 0 !important;
+            background: linear-gradient(135deg, #2d2d2d 0%, #404040 50%, #2d2d2d 100%);
+        }
+        
+        /* Features section container padding */
+        .features-stats-section .container {
+            padding-bottom: 1rem !important;
+        }
+        
+        /* Stats part padding */
+        .features-stats-section .stats-part {
+            padding-bottom: 1rem !important;
+        }
+        
+        /* About section positioning */
+        .about-section {
+            margin-top: -5rem !important;
+            padding-top: 0 !important;
+            background: linear-gradient(135deg, #404040 0%, #555555 50%, #404040 100%);
+        }
+        
+        /* Hero content positioning fix */
+        .hero-content-porsche {
+            max-width: none !important;
+            margin: 0 !important;
+            padding: 0 0 2rem 0 !important;
+            text-align: left !important;
+            position: relative;
+            z-index: 2;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            transform: translateY(-2rem) !important;
         }
         
         /* Override hero content for search form */
@@ -1300,6 +1351,32 @@
             margin-bottom: 4rem;
         }
         
+        /* Features section header özel stil */
+        .features-stats-section .section-header {
+            margin-top: 1rem !important;
+            padding-top: 1rem !important;
+        }
+        
+        /* Features section container özel stil */
+        .features-stats-section .container {
+            padding-top: 1rem !important;
+        }
+        
+        /* Features part özel stil */
+        .features-stats-section .features-part {
+            padding-top: 1rem !important;
+        }
+        
+        /* About section container özel stil */
+        .about-section .container {
+            padding-top: 1rem !important;
+        }
+        
+        /* About section content özel stil */
+        .about-section .about-content {
+            padding-top: 1rem !important;
+        }
+        
         .section-title {
             font-size: 2.5rem;
             font-weight: 800;
@@ -1479,7 +1556,7 @@
         
         /* Features & Stats Section */
         .features-stats-section {
-            background: #1a202c;
+            background: linear-gradient(135deg, #2d2d2d 0%, #404040 50%, #2d2d2d 100%);
             padding: 60px 0;
             position: relative;
             z-index: 0;
@@ -1562,7 +1639,7 @@
         /* About Section */
         .about-section {
             padding: 80px 0;
-            background: #0f1419;
+            background: linear-gradient(135deg, #404040 0%, #555555 50%, #404040 100%);
         }
         
         .about-content {
@@ -1604,7 +1681,7 @@
         
         /* Footer */
         .footer {
-            background: linear-gradient(135deg, #1a202c, #2d3748);
+            background: linear-gradient(135deg, #555555, #666666);
             color: #ffffff;
             padding: 60px 0 40px 0;
             text-align: center;
@@ -1660,7 +1737,7 @@
     <!-- Hero Section - Porsche Style -->
     <section class="hero-section-porsche" style="position: relative; z-index: 1;">
         <div class="hero-background">
-            <img src="images/cars/lexusbg.jpg" alt="Premium Car" class="hero-car-image">
+                                    <img src="images/cars/überunsfotom.jpeg" alt="Premium Car" class="hero-car-image">
             <div class="hero-overlay" style="
                 background: rgba(0, 0, 0, 0.8);
                 position: absolute;
@@ -1853,7 +1930,7 @@
                     </div>
                     
                     <!-- Minimal Discover Button -->
-                    <div class="discover-button-container" style="text-align: center; margin-top: 0.2rem;">
+                    <div class="discover-button-container" style="text-align: center; margin-top: -1rem;">
                         <button class="discover-button" style="
                             background: rgba(255, 255, 255, 0.1);
                             backdrop-filter: blur(20px);
@@ -1907,12 +1984,12 @@
         </div>
     </section>
 
-    <!-- Popular Cars Section -->
-                    <section id="popular-cars-section" class="popular-cars-section" style="margin-top: 0; padding-top: 0; position: relative; z-index: 0;">
-            <div class="container" style="padding-top: 0; padding-bottom: 0;">
-                <div class="row mb-0" style="margin-top: 5rem;">
+        <!-- Popular Cars Section -->
+                     <section id="popular-cars-section" class="popular-cars-section" style="margin-top: 0 !important; padding-top: 0 !important; position: relative; z-index: 0; background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%);">
+                          <div class="container" style="padding-top: 2rem; padding-bottom: 0;">
+                  <div class="row mb-0" style="margin-top: 0;">
                     <div class="col-12 text-center">
-                        <h2 class="section-title" style="font-size: 2.5rem; font-weight: 600; color: #718096; margin-bottom: 0; font-family: 'Inter', sans-serif;">
+                        <h2 class="section-title" style="font-size: 2.5rem; font-weight: 600; color: #ffffff; margin-bottom: 0; font-family: 'Inter', sans-serif;">
                             Unsere Exklusivsten Fahrzeuge
                         </h2>
                         <p class="section-subtitle" style="font-size: 1.1rem; color: #a0aec0; font-weight: 400; font-family: 'Inter', sans-serif; margin-bottom: 0;">
@@ -1920,19 +1997,19 @@
                         </p>
                     </div>
                 </div>
-                <div class="row" id="popular-cars-container" style="margin-top: 4rem; display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem;">
+                <div class="row" id="popular-cars-container" style="margin-top: 2rem; display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem;">
                 <!-- Car cards will be loaded here by JavaScript -->
              </div>
          </div>
      </section>
 
-         <!-- Features & Stats Section -->
-    <section class="features-stats-section" style="position: relative; z-index: 0;">
-        <div class="container">
+                  <!-- Features & Stats Section -->
+     <section class="features-stats-section" style="position: relative; z-index: 0; margin-top: 0 !important; margin-bottom: -5rem !important; background: linear-gradient(135deg, #2d2d2d 0%, #404040 50%, #2d2d2d 100%);">
+        <div class="container" style="padding-top: 1rem; padding-bottom: 1rem;">
             <!-- Features -->
             <div class="features-part">
-            <div class="section-header">
-                                        <h2 class="section-title" style="color: #718096;">Warum AuTor wählen?</h2>
+            <div class="section-header" style="margin-top: 1rem;">
+                                        <h2 class="section-title" style="color: #ffffff;">Warum AuTor wählen?</h2>
                 <p class="section-subtitle">Wir bieten Ihnen den besten Service für Ihre Mobilitätsbedürfnisse</p>
             </div>
             <div class="row g-4">
@@ -1976,7 +2053,7 @@
         </div>
 
             <!-- Stats -->
-            <div class="stats-part">
+            <div class="stats-part" style="padding-bottom: 1rem;">
             <div class="row">
                 <div class="col-lg-3 col-md-6">
                     <div class="stat-item">
@@ -2008,8 +2085,8 @@
     </section>
 
     <!-- About Section -->
-    <section class="about-section">
-        <div class="container">
+    <section class="about-section" style="margin-top: -5rem !important; background: linear-gradient(135deg, #404040 0%, #555555 50%, #404040 100%);">
+        <div class="container" style="padding-top: 1rem;">
             <div class="row align-items-center">
                 <div class="col-lg-6">
                     <div class="about-content">

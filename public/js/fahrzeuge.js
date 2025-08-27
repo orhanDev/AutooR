@@ -303,7 +303,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 };
 
                 localStorage.setItem('searchData', JSON.stringify(formData));
-                showNotification('Reisedaten erfolgreich gespeichert!', 'success');
             });
         }
     }
@@ -330,15 +329,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
         
-        // Show notification
-        const resultCount = filteredVehicles.length;
-        if (resultCount === 0) {
-            showNotification('Keine Fahrzeuge gefunden. Bitte versuchen Sie andere Filtereinstellungen.', 'info');
-        } else {
-            showNotification(`${resultCount} Fahrzeug(e) gefunden!`, 'success');
-        }
-        
-        console.log('Search completed. Found vehicles:', resultCount);
+        console.log('Search completed. Found vehicles:', filteredVehicles.length);
     }
 
     // Load vehicles
@@ -404,7 +395,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const carsHTML = filteredVehicles.map(vehicle => `
-            <div class="car-card" data-car-id="${vehicle.car_id}" style="width: 31%; margin: 0.5rem; flex: 0 0 calc(31% - 0.5rem);">
+            <div class="car-card" data-car-id="${vehicle.car_id}" style="width: 32%; margin: 0.5%; flex: 0 0 32%;">
                 <div class="car-image">
                     <img src="${vehicle.image_url}" 
                          alt="${vehicle.make} ${vehicle.model}" 
@@ -735,7 +726,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 daily_rate: vehicle.daily_rate
             }));
             highlightSelectedVehicle();
-            showNotification(`${vehicle.make} ${vehicle.model} ausgewählt`, 'success');
         }
     };
 
@@ -777,6 +767,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.clearAllSelections = function() {
         clearAllSelections();
-        showNotification('Alle Auswahlen zurückgesetzt', 'info');
     };
 });

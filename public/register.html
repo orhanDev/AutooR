@@ -131,52 +131,38 @@
             flex: 1;
         }
 
-        .footer-section {
-            background: #333;
+        /* Footer */
+        .footer {
+            background: linear-gradient(135deg, #555555, #666666);
             color: #ffffff;
-            padding: 8px 0;
-            margin-top: 30px;
-            width: 100vw;
-            position: relative;
-            left: 50%;
-            right: 50%;
-            margin-left: -50vw;
-            margin-right: -50vw;
-            z-index: 1;
-        }
-
-        .footer-content {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 8px;
-            font-size: 11px;
-            flex-wrap: wrap;
+            padding: 60px 0 40px 0;
             text-align: center;
-            background: #333;
-            padding: 0 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
-
-        .footer-text {
-            color: #ffffff;
+        
+        .footer-content {
+            opacity: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
         }
-
+        
         .footer-link {
-            color: #ff6b35;
+            color: #a0aec0;
             text-decoration: none;
-            font-weight: 600;
-            transition: color 0.3s ease;
+            margin: 0 1.5rem;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
         }
-
+        
         .footer-link:hover {
-            color: #e55a2b;
-            text-decoration: underline;
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
         }
-
-                 .footer-separator {
-             color: #ffffff;
-             font-weight: 600;
-         }
 
          /* Responsive Design */
          @media (max-width: 768px) {
@@ -996,14 +982,16 @@
     </main>
 
     <!-- Footer -->
-    <footer class="footer-section">
+    <footer class="footer">
         <div class="container">
             <div class="footer-content">
-                <span class="footer-text">© 2025 Alle Rechte vorbehalten. Dies ist eine Beispiel-Website für Übungszwecke vorbereitet. Es ist keine echte Autovermietungs-Website.</span>
-                <span class="footer-separator">-</span>
-                <a href="#" class="footer-link">Datenschutz</a>
-                <span class="footer-separator">-</span>
-                <a href="#" class="footer-link">Bedingungen</a>
+                <p class="mb-3">© 2025 AuTor. Alle Rechte vorbehalten.</p>
+                <div>
+                    <a href="#" class="footer-link">Datenschutz</a>
+                    <a href="#" class="footer-link">AGB</a>
+                    <a href="#" class="footer-link">Impressum</a>
+                    <a href="#" class="footer-link">Kontakt</a>
+                </div>
             </div>
         </div>
     </footer>
