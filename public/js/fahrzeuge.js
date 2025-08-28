@@ -6,8 +6,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Get DOM elements
     const vehiclesContainer = document.getElementById('vehicles-container');
-    const insuranceOptions = document.getElementById('insurance-options');
-    const productOptions = document.getElementById('product-options');
     const dateLocationForm = document.getElementById('date-location-form');
     const pickupLocationSelector = document.getElementById('pickup-location-selector');
     const dropoffLocationSelector = document.getElementById('dropoff-location-selector');
@@ -18,8 +16,6 @@ document.addEventListener('DOMContentLoaded', () => {
     
     console.log('DOM elements found:');
     console.log('vehiclesContainer:', vehiclesContainer);
-    console.log('insuranceOptions:', insuranceOptions);
-    console.log('productOptions:', productOptions);
 
     // Filter elements
     const vehicleTypeFilter = document.getElementById('vehicle-type-filter');
@@ -33,70 +29,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let allVehicles = [];
     let filteredVehicles = [];
     let selectedVehicle = null;
-    let selectedInsurance = null;
-    let selectedProducts = [];
 
-    // Insurance options data
-    const insuranceData = [
-        {
-            id: 'basic',
-            title: 'Basis-Versicherung',
-            price: 15,
-            description: 'Grundlegende Haftpflichtversicherung mit Selbstbeteiligung'
-        },
-        {
-            id: 'comfort',
-            title: 'Komfort-Versicherung',
-            price: 25,
-            description: 'Erweiterte Versicherung mit reduzierter Selbstbeteiligung'
-        },
-        {
-            id: 'premium',
-            title: 'Premium-Versicherung',
-            price: 35,
-            description: 'Vollständige Versicherung ohne Selbstbeteiligung'
-        }
-    ];
 
-    // Product options data
-    const productData = [
-        {
-            id: 'gps',
-            title: 'GPS-Navigation',
-            price: 12,
-            description: 'Professionelle GPS-Navigation mit Live-Verkehrsdaten'
-        },
-        {
-            id: 'child-seat',
-            title: 'Kindersitz',
-            price: 15,
-            description: 'Sicherer Kindersitz für Kinder bis 36kg'
-        },
-        {
-            id: 'roof-rack',
-            title: 'Dachgepäckträger',
-            price: 20,
-            description: 'Zusätzlicher Stauraum für Gepäck und Sportausrüstung'
-        },
-        {
-            id: 'winter-tires',
-            title: 'Winterreifen',
-            price: 25,
-            description: 'Sichere Winterreifen für kalte Jahreszeiten'
-        },
-        {
-            id: 'additional-driver',
-            title: 'Zusätzlicher Fahrer',
-            price: 18,
-            description: 'Berechtigung für einen zusätzlichen Fahrer'
-        },
-        {
-            id: 'baby-seat',
-            title: 'Babyschale',
-            price: 18,
-            description: 'Sichere Babyschale für Kinder bis 13kg oder 15 Monate'
-        }
-    ];
 
     // Location names mapping
     const locationNames = {
@@ -121,8 +55,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize page
     initializeDateLocationSelector();
     loadVehicles();
-    loadInsuranceOptions();
-    loadProductOptions();
     initializeFilters();
     
     if (shouldClear !== '1') {
@@ -395,7 +327,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const carsHTML = filteredVehicles.map(vehicle => `
-            <div class="car-card" data-car-id="${vehicle.car_id}" style="width: 32%; margin: 0.5%; flex: 0 0 32%;">
+            <div class="car-card" data-car-id="${vehicle.car_id}" style="height: 80px !important; background: rgba(30, 58, 138, 0.5) !important; border: 1px solid rgba(59, 130, 246, 0.3) !important; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important; width: 31%; margin: 1.5rem; flex: 0 0 calc(31% - 1.5rem); border-radius: 8px;">
                 <div class="car-image">
                     <img src="${vehicle.image_url}" 
                          alt="${vehicle.make} ${vehicle.model}" 
@@ -421,7 +353,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         </div>
                     </div>
                     <div class="car-cta">
-                        <button class="btn-rent-now">
+                        <button class="btn-rent-now" onclick="rentVehicle(${vehicle.car_id}, '${vehicle.make} ${vehicle.model}', ${vehicle.daily_rate})">
                             Jetzt mieten
                         </button>
                     </div>
@@ -451,31 +383,23 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Load insurance options
-    function loadInsuranceOptions() {
-        insuranceOptions.innerHTML = insuranceData.map(insurance => `
-            <div class="insurance-item" onclick="selectInsurance('${insurance.id}')" id="insurance-${insurance.id}">
-                <div class="insurance-radio"></div>
-                <div class="insurance-content">
-                    <div class="insurance-title">${insurance.title}</div>
-                    <div class="insurance-price">€${insurance.price}/Tag</div>
-                </div>
-            </div>
-        `).join('');
-    }
 
-    // Load product options
-    function loadProductOptions() {
-        productOptions.innerHTML = productData.map(product => `
-            <div class="product-item" onclick="toggleProduct('${product.id}')" id="product-${product.id}">
-                <div class="product-checkbox"></div>
-                <div class="product-content">
-                    <div class="product-title">${product.title}</div>
-                    <div class="product-price">€${product.price}/Tag</div>
-                </div>
-            </div>
-        `).join('');
-    }
+
+    // Rent vehicle function - Global scope
+    window.rentVehicle = function(carId, carName, dailyRate) {
+        // Save car selection to localStorage
+        const carSelection = {
+            carId: carId,
+            carName: carName,
+            dailyRate: dailyRate,
+            selectedDate: new Date().toISOString().split('T')[0] // Today's date as default
+        };
+        
+        localStorage.setItem('selectedCar', JSON.stringify(carSelection));
+        
+        // Redirect to extras & versicherung page
+        window.location.href = `/extras-versicherung.html?carId=${carId}&days=1`;
+    };
 
     // Initialize filters
     function initializeFilters() {
@@ -584,24 +508,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // Clear all selections
     function clearAllSelections() {
         selectedVehicle = null;
-        selectedInsurance = null;
-        selectedProducts = [];
         
         localStorage.removeItem('selectedVehicle');
-        localStorage.removeItem('selectedInsurance');
-        localStorage.removeItem('selectedProducts');
         
         // Clear UI highlights
         document.querySelectorAll('.car-card').forEach(card => {
             card.classList.remove('selected');
-        });
-        
-        document.querySelectorAll('.insurance-item').forEach(item => {
-            item.classList.remove('selected');
-        });
-        
-        document.querySelectorAll('.product-item').forEach(item => {
-            item.classList.remove('selected');
         });
     }
 
@@ -620,28 +532,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.error('Error parsing saved vehicle:', e);
             }
         }
-        
-        // Load insurance selection
-        const savedInsurance = localStorage.getItem('selectedInsurance');
-        if (savedInsurance) {
-            try {
-                selectedInsurance = JSON.parse(savedInsurance);
-                highlightSelectedInsurance();
-            } catch (e) {
-                console.error('Error parsing saved insurance:', e);
-            }
-        }
-        
-        // Load product selections
-        const savedProducts = localStorage.getItem('selectedProducts');
-        if (savedProducts) {
-            try {
-                selectedProducts = JSON.parse(savedProducts);
-                highlightSelectedProducts();
-            } catch (e) {
-                console.error('Error parsing saved products:', e);
-            }
-        }
     }
 
     // Highlight selected vehicle
@@ -658,33 +548,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Highlight selected insurance
-    function highlightSelectedInsurance() {
-        document.querySelectorAll('.insurance-item').forEach(item => {
-            item.classList.remove('selected');
-        });
 
-        if (selectedInsurance) {
-            const insuranceItem = document.getElementById(`insurance-${selectedInsurance.id}`);
-            if (insuranceItem) {
-                insuranceItem.classList.add('selected');
-            }
-        }
-    }
-
-    // Highlight selected products
-    function highlightSelectedProducts() {
-        document.querySelectorAll('.product-item').forEach(item => {
-            item.classList.remove('selected');
-        });
-
-        selectedProducts.forEach(product => {
-            const productItem = document.getElementById(`product-${product.id}`);
-            if (productItem) {
-                productItem.classList.add('selected');
-            }
-        });
-    }
 
     // Show notification
     function showNotification(message, type = 'info') {
@@ -727,42 +591,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }));
             highlightSelectedVehicle();
         }
-    };
-
-    window.selectInsurance = function(insuranceId) {
-        if (selectedInsurance && selectedInsurance.id === insuranceId) {
-            selectedInsurance = null;
-            localStorage.removeItem('selectedInsurance');
-        } else {
-            const insurance = insuranceData.find(ins => ins.id === insuranceId);
-            if (insurance) {
-                selectedInsurance = {
-                    id: insurance.id,
-                    name: insurance.title,
-                    daily_rate: insurance.price
-                };
-                localStorage.setItem('selectedInsurance', JSON.stringify(selectedInsurance));
-            }
-        }
-        highlightSelectedInsurance();
-    };
-
-    window.toggleProduct = function(productId) {
-        const index = selectedProducts.findIndex(p => p.id === productId);
-        if (index > -1) {
-            selectedProducts.splice(index, 1);
-        } else {
-            const product = productData.find(prod => prod.id === productId);
-            if (product) {
-                selectedProducts.push({
-                    id: product.id,
-                    name: product.title,
-                    daily_rate: product.price
-                });
-            }
-        }
-        localStorage.setItem('selectedProducts', JSON.stringify(selectedProducts));
-        highlightSelectedProducts();
     };
 
     window.clearAllSelections = function() {

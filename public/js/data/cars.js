@@ -453,7 +453,7 @@ window.LOCAL_CARS = [
 		seating_capacity: 5,
 		location_id: 4,
 		location_name: 'Köln Dom',
-		image_url: '/images/cars/audi-rs-etron.jpg',
+		        image_url: '/images/cars/audi-q8-rs.jpg',
 		color: 'Grau',
 		mileage: 25000,
 		vehicle_type: 'Premium Sedan',

@@ -77,6 +77,12 @@ app.get('/fahrzeuge', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'fahrzeuge.html'));
 });
 
+// Extras & Versicherung page
+app.get('/extras-versicherung', (req, res) => {
+    console.log('Extras & Versicherung route accessed');
+    res.sendFile(path.join(__dirname, 'public', 'extras-versicherung.html'));
+});
+
 app.get('/fahrzeuge2', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'fahrzeuge2.html'));
 });

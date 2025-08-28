@@ -112,7 +112,7 @@ function loadPopularCars() {
             transmission_type: 'Automatik',
             fuel_type: 'Benzin',
             seating_capacity: 2,
-            image_url: '/images/cars/audi-rs-etron.jpg'
+            image_url: '/images/cars/audi-q8-rs.jpg'
         }
     ];
     
@@ -151,7 +151,7 @@ function loadPopularCars() {
                     </div>
                 </div>
                 <div class="car-cta">
-                    <button class="btn-rent-now">
+                    <button class="btn-rent-now" onclick="rentVehicleFromHome(${car.car_id}, '${car.make} ${car.model}', ${car.daily_rate})">
                         Jetzt mieten
                     </button>
                 </div>
@@ -238,6 +238,22 @@ function initializeDatePickers() {
         });
     }
 }
+
+// Rent vehicle from home page - Global scope
+window.rentVehicleFromHome = function(carId, carName, dailyRate) {
+    // Save car selection to localStorage
+    const carSelection = {
+        carId: carId,
+        carName: carName,
+        dailyRate: dailyRate,
+        selectedDate: new Date().toISOString().split('T')[0] // Today's date as default
+    };
+    
+    localStorage.setItem('selectedCar', JSON.stringify(carSelection));
+    
+    // Redirect to extras & versicherung page
+    window.location.href = `/extras-versicherung.html?carId=${carId}&days=1`;
+};
 
 // Initialize form submission
 function initializeFormSubmission() {

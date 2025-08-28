@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AuTor - Premium Autovermietung</title>
+    <title>AutOr - Premium Autovermietung</title>
     
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
@@ -17,7 +17,8 @@
     <style>
         .custom-calendar {
             position: absolute;
-            bottom: 100%;
+            bottom: 100% !important;
+            top: auto !important;
             left: 0;
             right: 0;
             background: #191919;
@@ -154,7 +155,7 @@
         }
 
         body {
-            background-image: url('images/cars/überunsfotom.jpeg');
+            background-image: url('images/cars/überunsfotom.jpg');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -165,17 +166,7 @@
             overflow-x: hidden;
         }
         
-        /* Overlay for better readability */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.8);
-            z-index: -1;
-        }
+        /* Overlay for better readability - removed as we now use hero-overlay */
         
 
         
@@ -242,7 +233,7 @@
             padding-top: 0 !important;
             position: relative;
             z-index: 0;
-            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%);
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 25%, #dee2e6 50%, #e9ecef 75%, #f8f9fa 100%);
         }
         
         /* Features section positioning */
@@ -250,7 +241,7 @@
             margin-top: 0 !important;
             margin-bottom: -5rem !important;
             padding-top: 0 !important;
-            background: linear-gradient(135deg, #2d2d2d 0%, #404040 50%, #2d2d2d 100%);
+            background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 25%, #ced4da 50%, #dee2e6 75%, #e9ecef 100%);
         }
         
         /* Features section container padding */
@@ -267,7 +258,7 @@
         .about-section {
             margin-top: -5rem !important;
             padding-top: 0 !important;
-            background: linear-gradient(135deg, #404040 0%, #555555 50%, #404040 100%);
+            background: linear-gradient(135deg, #dee2e6 0%, #ced4da 25%, #adb5bd 50%, #ced4da 75%, #dee2e6 100%);
         }
         
         /* Hero content positioning fix */
@@ -322,6 +313,7 @@
             min-width: 120px;
             flex: 1;
             margin: 0 0.5rem;
+            align-items: flex-start;
         }
         
         .search-item.search-button {
@@ -329,24 +321,26 @@
             border-radius: 0 !important;
             padding: 0 !important;
             flex: 0 0 auto !important;
-            width: 40px !important;
+            width: 150px !important;
             display: inline-block !important;
         }
         
         .search-item.search-button button {
-            width: 100px;
-            height: 36px;
-            background: rgba(255, 255, 255, 0.1);
+            width: 150px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.2);
             backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.4);
             border-radius: 12px;
             color: #ffffff;
-            font-size: 14px;
+            font-size: 18px;
+            font-weight: 600;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
         }
         
         .search-item.search-button button:hover {
@@ -472,11 +466,11 @@
             width: 100%;
             padding: 0.75rem 4rem 0.75rem 0;
             border: none;
-            border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+            border-bottom: 2px solid rgba(255, 255, 255, 0.5);
             border-radius: 0;
             font-size: 14px;
             color: #ffffff;
-            background: transparent;
+            background: rgba(255, 255, 255, 0.05);
             transition: all 0.3s ease;
             min-height: 42px;
             font-weight: 500;
@@ -858,12 +852,13 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            color: rgba(255, 255, 255, 0.9);
+            color: rgba(255, 255, 255, 1);
             font-size: 14px;
-            font-weight: 500;
+            font-weight: 600;
             margin-bottom: 8px;
             cursor: pointer;
             transition: all 0.3s ease;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
         }
 
         .search-item label:hover {
@@ -1393,10 +1388,10 @@
         
         /* Car Cards - Porsche Style */
         .car-card {
-            background: linear-gradient(135deg, #1a202c, #2d3748) !important;
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a) !important;
             border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.4);
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             border: 1px solid rgba(255, 255, 255, 0.1);
             position: relative;
@@ -1420,13 +1415,13 @@
         
         .car-card:hover {
             transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 25px 80px rgba(213, 0, 28, 0.2);
-            border-color: rgba(213, 0, 28, 0.3);
+            box-shadow: 0 25px 80px rgba(212, 175, 55, 0.2);
+            border-color: rgba(212, 175, 55, 0.3);
         }
         
         .car-image {
             height: 120px;
-            background: linear-gradient(45deg, #1a1a1a, #2d2d2d);
+            background: linear-gradient(45deg, #f8f9fa, #e9ecef);
             position: relative;
             overflow: hidden;
             position: absolute;
@@ -1452,13 +1447,13 @@
             position: absolute;
             top: 0.6rem;
             right: 0.6rem;
-            background: linear-gradient(135deg, #8B0000, #A52A2A);
-            color: white;
+            background: linear-gradient(135deg, #d4af37, #b8941f);
+            color: #1a1a1a;
             padding: 0.25rem 0.5rem;
             border-radius: 12px;
             font-weight: 700;
             font-size: 0.7rem;
-            box-shadow: 0 2px 8px rgba(139, 0, 0, 0.3);
+            box-shadow: 0 2px 8px rgba(212, 175, 55, 0.3);
         }
         
         .car-details {
@@ -1469,7 +1464,7 @@
             justify-content: flex-start;
             min-height: 127px;
             max-height: 127px;
-            background: linear-gradient(135deg, #1a202c, #2d3748);
+            background: linear-gradient(135deg, #2a2a2a, #1a1a1a);
             margin-top: 112px;
             position: relative;
             z-index: 2;
@@ -1512,13 +1507,13 @@
             align-items: center;
             gap: 0.15rem;
             font-size: 0.7rem;
-            color: #718096 !important;
+            color: #cccccc !important;
             white-space: nowrap;
             flex-shrink: 0;
         }
         
         .spec-item i {
-            color: #B10000;
+            color: #d4af37;
         }
         
         .car-cta {
@@ -1530,8 +1525,8 @@
 
         
         .btn-rent-now {
-            background: linear-gradient(135deg, #8B0000, #A52A2A);
-            color: white;
+            background: linear-gradient(135deg, #d4af37, #b8941f);
+            color: #1a1a1a;
             border: none;
             border-radius: 6px;
             padding: 0.4rem 0.4rem;
@@ -1549,9 +1544,9 @@
         }
         
         .btn-rent-now:hover {
-            background: linear-gradient(135deg, #A52A2A, #8B0000);
+            background: linear-gradient(135deg, #b8941f, #d4af37);
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(139, 0, 0, 0.4);
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.4);
         }
         
         /* Features & Stats Section */
@@ -1571,7 +1566,7 @@
         }
         
         .feature-card {
-            background: #2d3748;
+            background: #ffffff;
             border-radius: 20px;
             padding: 2rem;
             text-align: center;
@@ -1601,25 +1596,29 @@
         .feature-title {
             font-size: 1.25rem;
             font-weight: 700;
-            color: #ffffff;
+            color: #000000;
             margin-bottom: 0.5rem;
         }
         
         .feature-description {
-            color: #a0aec0;
+            color: #495057;
             line-height: 1.6;
         }
         
         /* Stats Section */
         .stats-section {
-            background: var(--porsche-black);
-            color: var(--porsche-white);
+            background: transparent;
+            color: var(--porsche-black);
             padding: 40px 0;
         }
         
         .stat-item {
             text-align: center;
             padding: 2rem;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            margin: 0.5rem;
         }
         
         .stat-number {
@@ -1632,7 +1631,7 @@
         .stat-label {
             font-size: 1.1rem;
             font-weight: 500;
-            color: #ffffff;
+            color: #000000;
             opacity: 0.9;
         }
         
@@ -1649,13 +1648,13 @@
         .about-title {
             font-size: 2.5rem;
             font-weight: 800;
-            color: #718096;
+            color: #000000;
             margin-bottom: 1.5rem;
         }
         
         .about-text {
             font-size: 1.1rem;
-            color: #a0aec0;
+            color: #495057;
             line-height: 1.8;
             margin-bottom: 2rem;
         }
@@ -1671,7 +1670,7 @@
             gap: 1rem;
             margin-bottom: 1rem;
             font-weight: 500;
-            color: #ffffff;
+            color: #495057;
         }
         
         .benefit-item i {
@@ -1737,27 +1736,62 @@
     <!-- Hero Section - Porsche Style -->
     <section class="hero-section-porsche" style="position: relative; z-index: 1;">
         <div class="hero-background">
-                                    <img src="images/cars/überunsfotom.jpeg" alt="" class="hero-car-image" style="font-size: 0;">
+            <img src="images/cars/überunsfotom.jpg" alt="" class="hero-car-image" style="font-size: 0;">
+            <div class="hero-overlay" style="
+                background: rgba(0, 0, 0, 0.4);
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                z-index: 1;
+            "></div>
         </div>
         <div class="hero-content-porsche" style="padding-top: 0; margin-top: 0; transform: translateY(0); position: relative; z-index: 2; height: 100vh; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 6rem;">
-            <!-- Perfect Search Form -->
-            <div class="perfect-search-form" style="
-                background: transparent;
-                border: none;
-                border-radius: 20px;
-                padding: 1rem 1rem 0.5rem 1rem;
-                box-shadow: none;
+            <!-- Porsche Style Search Form -->
+            <div class="porsche-search-form" style="
+                background: linear-gradient(135deg, rgba(0, 0, 0, 0.85) 0%, rgba(20, 20, 20, 0.9) 100%);
+                backdrop-filter: blur(30px);
+                border: 2px solid rgba(255, 255, 255, 0.15);
+                border-radius: 16px;
+                padding: 2rem 2.5rem;
+                box-shadow: 
+                    0 20px 40px rgba(0, 0, 0, 0.4),
+                    0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+                position: relative;
+                overflow: hidden;
             ">
+            <div style="
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 1px;
+                background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            "></div>
             <form id="date-location-form" novalidate>
-                    <div class="search-row" style="display: flex !important; gap: 1rem !important; flex-wrap: nowrap !important; width: 100%; flex-direction: row !important; justify-content: center;">
+                    <div class="porsche-search-row" style="display: flex !important; gap: 1.5rem !important; flex-wrap: nowrap !important; width: 100%; flex-direction: row !important; justify-content: space-between; align-items: flex-end;">
                                         <!-- Pick-up Location -->
-                    <div class="search-item">
-                        <label for="pickup-location-selector" style="color: rgba(255, 255, 255, 0.9); font-weight: 300; font-size: 0.6rem; letter-spacing: 1px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.5rem;">
-                            <i class="bi bi-pin-map-fill label-icon"></i>
+                    <div class="porsche-search-item">
+                        <label for="pickup-location-selector" style="color: rgba(255, 255, 255, 0.95); font-weight: 500; font-size: 0.75rem; letter-spacing: 0.5px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.75rem; white-space: nowrap; font-family: 'Inter', sans-serif;">
+                            <i class="bi bi-pin-map-fill" style="margin-right: 6px; color: #B10000; font-size: 0.8rem;"></i>
                             Abholort
                         </label>
-                            <div class="select-wrapper" style="width: 100%; display: flex; align-items: center;">
-                        <select id="pickup-location-selector" required style="width: 100%; height: 0.2rem;">
+                            <div class="porsche-select-wrapper" style="width: 100%; display: flex; align-items: center; position: relative;">
+                        <select id="pickup-location-selector" required style="
+                            width: 100%; 
+                            height: 48px; 
+                            background: rgba(255, 255, 255, 0.08);
+                            border: 1px solid rgba(255, 255, 255, 0.2);
+                            border-radius: 8px;
+                            color: rgba(255, 255, 255, 0.9);
+                            font-size: 0.9rem;
+                            font-weight: 400;
+                            padding: 0 16px;
+                            font-family: 'Inter', sans-serif;
+                            transition: all 0.3s ease;
+                            backdrop-filter: blur(10px);
+                        ">
                                     <option value="" selected></option>
                             <option value="1">Berlin</option>
                             <option value="2">München</option>
@@ -1765,18 +1799,30 @@
                             <option value="4">Köln</option>
                             <option value="5">Frankfurt</option>
                         </select>
-                                <i class="bi bi-chevron-up select-arrow"></i>
                             </div>
                     </div>
 
                                         <!-- Drop-off Location -->
-                    <div class="search-item">
-                        <label for="dropoff-location-selector" style="color: rgba(255, 255, 255, 0.9); font-weight: 300; font-size: 0.6rem; letter-spacing: 1px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.5rem;">
-                            <i class="bi bi-pin-map label-icon"></i>
+                    <div class="porsche-search-item">
+                        <label for="dropoff-location-selector" style="color: rgba(255, 255, 255, 0.95); font-weight: 500; font-size: 0.75rem; letter-spacing: 0.5px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.75rem; white-space: nowrap; font-family: 'Inter', sans-serif;">
+                            <i class="bi bi-pin-map" style="margin-right: 6px; color: #B10000; font-size: 0.8rem;"></i>
                             Rückgabeort
                         </label>
-                            <div class="select-wrapper" style="width: 100%; display: flex; align-items: center;">
-                        <select id="dropoff-location-selector" required style="width: 100%; height: 0.2rem;">
+                            <div class="porsche-select-wrapper" style="width: 100%; display: flex; align-items: center; position: relative;">
+                        <select id="dropoff-location-selector" required style="
+                            width: 100%; 
+                            height: 48px; 
+                            background: rgba(255, 255, 255, 0.08);
+                            border: 1px solid rgba(255, 255, 255, 0.2);
+                            border-radius: 8px;
+                            color: rgba(255, 255, 255, 0.9);
+                            font-size: 0.9rem;
+                            font-weight: 400;
+                            padding: 0 16px;
+                            font-family: 'Inter', sans-serif;
+                            transition: all 0.3s ease;
+                            backdrop-filter: blur(10px);
+                        ">
                                     <option value=""></option>
                             <option value="1">Berlin</option>
                             <option value="2">München</option>
@@ -1784,21 +1830,32 @@
                             <option value="4">Köln</option>
                             <option value="5">Frankfurt</option>
                         </select>
-                                <i class="bi bi-chevron-up select-arrow"></i>
                             </div>
                     </div>
 
                     <!-- Pick-up Date -->
-                    <div class="search-item">
-                            <label for="pickup-date-selector" style="color: rgba(255, 255, 255, 0.9); font-weight: 300; font-size: 0.6rem; letter-spacing: 1px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.5rem;">
-                                <i class="bi bi-calendar-range-fill label-icon"></i>
+                    <div class="porsche-search-item">
+                            <label for="pickup-date-selector" style="color: rgba(255, 255, 255, 0.95); font-weight: 500; font-size: 0.75rem; letter-spacing: 0.5px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.75rem; white-space: nowrap; font-family: 'Inter', sans-serif;">
+                                <i class="bi bi-calendar-range-fill" style="margin-right: 6px; color: #B10000; font-size: 0.8rem;"></i>
                                 Abholdatum
                             </label>
-                            <div class="date-wrapper" style="position: relative; width: 100%; display: flex; align-items: center;">
-                                <input type="text" id="pickup-date-selector" placeholder="" required class="form-control" readonly style="width: 100%; height: 0.2rem;">
-                                <i class="bi bi-chevron-up select-arrow"></i>
+                            <div class="porsche-date-wrapper" style="position: relative; width: 100%; display: flex; align-items: center; z-index: 10;">
+                                <input type="text" id="pickup-date-selector" placeholder="" required class="form-control" readonly style="
+                                    width: 100%; 
+                                    height: 48px; 
+                                    background: rgba(255, 255, 255, 0.08);
+                                    border: 1px solid rgba(255, 255, 255, 0.2);
+                                    border-radius: 8px;
+                                    color: rgba(255, 255, 255, 0.9);
+                                    font-size: 0.9rem;
+                                    font-weight: 400;
+                                    padding: 0 16px;
+                                    font-family: 'Inter', sans-serif;
+                                    transition: all 0.3s ease;
+                                    backdrop-filter: blur(10px);
+                                ">
                                 <i class="bi bi-exclamation-triangle-fill date-error-icon" id="pickup-date-error"></i>
-                                <div class="custom-calendar" id="pickup-calendar">
+                                <div class="custom-calendar" id="pickup-calendar" style="z-index: 1000;">
                                     <div class="calendar-header">
                                         <div class="calendar-title" id="pickup-calendar-title">December 2024</div>
                                         <div class="calendar-nav">
@@ -1825,13 +1882,26 @@
                     </div>
 
                     <!-- Pick-up Time -->
-                    <div class="search-item">
-                            <label for="pickup-time" style="color: rgba(255, 255, 255, 0.9); font-weight: 300; font-size: 0.6rem; letter-spacing: 1px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.5rem;">
-                                <i class="bi bi-alarm-fill label-icon"></i>
+                    <div class="porsche-search-item">
+                            <label for="pickup-time" style="color: rgba(255, 255, 255, 0.95); font-weight: 500; font-size: 0.75rem; letter-spacing: 0.5px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.75rem; white-space: nowrap; font-family: 'Inter', sans-serif;">
+                                <i class="bi bi-alarm-fill" style="margin-right: 6px; color: #B10000; font-size: 0.8rem;"></i>
                                 Zeit
                             </label>
-                            <div class="select-wrapper" style="width: 100%; display: flex; align-items: center;">
-                                <select id="pickup-time" required style="width: 100%; height: 0.2rem;">
+                            <div class="porsche-select-wrapper" style="width: 100%; display: flex; align-items: center; position: relative;">
+                                <select id="pickup-time" required style="
+                                    width: 100%; 
+                                    height: 48px; 
+                                    background: rgba(255, 255, 255, 0.08);
+                                    border: 1px solid rgba(255, 255, 255, 0.2);
+                                    border-radius: 8px;
+                                    color: rgba(255, 255, 255, 0.9);
+                                    font-size: 0.9rem;
+                                    font-weight: 400;
+                                    padding: 0 16px;
+                                    font-family: 'Inter', sans-serif;
+                                    transition: all 0.3s ease;
+                                    backdrop-filter: blur(10px);
+                                ">
                                     <option value=""></option>
                             <option value="08:00">08:00</option>
                             <option value="09:00">09:00</option>
@@ -1845,21 +1915,32 @@
                             <option value="17:00">17:00</option>
                             <option value="18:00">18:00</option>
                         </select>
-                                <i class="bi bi-chevron-up select-arrow"></i>
                             </div>
                     </div>
 
                     <!-- Drop-off Date -->
-                    <div class="search-item">
-                            <label for="dropoff-date-selector" style="color: rgba(255, 255, 255, 0.9); font-weight: 300; font-size: 0.6rem; letter-spacing: 1px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.5rem;">
-                                <i class="bi bi-calendar-range label-icon" style="display: inline; margin-right: 0.3rem;"></i>
+                    <div class="porsche-search-item">
+                            <label for="dropoff-date-selector" style="color: rgba(255, 255, 255, 0.95); font-weight: 500; font-size: 0.75rem; letter-spacing: 0.5px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.75rem; white-space: nowrap; font-family: 'Inter', sans-serif;">
+                                <i class="bi bi-calendar-range" style="margin-right: 6px; color: #B10000; font-size: 0.8rem;"></i>
                                 Rückgabedatum
                             </label>
-                            <div class="date-wrapper" style="position: relative; width: 100%; display: flex; align-items: center;">
-                                <input type="text" id="dropoff-date-selector" placeholder="" required class="form-control" readonly style="width: 100%; height: 0.2rem;">
-                                <i class="bi bi-chevron-up select-arrow"></i>
+                            <div class="porsche-date-wrapper" style="position: relative; width: 100%; display: flex; align-items: center; z-index: 10;">
+                                <input type="text" id="dropoff-date-selector" placeholder="" required class="form-control" readonly style="
+                                    width: 100%; 
+                                    height: 48px; 
+                                    background: rgba(255, 255, 255, 0.08);
+                                    border: 1px solid rgba(255, 255, 255, 0.2);
+                                    border-radius: 8px;
+                                    color: rgba(255, 255, 255, 0.9);
+                                    font-size: 0.9rem;
+                                    font-weight: 400;
+                                    padding: 0 16px;
+                                    font-family: 'Inter', sans-serif;
+                                    transition: all 0.3s ease;
+                                    backdrop-filter: blur(10px);
+                                ">
                                 <i class="bi bi-exclamation-triangle-fill date-error-icon" id="dropoff-date-error"></i>
-                                <div class="custom-calendar" id="dropoff-calendar">
+                                <div class="custom-calendar" id="dropoff-calendar" style="z-index: 1000;">
                                     <div class="calendar-header">
                                         <div class="calendar-title" id="dropoff-calendar-title">December 2024</div>
                                         <div class="calendar-nav">
@@ -1886,13 +1967,26 @@
                     </div>
 
                     <!-- Drop-off Time -->
-                    <div class="search-item">
-                            <label for="dropoff-time" style="color: rgba(255, 255, 255, 0.9); font-weight: 300; font-size: 0.6rem; letter-spacing: 1px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.5rem;">
-                                <i class="bi bi-alarm label-icon"></i>
+                    <div class="porsche-search-item">
+                            <label for="dropoff-time" style="color: rgba(255, 255, 255, 0.95); font-weight: 500; font-size: 0.75rem; letter-spacing: 0.5px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.75rem; white-space: nowrap; font-family: 'Inter', sans-serif;">
+                                <i class="bi bi-alarm" style="margin-right: 6px; color: #B10000; font-size: 0.8rem;"></i>
                                 Zeit
                             </label>
-                            <div class="select-wrapper" style="width: 100%; display: flex; align-items: center;">
-                                <select id="dropoff-time" required style="width: 100%; height: 0.2rem;">
+                            <div class="porsche-select-wrapper" style="width: 100%; display: flex; align-items: center; position: relative;">
+                                <select id="dropoff-time" required style="
+                                    width: 100%; 
+                                    height: 48px; 
+                                    background: rgba(255, 255, 255, 0.08);
+                                    border: 1px solid rgba(255, 255, 255, 0.2);
+                                    border-radius: 8px;
+                                    color: rgba(255, 255, 255, 0.9);
+                                    font-size: 0.9rem;
+                                    font-weight: 400;
+                                    padding: 0 16px;
+                                    font-family: 'Inter', sans-serif;
+                                    transition: all 0.3s ease;
+                                    backdrop-filter: blur(10px);
+                                ">
                                     <option value=""></option>
                             <option value="08:00">08:00</option>
                             <option value="09:00">09:00</option>
@@ -1906,19 +2000,148 @@
                             <option value="17:00">17:00</option>
                             <option value="18:00">18:00</option>
                         </select>
-                                <i class="bi bi-chevron-up select-arrow"></i>
                             </div>
                     </div>
 
-                        <!-- Search Button -->
-                    <div class="search-item search-button">
-                        <button type="submit">
-                            <i class="bi bi-search"></i>
+                        <!-- Porsche Search Button -->
+                    <div class="porsche-search-button">
+                        <button type="submit" style="
+                            width: 60px;
+                            height: 48px;
+                            background: linear-gradient(135deg, #B10000 0%, #8B0000 100%);
+                            border: none;
+                            border-radius: 8px;
+                            color: white;
+                            font-size: 1.2rem;
+                            font-weight: 600;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            transition: all 0.3s ease;
+                            cursor: pointer;
+                            box-shadow: 
+                                0 4px 12px rgba(177, 0, 0, 0.3),
+                                0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+                            position: relative;
+                            overflow: hidden;
+                        ">
+                            <i class="bi bi-search" style="font-size: 1.1rem; z-index: 2;"></i>
+                            <div style="
+                                position: absolute;
+                                top: 0;
+                                left: -100%;
+                                width: 100%;
+                                height: 100%;
+                                background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+                                transition: left 0.5s ease;
+                            "></div>
                         </button>
                     </div>
                 </div>
                         </form>
                     </div>
+                    
+                    <!-- Porsche Style Hover Effects -->
+                    <style>
+                        .porsche-search-form select:hover,
+                        .porsche-search-form input:hover {
+                            border-color: rgba(177, 0, 0, 0.6) !important;
+                            background: rgba(255, 255, 255, 0.12) !important;
+                            transform: translateY(-1px);
+                            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+                        }
+                        
+                        .porsche-search-form select:focus,
+                        .porsche-search-form input:focus {
+                            border-color: #B10000 !important;
+                            background: rgba(255, 255, 255, 0.15) !important;
+                            outline: none;
+                            box-shadow: 
+                                0 0 0 2px rgba(177, 0, 0, 0.2),
+                                0 4px 12px rgba(0, 0, 0, 0.3);
+                        }
+                        
+                        .porsche-search-button button:hover {
+                            transform: translateY(-2px);
+                            box-shadow: 
+                                0 6px 20px rgba(177, 0, 0, 0.4),
+                                0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+                        }
+                        
+                        .porsche-search-button button:hover div {
+                            left: 100%;
+                        }
+                        
+                        .porsche-search-button button:active {
+                            transform: translateY(0);
+                        }
+                        
+                        /* Select dropdown option styling */
+                        .porsche-search-form select option {
+                            background-color: #2a2a2a !important;
+                            color: #ffffff !important;
+                            font-family: 'Inter', sans-serif;
+                            font-size: 0.9rem;
+                            padding: 8px 12px;
+                        }
+                        
+                        .porsche-search-form select option:hover {
+                            background-color: #B10000 !important;
+                            color: #ffffff !important;
+                        }
+                        
+                        .porsche-search-form select option:checked {
+                            background-color: #B10000 !important;
+                            color: #ffffff !important;
+                        }
+                        
+                        /* Firefox için select styling */
+                        .porsche-search-form select {
+                            color: rgba(255, 255, 255, 0.9) !important;
+                        }
+                        
+                        .porsche-search-form select:focus option {
+                            background-color: #2a2a2a !important;
+                            color: #ffffff !important;
+                        }
+                        
+                        /* Disabled option styling */
+                        .porsche-search-form select option:disabled,
+                        .porsche-search-form select option.disabled-option {
+                            color: #B10000 !important;
+                            background-color: #2a2a2a !important;
+                        }
+                        
+                        /* Calendar dropdown positioning */
+                        .custom-calendar {
+                            position: absolute !important;
+                            bottom: 100% !important;
+                            left: 0 !important;
+                            z-index: 1000 !important;
+                            background: #2a2a2a !important;
+                            border: 1px solid rgba(255, 255, 255, 0.2) !important;
+                            border-radius: 8px !important;
+                            box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.4) !important;
+                            overflow: visible !important;
+                            margin-bottom: 8px !important;
+                            top: auto !important;
+                        }
+                        
+                        /* Force calendar to open upwards */
+                        .custom-calendar.show {
+                            bottom: 100% !important;
+                            top: auto !important;
+                            transform: translateY(-8px) !important;
+                        }
+                        
+                        .porsche-date-wrapper {
+                            overflow: visible !important;
+                        }
+                        
+                        .porsche-search-form {
+                            overflow: visible !important;
+                        }
+                    </style>
                     
                     <!-- Minimal Discover Button -->
                     <div class="discover-button-container" style="text-align: center; margin-top: -1rem;">
@@ -1976,14 +2199,14 @@
     </section>
 
         <!-- Popular Cars Section -->
-                     <section id="popular-cars-section" class="popular-cars-section" style="margin-top: 0 !important; padding-top: 0 !important; position: relative; z-index: 0; background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%);">
+                     <section id="popular-cars-section" class="popular-cars-section" style="margin-top: 0 !important; padding-top: 0 !important; position: relative; z-index: 0; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 25%, #dee2e6 50%, #e9ecef 75%, #f8f9fa 100%);">
                           <div class="container" style="padding-top: 2rem; padding-bottom: 0;">
                   <div class="row mb-0" style="margin-top: 0;">
                     <div class="col-12 text-center">
-                        <h2 class="section-title" style="font-size: 2.5rem; font-weight: 600; color: #ffffff; margin-bottom: 0; font-family: 'Inter', sans-serif;">
+                        <h2 class="section-title" style="font-size: 2.5rem; font-weight: 600; color: #000000; margin-bottom: 0; font-family: 'Inter', sans-serif;">
                             Unsere Exklusivsten Fahrzeuge
                         </h2>
-                        <p class="section-subtitle" style="font-size: 1.1rem; color: #a0aec0; font-weight: 400; font-family: 'Inter', sans-serif; margin-bottom: 0;">
+                        <p class="section-subtitle" style="font-size: 1.1rem; color: #495057; font-weight: 400; font-family: 'Inter', sans-serif; margin-bottom: 0;">
                             Entdecken Sie unsere Premium-Flotte
                         </p>
                     </div>
@@ -1995,12 +2218,12 @@
      </section>
 
                   <!-- Features & Stats Section -->
-     <section class="features-stats-section" style="position: relative; z-index: 0; margin-top: 0 !important; margin-bottom: -5rem !important; background: linear-gradient(135deg, #2d2d2d 0%, #404040 50%, #2d2d2d 100%);">
+             <section class="features-stats-section" style="position: relative; z-index: 0; margin-top: 0 !important; margin-bottom: -5rem !important; background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 25%, #ced4da 50%, #dee2e6 75%, #e9ecef 100%);">
         <div class="container" style="padding-top: 1rem; padding-bottom: 1rem;">
             <!-- Features -->
             <div class="features-part">
             <div class="section-header" style="margin-top: 1rem;">
-                                        <h2 class="section-title" style="color: #ffffff;">Warum AuTor wählen?</h2>
+                                        <h2 class="section-title" style="color: #000000;">Warum AutOr wählen?</h2>
                 <p class="section-subtitle">Wir bieten Ihnen den besten Service für Ihre Mobilitätsbedürfnisse</p>
             </div>
             <div class="row g-4">
@@ -2076,12 +2299,12 @@
     </section>
 
     <!-- About Section -->
-    <section class="about-section" style="margin-top: -5rem !important; background: linear-gradient(135deg, #404040 0%, #555555 50%, #404040 100%);">
+            <section class="about-section" style="margin-top: -5rem !important; background: linear-gradient(135deg, #dee2e6 0%, #ced4da 25%, #adb5bd 50%, #ced4da 75%, #dee2e6 100%);">
         <div class="container" style="padding-top: 1rem;">
             <div class="row align-items-center">
                 <div class="col-lg-6">
                     <div class="about-content">
-                        <h2 class="about-title">Über AuTor</h2>
+                        <h2 class="about-title">Über AutOr</h2>
                         <p class="about-text">
                             Seit über 10 Jahren sind wir Ihr vertrauensvoller Partner für Premium-Autovermietung in Deutschland. 
                             Wir bieten Ihnen eine exklusive Auswahl an hochwertigen Fahrzeugen für jeden Anlass.
@@ -2108,8 +2331,8 @@
                         </div>
                 <div class="col-lg-6">
                     <div class="text-center">
-                        <img src="images/cars/autor.png" 
-                             alt="AuTor" class="img-fluid rounded-4" style="max-width: 100%; height: auto;">
+                                                 <img src="images/cars/überunsfotom.jpg" 
+                              alt="AutOr" class="img-fluid rounded-4" style="max-width: 100%; height: auto;">
                     </div>
                 </div>
             </div>
@@ -2120,7 +2343,7 @@
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
-                <p class="mb-3">© 2025 AuTor. Alle Rechte vorbehalten.</p>
+                <p class="mb-3">© 2025 AutOr. Alle Rechte vorbehalten.</p>
                 <div>
                     <a href="#" class="footer-link">Datenschutz</a>
                     <a href="#" class="footer-link">AGB</a>
@@ -2509,9 +2732,24 @@
                     this.daysContainer.querySelectorAll('.calendar-day:not(.disabled)').forEach(day => {
                         day.addEventListener('click', () => {
                             this.selectDate(day);
+                        });
                     });
-                });
-            }
+                    
+                    // Add event listeners to navigation buttons
+                    if (this.prevBtn) {
+                        this.prevBtn.addEventListener('click', () => {
+                            this.currentDate.setMonth(this.currentDate.getMonth() - 1);
+                            this.renderCalendar();
+                        });
+                    }
+                    
+                    if (this.nextBtn) {
+                        this.nextBtn.addEventListener('click', () => {
+                            this.currentDate.setMonth(this.currentDate.getMonth() + 1);
+                            this.renderCalendar();
+                        });
+                    }
+                }
             
                 selectDate(element) {
                     const dateString = element.dataset.date;
@@ -2532,6 +2770,11 @@
                     element.classList.add('selected');
                     
                     this.closeCalendar();
+                    
+                    // Tarih değiştiğinde saat validasyonunu tetikle
+                    if (typeof validateTimeSelection === 'function') {
+                        validateTimeSelection();
+                    }
                 }
             }
             
@@ -2557,6 +2800,80 @@
             );
             
             console.log('Calendars initialized:', pickupCalendar, dropoffCalendar);
+            
+            // Saat validasyonu için event listener'lar
+            const pickupTimeSelect = document.getElementById('pickup-time');
+            const dropoffTimeSelect = document.getElementById('dropoff-time');
+            
+            pickupTimeSelect.addEventListener('change', function() {
+                validateTimeSelection();
+            });
+            
+            dropoffTimeSelect.addEventListener('change', function() {
+                validateTimeSelection();
+            });
+            
+            function validateTimeSelection() {
+                const pickupTime = pickupTimeSelect.value;
+                const pickupDate = pickupDateInput.value;
+                const dropoffDate = dropoffDateInput.value;
+                
+                if (pickupTime && pickupDate && dropoffDate) {
+                    updateDropoffTimeOptions(pickupTime, pickupDate, dropoffDate);
+                }
+            }
+            
+            function updateDropoffTimeOptions(pickupTime, pickupDate, dropoffDate) {
+                const dropoffTimeSelect = document.getElementById('dropoff-time');
+                const currentValue = dropoffTimeSelect.value;
+                
+                // Mevcut options'ları temizle
+                dropoffTimeSelect.innerHTML = '<option value=""></option>';
+                
+                const timeOptions = [
+                    '08:00', '09:00', '10:00', '11:00', '12:00', 
+                    '13:00', '14:00', '15:00', '16:00', '17:00', '18:00'
+                ];
+                
+                // Aynı gün ise, pickup time'dan sonraki saatleri göster
+                if (pickupDate === dropoffDate) {
+                    const pickupHour = parseInt(pickupTime.split(':')[0]);
+                    
+                    timeOptions.forEach(time => {
+                        const hour = parseInt(time.split(':')[0]);
+                        const option = document.createElement('option');
+                        option.value = time;
+                        option.textContent = time;
+                        
+                        // Pickup time'dan önceki ve aynı saatleri pasif yap
+                        if (hour <= pickupHour) {
+                            option.disabled = true;
+                            option.classList.add('disabled-option');
+                        }
+                        
+                        dropoffTimeSelect.appendChild(option);
+                    });
+                } else {
+                    // Farklı gün ise tüm saatler aktif
+                    timeOptions.forEach(time => {
+                        const option = document.createElement('option');
+                        option.value = time;
+                        option.textContent = time;
+                        dropoffTimeSelect.appendChild(option);
+                    });
+                }
+                
+                // Önceki değeri koru (eğer hala geçerliyse)
+                if (currentValue && !dropoffTimeSelect.querySelector(`option[value="${currentValue}"]:disabled`)) {
+                    dropoffTimeSelect.value = currentValue;
+                } else {
+                    // Geçersizse ilk geçerli seçeneği seç
+                    const firstValidOption = dropoffTimeSelect.querySelector('option:not(:disabled)');
+                    if (firstValidOption && firstValidOption.value) {
+                        dropoffTimeSelect.value = firstValidOption.value;
+                    }
+                }
+            }
             
 
             
@@ -2667,10 +2984,24 @@
                 const dropoffLocation = document.getElementById('dropoff-location-selector').value;
                 const pickupDate = pickupDateInput.value;
                 const dropoffDate = dropoffDateInput.value;
+                const pickupTime = document.getElementById('pickup-time').value;
+                const dropoffTime = document.getElementById('dropoff-time').value;
                 
-                if (!pickupLocation || !dropoffLocation || !pickupDate || !dropoffDate) {
+                if (!pickupLocation || !dropoffLocation || !pickupDate || !dropoffDate || !pickupTime || !dropoffTime) {
                     alert('Bitte füllen Sie alle Felder aus.');
                     return;
+                }
+                
+                // Tarih ve saat validasyonu (artık otomatik olarak saat seçimi kısıtlanıyor)
+                const pickupDateTime = new Date(pickupDate.split('.').reverse().join('-') + 'T' + pickupTime);
+                const dropoffDateTime = new Date(dropoffDate.split('.').reverse().join('-') + 'T' + dropoffTime);
+                
+                // Ek güvenlik kontrolü
+                const timeDifference = dropoffDateTime - pickupDateTime;
+                const oneHour = 60 * 60 * 1000;
+                
+                if (timeDifference < oneHour) {
+                    return; // Kullanıcı zaten geçersiz seçim yapamaz
                 }
                 
                 // Store search data

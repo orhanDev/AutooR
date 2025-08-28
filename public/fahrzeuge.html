@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fahrzeuge - AuTor</title>
+    <title>Fahrzeuge - AutOr</title>
     
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
@@ -29,6 +29,18 @@
             --porsche-dark-gray: #212529;
             --porsche-light-gray: #6c757d;
             --porsche-gold: #d4af37;
+        }
+        
+        /* Overlay for better readability - same as main page */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: -1;
         }
         
         /* Additional styles for fahrzeuge page */
@@ -64,10 +76,10 @@
         
         .filter-card-modern .filter-label-modern {
             font-size: 0.6rem;
-            font-weight: 600;
+            font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            color: rgba(255, 255, 255, 0.9);
+            color: rgba(255, 255, 255, 1);
             margin-bottom: 0.4rem;
             position: relative;
             display: block !important;
@@ -75,15 +87,16 @@
             justify-content: flex-start !important;
             align-items: flex-start !important;
             width: auto !important;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
         }
         
         .filter-card-modern .filter-select-modern {
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.5);
             border-radius: 6px;
             padding: 0.6rem 0.5rem;
             font-size: 0.7rem;
-            font-weight: 400;
-            background: rgba(255, 255, 255, 0.15);
+            font-weight: 500;
+            background: rgba(255, 255, 255, 0.2);
             color: white;
             transition: all 0.3s ease;
             backdrop-filter: blur(10px);
@@ -95,18 +108,22 @@
             direction: ltr !important;
             width: 150px !important;
             display: block !important;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
         }
         
         .filter-card-modern .filter-select-modern:hover {
-            border-color: rgba(255, 255, 255, 0.5);
-            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.7);
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
         }
         
         .filter-card-modern .filter-select-modern:focus {
-            border-color: rgba(255, 255, 255, 0.8);
-            background: rgba(255, 255, 255, 0.25);
-            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.35);
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.4);
             outline: none;
+            transform: translateY(-1px);
         }
         
         /* Okları yukarı yönlendir */
@@ -366,6 +383,13 @@
         }
 
         /* Responsive Design */
+        @media (max-width: 992px) {
+            .car-card {
+                width: 32% !important;
+                flex: 0 0 32% !important;
+            }
+        }
+        
         @media (max-width: 768px) {
             .search-container {
                 margin: 0.25rem;
@@ -403,11 +427,13 @@
             
             .car-card {
                 height: auto;
-                min-height: 400px;
+                min-height: 320px;
+                width: 48% !important;
+                flex: 0 0 48% !important;
             }
             
             .car-image {
-                height: 200px;
+                height: 160px;
             }
             
             .car-specs {
@@ -1383,11 +1409,11 @@
             }
             
             .car-card {
-                min-height: 350px;
+                min-height: 280px;
             }
             
             .car-image {
-                height: 180px;
+                height: 140px;
             }
             
             .car-details {
@@ -1475,18 +1501,18 @@
         
         /* Porsche Style Car Cards */
         .car-card {
-            background: rgba(255, 255, 255, 0.05) !important;
+            background: linear-gradient(135deg, #ffffff, #f8f9fa) !important;
             backdrop-filter: blur(10px) !important;
-            border-radius: 16px;
+            border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             border: 1px solid rgba(255, 255, 255, 0.2);
             position: relative;
-            height: 250px !important;
-            min-height: 250px !important;
-            max-height: 250px !important;
-            padding-top: 0.5rem;
+            height: 200px !important;
+            min-height: 200px !important;
+            max-height: 200px !important;
+            padding-top: 0.3rem;
 
         }
         
@@ -1497,8 +1523,8 @@
         }
         
         .car-image {
-            height: 120px;
-            background: linear-gradient(45deg, #1a1a1a, #2d2d2d);
+            height: 100px;
+            background: linear-gradient(45deg, #f8f9fa, #e9ecef);
             position: absolute;
             top: 0;
             left: 0;
@@ -1510,7 +1536,7 @@
 
         .car-image img {
             width: 100%;
-            height: 8rem;
+            height: 6.5rem;
             object-fit: cover;
             transition: all 0.4s ease;
         }
@@ -1521,43 +1547,43 @@
         
         .price-badge {
             position: absolute;
-            top: 0.6rem;
-            right: 0.6rem;
-            background: linear-gradient(135deg, #8B0000, #A52A2A);
+            top: 0.5rem;
+            right: 0.5rem;
+            background: linear-gradient(135deg, #B10000, #cc0000);
             color: white;
-            padding: 0.25rem 0.5rem;
-            border-radius: 12px;
+            padding: 0.2rem 0.4rem;
+            border-radius: 10px;
             font-weight: 700;
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             box-shadow: 0 2px 8px rgba(139, 0, 0, 0.3);
         }
 
         .car-details {
-            padding: 1rem 1rem 1rem 1rem;
-            height: 127px;
+            padding: 0.8rem 0.8rem 0.8rem 0.8rem;
+            height: 97px;
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
-            min-height: 127px;
-            max-height: 127px;
-            background: rgba(255, 255, 255, 0.05);
+            min-height: 97px;
+            max-height: 97px;
+            background: linear-gradient(135deg, #ffffff, #f8f9fa);
             backdrop-filter: blur(10px);
-            margin-top: 112px;
+            margin-top: 92px;
             position: relative;
             z-index: 2;
-            width: calc(100% + 2rem);
-            left: -1rem;
-            right: -1rem;
+            width: calc(100% + 1.6rem);
+            left: -0.8rem;
+            right: -0.8rem;
             margin-right: 0;
             margin-left: 0;
         }
         
         .car-name {
-            font-size: 1rem;
+            font-size: 0.9rem;
             font-weight: 700;
-            color: #ffffff !important;
-            margin-bottom: 1px;
-            line-height: 1.2;
+            color: #000000 !important;
+            margin-bottom: 0.5px;
+            line-height: 1.1;
             overflow: visible;
             white-space: nowrap;
             text-overflow: ellipsis;
@@ -1569,13 +1595,13 @@
         }
         
         .btn-rent-now {
-            background: linear-gradient(135deg, #8B0000, #A52A2A) !important;
+            background: linear-gradient(135deg, #B10000, #cc0000) !important;
             color: white !important;
             border: none !important;
             border-radius: 6px !important;
-            padding: 0.4rem 0.4rem !important;
+            padding: 0.3rem 0.3rem !important;
             font-weight: 600 !important;
-            font-size: 0.65rem !important;
+            font-size: 0.6rem !important;
             text-transform: uppercase !important;
             letter-spacing: 0.3px !important;
             transition: all 0.3s ease !important;
@@ -1588,7 +1614,7 @@
         }
         
         .btn-rent-now:hover {
-            background: linear-gradient(135deg, #A52A2A, #8B0000) !important;
+            background: linear-gradient(135deg, #cc0000, #B10000) !important;
             transform: translateY(-2px) !important;
             box-shadow: 0 4px 12px rgba(139, 0, 0, 0.4) !important;
         }
@@ -1609,7 +1635,7 @@
             align-items: center;
             gap: 0.15rem;
             font-size: 0.7rem;
-            color: #ffffff !important;
+            color: #495057 !important;
             white-space: nowrap;
             flex-shrink: 0;
         }
@@ -1887,6 +1913,155 @@
                 height: 220px;
             }
         }
+        
+        /* Car Cards - Porsche Style for Fahrzeuge Page */
+        .car-card {
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a) !important;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.4);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            height: 250px !important;
+            min-height: 250px !important;
+            max-height: 250px !important;
+            padding-top: 0.5rem;
+        }
+        
+        .car-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 25px 80px rgba(212, 175, 55, 0.2);
+            border-color: rgba(212, 175, 55, 0.3);
+        }
+        
+        .car-image {
+            height: 120px;
+            background: linear-gradient(45deg, #f8f9fa, #e9ecef);
+            position: relative;
+            overflow: hidden;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            z-index: 1;
+        }
+        
+        .car-image img {
+            width: 100%;
+            height: 8rem;
+            object-fit: cover;
+            transition: all 0.4s ease;
+        }
+        
+        .car-card:hover .car-image img {
+            transform: scale(1.1);
+        }
+        
+        .price-badge {
+            position: absolute;
+            top: 0.6rem;
+            right: 0.6rem;
+            background: linear-gradient(135deg, #d4af37, #b8941f);
+            color: #1a1a1a;
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.7rem;
+            box-shadow: 0 2px 8px rgba(212, 175, 55, 0.3);
+        }
+        
+        .car-details {
+            padding: 1rem 1rem 1rem 1rem;
+            height: 127px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            min-height: 127px;
+            max-height: 127px;
+            background: linear-gradient(135deg, #2a2a2a, #1a1a1a);
+            margin-top: 112px;
+            position: relative;
+            z-index: 2;
+            width: calc(100% + 2rem);
+            left: -1rem;
+            right: -1rem;
+            margin-right: 0;
+            margin-left: 0;
+        }
+        
+        .car-name {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #ffffff !important;
+            margin-bottom: 1px;
+            line-height: 1.2;
+            overflow: visible;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            height: auto;
+            font-family: 'Helvetica Neue', 'Arial', sans-serif;
+            letter-spacing: 0.3px;
+            text-transform: none;
+            font-style: normal;
+        }
+        
+        .car-specs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+            flex-wrap: nowrap;
+            overflow: visible;
+            justify-content: flex-start;
+            align-items: center;
+            flex: 1;
+        }
+        
+        .spec-item {
+            display: flex;
+            align-items: center;
+            gap: 0.15rem;
+            font-size: 0.7rem;
+            color: #cccccc !important;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        
+        .spec-item i {
+            color: #d4af37;
+        }
+        
+        .car-cta {
+            display: flex;
+            gap: 0.3rem;
+            margin-top: auto;
+        }
+        
+        .btn-rent-now {
+            background: linear-gradient(135deg, #d4af37, #b8941f);
+            color: #1a1a1a;
+            border: none;
+            border-radius: 6px;
+            padding: 0.4rem 0.4rem;
+            font-weight: 600;
+            font-size: 0.65rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            width: 100%;
+            height: 40px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .btn-rent-now:hover {
+            background: linear-gradient(135deg, #b8941f, #d4af37);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.4);
+        }
     </style>
 </head>
 <body>
@@ -1896,9 +2071,9 @@
     <!-- Hero Section - Porsche Style -->
     <section class="hero-section-porsche" style="position: relative; height: calc(50vh + 2rem); overflow: hidden; z-index: 20;">
         <div class="hero-background" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: -1;">
-            <img src="images/cars/überunsfotom.jpg" alt="" class="hero-car-image" style="width: 100%; height: 100%; object-fit: cover; font-size: 0;">
+            <img src="images/cars/fahrzeugebg2.webp" alt="" class="hero-car-image" style="width: 100%; height: 100%; object-fit: cover; font-size: 0;">
             <div class="hero-overlay" style="
-                background: rgba(0, 0, 0, 0.7);
+                background: rgba(0, 0, 0, 0.4);
                 position: absolute;
                 top: 0;
                 left: 0;
@@ -1915,103 +2090,291 @@
 
 
     <!-- Filters Section - Modern Porsche Style -->
-    <div class="container" style="position: absolute; top: 40%; left: 50%; transform: translate(-50%, calc(-50% + 2rem)); z-index: 50; width: 100%;">
+    <div class="container" style="position: absolute; top: 32%; left: 50%; transform: translate(-50%, calc(-50% + 2rem)); z-index: 50; width: 100%;">
         <!-- Section Header -->
         <div class="section-header" style="text-align: center; margin-bottom: 2rem; color: white; visibility: hidden; height: 0; overflow: hidden;">
             <h2 class="section-title" style="font-size: 2.5rem; font-weight: 700; margin-bottom: 0.5rem; color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.8);">Verfügbare Fahrzeuge</h2>
             <p class="section-subtitle" style="font-size: 1.1rem; color: rgba(255, 255, 255, 0.9); margin-bottom: 0; text-shadow: 1px 1px 2px rgba(0,0,0,0.8);">Wählen Sie aus unserer exklusiven Sammlung</p>
         </div>
         
-        <div style="display: flex; gap: 1rem; align-items: flex-start;">
-            <div class="filter-card-modern" style="background: transparent; backdrop-filter: none; padding: 1rem 2rem 2rem 2rem; border-radius: 15px; flex: 1; border: 1px solid rgba(255, 255, 255, 0.2);">
-                <div class="filter-row">
-                    <div class="filter-item">
-                        <label class="filter-label-modern">Fahrzeugtyp</label>
-                        <select class="filter-select-modern" id="vehicle-type-filter">
-                            <option value="">Alle Fahrzeuge</option>
-                            <option value="compact">Kompakt</option>
-                            <option value="sedan">Limousine</option>
-                            <option value="suv">SUV</option>
-                            <option value="luxury">Luxus</option>
-                            <option value="electric">Elektrisch</option>
-                        </select>
-                    </div>
-                    <div class="filter-item">
-                        <label class="filter-label-modern">Marke</label>
-                        <select class="filter-select-modern" id="vehicle-model-filter">
-                            <option value="">Alle Marken</option>
-                            <option value="audi">Audi</option>
-                            <option value="bmw">BMW</option>
-                            <option value="mercedes">Mercedes</option>
-                            <option value="porsche">Porsche</option>
-                            <option value="tesla">Tesla</option>
-                            <option value="volkswagen">Volkswagen</option>
-                        </select>
-                    </div>
-                    <div class="filter-item">
-                        <label class="filter-label-modern">Kraftstoff</label>
-                        <select class="filter-select-modern" id="fuel-type-filter">
-                            <option value="">Alle</option>
-                            <option value="benzin">Benzin</option>
-                            <option value="diesel">Diesel</option>
-                            <option value="hybrid">Hybrid</option>
-                            <option value="elektrisch">Elektrisch</option>
-                        </select>
-                    </div>
-                    <div class="filter-item">
-                        <label class="filter-label-modern">Sortieren</label>
-                        <select class="filter-select-modern" id="sort-filter">
-                            <option value="price-low">Niedrigster Preis</option>
-                            <option value="price-high">Höchster Preis</option>
-                            <option value="name" selected>Name A-Z</option>
-                            <option value="popularity">Beliebtheit</option>
-                        </select>
-                    </div>
-                    <div class="filter-item">
-                        <label class="filter-label-modern">Getriebe</label>
-                        <select class="filter-select-modern" id="transmission-filter">
-                            <option value="">Alle</option>
-                            <option value="automatik">Automatik</option>
-                            <option value="manuell">Manuell</option>
-                        </select>
-                    </div>
-                    <div class="filter-item">
-                        <label class="filter-label-modern" style="visibility: hidden;">Suchen</label>
-                        <button type="button" class="btn-search" id="search-vehicles-btn" onclick="performSearch()" style="
-                            background: rgba(255, 255, 255, 0.15);
-                            border: 1px solid rgba(255, 255, 255, 0.3);
-                            color: white;
-                            padding: 0.6rem 0.5rem;
-                            border-radius: 6px;
-                            font-size: 0.7rem;
-                            font-weight: 400;
-                            transition: all 0.3s ease;
-                            backdrop-filter: blur(10px);
-                            height: 48px;
-                            min-width: 60px;
-                            max-width: 80px;
-                            width: 70px;
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-                            cursor: pointer;
-                        ">
-                            <i class="bi bi-search" style="font-size: 1.2rem;"></i>
-                        </button>
+        <!-- Porsche Style Filter Form - Fahrzeuge Page -->
+        <div class="porsche-filter-form" style="
+            background: linear-gradient(135deg, rgba(20, 20, 20, 0.95) 0%, rgba(40, 40, 40, 0.9) 50%, rgba(60, 60, 60, 0.85) 100%);
+            backdrop-filter: blur(35px);
+            border: 3px solid rgba(212, 175, 55, 0.4);
+            border-radius: 25px;
+            padding: 1.5rem 3.5rem;
+            box-shadow: 
+                0 30px 60px rgba(0, 0, 0, 0.6),
+                0 0 0 2px rgba(212, 175, 55, 0.1) inset,
+                0 0 20px rgba(212, 175, 55, 0.2);
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 2rem;
+            margin-top: -1rem;
+        ">
+        <div style="
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+        "></div>
+        
+        <div class="porsche-filter-row" style="display: flex !important; gap: 2.5rem !important; flex-wrap: nowrap !important; width: 100%; flex-direction: row !important; justify-content: space-between; align-items: flex-end;">
+            
+            <!-- Fahrzeugtyp -->
+            <div class="porsche-filter-item">
+                <label for="vehicle-type-filter" style="color: rgba(255, 255, 255, 0.95); font-weight: 700; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.3rem; white-space: nowrap; font-family: 'Inter', sans-serif;">
+                    <i class="bi bi-car-front" style="margin-right: 10px; color: #d4af37; font-size: 1rem;"></i>
+                    Fahrzeugtyp
+                </label>
+                <div class="porsche-select-wrapper" style="width: 100%; display: flex; align-items: center; position: relative;">
+                    <select id="vehicle-type-filter" style="
+                        width: 100%; 
+                        height: 48px; 
+                        background: rgba(255, 255, 255, 0.15);
+                        border: 2px solid rgba(212, 175, 55, 0.5);
+                        border-radius: 12px;
+                        color: rgba(255, 255, 255, 0.9);
+                        font-size: 12px;
+                        font-weight: 600;
+                        padding: 0 20px;
+                        font-family: 'Inter', sans-serif;
+                        transition: all 0.3s ease;
+                        backdrop-filter: blur(20px);
+                    ">
+                        <option value="">Alle Fahrzeuge</option>
+                        <option value="compact">Kompakt</option>
+                        <option value="sedan">Limousine</option>
+                        <option value="suv">SUV</option>
+                        <option value="luxury">Luxus</option>
+                        <option value="electric">Elektrisch</option>
+                    </select>
                 </div>
             </div>
+
+            <!-- Marke -->
+            <div class="porsche-filter-item">
+                <label for="vehicle-model-filter" style="color: rgba(255, 255, 255, 0.95); font-weight: 700; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.5rem; white-space: nowrap; font-family: 'Inter', sans-serif;">
+                    <i class="bi bi-tag" style="margin-right: 10px; color: #d4af37; font-size: 1rem;"></i>
+                    Marke
+                </label>
+                <div class="porsche-select-wrapper" style="width: 100%; display: flex; align-items: center; position: relative;">
+                    <select id="vehicle-model-filter" style="
+                        width: 100%; 
+                        height: 52px; 
+                        background: rgba(255, 255, 255, 0.12);
+                        border: 1px solid rgba(177, 0, 0, 0.4);
+                        border-radius: 10px;
+                        color: rgba(255, 255, 255, 0.9);
+                        font-size: 12px;
+                        font-weight: 500;
+                        padding: 0 18px;
+                        font-family: 'Inter', sans-serif;
+                        transition: all 0.3s ease;
+                        backdrop-filter: blur(15px);
+                    ">
+                        <option value="">Alle Marken</option>
+                        <option value="audi">Audi</option>
+                        <option value="bmw">BMW</option>
+                        <option value="mercedes">Mercedes</option>
+                        <option value="porsche">Porsche</option>
+                        <option value="tesla">Tesla</option>
+                        <option value="volkswagen">Volkswagen</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Kraftstoff -->
+            <div class="porsche-filter-item">
+                <label for="fuel-type-filter" style="color: rgba(255, 255, 255, 0.95); font-weight: 700; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.5rem; white-space: nowrap; font-family: 'Inter', sans-serif;">
+                    <i class="bi bi-fuel-pump" style="margin-right: 10px; color: #d4af37; font-size: 1rem;"></i>
+                    Kraftstoff
+                </label>
+                <div class="porsche-select-wrapper" style="width: 100%; display: flex; align-items: center; position: relative;">
+                    <select id="fuel-type-filter" style="
+                        width: 100%; 
+                        height: 48px; 
+                        background: rgba(255, 255, 255, 0.08);
+                        border: 1px solid rgba(255, 255, 255, 0.2);
+                        border-radius: 8px;
+                        color: rgba(255, 255, 255, 0.9);
+                        font-size: 12px;
+                        font-weight: 400;
+                        padding: 0 16px;
+                        font-family: 'Inter', sans-serif;
+                        transition: all 0.3s ease;
+                        backdrop-filter: blur(10px);
+                    ">
+                        <option value="">Alle</option>
+                        <option value="benzin">Benzin</option>
+                        <option value="diesel">Diesel</option>
+                        <option value="hybrid">Hybrid</option>
+                        <option value="elektrisch">Elektrisch</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Sortieren -->
+            <div class="porsche-filter-item">
+                <label for="sort-filter" style="color: rgba(255, 255, 255, 0.95); font-weight: 700; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.5rem; white-space: nowrap; font-family: 'Inter', sans-serif;">
+                    <i class="bi bi-sort-down" style="margin-right: 10px; color: #d4af37; font-size: 1rem;"></i>
+                    Sortieren
+                </label>
+                <div class="porsche-select-wrapper" style="width: 100%; display: flex; align-items: center; position: relative;">
+                    <select id="sort-filter" style="
+                        width: 100%; 
+                        height: 48px; 
+                        background: rgba(255, 255, 255, 0.08);
+                        border: 1px solid rgba(255, 255, 255, 0.2);
+                        border-radius: 8px;
+                        color: rgba(255, 255, 255, 0.9);
+                        font-size: 12px;
+                        font-weight: 400;
+                        padding: 0 16px;
+                        font-family: 'Inter', sans-serif;
+                        transition: all 0.3s ease;
+                        backdrop-filter: blur(10px);
+                    ">
+                        <option value="price-low">Niedrigster Preis</option>
+                        <option value="price-high">Höchster Preis</option>
+                        <option value="name" selected>Name A-Z</option>
+                        <option value="popularity">Beliebtheit</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Getriebe -->
+            <div class="porsche-filter-item">
+                <label for="transmission-filter" style="color: rgba(255, 255, 255, 0.95); font-weight: 700; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.5rem; white-space: nowrap; font-family: 'Inter', sans-serif;">
+                    <i class="bi bi-gear" style="margin-right: 10px; color: #d4af37; font-size: 1rem;"></i>
+                    Getriebe
+                </label>
+                <div class="porsche-select-wrapper" style="width: 100%; display: flex; align-items: center; position: relative;">
+                    <select id="transmission-filter" style="
+                        width: 100%; 
+                        height: 48px; 
+                        background: rgba(255, 255, 255, 0.08);
+                        border: 1px solid rgba(255, 255, 255, 0.2);
+                        border-radius: 8px;
+                        color: rgba(255, 255, 255, 0.9);
+                        font-size: 12px;
+                        font-weight: 400;
+                        padding: 0 16px;
+                        font-family: 'Inter', sans-serif;
+                        transition: all 0.3s ease;
+                        backdrop-filter: blur(10px);
+                    ">
+                        <option value="">Alle</option>
+                        <option value="automatik">Automatik</option>
+                        <option value="manuell">Manuell</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Porsche Search Button -->
+            <div class="porsche-filter-button">
+                <button type="button" id="search-vehicles-btn" onclick="performSearch()" style="
+                    width: 65px;
+                    height: 48px;
+                    background: linear-gradient(135deg, #d4af37 0%, #b8941f 50%, #8b6914 100%);
+                    border: none;
+                    border-radius: 15px;
+                    color: white;
+                    font-size: 1.4rem;
+                    font-weight: 700;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    transition: all 0.3s ease;
+                    cursor: pointer;
+                    box-shadow: 
+                        0 8px 20px rgba(212, 175, 55, 0.5),
+                        0 0 0 2px rgba(255, 255, 255, 0.2) inset,
+                        0 0 15px rgba(212, 175, 55, 0.3);
+                    position: relative;
+                    overflow: hidden;
+                ">
+                    <i class="bi bi-search" style="font-size: 1.1rem; z-index: 2;"></i>
+                    <div style="
+                        position: absolute;
+                        top: 0;
+                        left: -100%;
+                        width: 100%;
+                        height: 100%;
+                        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+                        transition: left 0.5s ease;
+                    "></div>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Porsche Style Hover Effects -->
+        <style>
+            .porsche-filter-form select:hover {
+                border-color: rgba(177, 0, 0, 0.6) !important;
+                background: rgba(255, 255, 255, 0.12) !important;
+                transform: translateY(-1px);
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            }
+            
+            .porsche-filter-form select:focus {
+                border-color: #B10000 !important;
+                background: rgba(255, 255, 255, 0.15) !important;
+                outline: none;
+                box-shadow: 
+                    0 0 0 2px rgba(177, 0, 0, 0.2),
+                    0 4px 12px rgba(0, 0, 0, 0.3);
+            }
+            
+            .porsche-filter-button button:hover {
+                transform: translateY(-2px);
+                box-shadow: 
+                    0 6px 20px rgba(177, 0, 0, 0.4),
+                    0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+            }
+            
+            .porsche-filter-button button:hover div {
+                left: 100%;
+            }
+            
+            .porsche-filter-button button:active {
+                transform: translateY(0);
+            }
+            
+            /* Select dropdown option styling */
+            .porsche-filter-form select option {
+                background-color: #2a2a2a !important;
+                color: #ffffff !important;
+                font-family: 'Inter', sans-serif;
+                font-size: 0.9rem;
+                padding: 8px 12px;
+            }
+            
+            .porsche-filter-form select option:hover {
+                background-color: #B10000 !important;
+                color: #ffffff !important;
+            }
+            
+            .porsche-filter-form select option:checked {
+                background-color: #B10000 !important;
+                color: #ffffff !important;
+            }
+        </style>
         </div>
         </div>
     </div>
     </div>
 
     <!-- Vehicles Section -->
-    <section class="vehicles-section" style="margin-top: 1.5rem; position: relative; z-index: 200; background: transparent; padding: 2rem 0 2rem 0;">
+    <section class="vehicles-section" style="margin-top: -6rem; position: relative; z-index: 1000; background: transparent; padding: 2rem 0 2rem 0;">
         <div class="container">
             
             <div class="row">
-                <!-- Left Side - Vehicles -->
-                <div class="col-lg-9">
+                <!-- Vehicles Container -->
+                <div class="col-12">
                     <div class="row" id="vehicles-container" style="min-height: 200px; display: flex; flex-wrap: wrap; justify-content: flex-start; gap: 0;">
                         <!-- Vehicles will be loaded here -->
                         <div class="col-12 text-center">
@@ -2020,26 +2383,7 @@
                     </div>
                 </div>
 
-                <!-- Right Sidebar - Insurance and Products -->
-                <div class="col-lg-3">
-                    <div class="options-sidebar" style="padding: 1rem; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 15px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1); height: fit-content; position: sticky; top: 120px;">
-                        <!-- Insurance Section -->
-                        <div class="options-section">
-                            <h3 class="options-title" style="font-size: 0.8rem; margin-bottom: 1rem; color: rgba(255, 255, 255, 0.9); text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid rgba(255, 255, 255, 0.3); padding-bottom: 0.5rem;">Versicherungspakete</h3>
-                            <div id="insurance-options">
-                                <!-- Insurance options will be loaded here -->
-                            </div>
-                        </div>
 
-                        <!-- Additional Products Section -->
-                        <div class="options-section" style="margin-top: 1.5rem;">
-                            <h3 class="options-title" style="font-size: 0.8rem; margin-bottom: 1rem; color: rgba(255, 255, 255, 0.9); text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid rgba(255, 255, 255, 0.3); padding-bottom: 0.5rem;">Zusatzprodukte</h3>
-                            <div id="product-options">
-                                <!-- Product options will be loaded here -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
                         </div>
                     </div>
     </section>
@@ -2063,7 +2407,7 @@
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         z-index: 9999;
         box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-        display: flex;
+        display: none;
         align-items: center;
         justify-content: center;
     ">
@@ -2089,31 +2433,29 @@
     </style>
 
     <script>
+        // Simple Back to Top functionality
         document.addEventListener('DOMContentLoaded', function() {
-            // Back to Top functionality
-            const backToTopBtnFahrzeuge = document.getElementById('back-to-top');
+            const backToTopBtn = document.getElementById('back-to-top');
             
-            if (backToTopBtnFahrzeuge) {
-                // Show button immediately for testing
-                backToTopBtnFahrzeuge.classList.add('show');
+            if (backToTopBtn) {
+                console.log('Back to top button found');
                 
-                // Show button when user scrolls down
-                window.addEventListener('scroll', function() {
+                // Simple click handler
+                backToTopBtn.onclick = function() {
+                    console.log('Back to top clicked!');
+                    window.scrollTo(0, 0);
+                };
+                
+                // Show button when scrolling
+                window.onscroll = function() {
                     if (window.pageYOffset > 100) {
-                        backToTopBtnFahrzeuge.classList.add('show');
+                        backToTopBtn.style.display = 'flex';
                     } else {
-                        backToTopBtnFahrzeuge.classList.remove('show');
+                        backToTopBtn.style.display = 'none';
                     }
-                });
-                
-                // Smooth scroll to top when button is clicked
-                backToTopBtnFahrzeuge.addEventListener('click', function() {
-                    console.log('Back to top button clicked!');
-                    window.scrollTo({
-                        top: 0,
-                        behavior: 'smooth'
-                    });
-                });
+                };
+            } else {
+                console.log('Back to top button not found');
             }
         });
     </script>
@@ -2122,7 +2464,7 @@
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
-                <p class="mb-3">© 2025 AuTor. Alle Rechte vorbehalten.</p>
+                <p class="mb-3">© 2025 AutOr. Alle Rechte vorbehalten.</p>
                 <div>
                 <a href="#" class="footer-link">Datenschutz</a>
                     <a href="#" class="footer-link">AGB</a>
@@ -2215,75 +2557,6 @@
         });
     </script>
     
-    <!-- Back to Top Button -->
-    <button id="back-to-top" class="back-to-top-btn" style="
-        position: fixed;
-        bottom: 40px;
-        right: 40px;
-        width: 50px;
-        height: 50px;
-        background: rgba(255, 255, 255, 0.9);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        border-radius: 12px;
-        color: #1a202c;
-        font-size: 1.2rem;
-        cursor: pointer;
-        opacity: 1;
-        visibility: visible;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        z-index: 9999;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    ">
-        <i class="bi bi-arrow-up"></i>
-    </button>
-
-    <style>
-        .back-to-top-btn:hover {
-            background: rgba(255, 255, 255, 1);
-            transform: translateY(-5px) scale(1.05);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
-            border-color: rgba(255, 255, 255, 0.3);
-        }
-        
-        .back-to-top-btn:active {
-            transform: translateY(-2px) scale(1.02);
-        }
-        
-        .back-to-top-btn.show {
-            opacity: 1;
-            visibility: visible;
-        }
-    </style>
-
-    <script>
-        // Back to Top functionality
-        const backToTopBtn = document.getElementById('back-to-top');
-        
-        // Show button immediately for testing
-        backToTopBtn.classList.add('show');
-        
-        // Show button when user scrolls down
-        window.addEventListener('scroll', function() {
-            if (window.pageYOffset > 100) {
-                backToTopBtn.classList.add('show');
-            } else {
-                backToTopBtn.classList.remove('show');
-            }
-        });
-        
-        // Smooth scroll to top when button is clicked
-        backToTopBtn.addEventListener('click', function() {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        });
-    </script>
-
     <!-- Navbar JavaScript -->
     <script src="js/navbar.js"></script>
 </body>

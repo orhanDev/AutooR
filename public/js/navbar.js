@@ -17,8 +17,8 @@ function createNavbar() {
     navbarContainer.innerHTML = `
         <nav class="navbar navbar-expand-lg fixed-top">
             <div class="container">
-                <a class="navbar-brand" href="/">
-                    AuTor
+                <a class="navbar-brand" href="/" style="text-decoration: none; background: none; border: none; box-shadow: none;">
+                    AutOr
                 </a>
                 
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -86,45 +86,37 @@ function addNavbarCSS() {
             position: relative;
             transition: all 0.3s ease;
             text-transform: none;
+            background: none !important;
+            border: none !important;
+            box-shadow: none !important;
         }
         
-        .navbar-brand::before {
-            display: none !important;
-            content: none !important;
-            visibility: hidden !important;
-            opacity: 0 !important;
-        }
-        
-        /* Hide any Premium Car text */
+        /* Completely remove any pseudo-elements that might show icons */
         .navbar-brand::before,
         .navbar-brand::after {
             content: none !important;
             display: none !important;
             visibility: hidden !important;
             opacity: 0 !important;
+            background: none !important;
+            background-image: none !important;
+            width: 0 !important;
+            height: 0 !important;
+            margin: 0 !important;
+            padding: 0 !important;
         }
         
         /* Remove any additional text elements */
         .navbar-brand span,
         .navbar-brand div,
-        .navbar-brand p {
+        .navbar-brand p,
+        .navbar-brand img {
             display: none !important;
             visibility: hidden !important;
             opacity: 0 !important;
         }
         
-        /* Force only AuTor text to be visible */
-        .navbar-brand {
-            font-weight: 800 !important;
-            font-size: 1.8rem !important;
-            color: #B10000 !important;
-            text-decoration: none !important;
-            background: none !important;
-            border: none !important;
-            box-shadow: none !important;
-        }
-        
-        /* Nuclear option - hide everything except AuTor */
+        /* Nuclear option - hide everything except AuTor text */
         .navbar-brand * {
             display: none !important;
             visibility: hidden !important;
@@ -132,19 +124,22 @@ function addNavbarCSS() {
             content: none !important;
         }
         
-        /* Ensure only AuTor text is visible */
-        .navbar-brand:not(:empty) {
-            content: "AuTor" !important;
-        }
-        
-        /* Ensure only AuTor text is visible */
-        .navbar-brand {
-            font-weight: 800;
-            font-size: 1.8rem;
-            color: #B10000 !important;
-            position: relative;
-            transition: all 0.3s ease;
-            text-transform: none;
+        /* Additional override for any remaining pseudo-elements */
+        .navbar-brand::before,
+        .navbar-brand::after,
+        .navbar-brand:before,
+        .navbar-brand:after {
+            content: none !important;
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+            background: none !important;
+            background-image: none !important;
+            width: 0 !important;
+            height: 0 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            position: static !important;
         }
         
         .navbar-brand::after {

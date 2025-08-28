@@ -36,30 +36,40 @@ html, body {
 }
 
 .navbar-brand {
-    color: white !important;
-    font-weight: 200;
-    font-size: 2rem;
-    letter-spacing: 8px;
-    text-transform: uppercase;
+    color: #B10000 !important;
+    font-weight: 800;
+    font-size: 1.8rem;
+    letter-spacing: 0;
+    text-transform: none;
     font-family: 'Inter', sans-serif;
     position: relative;
     padding: 0;
     margin: 0;
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    text-decoration: none !important;
 }
 
 .navbar-brand::after {
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    width: 0;
-    height: 1px;
-    background: #B10000;
-    transition: width 0.3s ease;
+    content: none !important;
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    background: none !important;
+    background-image: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    position: static !important;
 }
 
 .navbar-brand:hover::after {
-    width: 100%;
+    content: none !important;
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
 }
 
 .navbar-brand i {
