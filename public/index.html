@@ -16,56 +16,57 @@
     <!-- Custom Calendar CSS -->
     <style>
         .custom-calendar {
-            position: absolute;
-            bottom: 100% !important;
-            top: auto !important;
-            left: 0;
-            right: 0;
-            background: #191919;
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 12px;
-            box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.3);
-            z-index: 1000;
-            padding: 12px;
-            display: none;
-            font-family: 'Inter', sans-serif;
-            margin-bottom: 8px;
-            min-width: 280px;
+            position: absolute !important;
+            top: 100% !important;
+            bottom: auto !important;
+            left: 10px !important;
+            right: 20px !important;
+            background: #191919 !important;
+            backdrop-filter: blur(20px) !important;
+            border: 1px solid rgba(255, 255, 255, 0.2) !important;
+            border-radius: 6px !important;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
+            z-index: 9999 !important;
+            padding: 6px !important;
+            display: none !important;
+            font-family: 'Inter', sans-serif !important;
+            margin-top: 4px !important;
+            margin-bottom: 0 !important;
+            min-width: 220px !important;
         }
         
         .custom-calendar.show {
-            display: block;
+            display: block !important;
         }
         
         .calendar-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 16px;
+            margin-bottom: 8px;
             color: #ffffff;
         }
         
         .calendar-title {
-            font-size: 14px;
+            font-size: 12px;
             font-weight: 500;
             color: rgba(255, 255, 255, 0.9);
         }
         
         .calendar-nav {
             display: flex;
-            gap: 8px;
+            gap: 4px;
         }
         
         .calendar-nav-btn {
             background: rgba(255, 255, 255, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 6px;
+            border-radius: 3px;
             color: #ffffff;
-            padding: 4px 8px;
+            padding: 2px 4px;
             cursor: pointer;
             transition: all 0.3s ease;
-            font-size: 12px;
+            font-size: 8px;
         }
         
         .calendar-nav-btn:hover {
@@ -76,34 +77,35 @@
         .calendar-weekdays {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
-            gap: 2px;
-            margin-bottom: 6px;
+            gap: 1px;
+            margin-bottom: 3px;
         }
         
         .calendar-weekday {
-            text-align: center;
-            font-size: 10px;
+            text-align: left;
+            font-size: 8px;
             color: rgba(255, 255, 255, 0.6);
             font-weight: 500;
-            padding: 6px 2px;
+            padding: 4px 1px;
             white-space: nowrap;
         }
         
         .calendar-days {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
-            gap: 2px;
+            gap: 1px;
         }
         
         .calendar-day {
             text-align: center;
-            padding: 6px 2px;
-            font-size: 11px;
+            padding: 1px;
+            font-size: 9px;
             color: #ffffff;
             cursor: pointer;
-            border-radius: 6px;
+            border-radius: 2px;
             transition: all 0.3s ease;
-            min-height: 28px;
+            width: 12px;
+            height: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -1750,16 +1752,17 @@
         <div class="hero-content-porsche" style="padding-top: 0; margin-top: 0; transform: translateY(0); position: relative; z-index: 2; height: 100vh; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 6rem;">
             <!-- Porsche Style Search Form -->
             <div class="porsche-search-form" style="
-                background: linear-gradient(135deg, rgba(0, 0, 0, 0.85) 0%, rgba(20, 20, 20, 0.9) 100%);
+                background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 249, 250, 0.9) 100%);
                 backdrop-filter: blur(30px);
-                border: 2px solid rgba(255, 255, 255, 0.15);
+                border: 2px solid rgba(0, 0, 0, 0.1);
                 border-radius: 16px;
-                padding: 2rem 2.5rem;
+                padding: 0.8rem 1.2rem;
                 box-shadow: 
-                    0 20px 40px rgba(0, 0, 0, 0.4),
-                    0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+                    0 20px 40px rgba(0, 0, 0, 0.1),
+                    0 0 0 1px rgba(255, 255, 255, 0.8) inset;
                 position: relative;
                 overflow: hidden;
+                transform: translateY(-10rem);
             ">
             <div style="
                 position: absolute;
@@ -1770,250 +1773,261 @@
                 background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
             "></div>
             <form id="date-location-form" novalidate>
-                    <div class="porsche-search-row" style="display: flex !important; gap: 1.5rem !important; flex-wrap: nowrap !important; width: 100%; flex-direction: row !important; justify-content: space-between; align-items: flex-end;">
-                                        <!-- Pick-up Location -->
+                <!-- 1. Satır: Abholort ve Rückgabeort -->
+                <div class="porsche-search-row" style="display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 0.5rem !important; margin-bottom: 0.5rem !important;">
+                    <!-- Pick-up Location -->
                     <div class="porsche-search-item">
-                        <label for="pickup-location-selector" style="color: rgba(255, 255, 255, 0.95); font-weight: 500; font-size: 0.75rem; letter-spacing: 0.5px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.75rem; white-space: nowrap; font-family: 'Inter', sans-serif;">
+                        <label for="pickup-location-selector" style="color: rgba(0, 0, 0, 0.8); font-weight: 500; font-size: 0.6rem; letter-spacing: 0.5px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.3rem; white-space: nowrap; font-family: 'Inter', sans-serif;">
                             <i class="bi bi-pin-map-fill" style="margin-right: 6px; color: #B10000; font-size: 0.8rem;"></i>
                             Abholort
                         </label>
-                            <div class="porsche-select-wrapper" style="width: 100%; display: flex; align-items: center; position: relative;">
-                        <select id="pickup-location-selector" required style="
-                            width: 100%; 
-                            height: 48px; 
-                            background: rgba(255, 255, 255, 0.08);
-                            border: 1px solid rgba(255, 255, 255, 0.2);
-                            border-radius: 8px;
-                            color: rgba(255, 255, 255, 0.9);
-                            font-size: 0.9rem;
-                            font-weight: 400;
-                            padding: 0 16px;
-                            font-family: 'Inter', sans-serif;
-                            transition: all 0.3s ease;
-                            backdrop-filter: blur(10px);
-                        ">
-                                    <option value="" selected></option>
-                            <option value="1">Berlin</option>
-                            <option value="2">München</option>
-                            <option value="3">Hamburg</option>
-                            <option value="4">Köln</option>
-                            <option value="5">Frankfurt</option>
-                        </select>
-                            </div>
+                        <div class="porsche-select-wrapper" style="width: 100%; display: flex; align-items: center; position: relative;">
+                            <select id="pickup-location-selector" required style="
+                                width: 100%; 
+                                height: 35px; 
+                                background: rgba(255, 255, 255, 0.08);
+                                border: 2px solid rgba(0, 0, 0, 0.3);
+                                border-radius: 8px;
+                                color: rgba(0, 0, 0, 0.8);
+                                font-size: 0.8rem;
+                                font-weight: 400;
+                                padding: 0 10px;
+                                font-family: 'Inter', sans-serif;
+                                transition: all 0.3s ease;
+                                backdrop-filter: blur(10px);
+                            ">
+                                <option value="" selected></option>
+                                <option value="1">Berlin</option>
+                                <option value="2">München</option>
+                                <option value="3">Hamburg</option>
+                                <option value="4">Köln</option>
+                                <option value="5">Frankfurt</option>
+                            </select>
+                        </div>
                     </div>
 
-                                        <!-- Drop-off Location -->
+                    <!-- Drop-off Location -->
                     <div class="porsche-search-item">
-                        <label for="dropoff-location-selector" style="color: rgba(255, 255, 255, 0.95); font-weight: 500; font-size: 0.75rem; letter-spacing: 0.5px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.75rem; white-space: nowrap; font-family: 'Inter', sans-serif;">
+                        <label for="dropoff-location-selector" style="color: rgba(0, 0, 0, 0.8); font-weight: 500; font-size: 0.6rem; letter-spacing: 0.5px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.3rem; white-space: nowrap; font-family: 'Inter', sans-serif;">
                             <i class="bi bi-pin-map" style="margin-right: 6px; color: #B10000; font-size: 0.8rem;"></i>
                             Rückgabeort
                         </label>
-                            <div class="porsche-select-wrapper" style="width: 100%; display: flex; align-items: center; position: relative;">
-                        <select id="dropoff-location-selector" required style="
-                            width: 100%; 
-                            height: 48px; 
-                            background: rgba(255, 255, 255, 0.08);
-                            border: 1px solid rgba(255, 255, 255, 0.2);
-                            border-radius: 8px;
-                            color: rgba(255, 255, 255, 0.9);
-                            font-size: 0.9rem;
-                            font-weight: 400;
-                            padding: 0 16px;
-                            font-family: 'Inter', sans-serif;
-                            transition: all 0.3s ease;
-                            backdrop-filter: blur(10px);
-                        ">
-                                    <option value=""></option>
-                            <option value="1">Berlin</option>
-                            <option value="2">München</option>
-                            <option value="3">Hamburg</option>
-                            <option value="4">Köln</option>
-                            <option value="5">Frankfurt</option>
-                        </select>
-                            </div>
+                        <div class="porsche-select-wrapper" style="width: 100%; display: flex; align-items: center; position: relative;">
+                            <select id="dropoff-location-selector" required style="
+                                width: 100%; 
+                                height: 35px; 
+                                background: rgba(255, 255, 255, 0.08);
+                                border: 2px solid rgba(0, 0, 0, 0.3);
+                                border-radius: 8px;
+                                color: rgba(0, 0, 0, 0.8);
+                                font-size: 0.8rem;
+                                font-weight: 400;
+                                padding: 0 10px;
+                                font-family: 'Inter', sans-serif;
+                                transition: all 0.3s ease;
+                                backdrop-filter: blur(10px);
+                            ">
+                                <option value=""></option>
+                                <option value="1">Berlin</option>
+                                <option value="2">München</option>
+                                <option value="3">Hamburg</option>
+                                <option value="4">Köln</option>
+                                <option value="5">Frankfurt</option>
+                            </select>
+                        </div>
                     </div>
+                </div>
 
+                <!-- 2. Satır: Abholdatum ve Abholzeit -->
+                <div class="porsche-search-row" style="display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 0.5rem !important; margin-bottom: 0.5rem !important;">
                     <!-- Pick-up Date -->
                     <div class="porsche-search-item">
-                            <label for="pickup-date-selector" style="color: rgba(255, 255, 255, 0.95); font-weight: 500; font-size: 0.75rem; letter-spacing: 0.5px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.75rem; white-space: nowrap; font-family: 'Inter', sans-serif;">
-                                <i class="bi bi-calendar-range-fill" style="margin-right: 6px; color: #B10000; font-size: 0.8rem;"></i>
-                                Abholdatum
-                            </label>
-                            <div class="porsche-date-wrapper" style="position: relative; width: 100%; display: flex; align-items: center; z-index: 10;">
-                                <input type="text" id="pickup-date-selector" placeholder="" required class="form-control" readonly style="
-                                    width: 100%; 
-                                    height: 48px; 
-                                    background: rgba(255, 255, 255, 0.08);
-                                    border: 1px solid rgba(255, 255, 255, 0.2);
-                                    border-radius: 8px;
-                                    color: rgba(255, 255, 255, 0.9);
-                                    font-size: 0.9rem;
-                                    font-weight: 400;
-                                    padding: 0 16px;
-                                    font-family: 'Inter', sans-serif;
-                                    transition: all 0.3s ease;
-                                    backdrop-filter: blur(10px);
-                                ">
-                                <i class="bi bi-exclamation-triangle-fill date-error-icon" id="pickup-date-error"></i>
-                                <div class="custom-calendar" id="pickup-calendar" style="z-index: 1000;">
-                                    <div class="calendar-header">
-                                        <div class="calendar-title" id="pickup-calendar-title">December 2024</div>
-                                        <div class="calendar-nav">
-                                            <button class="calendar-nav-btn" id="pickup-prev-month">
-                                                <i class="bi bi-chevron-left"></i>
-                                            </button>
-                                            <button class="calendar-nav-btn" id="pickup-next-month">
-                                                <i class="bi bi-chevron-right"></i>
-                                            </button>
-                                        </div>
+                        <label for="pickup-date-selector" style="color: rgba(0, 0, 0, 0.8); font-weight: 500; font-size: 0.6rem; letter-spacing: 0.5px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.3rem; white-space: nowrap; font-family: 'Inter', sans-serif;">
+                            <i class="bi bi-calendar-range-fill" style="margin-right: 6px; color: #B10000; font-size: 0.8rem;"></i>
+                            Abholdatum
+                        </label>
+                        <div class="porsche-date-wrapper" style="position: relative; width: 100%; display: flex; align-items: center; z-index: 9999;">
+                            <input type="text" id="pickup-date-selector" placeholder="" required class="form-control" readonly style="
+                                width: 100%; 
+                                height: 35px; 
+                                background: rgba(255, 255, 255, 0.08);
+                                border: 2px solid rgba(0, 0, 0, 0.3);
+                                border-radius: 8px;
+                                color: rgba(0, 0, 0, 0.8);
+                                font-size: 0.8rem;
+                                font-weight: 400;
+                                padding: 0 10px;
+                                font-family: 'Inter', sans-serif;
+                                transition: all 0.3s ease;
+                                backdrop-filter: blur(10px);
+                            ">
+                            <i class="bi bi-exclamation-triangle-fill date-error-icon" id="pickup-date-error"></i>
+                            <div class="custom-calendar" id="pickup-calendar" style="z-index: 1000;">
+                                <div class="calendar-header">
+                                    <div class="calendar-title" id="pickup-calendar-title">December 2024</div>
+                                    <div class="calendar-nav">
+                                        <button class="calendar-nav-btn" id="pickup-prev-month">
+                                            <i class="bi bi-chevron-left"></i>
+                                        </button>
+                                        <button class="calendar-nav-btn" id="pickup-next-month">
+                                            <i class="bi bi-chevron-right"></i>
+                                        </button>
                                     </div>
-                                    <div class="calendar-weekdays">
-                                        <div class="calendar-weekday">Mo</div>
-                                        <div class="calendar-weekday">Di</div>
-                                        <div class="calendar-weekday">Mi</div>
-                                        <div class="calendar-weekday">Do</div>
-                                        <div class="calendar-weekday">Fr</div>
-                                        <div class="calendar-weekday">Sa</div>
-                                        <div class="calendar-weekday">So</div>
-                                    </div>
-                                    <div class="calendar-days" id="pickup-calendar-days"></div>
                                 </div>
+                                <div class="calendar-weekdays">
+                                    <div class="calendar-weekday">Mo</div>
+                                    <div class="calendar-weekday">Di</div>
+                                    <div class="calendar-weekday">Mi</div>
+                                    <div class="calendar-weekday">Do</div>
+                                    <div class="calendar-weekday">Fr</div>
+                                    <div class="calendar-weekday">Sa</div>
+                                    <div class="calendar-weekday">So</div>
+                                </div>
+                                <div class="calendar-days" id="pickup-calendar-days"></div>
                             </div>
+                        </div>
                     </div>
 
                     <!-- Pick-up Time -->
                     <div class="porsche-search-item">
-                            <label for="pickup-time" style="color: rgba(255, 255, 255, 0.95); font-weight: 500; font-size: 0.75rem; letter-spacing: 0.5px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.75rem; white-space: nowrap; font-family: 'Inter', sans-serif;">
-                                <i class="bi bi-alarm-fill" style="margin-right: 6px; color: #B10000; font-size: 0.8rem;"></i>
-                                Zeit
-                            </label>
-                            <div class="porsche-select-wrapper" style="width: 100%; display: flex; align-items: center; position: relative;">
-                                <select id="pickup-time" required style="
-                                    width: 100%; 
-                                    height: 48px; 
-                                    background: rgba(255, 255, 255, 0.08);
-                                    border: 1px solid rgba(255, 255, 255, 0.2);
-                                    border-radius: 8px;
-                                    color: rgba(255, 255, 255, 0.9);
-                                    font-size: 0.9rem;
-                                    font-weight: 400;
-                                    padding: 0 16px;
-                                    font-family: 'Inter', sans-serif;
-                                    transition: all 0.3s ease;
-                                    backdrop-filter: blur(10px);
-                                ">
-                                    <option value=""></option>
-                            <option value="08:00">08:00</option>
-                            <option value="09:00">09:00</option>
-                            <option value="10:00">10:00</option>
-                            <option value="11:00">11:00</option>
-                            <option value="12:00">12:00</option>
-                            <option value="13:00">13:00</option>
-                            <option value="14:00">14:00</option>
-                            <option value="15:00">15:00</option>
-                            <option value="16:00">16:00</option>
-                            <option value="17:00">17:00</option>
-                            <option value="18:00">18:00</option>
-                        </select>
-                            </div>
+                        <label for="pickup-time" style="color: rgba(0, 0, 0, 0.8); font-weight: 500; font-size: 0.6rem; letter-spacing: 0.5px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.3rem; white-space: nowrap; font-family: 'Inter', sans-serif;">
+                            <i class="bi bi-alarm-fill" style="margin-right: 6px; color: #B10000; font-size: 0.8rem;"></i>
+                            Zeit
+                        </label>
+                        <div class="porsche-select-wrapper" style="width: 100%; display: flex; align-items: center; position: relative;">
+                            <select id="pickup-time" required style="
+                                width: 100%; 
+                                height: 35px; 
+                                background: rgba(255, 255, 255, 0.08);
+                                border: 2px solid rgba(0, 0, 0, 0.3);
+                                border-radius: 8px;
+                                color: rgba(0, 0, 0, 0.8);
+                                font-size: 0.8rem;
+                                font-weight: 400;
+                                padding: 0 10px;
+                                font-family: 'Inter', sans-serif;
+                                transition: all 0.3s ease;
+                                backdrop-filter: blur(10px);
+                            ">
+                                <option value=""></option>
+                                <option value="08:00">08:00</option>
+                                <option value="09:00">09:00</option>
+                                <option value="10:00">10:00</option>
+                                <option value="11:00">11:00</option>
+                                <option value="12:00">12:00</option>
+                                <option value="13:00">13:00</option>
+                                <option value="14:00">14:00</option>
+                                <option value="15:00">15:00</option>
+                                <option value="16:00">16:00</option>
+                                <option value="17:00">17:00</option>
+                                <option value="18:00">18:00</option>
+                            </select>
+                        </div>
                     </div>
+                </div>
 
+                <!-- 3. Satır: Rückgabedatum ve Rückgabezeit -->
+                <div class="porsche-search-row" style="display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 0.5rem !important; margin-bottom: 0.8rem !important;">
                     <!-- Drop-off Date -->
                     <div class="porsche-search-item">
-                            <label for="dropoff-date-selector" style="color: rgba(255, 255, 255, 0.95); font-weight: 500; font-size: 0.75rem; letter-spacing: 0.5px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.75rem; white-space: nowrap; font-family: 'Inter', sans-serif;">
-                                <i class="bi bi-calendar-range" style="margin-right: 6px; color: #B10000; font-size: 0.8rem;"></i>
-                                Rückgabedatum
-                            </label>
-                            <div class="porsche-date-wrapper" style="position: relative; width: 100%; display: flex; align-items: center; z-index: 10;">
-                                <input type="text" id="dropoff-date-selector" placeholder="" required class="form-control" readonly style="
-                                    width: 100%; 
-                                    height: 48px; 
-                                    background: rgba(255, 255, 255, 0.08);
-                                    border: 1px solid rgba(255, 255, 255, 0.2);
-                                    border-radius: 8px;
-                                    color: rgba(255, 255, 255, 0.9);
-                                    font-size: 0.9rem;
-                                    font-weight: 400;
-                                    padding: 0 16px;
-                                    font-family: 'Inter', sans-serif;
-                                    transition: all 0.3s ease;
-                                    backdrop-filter: blur(10px);
-                                ">
-                                <i class="bi bi-exclamation-triangle-fill date-error-icon" id="dropoff-date-error"></i>
-                                <div class="custom-calendar" id="dropoff-calendar" style="z-index: 1000;">
-                                    <div class="calendar-header">
-                                        <div class="calendar-title" id="dropoff-calendar-title">December 2024</div>
-                                        <div class="calendar-nav">
-                                            <button class="calendar-nav-btn" id="dropoff-prev-month">
-                                                <i class="bi bi-chevron-left"></i>
-                                            </button>
-                                            <button class="calendar-nav-btn" id="dropoff-next-month">
-                                                <i class="bi bi-chevron-right"></i>
-                                            </button>
-                                        </div>
+                        <label for="dropoff-date-selector" style="color: rgba(0, 0, 0, 0.8); font-weight: 500; font-size: 0.6rem; letter-spacing: 0.5px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.3rem; white-space: nowrap; font-family: 'Inter', sans-serif;">
+                            <i class="bi bi-calendar-range" style="margin-right: 6px; color: #B10000; font-size: 0.8rem;"></i>
+                            Rückgabedatum
+                        </label>
+                        <div class="porsche-date-wrapper" style="position: relative; width: 100%; display: flex; align-items: center; z-index: 9999;">
+                            <input type="text" id="dropoff-date-selector" placeholder="" required class="form-control" readonly style="
+                                width: 100%; 
+                                height: 35px; 
+                                background: rgba(255, 255, 255, 0.08);
+                                border: 2px solid rgba(0, 0, 0, 0.3);
+                                border-radius: 8px;
+                                color: rgba(0, 0, 0, 0.8);
+                                font-size: 0.8rem;
+                                font-weight: 400;
+                                padding: 0 10px;
+                                font-family: 'Inter', sans-serif;
+                                transition: all 0.3s ease;
+                                backdrop-filter: blur(10px);
+                            ">
+                            <i class="bi bi-exclamation-triangle-fill date-error-icon" id="dropoff-date-error"></i>
+                            <div class="custom-calendar" id="dropoff-calendar" style="z-index: 1000;">
+                                <div class="calendar-header">
+                                    <div class="calendar-title" id="dropoff-calendar-title">December 2024</div>
+                                    <div class="calendar-nav">
+                                        <button class="calendar-nav-btn" id="dropoff-prev-month">
+                                            <i class="bi bi-chevron-left"></i>
+                                        </button>
+                                        <button class="calendar-nav-btn" id="dropoff-next-month">
+                                            <i class="bi bi-chevron-right"></i>
+                                        </button>
                                     </div>
-                                    <div class="calendar-weekdays">
-                                        <div class="calendar-weekday">Mo</div>
-                                        <div class="calendar-weekday">Di</div>
-                                        <div class="calendar-weekday">Mi</div>
-                                        <div class="calendar-weekday">Do</div>
-                                        <div class="calendar-weekday">Fr</div>
-                                        <div class="calendar-weekday">Sa</div>
-                                        <div class="calendar-weekday">So</div>
-                                    </div>
-                                    <div class="calendar-days" id="dropoff-calendar-days"></div>
                                 </div>
+                                <div class="calendar-weekdays">
+                                    <div class="calendar-weekday">Mo</div>
+                                    <div class="calendar-weekday">Di</div>
+                                    <div class="calendar-weekday">Mi</div>
+                                    <div class="calendar-weekday">Do</div>
+                                    <div class="calendar-weekday">Fr</div>
+                                    <div class="calendar-weekday">Sa</div>
+                                    <div class="calendar-weekday">So</div>
+                                </div>
+                                <div class="calendar-days" id="dropoff-calendar-days"></div>
                             </div>
+                        </div>
                     </div>
 
                     <!-- Drop-off Time -->
                     <div class="porsche-search-item">
-                            <label for="dropoff-time" style="color: rgba(255, 255, 255, 0.95); font-weight: 500; font-size: 0.75rem; letter-spacing: 0.5px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.75rem; white-space: nowrap; font-family: 'Inter', sans-serif;">
-                                <i class="bi bi-alarm" style="margin-right: 6px; color: #B10000; font-size: 0.8rem;"></i>
-                                Zeit
-                            </label>
-                            <div class="porsche-select-wrapper" style="width: 100%; display: flex; align-items: center; position: relative;">
-                                <select id="dropoff-time" required style="
-                                    width: 100%; 
-                                    height: 48px; 
-                                    background: rgba(255, 255, 255, 0.08);
-                                    border: 1px solid rgba(255, 255, 255, 0.2);
-                                    border-radius: 8px;
-                                    color: rgba(255, 255, 255, 0.9);
-                                    font-size: 0.9rem;
-                                    font-weight: 400;
-                                    padding: 0 16px;
-                                    font-family: 'Inter', sans-serif;
-                                    transition: all 0.3s ease;
-                                    backdrop-filter: blur(10px);
-                                ">
-                                    <option value=""></option>
-                            <option value="08:00">08:00</option>
-                            <option value="09:00">09:00</option>
-                            <option value="10:00">10:00</option>
-                            <option value="11:00">11:00</option>
-                            <option value="12:00">12:00</option>
-                            <option value="13:00">13:00</option>
-                            <option value="14:00">14:00</option>
-                            <option value="15:00">15:00</option>
-                            <option value="16:00">16:00</option>
-                            <option value="17:00">17:00</option>
-                            <option value="18:00">18:00</option>
-                        </select>
-                            </div>
+                        <label for="dropoff-time" style="color: rgba(0, 0, 0, 0.8); font-weight: 500; font-size: 0.6rem; letter-spacing: 0.5px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.3rem; white-space: nowrap; font-family: 'Inter', sans-serif;">
+                            <i class="bi bi-alarm" style="margin-right: 6px; color: #B10000; font-size: 0.8rem;"></i>
+                            Zeit
+                        </label>
+                        <div class="porsche-select-wrapper" style="width: 100%; display: flex; align-items: center; position: relative;">
+                            <select id="dropoff-time" required style="
+                                width: 100%; 
+                                height: 35px; 
+                                background: rgba(255, 255, 255, 0.08);
+                                border: 2px solid rgba(0, 0, 0, 0.3);
+                                border-radius: 8px;
+                                color: rgba(0, 0, 0, 0.8);
+                                font-size: 0.8rem;
+                                font-weight: 400;
+                                padding: 0 10px;
+                                font-family: 'Inter', sans-serif;
+                                transition: all 0.3s ease;
+                                backdrop-filter: blur(10px);
+                            ">
+                                <option value=""></option>
+                                <option value="08:00">08:00</option>
+                                <option value="09:00">09:00</option>
+                                <option value="10:00">10:00</option>
+                                <option value="11:00">11:00</option>
+                                <option value="12:00">12:00</option>
+                                <option value="13:00">13:00</option>
+                                <option value="14:00">14:00</option>
+                                <option value="15:00">15:00</option>
+                                <option value="16:00">16:00</option>
+                                <option value="17:00">17:00</option>
+                                <option value="18:00">18:00</option>
+                            </select>
+                        </div>
                     </div>
+                </div>
 
-                        <!-- Porsche Search Button -->
-                    <div class="porsche-search-button">
+                <!-- 4. Satır: Suchen Butonu -->
+                <div class="porsche-search-row" style="display: flex !important; justify-content: center !important; margin-bottom: 0 !important;">
+                    <div class="porsche-search-button" style="width: 100%;">
                         <button type="submit" style="
-                            width: 60px;
-                            height: 48px;
+                            width: 100%;
+                            height: 35px;
                             background: linear-gradient(135deg, #B10000 0%, #8B0000 100%);
                             border: none;
                             border-radius: 8px;
                             color: white;
-                            font-size: 1.2rem;
+                            font-size: 0.85rem;
                             font-weight: 600;
+                            text-transform: uppercase;
+                            letter-spacing: 1px;
                             display: flex;
                             align-items: center;
                             justify-content: center;
@@ -2025,7 +2039,8 @@
                             position: relative;
                             overflow: hidden;
                         ">
-                            <i class="bi bi-search" style="font-size: 1.1rem; z-index: 2;"></i>
+                            <i class="bi bi-search" style="font-size: 1rem; margin-right: 8px;"></i>
+                            Suchen
                             <div style="
                                 position: absolute;
                                 top: 0;
@@ -2081,8 +2096,14 @@
                             background-color: #2a2a2a !important;
                             color: #ffffff !important;
                             font-family: 'Inter', sans-serif;
-                            font-size: 0.9rem;
-                            padding: 8px 12px;
+                            font-size: 0.8rem;
+                            padding: 6px 10px;
+                        }
+                        
+                        /* Date select options - 6 punto */
+                        #pickup-date-selector option,
+                        #dropoff-date-selector option {
+                            font-size: 6pt !important;
                         }
                         
                         .porsche-search-form select option:hover {
@@ -2144,7 +2165,7 @@
                     </style>
                     
                     <!-- Minimal Discover Button -->
-                    <div class="discover-button-container" style="text-align: center; margin-top: -1rem;">
+                    <div class="discover-button-container" style="text-align: center; margin-top: -1rem; transform: translateY(-8rem);">
                         <button class="discover-button" style="
                             background: rgba(255, 255, 255, 0.1);
                             backdrop-filter: blur(20px);

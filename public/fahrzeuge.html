@@ -2159,7 +2159,7 @@
 
 
     <!-- Filters Section - Modern Porsche Style -->
-    <div class="container" style="position: absolute; top: 32%; left: 50%; transform: translate(-50%, calc(-50% + 2rem)); z-index: 50; width: 100%;">
+    <div id="filter-form-container" class="container" style="position: absolute; top: 32%; left: 50%; transform: translate(-50%, calc(-50% + 2rem)); z-index: 50; width: 100%; transition: margin-right 0.3s ease;">
         <!-- Section Header -->
         <div class="section-header" style="text-align: center; margin-bottom: 2rem; color: white; visibility: hidden; height: 0; overflow: hidden;">
             <h2 class="section-title" style="font-size: 2.5rem; font-weight: 700; margin-bottom: 0.5rem; color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.8);">Verfügbare Fahrzeuge</h2>
@@ -2170,17 +2170,17 @@
         <div class="porsche-filter-form" style="
             background: linear-gradient(135deg, rgba(20, 20, 20, 0.95) 0%, rgba(40, 40, 40, 0.9) 50%, rgba(60, 60, 60, 0.85) 100%);
             backdrop-filter: blur(35px);
-            border: 3px solid rgba(212, 175, 55, 0.4);
-            border-radius: 25px;
-            padding: 1.5rem 3.5rem;
+            border: 2px solid rgba(212, 175, 55, 0.4);
+            border-radius: 18px;
+            padding: 1rem 2rem;
             box-shadow: 
-                0 30px 60px rgba(0, 0, 0, 0.6),
-                0 0 0 2px rgba(212, 175, 55, 0.1) inset,
-                0 0 20px rgba(212, 175, 55, 0.2);
+                0 20px 40px rgba(0, 0, 0, 0.6),
+                0 0 0 1px rgba(212, 175, 55, 0.1) inset,
+                0 0 15px rgba(212, 175, 55, 0.2);
             position: relative;
             overflow: hidden;
-            margin-bottom: 2rem;
-            margin-top: -1rem;
+            margin-bottom: 1.5rem;
+            margin-top: -0.5rem;
         ">
         <div style="
             position: absolute;
@@ -2191,25 +2191,25 @@
             background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
         "></div>
         
-        <div class="porsche-filter-row" style="display: flex !important; gap: 2.5rem !important; flex-wrap: nowrap !important; width: 100%; flex-direction: row !important; justify-content: space-between; align-items: flex-end;">
+        <div class="porsche-filter-row" style="display: flex !important; gap: 1.5rem !important; flex-wrap: nowrap !important; width: 100%; flex-direction: row !important; justify-content: space-between; align-items: flex-end;">
             
             <!-- Fahrzeugtyp -->
             <div class="porsche-filter-item">
-                <label for="vehicle-type-filter" style="color: rgba(255, 255, 255, 0.95); font-weight: 700; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.3rem; white-space: nowrap; font-family: 'Inter', sans-serif;">
-                    <i class="bi bi-car-front" style="margin-right: 10px; color: #d4af37; font-size: 1rem;"></i>
+                <label for="vehicle-type-filter" style="color: rgba(255, 255, 255, 0.95); font-weight: 700; font-size: 10px; letter-spacing: 0.8px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.2rem; white-space: nowrap; font-family: 'Inter', sans-serif;">
+                    <i class="bi bi-car-front" style="margin-right: 8px; color: #d4af37; font-size: 0.8rem;"></i>
                     Fahrzeugtyp
                 </label>
                 <div class="porsche-select-wrapper" style="width: 100%; display: flex; align-items: center; position: relative;">
                     <select id="vehicle-type-filter" style="
                         width: 100%; 
-                        height: 48px; 
+                        height: 38px; 
                         background: rgba(255, 255, 255, 0.15);
-                        border: 2px solid rgba(212, 175, 55, 0.5);
-                        border-radius: 12px;
+                        border: 1px solid rgba(212, 175, 55, 0.5);
+                        border-radius: 8px;
                         color: rgba(255, 255, 255, 0.9);
-                        font-size: 12px;
+                        font-size: 10px;
                         font-weight: 600;
-                        padding: 0 20px;
+                        padding: 0 12px;
                         font-family: 'Inter', sans-serif;
                         transition: all 0.3s ease;
                         backdrop-filter: blur(20px);
@@ -2226,21 +2226,21 @@
 
             <!-- Marke -->
             <div class="porsche-filter-item">
-                <label for="vehicle-model-filter" style="color: rgba(255, 255, 255, 0.95); font-weight: 700; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.5rem; white-space: nowrap; font-family: 'Inter', sans-serif;">
-                    <i class="bi bi-tag" style="margin-right: 10px; color: #d4af37; font-size: 1rem;"></i>
+                <label for="vehicle-model-filter" style="color: rgba(255, 255, 255, 0.95); font-weight: 700; font-size: 10px; letter-spacing: 0.8px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.2rem; white-space: nowrap; font-family: 'Inter', sans-serif;">
+                    <i class="bi bi-tag" style="margin-right: 8px; color: #d4af37; font-size: 0.8rem;"></i>
                     Marke
                 </label>
                 <div class="porsche-select-wrapper" style="width: 100%; display: flex; align-items: center; position: relative;">
                     <select id="vehicle-model-filter" style="
                         width: 100%; 
-                        height: 52px; 
+                        height: 38px; 
                         background: rgba(255, 255, 255, 0.12);
                         border: 1px solid rgba(177, 0, 0, 0.4);
-                        border-radius: 10px;
+                        border-radius: 8px;
                         color: rgba(255, 255, 255, 0.9);
-                        font-size: 12px;
+                        font-size: 10px;
                         font-weight: 500;
-                        padding: 0 18px;
+                        padding: 0 12px;
                         font-family: 'Inter', sans-serif;
                         transition: all 0.3s ease;
                         backdrop-filter: blur(15px);
@@ -2258,21 +2258,21 @@
 
             <!-- Kraftstoff -->
             <div class="porsche-filter-item">
-                <label for="fuel-type-filter" style="color: rgba(255, 255, 255, 0.95); font-weight: 700; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.5rem; white-space: nowrap; font-family: 'Inter', sans-serif;">
-                    <i class="bi bi-fuel-pump" style="margin-right: 10px; color: #d4af37; font-size: 1rem;"></i>
+                <label for="fuel-type-filter" style="color: rgba(255, 255, 255, 0.95); font-weight: 700; font-size: 10px; letter-spacing: 0.8px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.2rem; white-space: nowrap; font-family: 'Inter', sans-serif;">
+                    <i class="bi bi-fuel-pump" style="margin-right: 8px; color: #d4af37; font-size: 0.8rem;"></i>
                     Kraftstoff
                 </label>
                 <div class="porsche-select-wrapper" style="width: 100%; display: flex; align-items: center; position: relative;">
                     <select id="fuel-type-filter" style="
                         width: 100%; 
-                        height: 48px; 
+                        height: 38px; 
                         background: rgba(255, 255, 255, 0.08);
                         border: 1px solid rgba(255, 255, 255, 0.2);
                         border-radius: 8px;
                         color: rgba(255, 255, 255, 0.9);
-                        font-size: 12px;
+                        font-size: 10px;
                         font-weight: 400;
-                        padding: 0 16px;
+                        padding: 0 12px;
                         font-family: 'Inter', sans-serif;
                         transition: all 0.3s ease;
                         backdrop-filter: blur(10px);
@@ -2288,21 +2288,21 @@
 
             <!-- Sortieren -->
             <div class="porsche-filter-item">
-                <label for="sort-filter" style="color: rgba(255, 255, 255, 0.95); font-weight: 700; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.5rem; white-space: nowrap; font-family: 'Inter', sans-serif;">
-                    <i class="bi bi-sort-down" style="margin-right: 10px; color: #d4af37; font-size: 1rem;"></i>
+                <label for="sort-filter" style="color: rgba(255, 255, 255, 0.95); font-weight: 700; font-size: 10px; letter-spacing: 0.8px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.2rem; white-space: nowrap; font-family: 'Inter', sans-serif;">
+                    <i class="bi bi-sort-down" style="margin-right: 8px; color: #d4af37; font-size: 0.8rem;"></i>
                     Sortieren
                 </label>
                 <div class="porsche-select-wrapper" style="width: 100%; display: flex; align-items: center; position: relative;">
                     <select id="sort-filter" style="
                         width: 100%; 
-                        height: 48px; 
+                        height: 38px; 
                         background: rgba(255, 255, 255, 0.08);
                         border: 1px solid rgba(255, 255, 255, 0.2);
                         border-radius: 8px;
                         color: rgba(255, 255, 255, 0.9);
-                        font-size: 12px;
+                        font-size: 10px;
                         font-weight: 400;
-                        padding: 0 16px;
+                        padding: 0 12px;
                         font-family: 'Inter', sans-serif;
                         transition: all 0.3s ease;
                         backdrop-filter: blur(10px);
@@ -2317,21 +2317,21 @@
 
             <!-- Getriebe -->
             <div class="porsche-filter-item">
-                <label for="transmission-filter" style="color: rgba(255, 255, 255, 0.95); font-weight: 700; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.5rem; white-space: nowrap; font-family: 'Inter', sans-serif;">
-                    <i class="bi bi-gear" style="margin-right: 10px; color: #d4af37; font-size: 1rem;"></i>
+                <label for="transmission-filter" style="color: rgba(255, 255, 255, 0.95); font-weight: 700; font-size: 10px; letter-spacing: 0.8px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.2rem; white-space: nowrap; font-family: 'Inter', sans-serif;">
+                    <i class="bi bi-gear" style="margin-right: 8px; color: #d4af37; font-size: 0.8rem;"></i>
                     Getriebe
                 </label>
                 <div class="porsche-select-wrapper" style="width: 100%; display: flex; align-items: center; position: relative;">
                     <select id="transmission-filter" style="
                         width: 100%; 
-                        height: 48px; 
+                        height: 38px; 
                         background: rgba(255, 255, 255, 0.08);
                         border: 1px solid rgba(255, 255, 255, 0.2);
                         border-radius: 8px;
                         color: rgba(255, 255, 255, 0.9);
-                        font-size: 12px;
+                        font-size: 10px;
                         font-weight: 400;
-                        padding: 0 16px;
+                        padding: 0 12px;
                         font-family: 'Inter', sans-serif;
                         transition: all 0.3s ease;
                         backdrop-filter: blur(10px);
@@ -2346,13 +2346,13 @@
             <!-- Porsche Search Button -->
             <div class="porsche-filter-button">
                 <button type="button" id="search-vehicles-btn" onclick="performSearch()" style="
-                    width: 65px;
-                    height: 48px;
+                    width: 50px;
+                    height: 38px;
                     background: linear-gradient(135deg, #d4af37 0%, #b8941f 50%, #8b6914 100%);
                     border: none;
-                    border-radius: 15px;
+                    border-radius: 10px;
                     color: white;
-                    font-size: 1.4rem;
+                    font-size: 1.1rem;
                     font-weight: 700;
                     display: flex;
                     align-items: center;
@@ -2360,13 +2360,13 @@
                     transition: all 0.3s ease;
                     cursor: pointer;
                     box-shadow: 
-                        0 8px 20px rgba(212, 175, 55, 0.5),
-                        0 0 0 2px rgba(255, 255, 255, 0.2) inset,
-                        0 0 15px rgba(212, 175, 55, 0.3);
+                        0 6px 15px rgba(212, 175, 55, 0.5),
+                        0 0 0 1px rgba(255, 255, 255, 0.2) inset,
+                        0 0 10px rgba(212, 175, 55, 0.3);
                     position: relative;
                     overflow: hidden;
                 ">
-                    <i class="bi bi-search" style="font-size: 1.1rem; z-index: 2;"></i>
+                    <i class="bi bi-search" style="font-size: 0.9rem; z-index: 2;"></i>
                     <div style="
                         position: absolute;
                         top: 0;
@@ -2463,28 +2463,28 @@
     </button>
 
             <!-- Booking Sidebar -->
-        <div id="booking-sidebar" style="position: fixed; top: 0; right: -380px; width: 380px; height: 100vh; background: linear-gradient(135deg, #1a1a1a, #2a2a2a); border-left: 3px solid #d4af37; z-index: 9999; transition: right 0.3s ease; box-shadow: -10px 0 30px rgba(0,0,0,0.5);">
-            <div style="padding: 1.5rem; height: 100vh; display: flex; flex-direction: column;">
+        <div id="booking-sidebar" style="position: fixed; top: 0; right: -280px; width: 280px; height: 100vh; background: linear-gradient(135deg, #1a1a1a, #2a2a2a); border-left: 3px solid #d4af37; z-index: 9999; transition: right 0.3s ease; box-shadow: -10px 0 30px rgba(0,0,0,0.5);">
+            <div style="padding: 1rem; height: 100vh; display: flex; flex-direction: column;">
                 <!-- Header -->
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(212, 175, 55, 0.3);">
-                    <h3 style="color: #d4af37; margin: 0; font-size: 1.3rem; font-weight: 600;">Schnellbuchung</h3>
-                    <button onclick="closeBookingSidebar()" style="background: none; border: none; color: #ffffff; font-size: 1.5rem; cursor: pointer; padding: 0; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;">×</button>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; padding-bottom: 0.75rem; border-bottom: 1px solid rgba(212, 175, 55, 0.3);">
+                    <h3 style="color: #d4af37; margin: 0; font-size: 1rem; font-weight: 600;">Schnellbuchung</h3>
+                    <button onclick="closeBookingSidebar()" style="background: none; border: none; color: #ffffff; font-size: 1.2rem; cursor: pointer; padding: 0; width: 25px; height: 25px; display: flex; align-items: center; justify-content: center;">×</button>
                 </div>
                 
                 <!-- Selected Car Info -->
-                <div id="sidebar-car-info" style="background: linear-gradient(135deg, #333333, #2a2a2a); border-radius: 12px; padding: 1rem; margin-bottom: 1rem; border: 1px solid rgba(212, 175, 55, 0.3); flex-shrink: 0;">
-                    <h4 style="color: #d4af37; margin: 0 0 0.5rem 0; font-size: 1rem;">Ausgewähltes Fahrzeug</h4>
-                    <div id="sidebar-car-details" style="font-size: 0.9rem;">
+                <div id="sidebar-car-info" style="background: linear-gradient(135deg, #333333, #2a2a2a); border-radius: 8px; padding: 0.75rem; margin-bottom: 0.75rem; border: 1px solid rgba(212, 175, 55, 0.3); flex-shrink: 0;">
+                    <h4 style="color: #d4af37; margin: 0 0 0.4rem 0; font-size: 0.85rem;">Ausgewähltes Fahrzeug</h4>
+                    <div id="sidebar-car-details" style="font-size: 0.75rem;">
                         <!-- Car details will be populated by JavaScript -->
                     </div>
                 </div>
 
                 <!-- Quick Booking Form -->
                 <form id="quick-booking-form" style="flex: 1; display: flex; flex-direction: column;">
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.75rem;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 0.5rem;">
                         <div>
-                            <label style="color: #d4af37; font-weight: 600; margin-bottom: 0.25rem; display: block; font-size: 0.85rem;">Abholort</label>
-                            <select id="sidebar-pickup-location" required style="width: 100%; background: linear-gradient(135deg, #333333, #2a2a2a); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 8px; color: #ffffff; padding: 0.5rem; font-size: 0.85rem;">
+                            <label style="color: #d4af37; font-weight: 600; margin-bottom: 0.2rem; display: block; font-size: 0.7rem;">Abholort</label>
+                            <select id="sidebar-pickup-location" required style="width: 100%; background: linear-gradient(135deg, #333333, #2a2a2a); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 6px; color: #ffffff; padding: 0.4rem; font-size: 0.7rem;">
                                 <option value="">Standort</option>
                                 <option value="1">Berlin</option>
                                 <option value="2">München</option>
@@ -2494,8 +2494,8 @@
                             </select>
                         </div>
                         <div>
-                            <label style="color: #d4af37; font-weight: 600; margin-bottom: 0.25rem; display: block; font-size: 0.85rem;">Rückgabeort</label>
-                            <select id="sidebar-return-location" required style="width: 100%; background: linear-gradient(135deg, #333333, #2a2a2a); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 8px; color: #ffffff; padding: 0.5rem; font-size: 0.85rem;">
+                            <label style="color: #d4af37; font-weight: 600; margin-bottom: 0.2rem; display: block; font-size: 0.7rem;">Rückgabeort</label>
+                            <select id="sidebar-return-location" required style="width: 100%; background: linear-gradient(135deg, #333333, #2a2a2a); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 6px; color: #ffffff; padding: 0.4rem; font-size: 0.7rem;">
                                 <option value="">Standort</option>
                                 <option value="1">Berlin</option>
                                 <option value="2">München</option>
@@ -2506,21 +2506,21 @@
                         </div>
                     </div>
 
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.75rem;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 0.5rem;">
                         <div>
-                            <label style="color: #d4af37; font-weight: 600; margin-bottom: 0.25rem; display: block; font-size: 0.85rem;">Abholdatum</label>
-                            <input type="date" id="sidebar-pickup-date" lang="de-DE" required style="width: 100%; background: linear-gradient(135deg, #333333, #2a2a2a); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 8px; color: #ffffff; padding: 0.5rem; font-size: 0.85rem; font-family: 'Inter', sans-serif;">
+                            <label style="color: #d4af37; font-weight: 600; margin-bottom: 0.2rem; display: block; font-size: 0.7rem;">Abholdatum</label>
+                            <input type="date" id="sidebar-pickup-date" lang="de-DE" required style="width: 100%; background: linear-gradient(135deg, #333333, #2a2a2a); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 6px; color: #ffffff; padding: 0.4rem; font-size: 0.7rem; font-family: 'Inter', sans-serif;">
                         </div>
                         <div>
-                            <label style="color: #d4af37; font-weight: 600; margin-bottom: 0.25rem; display: block; font-size: 0.85rem;">Rückgabedatum</label>
-                            <input type="date" id="sidebar-return-date" lang="de-DE" required style="width: 100%; background: linear-gradient(135deg, #333333, #2a2a2a); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 8px; color: #ffffff; padding: 0.5rem; font-size: 0.85rem; font-family: 'Inter', sans-serif;">
+                            <label style="color: #d4af37; font-weight: 600; margin-bottom: 0.2rem; display: block; font-size: 0.7rem;">Rückgabedatum</label>
+                            <input type="date" id="sidebar-return-date" lang="de-DE" required style="width: 100%; background: linear-gradient(135deg, #333333, #2a2a2a); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 6px; color: #ffffff; padding: 0.4rem; font-size: 0.7rem; font-family: 'Inter', sans-serif;">
                         </div>
                     </div>
 
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.75rem;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 0.5rem;">
                         <div>
-                            <label style="color: #d4af37; font-weight: 600; margin-bottom: 0.25rem; display: block; font-size: 0.85rem;">Abholzeit</label>
-                            <select id="sidebar-pickup-time" required style="width: 100%; background: linear-gradient(135deg, #333333, #2a2a2a); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 8px; color: #ffffff; padding: 0.5rem; font-size: 0.85rem;">
+                            <label style="color: #d4af37; font-weight: 600; margin-bottom: 0.2rem; display: block; font-size: 0.7rem;">Abholzeit</label>
+                            <select id="sidebar-pickup-time" required style="width: 100%; background: linear-gradient(135deg, #333333, #2a2a2a); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 6px; color: #ffffff; padding: 0.4rem; font-size: 0.7rem;">
                                 <option value="">Zeit</option>
                                 <option value="08:00">08:00</option>
                                 <option value="09:00">09:00</option>
@@ -2536,8 +2536,8 @@
                             </select>
                         </div>
                         <div>
-                            <label style="color: #d4af37; font-weight: 600; margin-bottom: 0.25rem; display: block; font-size: 0.85rem;">Rückgabezeit</label>
-                            <select id="sidebar-return-time" required style="width: 100%; background: linear-gradient(135deg, #333333, #2a2a2a); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 8px; color: #ffffff; padding: 0.5rem; font-size: 0.85rem;">
+                            <label style="color: #d4af37; font-weight: 600; margin-bottom: 0.2rem; display: block; font-size: 0.7rem;">Rückgabezeit</label>
+                            <select id="sidebar-return-time" required style="width: 100%; background: linear-gradient(135deg, #333333, #2a2a2a); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 6px; color: #ffffff; padding: 0.4rem; font-size: 0.7rem;">
                                 <option value="">Zeit</option>
                                 <option value="08:00">08:00</option>
                                 <option value="09:00">09:00</option>
@@ -2554,7 +2554,7 @@
                         </div>
                     </div>
 
-                    <button type="submit" style="width: 100%; background: linear-gradient(135deg, #d4af37, #b8941f); color: #1a1a1a; border: none; border-radius: 8px; padding: 0.75rem; font-weight: 600; font-size: 0.9rem; cursor: pointer; text-transform: uppercase; letter-spacing: 0.5px; margin-top: auto;">
+                    <button type="submit" style="width: 100%; background: linear-gradient(135deg, #d4af37, #b8941f); color: #1a1a1a; border: none; border-radius: 6px; padding: 0.6rem; font-weight: 600; font-size: 0.75rem; cursor: pointer; text-transform: uppercase; letter-spacing: 0.3px; margin-top: auto;">
                         Zu Extras & Versicherung
                     </button>
                 </form>

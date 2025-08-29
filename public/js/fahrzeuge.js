@@ -417,15 +417,53 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('booking-sidebar').style.right = '0';
         
         // Move main content to the left
-        document.getElementById('main-content').style.marginRight = '380px';
+        document.getElementById('main-content').style.marginRight = '280px';
+        
+        // Move navbar to the left
+        const navbarContainer = document.getElementById('navbar-container');
+        if (navbarContainer) {
+            navbarContainer.style.marginRight = '280px';
+        }
+        
+        // Move filter form to the left using transform and adjust width
+        const filterContainer = document.getElementById('filter-form-container');
+        if (filterContainer) {
+            filterContainer.style.transform = 'translate(-50%, calc(-50% + 2rem)) translateX(-132px)';
+            filterContainer.style.width = 'calc(100% - 280px)';
+        }
+        
+        // Reduce gaps between filter select elements
+        const filterRow = filterContainer?.querySelector('.porsche-filter-row');
+        if (filterRow) {
+            filterRow.style.gap = '0.1rem';
+        }
     }
 
     // Close booking sidebar
     window.closeBookingSidebar = function() {
-        document.getElementById('booking-sidebar').style.right = '-380px';
+        document.getElementById('booking-sidebar').style.right = '-280px';
         
         // Move main content back to original position
         document.getElementById('main-content').style.marginRight = '0';
+        
+        // Move navbar back to original position
+        const navbarContainer = document.getElementById('navbar-container');
+        if (navbarContainer) {
+            navbarContainer.style.marginRight = '0';
+        }
+        
+        // Move filter form back to original position using transform and restore width
+        const filterContainer = document.getElementById('filter-form-container');
+        if (filterContainer) {
+            filterContainer.style.transform = 'translate(-50%, calc(-50% + 2rem))';
+            filterContainer.style.width = '100%';
+        }
+        
+        // Restore original gaps between filter select elements
+        const filterRow = filterContainer?.querySelector('.porsche-filter-row');
+        if (filterRow) {
+            filterRow.style.gap = '1.5rem';
+        }
     }
 
     // Initialize sidebar form
