@@ -83,6 +83,11 @@ app.get('/extras-versicherung', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'extras-versicherung.html'));
 });
 
+app.get('/date-location-selection', (req, res) => {
+    console.log('Date & Location Selection route accessed');
+    res.sendFile(path.join(__dirname, 'public', 'date-location-selection.html'));
+});
+
 app.get('/fahrzeuge2', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'fahrzeuge2.html'));
 });

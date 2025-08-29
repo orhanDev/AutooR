@@ -387,19 +387,106 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Rent vehicle function - Global scope
     window.rentVehicle = function(carId, carName, dailyRate) {
-        // Save car selection to localStorage
-        const carSelection = {
-            carId: carId,
-            carName: carName,
-            dailyRate: dailyRate,
-            selectedDate: new Date().toISOString().split('T')[0] // Today's date as default
-        };
+        // Find the selected vehicle
+        const selectedVehicle = allVehicles.find(v => v.car_id === carId);
         
-        localStorage.setItem('selectedCar', JSON.stringify(carSelection));
-        
-        // Redirect to extras & versicherung page
-        window.location.href = `/extras-versicherung.html?carId=${carId}&days=1`;
+        // Show booking sidebar with car details
+        showBookingSidebar(selectedVehicle);
     };
+
+    // Show booking sidebar
+    function showBookingSidebar(vehicle) {
+        // Populate car details in sidebar
+        const carDetailsContainer = document.getElementById('sidebar-car-details');
+        carDetailsContainer.innerHTML = `
+            <div style="margin-bottom: 0.5rem;">
+                <strong style="color: #ffffff; font-size: 1rem;">${vehicle.make} ${vehicle.model}</strong>
+            </div>
+            <div style="margin-bottom: 0.25rem; color: #cccccc; font-size: 0.8rem;">
+                <span>€${vehicle.daily_rate}/Tag</span>
+            </div>
+            <div style="color: #cccccc; font-size: 0.8rem;">
+                <span>${vehicle.transmission_type} • ${vehicle.fuel_type}</span>
+            </div>
+        `;
+
+        // Initialize sidebar form
+        initializeSidebarForm(vehicle);
+
+        // Show sidebar
+        document.getElementById('booking-sidebar').style.right = '0';
+        
+        // Move main content to the left
+        document.getElementById('main-content').style.marginRight = '380px';
+    }
+
+    // Close booking sidebar
+    window.closeBookingSidebar = function() {
+        document.getElementById('booking-sidebar').style.right = '-380px';
+        
+        // Move main content back to original position
+        document.getElementById('main-content').style.marginRight = '0';
+    }
+
+    // Initialize sidebar form
+    function initializeSidebarForm(vehicle) {
+        // Set minimum date to today
+        const today = new Date();
+        const todayISO = today.toISOString().split('T')[0];
+        const todayFormatted = today.toLocaleDateString('de-DE');
+        
+        const pickupDateInput = document.getElementById('sidebar-pickup-date');
+        const returnDateInput = document.getElementById('sidebar-return-date');
+        
+        // Set default pickup date to today in German format
+        pickupDateInput.value = todayFormatted;
+        
+        // Set minimum dates
+        pickupDateInput.min = todayISO;
+        returnDateInput.min = todayISO;
+        
+        // Set default pickup date
+        pickupDateInput.value = todayISO;
+        
+        // Update return date minimum when pickup date changes
+        pickupDateInput.addEventListener('change', function() {
+            returnDateInput.min = this.value;
+        });
+
+        // Store pickup date for return date validation
+        let currentPickupDate = todayFormatted;
+        
+        // Update return date validation when pickup date changes
+        pickupDateInput.addEventListener('input', function() {
+            currentPickupDate = this.value;
+        });
+
+        // Form submission
+        document.getElementById('quick-booking-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                carId: vehicle.car_id,
+                pickupDate: document.getElementById('sidebar-pickup-date').value,
+                returnDate: document.getElementById('sidebar-return-date').value,
+                pickupTime: document.getElementById('sidebar-pickup-time').value,
+                returnTime: document.getElementById('sidebar-return-time').value,
+                pickupLocation: document.getElementById('sidebar-pickup-location').value,
+                returnLocation: document.getElementById('sidebar-return-location').value
+            };
+
+            // Calculate rental days (date inputs already in YYYY-MM-DD format)
+            const pickup = new Date(formData.pickupDate);
+            const returnDate = new Date(formData.returnDate);
+            const days = Math.ceil((returnDate - pickup) / (1000 * 60 * 60 * 24)) + 1;
+
+            // Save to localStorage
+            localStorage.setItem('bookingDetails', JSON.stringify(formData));
+
+            // Redirect to extras page
+            window.location.href = `/extras-versicherung.html?carId=${formData.carId}&days=${days}`;
+        });
+    }
 
     // Initialize filters
     function initializeFilters() {

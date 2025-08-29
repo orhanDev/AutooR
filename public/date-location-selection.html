@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Datum & Standort - AutOr</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 50%, #1a1a1a 100%);
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, rgba(26, 26, 26, 0.9) 0%, rgba(42, 42, 42, 0.8) 100%);
+            padding: 3rem 0;
+            position: relative;
+        }
+
+        .hero-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #ffffff;
+            text-align: center;
+            margin-bottom: 1rem;
+            letter-spacing: 2px;
+        }
+
+        .hero-subtitle {
+            font-size: 1.1rem;
+            color: #cccccc;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .selection-form {
+            background: linear-gradient(135deg, #2a2a2a, #1a1a1a);
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 2rem 0;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+        }
+
+        .form-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #d4af37;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            color: #d4af37;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .form-control {
+            background: linear-gradient(135deg, #333333, #2a2a2a);
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            border-radius: 10px;
+            color: #ffffff;
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            background: linear-gradient(135deg, #3a3a3a, #2a2a2a);
+            border-color: #d4af37;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+            color: #ffffff;
+        }
+
+        .form-control::placeholder {
+            color: #cccccc;
+        }
+
+        .btn-continue {
+            background: linear-gradient(135deg, #d4af37, #b8941f);
+            color: #1a1a1a;
+            border: none;
+            border-radius: 10px;
+            padding: 1rem 2rem;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        .btn-continue:hover {
+            background: linear-gradient(135deg, #b8941f, #d4af37);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
+        }
+
+        .selected-car-info {
+            background: linear-gradient(135deg, #333333, #2a2a2a);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .car-info-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #d4af37;
+            margin-bottom: 1rem;
+        }
+
+        .car-details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .car-detail-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+        }
+
+        .car-detail-label {
+            color: #cccccc;
+            font-size: 0.9rem;
+        }
+
+        .car-detail-value {
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        .date-time-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .date-time-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar Container -->
+    <div id="navbar-container"></div>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <h1 class="hero-title">Datum & Standort</h1>
+            <p class="hero-subtitle">Wählen Sie Ihren gewünschten Abhol- und Rückgabetermin</p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Selected Car Info -->
+        <div class="selected-car-info">
+            <h3 class="car-info-title">Ausgewähltes Fahrzeug</h3>
+            <div class="car-details-grid" id="selected-car-details">
+                <!-- Car details will be populated by JavaScript -->
+            </div>
+        </div>
+
+        <!-- Date and Location Selection Form -->
+        <div class="selection-form">
+            <h2 class="form-title">Buchungsdetails</h2>
+            <form id="date-location-form">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">Abholstandort</label>
+                            <select class="form-control" id="pickup-location" required>
+                                <option value="">Standort auswählen</option>
+                                <option value="1">Berlin Hauptbahnhof</option>
+                                <option value="2">München Flughafen</option>
+                                <option value="3">Hamburg Zentrum</option>
+                                <option value="4">Köln Dom</option>
+                                <option value="5">Frankfurt Flughafen</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">Rückgabestandort</label>
+                            <select class="form-control" id="return-location" required>
+                                <option value="">Standort auswählen</option>
+                                <option value="1">Berlin Hauptbahnhof</option>
+                                <option value="2">München Flughafen</option>
+                                <option value="3">Hamburg Zentrum</option>
+                                <option value="4">Köln Dom</option>
+                                <option value="5">Frankfurt Flughafen</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="date-time-row">
+                    <div class="form-group">
+                        <label class="form-label">Abholdatum</label>
+                        <input type="date" class="form-control" id="pickup-date" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Abholzeit</label>
+                        <select class="form-control" id="pickup-time" required>
+                            <option value="">Zeit auswählen</option>
+                            <option value="08:00">08:00</option>
+                            <option value="09:00">09:00</option>
+                            <option value="10:00">10:00</option>
+                            <option value="11:00">11:00</option>
+                            <option value="12:00">12:00</option>
+                            <option value="13:00">13:00</option>
+                            <option value="14:00">14:00</option>
+                            <option value="15:00">15:00</option>
+                            <option value="16:00">16:00</option>
+                            <option value="17:00">17:00</option>
+                            <option value="18:00">18:00</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="date-time-row">
+                    <div class="form-group">
+                        <label class="form-label">Rückgabedatum</label>
+                        <input type="date" class="form-control" id="return-date" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Rückgabezeit</label>
+                        <select class="form-control" id="return-time" required>
+                            <option value="">Zeit auswählen</option>
+                            <option value="08:00">08:00</option>
+                            <option value="09:00">09:00</option>
+                            <option value="10:00">10:00</option>
+                            <option value="11:00">11:00</option>
+                            <option value="12:00">12:00</option>
+                            <option value="13:00">13:00</option>
+                            <option value="14:00">14:00</option>
+                            <option value="15:00">15:00</option>
+                            <option value="16:00">16:00</option>
+                            <option value="17:00">17:00</option>
+                            <option value="18:00">18:00</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-continue">Weiter zu Extras & Versicherung</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/navbar.js"></script>
+    <script src="js/data/cars.js"></script>
+    <script>
+        // Initialize navbar
+        document.addEventListener('DOMContentLoaded', function() {
+            updateNavbar();
+            loadSelectedCar();
+            initializeForm();
+        });
+
+        let selectedCar = null;
+
+        function loadSelectedCar() {
+            // Get car data from URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const carId = parseInt(urlParams.get('carId'));
+            
+            // Find the car in the LOCAL_CARS array
+            selectedCar = window.LOCAL_CARS.find(car => car.car_id === carId);
+            
+            if (!selectedCar) {
+                // Fallback to demo data if car not found
+                selectedCar = {
+                    car_id: carId,
+                    make: 'Porsche',
+                    model: '911 Carrera',
+                    daily_rate: 150,
+                    transmission_type: 'Automatik',
+                    fuel_type: 'Benzin',
+                    seating_capacity: '2',
+                    image_url: '/images/cars/porsche-911-gt3.jpg'
+                };
+            }
+
+            // Display car details
+            const carDetailsContainer = document.getElementById('selected-car-details');
+            carDetailsContainer.innerHTML = `
+                <div class="car-detail-item">
+                    <span class="car-detail-label">Fahrzeug:</span>
+                    <span class="car-detail-value">${selectedCar.make} ${selectedCar.model}</span>
+                </div>
+                <div class="car-detail-item">
+                    <span class="car-detail-label">Grundpreis:</span>
+                    <span class="car-detail-value">€${selectedCar.daily_rate}/Tag</span>
+                </div>
+                <div class="car-detail-item">
+                    <span class="car-detail-label">Getriebe:</span>
+                    <span class="car-detail-value">${selectedCar.transmission_type}</span>
+                </div>
+                <div class="car-detail-item">
+                    <span class="car-detail-label">Kraftstoff:</span>
+                    <span class="car-detail-value">${selectedCar.fuel_type}</span>
+                </div>
+            `;
+        }
+
+        function initializeForm() {
+            // Set minimum date to today
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('pickup-date').min = today;
+            document.getElementById('return-date').min = today;
+
+            // Set default pickup date to today
+            document.getElementById('pickup-date').value = today;
+
+            // Update return date when pickup date changes
+            document.getElementById('pickup-date').addEventListener('change', function() {
+                const pickupDate = this.value;
+                const returnDateInput = document.getElementById('return-date');
+                returnDateInput.min = pickupDate;
+                
+                // If return date is before pickup date, set it to pickup date
+                if (returnDateInput.value && returnDateInput.value < pickupDate) {
+                    returnDateInput.value = pickupDate;
+                }
+            });
+
+            // Form submission
+            document.getElementById('date-location-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const formData = {
+                    carId: selectedCar.car_id,
+                    pickupLocation: document.getElementById('pickup-location').value,
+                    returnLocation: document.getElementById('return-location').value,
+                    pickupDate: document.getElementById('pickup-date').value,
+                    pickupTime: document.getElementById('pickup-time').value,
+                    returnDate: document.getElementById('return-date').value,
+                    returnTime: document.getElementById('return-time').value
+                };
+
+                // Calculate rental days
+                const pickup = new Date(formData.pickupDate);
+                const returnDate = new Date(formData.returnDate);
+                const days = Math.ceil((returnDate - pickup) / (1000 * 60 * 60 * 24)) + 1;
+
+                // Save to localStorage
+                localStorage.setItem('bookingDetails', JSON.stringify(formData));
+
+                // Redirect to extras page
+                window.location.href = `/extras-versicherung.html?carId=${formData.carId}&days=${days}`;
+            });
+        }
+    </script>
+</body>
+</html>

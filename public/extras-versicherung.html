@@ -374,6 +374,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/navbar.js"></script>
+    <script src="js/data/cars.js"></script>
     <script>
         // Initialize navbar
         document.addEventListener('DOMContentLoaded', function() {
@@ -387,35 +388,43 @@
         let selectedExtras = [];
         let basePrice = 0;
         let rentalDays = 1;
+        let selectedCar = null;
 
         function loadSelectedCar() {
-            // Get car data from localStorage or URL parameters
+            // Get car data from URL parameters
             const urlParams = new URLSearchParams(window.location.search);
-            const carId = urlParams.get('carId');
-            
-            // For demo purposes, using sample data
-            const selectedCar = {
-                name: 'Porsche 911 Carrera',
-                price: 150,
-                transmission: 'Automatik',
-                fuel: 'Benzin',
-                seats: '2',
-                image: '/images/cars/porsche-911-gt3.jpg'
-            };
-
-            basePrice = selectedCar.price;
+            const carId = parseInt(urlParams.get('carId'));
             rentalDays = parseInt(urlParams.get('days')) || 1;
+            
+            // Find the car in the LOCAL_CARS array
+            selectedCar = window.LOCAL_CARS.find(car => car.car_id === carId);
+            
+            if (!selectedCar) {
+                // Fallback to demo data if car not found
+                selectedCar = {
+                    car_id: carId,
+                    make: 'Porsche',
+                    model: '911 Carrera',
+                    daily_rate: 150,
+                    transmission_type: 'Automatik',
+                    fuel_type: 'Benzin',
+                    seating_capacity: '2',
+                    image_url: '/images/cars/porsche-911-gt3.jpg'
+                };
+            }
+
+            basePrice = selectedCar.daily_rate;
 
             // Display car details
             const carDetailsContainer = document.getElementById('selected-car-details');
             carDetailsContainer.innerHTML = `
                 <div class="car-detail-item">
                     <span class="car-detail-label">Fahrzeug:</span>
-                    <span class="car-detail-value">${selectedCar.name}</span>
+                    <span class="car-detail-value">${selectedCar.make} ${selectedCar.model}</span>
                 </div>
                 <div class="car-detail-item">
                     <span class="car-detail-label">Grundpreis:</span>
-                    <span class="car-detail-value">€${selectedCar.price}/Tag</span>
+                    <span class="car-detail-value">€${selectedCar.daily_rate}/Tag</span>
                 </div>
                 <div class="car-detail-item">
                     <span class="car-detail-label">Mietdauer:</span>
@@ -423,15 +432,15 @@
                 </div>
                 <div class="car-detail-item">
                     <span class="car-detail-label">Getriebe:</span>
-                    <span class="car-detail-value">${selectedCar.transmission}</span>
+                    <span class="car-detail-value">${selectedCar.transmission_type}</span>
                 </div>
                 <div class="car-detail-item">
                     <span class="car-detail-label">Kraftstoff:</span>
-                    <span class="car-detail-value">${selectedCar.fuel}</span>
+                    <span class="car-detail-value">${selectedCar.fuel_type}</span>
                 </div>
                 <div class="car-detail-item">
                     <span class="car-detail-label">Sitze:</span>
-                    <span class="car-detail-value">${selectedCar.seats}</span>
+                    <span class="car-detail-value">${selectedCar.seating_capacity}</span>
                 </div>
             `;
         }
@@ -532,8 +541,10 @@
 
             // Save selections to localStorage or send to server
             const selections = {
+                car: selectedCar,
                 insurance: selectedInsurance,
                 extras: selectedExtras,
+                rentalDays: rentalDays,
                 totalPrice: calculateTotalPrice()
             };
 
