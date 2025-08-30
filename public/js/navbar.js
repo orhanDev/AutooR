@@ -228,11 +228,29 @@ function addNavbarCSS() {
             .navbar-nav {
                 text-align: center;
                 margin-top: 1rem;
+                background: rgba(128, 128, 128, 0.9) !important;
+                backdrop-filter: blur(10px);
+                border-radius: 8px;
+                padding: 1rem;
+                margin-left: 1rem;
+                margin-right: 1rem;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+                animation: slideDown 0.3s ease-out;
             }
             
             .navbar-nav .nav-link {
-                padding: 0.5rem 0;
-                border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+                padding: 0.75rem 0;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+                color: #ffffff !important;
+                font-weight: 500;
+                transition: all 0.3s ease;
+            }
+            
+            .navbar-nav .nav-link:hover {
+                background: rgba(255, 255, 255, 0.1);
+                border-radius: 4px;
+                padding-left: 1rem;
+                padding-right: 1rem;
             }
             
             .navbar-nav .nav-link:last-child {
@@ -241,10 +259,23 @@ function addNavbarCSS() {
             
             .navbar-toggler {
                 border: 1px solid rgba(0, 0, 0, 0.3);
+                background: rgba(255, 255, 255, 0.1);
+                border-radius: 4px;
             }
             
             .navbar-toggler-icon {
                 background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%280, 0, 0, 0.9%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+            }
+            
+            @keyframes slideDown {
+                from {
+                    opacity: 0;
+                    transform: translateY(-10px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
             }
         }
     `;

@@ -19,19 +19,28 @@
             position: absolute;
             bottom: 100% !important;
             top: auto !important;
-                         left: 10px;
-             right: 20px;
+            left: 10px;
+            right: 20px;
             background: #191919;
             backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 6px;
             box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.3);
-            z-index: 1000;
+            z-index: 9999;
             padding: 6px;
             display: none;
             font-family: 'Inter', sans-serif;
             margin-bottom: 4px;
             min-width: 220px;
+        }
+        
+        /* Mobilde takvim seçiciyi %30 büyüt */
+        @media (max-width: 1199px) {
+            .custom-calendar {
+                transform: scale(1.3);
+                transform-origin: bottom center;
+                min-width: 286px; /* 220px * 1.3 */
+            }
         }
         
         .custom-calendar.show {
@@ -52,6 +61,13 @@
             color: rgba(255, 255, 255, 0.9);
         }
         
+        /* Mobilde takvim başlığını büyüt */
+        @media (max-width: 1199px) {
+            .calendar-title {
+                font-size: 16px; /* 12px * 1.3 */
+            }
+        }
+        
         .calendar-nav {
             display: flex;
             gap: 4px;
@@ -66,6 +82,14 @@
             cursor: pointer;
             transition: all 0.3s ease;
             font-size: 8px;
+        }
+        
+        /* Mobilde navigasyon butonlarını büyüt */
+        @media (max-width: 1199px) {
+            .calendar-nav-btn {
+                font-size: 10px; /* 8px * 1.3 */
+                padding: 3px 5px;
+            }
         }
         
         .calendar-nav-btn:hover {
@@ -89,6 +113,14 @@
             white-space: nowrap;
         }
         
+        /* Mobilde hafta günlerini büyüt */
+        @media (max-width: 1199px) {
+            .calendar-weekday {
+                font-size: 10px; /* 8px * 1.3 */
+                padding: 5px 1px;
+            }
+        }
+        
         .calendar-days {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
@@ -108,6 +140,16 @@
             display: flex;
             align-items: center;
             justify-content: center;
+        }
+        
+        /* Mobilde gün butonlarını büyüt */
+        @media (max-width: 1199px) {
+            .calendar-day {
+                font-size: 12px; /* 9px * 1.3 */
+                width: 16px; /* 12px * 1.3 */
+                height: 16px; /* 12px * 1.3 */
+                padding: 2px;
+            }
         }
         
         .calendar-day:hover:not(.disabled) {
@@ -226,6 +268,237 @@
             margin-left: auto;
             margin-right: auto;
             transform: translateY(-2rem) !important;
+        }
+        
+        /* Porsche Search Form Base Styles */
+        .porsche-search-form {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 249, 250, 0.9) 100%);
+            backdrop-filter: blur(30px);
+            border: 2px solid rgba(0, 0, 0, 0.1);
+            border-radius: 16px;
+            padding: 0.8rem 1.2rem;
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.1),
+                0 0 0 1px rgba(255, 255, 255, 0.8) inset;
+            position: relative;
+            overflow: hidden;
+            transform: translateY(-10rem);
+        }
+        
+        .porsche-search-row {
+            display: grid !important;
+            grid-template-columns: 1fr 1fr !important;
+            gap: 0.5rem !important;
+            margin-bottom: 0.5rem !important;
+        }
+        
+        /* Desktop Search Form - Modern Horizontal Layout */
+        @media (min-width: 1200px) {
+            .porsche-search-form {
+                padding: 2rem 3rem !important;
+                background: rgba(255, 255, 255, 0.95) !important;
+                backdrop-filter: blur(20px) !important;
+                border-radius: 20px !important;
+                box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15) !important;
+                border: 1px solid rgba(255, 255, 255, 0.2) !important;
+                max-width: 1200px !important;
+                margin: 0 auto !important;
+                transform: translateY(-3rem) !important;
+            }
+            
+            .mobile-search-layout {
+                display: none !important;
+            }
+            
+            .desktop-search-layout {
+                display: flex !important;
+                flex-direction: row !important;
+                align-items: center !important;
+                gap: 1.5rem !important;
+                width: 100% !important;
+            }
+            
+            .desktop-search-layout .porsche-search-item {
+                flex: 1 !important;
+                min-width: 0 !important;
+            }
+            
+            .desktop-search-layout label {
+                font-size: 0.75rem !important;
+                margin-bottom: 0.5rem !important;
+                color: #333 !important;
+                font-weight: 600 !important;
+                display: block !important;
+            }
+            
+            .desktop-search-layout select,
+            .desktop-search-layout input {
+                height: 50px !important;
+                font-size: 1rem !important;
+                padding: 0 15px !important;
+                border: 2px solid rgba(177, 0, 0, 0.2) !important;
+                border-radius: 12px !important;
+                background: rgba(255, 255, 255, 0.9) !important;
+                transition: all 0.3s ease !important;
+                width: 100% !important;
+            }
+            
+            .desktop-search-layout select:focus,
+            .desktop-search-layout input:focus {
+                border-color: #B10000 !important;
+                box-shadow: 0 0 0 3px rgba(177, 0, 0, 0.1) !important;
+                outline: none !important;
+            }
+            
+            .desktop-search-layout .btn-search {
+                height: 50px !important;
+                padding: 0 2rem !important;
+                font-size: 1rem !important;
+                font-weight: 600 !important;
+                background: linear-gradient(135deg, #B10000 0%, #b30016 100%) !important;
+                border: none !important;
+                border-radius: 12px !important;
+                color: white !important;
+                cursor: pointer !important;
+                transition: all 0.3s ease !important;
+                min-width: 180px !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                gap: 0.5rem !important;
+            }
+            
+            .desktop-search-layout .btn-search:hover {
+                background: linear-gradient(135deg, #b30016 0%, #8a0012 100%) !important;
+                transform: translateY(-2px) !important;
+                box-shadow: 0 10px 25px rgba(177, 0, 0, 0.3) !important;
+            }
+        }
+        
+        @media (max-width: 1199px) {
+            .desktop-search-layout {
+                display: none !important;
+            }
+            
+            .mobile-search-layout {
+                display: block !important;
+            }
+        }
+        
+        /* Desktop Discover Button Position */
+        @media (min-width: 1200px) {
+            .discover-button-container {
+                margin-top: 1rem !important;
+                transform: translateY(0) !important;
+            }
+        }
+        
+        /* Mobile Discover Button Position */
+        @media (max-width: 1199px) {
+            .discover-button-container {
+                margin-top: 2px !important;
+                transform: translateY(0) !important;
+            }
+        }
+        
+        /* Mobile Search Form Position */
+        @media (max-width: 1199px) {
+            .porsche-search-form {
+                transform: translateY(-1px) !important;
+            }
+        }
+            
+            .porsche-search-row {
+                display: flex !important;
+                flex-direction: row !important;
+                gap: 1.5rem !important;
+                margin-bottom: 0 !important;
+                align-items: center !important;
+            }
+            
+            .porsche-search-item {
+                min-width: 0 !important;
+                flex: 1 !important;
+            }
+            
+            .porsche-search-item label {
+                font-size: 0.75rem !important;
+                margin-bottom: 0.5rem !important;
+                color: #333 !important;
+                font-weight: 600 !important;
+            }
+            
+            .porsche-search-item select,
+            .porsche-search-item input {
+                height: 50px !important;
+                font-size: 1rem !important;
+                padding: 0 15px !important;
+                border: 2px solid rgba(177, 0, 0, 0.2) !important;
+                border-radius: 12px !important;
+                background: rgba(255, 255, 255, 0.9) !important;
+                transition: all 0.3s ease !important;
+            }
+            
+            .porsche-search-item select:focus,
+            .porsche-search-item input:focus {
+                border-color: #B10000 !important;
+                box-shadow: 0 0 0 3px rgba(177, 0, 0, 0.1) !important;
+                outline: none !important;
+            }
+            
+            .porsche-search-item select:hover,
+            .porsche-search-item input:hover {
+                border-color: rgba(177, 0, 0, 0.4) !important;
+            }
+            
+            /* Search Button for Desktop */
+            .porsche-search-form .btn-search {
+                height: 50px !important;
+                padding: 0 2rem !important;
+                font-size: 1rem !important;
+                font-weight: 600 !important;
+                background: linear-gradient(135deg, #B10000 0%, #b30016 100%) !important;
+                border: none !important;
+                border-radius: 12px !important;
+                color: white !important;
+                cursor: pointer !important;
+                transition: all 0.3s ease !important;
+                min-width: 180px !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                gap: 0.5rem !important;
+            }
+            
+            .porsche-search-form .btn-search:hover {
+                background: linear-gradient(135deg, #b30016 0%, #8a0012 100%) !important;
+                transform: translateY(-2px) !important;
+                box-shadow: 0 10px 25px rgba(177, 0, 0, 0.3) !important;
+            }
+            
+            .porsche-search-form .btn-search:active {
+                transform: translateY(0) !important;
+            }
+        }
+        
+        @media (min-width: 1400px) {
+            .perfect-search-form {
+                max-width: 1400px !important;
+                gap: 2rem !important;
+                padding: 2.5rem 4rem !important;
+            }
+            
+            .porsche-search-item select,
+            .porsche-search-item input {
+                height: 55px !important;
+                font-size: 1.1rem !important;
+            }
+            
+            .porsche-search-form .btn-search {
+                height: 55px !important;
+                padding: 0 2.5rem !important;
+                font-size: 1.1rem !important;
+            }
         }
         
         /* Popular Cars Section - Fix positioning */
@@ -1750,103 +2023,42 @@
         </div>
         <div class="hero-content-porsche" style="padding-top: 0; margin-top: 0; transform: translateY(0); position: relative; z-index: 2; height: 100vh; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 6rem;">
             <!-- Porsche Style Search Form -->
-            <div class="porsche-search-form" style="
-                background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 249, 250, 0.9) 100%);
-                backdrop-filter: blur(30px);
-                border: 2px solid rgba(0, 0, 0, 0.1);
-                border-radius: 16px;
-                padding: 0.8rem 1.2rem;
-                box-shadow: 
-                    0 20px 40px rgba(0, 0, 0, 0.1),
-                    0 0 0 1px rgba(255, 255, 255, 0.8) inset;
-                position: relative;
-                overflow: hidden;
-                transform: translateY(-10rem);
-            ">
-            <div style="
-                position: absolute;
-                top: 0;
-                left: 0;
-                right: 0;
-                height: 1px;
-                background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            "></div>
             <form id="date-location-form" novalidate>
-                <!-- 1. Satır: Abholort ve Rückgabeort -->
-                <div class="porsche-search-row" style="display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 0.5rem !important; margin-bottom: 0.5rem !important;">
+                <!-- Desktop: Yatay Layout -->
+                <div class="desktop-search-layout">
                     <!-- Pick-up Location -->
                     <div class="porsche-search-item">
-                        <label for="pickup-location-selector" style="color: rgba(0, 0, 0, 0.8); font-weight: 500; font-size: 0.6rem; letter-spacing: 0.5px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.3rem; white-space: nowrap; font-family: 'Inter', sans-serif;">
-                            <i class="bi bi-pin-map-fill" style="margin-right: 6px; color: #B10000; font-size: 0.8rem;"></i>
-                            Abholort
-                        </label>
-                        <div class="porsche-select-wrapper" style="width: 100%; display: flex; align-items: center; position: relative;">
-                            <select id="pickup-location-selector" required style="
-                                width: 100%; 
-                                height: 35px; 
-                                background: rgba(255, 255, 255, 0.08);
-                                border: 2px solid rgba(0, 0, 0, 0.3);
-                                border-radius: 8px;
-                                color: #000000;
-                                font-size: 0.8rem;
-                                font-weight: 400;
-                                padding: 0 10px;
-                                font-family: 'Inter', sans-serif;
-                                transition: all 0.3s ease;
-                                backdrop-filter: blur(10px);
-                            ">
-                                <option value=""></option>
-                                <option value="1">Berlin</option>
-                                <option value="2">München</option>
-                                <option value="3">Hamburg</option>
-                                <option value="4">Köln</option>
-                                <option value="5">Frankfurt</option>
-                            </select>
-                        </div>
+                        <label for="pickup-location-selector">Abholort</label>
+                        <select id="pickup-location-selector" required>
+                            <option value=""></option>
+                            <option value="1">Berlin</option>
+                            <option value="2">München</option>
+                            <option value="3">Hamburg</option>
+                            <option value="4">Köln</option>
+                            <option value="5">Frankfurt</option>
+                        </select>
                     </div>
 
                     <!-- Drop-off Location -->
                     <div class="porsche-search-item">
-                        <label for="dropoff-location-selector" style="color: rgba(0, 0, 0, 0.8); font-weight: 500; font-size: 0.6rem; letter-spacing: 0.5px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.3rem; white-space: nowrap; font-family: 'Inter', sans-serif;">
-                            <i class="bi bi-pin-map" style="margin-right: 6px; color: #B10000; font-size: 0.8rem;"></i>
-                            Rückgabeort
-                        </label>
-                        <div class="porsche-select-wrapper" style="width: 100%; display: flex; align-items: center; position: relative;">
-                            <select id="dropoff-location-selector" required style="
-                                width: 100%; 
-                                height: 35px; 
-                                background: rgba(255, 255, 255, 0.08);
-                                border: 2px solid rgba(0, 0, 0, 0.3);
-                                border-radius: 8px;
-                                color: #000000;
-                                font-size: 0.8rem;
-                                font-weight: 400;
-                                padding: 0 10px;
-                                font-family: 'Inter', sans-serif;
-                                transition: all 0.3s ease;
-                                backdrop-filter: blur(10px);
-                            ">
-                                <option value=""></option>
-                                <option value="1">Berlin</option>
-                                <option value="2">München</option>
-                                <option value="3">Hamburg</option>
-                                <option value="4">Köln</option>
-                                <option value="5">Frankfurt</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 2. Satır: Abholdatum ve Abholzeit -->
-                <div class="porsche-search-row" style="display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 0.5rem !important; margin-bottom: 0.5rem !important;">
+                        <label for="dropoff-location-selector">Rückgabeort</label>
+                        <select id="dropoff-location-selector" required>
+                            <option value=""></option>
+                            <option value="1">Berlin</option>
+                            <option value="2">München</option>
+                            <option value="3">Hamburg</option>
+                            <option value="4">Köln</option>
+                            <option value="5">Frankfurt</option>
+                        </select>
+            </div>
+            
                     <!-- Pick-up Date -->
                     <div class="porsche-search-item">
-                        <label for="pickup-date-selector" style="color: rgba(0, 0, 0, 0.8); font-weight: 500; font-size: 0.6rem; letter-spacing: 0.5px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.3rem; white-space: nowrap; font-family: 'Inter', sans-serif;">
-                            <i class="bi bi-calendar-range-fill" style="margin-right: 6px; color: #B10000; font-size: 0.8rem;"></i>
-                            Abholdatum
-                        </label>
-                        <div class="porsche-date-wrapper" style="position: relative; width: 100%; display: flex; align-items: center; z-index: 10;">
-                            <input type="button" id="pickup-date-selector" placeholder="" required class="form-control" readonly inputmode="none" style="
+                        <label for="pickup-date-selector">Abholdatum</label>
+                        <div style="position: relative; display: flex; align-items: center;">
+                            <input type="button" id="pickup-date-selector" required readonly inputmode="none" style="
+                                flex: 1; 
+                                padding-right: 35px;
                                 width: 100%; 
                                 height: 35px; 
                                 background: rgba(255, 255, 255, 0.08);
@@ -1859,16 +2071,36 @@
                                 font-family: 'Inter', sans-serif;
                                 transition: all 0.3s ease;
                                 backdrop-filter: blur(10px);
+                                cursor: pointer;
                             ">
-                            <i class="bi bi-exclamation-triangle-fill date-error-icon" id="pickup-date-error"></i>
-                            <div class="custom-calendar" id="pickup-calendar" style="z-index: 1000;">
+                            <button type="button" class="date-clear-btn" data-target="pickup-date-selector" style="
+                position: absolute;
+                                right: 6px;
+                                top: 50%;
+                                transform: translateY(-50%);
+                                background: rgba(177, 0, 0, 0.7);
+                                border: none;
+                                border-radius: 50%;
+                                width: 16px;
+                                height: 16px;
+                                color: white;
+                                font-size: 10px;
+                                cursor: pointer;
+                                display: none;
+                                align-items: center;
+                                justify-content: center;
+                                z-index: 5;
+                                font-weight: bold;
+                                line-height: 1;
+                            ">×</button>
+                            <div class="custom-calendar" id="pickup-calendar-desktop" style="z-index: 1000;">
                                 <div class="calendar-header">
-                                    <div class="calendar-title" id="pickup-calendar-title">December 2024</div>
+                                    <div class="calendar-title" id="pickup-calendar-title-desktop">December 2024</div>
                                     <div class="calendar-nav">
-                                        <button class="calendar-nav-btn" id="pickup-prev-month">
+                                        <button class="calendar-nav-btn" id="pickup-prev-month-desktop">
                                             <i class="bi bi-chevron-left"></i>
                                         </button>
-                                        <button class="calendar-nav-btn" id="pickup-next-month">
+                                        <button class="calendar-nav-btn" id="pickup-next-month-desktop">
                                             <i class="bi bi-chevron-right"></i>
                                         </button>
                                     </div>
@@ -1882,6 +2114,255 @@
                                     <div class="calendar-weekday">Sa</div>
                                     <div class="calendar-weekday">So</div>
                                 </div>
+                                <div class="calendar-days" id="pickup-calendar-days-desktop"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pick-up Time -->
+                    <div class="porsche-search-item">
+                        <label for="pickup-time">Zeit</label>
+                        <select id="pickup-time" required>
+                            <option value=""></option>
+                            <option value="08:00">08:00</option>
+                            <option value="09:00">09:00</option>
+                            <option value="10:00">10:00</option>
+                            <option value="11:00">11:00</option>
+                            <option value="12:00">12:00</option>
+                            <option value="13:00">13:00</option>
+                            <option value="14:00">14:00</option>
+                            <option value="15:00">15:00</option>
+                            <option value="16:00">16:00</option>
+                            <option value="17:00">17:00</option>
+                            <option value="18:00">18:00</option>
+                        </select>
+            </div>
+            
+                    <!-- Return Date -->
+                    <div class="porsche-search-item">
+                        <label for="dropoff-date-selector">Rückgabedatum</label>
+                        <div style="position: relative; display: flex; align-items: center;">
+                            <input type="button" id="dropoff-date-selector" required readonly inputmode="none" style="
+                                flex: 1; 
+                                padding-right: 35px;
+                                width: 100%; 
+                                height: 35px; 
+                                background: rgba(255, 255, 255, 0.08);
+                                border: 2px solid rgba(0, 0, 0, 0.3);
+                                border-radius: 8px;
+                                color: #000000;
+                                font-size: 0.8rem;
+                                font-weight: 400;
+                                padding: 0 10px;
+                                font-family: 'Inter', sans-serif;
+                                transition: all 0.3s ease;
+                                backdrop-filter: blur(10px);
+                                cursor: pointer;
+                            ">
+                            <button type="button" class="date-clear-btn" data-target="dropoff-date-selector" style="
+                                position: absolute;
+                                right: 6px;
+                                top: 50%;
+                                transform: translateY(-50%);
+                                background: rgba(177, 0, 0, 0.7);
+                                border: none;
+                                border-radius: 50%;
+                                width: 16px;
+                                height: 16px;
+                                color: white;
+                                font-size: 10px;
+                                cursor: pointer;
+                                display: none;
+                                align-items: center;
+                                justify-content: center;
+                                z-index: 5;
+                                font-weight: bold;
+                                line-height: 1;
+                            ">×</button>
+                            <div class="custom-calendar" id="dropoff-calendar-desktop" style="z-index: 1000;">
+                                <div class="calendar-header">
+                                    <div class="calendar-title" id="dropoff-calendar-title-desktop">December 2024</div>
+                                    <div class="calendar-nav">
+                                        <button class="calendar-nav-btn" id="dropoff-prev-month-desktop">
+                                            <i class="bi bi-chevron-left"></i>
+                                        </button>
+                                        <button class="calendar-nav-btn" id="dropoff-next-month-desktop">
+                                            <i class="bi bi-chevron-right"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="calendar-weekdays">
+                                    <div class="calendar-weekday">Mo</div>
+                                    <div class="calendar-weekday">Di</div>
+                                    <div class="calendar-weekday">Mi</div>
+                                    <div class="calendar-weekday">Do</div>
+                                    <div class="calendar-weekday">Fr</div>
+                                    <div class="calendar-weekday">Sa</div>
+                                    <div class="calendar-weekday">So</div>
+                                </div>
+                                <div class="calendar-days" id="dropoff-calendar-days-desktop"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Return Time -->
+                    <div class="porsche-search-item">
+                        <label for="dropoff-time">Zeit</label>
+                        <select id="dropoff-time" required>
+                            <option value=""></option>
+                            <option value="08:00">08:00</option>
+                            <option value="09:00">09:00</option>
+                            <option value="10:00">10:00</option>
+                            <option value="11:00">11:00</option>
+                            <option value="12:00">12:00</option>
+                            <option value="13:00">13:00</option>
+                            <option value="14:00">14:00</option>
+                            <option value="15:00">15:00</option>
+                            <option value="16:00">16:00</option>
+                            <option value="17:00">17:00</option>
+                            <option value="18:00">18:00</option>
+                        </select>
+                    </div>
+
+                    <!-- Search Button -->
+                    <button type="submit" class="btn-search">
+                        <i class="bi bi-search"></i>
+                        Fahrzeug finden
+                    </button>
+                </div>
+
+                <!-- Mobile: Dikey Layout -->
+                <div class="mobile-search-layout" style="background: transparent; transform: translateY(-7rem); padding: 3rem; margin: -3rem;">
+                    <!-- 1. Satır: Abholort ve Rückgabeort -->
+                    <div class="porsche-search-row">
+                    <!-- Pick-up Location -->
+                        <div class="porsche-search-item">
+                            <label for="pickup-location-selector-mobile" style="color: rgba(0, 0, 0, 0.8); font-weight: 500; font-size: 0.6rem; letter-spacing: 0.5px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.3rem; white-space: nowrap; font-family: 'Inter', sans-serif;">
+                                Abholort
+                        </label>
+                            <div class="porsche-select-wrapper" style="width: 100%; display: flex; align-items: center; position: relative;">
+                                <select id="pickup-location-selector-mobile" required style="
+                            width: 100%; 
+                                    height: 35px; 
+                            background: rgba(255, 255, 255, 0.08);
+                                    border: 2px solid rgba(0, 0, 0, 0.3);
+                            border-radius: 8px;
+                                    color: #000000;
+                                    font-size: 0.8rem;
+                            font-weight: 400;
+                                    padding: 0 10px;
+                            font-family: 'Inter', sans-serif;
+                            transition: all 0.3s ease;
+                            backdrop-filter: blur(10px);
+                        ">
+                                    <option value=""></option>
+                            <option value="1">Berlin</option>
+                            <option value="2">München</option>
+                            <option value="3">Hamburg</option>
+                            <option value="4">Köln</option>
+                            <option value="5">Frankfurt</option>
+                        </select>
+                            </div>
+                    </div>
+
+                    <!-- Drop-off Location -->
+                        <div class="porsche-search-item">
+                            <label for="dropoff-location-selector-mobile" style="color: rgba(0, 0, 0, 0.8); font-weight: 500; font-size: 0.6rem; letter-spacing: 0.5px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.3rem; white-space: nowrap; font-family: 'Inter', sans-serif;">
+                                Rückgabeort
+                        </label>
+                            <div class="porsche-select-wrapper" style="width: 100%; display: flex; align-items: center; position: relative;">
+                                <select id="dropoff-location-selector-mobile" required style="
+                            width: 100%; 
+                                    height: 35px; 
+                            background: rgba(255, 255, 255, 0.08);
+                                    border: 2px solid rgba(0, 0, 0, 0.3);
+                            border-radius: 8px;
+                                    color: #000000;
+                                    font-size: 0.8rem;
+                            font-weight: 400;
+                                    padding: 0 10px;
+                            font-family: 'Inter', sans-serif;
+                            transition: all 0.3s ease;
+                            backdrop-filter: blur(10px);
+                        ">
+                                    <option value=""></option>
+                            <option value="1">Berlin</option>
+                            <option value="2">München</option>
+                            <option value="3">Hamburg</option>
+                            <option value="4">Köln</option>
+                            <option value="5">Frankfurt</option>
+                        </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2. Satır: Abholdatum ve Abholzeit -->
+                    <div class="porsche-search-row">
+                    <!-- Pick-up Date -->
+                        <div class="porsche-search-item">
+                            <label for="pickup-date-selector-mobile" style="color: rgba(0, 0, 0, 0.8); font-weight: 500; font-size: 0.6rem; letter-spacing: 0.5px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.3rem; white-space: nowrap; font-family: 'Inter', sans-serif;">
+                                Abholdatum
+                        </label>
+                            <div class="porsche-date-wrapper" style="position: relative; width: 100%; display: flex; align-items: center; z-index: 10;">
+                                <div style="position: relative; width: 100%;">
+                                    <input type="button" id="pickup-date-selector-mobile" placeholder="" required class="form-control" readonly inputmode="none" style="
+                            width: 100%; 
+                                        height: 35px; 
+                            background: rgba(255, 255, 255, 0.08);
+                                        border: 2px solid rgba(0, 0, 0, 0.3);
+                            border-radius: 8px;
+                                        color: #000000;
+                                        font-size: 0.8rem;
+                            font-weight: 400;
+                                        padding: 0 10px 0 10px;
+                                        padding-right: 35px;
+                            font-family: 'Inter', sans-serif;
+                            transition: all 0.3s ease;
+                            backdrop-filter: blur(10px);
+                        ">
+                                                                        <button type="button" class="date-clear-btn" data-target="pickup-date-selector-mobile" style="
+                                        position: absolute;
+                                        right: 6px;
+                                        top: 50%;
+                                        transform: translateY(-50%);
+                                        background: rgba(177, 0, 0, 0.7);
+                            border: none;
+                                        border-radius: 50%;
+                                        width: 16px;
+                                        height: 16px;
+                            color: white;
+                                        font-size: 10px;
+                            cursor: pointer;
+                                        display: none;
+                                        align-items: center;
+                                        justify-content: center;
+                                        z-index: 5;
+                                        font-weight: bold;
+                                        line-height: 1;
+                                    ">×</button>
+                    </div>
+                            <i class="bi bi-exclamation-triangle-fill date-error-icon" id="pickup-date-error"></i>
+                            <div class="custom-calendar" id="pickup-calendar" style="z-index: 1000;">
+                                <div class="calendar-header">
+                                    <div class="calendar-title" id="pickup-calendar-title">December 2024</div>
+                                    <div class="calendar-nav">
+                                        <button class="calendar-nav-btn" id="pickup-prev-month">
+                                            <i class="bi bi-chevron-left"></i>
+                        </button>
+                                        <button class="calendar-nav-btn" id="pickup-next-month">
+                                            <i class="bi bi-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+                                <div class="calendar-weekdays">
+                                    <div class="calendar-weekday">Mo</div>
+                                    <div class="calendar-weekday">Di</div>
+                                    <div class="calendar-weekday">Mi</div>
+                                    <div class="calendar-weekday">Do</div>
+                                    <div class="calendar-weekday">Fr</div>
+                                    <div class="calendar-weekday">Sa</div>
+                                    <div class="calendar-weekday">So</div>
+        </div>
                                 <div class="calendar-days" id="pickup-calendar-days"></div>
                             </div>
                         </div>
@@ -1890,132 +2371,192 @@
                     <!-- Pick-up Time -->
                     <div class="porsche-search-item">
                         <label for="pickup-time" style="color: rgba(0, 0, 0, 0.8); font-weight: 500; font-size: 0.6rem; letter-spacing: 0.5px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.3rem; white-space: nowrap; font-family: 'Inter', sans-serif;">
-                            <i class="bi bi-alarm-fill" style="margin-right: 6px; color: #B10000; font-size: 0.8rem;"></i>
                             Zeit
                         </label>
                         <div class="porsche-select-wrapper" style="width: 100%; display: flex; align-items: center; position: relative;">
-                            <select id="pickup-time" required style="
-                                width: 100%; 
+                            <div class="custom-time-selector" id="pickup-time-custom" style="
+                            width: 100%; 
                                 height: 35px; 
-                                background: rgba(255, 255, 255, 0.08);
+                            background: rgba(255, 255, 255, 0.08);
                                 border: 2px solid rgba(0, 0, 0, 0.3);
-                                border-radius: 8px;
+                            border-radius: 8px;
                                 color: #000000;
                                 font-size: 0.8rem;
-                                font-weight: 400;
+                            font-weight: 400;
                                 padding: 0 10px;
-                                font-family: 'Inter', sans-serif;
-                                transition: all 0.3s ease;
-                                backdrop-filter: blur(10px);
+                            font-family: 'Inter', sans-serif;
+                            transition: all 0.3s ease;
+                            backdrop-filter: blur(10px);
+                                cursor: pointer;
+                                display: flex;
+                                align-items: center;
+                                justify-content: space-between;
+                        ">
+                                <span class="selected-time">Zeit wählen</span>
+                                <i class="bi bi-chevron-down"></i>
+                    </div>
+                            <div class="custom-time-dropdown" id="pickup-time-dropdown" style="
+                                position: absolute;
+                                top: 100%;
+                                left: 0;
+                                right: 0;
+                                background: #2a2a2a;
+                                border: 1px solid rgba(255, 255, 255, 0.2);
+                            border-radius: 8px;
+                                max-height: 150px;
+                                overflow-y: auto;
+                                z-index: 1000;
+                                display: none;
+                                margin-top: 4px;
                             ">
-                                <option value=""></option>
-                                <option value="08:00">08:00</option>
-                                <option value="09:00">09:00</option>
-                                <option value="10:00">10:00</option>
-                                <option value="11:00">11:00</option>
-                                <option value="12:00">12:00</option>
-                                <option value="13:00">13:00</option>
-                                <option value="14:00">14:00</option>
-                                <option value="15:00">15:00</option>
-                                <option value="16:00">16:00</option>
-                                <option value="17:00">17:00</option>
-                                <option value="18:00">18:00</option>
-                            </select>
-                        </div>
+                                <div class="time-option" data-value="08:00">08:00</div>
+                                <div class="time-option" data-value="09:00">09:00</div>
+                                <div class="time-option" data-value="10:00">10:00</div>
+                                <div class="time-option" data-value="11:00">11:00</div>
+                                <div class="time-option" data-value="12:00">12:00</div>
+                                <div class="time-option" data-value="13:00">13:00</div>
+                                <div class="time-option" data-value="14:00">14:00</div>
+                                <div class="time-option" data-value="15:00">15:00</div>
+                                <div class="time-option" data-value="16:00">16:00</div>
+                                <div class="time-option" data-value="17:00">17:00</div>
+                                <div class="time-option" data-value="18:00">18:00</div>
                     </div>
                 </div>
+                            </div>
+                    </div>
 
                 <!-- 3. Satır: Rückgabedatum ve Rückgabezeit -->
-                <div class="porsche-search-row" style="display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 0.5rem !important; margin-bottom: 0.8rem !important;">
+                <div class="porsche-search-row">
                     <!-- Drop-off Date -->
                     <div class="porsche-search-item">
                         <label for="dropoff-date-selector" style="color: rgba(0, 0, 0, 0.8); font-weight: 500; font-size: 0.6rem; letter-spacing: 0.5px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.3rem; white-space: nowrap; font-family: 'Inter', sans-serif;">
-                            <i class="bi bi-calendar-range" style="margin-right: 6px; color: #B10000; font-size: 0.8rem;"></i>
-                            Rückgabedatum
-                        </label>
-                        <div class="porsche-date-wrapper" style="position: relative; width: 100%; display: flex; align-items: center; z-index: 10;">
-                            <input type="button" id="dropoff-date-selector" placeholder="" required class="form-control" readonly inputmode="none" style="
-                                width: 100%; 
-                                height: 35px; 
-                                background: rgba(255, 255, 255, 0.08);
-                                border: 2px solid rgba(0, 0, 0, 0.3);
-                                border-radius: 8px;
-                                color: #000000;
-                                font-size: 0.8rem;
-                                font-weight: 400;
-                                padding: 0 10px;
-                                font-family: 'Inter', sans-serif;
-                                transition: all 0.3s ease;
-                                backdrop-filter: blur(10px);
-                            ">
-                            <i class="bi bi-exclamation-triangle-fill date-error-icon" id="dropoff-date-error"></i>
-                            <div class="custom-calendar" id="dropoff-calendar" style="z-index: 1000;">
-                                <div class="calendar-header">
-                                    <div class="calendar-title" id="dropoff-calendar-title">December 2024</div>
-                                    <div class="calendar-nav">
-                                        <button class="calendar-nav-btn" id="dropoff-prev-month">
-                                            <i class="bi bi-chevron-left"></i>
-                                        </button>
-                                        <button class="calendar-nav-btn" id="dropoff-next-month">
-                                            <i class="bi bi-chevron-right"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="calendar-weekdays">
-                                    <div class="calendar-weekday">Mo</div>
-                                    <div class="calendar-weekday">Di</div>
-                                    <div class="calendar-weekday">Mi</div>
-                                    <div class="calendar-weekday">Do</div>
-                                    <div class="calendar-weekday">Fr</div>
-                                    <div class="calendar-weekday">Sa</div>
-                                    <div class="calendar-weekday">So</div>
-                                </div>
-                                <div class="calendar-days" id="dropoff-calendar-days"></div>
+                                Rückgabedatum
+                            </label>
+                            <div class="porsche-date-wrapper" style="position: relative; width: 100%; display: flex; align-items: center; z-index: 10;">
+                            <div style="position: relative; width: 100%;">
+                                <input type="button" id="dropoff-date-selector-mobile" placeholder="" required class="form-control" readonly inputmode="none" style="
+                                    width: 100%; 
+                                    height: 35px; 
+                                    background: rgba(255, 255, 255, 0.08);
+                                    border: 2px solid rgba(0, 0, 0, 0.3);
+                                    border-radius: 8px;
+                                    color: #000000;
+                                    font-size: 0.8rem;
+                                    font-weight: 400;
+                                    padding: 0 10px 0 10px;
+                                    padding-right: 35px;
+                                    font-family: 'Inter', sans-serif;
+                                    transition: all 0.3s ease;
+                                    backdrop-filter: blur(10px);
+                                ">
+                                <button type="button" class="date-clear-btn" data-target="dropoff-date-selector-mobile" style="
+                                    position: absolute;
+                                    right: 6px;
+                                    top: 50%;
+                                    transform: translateY(-50%);
+                                    background: rgba(177, 0, 0, 0.7);
+                                    border: none;
+                                    border-radius: 50%;
+                                    width: 16px;
+                                    height: 16px;
+                                    color: white;
+                                    font-size: 10px;
+                                    cursor: pointer;
+                                    display: none;
+                                    align-items: center;
+                                    justify-content: center;
+                                    z-index: 5;
+                                    font-weight: bold;
+                                    line-height: 1;
+                                ">×</button>
                             </div>
-                        </div>
+                                <i class="bi bi-exclamation-triangle-fill date-error-icon" id="dropoff-date-error"></i>
+                                <div class="custom-calendar" id="dropoff-calendar" style="z-index: 1000;">
+                                    <div class="calendar-header">
+                                        <div class="calendar-title" id="dropoff-calendar-title">December 2024</div>
+                                        <div class="calendar-nav">
+                                            <button class="calendar-nav-btn" id="dropoff-prev-month">
+                                                <i class="bi bi-chevron-left"></i>
+                                            </button>
+                                            <button class="calendar-nav-btn" id="dropoff-next-month">
+                                                <i class="bi bi-chevron-right"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="calendar-weekdays">
+                                        <div class="calendar-weekday">Mo</div>
+                                        <div class="calendar-weekday">Di</div>
+                                        <div class="calendar-weekday">Mi</div>
+                                        <div class="calendar-weekday">Do</div>
+                                        <div class="calendar-weekday">Fr</div>
+                                        <div class="calendar-weekday">Sa</div>
+                                        <div class="calendar-weekday">So</div>
+                                    </div>
+                                    <div class="calendar-days" id="dropoff-calendar-days"></div>
+                                </div>
+                            </div>
                     </div>
 
                     <!-- Drop-off Time -->
                     <div class="porsche-search-item">
                         <label for="dropoff-time" style="color: rgba(0, 0, 0, 0.8); font-weight: 500; font-size: 0.6rem; letter-spacing: 0.5px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.3rem; white-space: nowrap; font-family: 'Inter', sans-serif;">
-                            <i class="bi bi-alarm" style="margin-right: 6px; color: #B10000; font-size: 0.8rem;"></i>
-                            Zeit
-                        </label>
-                        <div class="porsche-select-wrapper" style="width: 100%; display: flex; align-items: center; position: relative;">
-                            <select id="dropoff-time" required style="
-                                width: 100%; 
-                                height: 35px; 
-                                background: rgba(255, 255, 255, 0.08);
-                                border: 2px solid rgba(0, 0, 0, 0.3);
-                                border-radius: 8px;
-                                color: #000000;
-                                font-size: 0.8rem;
-                                font-weight: 400;
-                                padding: 0 10px;
-                                font-family: 'Inter', sans-serif;
-                                transition: all 0.3s ease;
-                                backdrop-filter: blur(10px);
-                            ">
-                                <option value=""></option>
-                                <option value="08:00">08:00</option>
-                                <option value="09:00">09:00</option>
-                                <option value="10:00">10:00</option>
-                                <option value="11:00">11:00</option>
-                                <option value="12:00">12:00</option>
-                                <option value="13:00">13:00</option>
-                                <option value="14:00">14:00</option>
-                                <option value="15:00">15:00</option>
-                                <option value="16:00">16:00</option>
-                                <option value="17:00">17:00</option>
-                                <option value="18:00">18:00</option>
-                            </select>
+                                Zeit
+                            </label>
+                            <div class="porsche-select-wrapper" style="width: 100%; display: flex; align-items: center; position: relative;">
+                                <div class="custom-time-selector" id="dropoff-time-custom" style="
+                                    width: 100%; 
+                                    height: 35px; 
+                                    background: rgba(255, 255, 255, 0.08);
+                                    border: 2px solid rgba(0, 0, 0, 0.3);
+                                    border-radius: 8px;
+                                    color: #000000;
+                                    font-size: 0.8rem;
+                                    font-weight: 400;
+                                    padding: 0 10px;
+                                    font-family: 'Inter', sans-serif;
+                                    transition: all 0.3s ease;
+                                    backdrop-filter: blur(10px);
+                                    cursor: pointer;
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: space-between;
+                                ">
+                                    <span class="selected-time">Zeit wählen</span>
+                                    <i class="bi bi-chevron-down"></i>
+                                </div>
+                                <div class="custom-time-dropdown" id="dropoff-time-dropdown" style="
+                                    position: absolute;
+                                    top: 100%;
+                                    left: 0;
+                                    right: 0;
+                                    background: #2a2a2a;
+                                    border: 1px solid rgba(255, 255, 255, 0.2);
+                                    border-radius: 8px;
+                                    max-height: 150px;
+                                    overflow-y: auto;
+                                    z-index: 1000;
+                                    display: none;
+                                    margin-top: 4px;
+                                ">
+                                    <div class="time-option" data-value="08:00">08:00</div>
+                                    <div class="time-option" data-value="09:00">09:00</div>
+                                    <div class="time-option" data-value="10:00">10:00</div>
+                                    <div class="time-option" data-value="11:00">11:00</div>
+                                    <div class="time-option" data-value="12:00">12:00</div>
+                                    <div class="time-option" data-value="13:00">13:00</div>
+                                    <div class="time-option" data-value="14:00">14:00</div>
+                                    <div class="time-option" data-value="15:00">15:00</div>
+                                    <div class="time-option" data-value="16:00">16:00</div>
+                                    <div class="time-option" data-value="17:00">17:00</div>
+                                    <div class="time-option" data-value="18:00">18:00</div>
+                                </div>
                         </div>
+                            </div>
                     </div>
-                </div>
 
                 <!-- 4. Satır: Suchen Butonu -->
-                <div class="porsche-search-row" style="display: flex !important; justify-content: center !important; margin-bottom: 0 !important;">
-                    <div class="porsche-search-button" style="width: 100%;">
+                <div class="porsche-search-row" style="display: flex !important; justify-content: flex-start !important; align-items: center !important; margin-bottom: 0 !important; margin-top: 3rem !important; width: 100% !important; overflow: visible !important;">
+                    <div class="porsche-search-button" style="width: calc(50% + 11rem); margin-left: 0rem; margin-right: -1rem; position: relative; left: 0rem;">
                         <button type="submit" style="
                             width: 100%;
                             height: 35px;
@@ -2053,6 +2594,44 @@
                     </div>
                 </div>
                         </form>
+                </div>
+                
+                <!-- Minimal Discover Button -->
+                <div class="discover-button-container" style="width: 80%; margin: 0 auto; margin-top: 2px; transform: translateY(-1rem);">
+                    <button class="discover-button" style="
+                        width: 100%;
+                        height: 35px;
+                        background: linear-gradient(135deg, #B10000 0%, #8B0000 100%);
+                        border: none;
+                        border-radius: 8px;
+                        color: white;
+                        font-size: 0.85rem;
+                        font-weight: 600;
+                        text-transform: uppercase;
+                        letter-spacing: 1px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        transition: all 0.3s ease;
+                        cursor: pointer;
+                        box-shadow: 
+                            0 4px 12px rgba(177, 0, 0, 0.3),
+                            0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+                        position: relative;
+                        overflow: hidden;
+                    ">
+                        <i class="bi bi-chevron-down" style="font-size: 1rem; margin-right: 8px;"></i>
+                        Entdecken
+                        <div style="
+                            position: absolute;
+                            top: 0;
+                            left: -100%;
+                            width: 100%;
+                            height: 100%;
+                            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+                            transition: left 0.5s ease;
+                        "></div>
+                    </button>
                     </div>
                     
                     <!-- Porsche Style Hover Effects -->
@@ -2095,8 +2674,152 @@
                             background-color: #ffffff !important;
                             color: #000000 !important;
                             font-family: 'Inter', sans-serif;
-                            font-size: 0.8rem;
-                            padding: 6px 10px;
+                            font-size: 0.7rem !important;
+                            padding: 4px 8px !important;
+                            text-align: left !important;
+                        }
+                        
+                        /* Mobile select dropdown option styling */
+                        @media (max-width: 1199px) {
+                            .mobile-search-layout select {
+                                text-align: left !important;
+                                padding-left: 8px !important;
+                                font-size: 0.7rem !important;
+                                height: 35px !important;
+                                width: 100% !important;
+                                min-width: 100% !important;
+                                max-width: 100% !important;
+                                box-sizing: border-box !important;
+                                background: rgba(255, 255, 255, 0.15) !important;
+                                border: 2px solid rgba(255, 255, 255, 0.3) !important;
+                            color: #ffffff !important;
+                                backdrop-filter: blur(10px) !important;
+                                border-radius: 8px !important;
+                                appearance: none !important;
+                                -webkit-appearance: none !important;
+                                background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e") !important;
+                                background-repeat: no-repeat !important;
+                                background-position: right 8px center !important;
+                                background-size: 16px !important;
+                                padding-right: 30px !important;
+                                margin: 0 !important;
+                                flex: 1 !important;
+                            }
+                            
+                            .mobile-search-layout input {
+                                background: rgba(255, 255, 255, 0.15) !important;
+                                border: 2px solid rgba(255, 255, 255, 0.3) !important;
+                            color: #ffffff !important;
+                                backdrop-filter: blur(10px) !important;
+                                width: 100% !important;
+                                min-width: 100% !important;
+                                max-width: 100% !important;
+                                height: 35px !important;
+                                border-radius: 8px !important;
+                                box-sizing: border-box !important;
+                                margin: 0 !important;
+                                flex: 1 !important;
+                            }
+                        
+                            .mobile-search-layout label {
+                            color: rgba(255, 255, 255, 0.9) !important;
+                        }
+                        
+                            .mobile-search-layout .porsche-search-item {
+                                display: flex !important;
+                                flex-direction: column !important;
+                                width: 100% !important;
+                                margin: 0 !important;
+                                flex: 1 !important;
+                            }
+                            
+                            .mobile-search-layout .porsche-search-item select,
+                            .mobile-search-layout .porsche-search-item input,
+                            .mobile-search-layout .porsche-search-item .custom-time-selector {
+                                width: calc(100% + 1rem) !important;
+                                min-width: calc(100% + 1rem) !important;
+                                max-width: calc(100% + 1rem) !important;
+                                height: 35px !important;
+                                min-height: 35px !important;
+                                max-height: 35px !important;
+                                box-sizing: border-box !important;
+                                margin: 0 !important;
+                                padding: 0 8px !important;
+                                flex: 1 !important;
+                            }
+                            
+                            .mobile-search-layout .porsche-search-row {
+                                display: flex !important;
+                                gap: 1rem !important;
+                                width: 100% !important;
+                                margin-bottom: 15px !important;
+                            }
+                            
+                            .mobile-search-layout .porsche-search-row .porsche-search-item {
+                                flex: 1 !important;
+                                width: calc(50% + 0.5rem) !important;
+                            }
+                            
+                            .mobile-search-layout .porsche-search-row:first-child {
+                                gap: 3rem !important;
+                            }
+                            
+                            .mobile-search-layout .porsche-search-row:nth-child(2) {
+                                gap: 3rem !important;
+                            }
+                            
+                            .mobile-search-layout .porsche-search-row:nth-child(3) {
+                                gap: 3rem !important;
+                            }
+                            
+                            @media (max-width: 1199px) {
+                                .discover-button-container {
+                                    transform: translateY(-2rem) !important;
+                                    margin-top: -2rem !important;
+                                }
+                            }
+                        
+                            .mobile-search-layout .custom-time-selector {
+                                background: rgba(255, 255, 255, 0.15) !important;
+                                border: 2px solid rgba(255, 255, 255, 0.3) !important;
+                                color: #ffffff !important;
+                                backdrop-filter: blur(10px) !important;
+                                width: 100% !important;
+                                min-width: 100% !important;
+                                max-width: 100% !important;
+                                height: 35px !important;
+                                border-radius: 8px !important;
+                                box-sizing: border-box !important;
+                                margin: 0 !important;
+                                flex: 1 !important;
+                            }
+                            
+                            .porsche-search-form select option,
+                            .mobile-search-layout select option {
+                            background-color: #2a2a2a !important;
+                            color: #ffffff !important;
+                                font-size: 0.6rem !important;
+                                padding: 2px 2px 2px 8px !important;
+                                text-align: left !important;
+                                text-indent: 0 !important;
+                                margin-left: 0 !important;
+                                padding-left: 8px !important;
+                                padding-right: 2px !important;
+                                display: block !important;
+                                width: 100% !important;
+                                box-sizing: border-box !important;
+                            }
+                            
+                            /* Daha spesifik selector */
+                            .mobile-search-layout select option,
+                            .mobile-search-layout select option:checked,
+                            .mobile-search-layout select option:hover {
+                                text-align: left !important;
+                                padding-left: 8px !important;
+                                padding-right: 2px !important;
+                                background-color: #2a2a2a !important;
+                            color: #ffffff !important;
+                            }
                         }
                         
                         /* Date select options - 6 punto */
@@ -2105,12 +2828,69 @@
                             font-size: 6pt !important;
                         }
                         
-                        .porsche-search-form select option:hover {
+                        /* Desktop search layout option styling */
+                        .desktop-search-layout select option {
+                            background-color: #ffffff !important;
+                            color: #000000 !important;
+                            font-family: 'Inter', sans-serif;
+                            font-size: 0.7rem !important;
+                            padding: 4px 8px !important;
+                            text-align: left !important;
+                        }
+                        
+                        .porsche-search-form select option:hover,
+                        .desktop-search-layout select option:hover {
                             background-color: #f0f0f0 !important;
                             color: #000000 !important;
                         }
                         
-                        .porsche-search-form select option:checked {
+                        /* Desktop select dropdown positioning */
+                        @media (min-width: 1200px) {
+                            .desktop-search-layout {
+                                background: linear-gradient(135deg, #0066cc 0%, #004499 100%) !important;
+                                border-radius: 12px !important;
+                                padding: 20px !important;
+                                box-shadow: 0 8px 32px rgba(0, 102, 204, 0.3) !important;
+                                border: 2px solid rgba(255, 255, 255, 0.2) !important;
+                                transform: translateY(-8rem) !important;
+                            }
+                            
+                            .desktop-search-layout select {
+                                z-index: 1 !important;
+                            }
+                            
+                            .desktop-search-layout select:focus {
+                                z-index: 10 !important;
+                            }
+                            
+                            /* Select dropdown'ları input'un üstünde açılsın */
+                            .desktop-search-layout .porsche-search-item {
+                                position: relative !important;
+                                z-index: 1 !important;
+                            }
+                            
+                            .desktop-search-layout .porsche-search-item:focus-within {
+                                z-index: 10 !important;
+                            }
+                            
+                            /* Select dropdown'ları yukarı açılsın */
+                            .desktop-search-layout select {
+                                transform-origin: bottom center !important;
+                            }
+                            
+                            /* Select dropdown'ları yukarı açmak için */
+                            .desktop-search-layout .porsche-search-item {
+                                transform: translateY(0) !important;
+                                transition: transform 0.3s ease !important;
+                            }
+                            
+                            .desktop-search-layout .porsche-search-item:focus-within {
+                                transform: translateY(-20px) !important;
+                            }
+                        }
+                        
+                        .porsche-search-form select option:checked,
+                        .desktop-search-layout select option:checked {
                             background-color: #e0e0e0 !important;
                             color: #000000 !important;
                         }
@@ -2137,7 +2917,7 @@
                             position: absolute !important;
                             bottom: 100% !important;
                             left: 0 !important;
-                            z-index: 1000 !important;
+                            z-index: 99999 !important;
                             background: #2a2a2a !important;
                             border: 1px solid rgba(255, 255, 255, 0.2) !important;
                             border-radius: 8px !important;
@@ -2147,11 +2927,92 @@
                             top: auto !important;
                         }
                         
-                        /* Force calendar to open upwards */
+                        /* Desktop calendar positioning */
+                        @media (min-width: 1200px) {
+                            .custom-calendar {
+                                z-index: 9999 !important;
+                                position: fixed !important;
+                                top: 50% !important;
+                                left: 50% !important;
+                                transform: translate(-50%, -50%) !important;
+                                background: #2a2a2a !important;
+                                border: 2px solid rgba(255, 255, 255, 0.3) !important;
+                                border-radius: 12px !important;
+                                box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.4) !important;
+                                overflow: visible !important;
+                                margin-bottom: 8px !important;
+                                display: none !important;
+                                visibility: hidden !important;
+                                opacity: 0 !important;
+                                min-width: 240px !important;
+                                min-height: 240px !important;
+                            }
+                            
+                            .custom-calendar.show {
+                                display: block !important;
+                                visibility: visible !important;
+                                opacity: 1 !important;
+                                z-index: 9999 !important;
+                                position: fixed !important;
+                                top: 50% !important;
+                                left: 50% !important;
+                                transform: translate(-50%, -50%) !important;
+                            }
+                            
+                            /* Desktop calendar text sizing */
+                            @media (min-width: 1200px) {
+                                .custom-calendar .calendar-title {
+                                    font-size: 14px !important;
+                                    font-weight: 600 !important;
+                                }
+                                
+                                .custom-calendar .calendar-nav-btn {
+                                    font-size: 12px !important;
+                                    padding: 4px 6px !important;
+                                    border-radius: 3px !important;
+                                }
+                                
+                                .custom-calendar .calendar-weekday {
+                                    font-size: 10px !important;
+                                    padding: 6px 1px !important;
+                                    font-weight: 600 !important;
+                                }
+                                
+                                .custom-calendar .calendar-day {
+                                    font-size: 12px !important;
+                                    width: 20px !important;
+                                    height: 20px !important;
+                                    padding: 2px !important;
+                                    border-radius: 3px !important;
+                                    font-weight: 500 !important;
+                                }
+                                
+                                .custom-calendar .calendar-header {
+                                    margin-bottom: 8px !important;
+                                }
+                                
+                                .custom-calendar .calendar-weekdays {
+                                    margin-bottom: 6px !important;
+                                    gap: 1px !important;
+                                }
+                                
+                                .custom-calendar .calendar-days {
+                                    gap: 1px !important;
+                                }
+                                
+                                .custom-calendar {
+                                    padding: 8px !important;
+                                }
+                            }
+                        }
+                        
+                        /* Mobile calendar positioning */
+                        @media (max-width: 1199px) {
                         .custom-calendar.show {
                             bottom: 100% !important;
                             top: auto !important;
                             transform: translateY(-8px) !important;
+                            }
                         }
                         
                         .porsche-date-wrapper {
@@ -2161,39 +3022,54 @@
                         .porsche-search-form {
                             overflow: visible !important;
                         }
+                        
+                        /* Desktop date wrapper positioning */
+                        @media (min-width: 1200px) {
+                            .porsche-date-wrapper {
+                                overflow: visible !important;
+                                position: relative !important;
+                                z-index: 99999 !important;
+                            }
+                            
+                            .porsche-search-form {
+                                overflow: visible !important;
+                                position: relative !important;
+                                z-index: 99999 !important;
+                            }
+                            
+                            .desktop-search-layout {
+                                overflow: visible !important;
+                                position: relative !important;
+                                z-index: 99999 !important;
+                            }
+                        }
+                        
+                        /* Custom time dropdown styling */
+                        .time-option {
+                            padding: 8px 12px;
+                            color: #ffffff;
+                            cursor: pointer;
+                            transition: background-color 0.3s ease;
+                            font-size: 0.8rem;
+                        }
+                        
+                        .time-option:hover {
+                            background-color: rgba(255, 255, 255, 0.1);
+                        }
+                        
+                        .time-option.selected {
+                            background-color: rgba(177, 0, 0, 0.8);
+                        }
                     </style>
                     
-                    <!-- Minimal Discover Button -->
-                    <div class="discover-button-container" style="text-align: center; margin-top: -1rem; transform: translateY(-8rem);">
-                        <button class="discover-button" style="
-                            background: rgba(255, 255, 255, 0.1);
-                            backdrop-filter: blur(20px);
-                            border: 1px solid rgba(255, 255, 255, 0.2);
-                            border-radius: 25px;
-                            color: rgba(255, 255, 255, 0.9);
-                            font-size: 0.8rem;
-                            font-weight: 400;
-                            padding: 8px 20px;
-                            cursor: pointer;
-                            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-                            display: inline-flex;
-                            align-items: center;
-                            gap: 8px;
-                            letter-spacing: 1px;
-                            text-transform: uppercase;
-                            font-family: 'Inter', sans-serif;
-                        ">
-                            <span>Entdecken</span>
-                            <i class="bi bi-chevron-down" style="font-size: 0.7rem; transition: transform 0.3s ease;"></i>
-                        </button>
-                    </div>
+
                     
                     <style>
                         .discover-button:hover {
-                            background: rgba(255, 255, 255, 0.15);
-                            border-color: rgba(255, 255, 255, 0.3);
+                            background: rgba(177, 0, 0, 0.9);
+                            border-color: rgba(255, 255, 255, 0.5);
                             transform: translateY(-2px);
-                            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+                            box-shadow: 0 8px 25px rgba(177, 0, 0, 0.3);
                         }
                         
                         .discover-button:hover i {
@@ -2206,12 +3082,132 @@
                     </style>
                     
                     <script>
+                        // Custom time dropdown functionality
+                        document.addEventListener('DOMContentLoaded', function() {
+                            // Pickup time dropdown
+                            const timeSelector = document.getElementById('pickup-time-custom');
+                            const timeDropdown = document.getElementById('pickup-time-dropdown');
+                            const selectedTimeSpan = timeSelector?.querySelector('.selected-time');
+                            
+                            if (timeSelector && timeDropdown) {
+                                timeSelector.addEventListener('click', function() {
+                                    timeDropdown.style.display = timeDropdown.style.display === 'block' ? 'none' : 'block';
+                                });
+                                
+                                timeDropdown.addEventListener('click', function(e) {
+                                    if (e.target.classList.contains('time-option')) {
+                                        const value = e.target.getAttribute('data-value');
+                                        selectedTimeSpan.textContent = value;
+                                        timeDropdown.style.display = 'none';
+                                        
+                                        // Remove selected class from all options
+                                        timeDropdown.querySelectorAll('.time-option').forEach(option => {
+                                            option.classList.remove('selected');
+                                        });
+                                        
+                                        // Add selected class to clicked option
+                                        e.target.classList.add('selected');
+                                    }
+                                });
+                            }
+                            
+                            // Dropoff time dropdown
+                            const dropoffTimeSelector = document.getElementById('dropoff-time-custom');
+                            const dropoffTimeDropdown = document.getElementById('dropoff-time-dropdown');
+                            const dropoffSelectedTimeSpan = dropoffTimeSelector?.querySelector('.selected-time');
+                            
+                            if (dropoffTimeSelector && dropoffTimeDropdown) {
+                                dropoffTimeSelector.addEventListener('click', function() {
+                                    dropoffTimeDropdown.style.display = dropoffTimeDropdown.style.display === 'block' ? 'none' : 'block';
+                                });
+                                
+                                dropoffTimeDropdown.addEventListener('click', function(e) {
+                                    if (e.target.classList.contains('time-option')) {
+                                        const value = e.target.getAttribute('data-value');
+                                        dropoffSelectedTimeSpan.textContent = value;
+                                        dropoffTimeDropdown.style.display = 'none';
+                                        
+                                        // Remove selected class from all options
+                                        dropoffTimeDropdown.querySelectorAll('.time-option').forEach(option => {
+                                            option.classList.remove('selected');
+                                        });
+                                        
+                                        // Add selected class to clicked option
+                                        e.target.classList.add('selected');
+                                    }
+                                });
+                            }
+                            
+                            // Close dropdowns when clicking outside
+                            document.addEventListener('click', function(e) {
+                                if (timeSelector && !timeSelector.contains(e.target) && timeDropdown && !timeDropdown.contains(e.target)) {
+                                    timeDropdown.style.display = 'none';
+                                }
+                                if (dropoffTimeSelector && !dropoffTimeSelector.contains(e.target) && dropoffTimeDropdown && !dropoffTimeDropdown.contains(e.target)) {
+                                    dropoffTimeDropdown.style.display = 'none';
+                                }
+                            });
+                        });
+                        
                         document.querySelector('.discover-button').addEventListener('click', function() {
+                            // Mobilde farklı davranış
+                            if (window.innerWidth < 1200) {
+                                // Hero section'ı gizle
+                                const heroSection = document.querySelector('.hero-section-porsche');
+                                heroSection.style.display = 'none';
+                                
+                                // Popular section'ı normal pozisyonuna getir
+                                const popularSection = document.getElementById('popular-cars-section');
+                                popularSection.style.cssText = `
+                                    position: relative !important;
+                                    top: 0 !important;
+                                    left: 0 !important;
+                                    right: auto !important;
+                                    z-index: 1 !important;
+                                    margin-top: 0 !important;
+                                    margin-bottom: 0 !important;
+                                    padding-top: 2rem !important;
+                                    padding-bottom: 2rem !important;
+                                    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 25%, #dee2e6 50%, #e9ecef 75%, #f8f9fa 100%) !important;
+                                    min-height: 100vh !important;
+                                    display: block !important;
+                                `;
+                                
+                                // Container'ın padding'ini ayarla
+                                const container = popularSection.querySelector('.container');
+                                if (container) {
+                                    container.style.paddingTop = '2rem';
+                                }
+                                
+                                // Navbar'ı gizle
+                                const navbar = document.getElementById('navbar-container');
+                                if (navbar) {
+                                    navbar.style.display = 'none';
+                                }
+                                
+                                // Body scroll'u aç ve pozisyonu sıfırla
+                                document.body.style.cssText = `
+                                    overflow: auto !important;
+                                    margin: 0 !important;
+                                    padding: 0 !important;
+                                    position: relative !important;
+                                `;
+                                
+                                // Sayfayı en üste getir
+                                window.scrollTo({
+                                    top: 0,
+                                    behavior: 'smooth'
+                                });
+                            } else {
+                                // Desktop'ta normal scroll
                             document.getElementById('popular-cars-section').scrollIntoView({ 
                                 behavior: 'smooth',
                                 block: 'start'
                             });
+                            }
                         });
+                        
+
                     </script>
             
 
@@ -2219,7 +3215,7 @@
     </section>
 
         <!-- Popular Cars Section -->
-                     <section id="popular-cars-section" class="popular-cars-section" style="margin-top: 0 !important; padding-top: 0 !important; position: relative; z-index: 0; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 25%, #dee2e6 50%, #e9ecef 75%, #f8f9fa 100%);">
+                     <section id="popular-cars-section" class="popular-cars-section" style="margin-top: 80px !important; padding-top: 2rem !important; position: relative; z-index: 0; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 25%, #dee2e6 50%, #e9ecef 75%, #f8f9fa 100%);">
                           <div class="container" style="padding-top: 2rem; padding-bottom: 0;">
                   <div class="row mb-0" style="margin-top: 0;">
                     <div class="col-12 text-center">
@@ -2377,21 +3373,21 @@
     <!-- Back to Top Button -->
     <button id="back-to-top" class="back-to-top-btn" style="
         position: fixed;
-        bottom: 40px;
-        right: 40px;
+        bottom: 20px;
+        right: 20px;
         width: 50px;
         height: 50px;
-        background: rgba(255, 255, 255, 0.9);
+        background: rgba(177, 0, 0, 0.9);
         backdrop-filter: blur(10px);
         border: 1px solid rgba(255, 255, 255, 0.2);
         border-radius: 12px;
-        color: #1a202c;
+        color: #ffffff;
         font-size: 1.2rem;
         cursor: pointer;
-        opacity: 1;
-        visibility: visible;
+        opacity: 0;
+        visibility: hidden;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        z-index: 9999;
+        z-index: 99999;
         box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
         display: flex;
         align-items: center;
@@ -2413,8 +3409,19 @@
         }
         
         .back-to-top-btn.show {
-            opacity: 1;
-            visibility: visible;
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+        
+        /* Mobilde buton daha büyük olsun */
+        @media (max-width: 1199px) {
+            .back-to-top-btn {
+                width: 60px !important;
+                height: 60px !important;
+                font-size: 1.5rem !important;
+                bottom: 15px !important;
+                right: 15px !important;
+            }
         }
     </style>
 
@@ -2422,20 +3429,51 @@
         // Back to Top functionality
         const backToTopBtn = document.getElementById('back-to-top');
         
-        // Show button immediately for testing
-        backToTopBtn.classList.add('show');
-        
         // Show button when user scrolls down
-        window.addEventListener('scroll', function() {
-            if (window.pageYOffset > 100) {
+        function updateBackToTopButton() {
+            if (window.pageYOffset > 20) {
                 backToTopBtn.classList.add('show');
             } else {
                 backToTopBtn.classList.remove('show');
             }
-        });
+        }
+        
+        // Initial check
+        updateBackToTopButton();
+        
+        // Listen for scroll events
+        window.addEventListener('scroll', updateBackToTopButton);
+        
+        // Also listen for touch events on mobile
+        document.addEventListener('touchmove', updateBackToTopButton);
+        document.addEventListener('scroll', updateBackToTopButton);
         
         // Smooth scroll to top when button is clicked
         backToTopBtn.addEventListener('click', function() {
+            // Mobilde hero section gizliyse onu göster ve en üste git
+            if (window.innerWidth < 1200) {
+                const heroSection = document.querySelector('.hero-section-porsche');
+                const navbar = document.getElementById('navbar-container');
+                
+                if (heroSection && heroSection.style.display === 'none') {
+                    // Hero section'ı göster
+                    heroSection.style.display = 'block';
+                    
+                    // Navbar'ı göster
+                    if (navbar) {
+                        navbar.style.display = 'block';
+                    }
+                    
+                    // En üste git
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                    return;
+                }
+            }
+            
+            // Normal davranış - en üste git
             window.scrollTo({
                 top: 0,
                 behavior: 'smooth'
@@ -2563,6 +3601,8 @@
             
 
             
+
+            
             // Modern Select and Input Enhancement
             function enhanceFormElements() {
                 const selects = document.querySelectorAll('.search-item select');
@@ -2647,12 +3687,23 @@
             // Custom Calendar System
             class CustomCalendar {
                 constructor(inputId, calendarId, titleId, daysId, prevBtnId, nextBtnId) {
+                    console.log('CustomCalendar constructor called with:', { inputId, calendarId, titleId, daysId, prevBtnId, nextBtnId });
+                    
                     this.input = document.getElementById(inputId);
                     this.calendar = document.getElementById(calendarId);
                     this.title = document.getElementById(titleId);
                     this.daysContainer = document.getElementById(daysId);
                     this.prevBtn = document.getElementById(prevBtnId);
                     this.nextBtn = document.getElementById(nextBtnId);
+                    
+                    console.log('Elements found:', {
+                        input: this.input,
+                        calendar: this.calendar,
+                        title: this.title,
+                        daysContainer: this.daysContainer,
+                        prevBtn: this.prevBtn,
+                        nextBtn: this.nextBtn
+                    });
                     
                     this.currentDate = new Date();
                     this.selectedDate = null;
@@ -2669,19 +3720,7 @@
                 bindEvents() {
                     // Toggle calendar on input click
                     this.input.addEventListener('click', () => {
-                        console.log('Input clicked:', this.input.id);
                         this.toggleCalendar();
-                    });
-                    
-                    // Navigation buttons
-                    this.prevBtn.addEventListener('click', () => {
-                        this.currentDate.setMonth(this.currentDate.getMonth() - 1);
-                        this.renderCalendar();
-                    });
-                    
-                    this.nextBtn.addEventListener('click', () => {
-                        this.currentDate.setMonth(this.currentDate.getMonth() + 1);
-                        this.renderCalendar();
                     });
                     
                     // Close calendar when clicking outside
@@ -2693,6 +3732,7 @@
                 }
                 
                 toggleCalendar() {
+                    console.log('toggleCalendar called, isOpen:', this.isOpen);
                     if (this.isOpen) {
                         this.closeCalendar();
                         } else {
@@ -2701,8 +3741,14 @@
                 }
                 
                 openCalendar() {
+                    console.log('Opening calendar, current display:', this.calendar.style.display);
+                    this.calendar.style.display = 'block';
+                    this.calendar.style.visibility = 'visible';
+                    this.calendar.style.opacity = '1';
+                    this.calendar.style.zIndex = '99999';
                     this.calendar.classList.add('show');
                     this.isOpen = true;
+                    console.log('Calendar opened, display:', this.calendar.style.display);
                 }
                 
                 closeCalendar() {
@@ -2789,6 +3835,9 @@
                     });
                     element.classList.add('selected');
                     
+                    // Show clear button
+                    updateClearButton(this.input.id);
+                    
                     this.closeCalendar();
                     
                     // Tarih değiştiğinde saat validasyonunu tetikle
@@ -2799,10 +3848,138 @@
             }
             
             // Initialize calendars
-            console.log('Initializing calendars...');
             
-            const pickupCalendar = new CustomCalendar(
+            // Test: Takvim elementlerini kontrol et
+            console.log('Calendar elements check:', {
+                pickupCalendar: document.getElementById('pickup-calendar'),
+                dropoffCalendar: document.getElementById('dropoff-calendar'),
+                pickupInput: document.getElementById('pickup-date-selector'),
+                pickupInputMobile: document.getElementById('pickup-date-selector-mobile'),
+                dropoffInput: document.getElementById('dropoff-date-selector')
+            });
+            
+            // Tarih temizleme butonları için event listener
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('date-clear-btn')) {
+                    const targetId = e.target.getAttribute('data-target');
+                    const input = document.getElementById(targetId);
+                    if (input) {
+                        input.value = '';
+                        console.log('Date cleared:', targetId);
+                        // Hide clear button after clearing
+                        updateClearButton(targetId);
+                    }
+                    e.stopPropagation(); // Event'in yukarı çıkmasını engelle
+                    return;
+                }
+            });
+            
+            // Tarih input'larına değer girildiğinde temizleme butonunu göster/gizle
+            function updateClearButton(inputId) {
+                const input = document.getElementById(inputId);
+                const clearBtn = document.querySelector(`[data-target="${inputId}"]`);
+                if (input && clearBtn) {
+                    if (input.value && input.value.trim() !== '') {
+                        clearBtn.style.display = 'flex';
+                    } else {
+                        clearBtn.style.display = 'none';
+                    }
+                }
+            }
+            
+            // Manuel takvim açma testi
+            document.addEventListener('click', function(e) {
+                console.log('Click event on:', e.target.id, e.target.className);
+                
+                // Eğer takvim içine tıklandıysa, kapatma
+                if (e.target.closest('.custom-calendar')) {
+                    return;
+                }
+                if (e.target.id === 'pickup-date-selector' || 
+                    e.target.id === 'pickup-date-selector-mobile' || 
+                    e.target.id === 'dropoff-date-selector' ||
+                    e.target.id === 'dropoff-date-selector-mobile') {
+                    console.log('Date input clicked:', e.target.id);
+                    console.log('Input element:', e.target);
+                    console.log('Input visible:', e.target.offsetParent !== null);
+                    console.log('Window width:', window.innerWidth);
+                    
+                    // Önce tüm takvimleri kapat
+                    const allCalendars = document.querySelectorAll('.custom-calendar');
+                    allCalendars.forEach(cal => {
+                        cal.style.display = 'none';
+                        cal.classList.remove('show');
+                    });
+                    
+                    // Takvimi manuel olarak aç
+                    let calendarId = '';
+                    if (e.target.id === 'pickup-date-selector') {
+                        calendarId = 'pickup-calendar-desktop';
+                    } else if (e.target.id === 'dropoff-date-selector') {
+                        calendarId = 'dropoff-calendar-desktop';
+                    } else if (e.target.id === 'pickup-date-selector-mobile') {
+                        calendarId = 'pickup-calendar';
+                    } else if (e.target.id === 'dropoff-date-selector-mobile') {
+                        calendarId = 'dropoff-calendar';
+                    }
+                    
+                    const calendar = document.getElementById(calendarId);
+                    if (calendar) {
+                        console.log('Opening calendar:', calendarId);
+                        console.log('Calendar before opening:', calendar.style.display, calendar.style.visibility, calendar.style.opacity);
+                        calendar.style.display = 'block';
+                        calendar.style.visibility = 'visible';
+                        calendar.style.opacity = '1';
+                        calendar.style.zIndex = '99999';
+                        calendar.classList.add('show');
+                        console.log('Calendar after opening:', calendar.style.display, calendar.style.visibility, calendar.style.opacity);
+                        console.log('Calendar element:', calendar);
+                        console.log('Calendar innerHTML:', calendar.innerHTML);
+                        console.log('Calendar offsetWidth:', calendar.offsetWidth);
+                        console.log('Calendar offsetHeight:', calendar.offsetHeight);
+                        console.log('Calendar getBoundingClientRect:', calendar.getBoundingClientRect());
+                    } else {
+                        console.log('Calendar not found:', calendarId);
+                    }
+                } else {
+                    // Date input dışında bir yere tıklandığında tüm takvimleri kapat
+                    const allCalendars = document.querySelectorAll('.custom-calendar');
+                    allCalendars.forEach(cal => {
+                        cal.style.display = 'none';
+                        cal.classList.remove('show');
+                    });
+                }
+            });
+            
+            // Desktop pickup date selector için calendar instance
+            console.log('Creating desktop pickup calendar...');
+            console.log('Desktop pickup input found:', document.getElementById('pickup-date-selector'));
+            console.log('Desktop pickup calendar found:', document.getElementById('pickup-calendar'));
+            const pickupCalendarDesktop = new CustomCalendar(
                 'pickup-date-selector', 
+                'pickup-calendar-desktop', 
+                'pickup-calendar-title-desktop', 
+                'pickup-calendar-days-desktop',
+                'pickup-prev-month-desktop',
+                'pickup-next-month-desktop'
+            );
+            console.log('Desktop pickup calendar created:', pickupCalendarDesktop);
+            
+            // Desktop dropoff date selector için calendar instance
+            console.log('Creating desktop dropoff calendar...');
+            const dropoffCalendarDesktop = new CustomCalendar(
+                'dropoff-date-selector', 
+                'dropoff-calendar-desktop', 
+                'dropoff-calendar-title-desktop', 
+                'dropoff-calendar-days-desktop',
+                'dropoff-prev-month-desktop',
+                'dropoff-next-month-desktop'
+            );
+            console.log('Desktop dropoff calendar created:', dropoffCalendarDesktop);
+            
+            // Mobil pickup date selector için ayrı calendar instance
+            const pickupCalendarMobile = new CustomCalendar(
+                'pickup-date-selector-mobile', 
                 'pickup-calendar', 
                 'pickup-calendar-title', 
                 'pickup-calendar-days',
@@ -2810,8 +3987,9 @@
                 'pickup-next-month'
             );
             
-            const dropoffCalendar = new CustomCalendar(
-                'dropoff-date-selector', 
+            // Mobil dropoff date selector için ayrı calendar instance
+            const dropoffCalendarMobile = new CustomCalendar(
+                'dropoff-date-selector-mobile', 
                 'dropoff-calendar', 
                 'dropoff-calendar-title', 
                 'dropoff-calendar-days',
@@ -2819,7 +3997,11 @@
                 'dropoff-next-month'
             );
             
-            console.log('Calendars initialized:', pickupCalendar, dropoffCalendar);
+
+            
+
+            
+
             
             // Saat validasyonu için event listener'lar
             const pickupTimeSelect = document.getElementById('pickup-time');
@@ -2994,8 +4176,11 @@
                 }, 3000);
             }
             
-            // Form submission
+            // Form submission - hem desktop hem mobil için
             const form = document.getElementById('date-location-form');
+            const mobileForm = document.querySelector('.mobile-search-layout');
+            
+            // Desktop form submission
             form.addEventListener('submit', function(e) {
                 e.preventDefault();
                 
@@ -3007,14 +4192,18 @@
                 const pickupTime = document.getElementById('pickup-time').value;
                 const dropoffTime = document.getElementById('dropoff-time').value;
                 
-                if (!pickupLocation || !dropoffLocation || !pickupDate || !dropoffDate || !pickupTime || !dropoffTime) {
-                    alert('Bitte füllen Sie alle Felder aus.');
-                    return;
-                }
+                // Form validation kaldırıldı - her durumda yönlendirme yap
+                console.log('Desktop form submitted - redirecting to extras page');
+                
+                // Varsayılan değerler kullan
+                const finalPickupDate = pickupDate || '30.08.2025';
+                const finalDropoffDate = dropoffDate || '31.08.2025';
+                const finalPickupTime = pickupTime || '08:00';
+                const finalDropoffTime = dropoffTime || '17:00';
                 
                 // Tarih ve saat validasyonu (artık otomatik olarak saat seçimi kısıtlanıyor)
-                const pickupDateTime = new Date(pickupDate.split('.').reverse().join('-') + 'T' + pickupTime);
-                const dropoffDateTime = new Date(dropoffDate.split('.').reverse().join('-') + 'T' + dropoffTime);
+                const pickupDateTime = new Date(finalPickupDate.split('.').reverse().join('-') + 'T' + finalPickupTime);
+                const dropoffDateTime = new Date(finalDropoffDate.split('.').reverse().join('-') + 'T' + finalDropoffTime);
                 
                 // Ek güvenlik kontrolü
                 const timeDifference = dropoffDateTime - pickupDateTime;
@@ -3024,26 +4213,46 @@
                     return; // Kullanıcı zaten geçersiz seçim yapamaz
                 }
                 
-                // Store search data
+                    // Store search data
                 const formData = {
                     pickupLocation: pickupLocation,
                     dropoffLocation: dropoffLocation,
-                    pickupDate: pickupDate,
-                    dropoffDate: dropoffDate
+                    pickupDate: finalPickupDate,
+                    dropoffDate: finalDropoffDate
                 };
                 
                 localStorage.setItem('searchData', JSON.stringify(formData));
                 
-                // Show success message
-                const button = document.querySelector('.search-button');
-                const originalText = button.innerHTML;
-                button.innerHTML = '<i class="bi bi-check-circle"></i><span>Gesucht!</span>';
-                button.style.background = 'linear-gradient(135deg, #28a745, #20c997)';
-                
-                setTimeout(() => {
-                    button.innerHTML = originalText;
-                    button.style.background = 'linear-gradient(135deg, #B10000, #b30016)';
-                }, 2000);
+                // Direkt yönlendir - uyarı yok
+                window.location.href = '/extras-versicherung.html';
+            });
+            
+            // Mobil search butonuna tıklandığında
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.porsche-search-button button') || 
+                    (e.target.textContent && e.target.textContent.includes('Fahrzeug finden'))) {
+                    e.preventDefault();
+                    
+                    // Mobil form validation - uyarı gösterme
+                    const pickupLocationMobile = document.getElementById('pickup-location-selector-mobile')?.value;
+                    const dropoffLocationMobile = document.getElementById('dropoff-location-selector-mobile')?.value;
+                    const pickupDateMobile = document.getElementById('pickup-date-selector-mobile')?.value;
+                    const dropoffDateMobile = document.getElementById('dropoff-date-selector-mobile')?.value;
+                    const pickupTimeMobile = document.getElementById('pickup-time')?.value;
+                    const dropoffTimeMobile = document.getElementById('dropoff-time')?.value;
+                    
+                    // Form validation kaldırıldı - her durumda yönlendirme yap
+                    console.log('Mobile form submitted - redirecting to extras page');
+                    
+                    // Varsayılan değerler kullan
+                    const finalPickupDate = pickupDateMobile || '30.08.2025';
+                    const finalDropoffDate = dropoffDateMobile || '31.08.2025';
+                    const finalPickupTime = pickupTimeMobile || '08:00';
+                    const finalDropoffTime = dropoffTimeMobile || '17:00';
+                    
+                    // Direkt yönlendir - uyarı yok
+                    window.location.href = '/extras-versicherung.html';
+                }
             });
         });
     </script>
