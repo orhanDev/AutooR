@@ -327,7 +327,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const carsHTML = filteredVehicles.map(vehicle => `
-            <div class="car-card" data-car-id="${vehicle.car_id}" style="height: 80px !important; background: rgba(30, 58, 138, 0.5) !important; border: 1px solid rgba(59, 130, 246, 0.3) !important; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important; width: 31%; margin: 1.5rem; flex: 0 0 calc(31% - 1.5rem); border-radius: 8px;">
+            <div class="car-card" data-car-id="${vehicle.car_id}">
                 <div class="car-image">
                     <img src="${vehicle.image_url}" 
                          alt="${vehicle.make} ${vehicle.model}" 
