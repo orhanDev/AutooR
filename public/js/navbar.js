@@ -26,7 +26,7 @@ function createNavbar() {
                 </button>
                 
                 <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav me-auto">
+                    <ul class="navbar-nav me-auto" id="navbar-menu-container">
                         <li class="nav-item">
                             <a class="nav-link" href="/fahrzeuge">Fahrzeuge</a>
                         </li>
@@ -47,6 +47,9 @@ function createNavbar() {
     
     // Add navbar CSS
     addNavbarCSS();
+    
+    // Add click outside to close hamburger menu
+    addHamburgerMenuCloseListener();
 }
 
 // Add navbar CSS styles
@@ -225,32 +228,81 @@ function addNavbarCSS() {
                 font-size: 1.2rem !important;
             }
             
+            /* Mobilde tüm navbar-nav'ları tek container'da birleştir */
             .navbar-nav {
                 text-align: center;
                 margin-top: 1rem;
-                background: rgba(128, 128, 128, 0.9) !important;
-                backdrop-filter: blur(10px);
-                border-radius: 8px;
-                padding: 1rem;
+                background: rgba(255, 255, 255, 0.1) !important;
+                backdrop-filter: blur(25px) saturate(180%);
+                -webkit-backdrop-filter: blur(25px) saturate(180%);
+                border-radius: 16px;
+                padding: 1.5rem;
                 margin-left: 1rem;
                 margin-right: 1rem;
-                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-                animation: slideDown 0.3s ease-out;
+                box-shadow: 
+                    0 20px 40px rgba(0, 0, 0, 0.2),
+                    0 0 0 1px rgba(255, 255, 255, 0.15) inset;
+                animation: slideDown 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                border: 1px solid rgba(255, 255, 255, 0.3);
+            }
+            
+            /* Mobilde auth butonlarını diğer linklerle yan yana getir */
+            #auth-buttons-container {
+                display: flex !important;
+                flex-direction: row !important;
+                justify-content: center !important;
+                align-items: center !important;
+                gap: 1rem !important;
+                margin-top: 0 !important;
+                margin-left: 0 !important;
+                margin-right: 0 !important;
+                background: none !important;
+                backdrop-filter: none !important;
+                -webkit-backdrop-filter: none !important;
+                border-radius: 0 !important;
+                padding: 0 !important;
+                box-shadow: none !important;
+                border: none !important;
+                animation: none !important;
+            }
+            
+            #auth-buttons-container .nav-link {
+                margin: 0 !important;
+                padding: 0.5rem 1rem !important;
+                border: 1px solid rgba(255, 255, 255, 0.3) !important;
+                border-radius: 8px !important;
+                background: rgba(255, 255, 255, 0.1) !important;
+                transition: all 0.3s ease !important;
+            }
+            
+            #auth-buttons-container .nav-link:hover {
+                background: rgba(255, 255, 255, 0.2) !important;
+                transform: translateY(-1px) !important;
             }
             
             .navbar-nav .nav-link {
-                padding: 0.75rem 0;
-                border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+                padding: 1rem 1.5rem;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.15);
                 color: #ffffff !important;
-                font-weight: 500;
-                transition: all 0.3s ease;
+                font-weight: 600;
+                font-size: 1rem;
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                border-radius: 12px;
+                margin: 0.25rem 0;
+                position: relative;
+                overflow: hidden;
             }
             
             .navbar-nav .nav-link:hover {
-                background: rgba(255, 255, 255, 0.1);
-                border-radius: 4px;
-                padding-left: 1rem;
-                padding-right: 1rem;
+                background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.1) 100%);
+                transform: translateY(-2px);
+                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+                border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+            }
+            
+            .navbar-nav .nav-link:active {
+                transform: translateY(0);
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
             }
             
             .navbar-nav .nav-link:last-child {
@@ -308,9 +360,6 @@ function updateNavbar() {
         // User is logged in - show welcome message and logout button
         authButtonsContainer.innerHTML = `
             <li class="nav-item">
-                <span class="nav-link">Willkommen ${currentUser.firstName}</span>
-            </li>
-            <li class="nav-item">
                 <a class="nav-link" href="#" onclick="logout()">Abmelden</a>
             </li>
         `;
@@ -341,6 +390,21 @@ function updateNavbar() {
                     <a class="nav-link" href="/login">Anmelden</a>
                 </li>
             `;
+        }
+    }
+    
+    // Mobilde auth butonlarını diğer linklerle yan yana getir
+    if (window.innerWidth <= 768) {
+        const menuContainer = document.getElementById('navbar-menu-container');
+        const authContainer = document.getElementById('auth-buttons-container');
+        
+        if (menuContainer && authContainer) {
+            // Auth butonlarını menu container'a taşı
+            const authLinks = authContainer.querySelectorAll('.nav-item');
+            authLinks.forEach(link => {
+                menuContainer.appendChild(link.cloneNode(true));
+            });
+            authContainer.innerHTML = '';
         }
     }
     
@@ -379,4 +443,21 @@ function testNavbarUpdate() {
     }));
     
     updateNavbar();
+}
+
+// Add hamburger menu close listener
+function addHamburgerMenuCloseListener() {
+    document.addEventListener('click', function(event) {
+        const navbarNav = document.getElementById('navbarNav');
+        const navbarToggler = document.querySelector('.navbar-toggler');
+        
+        // Check if hamburger menu is open
+        if (navbarNav && navbarNav.classList.contains('show')) {
+            // Check if click is outside the navbar
+            if (!navbarNav.contains(event.target) && !navbarToggler.contains(event.target)) {
+                // Close the hamburger menu
+                navbarNav.classList.remove('show');
+            }
+        }
+    });
 }

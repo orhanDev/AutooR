@@ -26,12 +26,13 @@
             border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 6px;
             box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.3);
-            z-index: 9999;
+            z-index: 99999 !important;
             padding: 6px;
             display: none;
             font-family: 'Inter', sans-serif;
             margin-bottom: 4px;
             min-width: 220px;
+            pointer-events: auto !important;
         }
         
         /* Mobilde takvim seçiciyi %30 büyüt */
@@ -47,12 +48,24 @@
             display: block;
         }
         
+        /* Takvim açıkken desktop-search-layout'un pointer-events'ini kapat */
+        .custom-calendar.show ~ .desktop-search-layout,
+        .custom-calendar.show + .desktop-search-layout {
+            pointer-events: none !important;
+        }
+        
+        /* Takvim açıkken sadece takvim günlerinin tıklanabilir olmasını sağla */
+        .custom-calendar.show .calendar-day {
+            pointer-events: auto !important;
+        }
+        
         .calendar-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 8px;
             color: #ffffff;
+            pointer-events: none !important;
         }
         
         .calendar-title {
@@ -102,6 +115,7 @@
             grid-template-columns: repeat(7, 1fr);
             gap: 1px;
             margin-bottom: 3px;
+            pointer-events: none !important;
         }
         
         .calendar-weekday {
@@ -125,6 +139,9 @@
             display: grid;
             grid-template-columns: repeat(7, 1fr);
             gap: 1px;
+            pointer-events: auto !important;
+            position: relative;
+            z-index: 999 !important;
         }
         
         .calendar-day {
@@ -140,6 +157,9 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            pointer-events: auto !important;
+            position: relative;
+            z-index: 999 !important;
         }
         
         /* Mobilde gün butonlarını büyüt */
@@ -165,6 +185,8 @@
         .calendar-day.disabled {
             color: rgba(255, 255, 255, 0.3);
             cursor: not-allowed;
+            pointer-events: none !important;
+            z-index: 1;
         }
         
         .calendar-day.other-month {
@@ -313,7 +335,7 @@
             .desktop-search-layout {
                 display: flex !important;
                 flex-direction: row !important;
-                align-items: center !important;
+                align-items: flex-end !important;
                 gap: 1.5rem !important;
                 width: 100% !important;
             }
@@ -324,11 +346,23 @@
             }
             
             .desktop-search-layout label {
-                font-size: 0.75rem !important;
-                margin-bottom: 0.5rem !important;
-                color: #333 !important;
-                font-weight: 600 !important;
+                font-size: 0.8rem !important;
+                margin-bottom: 0.75rem !important;
+                color: rgba(255, 255, 255, 0.95) !important;
+                font-weight: 500 !important;
                 display: block !important;
+                text-transform: uppercase !important;
+                letter-spacing: 0.5px !important;
+                text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) !important;
+                font-family: 'Inter', sans-serif !important;
+            }
+            
+            /* Daha spesifik selector ile label rengini beyaz yap */
+            .desktop-search-layout .porsche-search-item label {
+                color: rgba(255, 255, 255, 0.95) !important;
+                font-weight: 500 !important;
+                text-transform: uppercase !important;
+                letter-spacing: 0.5px !important;
             }
             
             .desktop-search-layout select,
@@ -391,6 +425,10 @@
                 margin-top: 1rem !important;
                 transform: translateY(0) !important;
             }
+            
+            .discover-button {
+                height: 60px !important;
+            }
         }
         
         /* Mobile Discover Button Position */
@@ -426,6 +464,15 @@
                 margin-bottom: 0.5rem !important;
                 color: #333 !important;
                 font-weight: 600 !important;
+            }
+            
+            .porsche-search-item label[for="dropoff-date-selector"],
+            .porsche-search-item label[for="pickup-date-selector-mobile"],
+            .porsche-search-item label[for="pickup-location-selector-mobile"],
+            .porsche-search-item label[for="dropoff-location-selector-mobile"],
+            .porsche-search-item label[for="pickup-time"],
+            .porsche-search-item label[for="dropoff-time"] {
+                font-size: 0.6rem !important;
             }
             
             .porsche-search-item select,
@@ -468,6 +515,7 @@
                 align-items: center !important;
                 justify-content: center !important;
                 gap: 0.5rem !important;
+                align-self: flex-end !important;
             }
             
             .porsche-search-form .btn-search:hover {
@@ -2021,7 +2069,7 @@
                 z-index: 1;
             "></div>
         </div>
-        <div class="hero-content-porsche" style="padding-top: 0; margin-top: 0; transform: translateY(0); position: relative; z-index: 2; height: 100vh; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 6rem;">
+        <div class="hero-content-porsche" style="padding-top: 0; margin-top: 0; transform: translateY(0); position: relative; z-index: 2; height: 100vh; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 5.5rem;">
             <!-- Porsche Style Search Form -->
             <form id="date-location-form" novalidate>
                 <!-- Desktop: Yatay Layout -->
@@ -2056,9 +2104,8 @@
                     <div class="porsche-search-item">
                         <label for="pickup-date-selector">Abholdatum</label>
                         <div style="position: relative; display: flex; align-items: center;">
-                            <input type="button" id="pickup-date-selector" required readonly inputmode="none" style="
+                            <input type="button" id="pickup-date-selector" required inputmode="none" style="
                                 flex: 1; 
-                                padding-right: 35px;
                                 width: 100%; 
                                 height: 35px; 
                                 background: rgba(255, 255, 255, 0.08);
@@ -2073,26 +2120,7 @@
                                 backdrop-filter: blur(10px);
                                 cursor: pointer;
                             ">
-                            <button type="button" class="date-clear-btn" data-target="pickup-date-selector" style="
-                position: absolute;
-                                right: 6px;
-                                top: 50%;
-                                transform: translateY(-50%);
-                                background: rgba(177, 0, 0, 0.7);
-                                border: none;
-                                border-radius: 50%;
-                                width: 16px;
-                                height: 16px;
-                                color: white;
-                                font-size: 10px;
-                                cursor: pointer;
-                                display: none;
-                                align-items: center;
-                                justify-content: center;
-                                z-index: 5;
-                                font-weight: bold;
-                                line-height: 1;
-                            ">×</button>
+
                             <div class="custom-calendar" id="pickup-calendar-desktop" style="z-index: 1000;">
                                 <div class="calendar-header">
                                     <div class="calendar-title" id="pickup-calendar-title-desktop">December 2024</div>
@@ -2117,8 +2145,8 @@
                                 <div class="calendar-days" id="pickup-calendar-days-desktop"></div>
                             </div>
                         </div>
-                    </div>
-
+            </div>
+            
                     <!-- Pick-up Time -->
                     <div class="porsche-search-item">
                         <label for="pickup-time">Zeit</label>
@@ -2142,9 +2170,8 @@
                     <div class="porsche-search-item">
                         <label for="dropoff-date-selector">Rückgabedatum</label>
                         <div style="position: relative; display: flex; align-items: center;">
-                            <input type="button" id="dropoff-date-selector" required readonly inputmode="none" style="
+                            <input type="button" id="dropoff-date-selector" required inputmode="none" style="
                                 flex: 1; 
-                                padding-right: 35px;
                                 width: 100%; 
                                 height: 35px; 
                                 background: rgba(255, 255, 255, 0.08);
@@ -2159,26 +2186,7 @@
                                 backdrop-filter: blur(10px);
                                 cursor: pointer;
                             ">
-                            <button type="button" class="date-clear-btn" data-target="dropoff-date-selector" style="
-                                position: absolute;
-                                right: 6px;
-                                top: 50%;
-                                transform: translateY(-50%);
-                                background: rgba(177, 0, 0, 0.7);
-                                border: none;
-                                border-radius: 50%;
-                                width: 16px;
-                                height: 16px;
-                                color: white;
-                                font-size: 10px;
-                                cursor: pointer;
-                                display: none;
-                                align-items: center;
-                                justify-content: center;
-                                z-index: 5;
-                                font-weight: bold;
-                                line-height: 1;
-                            ">×</button>
+
                             <div class="custom-calendar" id="dropoff-calendar-desktop" style="z-index: 1000;">
                                 <div class="calendar-header">
                                     <div class="calendar-title" id="dropoff-calendar-title-desktop">December 2024</div>
@@ -2232,12 +2240,12 @@
                 </div>
 
                 <!-- Mobile: Dikey Layout -->
-                <div class="mobile-search-layout" style="background: transparent; transform: translateY(-7rem); padding: 3rem; margin: -3rem;">
+                <div class="mobile-search-layout" style="background: transparent !important; transform: translateY(-10rem); padding: 2rem 3rem 2rem 2rem; margin: -3rem 0 -3rem 1rem;">
                     <!-- 1. Satır: Abholort ve Rückgabeort -->
                     <div class="porsche-search-row">
                     <!-- Pick-up Location -->
                         <div class="porsche-search-item">
-                            <label for="pickup-location-selector-mobile" style="color: rgba(0, 0, 0, 0.8); font-weight: 500; font-size: 0.6rem; letter-spacing: 0.5px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.3rem; white-space: nowrap; font-family: 'Inter', sans-serif;">
+                            <label for="pickup-location-selector-mobile" style="color: rgba(0, 0, 0, 0.8); font-weight: 500; font-size: 0.5rem; letter-spacing: 0.5px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.3rem; white-space: nowrap; font-family: 'Inter', sans-serif;">
                                 Abholort
                         </label>
                             <div class="porsche-select-wrapper" style="width: 100%; display: flex; align-items: center; position: relative;">
@@ -2267,7 +2275,7 @@
 
                     <!-- Drop-off Location -->
                         <div class="porsche-search-item">
-                            <label for="dropoff-location-selector-mobile" style="color: rgba(0, 0, 0, 0.8); font-weight: 500; font-size: 0.6rem; letter-spacing: 0.5px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.3rem; white-space: nowrap; font-family: 'Inter', sans-serif;">
+                            <label for="dropoff-location-selector-mobile" style="color: rgba(0, 0, 0, 0.8); font-weight: 500; font-size: 0.5rem; letter-spacing: 0.5px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.3rem; white-space: nowrap; font-family: 'Inter', sans-serif;">
                                 Rückgabeort
                         </label>
                             <div class="porsche-select-wrapper" style="width: 100%; display: flex; align-items: center; position: relative;">
@@ -2300,12 +2308,12 @@
                     <div class="porsche-search-row">
                     <!-- Pick-up Date -->
                         <div class="porsche-search-item">
-                            <label for="pickup-date-selector-mobile" style="color: rgba(0, 0, 0, 0.8); font-weight: 500; font-size: 0.6rem; letter-spacing: 0.5px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.3rem; white-space: nowrap; font-family: 'Inter', sans-serif;">
+                            <label for="pickup-date-selector-mobile" style="color: rgba(0, 0, 0, 0.8); font-weight: 500; font-size: 0.5rem; letter-spacing: 0.5px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.3rem; white-space: nowrap; font-family: 'Inter', sans-serif;">
                                 Abholdatum
                         </label>
                             <div class="porsche-date-wrapper" style="position: relative; width: 100%; display: flex; align-items: center; z-index: 10;">
                                 <div style="position: relative; width: 100%;">
-                                    <input type="button" id="pickup-date-selector-mobile" placeholder="" required class="form-control" readonly inputmode="none" style="
+                                    <input type="button" id="pickup-date-selector-mobile" placeholder="" required class="form-control" inputmode="none" style="
                             width: 100%; 
                                         height: 35px; 
                             background: rgba(255, 255, 255, 0.08);
@@ -2314,32 +2322,12 @@
                                         color: #000000;
                                         font-size: 0.8rem;
                             font-weight: 400;
-                                        padding: 0 10px 0 10px;
-                                        padding-right: 35px;
+                                        padding: 0 10px;
                             font-family: 'Inter', sans-serif;
                             transition: all 0.3s ease;
                             backdrop-filter: blur(10px);
                         ">
-                                                                        <button type="button" class="date-clear-btn" data-target="pickup-date-selector-mobile" style="
-                                        position: absolute;
-                                        right: 6px;
-                                        top: 50%;
-                                        transform: translateY(-50%);
-                                        background: rgba(177, 0, 0, 0.7);
-                            border: none;
-                                        border-radius: 50%;
-                                        width: 16px;
-                                        height: 16px;
-                            color: white;
-                                        font-size: 10px;
-                            cursor: pointer;
-                                        display: none;
-                                        align-items: center;
-                                        justify-content: center;
-                                        z-index: 5;
-                                        font-weight: bold;
-                                        line-height: 1;
-                                    ">×</button>
+
                     </div>
                             <i class="bi bi-exclamation-triangle-fill date-error-icon" id="pickup-date-error"></i>
                             <div class="custom-calendar" id="pickup-calendar" style="z-index: 1000;">
@@ -2370,7 +2358,7 @@
 
                     <!-- Pick-up Time -->
                     <div class="porsche-search-item">
-                        <label for="pickup-time" style="color: rgba(0, 0, 0, 0.8); font-weight: 500; font-size: 0.6rem; letter-spacing: 0.5px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.3rem; white-space: nowrap; font-family: 'Inter', sans-serif;">
+                        <label for="pickup-time" style="color: rgba(0, 0, 0, 0.8); font-weight: 500; font-size: 0.5rem; letter-spacing: 0.5px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.3rem; white-space: nowrap; font-family: 'Inter', sans-serif;">
                             Zeit
                         </label>
                         <div class="porsche-select-wrapper" style="width: 100%; display: flex; align-items: center; position: relative;">
@@ -2392,7 +2380,7 @@
                                 align-items: center;
                                 justify-content: space-between;
                         ">
-                                <span class="selected-time">Zeit wählen</span>
+                                <span class="selected-time"></span>
                                 <i class="bi bi-chevron-down"></i>
                     </div>
                             <div class="custom-time-dropdown" id="pickup-time-dropdown" style="
@@ -2429,12 +2417,12 @@
                 <div class="porsche-search-row">
                     <!-- Drop-off Date -->
                     <div class="porsche-search-item">
-                        <label for="dropoff-date-selector" style="color: rgba(0, 0, 0, 0.8); font-weight: 500; font-size: 0.6rem; letter-spacing: 0.5px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.3rem; white-space: nowrap; font-family: 'Inter', sans-serif;">
+                                                    <label for="dropoff-date-selector" style="color: rgba(0, 0, 0, 0.8); font-weight: 500; font-size: 0.2rem; letter-spacing: 0.5px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.3rem; white-space: nowrap; font-family: 'Inter', sans-serif;">
                                 Rückgabedatum
                             </label>
                             <div class="porsche-date-wrapper" style="position: relative; width: 100%; display: flex; align-items: center; z-index: 10;">
                             <div style="position: relative; width: 100%;">
-                                <input type="button" id="dropoff-date-selector-mobile" placeholder="" required class="form-control" readonly inputmode="none" style="
+                                <input type="button" id="dropoff-date-selector-mobile" placeholder="" required class="form-control" inputmode="none" style="
                                     width: 100%; 
                                     height: 35px; 
                                     background: rgba(255, 255, 255, 0.08);
@@ -2443,32 +2431,12 @@
                                     color: #000000;
                                     font-size: 0.8rem;
                                     font-weight: 400;
-                                    padding: 0 10px 0 10px;
-                                    padding-right: 35px;
+                                    padding: 0 10px;
                                     font-family: 'Inter', sans-serif;
                                     transition: all 0.3s ease;
                                     backdrop-filter: blur(10px);
                                 ">
-                                <button type="button" class="date-clear-btn" data-target="dropoff-date-selector-mobile" style="
-                                    position: absolute;
-                                    right: 6px;
-                                    top: 50%;
-                                    transform: translateY(-50%);
-                                    background: rgba(177, 0, 0, 0.7);
-                                    border: none;
-                                    border-radius: 50%;
-                                    width: 16px;
-                                    height: 16px;
-                                    color: white;
-                                    font-size: 10px;
-                                    cursor: pointer;
-                                    display: none;
-                                    align-items: center;
-                                    justify-content: center;
-                                    z-index: 5;
-                                    font-weight: bold;
-                                    line-height: 1;
-                                ">×</button>
+
                             </div>
                                 <i class="bi bi-exclamation-triangle-fill date-error-icon" id="dropoff-date-error"></i>
                                 <div class="custom-calendar" id="dropoff-calendar" style="z-index: 1000;">
@@ -2499,7 +2467,7 @@
 
                     <!-- Drop-off Time -->
                     <div class="porsche-search-item">
-                        <label for="dropoff-time" style="color: rgba(0, 0, 0, 0.8); font-weight: 500; font-size: 0.6rem; letter-spacing: 0.5px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.3rem; white-space: nowrap; font-family: 'Inter', sans-serif;">
+                        <label for="dropoff-time" style="color: rgba(0, 0, 0, 0.8); font-weight: 500; font-size: 0.5rem; letter-spacing: 0.5px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.3rem; white-space: nowrap; font-family: 'Inter', sans-serif;">
                                 Zeit
                             </label>
                             <div class="porsche-select-wrapper" style="width: 100%; display: flex; align-items: center; position: relative;">
@@ -2521,7 +2489,7 @@
                                     align-items: center;
                                     justify-content: space-between;
                                 ">
-                                    <span class="selected-time">Zeit wählen</span>
+                                    <span class="selected-time"></span>
                                     <i class="bi bi-chevron-down"></i>
                                 </div>
                                 <div class="custom-time-dropdown" id="dropoff-time-dropdown" style="
@@ -2556,7 +2524,7 @@
 
                 <!-- 4. Satır: Suchen Butonu -->
                 <div class="porsche-search-row" style="display: flex !important; justify-content: flex-start !important; align-items: center !important; margin-bottom: 0 !important; margin-top: 3rem !important; width: 100% !important; overflow: visible !important;">
-                    <div class="porsche-search-button" style="width: calc(50% + 11rem); margin-left: 0rem; margin-right: -1rem; position: relative; left: 0rem;">
+                    <div class="porsche-search-button" style="width: calc(50% + 15rem); margin-left: 0rem; margin-right: -1rem; position: relative; left: 0rem;">
                         <button type="submit" style="
                             width: 100%;
                             height: 35px;
@@ -2594,44 +2562,46 @@
                     </div>
                 </div>
                         </form>
-                </div>
+                    </div>
                 
-                <!-- Minimal Discover Button -->
-                <div class="discover-button-container" style="width: 80%; margin: 0 auto; margin-top: 2px; transform: translateY(-1rem);">
-                    <button class="discover-button" style="
-                        width: 100%;
-                        height: 35px;
-                        background: linear-gradient(135deg, #B10000 0%, #8B0000 100%);
-                        border: none;
-                        border-radius: 8px;
-                        color: white;
-                        font-size: 0.85rem;
-                        font-weight: 600;
-                        text-transform: uppercase;
-                        letter-spacing: 1px;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        transition: all 0.3s ease;
-                        cursor: pointer;
-                        box-shadow: 
-                            0 4px 12px rgba(177, 0, 0, 0.3),
-                            0 0 0 1px rgba(255, 255, 255, 0.1) inset;
-                        position: relative;
-                        overflow: hidden;
-                    ">
-                        <i class="bi bi-chevron-down" style="font-size: 1rem; margin-right: 8px;"></i>
-                        Entdecken
-                        <div style="
-                            position: absolute;
-                            top: 0;
-                            left: -100%;
+                                <!-- Minimal Discover Button -->
+                <div class="porsche-search-row" style="display: flex !important; justify-content: center !important; align-items: center !important; margin-bottom: 0 !important; margin-top: 1rem !important; width: 100% !important; overflow: visible !important;">
+                    <div class="porsche-search-button" style="width: calc(50% + 1rem); margin: 0 auto; position: relative; transform: translateY(-3rem);">
+                        <button class="discover-button" onclick="scrollToPopularCars()" style="
                             width: 100%;
-                            height: 100%;
-                            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-                            transition: left 0.5s ease;
-                        "></div>
-                    </button>
+                            height: 35px;
+                            background: linear-gradient(135deg, #FF8C00 0%, #FF6B35 100%);
+                            border: none;
+                            border-radius: 8px;
+                            color: white;
+                            font-size: 0.85rem;
+                            font-weight: 600;
+                            text-transform: uppercase;
+                            letter-spacing: 1px;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            transition: all 0.3s ease;
+                            cursor: pointer;
+                            box-shadow: 
+                                0 4px 12px rgba(255, 140, 0, 0.3),
+                                0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+                            position: relative;
+                            overflow: hidden;
+                        ">
+                            <i class="bi bi-chevron-down" style="font-size: 1rem; margin-right: 8px;"></i>
+                            Entdecken
+                            <div style="
+                                position: absolute;
+                                top: 0;
+                                left: -100%;
+                                width: 100%;
+                                height: 100%;
+                                background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+                                transition: left 0.5s ease;
+                            "></div>
+                        </button>
+                    </div>
                     </div>
                     
                     <!-- Porsche Style Hover Effects -->
@@ -2719,6 +2689,10 @@
                                 box-sizing: border-box !important;
                                 margin: 0 !important;
                                 flex: 1 !important;
+                                font-size: 0.8rem !important;
+                                overflow: hidden !important;
+                                text-overflow: ellipsis !important;
+                                white-space: nowrap !important;
                             }
                         
                             .mobile-search-layout label {
@@ -2736,9 +2710,9 @@
                             .mobile-search-layout .porsche-search-item select,
                             .mobile-search-layout .porsche-search-item input,
                             .mobile-search-layout .porsche-search-item .custom-time-selector {
-                                width: calc(100% + 1rem) !important;
-                                min-width: calc(100% + 1rem) !important;
-                                max-width: calc(100% + 1rem) !important;
+                                width: calc(100% + 2rem) !important;
+                                min-width: calc(100% + 2rem) !important;
+                                max-width: calc(100% + 2rem) !important;
                                 height: 35px !important;
                                 min-height: 35px !important;
                                 max-height: 35px !important;
@@ -2746,6 +2720,10 @@
                                 margin: 0 !important;
                                 padding: 0 8px !important;
                                 flex: 1 !important;
+                                font-size: 0.8rem !important;
+                                overflow: hidden !important;
+                                text-overflow: ellipsis !important;
+                                white-space: nowrap !important;
                             }
                             
                             .mobile-search-layout .porsche-search-row {
@@ -2753,11 +2731,12 @@
                                 gap: 1rem !important;
                                 width: 100% !important;
                                 margin-bottom: 15px !important;
+                                justify-content: space-between !important;
                             }
                             
                             .mobile-search-layout .porsche-search-row .porsche-search-item {
                                 flex: 1 !important;
-                                width: calc(50% + 0.5rem) !important;
+                                width: 48% !important;
                             }
                             
                             .mobile-search-layout .porsche-search-row:first-child {
@@ -2792,6 +2771,29 @@
                                 box-sizing: border-box !important;
                                 margin: 0 !important;
                                 flex: 1 !important;
+                            }
+                            
+                            /* Tarih input'ları için özel stil - genişlememesi için */
+                            .mobile-search-layout input[type="button"] {
+                                font-size: 0.75rem !important;
+                                overflow: hidden !important;
+                                text-overflow: ellipsis !important;
+                                white-space: nowrap !important;
+                                padding: 0 35px 0 6px !important;
+                                resize: none !important;
+                                width: calc(100% + 2rem) !important;
+                                min-width: calc(100% + 2rem) !important;
+                                max-width: calc(100% + 2rem) !important;
+                            }
+                            
+                            /* Daha spesifik selector ile tarih input'larının padding'ini zorla */
+                            .mobile-search-layout .porsche-search-item input[type="button"] {
+                                padding: 0 35px 0 6px !important;
+                            }
+                            
+                            /* En spesifik selector */
+                            .mobile-search-layout .porsche-search-item input[id*="date-selector"] {
+                                padding: 0 35px 0 6px !important;
                             }
                             
                             .porsche-search-form select option,
@@ -2847,10 +2849,12 @@
                         /* Desktop select dropdown positioning */
                         @media (min-width: 1200px) {
                             .desktop-search-layout {
-                                background: linear-gradient(135deg, #0066cc 0%, #004499 100%) !important;
+                                background: rgba(255, 255, 255, 0.1) !important;
+                                backdrop-filter: blur(20px) saturate(180%) !important;
+                                -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
                                 border-radius: 12px !important;
                                 padding: 20px !important;
-                                box-shadow: 0 8px 32px rgba(0, 102, 204, 0.3) !important;
+                                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1) !important;
                                 border: 2px solid rgba(255, 255, 255, 0.2) !important;
                                 transform: translateY(-8rem) !important;
                             }
@@ -3065,19 +3069,48 @@
 
                     
                     <style>
+                        /* Discover Button Modern Styling */
+                        .discover-button {
+                            background: linear-gradient(135deg, #FF6B35 0%, #F7931E 100%) !important;
+                            border: 2px solid rgba(255, 255, 255, 0.3) !important;
+                            border-radius: 16px !important;
+                            padding: 0 2.5rem !important;
+                            font-size: 1.1rem !important;
+                            font-weight: 600 !important;
+                            color: #ffffff !important;
+                            text-transform: uppercase !important;
+                            letter-spacing: 1px !important;
+                            box-shadow: 0 8px 32px rgba(255, 107, 53, 0.3) !important;
+                            backdrop-filter: blur(10px) !important;
+                            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+                            font-family: 'Inter', sans-serif !important;
+                            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) !important;
+                        }
+                        
                         .discover-button:hover {
-                            background: rgba(177, 0, 0, 0.9);
-                            border-color: rgba(255, 255, 255, 0.5);
-                            transform: translateY(-2px);
-                            box-shadow: 0 8px 25px rgba(177, 0, 0, 0.3);
+                            background: linear-gradient(135deg, #F7931E 0%, #FF6B35 100%) !important;
+                            border-color: rgba(255, 255, 255, 0.5) !important;
+                            transform: translateY(-3px) scale(1.02) !important;
+                            box-shadow: 0 12px 40px rgba(255, 107, 53, 0.4) !important;
                         }
                         
                         .discover-button:hover i {
-                            transform: translateY(2px);
+                            transform: translateY(2px) !important;
+                            transition: transform 0.3s ease !important;
                         }
                         
                         .discover-button:active {
-                            transform: translateY(0);
+                            transform: translateY(-1px) scale(0.98) !important;
+                            box-shadow: 0 6px 20px rgba(255, 107, 53, 0.3) !important;
+                        }
+                        
+                        /* Desktop specific styling */
+                        @media (min-width: 1200px) {
+                            .discover-button {
+                                height: 60px !important;
+                                font-size: 1.2rem !important;
+                                padding: 0 3rem !important;
+                            }
                         }
                     </style>
                     
@@ -3149,7 +3182,22 @@
                             });
                         });
                         
-                        document.querySelector('.discover-button').addEventListener('click', function() {
+                        // ESC tuşu ile tarih silme fonksiyonu
+                        function clearDateOnEscape(event) {
+                            if (event.key === 'Escape' || event.key === 'Backspace' || event.key === 'Delete') {
+                                const activeElement = document.activeElement;
+                                if (activeElement && activeElement.id && activeElement.id.includes('date-selector')) {
+                                    activeElement.value = '';
+                                    event.preventDefault();
+                                }
+                            }
+                        }
+                        
+                        // Tarih input'larına event listener ekle
+                        document.addEventListener('keydown', clearDateOnEscape);
+                        
+                        // Entdecken butonuna tıklayınca alt sayfaya in
+                        function scrollToPopularCars() {
                             // Mobilde farklı davranış
                             if (window.innerWidth < 1200) {
                                 // Hero section'ı gizle
@@ -3205,7 +3253,7 @@
                                 block: 'start'
                             });
                             }
-                        });
+                        }
                         
 
                     </script>
@@ -3780,7 +3828,10 @@
                         
                         const isCurrentMonth = currentDate.getMonth() === month;
                         const isToday = currentDate.toDateString() === today.toDateString();
-                        const isDisabled = currentDate < new Date(today.getFullYear(), today.getMonth(), today.getDate());
+                        // Fix: Sadece bugünden önceki günleri disabled yap, bugünü değil
+                        const todayStart = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+                        const currentDateStart = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
+                        const isDisabled = currentDateStart < todayStart;
                         const isSelected = this.selectedDate && currentDate.toDateString() === this.selectedDate.toDateString();
                         
                         let classes = 'calendar-day';
@@ -3789,14 +3840,20 @@
                         if (isDisabled) classes += ' disabled';
                         if (isSelected) classes += ' selected';
                         
-                        html += `<div class="${classes}" data-date="${currentDate.toISOString()}">${currentDate.getDate()}</div>`;
+                        html += `<div class="${classes}" data-date="${currentDate.toISOString()}" onclick="console.log('ONCLICK TEST:', ${currentDate.getDate()})" onmousedown="console.log('MOUSEDOWN TEST:', ${currentDate.getDate()})" onmouseup="console.log('MOUSEUP TEST:', ${currentDate.getDate()})">${currentDate.getDate()}</div>`;
                     }
                     
                     this.daysContainer.innerHTML = html;
                     
                     // Add event listeners to calendar days
-                    this.daysContainer.querySelectorAll('.calendar-day:not(.disabled)').forEach(day => {
-                        day.addEventListener('click', () => {
+                    const clickableDays = this.daysContainer.querySelectorAll('.calendar-day:not(.disabled)');
+                    console.log('Clickable days found:', clickableDays.length);
+                    clickableDays.forEach(day => {
+                        console.log('Adding event listener to day:', day.textContent, 'classes:', day.className);
+                        day.addEventListener('mousedown', (e) => {
+                            console.log('Day mousedown:', day.textContent, 'data-date:', day.dataset.date);
+                            e.stopPropagation();
+                            e.preventDefault();
                             this.selectDate(day);
                         });
                     });
@@ -3818,25 +3875,29 @@
                 }
             
                 selectDate(element) {
+                    console.log('selectDate called with element:', element);
                     const dateString = element.dataset.date;
+                    console.log('dateString:', dateString);
                     const selectedDate = new Date(dateString);
+                    console.log('selectedDate:', selectedDate);
                     
                     // Format date as DD.MM.YYYY
                     const day = selectedDate.getDate().toString().padStart(2, '0');
                     const month = (selectedDate.getMonth() + 1).toString().padStart(2, '0');
                     const year = selectedDate.getFullYear();
                     
-                    this.input.value = `${day}.${month}.${year}`;
+                    const formattedDate = `${day}.${month}.${year}`;
+                    console.log('formattedDate:', formattedDate);
+                    
+                    this.input.value = formattedDate;
                     this.selectedDate = selectedDate;
+                    console.log('Input value set to:', this.input.value);
                     
                     // Update visual selection
                     document.querySelectorAll('.calendar-day').forEach(day => {
                         day.classList.remove('selected');
                     });
                     element.classList.add('selected');
-                    
-                    // Show clear button
-                    updateClearButton(this.input.id);
                     
                     this.closeCalendar();
                     
@@ -3858,21 +3919,7 @@
                 dropoffInput: document.getElementById('dropoff-date-selector')
             });
             
-            // Tarih temizleme butonları için event listener
-            document.addEventListener('click', function(e) {
-                if (e.target.classList.contains('date-clear-btn')) {
-                    const targetId = e.target.getAttribute('data-target');
-                    const input = document.getElementById(targetId);
-                    if (input) {
-                        input.value = '';
-                        console.log('Date cleared:', targetId);
-                        // Hide clear button after clearing
-                        updateClearButton(targetId);
-                    }
-                    e.stopPropagation(); // Event'in yukarı çıkmasını engelle
-                    return;
-                }
-            });
+
             
             // Tarih input'larına değer girildiğinde temizleme butonunu göster/gizle
             function updateClearButton(inputId) {
@@ -4229,8 +4276,7 @@
             
             // Mobil search butonuna tıklandığında
             document.addEventListener('click', function(e) {
-                if (e.target.closest('.porsche-search-button button') || 
-                    (e.target.textContent && e.target.textContent.includes('Fahrzeug finden'))) {
+                if (e.target.closest('.porsche-search-button button') && e.target.textContent && e.target.textContent.includes('Fahrzeug finden')) {
                     e.preventDefault();
                     
                     // Mobil form validation - uyarı gösterme
