@@ -1,452 +1,1129 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Extras & Versicherung - AutOr</title>
+    <title>Extras & Versicherung - Premium Car Rental</title>
+    
+    <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="/css/navbar.css">
     <style>
-        body {
-            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 50%, #1a1a1a 100%);
-            color: #ffffff;
-            font-family: 'Inter', sans-serif;
-            min-height: 100vh;
+        :root {
+            --porsche-black: #B10000;
+            --porsche-white: #ffffff;
+            --porsche-red: #B10000;
+            --porsche-gray: #f8f9fa;
+            --porsche-dark-gray: #212529;
+            --porsche-light-gray: #6c757d;
+            --porsche-gold: #8F220C;
+            --primary: #B10000;
+            --secondary: #1a1a1a;
+            --accent: #2d2d2d;
+            --gold: #FFD700;
+            --silver: #c0c0c0;
+            --bronze: #cd7f32;
+            --success: #28a745;
+            --warning: #ffc107;
+            --danger: #dc3545;
+            --light: #f8f9fa;
+            --dark: #ffffff;
+            --white: #ffffff;
+            --gradient-primary: linear-gradient(135deg, #B10000 0%, #d32f2f 100%);
+            --gradient-secondary: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            --gradient-gold: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            --gradient-silver: linear-gradient(135deg, #c0c0c0 0%, #e8e8e8 100%);
+            --gradient-bronze: linear-gradient(135deg, #cd7f32 0%, #daa520 100%);
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.1);
+            --shadow-md: 0 4px 8px rgba(0,0,0,0.15);
+            --shadow-lg: 0 8px 16px rgba(0,0,0,0.2);
+            --shadow-xl: 0 12px 24px rgba(0,0,0,0.25);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
         }
 
-        .hero-section {
-            background: linear-gradient(135deg, rgba(26, 26, 26, 0.9) 0%, rgba(42, 42, 42, 0.8) 100%);
-            padding: 3rem 0;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-image: url('images/cars/Ã¼berunsfotom.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            min-height: 100vh;
+            color: var(--dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Navbar iÃ§in boÅŸluk */
+        body {
+            padding-top: 80px;
+        }
+
+        /* Navbar'Ä±n ÅŸeffaf olmasÄ±nÄ± saÄŸla */
+        .navbar {
+            background: transparent !important;
+            backdrop-filter: none !important;
+            border-bottom: none !important;
+            padding: 1.5rem 0;
+            transition: all 0.3s ease;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1001;
+        }
+
+        /* Navbar brand rengini dÃ¼zelt */
+        .navbar-brand {
+            color: #B10000 !important;
+            font-weight: 800 !important;
+        }
+
+        /* Navbar linklerini ana sayfa ile aynÄ± yap */
+        .navbar-nav .nav-link {
+            color: rgba(255, 255, 255, 0.9) !important;
+            font-weight: 300;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 0.5rem 1rem;
+            transition: all 0.3s ease;
             position: relative;
         }
 
-        .hero-title {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: #ffffff;
+        .navbar-nav .nav-link:hover {
+            color: white !important;
+        }
+
+        .navbar-nav .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: #B10000;
+            transition: width 0.3s ease;
+        }
+
+        .navbar-nav .nav-link:hover::after {
+            width: 100%;
+        }
+
+        /* Main Container */
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        /* Hero Section */
+        .hero {
             text-align: center;
+    margin-bottom: 1rem;
+    color: var(--white);
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%);
+    padding: 1rem 1rem;
+    border-radius: var(--radius-lg);
+    position: relative;
+    overflow: hidden;
+}
+        
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .hero h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 800;
             margin-bottom: 1rem;
-            letter-spacing: 2px;
+            background: linear-gradient(45deg, var(--white), var(--porsche-gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+            z-index: 2;
         }
 
-        .hero-subtitle {
-            font-size: 1.1rem;
-            color: #cccccc;
-            text-align: center;
-            margin-bottom: 2rem;
+        .hero p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
         }
 
-        .selection-container {
-            background: linear-gradient(135deg, #2a2a2a, #1a1a1a);
-            border-radius: 20px;
+        /* Progress Steps */
+        .progress-steps {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 3rem;
+            gap: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
             padding: 2rem;
-            margin: 2rem 0;
-            border: 1px solid rgba(212, 175, 55, 0.3);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: var(--white);
+            opacity: 0.7;
+        }
+
+        .step.active {
+            opacity: 1;
+        }
+
+        .step.completed {
+            opacity: 1;
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .step.active .step-number {
+            background: var(--porsche-red);
+            border-color: var(--porsche-red);
+            color: var(--white);
+        }
+
+        .step.completed .step-number {
+            background: var(--success);
+            border-color: var(--success);
+            color: var(--white);
+        }
+
+        .step-line {
+            width: 60px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .step.active .step-line,
+        .step.completed .step-line {
+            background: var(--porsche-red);
+        }
+
+        /* Content Grid */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        @media (max-width: 1200px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Car Info Card */
+        .car-info {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(15px);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .car-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .car-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--gradient-primary);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 1.5rem;
+        }
+
+        .car-details h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--porsche-dark-gray);
+        }
+
+        .car-specs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 1rem;
+        }
+
+        .spec-item {
+            display: flex
+;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    background: rgba(177, 0, 0, 0.1);
+    border-radius: var(--radius-sm)
+8px
+;
+    color: var(--porsche-dark-gray);
+    font-weight: 600;
+    font-size: 0.9rem !important;
+        }
+
+        .spec-icon {
+            color: var(--porsche-red);
+            font-size: 1.1rem;
+        }
+
+        /* Options Section */
+        .options-section {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(15px);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(255, 255, 255, 0.3);
         }
 
         .section-title {
-            font-size: 1.8rem;
-            font-weight: 600;
-            color: #d4af37;
-            margin-bottom: 1.5rem;
-            text-align: center;
-            letter-spacing: 1px;
-        }
-
-        .insurance-card, .extra-card {
-            background: linear-gradient(135deg, #333333, #2a2a2a);
-            border: 2px solid rgba(212, 175, 55, 0.2);
-            border-radius: 15px;
-            padding: 1.5rem;
-            margin-bottom: 1rem;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            position: relative;
-        }
-
-        .insurance-card:hover, .extra-card:hover {
-            border-color: rgba(212, 175, 55, 0.6);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.2);
-        }
-
-        .insurance-card.selected, .extra-card.selected {
-            border-color: #d4af37;
-            background: linear-gradient(135deg, #3a3a3a, #2a2a2a);
-            box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
-        }
-
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-
-        .card-title {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: #ffffff;
-            margin: 0;
-        }
-
-        .card-price {
             font-size: 1.3rem;
             font-weight: 700;
-            color: #d4af37;
+            margin-bottom: 1.2rem;
+            color: var(--porsche-dark-gray);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-        .card-description {
-            color: #cccccc;
-            font-size: 0.9rem;
-            margin-bottom: 0;
+        .section-title i {
+            color: var(--porsche-red);
         }
 
-        .checkbox-custom {
+        /* Insurance Cards */
+        .insurance-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .insurance-card {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: var(--radius-lg);
+            padding: 1.2rem;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .insurance-card::before {
+            content: '';
             position: absolute;
-            top: 1rem;
-            right: 1rem;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .insurance-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .insurance-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .insurance-card.selected {
+            border-color: var(--porsche-red);
+            box-shadow: 0 0 0 4px rgba(177, 0, 0, 0.2);
+        }
+
+        .insurance-card.selected::before {
+            background: var(--gradient-primary);
+            transform: scaleX(1);
+        }
+
+        .insurance-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            margin-top: 0.5rem;
+            padding-right: 4rem;
+        }
+
+        .insurance-type {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--porsche-dark-gray);
+        }
+
+        .insurance-price {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--porsche-red);
+        }
+
+        .insurance-features {
+            list-style: none;
+            margin-bottom: 1rem;
+        }
+
+        .insurance-features li {
+            display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    font-size: 0.8rem;
+    color: var(--porsche-dark-gray);
+        }
+
+        .insurance-features li i {
+            color: var(--success);
+            font-size: 0.8rem;
+        }
+
+        .insurance-badge {
+            position: absolute;
+    top: 0.4rem;
+    right: 0.5rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 10px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    z-index: 10;
+        }
+
+        .badge-gold {
+            background: var(--gradient-primary);
+            color: var(--white);
+        }
+
+        .badge-silver {
+            background: var(--gradient-primary);
+            color: var(--white);
+        }
+
+        .badge-bronze {
+            background: var(--gradient-primary);
+            color: var(--white);
+        }
+
+        /* Extras Grid */
+        .extras-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 0.8rem;
+        }
+
+        .extra-card {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: var(--radius-md);
+            padding: 0.8rem;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .extra-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .extra-card.selected {
+            border-color: var(--success);
+            background: rgba(40, 167, 69, 0.05);
+        }
+
+        .extra-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient-secondary);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 1.1rem;
+        }
+
+        .extra-info {
+            flex: 1;
+        }
+
+        .extra-name {
+            font-weight: 600;
+            color: var(--porsche-dark-gray);
+            margin-bottom: 0.25rem;
+        }
+
+        .extra-price {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--porsche-red);
+        }
+
+        .extra-checkbox {
             width: 20px;
             height: 20px;
-            border: 2px solid rgba(212, 175, 55, 0.5);
+            border: 2px solid var(--accent);
             border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
             background: transparent;
             transition: all 0.3s ease;
         }
 
-        .selected .checkbox-custom {
-            background: #d4af37;
-            border-color: #d4af37;
+        .extra-card.selected .extra-checkbox {
+            background: var(--success);
+            border-color: var(--success);
         }
 
-        .selected .checkbox-custom::after {
-            content: '✓';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: #1a1a1a;
-            font-weight: bold;
-            font-size: 12px;
+        /* Summary Card */
+        .summary-card {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(15px);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            position: sticky;
+            top: 120px;
         }
 
-        .summary-section {
-            background: linear-gradient(135deg, #2a2a2a, #1a1a1a);
-            border-radius: 20px;
-            padding: 2rem;
-            margin-top: 2rem;
-            border: 1px solid rgba(212, 175, 55, 0.3);
+        .summary-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid rgba(177, 0, 0, 0.2);
         }
 
         .summary-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: #d4af37;
-            margin-bottom: 1.5rem;
-            text-align: center;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--porsche-dark-gray);
+        }
+
+        .summary-items {
+            margin-bottom: 2rem;
         }
 
         .summary-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0.5rem 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
         }
 
         .summary-item:last-child {
             border-bottom: none;
-            font-weight: 700;
-            font-size: 1.1rem;
-            color: #d4af37;
-            border-top: 2px solid rgba(212, 175, 55, 0.3);
-            margin-top: 1rem;
-            padding-top: 1rem;
         }
 
         .summary-label {
-            color: #cccccc;
+            font-weight: 500;
+            color: var(--porsche-dark-gray);
         }
 
         .summary-value {
-            color: #ffffff;
             font-weight: 600;
+            color: var(--porsche-red);
         }
 
-        .btn-continue {
-            background: linear-gradient(135deg, #d4af37, #b8941f);
-            color: #1a1a1a;
-            border: none;
-            border-radius: 10px;
-            padding: 1rem 2rem;
-            font-weight: 600;
-            font-size: 1.1rem;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            width: 100%;
+        .summary-total {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--porsche-dark-gray);
+            padding: 1rem 0;
+            border-top: 2px solid var(--porsche-red);
             margin-top: 1rem;
         }
 
-        .btn-continue:hover {
-            background: linear-gradient(135deg, #b8941f, #d4af37);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
-        }
-
-        .selected-car-info {
-            background: linear-gradient(135deg, #333333, #2a2a2a);
-            border-radius: 15px;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-            border: 1px solid rgba(212, 175, 55, 0.3);
-        }
-
-        .car-info-title {
-            font-size: 1.3rem;
+        /* Continue Button */
+        .continue-btn {
+            width: 100%;
+            padding: 1rem 2rem;
+            background: var(--gradient-primary);
+            border: none;
+            border-radius: var(--radius-md);
+            color: var(--white);
+            font-size: 1.1rem;
             font-weight: 600;
-            color: #d4af37;
-            margin-bottom: 1rem;
-        }
-
-        .car-details-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-        }
-
-        .car-detail-item {
+            cursor: pointer;
+            transition: all 0.3s ease;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            padding: 0.5rem 0;
+            justify-content: center;
+            gap: 0.5rem;
         }
 
-        .car-detail-label {
-            color: #cccccc;
-            font-size: 0.9rem;
+        .continue-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
         }
 
-        .car-detail-value {
-            color: #ffffff;
+        .continue-btn:disabled {
+            background: rgba(177, 0, 0, 0.3);
+            color: var(--porsche-dark-gray);
+            cursor: not-allowed;
+            transform: none;
+            border: 1px solid rgba(177, 0, 0, 0.5);
             font-weight: 600;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .slide-in {
+            animation: slideIn 0.6s ease-out;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 1rem;
+            }
+            
+            .progress-steps {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .step-line {
+                display: none;
+            }
+            
+            .insurance-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .extras-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .summary-card {
+                position: static;
+                margin-top: 2rem;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Navbar Container -->
-    <div id="navbar-container"></div>
-
-    <!-- Hero Section -->
-    <section class="hero-section">
-        <div class="container">
-            <h1 class="hero-title">Extras & Versicherung</h1>
-            <p class="hero-subtitle">Wählen Sie Ihre gewünschten Zusatzleistungen und Versicherungspakete</p>
-        </div>
-    </section>
-
-    <!-- Main Content -->
-    <div class="container">
-        <!-- Selected Car Info -->
-        <div class="selected-car-info">
-            <h3 class="car-info-title">Ausgewähltes Fahrzeug</h3>
-            <div class="car-details-grid" id="selected-car-details">
-                <!-- Car details will be populated by JavaScript -->
-            </div>
-        </div>
-
-        <!-- Insurance Packages -->
-        <div class="selection-container">
-            <h2 class="section-title">Versicherungspakete</h2>
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="insurance-card" data-type="insurance" data-name="Basis-Versicherung" data-price="15">
-                        <div class="checkbox-custom"></div>
-                        <div class="card-header">
-                            <h4 class="card-title">Basis-Versicherung</h4>
-                            <span class="card-price">€15/Tag</span>
-                        </div>
-                        <p class="card-description">Grundlegender Versicherungsschutz für Ihr Fahrzeug</p>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="insurance-card" data-type="insurance" data-name="Komfort-Versicherung" data-price="25">
-                        <div class="checkbox-custom"></div>
-                        <div class="card-header">
-                            <h4 class="card-title">Komfort-Versicherung</h4>
-                            <span class="card-price">€25/Tag</span>
-                        </div>
-                        <p class="card-description">Erweiterter Schutz mit Selbstbeteiligung</p>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="insurance-card" data-type="insurance" data-name="Premium-Versicherung" data-price="35">
-                        <div class="checkbox-custom"></div>
-                        <div class="card-header">
-                            <h4 class="card-title">Premium-Versicherung</h4>
-                            <span class="card-price">€35/Tag</span>
-                        </div>
-                        <p class="card-description">Vollständiger Schutz ohne Selbstbeteiligung</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Additional Products -->
-        <div class="selection-container">
-            <h2 class="section-title">Zusatzprodukte</h2>
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="extra-card" data-type="extra" data-name="GPS-Navigation" data-price="12">
-                        <div class="checkbox-custom"></div>
-                        <div class="card-header">
-                            <h4 class="card-title">GPS-Navigation</h4>
-                            <span class="card-price">€12/Tag</span>
-                        </div>
-                        <p class="card-description">Professionelle Navigation für Ihre Reise</p>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="extra-card" data-type="extra" data-name="Kindersitz" data-price="15">
-                        <div class="checkbox-custom"></div>
-                        <div class="card-header">
-                            <h4 class="card-title">Kindersitz</h4>
-                            <span class="card-price">€15/Tag</span>
-                        </div>
-                        <p class="card-description">Sicherer Kindersitz für die Kleinen</p>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="extra-card" data-type="extra" data-name="Dachgepäckträger" data-price="20">
-                        <div class="checkbox-custom"></div>
-                        <div class="card-header">
-                            <h4 class="card-title">Dachgepäckträger</h4>
-                            <span class="card-price">€20/Tag</span>
-                        </div>
-                        <p class="card-description">Zusätzlicher Stauraum auf dem Dach</p>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="extra-card" data-type="extra" data-name="Winterreifen" data-price="25">
-                        <div class="checkbox-custom"></div>
-                        <div class="card-header">
-                            <h4 class="card-title">Winterreifen</h4>
-                            <span class="card-price">€25/Tag</span>
-                        </div>
-                        <p class="card-description">Sichere Fahrt bei winterlichen Bedingungen</p>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="extra-card" data-type="extra" data-name="Zusätzlicher Fahrer" data-price="18">
-                        <div class="checkbox-custom"></div>
-                        <div class="card-header">
-                            <h4 class="card-title">Zusätzlicher Fahrer</h4>
-                            <span class="card-price">€18/Tag</span>
-                        </div>
-                        <p class="card-description">Ein weiterer Fahrer für Ihr Fahrzeug</p>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="extra-card" data-type="extra" data-name="Babyschale" data-price="18">
-                        <div class="checkbox-custom"></div>
-                        <div class="card-header">
-                            <h4 class="card-title">Babyschale</h4>
-                            <span class="card-price">€18/Tag</span>
-                        </div>
-                        <p class="card-description">Sichere Babyschale für die Kleinsten</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Summary Section -->
-        <div class="summary-section">
-            <h3 class="summary-title">Zusammenfassung</h3>
-            <div id="summary-items">
-                <!-- Summary items will be populated by JavaScript -->
-            </div>
-            <button class="btn-continue" onclick="continueToCheckout()">Zur Buchung fortfahren</button>
-        </div>
+    <!-- Modern Navbar -->
+    <div id="navbar-container">
+        <!-- Navbar JavaScript ile yÃ¼klenecek -->
     </div>
 
+    <!-- Main Content -->
+    <main class="main-container">
+        <!-- Hero Section -->
+        <section class="hero fade-in-up">
+            <h1>Extras & Versicherung</h1>
+            <p>WÃ¤hlen Sie Ihre gewÃ¼nschten Zusatzleistungen und Versicherungspakete fÃ¼r eine sorgenfreie Fahrt</p>
+        </section>
+
+        <!-- Progress Steps -->
+        <div class="progress-steps fade-in-up">
+            <div class="step completed">
+                <div class="step-number">
+                    <i class="bi bi-check"></i>
+                </div>
+                <span>Fahrzeug ausgewÃ¤hlt</span>
+            </div>
+            <div class="step-line"></div>
+            <div class="step active">
+                <div class="step-number">2</div>
+                <span>Extras & Versicherung</span>
+            </div>
+            <div class="step-line"></div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <span>Buchung abschlieÃŸen</span>
+            </div>
+        </div>
+
+        <!-- Content Grid -->
+        <div class="content-grid">
+            <!-- Left Column -->
+            <div class="left-column">
+                <!-- Car Info -->
+                <div class="car-info slide-in">
+                    <div class="car-header">
+                        <div class="car-icon">
+                            <i class="bi bi-car-front-fill"></i>
+                        </div>
+                        <div class="car-details">
+                            <h3 id="car-name">Audi A8</h3>
+                            <p>Premium Limousine fÃ¼r Ihre Reise</p>
+                        </div>
+                    </div>
+                    <div class="car-specs">
+                        <div class="spec-item">
+                            <i class="bi bi-currency-euro spec-icon"></i>
+                            <span id="car-price">â‚¬219/Tag</span>
+                        </div>
+                        <div class="spec-item">
+                            <i class="bi bi-calendar spec-icon"></i>
+                            <span id="rental-days">1 Tag</span>
+                        </div>
+                        <div class="spec-item">
+                            <i class="bi bi-gear spec-icon"></i>
+                            <span id="car-transmission">Automatik</span>
+                        </div>
+                        <div class="spec-item">
+                            <i class="bi bi-fuel-pump spec-icon"></i>
+                            <span id="car-fuel">Benzin</span>
+                        </div>
+                        <div class="spec-item">
+                            <i class="bi bi-people spec-icon"></i>
+                            <span id="car-seats">5 Sitze</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Insurance Section -->
+                <div class="options-section slide-in">
+                    <h2 class="section-title">
+                        <i class="bi bi-shield-check"></i>
+                        Versicherungspakete
+                    </h2>
+                    <div class="insurance-grid">
+                        <div class="insurance-card" data-type="insurance" data-name="Premium Schutz" data-price="45">
+                            <div class="insurance-badge badge-gold">Empfohlen</div>
+                            <div class="insurance-header">
+                                <div class="insurance-type">Premium Schutz</div>
+                                <div class="insurance-price">â‚¬45/Tag</div>
+                            </div>
+                            <ul class="insurance-features">
+                                <li><i class="bi bi-check-circle"></i> Vollkasko ohne Selbstbeteiligung</li>
+                                <li><i class="bi bi-check-circle"></i> Unfallschutz inklusive</li>
+                                <li><i class="bi bi-check-circle"></i> Diebstahlschutz</li>
+                                <li><i class="bi bi-check-circle"></i> 24/7 Pannenhilfe</li>
+                                <li><i class="bi bi-check-circle"></i> Reiseabbruchschutz</li>
+                            </ul>
+                        </div>
+
+                        <div class="insurance-card" data-type="insurance" data-name="Standard Schutz" data-price="25">
+                            <div class="insurance-badge badge-silver">Beliebt</div>
+                            <div class="insurance-header">
+                                <div class="insurance-type">Standard Schutz</div>
+                                <div class="insurance-price">â‚¬25/Tag</div>
+                            </div>
+                            <ul class="insurance-features">
+                                <li><i class="bi bi-check-circle"></i> Teilkasko (â‚¬500 SB)</li>
+                                <li><i class="bi bi-check-circle"></i> Unfallschutz</li>
+                                <li><i class="bi bi-check-circle"></i> Diebstahlschutz</li>
+                                <li><i class="bi bi-check-circle"></i> Pannenhilfe</li>
+                            </ul>
+                        </div>
+
+                        <div class="insurance-card" data-type="insurance" data-name="Basis Schutz" data-price="15">
+                            <div class="insurance-badge badge-bronze">GÃ¼nstig</div>
+                            <div class="insurance-header">
+                                <div class="insurance-type">Basis Schutz</div>
+                                <div class="insurance-price">â‚¬15/Tag</div>
+                            </div>
+                            <ul class="insurance-features">
+                                <li><i class="bi bi-check-circle"></i> Haftpflicht inklusive</li>
+                                <li><i class="bi bi-check-circle"></i> Teilkasko (â‚¬1000 SB)</li>
+                                <li><i class="bi bi-check-circle"></i> Grundschutz</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Extras Section -->
+                <div class="options-section slide-in">
+                    <h2 class="section-title">
+                        <i class="bi bi-plus-circle"></i>
+                        ZusÃ¤tzliche Leistungen
+                    </h2>
+                    <div class="extras-grid">
+                        <div class="extra-card" data-type="extra" data-name="GPS Navigation" data-price="8">
+                            <div class="extra-icon">
+                                <i class="bi bi-geo-alt"></i>
+                            </div>
+                            <div class="extra-info">
+                                <div class="extra-name">GPS Navigation</div>
+                                <div class="extra-price">â‚¬8/Tag</div>
+                            </div>
+                            <div class="extra-checkbox">
+                                <i class="bi bi-check"></i>
+                            </div>
+                        </div>
+
+                        <div class="extra-card" data-type="extra" data-name="Kindersitz" data-price="12">
+                            <div class="extra-icon">
+                                <i class="bi bi-person-badge"></i>
+                            </div>
+                            <div class="extra-info">
+                                <div class="extra-name">Kindersitz</div>
+                                <div class="extra-price">â‚¬12/Tag</div>
+                            </div>
+                            <div class="extra-checkbox">
+                                <i class="bi bi-check"></i>
+                            </div>
+                        </div>
+
+                        <div class="extra-card" data-type="extra" data-name="ZusÃ¤tzlicher Fahrer" data-price="15">
+                            <div class="extra-icon">
+                                <i class="bi bi-person-plus"></i>
+                            </div>
+                            <div class="extra-info">
+                                <div class="extra-name">ZusÃ¤tzlicher Fahrer</div>
+                                <div class="extra-price">â‚¬15/Tag</div>
+                            </div>
+                            <div class="extra-checkbox">
+                                <i class="bi bi-check"></i>
+                            </div>
+                        </div>
+
+                        <div class="extra-card" data-type="extra" data-name="Tankoption" data-price="35">
+                            <div class="extra-icon">
+                                <i class="bi bi-fuel-pump"></i>
+                            </div>
+                            <div class="extra-info">
+                                <div class="extra-name">Tankoption</div>
+                                <div class="extra-price">â‚¬35 einmalig</div>
+                            </div>
+                            <div class="extra-checkbox">
+                                <i class="bi bi-check"></i>
+                            </div>
+                        </div>
+
+                        <div class="extra-card" data-type="extra" data-name="Premium Sound" data-price="10">
+                            <div class="extra-icon">
+                                <i class="bi bi-music-note-beamed"></i>
+                            </div>
+                            <div class="extra-info">
+                                <div class="extra-name">Premium Sound</div>
+                                <div class="extra-price">â‚¬10/Tag</div>
+                            </div>
+                            <div class="extra-checkbox">
+                                <i class="bi bi-check"></i>
+                            </div>
+                        </div>
+
+                        <div class="extra-card" data-type="extra" data-name="Winterreifen" data-price="20">
+                            <div class="extra-icon">
+                                <i class="bi bi-snow"></i>
+                            </div>
+                            <div class="extra-info">
+                                <div class="extra-name">Winterreifen</div>
+                                <div class="extra-price">â‚¬20/Tag</div>
+                            </div>
+                            <div class="extra-checkbox">
+                                <i class="bi bi-check"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column - Summary -->
+            <div class="right-column">
+                <div class="summary-card slide-in">
+                    <div class="summary-header">
+                        <i class="bi bi-receipt"></i>
+                        <span class="summary-title">Zusammenfassung</span>
+                    </div>
+                    <div class="summary-items" id="summary-items">
+                        <div class="summary-item">
+                            <span class="summary-label">Grundpreis (1 Tag):</span>
+                            <span class="summary-value">â‚¬219</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">Versicherung:</span>
+                            <span class="summary-value">-</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">Zusatzleistungen:</span>
+                            <span class="summary-value">â‚¬0</span>
+                        </div>
+                        <div class="summary-item summary-total">
+                            <span class="summary-label">Gesamtpreis:</span>
+                            <span class="summary-value">â‚¬219</span>
+                        </div>
+                    </div>
+                    <button class="continue-btn" id="continue-btn" onclick="continueToCheckout()" disabled>
+                        <i class="bi bi-shield-exclamation"></i>
+                        Versicherung erforderlich
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/navbar.js"></script>
     <script src="js/data/cars.js"></script>
     <script>
-        // Initialize navbar
-        document.addEventListener('DOMContentLoaded', function() {
-            updateNavbar();
-            loadSelectedCar();
-            initializeSelectionHandlers();
-            updateSummary();
-        });
-
+        // Global variables
         let selectedInsurance = null;
         let selectedExtras = [];
         let basePrice = 0;
         let rentalDays = 1;
         let selectedCar = null;
 
-        function loadSelectedCar() {
-            // Get car data from URL parameters
-            const urlParams = new URLSearchParams(window.location.search);
-            const carId = parseInt(urlParams.get('carId'));
-            rentalDays = parseInt(urlParams.get('days')) || 1;
-            
-            // Find the car in the LOCAL_CARS array
-            selectedCar = window.LOCAL_CARS.find(car => car.car_id === carId);
-            
-            if (!selectedCar) {
-                // Fallback to demo data if car not found
-                selectedCar = {
-                    car_id: carId,
-                    make: 'Porsche',
-                    model: '911 Carrera',
-                    daily_rate: 150,
-                    transmission_type: 'Automatik',
-                    fuel_type: 'Benzin',
-                    seating_capacity: '2',
-                    image_url: '/images/cars/porsche-911-gt3.jpg'
-                };
+        // Car data matching fahrzeuge.html
+        const cars = [
+            {
+                id: 1,
+                name: "Porsche 911 GT3 RS",
+                type: "Sportwagen",
+                brand: "Porsche",
+                price: 599,
+                image: "images/cars/porsche-911-gt3.jpg",
+                specs: {
+                    transmission: "Automatik",
+                    fuel: "Benzin",
+                    seats: 2,
+                    power: "525 PS"
+                },
+                badge: "Premium"
+            },
+            {
+                id: 2,
+                name: "Rolls-Royce Phantom",
+                type: "Luxuswagen",
+                brand: "Rolls-Royce",
+                price: 1899,
+                image: "images/cars/rolls-royce-phantom.jpg",
+                specs: {
+                    transmission: "Automatik",
+                    fuel: "Benzin",
+                    seats: 4,
+                    power: "571 PS"
+                },
+                badge: "Luxus"
+            },
+            {
+                id: 3,
+                name: "Bentley Continental GT",
+                type: "Luxuswagen",
+                brand: "Bentley",
+                price: 999,
+                image: "images/cars/bentley-continental.jpg",
+                specs: {
+                    transmission: "Automatik",
+                    fuel: "Benzin",
+                    seats: 4,
+                    power: "635 PS"
+                },
+                badge: "Premium"
+            },
+            {
+                id: 4,
+                name: "Porsche Cayenne",
+                type: "SUV",
+                brand: "Porsche",
+                price: 699,
+                image: "images/cars/porsche-cayenne.jpg",
+                specs: {
+                    transmission: "Automatik",
+                    fuel: "Benzin",
+                    seats: 5,
+                    power: "340 PS"
+                },
+                badge: "Premium"
+            },
+            {
+                id: 5,
+                name: "Porsche Taycan",
+                type: "Elektrofahrzeuge",
+                brand: "Porsche",
+                price: 799,
+                image: "images/cars/porsche-taycan.jpg",
+                specs: {
+                    transmission: "Automatik",
+                    fuel: "Elektrisch",
+                    seats: 4,
+                    power: "476 PS"
+                },
+                badge: "Premium"
             }
+        ];
 
-            basePrice = selectedCar.daily_rate;
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Page loaded, initializing...');
+            
+            // Initialize navbar
+            if (typeof createNavbar === 'function') {
+                createNavbar();
+            }
+            if (typeof updateNavbar === 'function') {
+                updateNavbar();
+            }
+            
+            initializePage();
+        });
 
-            // Display car details
-            const carDetailsContainer = document.getElementById('selected-car-details');
-            carDetailsContainer.innerHTML = `
-                <div class="car-detail-item">
-                    <span class="car-detail-label">Fahrzeug:</span>
-                    <span class="car-detail-value">${selectedCar.make} ${selectedCar.model}</span>
-                </div>
-                <div class="car-detail-item">
-                    <span class="car-detail-label">Grundpreis:</span>
-                    <span class="car-detail-value">€${selectedCar.daily_rate}/Tag</span>
-                </div>
-                <div class="car-detail-item">
-                    <span class="car-detail-label">Mietdauer:</span>
-                    <span class="car-detail-value">${rentalDays} Tag(e)</span>
-                </div>
-                <div class="car-detail-item">
-                    <span class="car-detail-label">Getriebe:</span>
-                    <span class="car-detail-value">${selectedCar.transmission_type}</span>
-                </div>
-                <div class="car-detail-item">
-                    <span class="car-detail-label">Kraftstoff:</span>
-                    <span class="car-detail-value">${selectedCar.fuel_type}</span>
-                </div>
-                <div class="car-detail-item">
-                    <span class="car-detail-label">Sitze:</span>
-                    <span class="car-detail-value">${selectedCar.seating_capacity}</span>
-                </div>
-            `;
+        function initializePage() {
+            try {
+                // Load car data
+                loadCarData();
+                
+                // Setup event handlers
+                setupEventHandlers();
+                
+                // Update summary
+                updateSummary();
+                
+                console.log('Page initialized successfully');
+            } catch (error) {
+                console.error('Error initializing page:', error);
+            }
         }
 
-        function initializeSelectionHandlers() {
-            // Insurance cards - only one can be selected
+        function loadCarData() {
+            try {
+                const urlParams = new URLSearchParams(window.location.search);
+                const carId = parseInt(urlParams.get('carId'));
+                rentalDays = parseInt(urlParams.get('days')) || 1;
+                
+                console.log('Loading car data for ID:', carId, 'Days:', rentalDays);
+                
+                // Try to get car from local cars array first
+                if (cars && cars.length > 0) {
+                    selectedCar = cars.find(car => car.id === carId);
+                }
+                
+                // Fallback if car not found
+                if (!selectedCar) {
+                    selectedCar = {
+                        id: carId || 2,
+                        name: 'Rolls-Royce Phantom',
+                        brand: 'Rolls-Royce',
+                        price: 1899,
+                        specs: {
+                            transmission: 'Automatik',
+                            fuel: 'Benzin',
+                            seats: 4
+                        }
+                    };
+                }
+                
+                basePrice = selectedCar.price;
+                
+                // Update car display
+                updateCarDisplay();
+                
+            } catch (error) {
+                console.error('Error loading car data:', error);
+                // Set fallback data
+                selectedCar = {
+                    id: 2,
+                    name: 'Rolls-Royce Phantom',
+                    brand: 'Rolls-Royce',
+                    price: 1899,
+                    specs: {
+                        transmission: 'Automatik',
+                        fuel: 'Benzin',
+                        seats: 4
+                    }
+                };
+                basePrice = 1899;
+                rentalDays = 1;
+                updateCarDisplay();
+            }
+        }
+
+        function updateCarDisplay() {
+            if (selectedCar) {
+                document.getElementById('car-name').textContent = selectedCar.name;
+                document.getElementById('car-price').textContent = `â‚¬${selectedCar.price}/Tag`;
+                document.getElementById('rental-days').textContent = `${rentalDays} Tag${rentalDays > 1 ? 'e' : ''}`;
+                document.getElementById('car-transmission').textContent = selectedCar.specs.transmission;
+                document.getElementById('car-fuel').textContent = selectedCar.specs.fuel;
+                document.getElementById('car-seats').textContent = `${selectedCar.specs.seats} Sitze`;
+            }
+        }
+
+        function setupEventHandlers() {
+            // Insurance cards
             document.querySelectorAll('.insurance-card').forEach(card => {
                 card.addEventListener('click', function() {
                     // Remove selection from other insurance cards
@@ -460,10 +1137,11 @@
                     };
                     
                     updateSummary();
+                    updateContinueButton();
                 });
             });
 
-            // Extra cards - multiple can be selected
+            // Extra cards
             document.querySelectorAll('.extra-card').forEach(card => {
                 card.addEventListener('click', function() {
                     this.classList.toggle('selected');
@@ -472,13 +1150,8 @@
                     const extraPrice = parseInt(this.dataset.price);
                     
                     if (this.classList.contains('selected')) {
-                        // Add to selected extras
-                        selectedExtras.push({
-                            name: extraName,
-                            price: extraPrice
-                        });
+                        selectedExtras.push({ name: extraName, price: extraPrice });
                     } else {
-                        // Remove from selected extras
                         selectedExtras = selectedExtras.filter(extra => extra.name !== extraName);
                     }
                     
@@ -488,73 +1161,101 @@
         }
 
         function updateSummary() {
-            const summaryContainer = document.getElementById('summary-items');
+            const container = document.getElementById('summary-items');
+            if (!container || !selectedCar) return;
+            
             let totalPrice = basePrice * rentalDays;
             
-            let summaryHTML = `
+            let html = `
                 <div class="summary-item">
-                    <span class="summary-label">Grundpreis (${rentalDays} Tag(e)):</span>
-                    <span class="summary-value">€${totalPrice}</span>
+                    <span class="summary-label">Grundpreis (${rentalDays} Tag${rentalDays > 1 ? 'e' : ''}):</span>
+                    <span class="summary-value">â‚¬${totalPrice}</span>
                 </div>
             `;
 
-            // Add insurance if selected
             if (selectedInsurance) {
                 const insuranceTotal = selectedInsurance.price * rentalDays;
                 totalPrice += insuranceTotal;
-                summaryHTML += `
+                html += `
                     <div class="summary-item">
                         <span class="summary-label">${selectedInsurance.name}:</span>
-                        <span class="summary-value">€${insuranceTotal}</span>
+                        <span class="summary-value">â‚¬${insuranceTotal}</span>
+                    </div>
+                `;
+            } else {
+                html += `
+                    <div class="summary-item">
+                        <span class="summary-label">Versicherung:</span>
+                        <span class="summary-value">-</span>
                     </div>
                 `;
             }
 
-            // Add extras if selected
+            let extrasTotal = 0;
             selectedExtras.forEach(extra => {
                 const extraTotal = extra.price * rentalDays;
-                totalPrice += extraTotal;
-                summaryHTML += `
-                    <div class="summary-item">
-                        <span class="summary-label">${extra.name}:</span>
-                        <span class="summary-value">€${extraTotal}</span>
-                    </div>
-                `;
+                extrasTotal += extraTotal;
             });
 
-            // Add total
-            summaryHTML += `
-                <div class="summary-item">
+            if (extrasTotal > 0) {
+                totalPrice += extrasTotal;
+                html += `
+                    <div class="summary-item">
+                        <span class="summary-label">Zusatzleistungen:</span>
+                        <span class="summary-value">â‚¬${extrasTotal}</span>
+                    </div>
+                `;
+            } else {
+                html += `
+                    <div class="summary-item">
+                        <span class="summary-label">Zusatzleistungen:</span>
+                        <span class="summary-value">â‚¬0</span>
+                    </div>
+                `;
+            }
+
+            html += `
+                <div class="summary-item summary-total">
                     <span class="summary-label">Gesamtpreis:</span>
-                    <span class="summary-value">€${totalPrice}</span>
+                    <span class="summary-value">â‚¬${totalPrice}</span>
                 </div>
             `;
 
-            summaryContainer.innerHTML = summaryHTML;
+            container.innerHTML = html;
+        }
+
+        function updateContinueButton() {
+            const btn = document.getElementById('continue-btn');
+            if (!btn) return;
+            
+            if (selectedInsurance) {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="bi bi-arrow-right"></i>Zur Buchung fortfahren';
+            } else {
+                btn.disabled = true;
+                btn.innerHTML = '<i class="bi bi-shield-exclamation"></i>Versicherung erforderlich';
+            }
         }
 
         function continueToCheckout() {
             if (!selectedInsurance) {
-                alert('Bitte wählen Sie ein Versicherungspaket aus.');
+                alert('Bitte wÃ¤hlen Sie ein Versicherungspaket aus.');
                 return;
             }
 
-            // Save selections to localStorage or send to server
             const selections = {
                 car: selectedCar,
                 insurance: selectedInsurance,
                 extras: selectedExtras,
                 rentalDays: rentalDays,
-                totalPrice: calculateTotalPrice()
+                totalPrice: calculateTotal()
             };
 
             localStorage.setItem('extrasSelections', JSON.stringify(selections));
-            
-            // Redirect to checkout page
             window.location.href = '/checkout';
         }
 
-        function calculateTotalPrice() {
+        function calculateTotal() {
             let total = basePrice * rentalDays;
             if (selectedInsurance) {
                 total += selectedInsurance.price * rentalDays;
@@ -567,3 +1268,4 @@
     </script>
 </body>
 </html>
+

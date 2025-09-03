@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8">
@@ -7,6 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
+    <link href="/css/navbar.css" rel="stylesheet">
     <style>
         body {
             background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 50%, #1a1a1a 100%);
@@ -49,7 +50,7 @@
         .form-title {
             font-size: 1.8rem;
             font-weight: 600;
-            color: #d4af37;
+            color: #8F220C;
             margin-bottom: 1.5rem;
             text-align: center;
             letter-spacing: 1px;
@@ -60,7 +61,7 @@
         }
 
         .form-label {
-            color: #d4af37;
+            color: #8F220C;
             font-weight: 600;
             margin-bottom: 0.5rem;
             font-size: 1rem;
@@ -78,7 +79,7 @@
 
         .form-control:focus {
             background: linear-gradient(135deg, #3a3a3a, #2a2a2a);
-            border-color: #d4af37;
+            border-color: #8F220C;
             box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
             color: #ffffff;
         }
@@ -88,7 +89,7 @@
         }
 
         .btn-continue {
-            background: linear-gradient(135deg, #d4af37, #b8941f);
+            background: linear-gradient(135deg, #8F220C, #8F220C);
             color: #1a1a1a;
             border: none;
             border-radius: 10px;
@@ -104,7 +105,7 @@
         }
 
         .btn-continue:hover {
-            background: linear-gradient(135deg, #b8941f, #d4af37);
+            background: linear-gradient(135deg, #8F220C, #8F220C);
             transform: translateY(-2px);
             box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
         }
@@ -120,7 +121,7 @@
         .car-info-title {
             font-size: 1.3rem;
             font-weight: 600;
-            color: #d4af37;
+            color: #8F220C;
             margin-bottom: 1rem;
         }
 
@@ -168,7 +169,7 @@
     <section class="hero-section">
         <div class="container">
             <h1 class="hero-title">Datum & Standort</h1>
-            <p class="hero-subtitle">Wählen Sie Ihren gewünschten Abhol- und Rückgabetermin</p>
+            <p class="hero-subtitle">WÃ¤hlen Sie Ihren gewÃ¼nschten Abhol- und RÃ¼ckgabetermin</p>
         </div>
     </section>
 
@@ -176,7 +177,7 @@
     <div class="container">
         <!-- Selected Car Info -->
         <div class="selected-car-info">
-            <h3 class="car-info-title">Ausgewähltes Fahrzeug</h3>
+            <h3 class="car-info-title">AusgewÃ¤hltes Fahrzeug</h3>
             <div class="car-details-grid" id="selected-car-details">
                 <!-- Car details will be populated by JavaScript -->
             </div>
@@ -191,24 +192,24 @@
                         <div class="form-group">
                             <label class="form-label">Abholstandort</label>
                             <select class="form-control" id="pickup-location" required>
-                                <option value="">Standort auswählen</option>
+                                <option value="">Standort auswÃ¤hlen</option>
                                 <option value="1">Berlin Hauptbahnhof</option>
-                                <option value="2">München Flughafen</option>
+                                <option value="2">MÃ¼nchen Flughafen</option>
                                 <option value="3">Hamburg Zentrum</option>
-                                <option value="4">Köln Dom</option>
+                                <option value="4">KÃ¶ln Dom</option>
                                 <option value="5">Frankfurt Flughafen</option>
                             </select>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class="form-label">Rückgabestandort</label>
+                            <label class="form-label">RÃ¼ckgabestandort</label>
                             <select class="form-control" id="return-location" required>
-                                <option value="">Standort auswählen</option>
+                                <option value="">Standort auswÃ¤hlen</option>
                                 <option value="1">Berlin Hauptbahnhof</option>
-                                <option value="2">München Flughafen</option>
+                                <option value="2">MÃ¼nchen Flughafen</option>
                                 <option value="3">Hamburg Zentrum</option>
-                                <option value="4">Köln Dom</option>
+                                <option value="4">KÃ¶ln Dom</option>
                                 <option value="5">Frankfurt Flughafen</option>
                             </select>
                         </div>
@@ -223,7 +224,7 @@
                     <div class="form-group">
                         <label class="form-label">Abholzeit</label>
                         <select class="form-control" id="pickup-time" required>
-                            <option value="">Zeit auswählen</option>
+                            <option value="">Zeit auswÃ¤hlen</option>
                             <option value="08:00">08:00</option>
                             <option value="09:00">09:00</option>
                             <option value="10:00">10:00</option>
@@ -241,13 +242,13 @@
 
                 <div class="date-time-row">
                     <div class="form-group">
-                        <label class="form-label">Rückgabedatum</label>
+                        <label class="form-label">RÃ¼ckgabedatum</label>
                         <input type="date" class="form-control" id="return-date" required>
                     </div>
                     <div class="form-group">
-                        <label class="form-label">Rückgabezeit</label>
+                        <label class="form-label">RÃ¼ckgabezeit</label>
                         <select class="form-control" id="return-time" required>
-                            <option value="">Zeit auswählen</option>
+                            <option value="">Zeit auswÃ¤hlen</option>
                             <option value="08:00">08:00</option>
                             <option value="09:00">09:00</option>
                             <option value="10:00">10:00</option>
@@ -312,7 +313,7 @@
                 </div>
                 <div class="car-detail-item">
                     <span class="car-detail-label">Grundpreis:</span>
-                    <span class="car-detail-value">€${selectedCar.daily_rate}/Tag</span>
+                    <span class="car-detail-value">â‚¬${selectedCar.daily_rate}/Tag</span>
                 </div>
                 <div class="car-detail-item">
                     <span class="car-detail-label">Getriebe:</span>
@@ -375,3 +376,4 @@
     </script>
 </body>
 </html>
+

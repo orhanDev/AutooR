@@ -1,11 +1,11 @@
-// public/js/admin/dashboard.js
+﻿// public/js/admin/dashboard.js
 
 document.addEventListener('DOMContentLoaded', async () => {
     const token = localStorage.getItem('token');
 
-    // Yönetici yetkisini kontrol et
+    // YÃ¶netici yetkisini kontrol et
     if (!token) {
-        alert('Sie müssen sich anmelden, um diese Seite anzuzeigen.');
+        alert('Sie mÃ¼ssen sich anmelden, um diese Seite anzuzeigen.');
         window.location.href = '/views/login.html';
         return;
     }
@@ -36,13 +36,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         } catch (error) {
             console.error('Fehler beim Abrufen der Admin-Dashboard-Daten:', error);
-            alert('Dashboard-Daten konnten nicht geladen werden. Bitte versuchen Sie es später erneut.');
+            alert('Dashboard-Daten konnten nicht geladen werden. Bitte versuchen Sie es spÃ¤ter erneut.');
         }
     }
 
     async function fetchTestDataCounts() {
         try {
-            // Kullanıcı sayısı
+            // KullanÄ±cÄ± sayÄ±sÄ±
             const usersResponse = await fetch('/api/admin/users', {
                 headers: { 'x-auth-token': token }
             });
@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 document.getElementById('test-users-count').textContent = users.length;
             }
 
-            // Araç sayısı
+            // AraÃ§ sayÄ±sÄ±
             const carsResponse = await fetch('/api/admin/cars', {
                 headers: { 'x-auth-token': token }
             });
@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 document.getElementById('test-cars-count').textContent = cars.length;
             }
 
-            // Rezervasyon sayısı
+            // Rezervasyon sayÄ±sÄ±
             const reservationsResponse = await fetch('/api/admin/reservations', {
                 headers: { 'x-auth-token': token }
             });
@@ -70,11 +70,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
 
         } catch (error) {
-            console.error('Test veri sayıları alınırken hata:', error);
+            console.error('Test veri sayÄ±larÄ± alÄ±nÄ±rken hata:', error);
         }
     }
 
-    // Test rezervasyonları ekle
+    // Test rezervasyonlarÄ± ekle
     async function addTestReservations() {
         const userId = document.getElementById('test-user-id').value;
         const resultDiv = document.getElementById('test-reservations-result');
@@ -104,7 +104,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     <div class="alert alert-success">
                         <i class="bi bi-check-circle me-2"></i>
                         ${data.message}<br>
-                        <small>Eklenen rezervasyon sayısı: ${data.reservations.length}</small>
+                        <small>Eklenen rezervasyon sayÄ±sÄ±: ${data.reservations.length}</small>
                     </div>
                 `;
                 
@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 await fetchAdminDashboardData();
                 await fetchTestDataCounts();
                 
-                // 3 saniye sonra mesajı kaldır
+                // 3 saniye sonra mesajÄ± kaldÄ±r
                 setTimeout(() => {
                     resultDiv.innerHTML = '';
                 }, 3000);
@@ -126,7 +126,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 `;
             }
         } catch (error) {
-            console.error('Test rezervasyonları eklenirken hata:', error);
+            console.error('Test rezervasyonlarÄ± eklenirken hata:', error);
             resultDiv.innerHTML = `
                 <div class="alert alert-danger">
                     <i class="bi bi-exclamation-triangle me-2"></i>
@@ -135,18 +135,18 @@ document.addEventListener('DOMContentLoaded', async () => {
             `;
         } finally {
             button.disabled = false;
-            button.innerHTML = '<i class="bi bi-plus-circle me-2"></i>Test Rezervasyonları Ekle';
+            button.innerHTML = '<i class="bi bi-plus-circle me-2"></i>Test RezervasyonlarÄ± Ekle';
         }
     }
 
     // Event listeners
     document.getElementById('add-test-reservations').addEventListener('click', addTestReservations);
 
-    // Sayfa yüklendiğinde verileri çek
+    // Sayfa yÃ¼klendiÄŸinde verileri Ã§ek
     await fetchAdminDashboardData();
     await fetchTestDataCounts();
 
-    // Çıkış linki (eğer varsa)
+    // Ã‡Ä±kÄ±ÅŸ linki (eÄŸer varsa)
     const adminLogoutLink = document.getElementById('admin-logout-link');
     if (adminLogoutLink) {
         adminLogoutLink.addEventListener('click', (e) => {

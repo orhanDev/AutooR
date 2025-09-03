@@ -1,11 +1,11 @@
-// Local demo dataset for cars and locations (no database needed)
+﻿// Local demo dataset for cars and locations (no database needed)
 // Keep fields aligned with UI usage
 
 window.LOCAL_LOCATIONS = [
 	{ location_id: 1, name: 'Berlin Hauptbahnhof' },
-	{ location_id: 2, name: 'München Flughafen' },
+	{ location_id: 2, name: 'MÃ¼nchen Flughafen' },
 	{ location_id: 3, name: 'Hamburg Zentrum' },
-	{ location_id: 4, name: 'Köln Dom' },
+	{ location_id: 4, name: 'KÃ¶ln Dom' },
 	{ location_id: 5, name: 'Frankfurt Flughafen' }
 ];
 
@@ -22,7 +22,7 @@ window.LOCAL_CARS = [
 		location_id: 1,
 		location_name: 'Berlin Hauptbahnhof',
 		image_url: '/images/cars/tesla-model-s.jpg',
-		color: 'Weiß',
+		color: 'WeiÃŸ',
 		mileage: 15000,
 		vehicle_type: 'Sedan',
 		engine_power: 670,
@@ -32,7 +32,7 @@ window.LOCAL_CARS = [
 		usb_port: true,
 		backup_camera: true,
 		parking_assist: true,
-		description: 'Elektrisch sedan, uzun menzil, hızlı şarj'
+		description: 'Elektrisch sedan, uzun menzil, hÄ±zlÄ± ÅŸarj'
 	},
 	{
 		car_id: 102,
@@ -44,7 +44,7 @@ window.LOCAL_CARS = [
 		fuel_type: 'Benzin',
 		seating_capacity: 2,
 		location_id: 2,
-		location_name: 'München Flughafen',
+		location_name: 'MÃ¼nchen Flughafen',
 		image_url: '/images/cars/porsche-911-gt3.jpg',
 		color: 'Schwarz',
 		mileage: 8000,
@@ -56,7 +56,7 @@ window.LOCAL_CARS = [
 		usb_port: true,
 		backup_camera: true,
 		parking_assist: true,
-		description: 'Spor araba, yüksek performans, lüks iç mekan'
+		description: 'Spor araba, yÃ¼ksek performans, lÃ¼ks iÃ§ mekan'
 	},
 	{
 		car_id: 103,
@@ -80,7 +80,7 @@ window.LOCAL_CARS = [
 		usb_port: true,
 		backup_camera: true,
 		parking_assist: true,
-		description: 'Lüks sedan, konforlu sürüş, ekonomik yakıt tüketimi'
+		description: 'LÃ¼ks sedan, konforlu sÃ¼rÃ¼ÅŸ, ekonomik yakÄ±t tÃ¼ketimi'
 	},
 	{
 		car_id: 104,
@@ -92,7 +92,7 @@ window.LOCAL_CARS = [
 		fuel_type: 'Benzin',
 		seating_capacity: 4,
 		location_id: 4,
-		location_name: 'Köln Dom',
+		location_name: 'KÃ¶ln Dom',
 		image_url: '/images/cars/bmw-m8.jpg',
 		color: 'Blau',
 		mileage: 12000,
@@ -104,7 +104,7 @@ window.LOCAL_CARS = [
 		usb_port: true,
 		backup_camera: true,
 		parking_assist: true,
-		description: 'Premium sedan, sportif sürüş, lüks iç mekan'
+		description: 'Premium sedan, sportif sÃ¼rÃ¼ÅŸ, lÃ¼ks iÃ§ mekan'
 	},
 	{
 		car_id: 105,
@@ -128,7 +128,7 @@ window.LOCAL_CARS = [
 		usb_port: true,
 		backup_camera: true,
 		parking_assist: true,
-		description: 'Premium sedan, quattro sürüş, modern tasarım'
+		description: 'Premium sedan, quattro sÃ¼rÃ¼ÅŸ, modern tasarÄ±m'
 	},
 	{
 		car_id: 106,
@@ -142,7 +142,7 @@ window.LOCAL_CARS = [
 		location_id: 1,
 		location_name: 'Berlin Hauptbahnhof',
 		image_url: '/images/cars/volkswagen-golf8r.jpg',
-		color: 'Weiß',
+		color: 'WeiÃŸ',
 		mileage: 18000,
 		vehicle_type: 'Hatchback',
 		engine_power: 150,
@@ -152,7 +152,7 @@ window.LOCAL_CARS = [
 		usb_port: true,
 		backup_camera: false,
 		parking_assist: false,
-		description: 'Pratik hatchback, ekonomik, güvenilir'
+		description: 'Pratik hatchback, ekonomik, gÃ¼venilir'
 	},
 	{
 		car_id: 107,
@@ -164,7 +164,7 @@ window.LOCAL_CARS = [
 		fuel_type: 'Hybrid',
 		seating_capacity: 7,
 		location_id: 2,
-		location_name: 'München Flughafen',
+		location_name: 'MÃ¼nchen Flughafen',
 		image_url: '/images/cars/bmw-x7.jpg',
 		color: 'Schwarz',
 		mileage: 15000,
@@ -176,7 +176,7 @@ window.LOCAL_CARS = [
 		usb_port: true,
 		backup_camera: true,
 		parking_assist: true,
-		description: 'Lüks SUV, hibrit motor, geniş iç mekan'
+		description: 'LÃ¼ks SUV, hibrit motor, geniÅŸ iÃ§ mekan'
 	},
 	{
 		car_id: 108,
@@ -200,7 +200,7 @@ window.LOCAL_CARS = [
 		usb_port: true,
 		backup_camera: true,
 		parking_assist: true,
-		description: 'Üst segment sedan, konforlu, lüks'
+		description: 'Ãœst segment sedan, konforlu, lÃ¼ks'
 	},
 	{
 		car_id: 109,
@@ -212,7 +212,7 @@ window.LOCAL_CARS = [
 		fuel_type: 'Benzin',
 		seating_capacity: 5,
 		location_id: 4,
-		location_name: 'Köln Dom',
+		location_name: 'KÃ¶ln Dom',
 		image_url: '/images/cars/audi-q8-rs.jpg',
 		color: 'Blau',
 		mileage: 14000,
@@ -224,7 +224,7 @@ window.LOCAL_CARS = [
 		usb_port: true,
 		backup_camera: true,
 		parking_assist: true,
-		description: 'Premium SUV, quattro sürüş, geniş bagaj'
+		description: 'Premium SUV, quattro sÃ¼rÃ¼ÅŸ, geniÅŸ bagaj'
 	},
 	{
 		car_id: 110,
@@ -238,7 +238,7 @@ window.LOCAL_CARS = [
 		location_id: 5,
 		location_name: 'Frankfurt Flughafen',
 		image_url: '/images/cars/rolls-royce-cullinan.jpg',
-		color: 'Weiß',
+		color: 'WeiÃŸ',
 		mileage: 28000,
 		vehicle_type: 'Luxus SUV',
 		engine_power: 340,
@@ -248,7 +248,7 @@ window.LOCAL_CARS = [
 		usb_port: true,
 		backup_camera: true,
 		parking_assist: true,
-		description: 'Lüks SUV, off-road yetenek, konforlu'
+		description: 'LÃ¼ks SUV, off-road yetenek, konforlu'
 	},
 	{
 		car_id: 111,
@@ -272,7 +272,7 @@ window.LOCAL_CARS = [
 		usb_port: true,
 		backup_camera: true,
 		parking_assist: true,
-		description: 'Hibrit SUV, ekonomik, güvenilir'
+		description: 'Hibrit SUV, ekonomik, gÃ¼venilir'
 	},
 	{
 		car_id: 112,
@@ -284,7 +284,7 @@ window.LOCAL_CARS = [
 		fuel_type: 'Benzin',
 		seating_capacity: 5,
 		location_id: 2,
-		location_name: 'München Flughafen',
+		location_name: 'MÃ¼nchen Flughafen',
 		image_url: '/images/cars/honda-civic-ehev.jpg',
 		color: 'Rot',
 		mileage: 20000,
@@ -296,7 +296,7 @@ window.LOCAL_CARS = [
 		usb_port: true,
 		backup_camera: false,
 		parking_assist: false,
-		description: 'Kompakt sedan, sportif tasarım, ekonomik'
+		description: 'Kompakt sedan, sportif tasarÄ±m, ekonomik'
 	},
 	{
 		car_id: 113,
@@ -310,7 +310,7 @@ window.LOCAL_CARS = [
 		location_id: 3,
 		location_name: 'Hamburg Zentrum',
 		image_url: '/images/cars/tesla-model-3.jpg',
-		color: 'Weiß',
+		color: 'WeiÃŸ',
 		mileage: 12000,
 		vehicle_type: 'Elektrik Sedan',
 		engine_power: 283,
@@ -320,7 +320,7 @@ window.LOCAL_CARS = [
 		usb_port: true,
 		backup_camera: true,
 		parking_assist: true,
-		description: 'Elektrikli sedan, uzun menzil, hızlı şarj'
+		description: 'Elektrikli sedan, uzun menzil, hÄ±zlÄ± ÅŸarj'
 	},
 	{
 		car_id: 114,
@@ -332,7 +332,7 @@ window.LOCAL_CARS = [
 		fuel_type: 'Benzin',
 		seating_capacity: 5,
 		location_id: 4,
-		location_name: 'Köln Dom',
+		location_name: 'KÃ¶ln Dom',
 		image_url: '/images/cars/porsche-cayenne.jpg',
 		color: 'Schwarz',
 		mileage: 18000,
@@ -344,7 +344,7 @@ window.LOCAL_CARS = [
 		usb_port: true,
 		backup_camera: true,
 		parking_assist: true,
-		description: 'Lüks SUV, yüksek performans, konforlu'
+		description: 'LÃ¼ks SUV, yÃ¼ksek performans, konforlu'
 	},
 	{
 		car_id: 115,
@@ -358,7 +358,7 @@ window.LOCAL_CARS = [
 		location_id: 5,
 		location_name: 'Frankfurt Flughafen',
 		image_url: '/images/cars/bentley-bentayga.jpg',
-		color: 'Weiß',
+		color: 'WeiÃŸ',
 		mileage: 15000,
 		vehicle_type: 'Ultra Luxus SUV',
 		engine_power: 550,
@@ -368,7 +368,7 @@ window.LOCAL_CARS = [
 		usb_port: true,
 		backup_camera: true,
 		parking_assist: true,
-		description: 'Ultra lüks SUV, el işçiliği, premium konfor'
+		description: 'Ultra lÃ¼ks SUV, el iÅŸÃ§iliÄŸi, premium konfor'
 	},
 	{
 		car_id: 116,
@@ -392,7 +392,7 @@ window.LOCAL_CARS = [
 		usb_port: true,
 		backup_camera: true,
 		parking_assist: true,
-		description: 'Ultra lüks sedan, el işçiliği, premium konfor'
+		description: 'Ultra lÃ¼ks sedan, el iÅŸÃ§iliÄŸi, premium konfor'
 	},
 	{
 		car_id: 117,
@@ -404,7 +404,7 @@ window.LOCAL_CARS = [
 		fuel_type: 'Benzin',
 		seating_capacity: 5,
 		location_id: 2,
-		location_name: 'München Flughafen',
+		location_name: 'MÃ¼nchen Flughafen',
 		image_url: '/images/cars/bmw-ix.jpg',
 		color: 'Blau',
 		mileage: 18000,
@@ -416,7 +416,7 @@ window.LOCAL_CARS = [
 		usb_port: true,
 		backup_camera: true,
 		parking_assist: true,
-		description: 'Premium sedan, sportif sürüş, lüks iç mekan'
+		description: 'Premium sedan, sportif sÃ¼rÃ¼ÅŸ, lÃ¼ks iÃ§ mekan'
 	},
 	{
 		car_id: 118,
@@ -440,7 +440,7 @@ window.LOCAL_CARS = [
 		usb_port: true,
 		backup_camera: true,
 		parking_assist: true,
-		description: 'Lüks sedan, konforlu sürüş, ekonomik yakıt tüketimi'
+		description: 'LÃ¼ks sedan, konforlu sÃ¼rÃ¼ÅŸ, ekonomik yakÄ±t tÃ¼ketimi'
 	},
 	{
 		car_id: 119,
@@ -452,7 +452,7 @@ window.LOCAL_CARS = [
 		fuel_type: 'Petrol',
 		seating_capacity: 5,
 		location_id: 4,
-		location_name: 'Köln Dom',
+		location_name: 'KÃ¶ln Dom',
 		        image_url: '/images/cars/audi-q8-rs.jpg',
 		color: 'Grau',
 		mileage: 25000,
@@ -464,7 +464,7 @@ window.LOCAL_CARS = [
 		usb_port: true,
 		backup_camera: true,
 		parking_assist: true,
-		description: 'Premium sedan, quattro sürüş, modern tasarım'
+		description: 'Premium sedan, quattro sÃ¼rÃ¼ÅŸ, modern tasarÄ±m'
 	},
 	{
 		car_id: 120,
@@ -478,7 +478,7 @@ window.LOCAL_CARS = [
 		location_id: 5,
 		location_name: 'Frankfurt Flughafen',
 		image_url: '/images/cars/volkswagen-id4-gtx.jpg',
-		color: 'Weiß',
+		color: 'WeiÃŸ',
 		mileage: 16000,
 		vehicle_type: 'Sedan',
 		engine_power: 150,
@@ -488,7 +488,7 @@ window.LOCAL_CARS = [
 		usb_port: true,
 		backup_camera: true,
 		parking_assist: true,
-		description: 'Pratik sedan, ekonomik, güvenilir'
+		description: 'Pratik sedan, ekonomik, gÃ¼venilir'
 	},
 	{
 		car_id: 121,
@@ -512,7 +512,7 @@ window.LOCAL_CARS = [
 		usb_port: true,
 		backup_camera: true,
 		parking_assist: true,
-		description: 'Premium SUV, sportif sürüş, geniş iç mekan'
+		description: 'Premium SUV, sportif sÃ¼rÃ¼ÅŸ, geniÅŸ iÃ§ mekan'
 	},
 	{
 		car_id: 122,
@@ -524,7 +524,7 @@ window.LOCAL_CARS = [
 		fuel_type: 'Diesel',
 		seating_capacity: 5,
 		location_id: 2,
-		location_name: 'München Flughafen',
+		location_name: 'MÃ¼nchen Flughafen',
 		image_url: '/images/cars/mercedes-amg-gt.jpg',
 		color: 'Silber',
 		mileage: 20000,
@@ -536,7 +536,7 @@ window.LOCAL_CARS = [
 		usb_port: true,
 		backup_camera: true,
 		parking_assist: true,
-		description: 'Lüks SUV, konforlu, geniş bagaj'
+		description: 'LÃ¼ks SUV, konforlu, geniÅŸ bagaj'
 	},
 	{
 		car_id: 123,
@@ -560,7 +560,7 @@ window.LOCAL_CARS = [
 		usb_port: true,
 		backup_camera: true,
 		parking_assist: true,
-		description: 'Kompakt SUV, quattro sürüş, pratik'
+		description: 'Kompakt SUV, quattro sÃ¼rÃ¼ÅŸ, pratik'
 	},
 	{
 		car_id: 124,
@@ -572,7 +572,7 @@ window.LOCAL_CARS = [
 		fuel_type: 'Hybrid',
 		seating_capacity: 5,
 		location_id: 4,
-		location_name: 'Köln Dom',
+		location_name: 'KÃ¶ln Dom',
 		image_url: '/images/cars/toyota-corolla-hybrid.jpg',
 		color: 'Grau',
 		mileage: 15000,
@@ -584,7 +584,7 @@ window.LOCAL_CARS = [
 		usb_port: true,
 		backup_camera: true,
 		parking_assist: true,
-		description: 'Hibrit sedan, ekonomik, güvenilir'
+		description: 'Hibrit sedan, ekonomik, gÃ¼venilir'
 	},
 	{
 		car_id: 125,
@@ -598,7 +598,7 @@ window.LOCAL_CARS = [
 		location_id: 5,
 		location_name: 'Frankfurt Flughafen',
 		image_url: '/images/cars/kia-ev6-gt.jpg',
-		color: 'Weiß',
+		color: 'WeiÃŸ',
 		mileage: 8000,
 		vehicle_type: 'Elektrik SUV',
 		engine_power: 321,
@@ -608,7 +608,7 @@ window.LOCAL_CARS = [
 		usb_port: true,
 		backup_camera: true,
 		parking_assist: true,
-		description: 'Elektrikli SUV, uzun menzil, modern tasarım'
+		description: 'Elektrikli SUV, uzun menzil, modern tasarÄ±m'
 	},
 	{
 		car_id: 126,
@@ -632,8 +632,9 @@ window.LOCAL_CARS = [
 		usb_port: true,
 		backup_camera: true,
 		parking_assist: true,
-		description: 'Hibrit SUV, ekonomik, geniş iç mekan'
+		description: 'Hibrit SUV, ekonomik, geniÅŸ iÃ§ mekan'
 	}
 ];
+
 
 

@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+﻿document.addEventListener('DOMContentLoaded', function() {
     const urlParams = new URLSearchParams(window.location.search);
     
     const pickupLocationId = urlParams.get('pickup_location_id');
@@ -26,14 +26,14 @@ document.addEventListener('DOMContentLoaded', function() {
     const summaryDatesEl = document.getElementById('summary-dates');
 
     // Fill summary bar
-    if (summaryPickupEl) summaryPickupEl.textContent = pickupLocationName || '—';
-    if (summaryDropoffEl) summaryDropoffEl.textContent = dropoffLocationName || '—';
+    if (summaryPickupEl) summaryPickupEl.textContent = pickupLocationName || 'â€”';
+    if (summaryDropoffEl) summaryDropoffEl.textContent = dropoffLocationName || 'â€”';
     if (summaryDatesEl) {
         const pd = pickupDate || '';
         const pt = pickupTime || '';
         const dd = dropoffDate || '';
         const dt = dropoffTime || '';
-        summaryDatesEl.textContent = `${pd}${pt ? ' ' + pt : ''} → ${dd}${dt ? ' ' + dt : ''}`.trim();
+        summaryDatesEl.textContent = `${pd}${pt ? ' ' + pt : ''} â†’ ${dd}${dt ? ' ' + dt : ''}`.trim();
     }
 
     let allCars = [];
@@ -181,9 +181,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="text-center py-5">
                         <i class="bi bi-search text-muted" style="font-size: 3rem;"></i>
                         <h3 class="mt-3 text-muted">Keine Fahrzeuge gefunden</h3>
-                        <p class="text-muted">Versuchen Sie andere Filtereinstellungen oder ändern Sie Ihre Suchkriterien.</p>
+                        <p class="text-muted">Versuchen Sie andere Filtereinstellungen oder Ã¤ndern Sie Ihre Suchkriterien.</p>
                         <button class="nav-link-text" onclick="location.reload()">
-                            <i class="bi bi-arrow-clockwise me-2"></i>Filter zurücksetzen
+                            <i class="bi bi-arrow-clockwise me-2"></i>Filter zurÃ¼cksetzen
                         </button>
                     </div>
                 </div>`;
@@ -230,7 +230,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         <div class="position-relative">
                             <img src="${carImage}" class="car-image" alt="${car.make} ${car.model}"
                                      onerror="this.onerror=null; this.src='/images/cars/car${(index % 3) + 1}.jpg';">
-                            <div class="car-price">€${Number(car.daily_rate).toLocaleString('de-DE')}/Tag</div>
+                            <div class="car-price">â‚¬${Number(car.daily_rate).toLocaleString('de-DE')}/Tag</div>
                             </div>
                         <div class="card-body d-flex flex-column">
                             <h5 class="card-title fw-bold mb-2">${car.make} ${car.model}</h5>
@@ -279,7 +279,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="col-12">
                         <div class="alert alert-danger text-center">
                             <i class="bi bi-exclamation-triangle me-2"></i>
-                            Fahrzeuge konnten nicht geladen werden. Bitte versuchen Sie es später erneut.
+                            Fahrzeuge konnten nicht geladen werden. Bitte versuchen Sie es spÃ¤ter erneut.
                         </div>
                     </div>`;
             }
@@ -312,3 +312,4 @@ document.addEventListener('DOMContentLoaded', function() {
 
     loadCars();
 });
+

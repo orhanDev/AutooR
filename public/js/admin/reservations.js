@@ -1,4 +1,4 @@
-// public/js/admin/reservations.js
+﻿// public/js/admin/reservations.js
 
 document.addEventListener('DOMContentLoaded', async () => {
     const token = localStorage.getItem('token');
@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const newStatusSelect = document.getElementById('new-status');
 
     if (!token) {
-        alert('Bu sayfayı görüntülemek için giriş yapmanız gerekiyor.');
+        alert('Bu sayfayÄ± gÃ¶rÃ¼ntÃ¼lemek iÃ§in giriÅŸ yapmanÄ±z gerekiyor.');
         window.location.href = '/views/login.html';
         return;
     }
@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
 
             if (response.status === 403) {
-                alert('Yönetici yetkiniz bulunmamaktadır.');
+                alert('YÃ¶netici yetkiniz bulunmamaktadÄ±r.');
                 window.location.href = '/';
                 return;
             }
@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             reservationsTableBody.innerHTML = ''; // Tabloyu temizle
 
             if (reservations.length === 0) {
-                reservationsTableBody.innerHTML = '<tr><td colspan="8" class="text-center">Henüz hiç rezervasyon bulunmamaktadır.</td></tr>';
+                reservationsTableBody.innerHTML = '<tr><td colspan="8" class="text-center">HenÃ¼z hiÃ§ rezervasyon bulunmamaktadÄ±r.</td></tr>';
                 return;
             }
 
@@ -54,25 +54,25 @@ document.addEventListener('DOMContentLoaded', async () => {
                             <span class="badge bg-${getStatusBadgeClass(reservation.status)}">${getDisplayStatus(reservation.status)}</span>
                         </td>
                         <td>
-                            <button class="nav-link-text btn-sm status-change-btn" data-id="${reservation.reservation_id}" data-current-status="${reservation.status}">Durum Değiştir</button>
+                            <button class="nav-link-text btn-sm status-change-btn" data-id="${reservation.reservation_id}" data-current-status="${reservation.status}">Durum DeÄŸiÅŸtir</button>
                         </td>
                     </tr>
                 `;
                 reservationsTableBody.innerHTML += row;
             });
 
-            // Durum değiştirme butonlarına event listener ekle
+            // Durum deÄŸiÅŸtirme butonlarÄ±na event listener ekle
             attachEventListeners();
 
         } catch (error) {
-            console.error('Rezervasyonlar çekilirken hata:', error);
-            reservationsTableBody.innerHTML = '<tr><td colspan="8" class="text-danger text-center">Rezervasyonlar yüklenemedi.</td></tr>';
+            console.error('Rezervasyonlar Ã§ekilirken hata:', error);
+            reservationsTableBody.innerHTML = '<tr><td colspan="8" class="text-danger text-center">Rezervasyonlar yÃ¼klenemedi.</td></tr>';
         }
     }
 
     function attachEventListeners() {
         document.querySelectorAll('.status-change-btn').forEach(button => {
-            button.removeEventListener('click', handleStatusChangeClick); // Tekrar eklemeyi önle
+            button.removeEventListener('click', handleStatusChangeClick); // Tekrar eklemeyi Ã¶nle
             button.addEventListener('click', handleStatusChangeClick);
         });
     }
@@ -81,10 +81,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         const reservationId = e.target.dataset.id;
         const currentStatus = e.target.dataset.currentStatus;
 
-        statusModalLabel.textContent = `Rezervasyon (${reservationId.substring(0, 8)}...) Durum Değiştir`;
+        statusModalLabel.textContent = `Rezervasyon (${reservationId.substring(0, 8)}...) Durum DeÄŸiÅŸtir`;
         reservationIdToUpdateInput.value = reservationId;
         currentStatusInput.value = getDisplayStatus(currentStatus);
-        newStatusSelect.value = currentStatus; // Seçili durumu ayarla
+        newStatusSelect.value = currentStatus; // SeÃ§ili durumu ayarla
 
         statusModal.show();
     }
@@ -109,12 +109,12 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const errorData = await response.json();
                 throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
             }
-            alert('Rezervasyon durumu başarıyla güncellendi!');
+            alert('Rezervasyon durumu baÅŸarÄ±yla gÃ¼ncellendi!');
             statusModal.hide();
             fetchReservations(); // Listeyi yenile
         } catch (error) {
-            console.error('Durum güncelleme hatası:', error);
-            alert(`Durum güncellenirken bir hata oluştu: ${error.message}`);
+            console.error('Durum gÃ¼ncelleme hatasÄ±:', error);
+            alert(`Durum gÃ¼ncellenirken bir hata oluÅŸtu: ${error.message}`);
         }
     });
 
@@ -132,21 +132,21 @@ document.addEventListener('DOMContentLoaded', async () => {
     function getDisplayStatus(status) {
         switch (status) {
             case 'pending': return 'Beklemede';
-            case 'approved': return 'Onaylandı';
+            case 'approved': return 'OnaylandÄ±';
             case 'rejected': return 'Reddedildi';
-            case 'completed': return 'Tamamlandı';
-            case 'cancelled': return 'İptal Edildi';
+            case 'completed': return 'TamamlandÄ±';
+            case 'cancelled': return 'Ä°ptal Edildi';
             default: return status;
         }
     }
 
     fetchReservations();
 
-    // Çıkış yap linki
+    // Ã‡Ä±kÄ±ÅŸ yap linki
     document.getElementById('admin-logout-link').addEventListener('click', (e) => {
         e.preventDefault();
         localStorage.removeItem('token');
-        alert('Başarıyla çıkış yapıldı.');
+        alert('BaÅŸarÄ±yla Ã§Ä±kÄ±ÅŸ yapÄ±ldÄ±.');
         window.location.href = '/';
     });
 });

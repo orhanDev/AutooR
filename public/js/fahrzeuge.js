@@ -1,11 +1,8 @@
-// Fahrzeuge page JavaScript
+﻿// Fahrzeuge page JavaScript
 
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Fahrzeuge page loaded');
-    console.log('Vehicles container from fahrzeuge.js:', document.getElementById('vehicles-container'));
-
-    // Get DOM elements
-    const vehiclesContainer = document.getElementById('vehicles-container');
+    const carsContainer = document.getElementById('cars-container');
     const dateLocationForm = document.getElementById('date-location-form');
     const pickupLocationSelector = document.getElementById('pickup-location-selector');
     const dropoffLocationSelector = document.getElementById('dropoff-location-selector');
@@ -35,9 +32,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Location names mapping
     const locationNames = {
         '1': 'Berlin Hauptbahnhof',
-        '2': 'München Flughafen',
+        '2': 'MÃ¼nchen Flughafen',
         '3': 'Hamburg Zentrum',
-        '4': 'Köln Dom',
+        '4': 'KÃ¶ln Dom',
         '5': 'Frankfurt Flughafen'
     };
 
@@ -104,8 +101,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     longhand: ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag']
                 },
                 months: {
-                    shorthand: ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'],
-                    longhand: ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember']
+                    shorthand: ['Jan', 'Feb', 'MÃ¤r', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'],
+                    longhand: ['Januar', 'Februar', 'MÃ¤rz', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember']
                 },
                 firstDayOfWeek: 1,
                 rangeSeparator: ' bis ',
@@ -212,7 +209,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Validate form
                 if (!pickupLocationSelector.value || !dropoffLocationSelector.value || 
                     !pickupDateSelector.value || !dropoffDateSelector.value) {
-                    showNotification('Bitte füllen Sie alle Felder aus.', 'error');
+                    showNotification('Bitte fÃ¼llen Sie alle Felder aus.', 'error');
                     return;
                 }
 
@@ -220,7 +217,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const dropoffDateValid = parseGermanDate(dropoffDateSelector.value) !== null;
                 
                 if (!pickupDateValid || !dropoffDateValid) {
-                    showNotification('Bitte geben Sie gültige Daten ein.', 'error');
+                    showNotification('Bitte geben Sie gÃ¼ltige Daten ein.', 'error');
                     return;
                 }
 
@@ -264,48 +261,26 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('Search completed. Found vehicles:', filteredVehicles.length);
     }
 
-    // Load vehicles
+    // Load vehicles from central catalog
     function loadVehicles() {
-        console.log('Loading vehicles...');
-        
-        // Try to use cars from cars.js first, fallback to hardcoded data
-        if (window.LOCAL_CARS && window.LOCAL_CARS.length > 0) {
-            console.log('Using cars from cars.js');
-            allVehicles = window.LOCAL_CARS.map(car => ({
-                car_id: car.car_id,
-                make: car.make,
-                model: car.model,
-                daily_rate: car.daily_rate,
-                transmission_type: car.transmission_type,
-                fuel_type: car.fuel_type,
-                seating_capacity: car.seating_capacity,
-                image_url: car.image_url
-            }));
-        } else {
-            console.log('Using hardcoded cars data');
-            // Use luxury cars data like in homepage
-            allVehicles = [
-                { car_id: 101, make: 'Porsche', model: '911 GT3 RS', daily_rate: 299, transmission_type: 'Automatik', fuel_type: 'Benzin', seating_capacity: 2, image_url: '/images/cars/porsche-911-gt3.jpg' },
-                { car_id: 102, make: 'Tesla', model: 'Model S', daily_rate: 289, transmission_type: 'Automatik', fuel_type: 'Elektrisch', seating_capacity: 5, image_url: '/images/cars/tesla-model-s.jpg' },
-                { car_id: 103, make: 'BMW', model: 'M8', daily_rate: 279, transmission_type: 'Automatik', fuel_type: 'Benzin', seating_capacity: 4, image_url: '/images/cars/bmw-m8.jpg' },
-                { car_id: 104, make: 'Rolls-Royce', model: 'Phantom', daily_rate: 269, transmission_type: 'Automatik', fuel_type: 'Benzin', seating_capacity: 4, image_url: '/images/cars/rolls-royce-phantom.jpg' },
-                { car_id: 105, make: 'Bentley', model: 'Continental GT', daily_rate: 259, transmission_type: 'Automatik', fuel_type: 'Benzin', seating_capacity: 4, image_url: '/images/cars/bentley-continental.jpg' },
-                { car_id: 106, make: 'Mercedes', model: 'AMG GT', daily_rate: 249, transmission_type: 'Automatik', fuel_type: 'Benzin', seating_capacity: 2, image_url: '/images/cars/mercedes-amg-gt.jpg' },
-                { car_id: 107, make: 'Audi', model: 'A8', daily_rate: 239, transmission_type: 'Automatik', fuel_type: 'Hybrid', seating_capacity: 5, image_url: '/images/cars/audi-a8.jpg' },
-                { car_id: 108, make: 'BMW', model: 'X7', daily_rate: 229, transmission_type: 'Automatik', fuel_type: 'Hybrid', seating_capacity: 7, image_url: '/images/cars/bmw-x7.jpg' },
-                { car_id: 109, make: 'Porsche', model: 'Taycan', daily_rate: 219, transmission_type: 'Automatik', fuel_type: 'Elektrisch', seating_capacity: 4, image_url: '/images/cars/porsche-taycan.jpg' },
-                { car_id: 110, make: 'Porsche', model: 'Cayenne', daily_rate: 209, transmission_type: 'Automatik', fuel_type: 'Benzin', seating_capacity: 5, image_url: '/images/cars/porsche-cayenne.jpg' },
-                { car_id: 111, make: 'Rolls-Royce', model: 'Cullinan', daily_rate: 199, transmission_type: 'Automatik', fuel_type: 'Benzin', seating_capacity: 5, image_url: '/images/cars/rolls-royce-cullinan.jpg' },
-                { car_id: 112, make: 'Bentley', model: 'Bentayga', daily_rate: 189, transmission_type: 'Automatik', fuel_type: 'Benzin', seating_capacity: 5, image_url: '/images/cars/bentley-bentayga.jpg' }
-            ];
-        }
-        
-        console.log('Loaded vehicles:', allVehicles.length);
+        const catalog = (window.CAR_CATALOG || []).map(c => ({
+            car_id: c.id,
+            make: c.brand,
+            model: c.model,
+            daily_rate: c.price,
+            transmission_type: c.transmission || c.specs?.transmission || '',
+            fuel_type: c.fuel || c.specs?.fuel || '',
+            seating_capacity: c.seats || c.specs?.seats || '',
+            baggage_large: c.bags || c.koffer || '',
+            baggage_small: c.handBags || c.handgepaeck || c.hand || '',
+            doors: c.doors || '',
+            min_age: c.minAge || '',
+            guaranteed: !!c.guaranteed,
+            image_url: c.image
+        }));
+        allVehicles = catalog;
         filteredVehicles = [...allVehicles];
-        
-        // Apply default sorting (Name A-Z)
         filteredVehicles.sort((a, b) => `${a.make} ${a.model}`.localeCompare(`${b.make} ${b.model}`));
-        
         displayVehicles();
     }
 
@@ -316,7 +291,7 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('Vehicles container:', vehiclesContainer);
         
         if (filteredVehicles.length === 0) {
-            vehiclesContainer.innerHTML = `
+            carsContainer.innerHTML = `
                 <div class="col-12 text-center py-5">
                     <i class="bi bi-search text-muted" style="font-size: 3rem;"></i>
                     <h4 class="mt-3 text-muted">Keine Fahrzeuge gefunden</h4>
@@ -326,42 +301,39 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+        const stripSimilar = (s) => String(s || '').replace(/\s*oder\s+ähnlich/gi, '').trim();
         const carsHTML = filteredVehicles.map(vehicle => `
             <div class="car-card" data-car-id="${vehicle.car_id}">
                 <div class="car-image">
                     <img src="${vehicle.image_url}" 
                          alt="${vehicle.make} ${vehicle.model}" 
-                         onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1503376780353-7e6692767b70?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80'; this.style.opacity='0.9';">
-                    <div class="price-badge">
-                        €${vehicle.daily_rate}/Tag
-                    </div>
+                         onerror="if(!this.dataset.try){this.dataset.try='png';this.src=this.src.replace(/\.jpg$/i,'.png');}else if(this.dataset.try==='png'){this.dataset.try='jpg';this.src=this.src.replace(/\.png$/i,'.jpg');}else{this.onerror=null;this.src='images/cars/default-car.jpg';}">
+                    ${vehicle.daily_rate ? `<div class=\"price-badge\">€${vehicle.daily_rate}/Tag</div>` : ''}
                 </div>
                 <div class="car-details">
-                    <h5 class="car-name">${vehicle.make} ${vehicle.model}</h5>
+                    <h5 class="car-name">${vehicle.make} ${stripSimilar(vehicle.model)}</h5>
                     <div class="car-specs">
                         <div class="spec-item">
                             <i class="bi bi-people"></i>
                             <span>${vehicle.seating_capacity} Sitze</span>
                         </div>
-                        <div class="spec-item">
-                            <i class="bi bi-gear"></i>
-                            <span>${vehicle.transmission_type}</span>
-                        </div>
+                        <div class="spec-item"><i class="bi bi-gear"></i><span>${vehicle.transmission_type}</span></div>
+                        ${vehicle.baggage_large ? `<div class=\"spec-item\"><i class=\"bi bi-suitcase\"></i><span>${vehicle.baggage_large} Koffer</span></div>` : ''}
+                        ${vehicle.baggage_small ? `<div class=\"spec-item\"><i class=\"bi bi-bag\"></i><span>${vehicle.baggage_small} Handgep.</span></div>` : ''}
+                        ${vehicle.doors ? `<div class=\"spec-item\"><i class=\"bi bi-door-closed\"></i><span>${vehicle.doors} Türen</span></div>` : ''}
                         <div class="spec-item">
                             <i class="bi bi-fuel-pump"></i>
                             <span>${vehicle.fuel_type}</span>
                         </div>
                     </div>
                     <div class="car-cta">
-                        <button class="btn-rent-now" onclick="rentVehicle(${vehicle.car_id}, '${vehicle.make} ${vehicle.model}', ${vehicle.daily_rate})">
-                            Jetzt mieten
-                        </button>
+                        <button class="btn-rent-now" onclick="rentVehicle(${vehicle.car_id}, '${vehicle.make} ${vehicle.model}', ${vehicle.daily_rate})">Jetzt mieten</button>
                     </div>
                 </div>
             </div>
         `).join('');
         
-        vehiclesContainer.innerHTML = carsHTML;
+        carsContainer.innerHTML = carsHTML;
         
         // Add click events to car cards
         const carCards = document.querySelectorAll('.car-card');
@@ -378,6 +350,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 const carId = this.dataset.carId;
                 if (carId) {
                     selectVehicle(parseInt(carId));
+                    // Navigate to reservation
+                    const v = allVehicles.find(v => v.car_id === parseInt(carId));
+                    if (v) {
+                        localStorage.setItem('selectedVehicle', JSON.stringify(v));
+                        window.location.href = '/reservation.html';
+                    }
                 }
             });
         });
@@ -403,10 +381,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 <strong style="color: #ffffff; font-size: 1rem;">${vehicle.make} ${vehicle.model}</strong>
             </div>
             <div style="margin-bottom: 0.25rem; color: #cccccc; font-size: 0.8rem;">
-                <span>€${vehicle.daily_rate}/Tag</span>
+                <span>â‚¬${vehicle.daily_rate}/Tag</span>
             </div>
             <div style="color: #cccccc; font-size: 0.8rem;">
-                <span>${vehicle.transmission_type} • ${vehicle.fuel_type}</span>
+                <span>${vehicle.transmission_type} â€¢ ${vehicle.fuel_type}</span>
             </div>
         `;
 
@@ -722,3 +700,4 @@ document.addEventListener('DOMContentLoaded', () => {
         clearAllSelections();
     };
 });
+

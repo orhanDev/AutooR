@@ -1,4 +1,4 @@
-// AUTOR - Modern Car Rental JavaScript
+﻿// AUTOR - Modern Car Rental JavaScript
 
 // Global variables
 let popularCarsContainer;
@@ -131,7 +131,7 @@ function loadPopularCars() {
                      alt="${car.make} ${car.model}" 
                      onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1503376780353-7e6692767b70?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80'; this.style.opacity='0.9';">
                 <div class="price-badge">
-                    €${car.daily_rate}/Tag
+                    â‚¬${car.daily_rate}/Tag
                 </div>
             </div>
             <div class="car-details">
@@ -232,7 +232,7 @@ function initializeDatePickers() {
         // Ensure dropoff date is after pickup date
         dropoffDate.addEventListener('change', function() {
             if (pickupDate.value && this.value < pickupDate.value) {
-                alert('Rückgabedatum muss nach dem Abholdatum liegen.');
+                alert('RÃ¼ckgabedatum muss nach dem Abholdatum liegen.');
                 this.value = '';
             }
         });
@@ -271,7 +271,7 @@ function initializeFormSubmission() {
             
             // Validate form
             if (!pickupLocation || !dropoffLocation || !pickupDate || !dropoffDate) {
-                alert('Bitte füllen Sie alle Felder aus.');
+                alert('Bitte fÃ¼llen Sie alle Felder aus.');
                 return;
             }
             
@@ -425,5 +425,6 @@ document.addEventListener('DOMContentLoaded', function() {
         observer.observe(statsSection);
     }
 });
+
 
 

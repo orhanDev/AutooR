@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8">
@@ -45,7 +45,7 @@
 
         /* Navbar */
         .navbar {
-            background: rgba(255, 255, 255, 0.9) !important;
+            background: rgba(255, 255, 255, 0) !important;
             backdrop-filter: blur(15px);
             box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
             position: fixed;
@@ -595,7 +595,7 @@
         }
 
         .product-item.selected .product-checkbox::after {
-            content: '✓';
+            content: 'âœ“';
             position: absolute;
             top: 50%;
             left: 50%;
@@ -1324,22 +1324,22 @@
                                 <div class="col-12 col-md-6 col-lg-3">
                                     <label class="form-label">Abholort</label>
                                     <select id="pickup-location-selector" class="form-select pickup-location-highlight" required lang="de">
-                                        <option value="">Standort wählen</option>
+                                        <option value="">Standort wÃ¤hlen</option>
                                         <option value="1">Berlin</option>
-                                        <option value="2">München</option>
+                                        <option value="2">MÃ¼nchen</option>
                                         <option value="3">Hamburg</option>
-                                        <option value="4">Köln</option>
+                                        <option value="4">KÃ¶ln</option>
                                         <option value="5">Frankfurt</option>
                                     </select>
                                 </div>
                                 <div class="col-12 col-md-6 col-lg-3">
-                                    <label class="form-label">Rückgabeort</label>
+                                    <label class="form-label">RÃ¼ckgabeort</label>
                                     <select id="dropoff-location-selector" class="form-select dropoff-location-highlight" required lang="de">
-                                        <option value="">Standort wählen</option>
+                                        <option value="">Standort wÃ¤hlen</option>
                                         <option value="1">Berlin</option>
-                                        <option value="2">München</option>
+                                        <option value="2">MÃ¼nchen</option>
                                         <option value="3">Hamburg</option>
-                                        <option value="4">Köln</option>
+                                        <option value="4">KÃ¶ln</option>
                                         <option value="5">Frankfurt</option>
                                     </select>
                                 </div>
@@ -1351,7 +1351,7 @@
                                     </div>
                                 </div>
                                 <div class="col-6 col-md-3 col-lg-2">
-                                    <label class="form-label">Rückgabedatum</label>
+                                    <label class="form-label">RÃ¼ckgabedatum</label>
                                     <div class="input-group">
                                         <span class="input-group-text calendar-trigger-selector" data-target="dropoff-date-selector"><i class="bi bi-calendar3 text-warning"></i></span>
                                         <input type="text" id="dropoff-date-selector" class="form-control dropoff-date-highlight" inputmode="numeric" pattern="\d{2}\.\d{2}\.\d{4}" maxlength="10" placeholder="tt.mm.jjjj" autocomplete="off" required>
@@ -1412,7 +1412,7 @@
                     <label class="filter-label">Sortieren</label>
                     <select class="form-select filter-select" id="sort-filter">
                         <option value="price-low">Niedrigster Preis</option>
-                        <option value="price-high">Höchster Preis</option>
+                        <option value="price-high">HÃ¶chster Preis</option>
                         <option value="name">Name A-Z</option>
                         <option value="popularity">Beliebtheit</option>
                     </select>
@@ -1428,12 +1428,12 @@
                 <div class="col-md-2 col-sm-6">
                     <label class="filter-label">Preisbereich</label>
                     <select class="form-select filter-select" id="price-filter">
-                        <option value="600">Bis €600/Tag</option>
-                        <option value="500">Bis €500/Tag</option>
-                        <option value="400">Bis €400/Tag</option>
-                        <option value="300">Bis €300/Tag</option>
-                        <option value="200">Bis €200/Tag</option>
-                        <option value="100">Bis €100/Tag</option>
+                        <option value="600">Bis â‚¬600/Tag</option>
+                        <option value="500">Bis â‚¬500/Tag</option>
+                        <option value="400">Bis â‚¬400/Tag</option>
+                        <option value="300">Bis â‚¬300/Tag</option>
+                        <option value="200">Bis â‚¬200/Tag</option>
+                        <option value="100">Bis â‚¬100/Tag</option>
                     </select>
                 </div>
             </div>
@@ -1448,7 +1448,7 @@
                     <!-- Search details will be populated here -->
                 </div>
                 <div class="total-price-display" id="total-price-display">
-                    Gesamtbetrag: €0
+                    Gesamtbetrag: â‚¬0
                 </div>
                 <button class="nav-link-text" onclick="continueToPayment()" disabled id="continue-button">
                     Weiter <i class="bi bi-arrow-right"></i>
@@ -1501,7 +1501,7 @@
     <footer class="footer-section">
         <div class="container">
             <div class="footer-content">
-                <span class="footer-text">© 2025 Alle Rechte vorbehalten. Dies ist eine Beispiel-Website für Übungszwecke vorbereitet. Es ist keine echte Autovermietungs-Website.</span>
+                <span class="footer-text">Â© 2025 Alle Rechte vorbehalten. Dies ist eine Beispiel-Website fÃ¼r Ãœbungszwecke vorbereitet. Es ist keine echte Autovermietungs-Website.</span>
                 <span class="footer-separator">-</span>
                 <a href="#" class="footer-link">Datenschutz</a>
                 <span class="footer-separator">-</span>
@@ -1520,3 +1520,4 @@
     <script src="js/navbar.js"></script>
 </body>
 </html>
+

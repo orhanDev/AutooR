@@ -1,4 +1,4 @@
-// Driver Information Page JavaScript
+﻿// Driver Information Page JavaScript
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Driver information page loaded');
     
@@ -89,7 +89,7 @@ function validateField(event) {
     if (field.type === 'email') {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(value)) {
-            showFieldError(field, 'Bitte geben Sie eine gültige E-Mail-Adresse ein');
+            showFieldError(field, 'Bitte geben Sie eine gÃ¼ltige E-Mail-Adresse ein');
             return false;
         }
     }
@@ -98,7 +98,7 @@ function validateField(event) {
     if (field.type === 'tel') {
         const phoneRegex = /^[\d\s\-\+\(\)]+$/;
         if (!phoneRegex.test(value) || value.length < 10) {
-            showFieldError(field, 'Bitte geben Sie eine gültige Telefonnummer ein');
+            showFieldError(field, 'Bitte geben Sie eine gÃ¼ltige Telefonnummer ein');
             return false;
         }
     }
@@ -453,7 +453,7 @@ function setupCountryDropdown() {
                      </div>
                      <div class="payment-actions">
                          <button type="button" class="nav-link-text" onclick="closeCreditCardForm()">Abbrechen</button>
-                         <button type="submit" class="nav-link-text">Zahlung bestätigen</button>
+                         <button type="submit" class="nav-link-text">Zahlung bestÃ¤tigen</button>
                      </div>
                  </form>
              </div>
@@ -513,7 +513,7 @@ function setupCountryDropdown() {
          localStorage.removeItem('driverInformation');
          console.log('Cleared driver information after successful payment');
          
-         alert('Zahlung erfolgreich! Ihre Reservierung wurde bestätigt.');
+         alert('Zahlung erfolgreich! Ihre Reservierung wurde bestÃ¤tigt.');
          closeCreditCardForm();
          window.location.href = '/reservation-confirmation';
      }, 3000);
@@ -536,7 +536,7 @@ function setupCountryDropdown() {
          console.log('Cleared driver information after successful PayPal payment');
          
          // Simulate PayPal redirect
-         alert('PayPal-Zahlung erfolgreich! Ihre Reservierung wurde bestätigt.');
+         alert('PayPal-Zahlung erfolgreich! Ihre Reservierung wurde bestÃ¤tigt.');
          window.location.href = '/reservation-confirmation';
      }, 2000);
  }
@@ -550,7 +550,7 @@ function setupCountryDropdown() {
          console.log('Cleared driver information after successful Klarna payment');
          
          // Simulate Klarna redirect
-         alert('Klarna-Zahlung erfolgreich! Ihre Reservierung wurde bestätigt.');
+         alert('Klarna-Zahlung erfolgreich! Ihre Reservierung wurde bestÃ¤tigt.');
          window.location.href = '/reservation-confirmation';
      }, 2000);
  }
@@ -563,21 +563,22 @@ function setupCountryDropdown() {
          localStorage.removeItem('driverInformation');
          console.log('Cleared driver information after successful Google Pay payment');
          
-         alert('Google Pay-Zahlung erfolgreich! Ihre Reservierung wurde bestätigt.');
+         alert('Google Pay-Zahlung erfolgreich! Ihre Reservierung wurde bestÃ¤tigt.');
          window.location.href = '/reservation-confirmation';
      }, 2000);
  }
 
  // Redirect to Sofort
  function redirectToSofort() {
-     alert('Sie werden zu Sofortüberweisung weitergeleitet...');
+     alert('Sie werden zu SofortÃ¼berweisung weitergeleitet...');
      setTimeout(() => {
          // Clear sensitive data after successful payment
          localStorage.removeItem('driverInformation');
          console.log('Cleared driver information after successful Sofort payment');
          
          // Simulate Sofort redirect
-         alert('Sofortüberweisung erfolgreich! Ihre Reservierung wurde bestätigt.');
+         alert('SofortÃ¼berweisung erfolgreich! Ihre Reservierung wurde bestÃ¤tigt.');
          window.location.href = '/reservation-confirmation';
      }, 2000);
  }
+

@@ -1,4 +1,4 @@
-// Vehicle Details Page JavaScript
+﻿// Vehicle Details Page JavaScript
 
 document.addEventListener('DOMContentLoaded', () => {
     const container = document.getElementById('vehicle-details-container');
@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <img src="${vehicle.image_url}" alt="${vehicle.make} ${vehicle.model}" 
                              class="img-fluid rounded-4 shadow-lg w-100" style="height: 400px; object-fit: cover;">
                         <div class="position-absolute top-0 end-0 m-3">
-                            <span class="badge bg-warning fs-6 px-3 py-2">€${vehicle.daily_rate}/Tag</span>
+                            <span class="badge bg-warning fs-6 px-3 py-2">â‚¬${vehicle.daily_rate}/Tag</span>
                         </div>
                     </div>
                 </div>
@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 <div class="d-flex align-items-center">
                                     <i class="bi bi-people text-warning fs-4 me-3"></i>
                                     <div>
-                                        <small class="text-muted d-block">Sitzplätze</small>
+                                        <small class="text-muted d-block">SitzplÃ¤tze</small>
                                         <strong>${vehicle.seating_capacity}</strong>
                                     </div>
                                 </div>
@@ -118,7 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <div class="bg-light rounded-3 p-3 mb-4">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div>
-                                    <h3 class="fw-bold text-warning mb-0">€${vehicle.daily_rate}</h3>
+                                    <h3 class="fw-bold text-warning mb-0">â‚¬${vehicle.daily_rate}</h3>
                                     <small class="text-muted">pro Tag</small>
                                 </div>
                                 <div class="text-end">
@@ -136,7 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             </button>
                             <button class="nav-link-text" onclick="window.history.back()">
                                 <i class="bi bi-arrow-left me-2"></i>
-                                Zurück zur Übersicht
+                                ZurÃ¼ck zur Ãœbersicht
                             </button>
                         </div>
                     </div>
@@ -200,7 +200,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                         <strong>${vehicle.usb_port ? 'Ja' : 'Nein'}</strong>
                                     </div>
                                     <div class="col-6">
-                                        <small class="text-muted d-block">Rückfahrkamera</small>
+                                        <small class="text-muted d-block">RÃ¼ckfahrkamera</small>
                                         <strong>${vehicle.backup_camera ? 'Ja' : 'Nein'}</strong>
                                     </div>
                                     <div class="col-6">
@@ -218,7 +218,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="row mt-5">
                 <div class="col-12">
                     <div class="bg-white rounded-4 p-4 shadow-sm border">
-                        <h3 class="fw-bold mb-4">Warum dieses Fahrzeug wählen?</h3>
+                        <h3 class="fw-bold mb-4">Warum dieses Fahrzeug wÃ¤hlen?</h3>
                         
                         <div class="row g-4">
                             <div class="col-md-4">
@@ -226,8 +226,8 @@ document.addEventListener('DOMContentLoaded', () => {
                                     <div class="bg-warning rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
                                         <i class="bi bi-shield-check text-white fs-4"></i>
                                     </div>
-                                    <h6 class="fw-bold">Sicher & Zuverlässig</h6>
-                                    <p class="text-muted small">Regelmäßig gewartet und vollversichert</p>
+                                    <h6 class="fw-bold">Sicher & ZuverlÃ¤ssig</h6>
+                                    <p class="text-muted small">RegelmÃ¤ÃŸig gewartet und vollversichert</p>
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -236,7 +236,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                         <i class="bi bi-fuel-pump text-white fs-4"></i>
                                     </div>
                                     <h6 class="fw-bold">Spritsparend</h6>
-                                    <p class="text-muted small">Moderne Technik für niedrigen Verbrauch</p>
+                                    <p class="text-muted small">Moderne Technik fÃ¼r niedrigen Verbrauch</p>
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -244,8 +244,8 @@ document.addEventListener('DOMContentLoaded', () => {
                                     <div class="bg-warning rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
                                         <i class="bi bi-star text-white fs-4"></i>
                                     </div>
-                                    <h6 class="fw-bold">Premium Qualität</h6>
-                                    <p class="text-muted small">Höchste Standards für Ihren Komfort</p>
+                                    <h6 class="fw-bold">Premium QualitÃ¤t</h6>
+                                    <p class="text-muted small">HÃ¶chste Standards fÃ¼r Ihren Komfort</p>
                                 </div>
                             </div>
                         </div>
@@ -263,7 +263,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <p class="text-muted">Das Fahrzeug konnte nicht geladen werden.</p>
                 <a href="/fahrzeuge" class="nav-link-text">
                     <i class="bi bi-arrow-left me-2"></i>
-                    Zurück zu den Fahrzeugen
+                    ZurÃ¼ck zu den Fahrzeugen
                 </a>
             </div>
         `;
@@ -275,3 +275,4 @@ document.addEventListener('DOMContentLoaded', () => {
         window.location.href = '/reservation';
     };
 });
+

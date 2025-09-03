@@ -1,4 +1,4 @@
-// Login Page JavaScript
+﻿// Login Page JavaScript
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Login page loaded');
     
@@ -44,7 +44,7 @@ function validateField(event) {
     if (field.type === 'email') {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(value)) {
-            showFieldError(field, 'Bitte geben Sie eine gültige E-Mail-Adresse ein');
+            showFieldError(field, 'Bitte geben Sie eine gÃ¼ltige E-Mail-Adresse ein');
             return false;
         }
     }
@@ -145,7 +145,7 @@ function setupFormSubmission() {
         
         // Disable submit button
         submitButton.disabled = true;
-        submitButton.innerHTML = '<i class="bi bi-hourglass-split me-2"></i>Anmeldung läuft...';
+        submitButton.innerHTML = '<i class="bi bi-hourglass-split me-2"></i>Anmeldung lÃ¤uft...';
         
         // Collect form data
         const formData = {
@@ -164,7 +164,7 @@ function setupFormSubmission() {
                     if (user.email === formData.email) {
                         // In a real app, you would check the password hash
                         // For demo purposes, we'll just check if email exists
-                        alert('Anmeldung erfolgreich! Willkommen zurück!');
+                        alert('Anmeldung erfolgreich! Willkommen zurÃ¼ck!');
                         
                         console.log('Setting login status...');
                         // Set login status
@@ -214,3 +214,4 @@ function showLoginError(message) {
         }
     }, 5000);
 }
+

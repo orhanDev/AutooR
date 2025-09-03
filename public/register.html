@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8">
@@ -15,6 +15,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="/css/navbar.css">
     <style>
         :root {
             --primary-red: #dc3545;
@@ -28,7 +29,7 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-image: url('images/cars/überunsfotom.jpeg');
+            background-image: url('images/cars/Ã¼berunsfotom.jpeg');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -52,38 +53,7 @@
             z-index: -1;
         }
 
-        /* Navbar */
-        .navbar {
-            background: rgba(255, 255, 255, 0.9) !important;
-            backdrop-filter: blur(15px);
-            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
-        }
-
-        .navbar-brand {
-            color: #000000 !important;
-        }
-        
-        .navbar-brand i,
-        .navbar-brand span {
-            color: #000000 !important;
-        }
-        
-        .navbar-brand .bi-car-front {
-            color: #000000 !important;
-        }
-        
-        .navbar-brand .text-warning {
-            color: #000000 !important;
-        }
-
-        .nav-link {
-            color: #666 !important;
-            transition: all 0.3s ease;
-        }
-
-        .nav-link:hover {
-            color: var(--primary-red) !important;
-        }
+        /* Navbar - centralized in /css/navbar.css; page-specific overrides removed */
 
         .btn-warning {
             background: #FFA000 !important;
@@ -803,13 +773,13 @@
 <body>
     <!-- Navigation -->
     <div id="navbar-container">
-        <!-- Navbar JavaScript ile yüklenecek -->
+        <!-- Navbar JavaScript ile yÃ¼klenecek -->
     </div>
 
     <!-- Hero Section with Background -->
     <section class="hero-section-porsche" style="position: relative; z-index: 1; height: 100vh; display: flex; align-items: center; justify-content: center;">
         <div class="hero-background" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: -1;">
-            <img src="images/cars/überunsfotom.jpg" alt="Premium Car" class="hero-car-image" style="width: 100%; height: 100%; object-fit: cover;">
+            <img src="images/cars/Ã¼berunsfotom.jpg" alt="Premium Car" class="hero-car-image" style="width: 100%; height: 100%; object-fit: cover;">
         </div>
         
         <div class="container" style="position: relative; z-index: 2;">
@@ -825,7 +795,7 @@
         <div class="container">
             <div class="register-container">
                 <h1 class="form-title">Konto erstellen</h1>
-                <p class="form-subtitle">Erstellen Sie Ihr AutOr-Konto und genießen Sie unsere Premium-Fahrzeugmietdienste</p>
+                <p class="form-subtitle">Erstellen Sie Ihr AutOr-Konto und genieÃŸen Sie unsere Premium-Fahrzeugmietdienste</p>
                 
                 <form id="register-form">
                     <div class="row">
@@ -861,10 +831,10 @@
                                         <span class="country-code">+49</span>
                                         <span class="country-name">Deutschland</span>
                                     </div>
-                                    <div class="country-option" data-code="+43" data-flag="flag-at" data-name="Österreich">
+                                    <div class="country-option" data-code="+43" data-flag="flag-at" data-name="Ã–sterreich">
                                         <div class="country-flag flag-at"></div>
                                         <span class="country-code">+43</span>
-                                        <span class="country-name">Österreich</span>
+                                        <span class="country-name">Ã–sterreich</span>
                                     </div>
                                     <div class="country-option" data-code="+41" data-flag="flag-ch" data-name="Schweiz">
                                         <div class="country-flag flag-ch"></div>
@@ -896,20 +866,20 @@
                                         <span class="country-code">+34</span>
                                         <span class="country-name">Spanien</span>
                                     </div>
-                                    <div class="country-option" data-code="+44" data-flag="flag-gb" data-name="Großbritannien">
+                                    <div class="country-option" data-code="+44" data-flag="flag-gb" data-name="GroÃŸbritannien">
                                         <div class="country-flag flag-gb"></div>
                                         <span class="country-code">+44</span>
-                                        <span class="country-name">Großbritannien</span>
+                                        <span class="country-name">GroÃŸbritannien</span>
                                     </div>
                                     <div class="country-option" data-code="+1" data-flag="flag-us" data-name="USA">
                                         <div class="country-flag flag-us"></div>
                                         <span class="country-code">+1</span>
                                         <span class="country-name">USA</span>
                                     </div>
-                                    <div class="country-option" data-code="+90" data-flag="flag-tr" data-name="Türkei">
+                                    <div class="country-option" data-code="+90" data-flag="flag-tr" data-name="TÃ¼rkei">
                                         <div class="country-flag flag-tr"></div>
                                         <span class="country-code">+90</span>
-                                        <span class="country-name">Türkei</span>
+                                        <span class="country-name">TÃ¼rkei</span>
                                     </div>
                                 </div>
                             </div>
@@ -928,7 +898,7 @@
                       </div>
 
                     <div class="form-group">
-                        <label for="confirm-password" class="form-label">Passwort bestätigen *</label>
+                        <label for="confirm-password" class="form-label">Passwort bestÃ¤tigen *</label>
                         <div class="password-input-group">
                             <input type="password" class="form-control" id="confirm-password" name="confirmPassword" placeholder="Passwort wiederholen" required>
                             <button type="button" class="password-toggle" onclick="toggleConfirmPassword()">
@@ -948,13 +918,13 @@
                         <div class="terms-checkbox">
                             <input type="checkbox" class="form-check-input" id="terms-checkbox" name="termsCheckbox">
                             <label for="terms-checkbox" class="terms-label">
-                                Ich akzeptiere die <a href="#" class="terms-link">Nutzungsbedingungen</a> und <a href="#" class="terms-link">Datenschutzerklärung</a> *
+                                Ich akzeptiere die <a href="#" class="terms-link">Nutzungsbedingungen</a> und <a href="#" class="terms-link">DatenschutzerklÃ¤rung</a> *
                             </label>
                         </div>
                         <div class="terms-checkbox">
                             <input type="checkbox" class="form-check-input" id="newsletter-checkbox" name="newsletterCheckbox">
                             <label for="newsletter-checkbox" class="terms-label">
-                                Ich möchte über Neuigkeiten und Angebote per E-Mail informiert werden
+                                Ich mÃ¶chte Ã¼ber Neuigkeiten und Angebote per E-Mail informiert werden
                             </label>
                         </div>
                     </div>
@@ -976,7 +946,7 @@
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
-                <p class="mb-3">© 2025 AutOr. Alle Rechte vorbehalten.</p>
+                <p class="mb-3">Â© 2025 AutOr. Alle Rechte vorbehalten.</p>
                 <div>
                     <a href="#" class="footer-link">Datenschutz</a>
                     <a href="#" class="footer-link">AGB</a>
@@ -994,3 +964,4 @@
     <script src="js/navbar.js"></script>
 </body>
 </html>
+

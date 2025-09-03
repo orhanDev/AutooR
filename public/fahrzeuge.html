@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fahrzeuge - AutOr</title>
+    <title>Fahrzeuge - AutOr Premium Car Rental</title>
     
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
@@ -11,16 +11,13 @@
     
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Flatpickr CSS for date picker -->
-    <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="/css/navbar.css">
     <style>
-        /* Porsche-inspired Modern Design */
         :root {
             --porsche-black: #B10000;
             --porsche-white: #ffffff;
@@ -29,1983 +26,295 @@
             --porsche-dark-gray: #212529;
             --porsche-light-gray: #6c757d;
             --porsche-gold: #d4af37;
-        }
-        
-        /* Overlay for better readability - same as main page */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.4);
-            z-index: -1;
-        }
-        
-        /* Additional styles for fahrzeuge page */
-        .filter-card-modern {
-            background: transparent !important;
-            backdrop-filter: none !important;
-            border: none !important;
-            border-radius: 0 !important;
-            padding: 0 !important;
-            box-shadow: none !important;
-            position: relative;
-            width: 100%;
-            max-width: 1800px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        
-        .filter-card-modern .filter-row {
-            background: transparent;
-            backdrop-filter: none;
-            border-radius: 0;
-            padding: 2rem;
-            border: none;
-            box-shadow: none;
-            position: relative;
-            overflow: visible;
-            display: flex;
-            gap: 2rem;
-            flex-wrap: nowrap;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .filter-card-modern .filter-label-modern {
-            font-size: 0.6rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: rgba(255, 255, 255, 1);
-            margin-bottom: 0.4rem;
-            position: relative;
-            display: block !important;
-            text-align: left !important;
-            justify-content: flex-start !important;
-            align-items: flex-start !important;
-            width: auto !important;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-        }
-        
-        .filter-card-modern .filter-select-modern {
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            border-radius: 6px;
-            padding: 0.6rem 0.5rem;
-            font-size: 0.7rem;
-            font-weight: 500;
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-            height: 38px;
-            min-width: 120px;
-            max-width: 180px;
-            text-align: left !important;
-            text-align-last: left !important;
-            direction: ltr !important;
-            width: 150px !important;
-            display: block !important;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-        }
-        
-        .filter-card-modern .filter-select-modern:hover {
-            border-color: rgba(255, 255, 255, 0.7);
-            background: rgba(255, 255, 255, 0.3);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
-        }
-        
-        .filter-card-modern .filter-select-modern:focus {
-            border-color: rgba(255, 255, 255, 0.9);
-            background: rgba(255, 255, 255, 0.35);
-            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.4);
-            outline: none;
-            transform: translateY(-1px);
-        }
-        
-        /* Okları yukarı yönlendir */
-        .filter-card-modern .filter-select-modern {
-            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 12 4-4 4 4'/%3e%3c/svg%3e");
-            background-position: right 0.5rem center;
-            background-repeat: no-repeat;
-            background-size: 1.5em 1.5em;
-            padding-right: 2.5rem;
-            appearance: none;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-        }
-        
-        /* Select dropdown'ını yukarı aç */
-        .filter-card-modern .filter-select-modern option {
-            direction: ltr;
-        }
-        
-        .filter-card-modern .filter-select-modern {
-            direction: ltr;
-        }
-        
-        /* Getriebe select'i için özel stil - Sortieren ile aynı pozisyon */
-        #transmission-filter {
-            direction: ltr !important;
-            position: relative !important;
-            z-index: 1000 !important;
-        }
-        
-        #transmission-filter option {
-            direction: ltr !important;
-        }
-        
-        /* Getriebe select'ini sağa yasla */
-        .filter-item:last-child {
-            position: relative;
-            z-index: 1000;
-            margin-left: auto;
-            flex-shrink: 0;
-        }
-        
-        /* Fahrzeugtyp'ı sağa kaydır */
-        .filter-item:first-child {
-            margin-left: 4rem;
-        }
-        
-        /* Diğer filter item'ları için flex ayarı */
-        .filter-item:not(:last-child) {
-            flex: 1;
-        }
-        
-        /* Tüm select'lerin dropdown'larını yukarı açılacak şekilde zorla */
-        .filter-card-modern .filter-select-modern {
-            transform-origin: bottom center;
-        }
-        
-        /* Getriebe select'i için özel zorlama */
-        #transmission-filter {
-            transform-origin: bottom center !important;
-        }
-        
-        /* Select dropdown'larını yukarı açılacak şekilde ayarla */
-        .filter-card-modern .filter-select-modern option {
-            direction: ltr;
-            text-align: left;
-        }
-        
-        .search-form {
-            background: transparent !important;
-            backdrop-filter: none !important;
-            border: none !important;
-            border-radius: 0 !important;
-            padding: 0 !important;
-            box-shadow: none !important;
-            margin-top: 3rem;
-            position: relative;
-            width: 100%;
-            max-width: 1800px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        
-        .search-form form {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(15px);
-            border-radius: 16px;
-            padding: 2rem 2rem;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-            position: relative;
-            overflow: hidden;
+            --primary: #B10000;
+            --secondary: #1a1a1a;
+            --accent: #2d2d2d;
+            --gold: #FFD700;
+            --silver: #c0c0c0;
+            --bronze: #cd7f32;
+            --success: #28a745;
+            --warning: #ffc107;
+            --danger: #dc3545;
+            --light: #f8f9fa;
+            --dark: #ffffff;
+            --white: #ffffff;
+            --gradient-primary: linear-gradient(135deg, #B10000 0%, #d32f2f 100%);
+            --gradient-secondary: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            --gradient-gold: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            --gradient-silver: linear-gradient(135deg, #c0c0c0 0%, #e8e8e8 100%);
+            --gradient-bronze: linear-gradient(135deg, #cd7f32 0%, #daa520 100%);
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.1);
+            --shadow-md: 0 4px 8px rgba(0,0,0,0.15);
+            --shadow-lg: 0 8px 16px rgba(0,0,0,0.2);
+            --shadow-xl: 0 12px 24px rgba(0,0,0,0.25);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
         }
 
-        .search-form form::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.3) 50%, transparent 100%);
-        }
-        
-        .search-form .form-label {
-            font-size: 0.6rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: rgba(255, 255, 255, 0.9);
-            margin-bottom: 0.4rem;
-            position: relative;
-            display: block !important;
-            text-align: left !important;
-            justify-content: flex-start !important;
-            align-items: flex-start !important;
-            width: auto !important;
-        }
-        
-        .search-form .form-label::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 100%;
-            height: 1px;
-            background: linear-gradient(90deg, rgba(255, 255, 255, 0.3) 0%, transparent 100%);
-        }
-        
-        .search-form .form-select,
-        .search-form .form-control {
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 6px;
-            padding: 0.6rem 0.5rem;
-            font-size: 0.7rem;
-            font-weight: 400;
-            background: rgba(255, 255, 255, 0.15);
-            color: white;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-            height: 38px;
-            min-width: 80px;
-            max-width: 120px;
-            text-align: left !important;
-            text-align-last: left !important;
-            direction: ltr !important;
-            width: 120px !important;
-            display: block !important;
-        }
-        
-        .search-form .form-select::placeholder,
-        .search-form .form-control::placeholder {
-            color: rgba(255, 255, 255, 0.6);
-            text-align: left !important;
-            direction: ltr !important;
-        }
-        
-        .search-form .form-select:hover,
-        .search-form .form-control:hover {
-            border-color: rgba(255, 255, 255, 0.5);
-            background: rgba(255, 255, 255, 0.2);
-        }
-        
-        .search-form .form-select:focus,
-        .search-form .form-control:focus {
-            border-color: rgba(255, 255, 255, 0.8);
-            background: rgba(255, 255, 255, 0.25);
-            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3);
-            outline: none;
-        }
-        
-        .search-form .input-group-text {
-            background: rgba(0, 0, 0, 0.7);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-right: none;
-            color: white;
-            border-radius: 6px 0 0 6px;
-            padding: 0.6rem 0.8rem;
-            font-size: 0.9rem;
-            backdrop-filter: blur(10px);
-            height: 38px;
-        }
-        
-        .search-form .input-group .form-control {
-            border-left: none;
-            border-radius: 0 6px 6px 0;
-            min-width: 80px;
-            max-width: 100px;
-            text-align: left !important;
-            text-align-last: left !important;
-            direction: ltr !important;
-            width: 100px !important;
-            display: block !important;
-        }
-        
-        .search-form .btn-search {
-            background: transparent;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            color: white;
-            padding: 0.75rem 1.5rem;
-            border-radius: 4px;
-            font-size: 0.9rem;
-            font-weight: 500;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-            transition: all 0.3s ease;
-        }
-        
-
-        
-        .search-form .btn-search:hover {
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            border-color: rgba(255, 255, 255, 0.7);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-        }
-        
-
-        
-
-        
-        .search-form .btn-search i {
-            margin-right: 0.5rem;
-            font-size: 1rem;
-        }
-        
-        /* Bootstrap col sınıflarını düzelt - yan yana sıralama için */
-        .search-form .col-12,
-        .search-form .col-md-6,
-        .search-form .col-lg-3,
-        .search-form .col-6,
-        .search-form .col-md-3,
-        .search-form .col-lg-2,
-        .search-form .col-md-12 {
-            text-align: left !important;
-            display: flex !important;
-            flex-direction: column !important;
-            width: auto !important;
-            flex: 0 0 auto !important;
-            margin-right: 0 !important;
-            margin-left: 0 !important;
-            padding-left: 0 !important;
-            min-width: 120px !important;
-        }
-        
-        .search-form .row {
-            text-align: center !important;
-            justify-content: space-between !important;
-            display: flex !important;
-            flex-direction: row !important;
-            flex-wrap: nowrap !important;
-            align-items: end !important;
-            gap: 0 !important;
-            margin-left: 0 !important;
-            padding-left: 0 !important;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 992px) {
-            .car-card {
-                width: 32% !important;
-                flex: 0 0 32% !important;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .search-container {
-                margin: 0.25rem;
-                padding: 0.75rem;
-            border-radius: 6px;
-            }
-            
-            .search-title {
-                font-size: 1.8rem;
-                letter-spacing: 1px;
-            }
-            
-            .search-subtitle {
-                font-size: 1rem;
-            }
-            
-            .search-grid {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-            }
-            
-            .field-input {
-                padding: 0.875rem 1rem;
-                font-size: 0.9rem;
-            }
-            
-            .search-button {
-                padding: 1rem 1.5rem;
-                font-size: 1rem;
-            }
-            
-            .section-title {
-                font-size: 1.8rem;
-            }
-            
-            .car-card {
-                height: auto;
-                min-height: 320px;
-                width: 48% !important;
-                flex: 0 0 48% !important;
-            }
-            
-            .car-image {
-                height: 160px;
-            }
-            
-            .car-specs {
-            flex-direction: column;
-                gap: 0.5rem;
-            }
-            
-            .options-sidebar {
-                position: static;
-                margin-top: 2rem;
-            }
-        }
-
-        /* Select dropdown styling */
-        #booking-sidebar select option {
-            background-color: #2a2a2a !important;
-            color: #ffffff !important;
-            border: none !important;
-        }
-
-        #booking-sidebar select option:hover {
-            background-color: #d4af37 !important;
-            color: #1a1a1a !important;
-        }
-
-        #booking-sidebar select option:checked {
-            background-color: #d4af37 !important;
-            color: #1a1a1a !important;
-        }
-
-        #booking-sidebar select:focus option:checked {
-            background-color: #d4af37 !important;
-            color: #1a1a1a !important;
-        }
-
-        /* Force German locale for date inputs */
-        #booking-sidebar input[type="date"] {
-            font-family: 'Inter', sans-serif !important;
-        }
-
-        #booking-sidebar input[type="date"]::-webkit-calendar-picker-indicator {
-            filter: invert(1);
-        }
-
-        /* Force German locale with multiple selectors */
-        #booking-sidebar input[type="date"] {
-            font-family: 'Inter', sans-serif !important;
-        }
-        #booking-sidebar input[type="date"]::-webkit-calendar-picker-indicator {
-            filter: invert(1);
-            cursor: pointer;
-        }
-        #booking-sidebar input[type="date"]::-webkit-datetime-edit {
-            color: #ffffff;
-        }
-        #booking-sidebar input[type="date"]::-webkit-datetime-edit-fields-wrapper {
-            color: #ffffff;
-        }
-        #booking-sidebar input[type="date"]::-webkit-datetime-edit-text {
-            color: #ffffff;
-        }
-        #booking-sidebar input[type="date"]::-webkit-datetime-edit-month-field {
-            color: #ffffff;
-        }
-        #booking-sidebar input[type="date"]::-webkit-datetime-edit-day-field {
-            color: #ffffff;
-        }
-        #booking-sidebar input[type="date"]::-webkit-datetime-edit-year-field {
-            color: #ffffff;
-        }
-
-        /* German date format */
-        #booking-sidebar input[type="date"]::before {
-            content: attr(placeholder);
-            color: #cccccc;
-        }
-
-        #booking-sidebar input[type="date"]:focus::before,
-        #booking-sidebar input[type="date"]:valid::before {
-            display: none;
-        }
-
-        /* Perfect Search Form */
-        .perfect-search-form {
-            position: relative;
-            z-index: 10;
-            margin-top: 2rem;
-            padding: 0;
-        }
-        
-        /* Override hero content for search form */
-        .hero-content-porsche {
-            max-width: none !important;
-            margin: 0 !important;
-            padding: 0 20px !important;
-            text-align: left !important;
-        }
-        
-        .search-row {
-            display: flex;
-            align-items: end;
-            gap: 1rem;
-            flex-wrap: wrap;
-            justify-content: center;
-            padding-left: 100px;
-            margin-left: 50px;
-            padding-right: 100px;
-            margin-right: 50px;
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-
-        .search-row-bottom {
-            margin-top: 1.5rem;
-            justify-content: center;
-            padding-left: 100px;
-            margin-left: 50px;
-            padding-right: 100px;
-            margin-right: 50px;
-            max-width: 1000px;
-            margin: 1.5rem auto 0 auto;
-        }
-
-        .search-item {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-            min-width: 120px;
-            flex: 0.8;
-        }
-        
-        .search-item.search-button {
-            background: transparent !important;
-            border-radius: 0 !important;
-            padding: 0 !important;
-        }
-        
-        /* Abholdatum'u daha daralt */
-        .search-item:nth-child(3) {
-            flex: 0.4;
-            min-width: 100px;
-        }
-        
-        /* Abholdatum yazı boyutunu küçült */
-        .search-item:nth-child(3) select,
-        .search-item:nth-child(3) input {
-            font-size: 0.75rem;
-            padding: 0.75rem 0.5rem;
-        }
-        
-        /* Abholdatum label yazısını küçült */
-        .search-item:nth-child(3) label {
-            font-size: 0.85rem;
-        }
-        
-        /* Rückgabedatum'u daha daralt */
-        .search-item:nth-child(5) {
-            flex: 0.4;
-            min-width: 100px;
-        }
-        
-        /* Rückgabedatum yazı boyutunu küçült */
-        .search-item:nth-child(5) select,
-        .search-item:nth-child(5) input {
-            font-size: 0.75rem;
-            padding: 0.75rem 0.5rem;
-        }
-        
-        /* Rückgabedatum label yazısını küçült */
-        .search-item:nth-child(5) label {
-            font-size: 0.85rem;
-        }
-        
-        /* Zeit select'lerini daralt */
-        .search-item:nth-child(4),
-        .search-item:nth-child(6) {
-            flex: 0.25;
-            min-width: 60px;
-            max-width: 80px;
-        }
-        
-        /* Zeit select yazılarını küçült */
-        .search-item:nth-child(4) select,
-        .search-item:nth-child(6) select {
-            font-size: 0.75rem;
-            padding: 0.875rem 0.5rem;
-            min-height: 44px;
-        }
-        
-        /* Standort wählen alanlarını daralt */
-        .search-item:nth-child(1),
-        .search-item:nth-child(2) {
-            flex: 0.5;
-        }
-        
-        .search-item label {
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: white;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+        * {
             margin: 0;
-        }
-        
-        .search-item select,
-        .search-item input {
-            width: 100%;
-            padding: 0.875rem 1rem;
-            border: 2px solid rgba(255, 255, 255, 0.8);
-            border-radius: 8px;
-            font-size: 0.7rem;
-            color: white;
-            background: rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
-            min-height: 44px;
-            border-right: 2px solid rgba(255, 255, 255, 0.8);
-        }
-        
-        .search-item select:focus,
-        .search-item input:focus {
-            outline: none;
-            border-color: white;
-            background: rgba(255, 255, 255, 0.1);
-            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.2);
-        }
-        
-        .search-item select:hover,
-        .search-item input:hover {
-            border-color: white;
-            background: rgba(255, 255, 255, 0.1);
-        }
-        
-        .search-item select::placeholder,
-        .search-item input::placeholder {
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        /* Select option'ları için özel styling */
-        .search-item select option {
-            background: #2a2a2a;
-            color: white;
-            font-size: 0.65rem;
-            padding: 8px 12px;
-            border: none;
-            border-right: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .search-item select option:checked {
-            background: #333333;
-            color: white;
-        }
-
-        .search-item select option:hover {
-            background: #404040;
-            color: white;
-        }
-        
-        .search-button {
-            flex: 1;
-            min-width: 100%;
-            max-width: 100%;
-            background: transparent;
-            border-radius: 0;
             padding: 0;
-        }
-        
-        .search-button button {
-            width: 100%;
-            padding: 0.4rem;
-            background: rgba(128, 128, 128, 0.1);
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.8);
-            border-radius: 12px;
-            font-size: 0.85rem;
-            font-weight: 400;
-            text-transform: none;
-            letter-spacing: 1px;
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0;
-            min-height: 36px;
-            backdrop-filter: blur(20px);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .search-button button::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(192, 192, 192, 0.2), transparent);
-            transition: left 0.6s ease;
-        }
-        
-        .search-button button:hover::before {
-            left: 100%;
-        }
-        
-        .search-button button:hover {
-            background: rgba(160, 160, 160, 0.2);
-            border-color: rgba(255, 255, 255, 1);
-            transform: translateY(-1px);
-            box-shadow: 0 8px 32px rgba(128, 128, 128, 0.2);
-        }
-        
-        .search-button button:active {
-            transform: translateY(0);
-            box-shadow: 0 4px 16px rgba(34, 197, 94, 0.15);
-        }
-        
-        .search-button button:active {
-            transform: translateY(0);
-        }
-        
-        .search-button i {
-            font-size: 1.25rem;
-        }
-        
-        /* Modern Filters - Ultra Luxury Porsche Style */
-        .filters-section {
-            padding: 4rem 0;
-            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 50%, #0f0f0f 100%);
-            position: relative;
-            overflow: hidden;
+            box-sizing: border-box;
         }
 
-        .filters-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
-            pointer-events: none;
+        body {
+            font-family: 'Inter', sans-serif;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('images/cars/ueberunsfotom1.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            min-height: 100vh;
+            color: var(--dark);
+            line-height: 1.6;
+            overflow-x: hidden;
         }
 
-        .filter-card-modern {
+        /* Navbar için boşluk */
+        body {
+            padding-top: 80px;
+        }
+
+        /* Sayfaya özel navbar stilleri kaldırıldı - global navbar.js ve style.css kullanılacak */
+        
+        /* Ana container */
+        .main-container {
+            padding: 2rem 0;
+            min-height: calc(100vh - 80px);
+        }
+
+
+
+        /* Filter Section - Modern Design */
+        .filter-section {
             background: transparent;
             backdrop-filter: none;
-            border-radius: 0;
-            padding: 0;
-            box-shadow: none;
             border: none;
+            border-radius: 0;
+            padding: 0.98rem;
+            margin: 0.98rem auto;
+            max-width: 920px;
+            width: fit-content;
+            box-shadow: none;
             position: relative;
             overflow: visible;
+            transform: translateY(12rem);
+        }
+        
+        /* Sol ve sağdaki boş alanları şeffaf yapma */
+        .filter-section::after {
+            display: none;
         }
 
-        .filter-card-modern::before {
+        .filter-section::before {
             display: none;
+        }
+
+        .filter-title {
+            font-size: 1.26rem;
+            font-weight: 800;
+            color: rgba(255, 255, 255, 0.9);
+            text-align: center;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1.05px;
+            position: relative;
+            width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .filter-title::after {
+            content: '';
+            position: absolute;
+            bottom: -7px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 56px;
+            height: 2px;
+            background: linear-gradient(90deg, #d4af37, #b8941f);
+            border-radius: 1px;
         }
 
         .filter-row {
             display: flex;
-            gap: 1.5rem;
             flex-wrap: nowrap;
+            gap: 0.8rem;
             align-items: end;
-            position: relative;
-            z-index: 1;
+            justify-content: center;
+            padding: 0;
+            margin: 0;
+            width: 100%;
         }
 
         .filter-item {
             display: flex;
             flex-direction: column;
-            gap: 0.75rem;
-            flex: 1;
-            min-width: 140px;
-            position: relative;
-        }
-
-        .filter-item::after {
-            content: '';
-            position: absolute;
-            bottom: -1rem;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-        }
-
-        .filter-label-modern {
-            font-size: 0.7rem;
-            font-weight: 700;
-            color: rgba(255, 255, 255, 0.9);
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            gap: 0.5rem;
+            min-width: 144px;
+            max-width: 144px;
             margin: 0;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-            position: relative;
+            padding: 0.4rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
         }
 
-        .filter-label-modern::before {
-            content: '';
-            position: absolute;
-            left: -0.5rem;
-            top: 50%;
-            width: 2px;
-            height: 0;
-            background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.6), transparent);
-            transition: height 0.3s ease;
+        /* Her filter-item için şeffaf renkler */
+        .filter-item:nth-child(1) {
+            background: transparent;
+            border: none;
         }
 
-        .filter-item:hover .filter-label-modern::before {
-            height: 1rem;
-            transform: translateY(-50%);
+        .filter-item:nth-child(2) {
+            background: transparent;
+            border: none;
         }
 
-        .filter-select-modern {
+        .filter-item:nth-child(3) {
+            background: transparent;
+            border: none;
+        }
+
+        .filter-item:nth-child(4) {
+            background: transparent;
+            border: none;
+        }
+
+        .filter-item:nth-child(5) {
+            background: transparent;
+            border: none;
+        }
+
+        .filter-item:nth-child(6) {
+            background: transparent;
+            border: none;
+        }
+
+        /* Hover efektleri - şeffaf */
+        .filter-item:nth-child(1):hover {
+            background: transparent;
+            transform: translateY(-2px);
+        }
+
+        .filter-item:nth-child(2):hover {
+            background: transparent;
+            transform: translateY(-2px);
+        }
+
+        .filter-item:nth-child(3):hover {
+            background: transparent;
+            transform: translateY(-2px);
+        }
+
+        .filter-item:nth-child(4):hover {
+            background: transparent;
+            transform: translateY(-2px);
+        }
+
+        .filter-item:nth-child(5):hover {
+            background: transparent;
+            transform: translateY(-2px);
+        }
+
+        .filter-item:nth-child(6):hover {
+            background: transparent;
+            transform: translateY(-2px);
+        }
+        
+        .filter-label {
+            font-size: 0.665rem;
+            font-weight: 700;
+            color: #ffffff;
+            text-transform: uppercase;
+            letter-spacing: 0.7px;
+            margin-bottom: 0.21rem;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+        }
+        
+        .filter-select {
             width: 100%;
-            padding: 1rem 1.25rem;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 12px;
-            font-size: 0.8rem;
-            color: white;
-            background: rgba(0, 0, 0, 0.4);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            min-height: 48px;
-            cursor: pointer;
-            backdrop-filter: blur(10px);
+            background: rgba(26, 26, 26, 0.9);
+            border: 1.4px solid rgba(212, 175, 55, 0.4);
+            border-radius: 8px;
+            color: #d4af37;
+            padding: 0.49rem 0.7rem;
+            font-size: 0.63rem;
+            font-weight: 500;
+            transition: all 0.28s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            backdrop-filter: blur(10.5px);
             position: relative;
             overflow: hidden;
-            border-right: 1px solid rgba(255, 255, 255, 0.2);
         }
 
-        .filter-select-modern::before {
+        .filter-select::before {
             content: '';
             position: absolute;
             top: 0;
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.1), transparent);
             transition: left 0.6s ease;
         }
 
-        .filter-select-modern:hover::before {
+        .filter-select:hover::before {
             left: 100%;
         }
 
-        .filter-select-modern:focus {
-            outline: none;
-            border-color: rgba(255, 255, 255, 0.6);
-            background: rgba(255, 255, 255, 0.15);
-            box-shadow: 
-                0 0 0 3px rgba(255, 255, 255, 0.1),
-                0 8px 32px rgba(0, 0, 0, 0.2);
-            transform: translateY(-2px);
-        }
-
-        .filter-select-modern:hover {
-            border-color: rgba(255, 255, 255, 0.4);
-            background: rgba(255, 255, 255, 0.12);
-            transform: translateY(-1px);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-        }
-
-        .filter-select-modern option {
-            background: #1a1a1a;
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 0.75rem;
-            padding: 12px 16px;
-            border: none;
-            border-right: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .filter-select-modern option:checked {
-            background: linear-gradient(135deg, #333333, #555555);
-            color: white;
-            font-weight: 600;
-        }
-
-        .filter-select-modern option:hover {
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-        }
-
-        /* Modern Navbar */
-        .navbar {
-            background: rgba(255, 255, 255, 0.1) !important;
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 1rem 0;
-            transition: all 0.3s ease;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-        }
-
-        .navbar-brand {
-            font-weight: 800;
-            font-size: 1.8rem;
-            color: #B10000 !important;
-            position: relative;
-            transition: all 0.3s ease;
-            text-transform: none;
-        }
-        
-        .navbar-brand::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 0;
-            height: 1px;
-            background: rgba(255, 255, 255, 0.8);
-            transition: width 0.3s ease;
-        }
-        
-        .navbar-brand:hover::after {
-            width: 100%;
-        }
-        
-        .navbar-brand i {
-            color: #B10000 !important;
-        }
-
-        .nav-link {
-            font-weight: 500;
-            color: rgba(255, 255, 255, 0.9) !important;
-            margin: 0 0.5rem;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-        
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 0;
-            height: 1px;
-            background: rgba(255, 255, 255, 0.8);
-            transition: width 0.3s ease;
-        }
-        
-        .nav-link:hover::after {
-            width: 100%;
-        }
-        
-        .btn-outline-primary {
-            border: 2px solid var(--porsche-red);
-            color: var(--porsche-red);
-            font-weight: 600;
-            padding: 0.75rem 1.5rem;
-            border-radius: 50px;
-            transition: all 0.3s ease;
-        }
-        
-        .btn-outline-primary:hover {
-            background: var(--porsche-red);
-            color: var(--porsche-white);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(213, 0, 28, 0.3);
-        }
-        
-
-        
-        .search-form-modern {
-            position: relative;
-        }
-        
-        .search-grid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 1rem;
-            align-items: end;
-            justify-content: space-between;
-            width: 100%;
-        }
-        
-        /* Tüm select'ler eşit genişlikte olsun */
-        .field-input {
-            width: 100% !important;
-            min-width: 100% !important;
-            max-width: 100% !important;
-        }
-        
-        /* Rückgabedatum sağa yasla */
-        .search-field:nth-child(4) {
-            justify-self: end;
-        }
-        
-        .search-field {
-            position: relative;
-        }
-        
-        .field-label {
-            display: flex;
-            align-items: center;
-            gap: 0.25rem;
-            font-size: 0.7rem;
-            font-weight: 500;
-            color: #666666;
-            margin-bottom: 0.25rem;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-        }
-        
-        .field-label i {
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 0.8rem;
-        }
-        
-        .field-input {
-            width: 100%;
-            padding: 0.5rem 0.75rem;
-            border: 1px solid #e9ecef;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            background: white;
-            color: #333333;
-            transition: all 0.3s ease;
-            font-weight: 400;
-        }
-        
-        /* Modern Select Styling */
-        .field-input[data-type="select"] {
-            background: linear-gradient(135deg, #f8f9fa, #ffffff);
-            border: 1px solid #dee2e6;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-            cursor: pointer;
-            position: relative;
-        }
-        
-        .field-input[data-type="select"]:hover {
-            border-color: rgba(255, 255, 255, 0.8);
-            box-shadow: 0 4px 8px rgba(255, 255, 255, 0.2);
-            transform: translateY(-1px);
-        }
-        
-        .field-input[data-type="select"]:focus {
-            border-color: rgba(255, 255, 255, 0.8);
-            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.2);
-            background: linear-gradient(135deg, #ffffff, #f8f9fa);
-        }
-        
-        /* Select Options Styling */
-        .field-input option {
-            font-size: 0.75rem;
-            padding: 0.5rem;
-            background: white;
-            color: #333333;
-        }
-        
-        .field-input option:hover {
-            background: #f8f9fa;
-        }
-
-        .field-input option:checked {
-            background: linear-gradient(135deg, #333333, #555555);
-            color: white;
-        }
-        
-        .field-input:focus {
-            outline: none;
-            border-color: rgba(255, 255, 255, 0.8);
-            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.2);
-        }
-        
-        .field-input::placeholder {
-            color: #999999;
-        }
-        
-        .date-input-wrapper {
-            position: relative;
-        }
-        
-        .date-icon {
-            position: absolute;
-            right: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: rgba(255, 255, 255, 0.8);
-            pointer-events: none;
-        }
-        
-        /* Select Icon */
-        .select-wrapper {
-            position: relative;
-        }
-        
-        .select-icon {
-            position: absolute;
-            right: 0.75rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: rgba(255, 255, 255, 0.8);
-            pointer-events: none;
-            font-size: 0.8rem;
-            transition: all 0.3s ease;
-        }
-        
-        .field-input[data-type="select"]:focus + .select-icon {
-            transform: translateY(-50%) rotate(180deg);
-            color: rgba(255, 255, 255, 1);
-        }
-        
-        .search-button-field {
-            grid-column: 1 / 6;
-        }
-        
-        @media (max-width: 768px) {
-            .search-button-field {
-                grid-column: 1 / -1;
-            }
-        }
-        
-        .search-button {
-            width: 100%;
-            padding: 0.75rem 1rem;
-            background: linear-gradient(135deg, #000000, #333333);
-            color: white;
-            border: none;
-            border-radius: 4px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.25rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-        }
-        
-        .search-button:hover {
-            background: linear-gradient(135deg, #333333, #555555);
-            transform: translateY(-2px);
-            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3);
-        }
-        
-        .search-button:active {
-            transform: translateY(0);
-        }
-        
-        .search-button i {
-            font-size: 1.2rem;
-        }
-        
-        /* Flatpickr Dark Theme Styling */
-        .flatpickr-calendar {
-            background: #2d3748 !important;
-            border: 1px solid #4a5568 !important;
-            border-radius: 6px !important;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3) !important;
-            color: white !important;
-            font-family: inherit !important;
-            width: 200px !important;
-            max-width: 200px !important;
-            font-size: 0.7rem !important;
-            transform: scale(0.85) !important;
-            transform-origin: top left !important;
-        }
-        
-        .flatpickr-months {
-            background: #1a202c !important;
-            border-radius: 6px 6px 0 0 !important;
-            padding: 6px 0 !important;
-        }
-        
-        .flatpickr-month {
-            color: white !important;
-        }
-        
-        .flatpickr-current-month {
-            color: white !important;
-            font-weight: 600 !important;
-            font-size: 0.8rem !important;
-        }
-        
-        .flatpickr-monthDropdown-months {
-            background: #1a202c !important;
-            color: white !important;
-            border: none !important;
-        }
-        
-        .flatpickr-weekdays {
-            background: #2d3748 !important;
-            padding: 6px 0 !important;
-        }
-        
-        .flatpickr-weekday {
-            color: #a0aec0 !important;
-            font-weight: 500 !important;
-            font-size: 0.6rem !important;
-        }
-        
-        .flatpickr-days {
-            background: #2d3748 !important;
-            padding: 6px !important;
-        }
-        
-        .flatpickr-day {
-            color: white !important;
-            border-radius: 3px !important;
-            margin: 1px !important;
-            height: 24px !important;
-            line-height: 24px !important;
-            font-size: 0.7rem !important;
-        }
-        
-        .flatpickr-day:hover {
-            background: #4a5568 !important;
-            color: white !important;
-        }
-        
-        .flatpickr-day.selected {
-            background: #3182ce !important;
-            color: white !important;
-            border: 2px solid #63b3ed !important;
-        }
-        
-        .flatpickr-day.today {
-            background: #2b6cb0 !important;
-            color: white !important;
-        }
-        
-        .flatpickr-day.prevMonthDay,
-        .flatpickr-day.nextMonthDay {
-            color: #718096 !important;
-        }
-        
-        .flatpickr-months .flatpickr-prev-month,
-        .flatpickr-months .flatpickr-next-month {
-            color: white !important;
-            fill: white !important;
-            padding: 6px !important;
-        }
-        
-        .flatpickr-months .flatpickr-prev-month:hover,
-        .flatpickr-months .flatpickr-next-month:hover {
-            color: #63b3ed !important;
-            fill: #63b3ed !important;
-        }
-        
-        .flatpickr-calendar.arrowTop:before,
-        .flatpickr-calendar.arrowTop:after {
-            border-bottom-color: #2d3748 !important;
-        }
-        
-        .flatpickr-calendar.arrowBottom:before,
-        .flatpickr-calendar.arrowBottom:after {
-            border-top-color: #2d3748 !important;
-        }
-
-        /* Navbar Responsive */
-        @media (max-width: 768px) {
-            .navbar {
-                padding: 0.5rem 0;
-            }
-            
-            .navbar-brand {
-                font-size: 1.2rem;
-            }
-            
-            .navbar-nav {
-            text-align: center;
-                margin-top: 1rem;
-            }
-            
-            .navbar-nav .nav-link {
-                padding: 0.5rem 0;
-                border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-            }
-            
-            .navbar-nav .nav-link:last-child {
-                border-bottom: none;
-            }
-            
-            .navbar-toggler {
-                border: 1px solid rgba(0, 0, 0, 0.3);
-            }
-            
-            .navbar-toggler-icon {
-                background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%280, 0, 0, 0.9%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
-            }
-        }
-
-        @media (max-width: 576px) {
-            .hero-section-porsche {
-                min-height: auto;
-                padding: 0;
-                background: linear-gradient(135deg, #000000, #1a1a1a);
-            position: relative;
-            }
-            
-            .hero-content {
-                text-align: center;
-                padding: 2rem 0.5rem 1rem 0.5rem;
-                background: none;
-            }
-            
-            .hero-content h1 {
-                font-size: 1.2rem;
-                margin-bottom: 0.5rem;
-            color: white;
-                text-shadow: none;
-                line-height: 1.3;
-            }
-            
-            .hero-content p {
-                font-size: 0.7rem;
-                margin-bottom: 0;
-                color: #cccccc;
-                text-shadow: none;
-                line-height: 1.4;
-            }
-            
-            .search-form {
-                position: static;
-                margin: 0 0.5rem 1rem 0.5rem;
-                padding: 0.75rem;
-                background: rgba(255, 255, 255, 0.95);
-                backdrop-filter: none;
-                border-radius: 6px;
-                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-                z-index: 100 !important;
-                position: relative !important;
-                display: none;
-            }
-            
-            .search-form.active {
-                display: block;
-            }
-            
-            .search-toggle-btn {
-                position: fixed;
-                bottom: 1rem;
-                right: 1rem;
-                background: #000000;
-            color: white;
-            border: none;
-                border-radius: 50%;
-                width: 50px;
-                height: 50px;
-                font-size: 1.2rem;
-                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-                z-index: 1000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-                transition: all 0.3s ease;
-            }
-            
-            .search-toggle-btn:hover {
-                background: #333333;
-                transform: scale(1.1);
-            }
-            
-            .search-toggle-btn.active {
-                background: #555555;
-            }
-            
-            .search-form .row {
-                gap: 0.5rem !important;
-            }
-            
-            .search-form .col-12,
-            .search-form .col-md-6,
-            .search-form .col-lg-3,
-            .search-form .col-6,
-            .search-form .col-md-3,
-            .search-form .col-lg-2,
-            .search-form .col-md-12 {
-                width: 100% !important;
-                min-width: 100% !important;
-                max-width: 100% !important;
-                margin-bottom: 0;
-                flex: 1 1 100% !important;
-            }
-            
-            .search-form .btn-search {
-                padding: 0.5rem !important;
-                font-size: 0.7rem !important;
-                background: #22c55e !important;
-                color: white !important;
-                border: none !important;
-                height: auto !important;
-            }
-            
-            .search-form .btn-search:hover {
-                background: #555555 !important;
-                color: white !important;
-                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
-            }
-            
-            .search-form label {
-                color: #333333 !important;
-                font-size: 0.6rem !important;
-                font-weight: 600 !important;
-                margin-bottom: 0.25rem !important;
-            }
-            
-            .search-form input,
-            .search-form select {
-                background: white !important;
-                border: 1px solid #dddddd !important;
-                color: #333333 !important;
-                font-size: 0.7rem !important;
-                width: 100% !important;
-                min-width: 100% !important;
-                max-width: 100% !important;
-                box-sizing: border-box !important;
-                position: relative !important;
-                z-index: 10 !important;
-                padding: 0.4rem 0.5rem !important;
-                height: auto !important;
-            }
-            
-            /* Dropdown menüler için */
-            .search-form select:focus {
-                z-index: 1000 !important;
-            }
-            
-            /* Flatpickr takvim için */
-            .flatpickr-calendar {
-                z-index: 9999 !important;
-                position: fixed !important;
-                top: auto !important;
-                left: auto !important;
-            }
-            
-
-            
-            /* Input focus durumunda */
-            .search-form input:focus {
-                z-index: 1000 !important;
-            }
-            
-            .search-form input::placeholder {
-                color: #999999 !important;
-            }
-            
-            .section-title {
-                font-size: 1.5rem;
-            }
-            
-            .car-card {
-                min-height: 280px;
-            }
-            
-            .car-image {
-                height: 140px;
-            }
-            
-            .car-details {
-                padding: 1rem;
-            }
-            
-            .car-name {
-                font-size: 1rem;
-            }
-            
-            .spec-item span {
-                font-size: 0.6rem;
-            }
-        }
-        
-
-        
-        /* Filters Section */
-        .filters-section {
-            background: #f8f9fa;
-            padding: 2rem 0;
-            border-bottom: 1px solid #e9ecef;
-        }
-        
-        .filter-card {
-            background: white;
-            border-radius: 12px;
-            padding: 1.5rem;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-            border: 1px solid #e9ecef;
-        }
-        
-        .filter-label {
-            font-size: 0.8rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #212529;
-            margin-bottom: 0.75rem;
-        }
-        
-        .filter-select {
-            border: 1px solid #e9ecef;
-            border-radius: 8px;
-            padding: 0.75rem 1rem;
-            font-size: 0.9rem;
-            font-weight: 400;
-            background: white;
-            transition: all 0.3s ease;
-            width: 100%;
-        }
-        
         .filter-select:focus {
-            border-color: #333333;
-            box-shadow: 0 0 0 3px rgba(51, 51, 51, 0.1);
             outline: none;
-        }
-        
-        /* Vehicles Section */
-        .vehicles-section {
-            padding: 4rem 0;
-            background: transparent;
-        }
-        
-        .section-header {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-        
-        .section-title {
-            font-size: 2.5rem;
-            font-weight: 300;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            color: rgba(255, 255, 255, 0.9);
-            margin-bottom: 1rem;
-        }
-        
-        .section-subtitle {
-            font-size: 1.1rem;
-            font-weight: 300;
-            color: rgba(255, 255, 255, 0.7);
-            letter-spacing: 1px;
-        }
-        
-        /* Porsche Style Car Cards */
-        .car-card {
-            background: linear-gradient(135deg, #ffffff, #f8f9fa) !important;
-            backdrop-filter: blur(10px) !important;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            position: relative;
-            height: 200px !important;
-            min-height: 200px !important;
-            max-height: 200px !important;
-            padding-top: 0.3rem;
-            width: 100%;
-            margin: 0;
-        }
-        
-        .car-card:hover {
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 25px 80px rgba(213, 0, 28, 0.2);
-            border-color: rgba(213, 0, 28, 0.3);
-        }
-        
-        .car-image {
-            height: 100px;
-            background: linear-gradient(45deg, #f8f9fa, #e9ecef);
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            width: 100%;
-            z-index: 1;
-            overflow: hidden;
+            border-color: #d4af37;
+            box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.3);
+            transform: translateY(-3px);
+            background: rgba(42, 42, 42, 0.95);
+            color: #ffffff;
         }
 
-        .car-image img {
-            width: 100%;
-            height: 6.5rem;
-            object-fit: cover;
-            transition: all 0.4s ease;
-        }
-        
-        .car-card:hover .car-image img {
-            transform: scale(1.1);
-        }
-        
-        .price-badge {
-            position: absolute;
-            top: 0.5rem;
-            right: 0.5rem;
-            background: linear-gradient(135deg, #B10000, #cc0000);
-            color: white;
-            padding: 0.2rem 0.4rem;
-            border-radius: 10px;
-            font-weight: 700;
-            font-size: 0.65rem;
-            box-shadow: 0 2px 8px rgba(139, 0, 0, 0.3);
+        .filter-select:hover {
+            border-color: rgba(212, 175, 55, 0.8);
+            transform: translateY(-1.4px);
+            background: rgba(42, 42, 42, 0.9);
+            color: #ffffff;
         }
 
-        .car-details {
-            padding: 0.8rem 0.8rem 0.8rem 0.8rem;
-            height: 97px;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            min-height: 97px;
-            max-height: 97px;
-            background: linear-gradient(135deg, #ffffff, #f8f9fa);
-            backdrop-filter: blur(10px);
-            margin-top: 92px;
-            position: relative;
-            z-index: 2;
-            width: calc(100% + 1.6rem);
-            left: -0.8rem;
-            right: -0.8rem;
-            margin-right: 0;
-            margin-left: 0;
-        }
-        
-        .car-name {
-            font-size: 0.9rem;
-            font-weight: 700;
-            color: #000000 !important;
-            margin-bottom: 0.5px;
-            line-height: 1.1;
-            overflow: visible;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            height: auto;
-            font-family: 'Helvetica Neue', 'Arial', sans-serif;
-            letter-spacing: 0.3px;
-            text-transform: none;
-            font-style: normal;
-        }
-        
-        .btn-rent-now {
-            background: linear-gradient(135deg, #B10000, #cc0000) !important;
-            color: white !important;
-            border: none !important;
-            border-radius: 6px !important;
-            padding: 0.3rem 0.3rem !important;
-            font-weight: 600 !important;
-            font-size: 0.6rem !important;
-            text-transform: uppercase !important;
-            letter-spacing: 0.3px !important;
-            transition: all 0.3s ease !important;
-            cursor: pointer !important;
-            width: 100% !important;
-            height: 40px !important;
-            white-space: nowrap !important;
-            overflow: hidden !important;
-            text-overflow: ellipsis !important;
-        }
-        
-        .btn-rent-now:hover {
-            background: linear-gradient(135deg, #cc0000, #B10000) !important;
-            transform: translateY(-2px) !important;
-            box-shadow: 0 4px 12px rgba(139, 0, 0, 0.4) !important;
-        }
-
-        .car-specs {
-            display: flex;
-            gap: 0.5rem;
-            margin-bottom: 0.5rem;
-            flex-wrap: nowrap;
-            overflow: hidden;
-            justify-content: flex-start;
-            align-items: center;
-            flex: 1;
-        }
-
-        .spec-item {
-            display: flex;
-            align-items: center;
-            gap: 0.15rem;
-            font-size: 0.7rem;
-            color: #495057 !important;
-            white-space: nowrap;
-            flex-shrink: 0;
-            min-width: 0;
-        }
-        
-        .spec-item span {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        
-        .spec-item i {
-            color: #B10000;
-        }
-        
-        .car-cta {
-            display: flex;
-            gap: 0.3rem;
-            margin-top: auto;
-            width: 100%;
-            flex-shrink: 0;
-            min-height: 40px;
-        }
-        
-        .btn-view-details {
-            background: #000000;
-            color: white;
+        .filter-select option {
+            background: #1a1a1a;
+            color: #d4af37;
+            padding: 0.56rem;
             border: none;
-            border-radius: 6px;
-            padding: 0.75rem 1.5rem;
-            font-size: 0.8rem;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: block;
-            text-align: center;
+            font-size: 0.63rem;
         }
-        
-        .btn-view-details:hover {
-            background: #333333;
-            color: white;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-        }
-        
-        /* Sidebar */
-        .options-sidebar {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 15px;
-            padding: 2rem;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            height: fit-content;
-            position: sticky;
-            top: 120px;
-            max-height: calc(100vh - 140px);
-            overflow-y: auto;
-        }
-        
-        .options-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: rgba(255, 255, 255, 0.9);
-            margin-bottom: 1.5rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            border-bottom: 2px solid rgba(255, 255, 255, 0.3);
-            padding-bottom: 0.5rem;
-        }
-        
-        .insurance-item, .product-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .insurance-item:last-child, .product-item:last-child {
-            border-bottom: none;
-        }
-        
-        .insurance-item:hover, .product-item:hover {
-            background: rgba(51, 51, 51, 0.05);
-            border-radius: 8px;
-            padding-left: 1rem;
-            padding-right: 1rem;
-            margin-left: -1rem;
-            margin-right: -1rem;
-        }
-        
-        .insurance-radio, .product-checkbox {
-            width: 14px;
-            height: 14px;
-            border: 2px solid #6c757d;
-            border-radius: 50%;
-            position: relative;
-            flex-shrink: 0;
-            transition: all 0.3s ease;
-        }
-        
-        .product-checkbox {
-            border-radius: 4px;
-        }
-        
-        .insurance-item.selected .insurance-radio,
-        .product-item.selected .product-checkbox {
-            border-color: #333333;
-            background: #333333;
-        }
-        
-        .insurance-item.selected .insurance-radio::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 6px;
-            height: 6px;
-            background: white;
-            border-radius: 50%;
-        }
-        
-        .product-item.selected .product-checkbox::after {
-            content: '✓';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: white;
-            font-size: 12px;
-            font-weight: bold;
-        }
-        
-        .insurance-content, .product-content {
-            display: flex;
-            justify-content: space-between;
-                align-items: center;
-            flex: 1;
-        }
-        
-        .insurance-title, .product-title {
-            font-size: 0.7rem;
-            font-weight: 500;
-            color: rgba(255, 255, 255, 0.9);
-        }
-        
-        .insurance-price, .product-price {
-            font-size: 0.7rem;
-            font-weight: 600;
-            color: rgba(255, 255, 255, 0.8);
-        }
-        
-        /* Footer */
-        .footer {
-            background: linear-gradient(135deg, #555555, #666666);
-            color: #ffffff;
-            padding: 60px 0 40px 0;
-            text-align: center;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .footer-content {
-            opacity: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 1rem;
-        }
-        
-        .footer-link {
-            color: #a0aec0;
-            text-decoration: none;
-            margin: 0 1.5rem;
-            transition: all 0.3s ease;
-            font-weight: 500;
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-        }
-        
-        .footer-link:hover {
-            color: #ffffff;
-            background: rgba(255, 255, 255, 0.1);
-            transform: translateY(-2px);
-        }
-        
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .hero-title-porsche {
-                font-size: 2.5rem;
-            }
-            
-            .hero-subtitle-porsche {
-                font-size: 1rem;
-            }
-            
-            .perfect-search-form {
-                padding: 0 1rem;
-            }
-            
-            .search-row {
-                flex-direction: column;
-                gap: 1rem;
-            }
-            
-            .search-item {
-                min-width: 100%;
-                flex: none;
-            }
-            
-            .search-button {
-                min-width: 100%;
-            }
-            
-            .section-title {
-                font-size: 2rem;
-            }
 
-            .options-sidebar {
-                position: static;
-                margin-top: 2rem;
-            }
-            
-            .car-card {
-                height: 380px;
-            }
-            
-            .car-image {
-                height: 240px;
-            }
-
-            .filter-row {
-                flex-direction: column;
-                gap: 1rem;
-            }
-
-            .filter-item {
-                min-width: 100%;
-            }
-
-            .filter-card-modern {
-                padding: 1.5rem;
-            }
+        /* Cars Grid */
+        .cars-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            margin-bottom: 3rem;
+            align-items: start;
+            justify-items: stretch;
+            transform: translateY(13rem);
         }
         
-        @media (max-width: 576px) {
-            .hero-title-porsche {
-                font-size: 2rem;
-            }
-            
-            .perfect-search-form {
-                padding: 0 0.5rem;
-            }
-            
-            .search-item label {
-                font-size: 0.8rem;
-            }
-            
-            .search-item select,
-            .search-item input {
-                padding: 0.75rem;
-                font-size: 0.85rem;
-            }
-            
-            .search-button button {
-                padding: 0.75rem 1rem;
-                font-size: 0.85rem;
-            }
-            
-            .filter-card {
-                padding: 1rem;
-            }
-            
-            .car-card {
-                height: 360px;
-            }
-            
-            .car-image {
-                height: 220px;
-            }
-        }
-        
-        /* Car Cards - Porsche Style for Fahrzeuge Page */
+        /* Car Card - Matching main page style */
         .car-card {
             background: linear-gradient(135deg, #1a1a1a, #2a2a2a) !important;
             border-radius: 16px;
             overflow: hidden;
             box-shadow: 0 15px 50px rgba(0, 0, 0, 0.4);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.28s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             border: 1px solid rgba(255, 255, 255, 0.1);
             position: relative;
-            height: 250px !important;
-            min-height: 250px !important;
-            max-height: 250px !important;
+            height: 220px !important;
+            min-height: 220px !important;
+            max-height: 220px !important;
             padding-top: 0.5rem;
+            width: 100%;
+            min-width: 0;
+            max-width: none;
         }
         
         .car-card:hover {
@@ -2015,7 +324,7 @@
         }
         
         .car-image {
-            height: 120px;
+            height: 100px;
             background: linear-gradient(45deg, #f8f9fa, #e9ecef);
             position: relative;
             overflow: hidden;
@@ -2031,7 +340,7 @@
             width: 100%;
             height: 8rem;
             object-fit: cover;
-            transition: all 0.4s ease;
+            transition: all 0.28s ease;
         }
         
         .car-card:hover .car-image img {
@@ -2053,14 +362,14 @@
         
         .car-details {
             padding: 1rem 1rem 1rem 1rem;
-            height: 127px;
+            height: 117px;
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
-            min-height: 127px;
-            max-height: 127px;
+            min-height: 117px;
+            max-height: 117px;
             background: linear-gradient(135deg, #2a2a2a, #1a1a1a);
-            margin-top: 112px;
+            margin-top: 92px;
             position: relative;
             z-index: 2;
             width: calc(100% + 2rem);
@@ -2075,6 +384,7 @@
             font-weight: 700;
             color: #ffffff !important;
             margin-bottom: 1px;
+            margin-left: 0.2rem;
             line-height: 1.2;
             overflow: visible;
             white-space: nowrap;
@@ -2085,11 +395,19 @@
             text-transform: none;
             font-style: normal;
         }
+
+        .car-subtitle {
+            font-size: 0.8rem;
+            color: #cccccc !important;
+            margin-bottom: 0.5rem;
+            font-weight: 400;
+        }
         
         .car-specs {
             display: flex;
             gap: 0.5rem;
             margin-bottom: 0.5rem;
+            margin-left: 0.2rem;
             flex-wrap: nowrap;
             overflow: visible;
             justify-content: flex-start;
@@ -2111,20 +429,29 @@
             color: #d4af37;
         }
         
+        .car-price {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: #d4af37;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+        
         .car-cta {
             display: flex;
             gap: 0.3rem;
             margin-top: auto;
+            justify-content: center;
         }
         
-        .btn-rent-now {
-            background: linear-gradient(135deg, #d4af37, #b8941f);
-            color: #1a1a1a;
+        .btn-primary {
+            background: linear-gradient(#eb3e00ed);
+    color: #f8f9fa;
             border: none;
             border-radius: 6px;
             padding: 0.4rem 0.4rem;
             font-weight: 600;
-            font-size: 0.65rem;
+    font-size: 0.9rem;
             transition: all 0.3s ease;
             cursor: pointer;
             text-transform: uppercase;
@@ -2136,811 +463,804 @@
             text-overflow: ellipsis;
         }
         
-        .btn-rent-now:hover {
+        .btn-primary:hover {
             background: linear-gradient(135deg, #b8941f, #d4af37);
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(212, 175, 55, 0.4);
+            color: #1a1a1a;
         }
-    </style>
-</head>
-<body>
-    <!-- Navbar Container -->
-    <div id="navbar-container"></div>
-
-    <!-- Hero Section - Porsche Style -->
-    <section class="hero-section-porsche" style="position: relative; height: calc(50vh + 2rem); overflow: hidden; z-index: 20;">
-        <div class="hero-background" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: -1;">
-            <img src="images/cars/fahrzeugebg2.webp" alt="" class="hero-car-image" style="width: 100%; height: 100%; object-fit: cover; font-size: 0;">
-            <div class="hero-overlay" style="
-                background: rgba(0, 0, 0, 0.4);
-                position: absolute;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                z-index: 1;
-            "></div>
-        </div>
-        <div class="hero-content-porsche">
-            <!-- Hero content without search form -->
-        </div>
-    </section>
-
-
-
-    <!-- Filters Section - Modern Porsche Style -->
-    <div id="filter-form-container" class="container" style="position: absolute; top: 32%; left: 50%; transform: translate(-50%, calc(-50% + 2rem)); z-index: 50; width: 100%; transition: margin-right 0.3s ease;">
-        <!-- Section Header -->
-        <div class="section-header" style="text-align: center; margin-bottom: 2rem; color: white; visibility: hidden; height: 0; overflow: hidden;">
-            <h2 class="section-title" style="font-size: 2.5rem; font-weight: 700; margin-bottom: 0.5rem; color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.8);">Verfügbare Fahrzeuge</h2>
-            <p class="section-subtitle" style="font-size: 1.1rem; color: rgba(255, 255, 255, 0.9); margin-bottom: 0; text-shadow: 1px 1px 2px rgba(0,0,0,0.8);">Wählen Sie aus unserer exklusiven Sammlung</p>
-        </div>
         
-        <!-- Porsche Style Filter Form - Fahrzeuge Page -->
-        <div class="porsche-filter-form" style="
-            background: linear-gradient(135deg, rgba(20, 20, 20, 0.95) 0%, rgba(40, 40, 40, 0.9) 50%, rgba(60, 60, 60, 0.85) 100%);
-            backdrop-filter: blur(35px);
-            border: 2px solid rgba(212, 175, 55, 0.4);
-            border-radius: 18px;
-            padding: 1rem 2rem;
-            box-shadow: 
-                0 20px 40px rgba(0, 0, 0, 0.6),
-                0 0 0 1px rgba(212, 175, 55, 0.1) inset,
-                0 0 15px rgba(212, 175, 55, 0.2);
-            position: relative;
-            overflow: hidden;
-            margin-bottom: 1.5rem;
-            margin-top: -0.5rem;
-        ">
-        <div style="
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-        "></div>
-        
-        <div class="porsche-filter-row" style="display: flex !important; gap: 1.5rem !important; flex-wrap: nowrap !important; width: 100%; flex-direction: row !important; justify-content: space-between; align-items: flex-end;">
-            
-            <!-- Fahrzeugtyp -->
-            <div class="porsche-filter-item">
-                <label for="vehicle-type-filter" style="color: rgba(255, 255, 255, 0.95); font-weight: 700; font-size: 10px; letter-spacing: 0.8px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.2rem; white-space: nowrap; font-family: 'Inter', sans-serif;">
-                    <i class="bi bi-car-front" style="margin-right: 8px; color: #d4af37; font-size: 0.8rem;"></i>
-                    Fahrzeugtyp
-                </label>
-                <div class="porsche-select-wrapper" style="width: 100%; display: flex; align-items: center; position: relative;">
-                    <select id="vehicle-type-filter" style="
-                        width: 100%; 
-                        height: 38px; 
-                        background: rgba(255, 255, 255, 0.15);
-                        border: 1px solid rgba(212, 175, 55, 0.5);
-                        border-radius: 8px;
-                        color: rgba(255, 255, 255, 0.9);
-                        font-size: 10px;
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: var(--white);
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius-md);
                         font-weight: 600;
-                        padding: 0 12px;
-                        font-family: 'Inter', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
                         transition: all 0.3s ease;
-                        backdrop-filter: blur(20px);
-                    ">
-                        <option value="">Alle Fahrzeuge</option>
-                        <option value="compact">Kompakt</option>
-                        <option value="sedan">Limousine</option>
-                        <option value="suv">SUV</option>
-                        <option value="luxury">Luxus</option>
-                        <option value="electric">Elektrisch</option>
-                    </select>
-                </div>
-            </div>
-
-            <!-- Marke -->
-            <div class="porsche-filter-item">
-                <label for="vehicle-model-filter" style="color: rgba(255, 255, 255, 0.95); font-weight: 700; font-size: 10px; letter-spacing: 0.8px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.2rem; white-space: nowrap; font-family: 'Inter', sans-serif;">
-                    <i class="bi bi-tag" style="margin-right: 8px; color: #d4af37; font-size: 0.8rem;"></i>
-                    Marke
-                </label>
-                <div class="porsche-select-wrapper" style="width: 100%; display: flex; align-items: center; position: relative;">
-                    <select id="vehicle-model-filter" style="
-                        width: 100%; 
-                        height: 38px; 
-                        background: rgba(255, 255, 255, 0.12);
-                        border: 1px solid rgba(177, 0, 0, 0.4);
-                        border-radius: 8px;
-                        color: rgba(255, 255, 255, 0.9);
-                        font-size: 10px;
-                        font-weight: 500;
-                        padding: 0 12px;
-                        font-family: 'Inter', sans-serif;
-                        transition: all 0.3s ease;
-                        backdrop-filter: blur(15px);
-                    ">
-                        <option value="">Alle Marken</option>
-                        <option value="audi">Audi</option>
-                        <option value="bmw">BMW</option>
-                        <option value="mercedes">Mercedes</option>
-                        <option value="porsche">Porsche</option>
-                        <option value="tesla">Tesla</option>
-                        <option value="volkswagen">Volkswagen</option>
-                    </select>
-                </div>
-            </div>
-
-            <!-- Kraftstoff -->
-            <div class="porsche-filter-item">
-                <label for="fuel-type-filter" style="color: rgba(255, 255, 255, 0.95); font-weight: 700; font-size: 10px; letter-spacing: 0.8px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.2rem; white-space: nowrap; font-family: 'Inter', sans-serif;">
-                    <i class="bi bi-fuel-pump" style="margin-right: 8px; color: #d4af37; font-size: 0.8rem;"></i>
-                    Kraftstoff
-                </label>
-                <div class="porsche-select-wrapper" style="width: 100%; display: flex; align-items: center; position: relative;">
-                    <select id="fuel-type-filter" style="
-                        width: 100%; 
-                        height: 38px; 
-                        background: rgba(255, 255, 255, 0.08);
-                        border: 1px solid rgba(255, 255, 255, 0.2);
-                        border-radius: 8px;
-                        color: rgba(255, 255, 255, 0.9);
-                        font-size: 10px;
-                        font-weight: 400;
-                        padding: 0 12px;
-                        font-family: 'Inter', sans-serif;
-                        transition: all 0.3s ease;
-                        backdrop-filter: blur(10px);
-                    ">
-                        <option value="">Alle</option>
-                        <option value="benzin">Benzin</option>
-                        <option value="diesel">Diesel</option>
-                        <option value="hybrid">Hybrid</option>
-                        <option value="elektrisch">Elektrisch</option>
-                    </select>
-                </div>
-            </div>
-
-            <!-- Sortieren -->
-            <div class="porsche-filter-item">
-                <label for="sort-filter" style="color: rgba(255, 255, 255, 0.95); font-weight: 700; font-size: 10px; letter-spacing: 0.8px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.2rem; white-space: nowrap; font-family: 'Inter', sans-serif;">
-                    <i class="bi bi-sort-down" style="margin-right: 8px; color: #d4af37; font-size: 0.8rem;"></i>
-                    Sortieren
-                </label>
-                <div class="porsche-select-wrapper" style="width: 100%; display: flex; align-items: center; position: relative;">
-                    <select id="sort-filter" style="
-                        width: 100%; 
-                        height: 38px; 
-                        background: rgba(255, 255, 255, 0.08);
-                        border: 1px solid rgba(255, 255, 255, 0.2);
-                        border-radius: 8px;
-                        color: rgba(255, 255, 255, 0.9);
-                        font-size: 10px;
-                        font-weight: 400;
-                        padding: 0 12px;
-                        font-family: 'Inter', sans-serif;
-                        transition: all 0.3s ease;
-                        backdrop-filter: blur(10px);
-                    ">
-                        <option value="price-low">Niedrigster Preis</option>
-                        <option value="price-high">Höchster Preis</option>
-                        <option value="name" selected>Name A-Z</option>
-                        <option value="popularity">Beliebtheit</option>
-                    </select>
-                </div>
-            </div>
-
-            <!-- Getriebe -->
-            <div class="porsche-filter-item">
-                <label for="transmission-filter" style="color: rgba(255, 255, 255, 0.95); font-weight: 700; font-size: 10px; letter-spacing: 0.8px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.2rem; white-space: nowrap; font-family: 'Inter', sans-serif;">
-                    <i class="bi bi-gear" style="margin-right: 8px; color: #d4af37; font-size: 0.8rem;"></i>
-                    Getriebe
-                </label>
-                <div class="porsche-select-wrapper" style="width: 100%; display: flex; align-items: center; position: relative;">
-                    <select id="transmission-filter" style="
-                        width: 100%; 
-                        height: 38px; 
-                        background: rgba(255, 255, 255, 0.08);
-                        border: 1px solid rgba(255, 255, 255, 0.2);
-                        border-radius: 8px;
-                        color: rgba(255, 255, 255, 0.9);
-                        font-size: 10px;
-                        font-weight: 400;
-                        padding: 0 12px;
-                        font-family: 'Inter', sans-serif;
-                        transition: all 0.3s ease;
-                        backdrop-filter: blur(10px);
-                    ">
-                        <option value="">Alle</option>
-                        <option value="automatik">Automatik</option>
-                        <option value="manuell">Manuell</option>
-                    </select>
-                </div>
-            </div>
-
-            <!-- Porsche Search Button -->
-            <div class="porsche-filter-button">
-                <button type="button" id="search-vehicles-btn" onclick="performSearch()" style="
-                    width: 50px;
-                    height: 38px;
-                    background: linear-gradient(135deg, #d4af37 0%, #b8941f 50%, #8b6914 100%);
-                    border: none;
-                    border-radius: 10px;
-                    color: white;
-                    font-size: 1.1rem;
-                    font-weight: 700;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    transition: all 0.3s ease;
-                    cursor: pointer;
-                    box-shadow: 
-                        0 6px 15px rgba(212, 175, 55, 0.5),
-                        0 0 0 1px rgba(255, 255, 255, 0.2) inset,
-                        0 0 10px rgba(212, 175, 55, 0.3);
-                    position: relative;
-                    overflow: hidden;
-                ">
-                    <i class="bi bi-search" style="font-size: 0.9rem; z-index: 2;"></i>
-                    <div style="
-                        position: absolute;
-                        top: 0;
-                        left: -100%;
-                        width: 100%;
-                        height: 100%;
-                        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-                        transition: left 0.5s ease;
-                    "></div>
-                </button>
-            </div>
-        </div>
+            flex: 1;
+        }
         
-        <!-- Porsche Style Hover Effects -->
-        <style>
-            .porsche-filter-form select:hover {
-                border-color: rgba(177, 0, 0, 0.6) !important;
-                background: rgba(255, 255, 255, 0.12) !important;
-                transform: translateY(-1px);
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+            color: var(--white);
+        }
+        
+                /* Responsive */
+        @media (max-width: 768px) {
+            .filter-section {
+                padding: 0.735rem 0.49rem;
+                margin: 0.735rem auto;
+                max-width: 95%;
+                width: fit-content;
             }
             
-            .porsche-filter-form select:focus {
-                border-color: #B10000 !important;
-                background: rgba(255, 255, 255, 0.15) !important;
-                outline: none;
-                box-shadow: 
-                    0 0 0 2px rgba(177, 0, 0, 0.2),
-                    0 4px 12px rgba(0, 0, 0, 0.3);
+            .filter-title {
+                font-size: 1.05rem;
+                margin-bottom: 1.05rem;
+                        width: 100%; 
+                margin-left: auto;
+                margin-right: auto;
             }
             
-            .porsche-filter-button button:hover {
-                transform: translateY(-2px);
-                box-shadow: 
-                    0 6px 20px rgba(177, 0, 0, 0.4),
-                    0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+            .filter-row {
+                flex-direction: column;
+                gap: 0.7rem;
+                align-items: stretch;
+                padding: 0;
+                margin: 0;
+                        width: 100%; 
             }
             
-            .porsche-filter-button button:hover div {
-                left: 100%;
+            .filter-item {
+                min-width: auto;
+                max-width: none;
+                margin: 0;
+                padding: 0.4rem;
             }
             
-            .porsche-filter-button button:active {
-                transform: translateY(0);
+            .cars-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1.5rem;
+                transform: translateY(13rem);
             }
             
-            /* Select dropdown option styling */
-            .porsche-filter-form select option {
-                background-color: #2a2a2a !important;
-                color: #ffffff !important;
-                font-family: 'Inter', sans-serif;
-                font-size: 0.9rem;
-                padding: 8px 12px;
+            .car-specs {
+                flex-direction: column;
+                gap: 0.3rem;
             }
             
-            .porsche-filter-form select option:hover {
-                background-color: #B10000 !important;
-                color: #ffffff !important;
+            .car-cta {
+                flex-direction: column;
             }
-            
-            .porsche-filter-form select option:checked {
-                background-color: #B10000 !important;
-                color: #ffffff !important;
+        }
+
+        @media (max-width: 480px) {
+            .cars-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+                transform: translateY(13rem);
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+                    display: flex;
+                    justify-content: center;
+            align-items: center;
+            padding: 3rem;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid var(--porsche-red);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            color: var(--porsche-red);
+            margin-bottom: 1rem;
+        }
+
+        .empty-state h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--white);
             }
         </style>
-        </div>
-        </div>
-    </div>
+</head>
+<body>
+        <!-- Modern Navbar -->
+    <div id="navbar-container">
+        <!-- Navbar JavaScript ile yüklenecek -->
     </div>
 
-    <!-- Vehicles Section -->
-    <section class="vehicles-section" id="main-content" style="margin-top: -6rem; position: relative; z-index: 1000; background: transparent; padding: 2rem 0 2rem 0; transition: margin-right 0.3s ease;">
+    <!-- Main Content -->
+    <div class="main-container">
         <div class="container">
-            
-            <div class="row">
-                <!-- Vehicles Container -->
-                <div class="col-12">
-                    <div id="vehicles-container" style="min-height: 200px;">
-                        <!-- Vehicles will be loaded here -->
-                        <div class="col-12 text-center">
-                            <p style="color: rgba(255, 255, 255, 0.7);">Araba kartları yükleniyor...</p>
-                        </div>
-                    </div>
+            <!-- Filter Section -->
+            <div class="filter-section">
+                <h2 class="filter-title">Fahrzeuge Filtern</h2>
+
+                <div class="filter-row">
+                                    <div class="filter-item">
+                    <label class="filter-label">Fahrzeugtyp</label>
+                    <select class="filter-select" id="type-filter">
+                        <option value="">Alle Typen</option>
+                        <option value="Sportwagen">Sportwagen</option>
+                        <option value="Luxuswagen">Luxuswagen</option>
+                        <option value="SUV">SUV</option>
+                        <option value="Elektrofahrzeuge">Elektrofahrzeuge</option>
+                        <option value="Hybrid">Hybrid</option>
+                    </select>
                 </div>
 
-
+                <div class="filter-item">
+                    <label class="filter-label">Marke</label>
+                    <select class="filter-select" id="brand-filter">
+                        <option value="">Alle Marken</option>
+                        <option value="Porsche">Porsche</option>
+                        <option value="Ferrari">Ferrari</option>
+                        <option value="Lamborghini">Lamborghini</option>
+                        <option value="BMW">BMW</option>
+                        <option value="Mercedes">Mercedes</option>
+                        <option value="Audi">Audi</option>
+                        <option value="Tesla">Tesla</option>
+                        <option value="Rolls-Royce">Rolls-Royce</option>
+                        <option value="Bentley">Bentley</option>
+                        <option value="McLaren">McLaren</option>
+                        <option value="Volkswagen">Volkswagen</option>
+                        <option value="Honda">Honda</option>
+                        <option value="Kia">Kia</option>
+                        <option value="Toyota">Toyota</option>
+                            </select>
                         </div>
-                    </div>
-    </section>
-
-    <!-- Back to Top Button -->
-    <button id="back-to-top" onclick="window.scrollTo(0,0)" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000; background: linear-gradient(135deg, #d4af37, #b8941f); color: #1a1a1a; border: none; border-radius: 50%; width: 50px; height: 50px; font-size: 20px; cursor: pointer; display: none; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
-        ↑
-    </button>
-
-            <!-- Booking Sidebar -->
-        <div id="booking-sidebar" style="position: fixed; top: 0; right: -280px; width: 280px; height: 100vh; background: linear-gradient(135deg, #1a1a1a, #2a2a2a); border-left: 3px solid #d4af37; z-index: 9999; transition: right 0.3s ease; box-shadow: -10px 0 30px rgba(0,0,0,0.5);">
-            <div style="padding: 1rem; height: 100vh; display: flex; flex-direction: column;">
-                <!-- Header -->
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; padding-bottom: 0.75rem; border-bottom: 1px solid rgba(212, 175, 55, 0.3);">
-                    <h3 style="color: #d4af37; margin: 0; font-size: 1rem; font-weight: 600;">Schnellbuchung</h3>
-                    <button onclick="closeBookingSidebar()" style="background: none; border: none; color: #ffffff; font-size: 1.2rem; cursor: pointer; padding: 0; width: 25px; height: 25px; display: flex; align-items: center; justify-content: center;">×</button>
+                
+                <div class="filter-item">
+                    <label class="filter-label">Preisbereich</label>
+                    <select class="filter-select" id="price-filter">
+                        <option value="">Alle Preise</option>
+                        <option value="0-200">0 - 200€/Tag</option>
+                        <option value="200-400">200 - 400€/Tag</option>
+                        <option value="400-600">400 - 600€/Tag</option>
+                        <option value="600-800">600 - 800€/Tag</option>
+                        <option value="800-1000">800 - 1000€/Tag</option>
+                        <option value="1000+">1000€+/Tag</option>
+                            </select>
                 </div>
                 
-                <!-- Selected Car Info -->
-                <div id="sidebar-car-info" style="background: linear-gradient(135deg, #333333, #2a2a2a); border-radius: 8px; padding: 0.75rem; margin-bottom: 0.75rem; border: 1px solid rgba(212, 175, 55, 0.3); flex-shrink: 0;">
-                    <h4 style="color: #d4af37; margin: 0 0 0.4rem 0; font-size: 0.85rem;">Ausgewähltes Fahrzeug</h4>
-                    <div id="sidebar-car-details" style="font-size: 0.75rem;">
-                        <!-- Car details will be populated by JavaScript -->
-                    </div>
+                <div class="filter-item">
+                    <label class="filter-label">Getriebe</label>
+                    <select class="filter-select" id="transmission-filter">
+                        <option value="">Alle Getriebe</option>
+                        <option value="Automatik">Automatik</option>
+                            </select>
                 </div>
 
-                <!-- Quick Booking Form -->
-                <form id="quick-booking-form" style="flex: 1; display: flex; flex-direction: column;">
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 0.5rem;">
-                        <div>
-                            <label style="color: #d4af37; font-weight: 600; margin-bottom: 0.2rem; display: block; font-size: 0.7rem;">Abholort</label>
-                            <select id="sidebar-pickup-location" required style="width: 100%; background: linear-gradient(135deg, #333333, #2a2a2a); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 6px; color: #ffffff; padding: 0.4rem; font-size: 0.7rem;">
-                                <option value="">Standort</option>
-                                <option value="1">Berlin</option>
-                                <option value="2">München</option>
-                                <option value="3">Hamburg</option>
-                                <option value="4">Köln</option>
-                                <option value="5">Frankfurt</option>
+                <div class="filter-item">
+                    <label class="filter-label">Kraftstoff</label>
+                    <select class="filter-select" id="fuel-filter">
+                        <option value="">Alle Kraftstoffe</option>
+                        <option value="Benzin">Benzin</option>
+                        <option value="Hybrid">Hybrid</option>
+                        <option value="Elektrisch">Elektrisch</option>
                             </select>
                         </div>
-                        <div>
-                            <label style="color: #d4af37; font-weight: 600; margin-bottom: 0.2rem; display: block; font-size: 0.7rem;">Rückgabeort</label>
-                            <select id="sidebar-return-location" required style="width: 100%; background: linear-gradient(135deg, #333333, #2a2a2a); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 6px; color: #ffffff; padding: 0.4rem; font-size: 0.7rem;">
-                                <option value="">Standort</option>
-                                <option value="1">Berlin</option>
-                                <option value="2">München</option>
-                                <option value="3">Hamburg</option>
-                                <option value="4">Köln</option>
-                                <option value="5">Frankfurt</option>
+
+                <div class="filter-item">
+                    <label class="filter-label">Sortieren</label>
+                    <select class="filter-select" id="sort-filter">
+                        <option value="price-asc">Preis: Niedrig zu Hoch</option>
+                        <option value="price-desc">Preis: Hoch zu Niedrig</option>
+                        <option value="name-asc">Name: A-Z</option>
+                        <option value="name-desc">Name: Z-A</option>
+                        <option value="popularity">Beliebtheit</option>
                             </select>
+                        </div>
                         </div>
                     </div>
 
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 0.5rem;">
-                        <div>
-                            <label style="color: #d4af37; font-weight: 600; margin-bottom: 0.2rem; display: block; font-size: 0.7rem;">Abholdatum</label>
-                            <input type="date" id="sidebar-pickup-date" lang="de-DE" required style="width: 100%; background: linear-gradient(135deg, #333333, #2a2a2a); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 6px; color: #ffffff; padding: 0.4rem; font-size: 0.7rem; font-family: 'Inter', sans-serif;">
+            <!-- Cars Grid -->
+            <div id="cars-container">
+                <!-- Loading State -->
+                <div class="loading">
+                    <div class="spinner"></div>
                         </div>
-                        <div>
-                            <label style="color: #d4af37; font-weight: 600; margin-bottom: 0.2rem; display: block; font-size: 0.7rem;">Rückgabedatum</label>
-                            <input type="date" id="sidebar-return-date" lang="de-DE" required style="width: 100%; background: linear-gradient(135deg, #333333, #2a2a2a); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 6px; color: #ffffff; padding: 0.4rem; font-size: 0.7rem; font-family: 'Inter', sans-serif;">
                         </div>
-                    </div>
-
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 0.5rem;">
-                        <div>
-                            <label style="color: #d4af37; font-weight: 600; margin-bottom: 0.2rem; display: block; font-size: 0.7rem;">Abholzeit</label>
-                            <select id="sidebar-pickup-time" required style="width: 100%; background: linear-gradient(135deg, #333333, #2a2a2a); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 6px; color: #ffffff; padding: 0.4rem; font-size: 0.7rem;">
-                                <option value="">Zeit</option>
-                                <option value="08:00">08:00</option>
-                                <option value="09:00">09:00</option>
-                                <option value="10:00">10:00</option>
-                                <option value="11:00">11:00</option>
-                                <option value="12:00">12:00</option>
-                                <option value="13:00">13:00</option>
-                                <option value="14:00">14:00</option>
-                                <option value="15:00">15:00</option>
-                                <option value="16:00">16:00</option>
-                                <option value="17:00">17:00</option>
-                                <option value="18:00">18:00</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label style="color: #d4af37; font-weight: 600; margin-bottom: 0.2rem; display: block; font-size: 0.7rem;">Rückgabezeit</label>
-                            <select id="sidebar-return-time" required style="width: 100%; background: linear-gradient(135deg, #333333, #2a2a2a); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 6px; color: #ffffff; padding: 0.4rem; font-size: 0.7rem;">
-                                <option value="">Zeit</option>
-                                <option value="08:00">08:00</option>
-                                <option value="09:00">09:00</option>
-                                <option value="10:00">10:00</option>
-                                <option value="11:00">11:00</option>
-                                <option value="12:00">12:00</option>
-                                <option value="13:00">13:00</option>
-                                <option value="14:00">14:00</option>
-                                <option value="15:00">15:00</option>
-                                <option value="16:00">16:00</option>
-                                <option value="17:00">17:00</option>
-                                <option value="18:00">18:00</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <button type="submit" style="width: 100%; background: linear-gradient(135deg, #d4af37, #b8941f); color: #1a1a1a; border: none; border-radius: 6px; padding: 0.6rem; font-weight: 600; font-size: 0.75rem; cursor: pointer; text-transform: uppercase; letter-spacing: 0.3px; margin-top: auto;">
-                        Zu Extras & Versicherung
-                    </button>
-                </form>
             </div>
         </div>
-
-    <style>
-        .back-to-top-btn:hover {
-            background: rgba(255, 255, 255, 1);
-            transform: translateY(-5px) scale(1.05);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
-            border-color: rgba(255, 255, 255, 0.3);
-        }
-        
-        .back-to-top-btn:active {
-            transform: translateY(-2px) scale(1.02);
-        }
-        
-        .back-to-top-btn.show {
-            opacity: 1;
-            visibility: visible;
-        }
-        
-        /* Responsive car cards for fahrzeuge page */
-        #vehicles-container {
-            display: grid !important;
-            grid-template-columns: repeat(4, 1fr) !important;
-            gap: 1.5rem !important;
-            justify-content: center !important;
-            align-items: stretch !important;
-            padding: 0 1rem !important;
-            width: 100% !important;
-            max-width: 100% !important;
-        }
-        
-        @media (max-width: 1200px) {
-            #vehicles-container {
-                grid-template-columns: repeat(3, 1fr) !important;
-                gap: 1.2rem !important;
-            }
-            
-            .car-card {
-                width: 100% !important;
-                flex: none !important;
-                margin: 0 !important;
-            }
-        }
-        
-        @media (max-width: 992px) {
-            #vehicles-container {
-                grid-template-columns: repeat(2, 1fr) !important;
-                gap: 1rem !important;
-            }
-            
-            .car-card {
-                width: 100% !important;
-                flex: none !important;
-                margin: 0 !important;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            #vehicles-container {
-                grid-template-columns: repeat(2, 1fr) !important;
-                gap: 0.8rem !important;
-                padding: 0 0.5rem !important;
-            }
-            
-            .car-card {
-                width: 100% !important;
-                flex: none !important;
-                margin: 0 !important;
-                height: 180px !important;
-                min-height: 180px !important;
-                max-height: 180px !important;
-            }
-            
-            .car-image {
-                height: 90px;
-            }
-            
-            .car-image img {
-                height: 5.5rem;
-            }
-            
-            .car-details {
-                padding: 0.6rem;
-                height: 85px;
-                min-height: 85px;
-                max-height: 85px;
-                margin-top: 80px;
-            }
-            
-            .car-name {
-                font-size: 0.8rem;
-            }
-            
-            .spec-item {
-                font-size: 0.6rem;
-            }
-            
-            .btn-rent-now {
-                padding: 0.25rem 0.25rem;
-                font-size: 0.55rem;
-                height: 35px;
-            }
-        }
-        
-        @media (max-width: 576px) {
-            #vehicles-container {
-                grid-template-columns: 1fr !important;
-                gap: 0.6rem !important;
-                padding: 0 0.3rem !important;
-            }
-            
-            .car-card {
-                width: 100% !important;
-                flex: none !important;
-                margin: 0 !important;
-                height: 160px !important;
-                min-height: 160px !important;
-                max-height: 160px !important;
-            }
-            
-            .car-image {
-                height: 80px;
-            }
-            
-            .car-image img {
-                height: 5rem;
-            }
-            
-            .car-details {
-                padding: 0.5rem;
-                height: 75px;
-                min-height: 75px;
-                max-height: 75px;
-                margin-top: 70px;
-            }
-            
-            .car-name {
-                font-size: 0.75rem;
-            }
-            
-            .spec-item {
-                font-size: 0.55rem;
-            }
-            
-            .btn-rent-now {
-                padding: 0.2rem 0.2rem;
-                font-size: 0.5rem;
-                height: 30px;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            #vehicles-container {
-                grid-template-columns: 1fr !important;
-                gap: 0.5rem !important;
-                padding: 0 0.2rem !important;
-            }
-            
-            .car-card {
-                width: 100% !important;
-                flex: none !important;
-                margin: 0 !important;
-                height: 150px !important;
-                min-height: 150px !important;
-                max-height: 150px !important;
-            }
-            
-            .car-image {
-                height: 75px;
-            }
-            
-            .car-image img {
-                height: 4.5rem;
-            }
-            
-            .car-details {
-                padding: 0.4rem;
-                height: 70px;
-                min-height: 70px;
-                max-height: 70px;
-                margin-top: 65px;
-            }
-            
-            .car-name {
-                font-size: 0.7rem;
-            }
-            
-            .spec-item {
-                font-size: 0.5rem;
-            }
-            
-            .btn-rent-now {
-                padding: 0.15rem 0.15rem;
-                font-size: 0.45rem;
-                height: 28px;
-            }
-        }
-        
-        @media (max-width: 360px) {
-            #vehicles-container {
-                grid-template-columns: 1fr !important;
-                gap: 0.4rem !important;
-                padding: 0 0.1rem !important;
-            }
-            
-            .car-card {
-                width: 100% !important;
-                flex: none !important;
-                margin: 0 !important;
-                height: 140px !important;
-                min-height: 140px !important;
-                max-height: 140px !important;
-            }
-            
-            .car-image {
-                height: 70px;
-            }
-            
-            .car-image img {
-                height: 4rem;
-            }
-            
-            .car-details {
-                padding: 0.3rem;
-                height: 65px;
-                min-height: 65px;
-                max-height: 65px;
-                margin-top: 60px;
-            }
-            
-            .car-name {
-                font-size: 0.65rem;
-            }
-            
-            .spec-item {
-                font-size: 0.45rem;
-            }
-            
-            .btn-rent-now {
-                padding: 0.1rem 0.1rem;
-                font-size: 0.4rem;
-                height: 25px;
-            }
-        }
-    </style>
-
-    <script>
-        // Simple Back to Top functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            const backToTopBtn = document.getElementById('back-to-top');
-            
-            if (backToTopBtn) {
-                console.log('Back to top button found');
-                
-                // Simple click handler
-                backToTopBtn.onclick = function() {
-                    console.log('Back to top clicked!');
-                    window.scrollTo(0, 0);
-                };
-                
-                // Show button when scrolling
-                window.onscroll = function() {
-                    if (window.pageYOffset > 100) {
-                        backToTopBtn.style.display = 'flex';
-                    } else {
-                        backToTopBtn.style.display = 'none';
-                    }
-                };
-            } else {
-                console.log('Back to top button not found');
-            }
-        });
-    </script>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <p class="mb-3">© 2025 AutOr. Alle Rechte vorbehalten.</p>
-                <div>
-                <a href="#" class="footer-link">Datenschutz</a>
-                    <a href="#" class="footer-link">AGB</a>
-                    <a href="#" class="footer-link">Impressum</a>
-                    <a href="#" class="footer-link">Kontakt</a>
-                </div>
-                </div>
-            </div>
-    </footer>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Flatpickr JS for date picker -->
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <!-- Custom JS -->
-    <script src="js/data/cars.js"></script>
-    <script src="js/fahrzeuge.js"></script>
-    <script src="js/navbar.js"></script>
+    <!-- Navbar JS -->
+    <script src="/js/navbar.js"></script>
+    <!-- Central Car Catalog -->
+    <script src="/js/cars-data.js"></script>
     
+    <!-- Car Data -->
     <script>
-        // Porsche-style search form functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('Fahrzeuge page DOM loaded');
-            console.log('Vehicles container:', document.getElementById('vehicles-container'));
-            // Büyüteç ikonu için Porsche-style animasyonlar
-            const searchButton = document.getElementById('search-vehicles-btn');
-            if (searchButton) {
-                // Hover efekti
-                searchButton.addEventListener('mouseenter', function() {
-                    this.style.transform = 'scale(1.05) translateY(-2px)';
-                    this.style.boxShadow = '0 8px 25px rgba(255, 255, 255, 0.3)';
-                    this.style.background = 'rgba(255, 255, 255, 0.25)';
-                    this.style.borderColor = 'rgba(255, 255, 255, 0.6)';
-                });
-                
-                searchButton.addEventListener('mouseleave', function() {
-                    this.style.transform = 'scale(1) translateY(0)';
-                    this.style.boxShadow = 'none';
-                    this.style.background = 'rgba(255, 255, 255, 0.15)';
-                    this.style.borderColor = 'rgba(255, 255, 255, 0.3)';
-                });
-                
-                // Tıklama efekti
-                searchButton.addEventListener('click', function() {
-                    // Tıklama animasyonu
-                    this.style.transform = 'scale(0.95)';
-                    this.style.background = 'rgba(255, 255, 255, 0.4)';
-                    
-                    setTimeout(() => {
-                        this.style.transform = 'scale(1.05) translateY(-2px)';
-                        this.style.background = 'rgba(255, 255, 255, 0.25)';
-                    }, 150);
-                    
-                    setTimeout(() => {
-                        this.style.transform = 'scale(1) translateY(0)';
-                        this.style.background = 'rgba(255, 255, 255, 0.15)';
-                    }, 300);
-                    
-                    // Porsche-style arama fonksiyonu
-                    performPorscheSearch();
-                });
-            }
-            
-            // Porsche-style arama fonksiyonu
-            function performPorscheSearch() {
-                const vehicleType = document.getElementById('vehicle-type-filter').value;
-                const vehicleModel = document.getElementById('vehicle-model-filter').value;
-                const fuelType = document.getElementById('fuel-type-filter').value;
-                const sortBy = document.getElementById('sort-filter').value;
-                const transmission = document.getElementById('transmission-filter').value;
-                
-                // Arama parametrelerini konsola yazdır (geliştirme için)
-                console.log('Porsche Search Parameters:', {
-                    vehicleType,
-                    vehicleModel,
-                    fuelType,
-                    sortBy,
-                    transmission
-                });
-                
-                // Burada gerçek arama fonksiyonu eklenebilir
-                // Örneğin: filterVehicles(vehicleType, vehicleModel, fuelType, sortBy, transmission);
-            }
-            
+        // Complete car data - all available vehicles
+        const cars = [
+            {
+                id: 1,
+                name: "Porsche 911 GT3 RS",
+                type: "Sportwagen",
+                brand: "Porsche",
+                price: 899,
+                image: "images/cars/porsche-911-gt3.jpg",
+                specs: {
+                    transmission: "Automatik",
+                    fuel: "Benzin",
+                    seats: 2,
+                    power: "525 PS"
+                },
+                badge: "Premium"
+            },
 
+            {
+                id: 2,
+                name: "Rolls-Royce Phantom",
+                type: "Luxuswagen",
+                brand: "Rolls-Royce",
+                price: 1899,
+                image: "images/cars/rolls-royce-phantom.jpg",
+                specs: {
+                    transmission: "Automatik",
+                    fuel: "Benzin",
+                    seats: 4,
+                    power: "571 PS"
+                },
+                badge: "Luxus"
+            },
+            {
+                id: 3,
+                name: "Bentley Continental GT",
+                type: "Luxuswagen",
+                brand: "Bentley",
+                price: 999,
+                image: "images/cars/bentley-continental.jpg",
+                specs: {
+                    transmission: "Automatik",
+                    fuel: "Benzin",
+                    seats: 4,
+                    power: "635 PS"
+                },
+                badge: "Premium"
+            },
+
+            {
+                id: 4,
+                name: "Porsche Cayenne",
+                type: "SUV",
+                brand: "Porsche",
+                price: 699,
+                image: "images/cars/porsche-cayenne.jpg",
+                specs: {
+                    transmission: "Automatik",
+                    fuel: "Benzin",
+                    seats: 5,
+                    power: "340 PS"
+                },
+                badge: "Premium"
+            },
+            {
+                id: 5,
+                name: "Porsche Taycan",
+                type: "Elektrofahrzeuge",
+                brand: "Porsche",
+                price: 799,
+                image: "images/cars/porsche-taycan.jpg",
+                specs: {
+                    transmission: "Automatik",
+                    fuel: "Elektrisch",
+                    seats: 4,
+                    power: "476 PS"
+                },
+                badge: "Premium"
+            },
+            {
+                id: 9,
+                name: "BMW iX",
+                type: "SUV",
+                brand: "BMW",
+                price: 599,
+                image: "images/cars/bmw-ix.jpg",
+                specs: {
+                    transmission: "Automatik",
+                    fuel: "Elektrisch",
+                    seats: 5,
+                    power: "326 PS"
+                },
+                badge: "Premium"
+            },
+            {
+                id: 10,
+                name: "BMW M8",
+                type: "Sportwagen",
+                brand: "BMW",
+                price: 899,
+                image: "images/cars/bmw-m8.jpg",
+                specs: {
+                    transmission: "Automatik",
+                    fuel: "Benzin",
+                    seats: 4,
+                    power: "625 PS"
+                },
+                badge: "Sport"
+            },
+            {
+                id: 11,
+                name: "BMW X7",
+                type: "SUV",
+                brand: "BMW",
+                price: 799,
+                image: "images/cars/bmw-x7.jpg",
+                specs: {
+                    transmission: "Automatik",
+                    fuel: "Benzin",
+                    seats: 7,
+                    power: "340 PS"
+                },
+                badge: "Luxus"
+            },
+            {
+                id: 12,
+                name: "Mercedes AMG GT",
+                type: "Sportwagen",
+                brand: "Mercedes",
+                price: 999,
+                image: "images/cars/mercedes-amg-gt.jpg",
+                specs: {
+                    transmission: "Automatik",
+                    fuel: "Benzin",
+                    seats: 2,
+                    power: "585 PS"
+                },
+                badge: "Premium"
+            },
+            {
+                id: 13,
+                name: "Mercedes G-Class",
+                type: "SUV",
+                brand: "Mercedes",
+                price: 1199,
+                image: "images/cars/mercedes-g-class.jpg",
+                specs: {
+                    transmission: "Automatik",
+                    fuel: "Benzin",
+                    seats: 5,
+                    power: "585 PS"
+                },
+                badge: "Luxus"
+            },
+            {
+                id: 14,
+                name: "Mercedes S-Class",
+                type: "Luxuswagen",
+                brand: "Mercedes",
+                price: 899,
+                image: "images/cars/mercedes-s-class.jpg",
+                specs: {
+                    transmission: "Automatik",
+                    fuel: "Benzin",
+                    seats: 4,
+                    power: "367 PS"
+                },
+                badge: "Luxus"
+            },
+            {
+                id: 15,
+                name: "Audi A8",
+                type: "Luxuswagen",
+                brand: "Audi",
+                price: 799,
+                image: "images/cars/audi-a8.jpg",
+                specs: {
+                    transmission: "Automatik",
+                    fuel: "Benzin",
+                    seats: 4,
+                    power: "340 PS"
+                },
+                badge: "Premium"
+            },
+            {
+                id: 16,
+                name: "Audi Q8 RS",
+                type: "SUV",
+                brand: "Audi",
+                price: 899,
+                image: "images/cars/audi-q8-rs.jpg",
+                specs: {
+                    transmission: "Automatik",
+                    fuel: "Benzin",
+                    seats: 5,
+                    power: "600 PS"
+                },
+                badge: "Sport"
+            },
+            {
+                id: 17,
+                name: "Tesla Model S",
+                type: "Elektrofahrzeuge",
+                brand: "Tesla",
+                price: 699,
+                image: "images/cars/tesla-model-s.jpg",
+                specs: {
+                    transmission: "Automatik",
+                    fuel: "Elektrisch",
+                    seats: 5,
+                    power: "670 PS"
+                },
+                badge: "Premium"
+            },
+            {
+                id: 18,
+                name: "Tesla Model X",
+                type: "SUV",
+                brand: "Tesla",
+                price: 799,
+                image: "images/cars/tesla-model-x.jpg",
+                specs: {
+                    transmission: "Automatik",
+                    fuel: "Elektrisch",
+                    seats: 7,
+                    power: "670 PS"
+                },
+                badge: "Premium"
+            },
+            {
+                id: 19,
+                name: "Tesla Model 3",
+                type: "Elektrofahrzeuge",
+                brand: "Tesla",
+                price: 499,
+                image: "images/cars/tesla-model-3.jpg",
+                specs: {
+                    transmission: "Automatik",
+                    fuel: "Elektrisch",
+                    seats: 5,
+                    power: "450 PS"
+                },
+                badge: "Sport"
+            },
+            {
+                id: 20,
+                name: "Tesla Model Y",
+                type: "SUV",
+                brand: "Tesla",
+                price: 599,
+                image: "images/cars/tesla-model-y.jpg",
+                specs: {
+                    transmission: "Automatik",
+                    fuel: "Elektrisch",
+                    seats: 7,
+                    power: "450 PS"
+                },
+                badge: "Premium"
+            },
+            {
+                id: 21,
+                name: "Volkswagen Golf 8R",
+                type: "Sportwagen",
+                brand: "Volkswagen",
+                price: 299,
+                image: "images/cars/volkswagen-golf8r.jpg",
+                specs: {
+                    transmission: "Automatik",
+                    fuel: "Benzin",
+                    seats: 5,
+                    power: "320 PS"
+                },
+                badge: "Sport"
+            },
+            {
+                id: 22,
+                name: "Volkswagen ID.4 GTX",
+                type: "Elektrofahrzeuge",
+                brand: "Volkswagen",
+                price: 399,
+                image: "images/cars/volkswagen-id4-gtx.jpg",
+                specs: {
+                    transmission: "Automatik",
+                    fuel: "Elektrisch",
+                    seats: 5,
+                    power: "299 PS"
+                },
+                badge: "Premium"
+            },
+            {
+                id: 23,
+                name: "Honda Civic e:HEV",
+                type: "Hybrid",
+                brand: "Honda",
+                price: 199,
+                image: "images/cars/honda-civic-ehev.jpg",
+                specs: {
+                    transmission: "Automatik",
+                    fuel: "Hybrid",
+                    seats: 5,
+                    power: "184 PS"
+                },
+                badge: "Sport"
+            },
+            {
+                id: 24,
+                name: "Honda CR-V Hybrid",
+                type: "SUV",
+                brand: "Honda",
+                price: 299,
+                image: "images/cars/honda-crv-hybrid.jpg",
+                specs: {
+                    transmission: "Automatik",
+                    fuel: "Hybrid",
+                    seats: 5,
+                    power: "184 PS"
+                },
+                badge: "Premium"
+            },
+            {
+                id: 25,
+                name: "Kia EV6 GT",
+                type: "Elektrofahrzeuge",
+                brand: "Kia",
+                price: 399,
+                image: "images/cars/kia-ev6-gt.jpg",
+                specs: {
+                    transmission: "Automatik",
+                    fuel: "Elektrisch",
+                    seats: 5,
+                    power: "585 PS"
+                },
+                badge: "Sport"
+            },
+            {
+                id: 26,
+                name: "Kia Sportage Hybrid",
+                type: "SUV",
+                brand: "Kia",
+                price: 249,
+                image: "images/cars/kia-sportage-hybrid.jpg",
+                specs: {
+                    transmission: "Automatik",
+                    fuel: "Hybrid",
+                    seats: 5,
+                    power: "230 PS"
+                },
+                badge: "Premium"
+            },
+            {
+                id: 27,
+                name: "Toyota Corolla Hybrid",
+                type: "Hybrid",
+                brand: "Toyota",
+                price: 179,
+                image: "images/cars/toyota-corolla-hybrid.jpg",
+                specs: {
+                    transmission: "Automatik",
+                    fuel: "Hybrid",
+                    seats: 5,
+                    power: "122 PS"
+                },
+                badge: "Sport"
+            },
+            {
+                id: 28,
+                name: "Toyota RAV4 PHEV",
+                type: "Hybrid",
+                brand: "Toyota",
+                price: 299,
+                image: "images/cars/toyota-rav4-phev.jpg",
+                specs: {
+                    transmission: "Automatik",
+                    fuel: "Hybrid",
+                    seats: 5,
+                    power: "306 PS"
+                },
+                badge: "Premium"
+            }
+        ];
+
+        // Render cars
+        function renderCars(carsToRender = cars) {
+            const container = document.getElementById('cars-container');
             
-            // Date pickers not needed on fahrzeuge page
+            if (carsToRender.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="bi bi-car-front"></i>
+                        <h3>Keine Fahrzeuge gefunden</h3>
+                        <p>Versuchen Sie andere Filtereinstellungen</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = `
+                <div class="cars-grid">
+                    ${carsToRender.map(car => `
+                        <div class="car-card">
+                            <div class="car-image">
+                                <img src="${car.image}" alt="${car.name}" onerror="this.src='images/cars/default-car.jpg'">
+                            </div>
+                            <div class="price-badge">€${car.price}/Tag</div>
+                            <div class="car-details">
+                                <h3 class="car-name">${car.name}</h3>
+                                <div class="car-specs">
+                                    <span class="spec-item">
+                                        <i class="bi bi-gear"></i>
+                                        ${car.specs.transmission}
+                                    </span>
+                                    <span class="spec-item">
+                                        <i class="bi bi-fuel-pump"></i>
+                                        ${car.specs.fuel}
+                                    </span>
+                                    <span class="spec-item">
+                                        <i class="bi bi-people"></i>
+                                        ${car.specs.seats}
+                                    </span>
+                                    <span class="spec-item">
+                                        <i class="bi bi-speedometer2"></i>
+                                        ${car.specs.power}
+                                    </span>
+                                </div>
+                                <div class="car-cta">
+                                    <button class="btn-primary" onclick="selectCar(${car.id})">
+                                        Jetzt Mieten
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        // Filter functionality
+        function filterCars() {
+            const typeFilter = document.getElementById('type-filter').value;
+            const brandFilter = document.getElementById('brand-filter').value;
+            const priceFilter = document.getElementById('price-filter').value;
+            const transmissionFilter = document.getElementById('transmission-filter').value;
+            const fuelFilter = document.getElementById('fuel-filter').value;
+            const sortFilter = document.getElementById('sort-filter').value;
+
+            let filteredCars = cars.filter(car => {
+                // Type filter
+                if (typeFilter && typeFilter !== '' && car.type !== typeFilter) {
+                    return false;
+                }
+                
+                // Brand filter
+                if (brandFilter && brandFilter !== '' && car.brand !== brandFilter) {
+                    return false;
+                }
+                
+                // Transmission filter
+                if (transmissionFilter && transmissionFilter !== '' && car.specs.transmission !== transmissionFilter) {
+                    return false;
+                }
+                
+                // Fuel filter
+                if (fuelFilter && fuelFilter !== '' && car.specs.fuel !== fuelFilter) {
+                    return false;
+                }
+                
+                // Price filter
+                if (priceFilter && priceFilter !== '') {
+                    if (priceFilter === '1000+') {
+                        if (car.price < 1000) {
+                            return false;
+                        }
+                    } else {
+                        const [min, max] = priceFilter.split('-').map(Number);
+                        if (max && car.price > max) {
+                            return false;
+                        }
+                        if (min && car.price < min) {
+                            return false;
+                        }
+                    }
+                }
+                
+                return true;
+            });
+
+            // Sort cars
+            filteredCars.sort((a, b) => {
+                switch (sortFilter) {
+                    case 'price-asc':
+                        return a.price - b.price;
+                    case 'price-desc':
+                        return b.price - a.price;
+                    case 'name-asc':
+                        return a.name.localeCompare(b.name);
+                    case 'name-desc':
+                        return b.name.localeCompare(a.name);
+                    case 'popularity':
+                        // Sort by badge priority: Ultra > Exklusiv > Luxus > Premium > Sport
+                        const badgePriority = { 'Ultra': 5, 'Exklusiv': 4, 'Luxus': 3, 'Premium': 2, 'Sport': 1 };
+                        return badgePriority[b.badge] - badgePriority[a.badge];
+                    default:
+                        return 0;
+                }
+            });
+
+            renderCars(filteredCars);
+        }
+
+        // Test filters function
+        function testFilters() {
+            console.log('=== TESTING FILTERS ===');
+            console.log('Total cars:', cars.length);
+            console.log('Available types:', [...new Set(cars.map(car => car.type))]);
+            console.log('Available brands:', [...new Set(cars.map(car => car.brand))]);
+            console.log('Available transmissions:', [...new Set(cars.map(car => car.specs.transmission))]);
+            console.log('Available fuels:', [...new Set(cars.map(car => car.specs.fuel))]);
             
-            // Form submission not needed on fahrzeuge page
+            // Test filter function
+            filterCars();
+        }
+
+        // Car selection
+        function selectCar(carId) {
+            const car = cars.find(c => c.id === carId);
+            if (car) {
+                // Store selected car data
+                const carData = {
+                    carId: car.id,
+                    carName: car.name,
+                    carPrice: car.price,
+                    carImage: car.image
+                };
+                localStorage.setItem('selectedCar', JSON.stringify(carData));
+                
+                // Redirect to extras page
+                window.location.href = `/extras-versicherung.html?carId=${car.id}&days=2`;
+            }
+        }
+
+
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if filter elements exist
+            const typeFilter = document.getElementById('type-filter');
+            const brandFilter = document.getElementById('brand-filter');
+            const priceFilter = document.getElementById('price-filter');
+            const transmissionFilter = document.getElementById('transmission-filter');
+            const fuelFilter = document.getElementById('fuel-filter');
+            const sortFilter = document.getElementById('sort-filter');
+            
+            renderCars();
+            
+            // Add filter event listeners
+            if (typeFilter) typeFilter.addEventListener('change', filterCars);
+            if (brandFilter) brandFilter.addEventListener('change', filterCars);
+            if (priceFilter) priceFilter.addEventListener('change', filterCars);
+            if (transmissionFilter) transmissionFilter.addEventListener('change', filterCars);
+            if (fuelFilter) fuelFilter.addEventListener('change', filterCars);
+            if (sortFilter) sortFilter.addEventListener('change', filterCars);
         });
     </script>
-    
-    <!-- Navbar JavaScript -->
-    <script src="js/navbar.js"></script>
 </body>
 </html>

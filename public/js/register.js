@@ -1,4 +1,4 @@
-// Registration Page JavaScript
+﻿// Registration Page JavaScript
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Registration page loaded');
     
@@ -85,7 +85,7 @@ function validateField(event) {
     if (field.type === 'email') {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(value)) {
-            showFieldError(field, 'Bitte geben Sie eine gültige E-Mail-Adresse ein');
+            showFieldError(field, 'Bitte geben Sie eine gÃ¼ltige E-Mail-Adresse ein');
             return false;
         }
     }
@@ -94,7 +94,7 @@ function validateField(event) {
     if (field.type === 'tel') {
         const phoneRegex = /^[\d\s\-\+\(\)]+$/;
         if (!phoneRegex.test(value) || value.length < 10) {
-            showFieldError(field, 'Bitte geben Sie eine gültige Telefonnummer ein');
+            showFieldError(field, 'Bitte geben Sie eine gÃ¼ltige Telefonnummer ein');
             return false;
         }
     }
@@ -157,7 +157,7 @@ function showPasswordCriteria(criteria) {
     const criteriaList = [
         { key: 'length', text: 'Mindestens 8 Zeichen', icon: 'bi-hash' },
         { key: 'lowercase', text: 'Mindestens ein Kleinbuchstabe', icon: 'bi-type-lowercase' },
-        { key: 'uppercase', text: 'Mindestens ein Großbuchstabe', icon: 'bi-type-uppercase' },
+        { key: 'uppercase', text: 'Mindestens ein GroÃŸbuchstabe', icon: 'bi-type-uppercase' },
         { key: 'number', text: 'Mindestens eine Zahl', icon: 'bi-123' },
         { key: 'special', text: 'Mindestens ein Sonderzeichen', icon: 'bi-exclamation-circle' }
     ];
@@ -196,7 +196,7 @@ function validatePasswordMatch(event) {
     const password = document.getElementById('password');
     
     if (confirmPassword.value !== password.value) {
-        showFieldError(confirmPassword, 'Die Passwörter stimmen nicht überein');
+        showFieldError(confirmPassword, 'Die PasswÃ¶rter stimmen nicht Ã¼berein');
         return false;
     }
     
@@ -357,7 +357,7 @@ function setupFormSubmission() {
         const password = document.getElementById('password');
         const confirmPassword = document.getElementById('confirm-password');
         if (confirmPassword.value !== password.value) {
-            showFieldError(confirmPassword, 'Die Passwörter stimmen nicht überein');
+            showFieldError(confirmPassword, 'Die PasswÃ¶rter stimmen nicht Ã¼berein');
             isValid = false;
         }
         
@@ -574,7 +574,7 @@ function showRecaptchaError() {
     const errorDiv = document.createElement('div');
     errorDiv.className = 'recaptcha-error text-danger mt-2';
     errorDiv.style.fontSize = '12px';
-    errorDiv.textContent = 'Bitte bestätigen Sie, dass Sie kein Roboter sind';
+    errorDiv.textContent = 'Bitte bestÃ¤tigen Sie, dass Sie kein Roboter sind';
     recaptchaContainer.appendChild(errorDiv);
 }
 
@@ -643,3 +643,4 @@ function validateForm() {
         submitButton.classList.add('btn-disabled');
     }
 }
+

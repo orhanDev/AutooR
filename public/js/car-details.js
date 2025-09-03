@@ -1,10 +1,10 @@
-document.addEventListener('DOMContentLoaded', async () => {
+﻿document.addEventListener('DOMContentLoaded', async () => {
     const urlParams = new URLSearchParams(window.location.search);
     const carId = urlParams.get('id');
 
     if (!carId) {
         console.error('Fahrzeug-ID nicht gefunden.');
-        document.querySelector('main .container').innerHTML = '<p class="text-danger text-center">Auto nicht gefunden. Bitte kehren Sie zur Startseite zurück.</p>';
+        document.querySelector('main .container').innerHTML = '<p class="text-danger text-center">Auto nicht gefunden. Bitte kehren Sie zur Startseite zurÃ¼ck.</p>';
         return;
     }
 
@@ -35,13 +35,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     let currentCarDailyRate = 0;
 
-    // URL parametrelerinden tarih/saat bilgileri (özet bar için)
+    // URL parametrelerinden tarih/saat bilgileri (Ã¶zet bar iÃ§in)
     const pickup_date = urlParams.get('pickup_date');
     const dropoff_date = urlParams.get('dropoff_date');
     const pickup_time = urlParams.get('pickup_time');
     const dropoff_time = urlParams.get('dropoff_time');
 
-    // Fahrzeugdetails holen und Seite befüllen
+    // Fahrzeugdetails holen und Seite befÃ¼llen
     try {
         const response = await fetch(`/api/cars/${carId}`);
         if (!response.ok) {
@@ -50,11 +50,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         const car = await response.json();
 
         carTitle.textContent = `${car.make} ${car.model} Details`;
-        // Kurumsal üst özet bar
+        // Kurumsal Ã¼st Ã¶zet bar
         const sDates = [];
         if (pickup_date) sDates.push(pickup_date + (pickup_time ? ' ' + pickup_time : ''));
         if (dropoff_date) sDates.push(dropoff_date + (dropoff_time ? ' ' + dropoff_time : ''));
-        const summaryDates = sDates.length ? sDates.join(' → ') : '—';
+        const summaryDates = sDates.length ? sDates.join(' â†’ ') : 'â€”';
         const titleEl = document.getElementById('summary-title');
         const datesEl = document.getElementById('summary-dates');
         if (titleEl) titleEl.textContent = `${car.make} ${car.model}`;
@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         carSeatingCapacity.textContent = car.seating_capacity;
         carColor.textContent = car.color || 'Nicht angegeben';
         carLocationName.textContent = car.location_name;
-        carDescription.textContent = car.description || 'Keine Beschreibung verfügbar.';
+        carDescription.textContent = car.description || 'Keine Beschreibung verfÃ¼gbar.';
 
         // Features anzeigen
         if (car.features && car.features.length > 0) {
@@ -91,15 +91,15 @@ document.addEventListener('DOMContentLoaded', async () => {
                 carFeaturesBadges.appendChild(span);
             });
         } else {
-            carFeaturesBadges.innerHTML = '<p>Für dieses Auto sind keine Features verfügbar.</p>';
+            carFeaturesBadges.innerHTML = '<p>FÃ¼r dieses Auto sind keine Features verfÃ¼gbar.</p>';
         }
 
     } catch (error) {
         console.error('Fehler beim Laden der Fahrzeugdetails:', error);
-        document.querySelector('main .container').innerHTML = '<p class="text-danger text-center">Fahrzeugdetails konnten nicht geladen werden. Bitte versuchen Sie es später erneut.</p>';
+        document.querySelector('main .container').innerHTML = '<p class="text-danger text-center">Fahrzeugdetails konnten nicht geladen werden. Bitte versuchen Sie es spÃ¤ter erneut.</p>';
     }
 
-    // Standorte laden (für Abholung und Rückgabe)
+    // Standorte laden (fÃ¼r Abholung und RÃ¼ckgabe)
     async function fetchAndPopulateLocations() {
         try {
             const response = await fetch('/api/locations');
@@ -114,7 +114,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 dropoffLocationSelect.innerHTML += option;
             });
 
-            // Standardmäßig den aktuellen Standort des Autos auswählen
+            // StandardmÃ¤ÃŸig den aktuellen Standort des Autos auswÃ¤hlen
             if (carLocationName.dataset.locationId) {
                 pickupLocationSelect.value = carLocationName.dataset.locationId;
                 dropoffLocationSelect.value = carLocationName.dataset.locationId;
@@ -126,7 +126,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     fetchAndPopulateLocations();
 
-    // Logik für Datum- und Zeitfelder
+    // Logik fÃ¼r Datum- und Zeitfelder
     const today = new Date();
     const tomorrow = new Date(today);
     tomorrow.setDate(today.getDate() + 1);
@@ -151,7 +151,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const diffTime = Math.abs(dropOff - pickUp);
             const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-            if (diffDays >= 0) { // Mindestens 0 Tage, also auch gleiche Tag Abholung möglich
+            if (diffDays >= 0) { // Mindestens 0 Tage, also auch gleiche Tag Abholung mÃ¶glich
                 totalPriceElement.textContent = (currentCarDailyRate * (diffDays + 1)).toFixed(2); // +1 Tag, da auch am gleichen Tag abgeholt wird
             } else {
                 totalPriceElement.textContent = '0.00';
@@ -191,7 +191,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const totalPrice = parseFloat(totalPriceElement.textContent);
 
         if (!pickupLocation || !dropoffLocation || !pickupDate || !dropoffDate || !pickupTime || !dropoffTime || totalPrice === 0) {
-            alert('Bitte füllen Sie alle Reservierungsdetails vollständig aus und wählen Sie einen gültigen Datumsbereich.');
+            alert('Bitte fÃ¼llen Sie alle Reservierungsdetails vollstÃ¤ndig aus und wÃ¤hlen Sie einen gÃ¼ltigen Datumsbereich.');
             return;
         }
 
@@ -210,7 +210,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     'x-auth-token': token // JWT im Header mitschicken
                 },
                 body: JSON.stringify({
-                    // user_id wird jetzt vom Backend über das Token ermittelt
+                    // user_id wird jetzt vom Backend Ã¼ber das Token ermittelt
                     car_id: carId,
                     pickup_location_id: pickupLocation,
                     dropoff_location_id: dropoffLocation,
@@ -238,3 +238,4 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 });
+

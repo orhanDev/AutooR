@@ -1,4 +1,4 @@
-// public/js/admin/locations.js
+﻿// public/js/admin/locations.js
 
 document.addEventListener('DOMContentLoaded', async () => {
     const token = localStorage.getItem('token');
@@ -11,20 +11,20 @@ document.addEventListener('DOMContentLoaded', async () => {
     const addLocationBtn = document.getElementById('add-location-btn');
 
     if (!token) {
-        alert('Bu sayfayı görüntülemek için giriş yapmanız gerekiyor.');
+        alert('Bu sayfayÄ± gÃ¶rÃ¼ntÃ¼lemek iÃ§in giriÅŸ yapmanÄ±z gerekiyor.');
         window.location.href = '/views/login.html';
         return;
     }
 
-    // Lokasyonları çekme ve tabloyu doldurma
+    // LokasyonlarÄ± Ã§ekme ve tabloyu doldurma
     async function fetchLocations() {
         try {
-            const response = await fetch('/api/locations', { // Tüm lokasyonları getiren API
+            const response = await fetch('/api/locations', { // TÃ¼m lokasyonlarÄ± getiren API
                 headers: { 'x-auth-token': token }
             });
 
             if (response.status === 403) {
-                alert('Yönetici yetkiniz bulunmamaktadır.');
+                alert('YÃ¶netici yetkiniz bulunmamaktadÄ±r.');
                 window.location.href = '/';
                 return;
             }
@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             locationsTableBody.innerHTML = ''; // Tabloyu temizle
 
             if (locations.length === 0) {
-                locationsTableBody.innerHTML = '<tr><td colspan="2" class="text-center">Henüz hiç lokasyon bulunmamaktadır.</td></tr>';
+                locationsTableBody.innerHTML = '<tr><td colspan="2" class="text-center">HenÃ¼z hiÃ§ lokasyon bulunmamaktadÄ±r.</td></tr>';
                 return;
             }
 
@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     <tr>
                         <td>${location.name}</td>
                         <td>
-                            <button class="nav-link-text btn-sm edit-location-btn" data-id="${location.location_id}">Düzenle</button>
+                            <button class="nav-link-text btn-sm edit-location-btn" data-id="${location.location_id}">DÃ¼zenle</button>
                             <button class="nav-link-text btn-sm delete-location-btn" data-id="${location.location_id}">Sil</button>
                         </td>
                     </tr>
@@ -56,12 +56,12 @@ document.addEventListener('DOMContentLoaded', async () => {
             attachEventListeners();
 
         } catch (error) {
-            console.error('Lokasyonlar çekilirken hata:', error);
-            locationsTableBody.innerHTML = '<tr><td colspan="2" class="text-danger text-center">Lokasyonlar yüklenemedi.</td></tr>';
+            console.error('Lokasyonlar Ã§ekilirken hata:', error);
+            locationsTableBody.innerHTML = '<tr><td colspan="2" class="text-danger text-center">Lokasyonlar yÃ¼klenemedi.</td></tr>';
         }
     }
 
-    // Edit ve Delete butonlarına event listener'ları atayan fonksiyon
+    // Edit ve Delete butonlarÄ±na event listener'larÄ± atayan fonksiyon
     function attachEventListeners() {
         document.querySelectorAll('.edit-location-btn').forEach(button => {
             button.removeEventListener('click', handleEditClick); 
@@ -73,10 +73,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
-    // Düzenle butonuna tıklanınca
+    // DÃ¼zenle butonuna tÄ±klanÄ±nca
     async function handleEditClick(e) {
         const locationId = e.target.dataset.id;
-        locationModalLabel.textContent = 'Lokasyon Düzenle';
+        locationModalLabel.textContent = 'Lokasyon DÃ¼zenle';
         locationForm.reset();
         locationIdInput.value = locationId;
 
@@ -91,15 +91,15 @@ document.addEventListener('DOMContentLoaded', async () => {
             locationNameInput.value = location.name;
             locationModal.show();
         } catch (error) {
-            console.error('Lokasyon detayları çekilirken hata:', error);
-            alert('Lokasyon detayları yüklenemedi.');
+            console.error('Lokasyon detaylarÄ± Ã§ekilirken hata:', error);
+            alert('Lokasyon detaylarÄ± yÃ¼klenemedi.');
         }
     }
 
-    // Sil butonuna tıklanınca
+    // Sil butonuna tÄ±klanÄ±nca
     async function handleDeleteClick(e) {
         const locationId = e.target.dataset.id;
-        if (confirm('Bu lokasyonu silmek istediğinizden emin misiniz? Bu işlem, bu lokasyona bağlı araçları etkileyebilir.')) {
+        if (confirm('Bu lokasyonu silmek istediÄŸinizden emin misiniz? Bu iÅŸlem, bu lokasyona baÄŸlÄ± araÃ§larÄ± etkileyebilir.')) {
             try {
                 const response = await fetch(`/api/admin/locations/${locationId}`, {
                     method: 'DELETE',
@@ -108,16 +108,16 @@ document.addEventListener('DOMContentLoaded', async () => {
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
-                alert('Lokasyon başarıyla silindi.');
+                alert('Lokasyon baÅŸarÄ±yla silindi.');
                 fetchLocations(); // Listeyi yenile
             } catch (error) {
                 console.error('Lokasyon silinirken hata:', error);
-                alert(`Lokasyon silinirken bir hata oluştu: ${error.message}`);
+                alert(`Lokasyon silinirken bir hata oluÅŸtu: ${error.message}`);
             }
         }
     }
 
-    // Yeni Lokasyon Ekle butonuna tıklanınca
+    // Yeni Lokasyon Ekle butonuna tÄ±klanÄ±nca
     addLocationBtn.addEventListener('click', () => {
         locationModalLabel.textContent = 'Yeni Lokasyon Ekle';
         locationForm.reset();
@@ -125,7 +125,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         locationModal.show();
     });
 
-    // Form gönderimi (Lokasyon ekle/düzenle)
+    // Form gÃ¶nderimi (Lokasyon ekle/dÃ¼zenle)
     locationForm.addEventListener('submit', async (event) => {
         event.preventDefault();
 
@@ -150,26 +150,26 @@ document.addEventListener('DOMContentLoaded', async () => {
             const data = await response.json();
 
             if (response.ok) {
-                alert(`Lokasyon başarıyla ${id ? 'güncellendi' : 'eklendi'}!`);
+                alert(`Lokasyon baÅŸarÄ±yla ${id ? 'gÃ¼ncellendi' : 'eklendi'}!`);
                 locationModal.hide();
                 fetchLocations(); // Listeyi yenile
             } else {
-                throw new Error(data.message || `Lokasyon ${id ? 'güncellenirken' : 'eklenirken'} bir hata oluştu.`);
+                throw new Error(data.message || `Lokasyon ${id ? 'gÃ¼ncellenirken' : 'eklenirken'} bir hata oluÅŸtu.`);
             }
         } catch (error) {
-            console.error(`Lokasyon ${id ? 'güncelleme' : 'ekleme'} hatası:`, error);
-            alert(`Lokasyon ${id ? 'güncellenirken' : 'eklenirken'} bir hata oluştu: ${error.message}`);
+            console.error(`Lokasyon ${id ? 'gÃ¼ncelleme' : 'ekleme'} hatasÄ±:`, error);
+            alert(`Lokasyon ${id ? 'gÃ¼ncellenirken' : 'eklenirken'} bir hata oluÅŸtu: ${error.message}`);
         }
     });
 
-    // Sayfa yüklendiğinde lokasyonları çek
+    // Sayfa yÃ¼klendiÄŸinde lokasyonlarÄ± Ã§ek
     fetchLocations();
 
-    // Çıkış yap linki
+    // Ã‡Ä±kÄ±ÅŸ yap linki
     document.getElementById('admin-logout-link').addEventListener('click', (e) => {
         e.preventDefault();
         localStorage.removeItem('token');
-        alert('Başarıyla çıkış yapıldı.');
+        alert('BaÅŸarÄ±yla Ã§Ä±kÄ±ÅŸ yapÄ±ldÄ±.');
         window.location.href = '/';
     });
 });

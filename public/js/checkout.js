@@ -1,6 +1,6 @@
-// checkout.js – Türkçe kod tabanında Türkçe UI
+﻿// checkout.js â€“ TÃ¼rkÃ§e kod tabanÄ±nda TÃ¼rkÃ§e UI
 document.addEventListener('DOMContentLoaded', async () => {
-  // 5 dakikalık geri sayım
+  // 5 dakikalÄ±k geri sayÄ±m
   try {
     const countdownEl = document.getElementById('countdown');
     let remaining = 5 * 60; // saniye
@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (remaining <= 0) {
           clearInterval(timer);
           countdownEl.textContent = '00:00';
-          alert('Zeitüberschreitung: Bitte erneut beginnen.');
+          alert('ZeitÃ¼berschreitung: Bitte erneut beginnen.');
           window.location.href = '/';
           return;
         }
@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const carId = url.searchParams.get('carId') || localStorage.getItem('selected_car_id');
   if (!carId) return;
 
-  // Reservierungsdaten (varsayılan olarak localStorage ya da query'den alınabilir)
+  // Reservierungsdaten (varsayÄ±lan olarak localStorage ya da query'den alÄ±nabilir)
   const pickup = localStorage.getItem('pickup_location_name') || new URLSearchParams(location.search).get('pickup_location_name') || '';
   const dropoff = localStorage.getItem('dropoff_location_name') || new URLSearchParams(location.search).get('dropoff_location_name') || '';
   const pickupDate = localStorage.getItem('pickup_date') || new URLSearchParams(location.search).get('pickup_date') || '';
@@ -36,27 +36,27 @@ document.addEventListener('DOMContentLoaded', async () => {
   const pickupTime = localStorage.getItem('pickup_time') || new URLSearchParams(location.search).get('pickup_time') || '';
   const dropoffTime = localStorage.getItem('dropoff_time') || new URLSearchParams(location.search).get('dropoff_time') || '';
 
-  // Üst özet
+  // Ãœst Ã¶zet
   const resEl = document.getElementById('reservation-summary');
   resEl.innerHTML = `
     <div><div class="text-muted">Abholort</div><strong>${pickup || '-'}</strong></div>
-    <div><div class="text-muted">Rückgabeort</div><strong>${dropoff || '-'}</strong></div>
+    <div><div class="text-muted">RÃ¼ckgabeort</div><strong>${dropoff || '-'}</strong></div>
     <div><div class="text-muted">Abholung</div><strong>${(pickupDate || '-') + (pickupTime ? ' ' + pickupTime : '')}</strong></div>
-    <div><div class="text-muted">Rückgabe</div><strong>${(dropoffDate || '-') + (dropoffTime ? ' ' + dropoffTime : '')}</strong></div>
+    <div><div class="text-muted">RÃ¼ckgabe</div><strong>${(dropoffDate || '-') + (dropoffTime ? ' ' + dropoffTime : '')}</strong></div>
   `;
 
-  // Araç detayları çek
+  // AraÃ§ detaylarÄ± Ã§ek
   const carRes = await fetch(`/api/cars/${carId}`);
   const car = await carRes.json();
 
-  // Fiyat hesap (basit: günlük fiyat)
-  // toplam ücreti gün sayısına göre hesapla
+  // Fiyat hesap (basit: gÃ¼nlÃ¼k fiyat)
+  // toplam Ã¼creti gÃ¼n sayÄ±sÄ±na gÃ¶re hesapla
   const msPerDay = 24 * 60 * 60 * 1000;
   const start = pickupDate ? new Date(pickupDate) : null;
   const end = dropoffDate ? new Date(dropoffDate) : null;
   const days = start && end ? Math.max(1, Math.round((end - start) / msPerDay)) : 1;
   const total = Number(car.daily_rate || 0) * days;
-  document.getElementById('total-price').textContent = `€${total.toLocaleString('de-DE', { minimumFractionDigits: 2 })}`;
+  document.getElementById('total-price').textContent = `â‚¬${total.toLocaleString('de-DE', { minimumFractionDigits: 2 })}`;
 
   // Kart
   const vehicleCard = document.getElementById('vehicle-card');
@@ -66,22 +66,22 @@ document.addEventListener('DOMContentLoaded', async () => {
     <div>
       <div class="fw-semibold mb-1">${car.make} ${car.model} (${car.year})</div>
       <div class="small text-muted mb-2">${car.description || ''}</div>
-      <div class="small">Kaution: 4.500 TL • Mindestalter: 21 • Km inkl.: 500</div>
+      <div class="small">Kaution: 4.500 TL â€¢ Mindestalter: 21 â€¢ Km inkl.: 500</div>
     </div>
   `;
 
-  // Diğer alanları doldur
+  // DiÄŸer alanlarÄ± doldur
   document.getElementById('pickup-location').textContent = pickup || '-';
   document.getElementById('dropoff-location').textContent = dropoff || '-';
   document.getElementById('car-transmission').textContent = car.transmission_type;
   document.getElementById('car-fuel').textContent = car.fuel_type;
   document.getElementById('car-seats').textContent = car.seating_capacity;
 
-  // sonraki adımlara bilgi taşı
+  // sonraki adÄ±mlara bilgi taÅŸÄ±
   localStorage.setItem('selected_car_id', carId);
   localStorage.setItem('days', String(days));
 
-  // Ödeme yöntemi görünürlükleri
+  // Ã–deme yÃ¶ntemi gÃ¶rÃ¼nÃ¼rlÃ¼kleri
   const formCard = document.getElementById('form-card');
   const formPaypal = document.getElementById('form-paypal');
   const formKlarna = document.getElementById('form-klarna');
@@ -97,9 +97,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     const phone = (document.getElementById('phone').value || '').trim();
     const first = (document.getElementById('first_name').value || '').trim();
     const last = (document.getElementById('last_name').value || '').trim();
-    // Telefonu opsiyonel yaptık; e-posta ve ad/soyad zorunlu
+    // Telefonu opsiyonel yaptÄ±k; e-posta ve ad/soyad zorunlu
     if (!email || !first || !last) {
-      alert('Bitte E-Mail, Vorname und Nachname ausfüllen.');
+      alert('Bitte E-Mail, Vorname und Nachname ausfÃ¼llen.');
       return false;
     }
     // Persist contact and trip info for review page
@@ -117,7 +117,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     return true;
   }
 
-  // PayPal sandbox butonu (yalnızca demo)
+  // PayPal sandbox butonu (yalnÄ±zca demo)
   try {
     if (window.paypal) {
       paypal.Buttons({
@@ -142,7 +142,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       const amountText = document.getElementById('total-price').textContent.replace(/[^0-9,\.]/g,'').replace(',', '.');
       const amount = parseFloat(amountText) || 0;
       if (!status.enabled) {
-        // Demo fallback: Dahili Klarna sayfasına yönlendir
+        // Demo fallback: Dahili Klarna sayfasÄ±na yÃ¶nlendir
         localStorage.setItem('klarna_amount', String(amount));
         window.location.href = '/views/klarna_demo.html';
         return;
@@ -154,23 +154,23 @@ document.addEventListener('DOMContentLoaded', async () => {
       const data = await resp.json();
       if (!resp.ok) { alert('Klarna Fehler: ' + (data.error || '')); return; }
       if (data.redirect_url) { window.location.href = data.redirect_url; return; }
-      alert('Klarna Antwort ungültig.');
+      alert('Klarna Antwort ungÃ¼ltig.');
     } catch (err) {
-      alert('Klarna nicht verfügbar: ' + err.message);
+      alert('Klarna nicht verfÃ¼gbar: ' + err.message);
     }
   });
 
-  // Güvenli ödeme akışı: sayfa açılışında özet+opsiyonları göster; buton yalnızca validasyon ve geçiş yapar
+  // GÃ¼venli Ã¶deme akÄ±ÅŸÄ±: sayfa aÃ§Ä±lÄ±ÅŸÄ±nda Ã¶zet+opsiyonlarÄ± gÃ¶ster; buton yalnÄ±zca validasyon ve geÃ§iÅŸ yapar
   let summaryOpen = false;
   let extrasTotalState = 0;
   function openSummary() {
     const summary = document.getElementById('summary-sections');
     summary.innerHTML = `
       <div class="mb-2"><strong>Preis Informationen</strong></div>
-      <div class="row"><div class="col-6">Gesamt</div><div class="col-6 text-end" id="summary-total">€${total.toLocaleString('de-DE', { minimumFractionDigits: 2 })}</div></div>
+      <div class="row"><div class="col-6">Gesamt</div><div class="col-6 text-end" id="summary-total">â‚¬${total.toLocaleString('de-DE', { minimumFractionDigits: 2 })}</div></div>
       <div class="row small mt-1">
         <div class="col-6">Abholung</div><div class="col-6 text-end">${pickupDate} ${pickupTime}</div>
-        <div class="col-6">Rückgabe</div><div class="col-6 text-end">${dropoffDate} ${dropoffTime}</div>
+        <div class="col-6">RÃ¼ckgabe</div><div class="col-6 text-end">${dropoffDate} ${dropoffTime}</div>
         <div class="col-6">Dauer</div><div class="col-6 text-end">${days} Tag(e)</div>
       </div>
       <hr/>
@@ -179,23 +179,23 @@ document.addEventListener('DOMContentLoaded', async () => {
         <div class="col-12">
           <div class="form-check extras-item">
             <input class="form-check-input" type="checkbox" id="ex1" data-price="25"/>
-            <label class="form-check-label ms-2" for="ex1">Excess Protection (€25/Tag)</label>
+            <label class="form-check-label ms-2" for="ex1">Excess Protection (â‚¬25/Tag)</label>
           </div>
         </div>
         <div class="col-12">
           <div class="form-check extras-item">
             <input class="form-check-input" type="checkbox" id="ex2" data-price="6"/>
-            <label class="form-check-label ms-2" for="ex2">Roadside Protection (€6/Tag)</label>
+            <label class="form-check-label ms-2" for="ex2">Roadside Protection (â‚¬6/Tag)</label>
           </div>
         </div>
         <div class="col-12">
           <div class="form-check extras-item">
             <input class="form-check-input" type="checkbox" id="ex3" data-price="5"/>
-            <label class="form-check-label ms-2" for="ex3">Navigationsgerät (€5/Tag)</label>
+            <label class="form-check-label ms-2" for="ex3">NavigationsgerÃ¤t (â‚¬5/Tag)</label>
           </div>
         </div>
       </div>
-      <div class="mt-2 text-end"><span class="small text-muted">Extras Zwischensumme: </span><strong id="inline-extras-total">€0,00</strong></div>
+      <div class="mt-2 text-end"><span class="small text-muted">Extras Zwischensumme: </span><strong id="inline-extras-total">â‚¬0,00</strong></div>
       <div class="alert alert-info mt-3 small">Zusatzleistungen werden ggf. bei der Abholung bezahlt. Kaution kann variieren.</div>
     `;
 
@@ -215,9 +215,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
       });
       extrasTotalState = ext;
-      extrasTotalEl.textContent = `€${ext.toLocaleString('de-DE', { minimumFractionDigits: 2 })}`;
+      extrasTotalEl.textContent = `â‚¬${ext.toLocaleString('de-DE', { minimumFractionDigits: 2 })}`;
       const newTotal = ext + Number(total);
-      totalEl.textContent = `€${newTotal.toLocaleString('de-DE', { minimumFractionDigits: 2 })}`;
+      totalEl.textContent = `â‚¬${newTotal.toLocaleString('de-DE', { minimumFractionDigits: 2 })}`;
       summaryTotalEl.textContent = totalEl.textContent;
       localStorage.setItem('extras_selected', JSON.stringify(selected));
       localStorage.setItem('extras_total', String(ext));
@@ -227,7 +227,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     summaryOpen = true;
   }
 
-  // Sayfa açılır açılmaz opsiyon ve özet görünür
+  // Sayfa aÃ§Ä±lÄ±r aÃ§Ä±lmaz opsiyon ve Ã¶zet gÃ¶rÃ¼nÃ¼r
   openSummary();
 
   document.getElementById('btn-secure-checkout').addEventListener('click', () => {
@@ -241,8 +241,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     proceedToReview();
   });
 
-  // Sonraki adım: basit rezervasyon oluştur (kayıtlı kullanıcı gerektirir)
-  // Nächster Schritt kaldırıldı
+  // Sonraki adÄ±m: basit rezervasyon oluÅŸtur (kayÄ±tlÄ± kullanÄ±cÄ± gerektirir)
+  // NÃ¤chster Schritt kaldÄ±rÄ±ldÄ±
 });
+
 
 

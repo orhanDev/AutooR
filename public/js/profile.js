@@ -1,4 +1,4 @@
-// public/js/profile.js
+﻿// public/js/profile.js
 
 document.addEventListener('DOMContentLoaded', async () => {
     const token = localStorage.getItem('token');
@@ -20,10 +20,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
 
             if (!response.ok) {
-                // Wenn Token ungültig ist oder Benutzer nicht gefunden, ausloggen
+                // Wenn Token ungÃ¼ltig ist oder Benutzer nicht gefunden, ausloggen
                 if (response.status === 401 || response.status === 404) {
                     localStorage.removeItem('token');
-                    alert('Ihre Sitzung ist abgelaufen oder ungültig. Bitte melden Sie sich erneut an.');
+                    alert('Ihre Sitzung ist abgelaufen oder ungÃ¼ltig. Bitte melden Sie sich erneut an.');
                     window.location.href = '/views/login.html';
                     return;
                 }
@@ -42,13 +42,13 @@ document.addEventListener('DOMContentLoaded', async () => {
             document.getElementById('user-created-at').textContent = createdAtText;
             document.getElementById('user-is-admin').textContent = user.is_admin ? 'Ja' : 'Nein';
 
-            // Üst özet bar
+            // Ãœst Ã¶zet bar
             const summaryUser = document.getElementById('summary-user');
             const summarySince = document.getElementById('summary-since');
             if (summaryUser) summaryUser.textContent = `${user.first_name || ''} ${user.last_name || ''}`.trim();
             if (summarySince) summarySince.textContent = createdAtText;
 
-            // ödeme bilgilerini formlara doldur
+            // Ã¶deme bilgilerini formlara doldur
             try {
                 const card = user.payment_card_json || {};
                 const paypal = user.payment_paypal_json || {};
@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         } catch (error) {
             console.error('Fehler beim Laden der Benutzerdaten:', error);
-            alert('Benutzerdaten konnten nicht geladen werden. Bitte versuchen Sie es später erneut.');
+            alert('Benutzerdaten konnten nicht geladen werden. Bitte versuchen Sie es spÃ¤ter erneut.');
         }
     }
 
@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             const reservations = await response.json();
             const userReservationsContainer = document.getElementById('user-reservations');
-            userReservationsContainer.innerHTML = ''; // Vorherigen Inhalt löschen
+            userReservationsContainer.innerHTML = ''; // Vorherigen Inhalt lÃ¶schen
 
             if (reservations.length === 0) {
                 userReservationsContainer.innerHTML = '<p>Sie haben noch keine Reservierungen.</p>';
@@ -101,10 +101,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                             <p class="card-text"><strong>Reservierungs-ID:</strong> ${reservation.reservation_id}</p>
                             <p class="card-text"><strong>Kennzeichen:</strong> ${reservation.license_plate}</p>
                             <p class="card-text"><strong>Abholung:</strong> ${new Date(reservation.pickup_date).toLocaleDateString()} ${reservation.pickup_time} (${reservation.pickup_location_name})</p>
-                            <p class="card-text"><strong>Rückgabe:</strong> ${new Date(reservation.dropoff_date).toLocaleDateString()} ${reservation.dropoff_time} (${reservation.dropoff_location_name})</p>
+                            <p class="card-text"><strong>RÃ¼ckgabe:</strong> ${new Date(reservation.dropoff_date).toLocaleDateString()} ${reservation.dropoff_time} (${reservation.dropoff_location_name})</p>
                             <p class="card-text"><strong>Gesamtpreis:</strong> ${reservation.total_price} TL</p>
                             <p class="card-text"><strong>Status:</strong> <span class="badge bg-primary">${reservation.status}</span></p>
-                            <!-- Stornieren/Bearbeiten Buttons können hier hinzugefügt werden -->
+                            <!-- Stornieren/Bearbeiten Buttons kÃ¶nnen hier hinzugefÃ¼gt werden -->
                         </div>
                     </div>
                 `;
@@ -113,7 +113,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         } catch (error) {
             console.error('Fehler beim Laden der Reservierungen:', error);
-            document.getElementById('user-reservations').innerHTML = '<p class="text-danger">Reservierungen konnten nicht geladen werden. Bitte versuchen Sie es später erneut.</p>';
+            document.getElementById('user-reservations').innerHTML = '<p class="text-danger">Reservierungen konnten nicht geladen werden. Bitte versuchen Sie es spÃ¤ter erneut.</p>';
         }
     }
 
@@ -149,10 +149,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                     body: JSON.stringify(body)
                 });
                 if (!resp.ok) throw new Error('Save failed');
-                document.getElementById('save-status').textContent = 'Ödeme yöntemleri kaydedildi.';
+                document.getElementById('save-status').textContent = 'Ã–deme yÃ¶ntemleri kaydedildi.';
             } catch (e) {
-                document.getElementById('save-status').textContent = 'Kaydetme başarısız.';
+                document.getElementById('save-status').textContent = 'Kaydetme baÅŸarÄ±sÄ±z.';
             }
         });
     }
 });
+

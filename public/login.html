@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8">
@@ -7,6 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
     <link href="/css/style.css" rel="stylesheet">
+    <link href="/css/navbar.css" rel="stylesheet">
     <style>
         :root {
             --primary-red: #dc3545;
@@ -16,7 +17,7 @@
         }
 
         body {
-            background-image: url('images/cars/überunsfotom.jpeg') !important;
+            background-image: url('images/cars/Ã¼berunsfotom.jpeg') !important;
             background-size: cover !important;
             background-position: center !important;
             background-attachment: fixed !important;
@@ -96,23 +97,7 @@
                  margin-top: 60px !important;
              }
              
-                         .navbar-brand {
-                font-size: 1.5rem !important;
-                color: #000000 !important;
-            }
-            
-            .navbar-brand i,
-            .navbar-brand span {
-                color: #000000 !important;
-            }
-            
-            .navbar-brand .bi-car-front {
-                color: #000000 !important;
-            }
-            
-            .navbar-brand .text-warning {
-                color: #000000 !important;
-            }
+            /* Navbar mobile overrides removed to keep consistency with centralized navbar.css */
              
              .main-content {
                  padding: 20px 0 !important;
@@ -416,13 +401,7 @@
             }
         }
 
-        /* Navbar styles */
-        .navbar {
-            background: rgba(255, 255, 255, 0.9) !important;
-            backdrop-filter: blur(15px);
-            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
-            border-bottom: 1px solid rgba(0,0,0,0.1);
-        }
+        /* Navbar styles moved to /css/navbar.css to centralize */
 
         .btn-outline-warning {
             background: #ff6b35;
@@ -469,7 +448,7 @@
 <body style="overflow-x: hidden;">
     <!-- Navbar -->
     <div id="navbar-container">
-        <!-- Navbar JavaScript ile yüklenecek -->
+        <!-- Navbar JavaScript ile yÃ¼klenecek -->
     </div>
 
     <main class="main-content">
@@ -502,7 +481,7 @@
                 </form>
                 
                 <div class="forgot-password">
-                    <a href="#" onclick="alert('Passwort zurücksetzen Funktion wird implementiert...')">
+                    <a href="#" onclick="alert('Passwort zurÃ¼cksetzen Funktion wird implementiert...')">
                         Passwort vergessen?
                     </a>
                 </div>
@@ -518,7 +497,7 @@
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
-                <p class="mb-3">© 2025 AutOr. Alle Rechte vorbehalten.</p>
+                <p class="mb-3">Â© 2025 AutOr. Alle Rechte vorbehalten.</p>
                 <div>
                     <a href="#" class="footer-link">Datenschutz</a>
                     <a href="#" class="footer-link">AGB</a>
@@ -549,3 +528,4 @@
     </script>
 </body>
 </html>
+

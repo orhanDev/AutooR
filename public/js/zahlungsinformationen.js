@@ -1,4 +1,4 @@
-// Zahlungsinformationen page JavaScript
+﻿// Zahlungsinformationen page JavaScript
 
 document.addEventListener('DOMContentLoaded', () => {
     // Elements
@@ -137,7 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 // Set overlay price
                 if (carOverlayPrice) {
-                    carOverlayPrice.textContent = `€${car.daily_rate}/Tag`;
+                    carOverlayPrice.textContent = `â‚¬${car.daily_rate}/Tag`;
                 }
                 
                 // Set car specifications with fallbacks
@@ -147,7 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 carPower.textContent = car.engine_power ? `${car.engine_power} PS` : '150 PS';
                 carType.textContent = car.vehicle_type || 'Sedan';
                 carYear.textContent = car.year || '2023';
-                carColor.textContent = car.color || 'Weiß';
+                carColor.textContent = car.color || 'WeiÃŸ';
                 carClimate.textContent = car.air_conditioning ? 'Ja' : 'Nein';
             } else {
                 console.error('Car not found for ID:', carId);
@@ -199,7 +199,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             <i class="bi bi-car-front me-2"></i>
                             Fahrzeugmiete (${days} Tag(e))
                         </span>
-                        <span class="summary-value">€${carPrice.toFixed(2)}</span>
+                        <span class="summary-value">â‚¬${carPrice.toFixed(2)}</span>
                     </div>
                 `;
             }
@@ -216,7 +216,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <i class="bi bi-shield-check me-2"></i>
                         ${selectedInsurance.name}
                     </span>
-                    <span class="summary-value">€${insurancePrice.toFixed(2)}</span>
+                    <span class="summary-value">â‚¬${insurancePrice.toFixed(2)}</span>
                 </div>
             `;
         }
@@ -247,7 +247,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 <i class="bi ${icon} me-2"></i>
                                 ${product.name}
                             </span>
-                            <span class="summary-value">€${productPrice.toFixed(2)}</span>
+                            <span class="summary-value">â‚¬${productPrice.toFixed(2)}</span>
                         </div>
                     `;
                 }
@@ -261,7 +261,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <i class="bi bi-calculator me-2"></i>
                     Gesamtbetrag
                 </span>
-                <span class="summary-value">€${totalPrice.toFixed(2)}</span>
+                <span class="summary-value">â‚¬${totalPrice.toFixed(2)}</span>
             </div>
         `;
 
@@ -296,7 +296,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Process payment
     window.processPayment = function() {
         if (!selectedPaymentMethod) {
-            alert('Bitte wählen Sie eine Zahlungsmethode aus.');
+            alert('Bitte wÃ¤hlen Sie eine Zahlungsmethode aus.');
             return;
         }
 
@@ -308,3 +308,4 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
 });
+

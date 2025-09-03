@@ -1,25 +1,25 @@
-// public/js/auth.js
+﻿// public/js/auth.js
 
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('=== Auth.js çalışıyor ===');
+    console.log('=== Auth.js Ã§alÄ±ÅŸÄ±yor ===');
     const authLinksContainer = document.getElementById('auth-links');
     console.log('auth-links container:', authLinksContainer);
     
     const token = localStorage.getItem('token');
     console.log('Token localStorage\'dan:', token);
 
-    // Oturumu otomatik silme kaldırıldı; yalnızca explicit logout ile silinecek
+    // Oturumu otomatik silme kaldÄ±rÄ±ldÄ±; yalnÄ±zca explicit logout ile silinecek
 
     async function updateAuthLinks() {
-        console.log('=== updateAuthLinks çalışıyor ===');
+        console.log('=== updateAuthLinks Ã§alÄ±ÅŸÄ±yor ===');
         
         if (token) {
-            console.log('Token mevcut, kullanıcı bilgileri alınıyor...');
+            console.log('Token mevcut, kullanÄ±cÄ± bilgileri alÄ±nÄ±yor...');
             
             // Benutzernamen abrufen
             let userName = '';
             try {
-                console.log('/api/auth/user endpoint\'ine istek atılıyor...');
+                console.log('/api/auth/user endpoint\'ine istek atÄ±lÄ±yor...');
                 const res = await fetch('/api/auth/user', {
                     headers: { 'x-auth-token': token }
                 });
@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 } else {
                     console.error('Response not ok:', res.status, res.statusText);
-                    // Token geçersiz, temizle
+                    // Token geÃ§ersiz, temizle
                     localStorage.removeItem('token');
                     localStorage.removeItem('welcome_name');
                     localStorage.removeItem('user');
@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
             } catch (e) { 
                 userName = ''; 
                 console.error('Error fetching user data:', e);
-                // Hata durumunda token'ı temizle
+                // Hata durumunda token'Ä± temizle
                 localStorage.removeItem('token');
                 localStorage.removeItem('welcome_name');
                 localStorage.removeItem('user');
@@ -56,9 +56,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            // Sadece token varsa ve kullanıcı adı alınabildiyse "Willkommen" göster
+            // Sadece token varsa ve kullanÄ±cÄ± adÄ± alÄ±nabildiyse "Willkommen" gÃ¶ster
             if (userName) {
-                console.log('Willkommen gösteriliyor:', userName);
+                console.log('Willkommen gÃ¶steriliyor:', userName);
                 authLinksContainer.innerHTML = `
                     <li class="nav-item">
                         <a class="nav-link" href="/views/profile.html">Mein Profil</a>
@@ -76,17 +76,17 @@ document.addEventListener('DOMContentLoaded', () => {
                     logout();
                 });
             } else {
-                console.log('Kullanıcı adı alınamadı, giriş linkleri gösteriliyor');
+                console.log('KullanÄ±cÄ± adÄ± alÄ±namadÄ±, giriÅŸ linkleri gÃ¶steriliyor');
                 showLoginLinks();
             }
         } else {
-            console.log('Token yok, giriş linkleri gösteriliyor');
+            console.log('Token yok, giriÅŸ linkleri gÃ¶steriliyor');
             showLoginLinks();
         }
     }
 
     function showLoginLinks() {
-        console.log('showLoginLinks çalışıyor');
+        console.log('showLoginLinks Ã§alÄ±ÅŸÄ±yor');
         if (authLinksContainer) {
             authLinksContainer.innerHTML = `
                 <li class="nav-item">
@@ -101,7 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Logout function
     function logout() {
-        console.log('Logout çalışıyor');
+        console.log('Logout Ã§alÄ±ÅŸÄ±yor');
         localStorage.removeItem('token');
         localStorage.removeItem('welcome_name');
         localStorage.removeItem('user');
@@ -111,3 +111,4 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initial load
     updateAuthLinks();
 });
+

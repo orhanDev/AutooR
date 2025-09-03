@@ -1,4 +1,4 @@
-// Payment Page JavaScript
+﻿// Payment Page JavaScript
 
 document.addEventListener('DOMContentLoaded', () => {
     const container = document.getElementById('payment-container');
@@ -133,7 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 
                                 <div id="billing-address" style="display: none;">
                                     <div class="col-12">
-                                        <label class="form-label fw-medium">Straße und Hausnummer</label>
+                                        <label class="form-label fw-medium">StraÃŸe und Hausnummer</label>
                                         <input type="text" name="billingAddress" class="form-control border-2">
                                     </div>
                                     
@@ -154,7 +154,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                         <input class="form-check-input" type="checkbox" id="paymentTerms">
                                         <label class="form-check-label" for="paymentTerms">
                                             Ich akzeptiere die <a href="#" class="text-warning">Zahlungsbedingungen</a> und 
-                                            <a href="#" class="text-warning">Datenschutzerklärung</a> *
+                                            <a href="#" class="text-warning">DatenschutzerklÃ¤rung</a> *
                                         </label>
                                     </div>
                                 </div>
@@ -163,7 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 <div class="col-12">
                                     <button type="submit" class="nav-link-text btn-lg w-100 fw-bold">
                                         <i class="bi bi-lock me-2"></i>
-                                        Sichere Zahlung - €${totalPrice}
+                                        Sichere Zahlung - â‚¬${totalPrice}
                                     </button>
                                 </div>
                             </div>
@@ -174,7 +174,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <!-- Order Summary -->
                 <div class="col-lg-4 mb-4">
                     <div class="bg-white rounded-4 p-4 shadow-sm border">
-                        <h5 class="fw-bold mb-4">Bestellübersicht</h5>
+                        <h5 class="fw-bold mb-4">BestellÃ¼bersicht</h5>
                         
                         <!-- Vehicle Info -->
                         <div class="d-flex align-items-center mb-4">
@@ -195,7 +195,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                     <br><strong>${getLocationName(data.pickupLocation)}</strong>
                                 </div>
                                 <div class="col-6">
-                                    <small class="text-muted">Rückgabeort:</small>
+                                    <small class="text-muted">RÃ¼ckgabeort:</small>
                                     <br><strong>${getLocationName(data.dropoffLocation)}</strong>
                                 </div>
                             </div>
@@ -205,7 +205,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                     <br><strong>${data.pickupTime}</strong>
                                 </div>
                                 <div class="col-6">
-                                    <small class="text-muted">Rückgabezeit:</small>
+                                    <small class="text-muted">RÃ¼ckgabezeit:</small>
                                     <br><strong>${data.dropoffTime}</strong>
                                 </div>
                             </div>
@@ -214,33 +214,33 @@ document.addEventListener('DOMContentLoaded', () => {
                         <!-- Additional Services -->
                         ${additionalServices > 0 ? `
                         <div class="mb-4">
-                            <h6 class="fw-bold mb-3">Zusätzliche Services</h6>
+                            <h6 class="fw-bold mb-3">ZusÃ¤tzliche Services</h6>
                             <div class="row g-2">
-                                ${data.additionalDriver ? '<div class="col-12"><small>Zusätzlicher Fahrer: €' + (15 * days) + '</small></div>' : ''}
-                                ${data.childSeat ? '<div class="col-12"><small>Kindersitz: €' + (10 * days) + '</small></div>' : ''}
-                                ${data.gps ? '<div class="col-12"><small>GPS Navigation: €' + (8 * days) + '</small></div>' : ''}
-                                ${data.insurance ? '<div class="col-12"><small>Zusätzliche Versicherung: €' + (20 * days) + '</small></div>' : ''}
+                                ${data.additionalDriver ? '<div class="col-12"><small>ZusÃ¤tzlicher Fahrer: â‚¬' + (15 * days) + '</small></div>' : ''}
+                                ${data.childSeat ? '<div class="col-12"><small>Kindersitz: â‚¬' + (10 * days) + '</small></div>' : ''}
+                                ${data.gps ? '<div class="col-12"><small>GPS Navigation: â‚¬' + (8 * days) + '</small></div>' : ''}
+                                ${data.insurance ? '<div class="col-12"><small>ZusÃ¤tzliche Versicherung: â‚¬' + (20 * days) + '</small></div>' : ''}
                             </div>
                         </div>
                         ` : ''}
                         
                         <!-- Price Breakdown -->
                         <div class="bg-light rounded-3 p-3">
-                            <h6 class="fw-bold mb-3">Preisübersicht</h6>
+                            <h6 class="fw-bold mb-3">PreisÃ¼bersicht</h6>
                             <div class="d-flex justify-content-between mb-2">
                                 <span>Grundpreis (${days} Tag${days > 1 ? 'e' : ''})</span>
-                                <span>€${basePrice}</span>
+                                <span>â‚¬${basePrice}</span>
                             </div>
                             ${additionalServices > 0 ? `
                             <div class="d-flex justify-content-between mb-2">
-                                <span>Zusätzliche Services</span>
-                                <span>€${additionalServices}</span>
+                                <span>ZusÃ¤tzliche Services</span>
+                                <span>â‚¬${additionalServices}</span>
                             </div>
                             ` : ''}
                             <hr>
                             <div class="d-flex justify-content-between fw-bold">
                                 <span>Gesamtpreis</span>
-                                <span class="text-warning">€${totalPrice}</span>
+                                <span class="text-warning">â‚¬${totalPrice}</span>
                             </div>
                         </div>
                         
@@ -248,7 +248,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <div class="mt-4 text-center">
                             <div class="d-flex justify-content-center align-items-center mb-2">
                                 <i class="bi bi-shield-check text-success me-2"></i>
-                                <small class="text-muted">SSL-verschlüsselte Zahlung</small>
+                                <small class="text-muted">SSL-verschlÃ¼sselte Zahlung</small>
                             </div>
                             <div class="d-flex justify-content-center align-items-center">
                                 <i class="bi bi-lock text-success me-2"></i>
@@ -335,8 +335,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const locations = {
             'berlin_airport': 'Berlin Flughafen',
             'berlin_center': 'Berlin Zentrum',
-            'munich_airport': 'München Flughafen',
-            'munich_center': 'München Zentrum',
+            'munich_airport': 'MÃ¼nchen Flughafen',
+            'munich_center': 'MÃ¼nchen Zentrum',
             'hamburg_airport': 'Hamburg Flughafen',
             'hamburg_center': 'Hamburg Zentrum'
         };
@@ -399,9 +399,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 <p class="text-muted">Die Zahlungsseite konnte nicht geladen werden.</p>
                 <a href="/reservation" class="nav-link-text">
                     <i class="bi bi-arrow-left me-2"></i>
-                    Zurück zur Reservierung
+                    ZurÃ¼ck zur Reservierung
                 </a>
             </div>
         `;
     }
 });
+

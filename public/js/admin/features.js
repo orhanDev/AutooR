@@ -1,4 +1,4 @@
-// public/js/admin/features.js
+﻿// public/js/admin/features.js
 
 document.addEventListener('DOMContentLoaded', async () => {
     const token = localStorage.getItem('token');
@@ -11,20 +11,20 @@ document.addEventListener('DOMContentLoaded', async () => {
     const addFeatureBtn = document.getElementById('add-feature-btn');
 
     if (!token) {
-        alert('Bu sayfayı görüntülemek için giriş yapmanız gerekiyor.');
+        alert('Bu sayfayÄ± gÃ¶rÃ¼ntÃ¼lemek iÃ§in giriÅŸ yapmanÄ±z gerekiyor.');
         window.location.href = '/views/login.html';
         return;
     }
 
-    // Özellikleri çekme ve tabloyu doldurma
+    // Ã–zellikleri Ã§ekme ve tabloyu doldurma
     async function fetchFeatures() {
         try {
-            const response = await fetch('/api/admin/features', { // Tüm özellikleri getiren API
+            const response = await fetch('/api/admin/features', { // TÃ¼m Ã¶zellikleri getiren API
                 headers: { 'x-auth-token': token }
             });
 
             if (response.status === 403) {
-                alert('Yönetici yetkiniz bulunmamaktadır.');
+                alert('YÃ¶netici yetkiniz bulunmamaktadÄ±r.');
                 window.location.href = '/';
                 return;
             }
@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             featuresTableBody.innerHTML = ''; // Tabloyu temizle
 
             if (features.length === 0) {
-                featuresTableBody.innerHTML = '<tr><td colspan="2" class="text-center">Henüz hiç özellik bulunmamaktadır.</td></tr>';
+                featuresTableBody.innerHTML = '<tr><td colspan="2" class="text-center">HenÃ¼z hiÃ§ Ã¶zellik bulunmamaktadÄ±r.</td></tr>';
                 return;
             }
 
@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     <tr>
                         <td>${feature.feature_name}</td>
                         <td>
-                            <button class="nav-link-text btn-sm edit-feature-btn" data-id="${feature.feature_id}">Düzenle</button>
+                            <button class="nav-link-text btn-sm edit-feature-btn" data-id="${feature.feature_id}">DÃ¼zenle</button>
                             <button class="nav-link-text btn-sm delete-feature-btn" data-id="${feature.feature_id}">Sil</button>
                         </td>
                     </tr>
@@ -56,12 +56,12 @@ document.addEventListener('DOMContentLoaded', async () => {
             attachEventListeners();
 
         } catch (error) {
-            console.error('Özellikler çekilirken hata:', error);
-            featuresTableBody.innerHTML = '<tr><td colspan="2" class="text-danger text-center">Özellikler yüklenemedi.</td></tr>';
+            console.error('Ã–zellikler Ã§ekilirken hata:', error);
+            featuresTableBody.innerHTML = '<tr><td colspan="2" class="text-danger text-center">Ã–zellikler yÃ¼klenemedi.</td></tr>';
         }
     }
 
-    // Edit ve Delete butonlarına event listener'ları atayan fonksiyon
+    // Edit ve Delete butonlarÄ±na event listener'larÄ± atayan fonksiyon
     function attachEventListeners() {
         document.querySelectorAll('.edit-feature-btn').forEach(button => {
             button.removeEventListener('click', handleEditClick); 
@@ -73,10 +73,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
-    // Düzenle butonuna tıklanınca
+    // DÃ¼zenle butonuna tÄ±klanÄ±nca
     async function handleEditClick(e) {
         const featureId = e.target.dataset.id;
-        featureModalLabel.textContent = 'Özellik Düzenle';
+        featureModalLabel.textContent = 'Ã–zellik DÃ¼zenle';
         featureForm.reset();
         featureIdInput.value = featureId;
 
@@ -91,15 +91,15 @@ document.addEventListener('DOMContentLoaded', async () => {
             featureNameInput.value = feature.feature_name;
             featureModal.show();
         } catch (error) {
-            console.error('Özellik detayları çekilirken hata:', error);
-            alert('Özellik detayları yüklenemedi.');
+            console.error('Ã–zellik detaylarÄ± Ã§ekilirken hata:', error);
+            alert('Ã–zellik detaylarÄ± yÃ¼klenemedi.');
         }
     }
 
-    // Sil butonuna tıklanınca
+    // Sil butonuna tÄ±klanÄ±nca
     async function handleDeleteClick(e) {
         const featureId = e.target.dataset.id;
-        if (confirm('Bu özelliği silmek istediğinizden emin misiniz? Bu işlem, bu özelliği kullanan araçları etkileyebilir.')) {
+        if (confirm('Bu Ã¶zelliÄŸi silmek istediÄŸinizden emin misiniz? Bu iÅŸlem, bu Ã¶zelliÄŸi kullanan araÃ§larÄ± etkileyebilir.')) {
             try {
                 const response = await fetch(`/api/admin/features/${featureId}`, {
                     method: 'DELETE',
@@ -108,24 +108,24 @@ document.addEventListener('DOMContentLoaded', async () => {
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
-                alert('Özellik başarıyla silindi.');
+                alert('Ã–zellik baÅŸarÄ±yla silindi.');
                 fetchFeatures(); // Listeyi yenile
             } catch (error) {
-                console.error('Özellik silinirken hata:', error);
-                alert(`Özellik silinirken bir hata oluştu: ${error.message}`);
+                console.error('Ã–zellik silinirken hata:', error);
+                alert(`Ã–zellik silinirken bir hata oluÅŸtu: ${error.message}`);
             }
         }
     }
 
-    // Yeni Özellik Ekle butonuna tıklanınca
+    // Yeni Ã–zellik Ekle butonuna tÄ±klanÄ±nca
     addFeatureBtn.addEventListener('click', () => {
-        featureModalLabel.textContent = 'Yeni Özellik Ekle';
+        featureModalLabel.textContent = 'Yeni Ã–zellik Ekle';
         featureForm.reset();
         featureIdInput.value = '';
         featureModal.show();
     });
 
-    // Form gönderimi (Özellik ekle/düzenle)
+    // Form gÃ¶nderimi (Ã–zellik ekle/dÃ¼zenle)
     featureForm.addEventListener('submit', async (event) => {
         event.preventDefault();
 
@@ -150,26 +150,26 @@ document.addEventListener('DOMContentLoaded', async () => {
             const data = await response.json();
 
             if (response.ok) {
-                alert(`Özellik başarıyla ${id ? 'güncellendi' : 'eklendi'}!`);
+                alert(`Ã–zellik baÅŸarÄ±yla ${id ? 'gÃ¼ncellendi' : 'eklendi'}!`);
                 featureModal.hide();
                 fetchFeatures(); // Listeyi yenile
             } else {
-                throw new Error(data.message || `Özellik ${id ? 'güncellenirken' : 'eklenirken'} bir hata oluştu.`);
+                throw new Error(data.message || `Ã–zellik ${id ? 'gÃ¼ncellenirken' : 'eklenirken'} bir hata oluÅŸtu.`);
             }
         } catch (error) {
-            console.error(`Özellik ${id ? 'güncelleme' : 'ekleme'} hatası:`, error);
-            alert(`Özellik ${id ? 'güncellenirken' : 'eklenirken'} bir hata oluştu: ${error.message}`);
+            console.error(`Ã–zellik ${id ? 'gÃ¼ncelleme' : 'ekleme'} hatasÄ±:`, error);
+            alert(`Ã–zellik ${id ? 'gÃ¼ncellenirken' : 'eklenirken'} bir hata oluÅŸtu: ${error.message}`);
         }
     });
 
-    // Sayfa yüklendiğinde özellikleri çek
+    // Sayfa yÃ¼klendiÄŸinde Ã¶zellikleri Ã§ek
     fetchFeatures();
 
-    // Çıkış yap linki
+    // Ã‡Ä±kÄ±ÅŸ yap linki
     document.getElementById('admin-logout-link').addEventListener('click', (e) => {
         e.preventDefault();
         localStorage.removeItem('token');
-        alert('Başarıyla çıkış yapıldı.');
+        alert('BaÅŸarÄ±yla Ã§Ä±kÄ±ÅŸ yapÄ±ldÄ±.');
         window.location.href = '/';
     });
 });
