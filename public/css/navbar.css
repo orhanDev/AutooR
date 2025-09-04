@@ -6,18 +6,29 @@
 }
 
 .navbar {
-    background: rgba(255, 255, 255, 0) !important;
-    backdrop-filter: blur(1px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    background: transparent !important;
+    backdrop-filter: none !important;
+    border-bottom: none !important;
     padding: 1rem 0;
     transition: all 0.3s ease;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    box-shadow: none !important;
+}
+
+/* Prevent content being covered by fixed navbar */
+/* remove global padding since navbar scrolls with page */
+/* body { padding-top: 80px; } */
+
+/* Ensure navbar stays fixed on top on all pages */
+.navbar.fixed-top {
+    position: fixed !important;
+    top: 0; left: 0; right: 0;
+    z-index: 1050 !important;
 }
 
 .navbar-brand {
     font-weight: 800;
     font-size: 1.8rem;
-    color:#B10000 !important;
+    color:#000000 !important;
     position: relative;
     transition: all 0.3s ease;
     text-transform: none;
@@ -26,16 +37,14 @@
     box-shadow: none !important;
 }s
 
-.navbar-brand i {
-    color: #B10000 !important;
-}
+.navbar-brand i { color: #000000 !important; }
 
 .brand-center {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    color: #ffffff !important;
+    color: #000000 !important;
     font-weight: 800;
     font-size: 1.4rem;
     letter-spacing: 0.35rem;
@@ -47,7 +56,7 @@
 .account-btn {
     background: transparent !important;
     border: none !important;
-    color: #ffffff !important;
+    color: #000000 !important;
     padding: 0.25rem 0.5rem;
 }
 
@@ -98,7 +107,7 @@
 .account-item:hover { background: rgba(255,255,255,0.12); }
 .nav-link {
     font-weight: 500;
-    color: rgba(255, 255, 255, 0.9) !important;
+    color: #000000 !important;
     margin: 0 0.5rem;
     transition: all 0.3s ease;
     position: relative;
@@ -111,7 +120,7 @@
     left: 0;
     width: 0;
     height: 1px;
-    background:  #B10000;
+    background:  #000000;
     transition: width 0.3s ease;
 }
 
@@ -137,9 +146,7 @@
 
 /* Apply collapsed menu styles on all viewports */
 .navbar-nav {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
+    display: block;
     gap: 0.25rem;
     margin: 0;
     padding: 0.5rem 0;
@@ -206,15 +213,13 @@
     background: transparent !important;
     border-radius: 0;
     box-shadow: none !important;
-    color: #ffffff !important;
+    color: #000000 !important;
 }
 
-.navbar-toggler-icon {
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.95%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
-}
+.navbar-toggler-icon { background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%280, 0, 0, 0.95%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e"); }
 
 .menu-label {
-    color: #ffffff !important;
+    color: #000000 !important;
     font-weight: 700;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     font-size: 1rem;
@@ -281,11 +286,12 @@
     position: relative;
     padding-right: 1.5rem;
     border-bottom: none;
+    border: 1.5px solid transparent;
     font-size: 1.25rem;
     font-weight: 600;
 }
 .side-left .nav-item.active .nav-link,
-.side-left .nav-link:hover { background: #f3f4f6; }
+.side-left .nav-link:hover { background: #f3f4f6; border-color:#ffc107; }
 .side-left .nav-item + .nav-item { margin-top: 0.25rem; }
 
 /* Replace underline pseudo with chevron for side-left links */
@@ -306,13 +312,15 @@
 
 .navbar .collapse .submenu-panel {
     flex: 1;
-    padding: 1.5rem 1.5rem;
-    background: #ffffff; /* continuous white background */
+    padding: 0.2rem 0.2rem;
+    background: #ffffff;
     color: #111111;
     overflow-y: auto;
     border-left: 1px solid #e5e7eb;
     transform: translateX(8px);
-    transition: transform 0.25s ease, opacity 0.25s ease;
+    transition: transform 0.25s 
+ease, opacity 0.25s 
+ease;
     opacity: 0;
 }
 .navbar .collapse .submenu-panel.open { transform: translateX(0); opacity: 1; }
@@ -323,7 +331,7 @@
     text-transform: uppercase;
     letter-spacing: 0.08rem;
     margin-bottom: 1rem;
-    color: #747882;
+    color: #6b7280;
 }
 
 .submenu .submenu-list {
@@ -346,8 +354,9 @@
     font-size: 1.15rem;
     position: relative;
     padding-right: 1.75rem;
+    border: 1.5px solid transparent;
 }
-.submenu .submenu-list li a:hover { background: #eef0f3; }
+.submenu .submenu-list li a:hover { background: #eef0f3; border-color:#ffc107; }
 
 .submenu .submenu-list li a::after {
     content: '›';
@@ -392,19 +401,25 @@
     transition: transform 0.25s ease;
 }
 .vehicle-title {
-    font-size: 1.1rem;
-    font-weight: 800;
+    font-size: 1rem;
+    font-weight: 700;
     margin-bottom: 0.2rem;
     line-height: 1.2;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    color: #111111; /* ensure readable on white panel */
+    padding-right: 6rem; /* spacing from price badge */
 }
 .vehicle-subtitle {
     font-size: 0.9rem;
     color: #6b7280;
     margin-bottom: 0.35rem;
+    padding-right: 6rem; /* spacing from price badge */
 }
+
+/* Prevent breaking the dot/bullet and label onto different lines */
+.nowrap { white-space: nowrap; }
 .vehicle-badge {
     display: inline-block;
     margin-top: 0.5rem;
@@ -420,13 +435,13 @@
     position: absolute;
     top: 0.75rem;
     right: 0.75rem;
-    background: #B10000;
-    color: #ffffff;
+    background: #ffc107;
+    color: #000000;
     border-radius: 10px;
     padding: 0.35rem 0.6rem;
     font-weight: 800;
-    font-size: 0.9rem;
-    box-shadow: 0 8px 20px rgba(177,0,0,0.25);
+    font-size: 0.8rem;
+    box-shadow: 0 1px 2px rgb(0 0 0 / 20%);
 }
 
 .vehicle-meta {
@@ -437,14 +452,14 @@
 }
 .vehicle-chip {
     background: #f3f4f6;
-    color: #111111;
-    border-radius: 999px;
+    color: #141414;
+    border-radius: 10px;
     padding: 0.25rem 0.55rem;
-    font-size: 0.69rem;
+    font-size: 0.7rem;
     font-weight: 700;
 }
 
-.vehicle-card:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(0,0,0,0.08); border-color: #d1d5db; }
+.vehicle-card:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(0,0,0,0.08); border-color: #ffc107; }
 .vehicle-card:hover img { transform: translateX(12px); }
 .vehicle-card.selected { border-color: #B10000; box-shadow: 0 0 0 3px rgba(177,0,0,0.15); }
 

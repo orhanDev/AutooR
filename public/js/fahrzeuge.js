@@ -12,12 +12,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const dropoffTimeSelector = document.getElementById('dropoff-time');
     
     console.log('DOM elements found:');
-    console.log('vehiclesContainer:', vehiclesContainer);
 
     // Filter elements
-    const vehicleTypeFilter = document.getElementById('vehicle-type-filter');
-    const vehicleModelFilter = document.getElementById('vehicle-model-filter');
-    const fuelTypeFilter = document.getElementById('fuel-type-filter');
+    const vehicleTypeFilter = document.getElementById('type-filter');
+    const vehicleModelFilter = document.getElementById('brand-filter');
+    const fuelTypeFilter = document.getElementById('fuel-filter');
     const sortFilter = document.getElementById('sort-filter');
     const transmissionFilter = document.getElementById('transmission-filter');
     const priceFilter = document.getElementById('price-filter');
@@ -27,6 +26,83 @@ document.addEventListener('DOMContentLoaded', () => {
     let filteredVehicles = [];
     let selectedVehicle = null;
 
+    // Image index used to map make/model to exact filenames in /images/cars
+    const IMG_INDEX = [
+        'aston-martin-vantage-2d-red-2024.png',
+        'audi-a6-avant-stw-black-2025.png',
+        'audi-a7-4d-blau-2019.png',
+        'bmw-1-hatch-4d-black-2025.png',
+        'bmw-2-activ-tourer-grey-2022.png',
+        'bmw-2-gran-coupe-4d-grey-2021.png',
+        'bmw-3-sedan-4d-white-2023-JV.png',
+        'bmw-3-touring-stw-4d-grey-2023-JV.png',
+        'bmw-5-touring-stw-black-2024.png',
+        'bmw-7-4d-blue-2023.png',
+        'bmw-8-gran-coupe-grey-2022.png',
+        'bmw-m235i-grancoupe-4d-blue-2023.png',
+        'bmw-m3-amg-stw-lila-2023.png',
+        'bmw-m8-coupe-2d-black-2023-JV.png',
+        'bmw-x1-m35-suv-grey-2025.png',
+        'bmw-x3-m50-suv-black-2025.png',
+        'bmw-x3-suv-silver-2025.png',
+        'bmw-x5-suv-4d-grey-2023-JV.png',
+        'bmw-x5m-suv-4d-black-2023-JV.png',
+        'bmw-x7-m60i-suv-white-2023.png',
+        'bmw-x7-suv-4d-silver-2023-JV.png',
+        'cupra-formentor-suv-grey-2025.png',
+        'land-rover-range-rover-hse-suv-black-2025.png',
+        'land-rover-range-rover-sport-5d-suv-grey-2022.png',
+        'maserati-grecale-suv-4d-blue-2023-JV.png',
+        'mb-gls63-amg-suv-4d-grey-2025.png',
+        'mb-s-long-sedan-4d-silver-2021-JV.png',
+        'mb-sl63-amg-convertible-silver-2022.png',
+        'mb-v-class-extralong-van-black-2024.png',
+        'mb-vito-van-black-2020.png',
+        'nissan-primastar-van-white-2022.png',
+        'opel-combo-van-black-2024.png',
+        'peugeot-408-4d-white-2022.png',
+        'porsche-911-carrera-4s-convertible-2d-blue-2024.png',
+        'porsche-911-carrera-4s-coupe-2d-silver-2019-JV.png',
+        'porsche-macan-suv-white-2025.png',
+        'porsche-panamera-sedan-4d-black-2021-JV.png',
+        'vw-golf-variant-stw-4d-grey-2022.png',
+        'vw-t-roc-convertible-white-open-2023.png',
+        'vw-t-roc-suv-4d-white-2022-JV.png',
+        'vw-tiguan-suv-black-2024.png',
+        'vw-touran-van-grey-2021.png'
+    ];
+
+    const normalize = (s) => String(s||'').toLowerCase().replace(/[^a-z0-9]+/g,' ');
+    const score = (name, pattern) => {
+        const n = normalize(name), p = normalize(pattern);
+        let sc = 0;
+        p.split(' ').filter(Boolean).forEach(tok => { if (n.includes(tok)) sc += tok.length; });
+        return sc;
+    };
+    function findBestImage(make, model) {
+        const target = `${make||''} ${model||''}`.trim();
+        let best = ''; let bestScore = 0;
+        IMG_INDEX.forEach(file => {
+            const s = score(file, target);
+            if (s > bestScore) { bestScore = s; best = file; }
+        });
+        return best ? `/images/cars/${best}` : '';
+    }
+    function toImg(vehicle) {
+        // If catalog image is absolute windows path, strip to filename
+        let img = vehicle.image_url || '';
+        if (img && (/^[a-zA-Z]:\\/.test(img) || img.includes('\\'))) {
+            const base = img.split('\\').pop();
+            img = `/images/cars/${base}`;
+        }
+        if (img && !img.startsWith('/')) {
+            if (img.startsWith('images/')) img = '/' + img.replace(/^\/+/, '');
+            else img = `/images/cars/${img}`;
+        }
+        // Prefer best match from index
+        const best = findBestImage(vehicle.make, vehicle.model);
+        return best || img;
+    }
 
 
     // Location names mapping
@@ -263,10 +339,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Load vehicles from central catalog
     function loadVehicles() {
-        const catalog = (window.CAR_CATALOG || []).map(c => ({
-            car_id: c.id,
+        const catalog = (window.CAR_CATALOG || []).map((c, idx) => ({
+            car_id: (c.id !== undefined && c.id !== null) ? c.id : (idx + 1),
             make: c.brand,
             model: c.model,
+            type: c.type || c.category || c.segment || c.class || '',
             daily_rate: c.price,
             transmission_type: c.transmission || c.specs?.transmission || '',
             fuel_type: c.fuel || c.specs?.fuel || '',
@@ -278,7 +355,13 @@ document.addEventListener('DOMContentLoaded', () => {
             guaranteed: !!c.guaranteed,
             image_url: c.image
         }));
-        allVehicles = catalog;
+        // Deduplicate by stable key (id preferred, else make+model)
+        const uniq = new Map();
+        catalog.forEach(v => {
+            const key = (v.car_id !== undefined && v.car_id !== null) ? `id:${v.car_id}` : `mm:${(v.make||'')}-${(v.model||'')}`;
+            if (!uniq.has(key)) uniq.set(key, v);
+        });
+        allVehicles = Array.from(uniq.values());
         filteredVehicles = [...allVehicles];
         filteredVehicles.sort((a, b) => `${a.make} ${a.model}`.localeCompare(`${b.make} ${b.model}`));
         displayVehicles();
@@ -288,7 +371,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function displayVehicles() {
         console.log('Displaying vehicles...');
         console.log('Filtered vehicles count:', filteredVehicles.length);
-        console.log('Vehicles container:', vehiclesContainer);
         
         if (filteredVehicles.length === 0) {
             carsContainer.innerHTML = `
@@ -302,41 +384,30 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const stripSimilar = (s) => String(s || '').replace(/\s*oder\s+ähnlich/gi, '').trim();
-        const carsHTML = filteredVehicles.map(vehicle => `
-            <div class="car-card" data-car-id="${vehicle.car_id}">
-                <div class="car-image">
-                    <img src="${vehicle.image_url}" 
-                         alt="${vehicle.make} ${vehicle.model}" 
-                         onerror="if(!this.dataset.try){this.dataset.try='png';this.src=this.src.replace(/\.jpg$/i,'.png');}else if(this.dataset.try==='png'){this.dataset.try='jpg';this.src=this.src.replace(/\.png$/i,'.jpg');}else{this.onerror=null;this.src='images/cars/default-car.jpg';}">
-                    ${vehicle.daily_rate ? `<div class=\"price-badge\">€${vehicle.daily_rate}/Tag</div>` : ''}
+        const cards = filteredVehicles.map(vehicle => {
+            const title = `${vehicle.make || ''} ${stripSimilar(vehicle.model || '')}`.trim();
+            const img = toImg(vehicle);
+            const makeAttr = (vehicle.make || '').toString().replace(/"/g, '&quot;');
+            const modelAttr = stripSimilar((vehicle.model || '').toString().replace(/"/g, '&quot;'));
+            return `
+            <div class="vehicle-card" data-car-id="${vehicle.car_id}" data-make="${makeAttr}" data-model="${modelAttr}" data-img="${img}" data-price="${vehicle.daily_rate || ''}" data-trans="${vehicle.transmission_type || ''}" data-fuel="${vehicle.fuel_type || ''}" data-seats="${vehicle.seating_capacity || ''}" data-bags="${vehicle.baggage_large || ''}" data-hand="${vehicle.baggage_small || ''}" data-doors="${vehicle.doors || ''}">
+                <div class="vehicle-title">${title}</div>
+                <div class="vehicle-subtitle">${(vehicle.type || '').toString().replace(/"/g,'&quot;')} ${vehicle.transmission_type ? `<span class=\"nowrap\">• ${vehicle.transmission_type}</span>` : ''}</div>
+                <img src="${img}" alt="${title}" onerror="if(!this.dataset.try){this.dataset.try='png';this.src=this.src.replace(/\.jpg$/i,'.png');}else if(this.dataset.try==='png'){this.dataset.try='jpg';this.src=this.src.replace(/\.png$/i,'.jpg');}else{this.onerror=null;this.src='/images/cars/default-car.jpg';}" />
+                ${vehicle.daily_rate ? `<div class=\"price-badge\">€${Math.floor(Number(vehicle.daily_rate))}/Tag</div>` : ''}
+                <div class="vehicle-meta">
+                    ${vehicle.seating_capacity ? `<span class=\"vehicle-chip\">${vehicle.seating_capacity} Sitze</span>` : ''}
+                    ${vehicle.baggage_large ? `<span class=\"vehicle-chip\">${vehicle.baggage_large} Koffer</span>` : ''}
+                    ${vehicle.baggage_small ? `<span class=\"vehicle-chip\">${vehicle.baggage_small} Handgep.</span>` : ''}
+                    ${vehicle.doors ? `<span class=\"vehicle-chip\">${vehicle.doors} Türen</span>` : ''}
                 </div>
-                <div class="car-details">
-                    <h5 class="car-name">${vehicle.make} ${stripSimilar(vehicle.model)}</h5>
-                    <div class="car-specs">
-                        <div class="spec-item">
-                            <i class="bi bi-people"></i>
-                            <span>${vehicle.seating_capacity} Sitze</span>
-                        </div>
-                        <div class="spec-item"><i class="bi bi-gear"></i><span>${vehicle.transmission_type}</span></div>
-                        ${vehicle.baggage_large ? `<div class=\"spec-item\"><i class=\"bi bi-suitcase\"></i><span>${vehicle.baggage_large} Koffer</span></div>` : ''}
-                        ${vehicle.baggage_small ? `<div class=\"spec-item\"><i class=\"bi bi-bag\"></i><span>${vehicle.baggage_small} Handgep.</span></div>` : ''}
-                        ${vehicle.doors ? `<div class=\"spec-item\"><i class=\"bi bi-door-closed\"></i><span>${vehicle.doors} Türen</span></div>` : ''}
-                        <div class="spec-item">
-                            <i class="bi bi-fuel-pump"></i>
-                            <span>${vehicle.fuel_type}</span>
-                        </div>
-                    </div>
-                    <div class="car-cta">
-                        <button class="btn-rent-now" onclick="rentVehicle(${vehicle.car_id}, '${vehicle.make} ${vehicle.model}', ${vehicle.daily_rate})">Jetzt mieten</button>
-                    </div>
-                </div>
-            </div>
-        `).join('');
-        
-        carsContainer.innerHTML = carsHTML;
-        
-        // Add click events to car cards
-        const carCards = document.querySelectorAll('.car-card');
+            </div>`;
+        }).join('');
+
+        carsContainer.innerHTML = `<div class="cars-grid">${cards}</div>`;
+
+        // Add click events to vehicle cards (same behavior as menu cards)
+        const carCards = document.querySelectorAll('.vehicle-card');
         console.log('Car cards found:', carCards.length);
         
         carCards.forEach(card => {
@@ -350,7 +421,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const carId = this.dataset.carId;
                 if (carId) {
                     selectVehicle(parseInt(carId));
-                    // Navigate to reservation
+                    // Prepare data similar to navbar cards
                     const v = allVehicles.find(v => v.car_id === parseInt(carId));
                     if (v) {
                         localStorage.setItem('selectedVehicle', JSON.stringify(v));
@@ -507,25 +578,27 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize filters
     function initializeFilters() {
         console.log('Initializing filters...');
-        // Add event listeners to all filters
-        [vehicleTypeFilter, vehicleModelFilter, fuelTypeFilter, sortFilter, transmissionFilter, priceFilter].forEach(filter => {
-            if (filter) {
-                // Remove the automatic filter application on change
-                // filter.addEventListener('change', applyFilters);
-                console.log('Filter found:', filter.id);
-            } else {
-                console.log('Filter not found');
+        const fSort = document.getElementById('filter-sort');
+        const fCat = document.getElementById('filter-category');
+        const fTrans = document.getElementById('filter-transmission');
+        const fSeats = document.getElementById('filter-seats');
+        const fAge = document.getElementById('filter-age');
+        [fSort, fCat, fTrans, fSeats, fAge].forEach(el => el && el.addEventListener('change', () => {
+            // Simple client-side filtering
+            let filtered = [...allVehicles];
+            if (fCat && fCat.value) filtered = filtered.filter(v => (v.type||`${v.make} ${v.model}`).toLowerCase().includes(fCat.value.toLowerCase()));
+            if (fTrans && fTrans.value) filtered = filtered.filter(v => (v.transmission_type||'').toLowerCase() === fTrans.value.toLowerCase());
+            if (fSeats && fSeats.value) filtered = filtered.filter(v => Number(v.seating_capacity)||0 >= Number(fSeats.value));
+            // Age filter is informational in this static list; skip or future use
+            if (fSort && fSort.value) {
+                if (fSort.value === 'price-asc') filtered.sort((a,b)=> (a.daily_rate||0)-(b.daily_rate||0));
+                if (fSort.value === 'price-desc') filtered.sort((a,b)=> (b.daily_rate||0)-(a.daily_rate||0));
+                if (fSort.value === 'name-asc') filtered.sort((a,b)=>(`${a.make} ${a.model}`).localeCompare(`${b.make} ${b.model}`));
+                if (fSort.value === 'name-desc') filtered.sort((a,b)=>(`${b.make} ${b.model}`).localeCompare(`${a.make} ${a.model}`));
             }
-        });
-        
-        // Add click event listener to search button
-        const searchButton = document.getElementById('search-vehicles-btn');
-        if (searchButton) {
-            searchButton.addEventListener('click', window.performSearch);
-            console.log('Search button event listener added');
-        } else {
-            console.log('Search button not found');
-        }
+            filteredVehicles = filtered;
+            displayVehicles();
+        }));
     }
 
     // Apply filters

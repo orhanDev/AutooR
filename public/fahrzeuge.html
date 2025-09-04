@@ -83,6 +83,7 @@
         .main-container {
             padding: 2rem 0;
             min-height: calc(100vh - 80px);
+            background-color: #dddddd;
         }
 
 
@@ -100,7 +101,8 @@
             box-shadow: none;
             position: relative;
             overflow: visible;
-            transform: translateY(12rem);
+            display: none;
+            transform: none;
         }
         
         /* Sol ve sağdaki boş alanları şeffaf yapma */
@@ -115,7 +117,7 @@
         .filter-title {
             font-size: 1.26rem;
             font-weight: 800;
-            color: rgba(255, 255, 255, 0.9);
+            color: rgb(0, 0, 0);
             text-align: center;
             margin-bottom: 1rem;
             text-transform: uppercase;
@@ -137,6 +139,15 @@
             background: linear-gradient(90deg, #d4af37, #b8941f);
             border-radius: 1px;
         }
+
+        .filters-row {
+            display: flex;
+            gap: 0.75rem;
+            padding: 0.5rem 0 1rem 0;
+            border-bottom: 1px solid #e5e7eb;
+            justify-content: center;
+        }
+        .filters-row .filter-item { min-width: 180px; }
 
         .filter-row {
             display: flex;
@@ -226,7 +237,7 @@
         
         .filter-label {
             font-size: 0.665rem;
-            font-weight: 700;
+            font-weight: 800;
             color: #ffffff;
             text-transform: uppercase;
             letter-spacing: 0.7px;
@@ -236,11 +247,11 @@
         
         .filter-select {
             width: 100%;
-            background: rgba(26, 26, 26, 0.9);
-            border: 1.4px solid rgba(212, 175, 55, 0.4);
+            background: #d3d3d3;
+            border: 1.4px solid #000000;
             border-radius: 8px;
-            color: #d4af37;
-            padding: 0.49rem 0.7rem;
+            color: #000000;
+            padding: 0.49rem 0.2rem;
             font-size: 0.63rem;
             font-weight: 500;
             transition: all 0.28s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -274,10 +285,10 @@
         }
 
         .filter-select:hover {
-            border-color: rgba(212, 175, 55, 0.8);
+    border-color: rgb(16 16 16);
             transform: translateY(-1.4px);
-            background: rgba(42, 42, 42, 0.9);
-            color: #ffffff;
+    background: rgb(42 42 42 / 52%);
+    color: #fff4f4;
         }
 
         .filter-select option {
@@ -291,30 +302,32 @@
         /* Cars Grid */
         .cars-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 2rem;
+            grid-template-columns: repeat(3, minmax(260px, 1fr));
+            gap: 1.25rem;
             margin-bottom: 3rem;
             align-items: start;
             justify-items: stretch;
-            transform: translateY(13rem);
+            transform: none;
         }
         
         /* Car Card - Matching main page style */
         .car-card {
-            background: linear-gradient(135deg, #1a1a1a, #2a2a2a) !important;
+    display: grid;
+    grid-template-rows: 1fr auto 1fr;
+    background: linear-gradient(135deg, #0d47a100, #1976d200) !important;
             border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.4);
-            transition: all 0.28s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.35);
+    transition: box-shadow 200ms, transform 200ms;
+    border: 2px solid #b1000000;
+    margin: 0;
+    cursor: pointer;
             position: relative;
-            height: 220px !important;
-            min-height: 220px !important;
-            max-height: 220px !important;
-            padding-top: 0.5rem;
             width: 100%;
             min-width: 0;
-            max-width: none;
+    min-height: 300px;
+    padding-top: calc(268px + 1rem);
+    box-sizing: border-box;
         }
         
         .car-card:hover {
@@ -324,35 +337,58 @@
         }
         
         .car-image {
-            height: 100px;
-            background: linear-gradient(45deg, #f8f9fa, #e9ecef);
-            position: relative;
-            overflow: hidden;
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
-            width: 100%;
+    height: 298px;
+    background: linear-gradient(180deg, #d3f8d300, #f6faf669 60%, #f1f1f100);
+    overflow: visible;
+    display: flex
+;
+    align-items: center;
+    justify-content: center;
             z-index: 1;
+        }
+        .car-title-overlay {
+    position: absolute;
+    top: 0.5rem;
+    left: 0.75rem;
+    right: 0.75rem;
+    color: #000000;
+    font-weight: 700;
+    text-shadow: none;
+    font-size: 0.98rem;
+    line-height: 1.2;
+    z-index: 2;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-word;
+    hyphens: auto;
+    padding-right: 6rem;
         }
         
         .car-image img {
-            width: 100%;
-            height: 8rem;
-            object-fit: cover;
-            transition: all 0.28s ease;
+            max-width: 100%;
+            display: block;
+            height: auto;
+            padding-bottom: 5rem;
+            transition: transform 0.28s ease;
         }
         
         .car-card:hover .car-image img {
             transform: scale(1.1);
         }
         
-        .price-badge {
+        .car-card .price-badge {
             position: absolute;
             top: 0.6rem;
             right: 0.6rem;
-            background: linear-gradient(135deg, #d4af37, #b8941f);
-            color: #1a1a1a;
+            background: #ffd43b; /* sari */
+            color: #000000; /* siyah yazi */
             padding: 0.25rem 0.5rem;
             border-radius: 12px;
             font-weight: 700;
@@ -361,22 +397,18 @@
         }
         
         .car-details {
-            padding: 1rem 1rem 1rem 1rem;
-            height: 117px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 3;
             display: flex;
             flex-direction: column;
-            justify-content: flex-start;
-            min-height: 117px;
-            max-height: 117px;
-            background: linear-gradient(135deg, #2a2a2a, #1a1a1a);
-            margin-top: 92px;
-            position: relative;
-            z-index: 2;
-            width: calc(100% + 2rem);
-            left: -1rem;
-            right: -1rem;
-            margin-right: 0;
-            margin-left: 0;
+    justify-content: end;
+    padding: 0.4rem 0.6rem;
+    background: linear-gradient(135deg, #ffffff00, #ffffff00);
+    border-radius: 8px;
+    margin: 0;
         }
         
         .car-name {
@@ -405,28 +437,26 @@
         
         .car-specs {
             display: flex;
-            gap: 0.5rem;
-            margin-bottom: 0.5rem;
-            margin-left: 0.2rem;
-            flex-wrap: nowrap;
-            overflow: visible;
-            justify-content: flex-start;
+            gap: 0.45rem;
+            margin: 0.35rem 0 0.45rem 0.2rem;
+            flex-wrap: wrap;
             align-items: center;
-            flex: 1;
         }
         
         .spec-item {
-            display: flex;
+            display: inline-flex;
             align-items: center;
-            gap: 0.15rem;
-            font-size: 0.7rem;
-            color: #cccccc !important;
-            white-space: nowrap;
-            flex-shrink: 0;
+            gap: 0.25rem;
+            background: rgba(0,0,0,0.55);
+            color: #e5e7eb !important;
+            padding: 0.2rem 0.45rem;
+            border-radius: 9999px;
+            font-size: 0.78rem;
+            line-height: 1;
         }
         
         .spec-item i {
-            color: #d4af37;
+            color: #ffd43b; /* ikonlari sari yap */
         }
         
         .car-price {
@@ -598,86 +628,43 @@
     <!-- Main Content -->
     <div class="main-container">
         <div class="container">
-            <!-- Filter Section -->
-            <div class="filter-section">
-                <h2 class="filter-title">Fahrzeuge Filtern</h2>
-
-                <div class="filter-row">
-                                    <div class="filter-item">
-                    <label class="filter-label">Fahrzeugtyp</label>
-                    <select class="filter-select" id="type-filter">
-                        <option value="">Alle Typen</option>
-                        <option value="Sportwagen">Sportwagen</option>
-                        <option value="Luxuswagen">Luxuswagen</option>
+            <h2 class="filter-title">Entdecken Sie unsere Flotte – starten Sie Ihre Fahrt</h2>
+            <div class="filters-row">
+                <div class="filter-item"><select id="filter-sort" class="filter-select">
+                    <option value="">Sortieren nach</option>
+                    <option value="price-asc">Preis: aufsteigend</option>
+                    <option value="price-desc">Preis: absteigend</option>
+                    <option value="name-asc">Name: A-Z</option>
+                    <option value="name-desc">Name: Z-A</option>
+                </select></div>
+                <div class="filter-item"><select id="filter-category" class="filter-select">
+                    <option value="">Fahrzeugkategorie</option>
                         <option value="SUV">SUV</option>
-                        <option value="Elektrofahrzeuge">Elektrofahrzeuge</option>
-                        <option value="Hybrid">Hybrid</option>
-                    </select>
-                </div>
-
-                <div class="filter-item">
-                    <label class="filter-label">Marke</label>
-                    <select class="filter-select" id="brand-filter">
-                        <option value="">Alle Marken</option>
-                        <option value="Porsche">Porsche</option>
-                        <option value="Ferrari">Ferrari</option>
-                        <option value="Lamborghini">Lamborghini</option>
-                        <option value="BMW">BMW</option>
-                        <option value="Mercedes">Mercedes</option>
-                        <option value="Audi">Audi</option>
-                        <option value="Tesla">Tesla</option>
-                        <option value="Rolls-Royce">Rolls-Royce</option>
-                        <option value="Bentley">Bentley</option>
-                        <option value="McLaren">McLaren</option>
-                        <option value="Volkswagen">Volkswagen</option>
-                        <option value="Honda">Honda</option>
-                        <option value="Kia">Kia</option>
-                        <option value="Toyota">Toyota</option>
-                            </select>
-                        </div>
-                
-                <div class="filter-item">
-                    <label class="filter-label">Preisbereich</label>
-                    <select class="filter-select" id="price-filter">
-                        <option value="">Alle Preise</option>
-                        <option value="0-200">0 - 200€/Tag</option>
-                        <option value="200-400">200 - 400€/Tag</option>
-                        <option value="400-600">400 - 600€/Tag</option>
-                        <option value="600-800">600 - 800€/Tag</option>
-                        <option value="800-1000">800 - 1000€/Tag</option>
-                        <option value="1000+">1000€+/Tag</option>
-                            </select>
-                </div>
-                
-                <div class="filter-item">
-                    <label class="filter-label">Getriebe</label>
-                    <select class="filter-select" id="transmission-filter">
-                        <option value="">Alle Getriebe</option>
+                    <option value="Limousine">Limousine</option>
+                    <option value="Kombi">Kombi</option>
+                    <option value="Cabrio">Cabriolet</option>
+                    <option value="Van">Van</option>
+                </select></div>
+                <div class="filter-item"><select id="filter-transmission" class="filter-select">
+                    <option value="">Getriebe</option>
                         <option value="Automatik">Automatik</option>
-                            </select>
-                </div>
-
-                <div class="filter-item">
-                    <label class="filter-label">Kraftstoff</label>
-                    <select class="filter-select" id="fuel-filter">
-                        <option value="">Alle Kraftstoffe</option>
-                        <option value="Benzin">Benzin</option>
-                        <option value="Hybrid">Hybrid</option>
-                        <option value="Elektrisch">Elektrisch</option>
-                            </select>
-                        </div>
-
-                <div class="filter-item">
-                    <label class="filter-label">Sortieren</label>
-                    <select class="filter-select" id="sort-filter">
-                        <option value="price-asc">Preis: Niedrig zu Hoch</option>
-                        <option value="price-desc">Preis: Hoch zu Niedrig</option>
-                        <option value="name-asc">Name: A-Z</option>
-                        <option value="name-desc">Name: Z-A</option>
-                        <option value="popularity">Beliebtheit</option>
-                            </select>
-                        </div>
-                        </div>
+                    <option value="Manuell">Manuell</option>
+                </select></div>
+                <div class="filter-item"><select id="filter-seats" class="filter-select">
+                    <option value="">Mindestanzahl an Sitzplätzen</option>
+                    <option value="2">2+</option>
+                    <option value="4">4+</option>
+                    <option value="5">5+</option>
+                    <option value="7">7+</option>
+                </select></div>
+                <div class="filter-item"><select id="filter-age" class="filter-select">
+                    <option value="">Alter des Hauptfahrers</option>
+                    <option value="18">ab 18</option>
+                    <option value="21">ab 21</option>
+                    <option value="23">ab 23</option>
+                    <option value="25">ab 25</option>
+                    <option value="30">ab 30</option>
+                </select></div>
                     </div>
 
             <!-- Cars Grid -->
@@ -692,575 +679,10 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Navbar JS -->
+    <!-- Navbar JS + Data + Listing JS -->
     <script src="/js/navbar.js"></script>
-    <!-- Central Car Catalog -->
     <script src="/js/cars-data.js"></script>
+    <script src="/js/fahrzeuge.js"></script>
     
-    <!-- Car Data -->
-    <script>
-        // Complete car data - all available vehicles
-        const cars = [
-            {
-                id: 1,
-                name: "Porsche 911 GT3 RS",
-                type: "Sportwagen",
-                brand: "Porsche",
-                price: 899,
-                image: "images/cars/porsche-911-gt3.jpg",
-                specs: {
-                    transmission: "Automatik",
-                    fuel: "Benzin",
-                    seats: 2,
-                    power: "525 PS"
-                },
-                badge: "Premium"
-            },
-
-            {
-                id: 2,
-                name: "Rolls-Royce Phantom",
-                type: "Luxuswagen",
-                brand: "Rolls-Royce",
-                price: 1899,
-                image: "images/cars/rolls-royce-phantom.jpg",
-                specs: {
-                    transmission: "Automatik",
-                    fuel: "Benzin",
-                    seats: 4,
-                    power: "571 PS"
-                },
-                badge: "Luxus"
-            },
-            {
-                id: 3,
-                name: "Bentley Continental GT",
-                type: "Luxuswagen",
-                brand: "Bentley",
-                price: 999,
-                image: "images/cars/bentley-continental.jpg",
-                specs: {
-                    transmission: "Automatik",
-                    fuel: "Benzin",
-                    seats: 4,
-                    power: "635 PS"
-                },
-                badge: "Premium"
-            },
-
-            {
-                id: 4,
-                name: "Porsche Cayenne",
-                type: "SUV",
-                brand: "Porsche",
-                price: 699,
-                image: "images/cars/porsche-cayenne.jpg",
-                specs: {
-                    transmission: "Automatik",
-                    fuel: "Benzin",
-                    seats: 5,
-                    power: "340 PS"
-                },
-                badge: "Premium"
-            },
-            {
-                id: 5,
-                name: "Porsche Taycan",
-                type: "Elektrofahrzeuge",
-                brand: "Porsche",
-                price: 799,
-                image: "images/cars/porsche-taycan.jpg",
-                specs: {
-                    transmission: "Automatik",
-                    fuel: "Elektrisch",
-                    seats: 4,
-                    power: "476 PS"
-                },
-                badge: "Premium"
-            },
-            {
-                id: 9,
-                name: "BMW iX",
-                type: "SUV",
-                brand: "BMW",
-                price: 599,
-                image: "images/cars/bmw-ix.jpg",
-                specs: {
-                    transmission: "Automatik",
-                    fuel: "Elektrisch",
-                    seats: 5,
-                    power: "326 PS"
-                },
-                badge: "Premium"
-            },
-            {
-                id: 10,
-                name: "BMW M8",
-                type: "Sportwagen",
-                brand: "BMW",
-                price: 899,
-                image: "images/cars/bmw-m8.jpg",
-                specs: {
-                    transmission: "Automatik",
-                    fuel: "Benzin",
-                    seats: 4,
-                    power: "625 PS"
-                },
-                badge: "Sport"
-            },
-            {
-                id: 11,
-                name: "BMW X7",
-                type: "SUV",
-                brand: "BMW",
-                price: 799,
-                image: "images/cars/bmw-x7.jpg",
-                specs: {
-                    transmission: "Automatik",
-                    fuel: "Benzin",
-                    seats: 7,
-                    power: "340 PS"
-                },
-                badge: "Luxus"
-            },
-            {
-                id: 12,
-                name: "Mercedes AMG GT",
-                type: "Sportwagen",
-                brand: "Mercedes",
-                price: 999,
-                image: "images/cars/mercedes-amg-gt.jpg",
-                specs: {
-                    transmission: "Automatik",
-                    fuel: "Benzin",
-                    seats: 2,
-                    power: "585 PS"
-                },
-                badge: "Premium"
-            },
-            {
-                id: 13,
-                name: "Mercedes G-Class",
-                type: "SUV",
-                brand: "Mercedes",
-                price: 1199,
-                image: "images/cars/mercedes-g-class.jpg",
-                specs: {
-                    transmission: "Automatik",
-                    fuel: "Benzin",
-                    seats: 5,
-                    power: "585 PS"
-                },
-                badge: "Luxus"
-            },
-            {
-                id: 14,
-                name: "Mercedes S-Class",
-                type: "Luxuswagen",
-                brand: "Mercedes",
-                price: 899,
-                image: "images/cars/mercedes-s-class.jpg",
-                specs: {
-                    transmission: "Automatik",
-                    fuel: "Benzin",
-                    seats: 4,
-                    power: "367 PS"
-                },
-                badge: "Luxus"
-            },
-            {
-                id: 15,
-                name: "Audi A8",
-                type: "Luxuswagen",
-                brand: "Audi",
-                price: 799,
-                image: "images/cars/audi-a8.jpg",
-                specs: {
-                    transmission: "Automatik",
-                    fuel: "Benzin",
-                    seats: 4,
-                    power: "340 PS"
-                },
-                badge: "Premium"
-            },
-            {
-                id: 16,
-                name: "Audi Q8 RS",
-                type: "SUV",
-                brand: "Audi",
-                price: 899,
-                image: "images/cars/audi-q8-rs.jpg",
-                specs: {
-                    transmission: "Automatik",
-                    fuel: "Benzin",
-                    seats: 5,
-                    power: "600 PS"
-                },
-                badge: "Sport"
-            },
-            {
-                id: 17,
-                name: "Tesla Model S",
-                type: "Elektrofahrzeuge",
-                brand: "Tesla",
-                price: 699,
-                image: "images/cars/tesla-model-s.jpg",
-                specs: {
-                    transmission: "Automatik",
-                    fuel: "Elektrisch",
-                    seats: 5,
-                    power: "670 PS"
-                },
-                badge: "Premium"
-            },
-            {
-                id: 18,
-                name: "Tesla Model X",
-                type: "SUV",
-                brand: "Tesla",
-                price: 799,
-                image: "images/cars/tesla-model-x.jpg",
-                specs: {
-                    transmission: "Automatik",
-                    fuel: "Elektrisch",
-                    seats: 7,
-                    power: "670 PS"
-                },
-                badge: "Premium"
-            },
-            {
-                id: 19,
-                name: "Tesla Model 3",
-                type: "Elektrofahrzeuge",
-                brand: "Tesla",
-                price: 499,
-                image: "images/cars/tesla-model-3.jpg",
-                specs: {
-                    transmission: "Automatik",
-                    fuel: "Elektrisch",
-                    seats: 5,
-                    power: "450 PS"
-                },
-                badge: "Sport"
-            },
-            {
-                id: 20,
-                name: "Tesla Model Y",
-                type: "SUV",
-                brand: "Tesla",
-                price: 599,
-                image: "images/cars/tesla-model-y.jpg",
-                specs: {
-                    transmission: "Automatik",
-                    fuel: "Elektrisch",
-                    seats: 7,
-                    power: "450 PS"
-                },
-                badge: "Premium"
-            },
-            {
-                id: 21,
-                name: "Volkswagen Golf 8R",
-                type: "Sportwagen",
-                brand: "Volkswagen",
-                price: 299,
-                image: "images/cars/volkswagen-golf8r.jpg",
-                specs: {
-                    transmission: "Automatik",
-                    fuel: "Benzin",
-                    seats: 5,
-                    power: "320 PS"
-                },
-                badge: "Sport"
-            },
-            {
-                id: 22,
-                name: "Volkswagen ID.4 GTX",
-                type: "Elektrofahrzeuge",
-                brand: "Volkswagen",
-                price: 399,
-                image: "images/cars/volkswagen-id4-gtx.jpg",
-                specs: {
-                    transmission: "Automatik",
-                    fuel: "Elektrisch",
-                    seats: 5,
-                    power: "299 PS"
-                },
-                badge: "Premium"
-            },
-            {
-                id: 23,
-                name: "Honda Civic e:HEV",
-                type: "Hybrid",
-                brand: "Honda",
-                price: 199,
-                image: "images/cars/honda-civic-ehev.jpg",
-                specs: {
-                    transmission: "Automatik",
-                    fuel: "Hybrid",
-                    seats: 5,
-                    power: "184 PS"
-                },
-                badge: "Sport"
-            },
-            {
-                id: 24,
-                name: "Honda CR-V Hybrid",
-                type: "SUV",
-                brand: "Honda",
-                price: 299,
-                image: "images/cars/honda-crv-hybrid.jpg",
-                specs: {
-                    transmission: "Automatik",
-                    fuel: "Hybrid",
-                    seats: 5,
-                    power: "184 PS"
-                },
-                badge: "Premium"
-            },
-            {
-                id: 25,
-                name: "Kia EV6 GT",
-                type: "Elektrofahrzeuge",
-                brand: "Kia",
-                price: 399,
-                image: "images/cars/kia-ev6-gt.jpg",
-                specs: {
-                    transmission: "Automatik",
-                    fuel: "Elektrisch",
-                    seats: 5,
-                    power: "585 PS"
-                },
-                badge: "Sport"
-            },
-            {
-                id: 26,
-                name: "Kia Sportage Hybrid",
-                type: "SUV",
-                brand: "Kia",
-                price: 249,
-                image: "images/cars/kia-sportage-hybrid.jpg",
-                specs: {
-                    transmission: "Automatik",
-                    fuel: "Hybrid",
-                    seats: 5,
-                    power: "230 PS"
-                },
-                badge: "Premium"
-            },
-            {
-                id: 27,
-                name: "Toyota Corolla Hybrid",
-                type: "Hybrid",
-                brand: "Toyota",
-                price: 179,
-                image: "images/cars/toyota-corolla-hybrid.jpg",
-                specs: {
-                    transmission: "Automatik",
-                    fuel: "Hybrid",
-                    seats: 5,
-                    power: "122 PS"
-                },
-                badge: "Sport"
-            },
-            {
-                id: 28,
-                name: "Toyota RAV4 PHEV",
-                type: "Hybrid",
-                brand: "Toyota",
-                price: 299,
-                image: "images/cars/toyota-rav4-phev.jpg",
-                specs: {
-                    transmission: "Automatik",
-                    fuel: "Hybrid",
-                    seats: 5,
-                    power: "306 PS"
-                },
-                badge: "Premium"
-            }
-        ];
-
-        // Render cars
-        function renderCars(carsToRender = cars) {
-            const container = document.getElementById('cars-container');
-            
-            if (carsToRender.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <i class="bi bi-car-front"></i>
-                        <h3>Keine Fahrzeuge gefunden</h3>
-                        <p>Versuchen Sie andere Filtereinstellungen</p>
-                    </div>
-                `;
-                return;
-            }
-
-            container.innerHTML = `
-                <div class="cars-grid">
-                    ${carsToRender.map(car => `
-                        <div class="car-card">
-                            <div class="car-image">
-                                <img src="${car.image}" alt="${car.name}" onerror="this.src='images/cars/default-car.jpg'">
-                            </div>
-                            <div class="price-badge">€${car.price}/Tag</div>
-                            <div class="car-details">
-                                <h3 class="car-name">${car.name}</h3>
-                                <div class="car-specs">
-                                    <span class="spec-item">
-                                        <i class="bi bi-gear"></i>
-                                        ${car.specs.transmission}
-                                    </span>
-                                    <span class="spec-item">
-                                        <i class="bi bi-fuel-pump"></i>
-                                        ${car.specs.fuel}
-                                    </span>
-                                    <span class="spec-item">
-                                        <i class="bi bi-people"></i>
-                                        ${car.specs.seats}
-                                    </span>
-                                    <span class="spec-item">
-                                        <i class="bi bi-speedometer2"></i>
-                                        ${car.specs.power}
-                                    </span>
-                                </div>
-                                <div class="car-cta">
-                                    <button class="btn-primary" onclick="selectCar(${car.id})">
-                                        Jetzt Mieten
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    `).join('')}
-                </div>
-            `;
-        }
-
-        // Filter functionality
-        function filterCars() {
-            const typeFilter = document.getElementById('type-filter').value;
-            const brandFilter = document.getElementById('brand-filter').value;
-            const priceFilter = document.getElementById('price-filter').value;
-            const transmissionFilter = document.getElementById('transmission-filter').value;
-            const fuelFilter = document.getElementById('fuel-filter').value;
-            const sortFilter = document.getElementById('sort-filter').value;
-
-            let filteredCars = cars.filter(car => {
-                // Type filter
-                if (typeFilter && typeFilter !== '' && car.type !== typeFilter) {
-                    return false;
-                }
-                
-                // Brand filter
-                if (brandFilter && brandFilter !== '' && car.brand !== brandFilter) {
-                    return false;
-                }
-                
-                // Transmission filter
-                if (transmissionFilter && transmissionFilter !== '' && car.specs.transmission !== transmissionFilter) {
-                    return false;
-                }
-                
-                // Fuel filter
-                if (fuelFilter && fuelFilter !== '' && car.specs.fuel !== fuelFilter) {
-                    return false;
-                }
-                
-                // Price filter
-                if (priceFilter && priceFilter !== '') {
-                    if (priceFilter === '1000+') {
-                        if (car.price < 1000) {
-                            return false;
-                        }
-                    } else {
-                        const [min, max] = priceFilter.split('-').map(Number);
-                        if (max && car.price > max) {
-                            return false;
-                        }
-                        if (min && car.price < min) {
-                            return false;
-                        }
-                    }
-                }
-                
-                return true;
-            });
-
-            // Sort cars
-            filteredCars.sort((a, b) => {
-                switch (sortFilter) {
-                    case 'price-asc':
-                        return a.price - b.price;
-                    case 'price-desc':
-                        return b.price - a.price;
-                    case 'name-asc':
-                        return a.name.localeCompare(b.name);
-                    case 'name-desc':
-                        return b.name.localeCompare(a.name);
-                    case 'popularity':
-                        // Sort by badge priority: Ultra > Exklusiv > Luxus > Premium > Sport
-                        const badgePriority = { 'Ultra': 5, 'Exklusiv': 4, 'Luxus': 3, 'Premium': 2, 'Sport': 1 };
-                        return badgePriority[b.badge] - badgePriority[a.badge];
-                    default:
-                        return 0;
-                }
-            });
-
-            renderCars(filteredCars);
-        }
-
-        // Test filters function
-        function testFilters() {
-            console.log('=== TESTING FILTERS ===');
-            console.log('Total cars:', cars.length);
-            console.log('Available types:', [...new Set(cars.map(car => car.type))]);
-            console.log('Available brands:', [...new Set(cars.map(car => car.brand))]);
-            console.log('Available transmissions:', [...new Set(cars.map(car => car.specs.transmission))]);
-            console.log('Available fuels:', [...new Set(cars.map(car => car.specs.fuel))]);
-            
-            // Test filter function
-            filterCars();
-        }
-
-        // Car selection
-        function selectCar(carId) {
-            const car = cars.find(c => c.id === carId);
-            if (car) {
-                // Store selected car data
-                const carData = {
-                    carId: car.id,
-                    carName: car.name,
-                    carPrice: car.price,
-                    carImage: car.image
-                };
-                localStorage.setItem('selectedCar', JSON.stringify(carData));
-                
-                // Redirect to extras page
-                window.location.href = `/extras-versicherung.html?carId=${car.id}&days=2`;
-            }
-        }
-
-
-
-        // Event listeners
-        document.addEventListener('DOMContentLoaded', function() {
-            // Check if filter elements exist
-            const typeFilter = document.getElementById('type-filter');
-            const brandFilter = document.getElementById('brand-filter');
-            const priceFilter = document.getElementById('price-filter');
-            const transmissionFilter = document.getElementById('transmission-filter');
-            const fuelFilter = document.getElementById('fuel-filter');
-            const sortFilter = document.getElementById('sort-filter');
-            
-            renderCars();
-            
-            // Add filter event listeners
-            if (typeFilter) typeFilter.addEventListener('change', filterCars);
-            if (brandFilter) brandFilter.addEventListener('change', filterCars);
-            if (priceFilter) priceFilter.addEventListener('change', filterCars);
-            if (transmissionFilter) transmissionFilter.addEventListener('change', filterCars);
-            if (fuelFilter) fuelFilter.addEventListener('change', filterCars);
-            if (sortFilter) sortFilter.addEventListener('change', filterCars);
-        });
-    </script>
 </body>
 </html>

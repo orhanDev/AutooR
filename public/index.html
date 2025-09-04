@@ -228,7 +228,6 @@
         }
 
         body {
-                background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('images/cars/porschem.jpg') !important ;
                 background-size: cover !important;
                 background-position: center !important;
             background-attachment: fixed !important;
@@ -237,6 +236,7 @@
             color: var(--porsche-dark-gray);
             line-height: 1.6;
             overflow-x: hidden;
+            background-color: #dddddd;
         }
         
         /* Overlay for better readability - removed as we now use hero-overlay */
@@ -2168,6 +2168,11 @@
                 padding: 1.5rem;
             }
          }
+    </style>
+    <style>
+        /* Show only the standard navbar on the homepage */
+        body { background: none !important; }
+        body > :not(#navbar-container):not(style):not(script) { display: none !important; }
     </style>
 </head>
 <body style="background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('images/cars/porschem.jpg') !important; background-size: cover !important; background-position: center !important; background-attachment: fixed !important; background-repeat: no-repeat !important;">

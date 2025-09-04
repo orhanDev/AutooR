@@ -36,7 +36,7 @@ function createNavbar() {
     
     // Create navbar HTML with ana sayfa styling
     navbarContainer.innerHTML = `
-        <nav class="navbar fixed-top">
+        <nav class="navbar">
             <div class="container d-flex align-items-center">
                 <button class="navbar-toggler me-2 d-flex align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-label="Menü">
                     <span class="navbar-toggler-icon"></span>
@@ -336,18 +336,23 @@ function initSideMenu() {
         `
     };
 
+    // helper to open a submenu programmatically
+    const openSubmenu = (key) => {
+        if (!key || !contentByKey[key]) return;
+        panel.innerHTML = contentByKey[key];
+        panel.setAttribute('aria-hidden', 'false');
+        panel.classList.add('open');
+        if (key === 'mietwagen') {
+            renderVehicleCards(panel.querySelector('#vehicle-cards'));
+        }
+    };
+
     collapse.querySelectorAll('.side-item[data-submenu]')
         .forEach(item => {
             item.addEventListener('click', (e) => {
                 e.preventDefault();
                 const key = item.getAttribute('data-submenu');
-                if (!key || !contentByKey[key]) return;
-                panel.innerHTML = contentByKey[key];
-                panel.setAttribute('aria-hidden', 'false');
-                panel.classList.add('open');
-                if (key === 'mietwagen') {
-                    renderVehicleCards(panel.querySelector('#vehicle-cards'));
-                }
+                openSubmenu(key);
             });
         });
 
@@ -356,6 +361,15 @@ function initSideMenu() {
         panel.classList.remove('open');
         panel.setAttribute('aria-hidden', 'true');
         panel.innerHTML = '';
+    });
+
+    // Open Mietwagen by default on first open of the hamburger menu
+    let openedDefault = false;
+    collapse.addEventListener('shown.bs.collapse', () => {
+        if (!openedDefault) {
+            openSubmenu('mietwagen');
+            openedDefault = true;
+        }
     });
 }
 
@@ -616,9 +630,9 @@ async function renderVehicleCards(container) {
         return `
         <div class="vehicle-card" data-id="${id}" data-make="${makeAttr}" data-model="${modelAttr}" data-img="${img}" data-price="${price}" data-trans="${transmission}" data-fuel="${fuel}" data-seats="${seats}" data-bags="${bags}" data-hand="${hand}" data-doors="${doors}">
             <div class="vehicle-title">${title}</div>
-            <div class="vehicle-subtitle">${(c.type||'').toString().replace(/"/g,'&quot;')} ${transmission ? '• '+transmission : ''}</div>
+            <div class="vehicle-subtitle">${(c.type||'').toString().replace(/"/g,'&quot;')} ${transmission ? `<span class=\"nowrap\">• ${transmission}</span>` : ''}</div>
             <img src="${img}" alt="${title}" onerror="if(!this.dataset.try){this.dataset.try='png';this.src=this.src.replace(/\\.jpg$/i,'.png');}else if(this.dataset.try==='png'){this.dataset.try='jpg';this.src=this.src.replace(/\\.png$/i,'.jpg');}else{this.onerror=null;this.src='/images/cars/default-car.jpg';}" />
-            ${price ? `<div class="price-badge">€${price}/Tag</div>` : ''}
+            ${price ? `<div class=\"price-badge\">€${Math.floor(Number(price))}/Tag</div>` : ''}
             <div class="vehicle-meta">
                 ${seats ? `<span class="vehicle-chip">${seats} Sitze</span>` : ''}
                 ${bags ? `<span class="vehicle-chip">${bags} Koffer</span>` : ''}

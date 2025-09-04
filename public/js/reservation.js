@@ -3,6 +3,34 @@
 document.addEventListener('DOMContentLoaded', () => {
     const container = document.getElementById('reservation-container');
 
+    // Enable/disable submit button based on required selections
+    function updateSubmitEnabled() {
+        const submitBtn = document.getElementById('submitBtn');
+        if (!submitBtn) return;
+        const mainCard = document.getElementById('reservation-main-card');
+        const pickupLoc = document.getElementById('qr-pickup-location');
+        const dropoffLoc = document.getElementById('qr-dropoff-location');
+        const pDate = document.getElementById('qr-pickup-date');
+        const dDate = document.getElementById('qr-dropoff-date');
+        const pTime = document.getElementById('qr-pickup-time');
+        const dTime = document.getElementById('qr-dropoff-time');
+        const hasInsurance = !!document.querySelector('.insurance-card.selected');
+        const terms = document.getElementById('terms');
+        const termsChecked = !!(terms && terms.checked);
+        const ok = Boolean(
+            pickupLoc && pickupLoc.value &&
+            dropoffLoc && dropoffLoc.value &&
+            pDate && pDate.value &&
+            dDate && dDate.value &&
+            pTime && pTime.value &&
+            dTime && dTime.value &&
+            hasInsurance &&
+            termsChecked
+        );
+        submitBtn.disabled = !ok;
+        if (mainCard) mainCard.classList.toggle('ready', ok);
+    }
+
     // Hoisted helpers used inside template strings below
     function renderInsuranceCard(key, badge, title, price, bullets) {
         return `
@@ -84,18 +112,21 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="row">
                 <!-- Reservation Form -->
                 <div class="col-lg-8 mb-4">
-                    <div class="bg-white rounded-4 p-4 shadow-sm border">
+                    <div id="reservation-main-card" class="bg-white rounded-4 p-4 shadow-sm border">
+                        <h2 class="fw-bold mb-4">
+                            <i class="bi bi-calendar-check text-warning me-2"></i>
+                            Reservierung
+                        </h2>
                         <!-- Quick search form (Porsche-like) -->
-                        <div class="rounded-4 p-3 mb-4" style="background:#f7f7f7;">
-                            
-                            <div class="row g-2 align-items-end">
+                        <div class="rounded-4 p-3 mb-4 summary-box" style="background:#f7f7f7;">
+                            <div class="row g-3 align-items-end">
                                 <div class="col-12">
                                     <label class="form-label small text-muted mb-1">Abholung & Rückgabe</label>
                                 </div>
-                                <div class="col-xl-6 col-lg-6">
-                                    <div class="input-group">
+                                <div class="col-lg-6">
+                                    <div class="input-group qr-loc">
                                         <span class="input-group-text bg-white"><i class="bi bi-geo-alt"></i></span>
-                                        <select id="qr-pickup-location" class="form-select border-2">
+                                        <select id="qr-pickup-location" class="form-select border-2 qr-select">
                                             <option value="">Bitte wählen</option>
                                             <option value="berlin_airport">Berlin Flughafen</option>
                                             <option value="berlin_center">Berlin Zentrum</option>
@@ -106,10 +137,10 @@ document.addEventListener('DOMContentLoaded', () => {
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-xl-6 col-lg-6">
-                                    <div class="input-group">
+                                <div class="col-lg-6">
+                                    <div class="input-group qr-loc">
                                         <span class="input-group-text bg-white"><i class="bi bi-geo-alt"></i></span>
-                                        <select id="qr-dropoff-location" class="form-select border-2">
+                                        <select id="qr-dropoff-location" class="form-select border-2 qr-select">
                                             <option value="">Bitte wählen</option>
                                             <option value="berlin_airport">Berlin Flughafen</option>
                                             <option value="berlin_center">Berlin Zentrum</option>
@@ -123,75 +154,34 @@ document.addEventListener('DOMContentLoaded', () => {
                                 <div class="col-md-6 col-xl-3">
                                     <label class="form-label small text-muted mb-1">Abholdatum</label>
                                     <div class="input-group flex-nowrap">
-                                        <input type="text" id="qr-pickup-date" class="form-control border-2" placeholder="TT.MM.JJJJ" style="min-width:120px;flex:0 0 120px;">
-                                        <select id="qr-pickup-time" class="form-select border-2" style="flex:0 0 108px;max-width:108px;margin-right:8px;">
+                                        <span class="input-group-text bg-white"><i class="bi bi-calendar"></i></span>
+                                        <input type="text" id="qr-pickup-date" class="form-control border-2 qr-select" placeholder="TT.MM.JJJJ">
+                                        <span class="input-group-text bg-white"><i class="bi bi-clock"></i></span>
+                                        <select id="qr-pickup-time" class="form-select border-2 qr-select">
                                             <option value="">Zeit</option>
                                             <option>08:00</option><option>09:00</option><option>10:00</option><option>11:00</option><option>12:00</option>
                                             <option>13:00</option><option>14:00</option><option>15:00</option><option>16:00</option><option>17:00</option><option>18:00</option>
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-md-6 col-xl-3" style="margin-left:3rem;">
+                                <div class="col-md-6 col-xl-3">
                                     <label class="form-label small text-muted mb-1">Rückgabedatum</label>
                                     <div class="input-group flex-nowrap">
-                                        <input type="text" id="qr-dropoff-date" class="form-control border-2" placeholder="TT.MM.JJJJ" style="min-width:120px;flex:0 0 120px;">
-                                        <select id="qr-dropoff-time" class="form-select border-2" style="flex:0 0 108px;max-width:108px;">
+                                        <span class="input-group-text bg-white"><i class="bi bi-calendar"></i></span>
+                                        <input type="text" id="qr-dropoff-date" class="form-control border-2 qr-select" placeholder="TT.MM.JJJJ">
+                                        <span class="input-group-text bg-white"><i class="bi bi-clock"></i></span>
+                                        <select id="qr-dropoff-time" class="form-select border-2 qr-select">
                                             <option value="">Zeit</option>
                                             <option>08:00</option><option>09:00</option><option>10:00</option><option>11:00</option><option>12:00</option>
                                             <option>13:00</option><option>14:00</option><option>15:00</option><option>16:00</option><option>17:00</option><option>18:00</option>
                                         </select>
                                     </div>
                                 </div>
-                                
                             </div>
                         </div>
-                        <h2 class="fw-bold mb-4">
-                            <i class="bi bi-calendar-check text-warning me-2"></i>
-                            Reservierung - ${vehicle.make} ${vehicle.model}
-                        </h2>
                         
                         <form id="reservation-form">
                             <div class="row g-3">
-                                <!-- Personal Information -->
-                                <div class="col-12">
-                                    <h5 class="fw-bold text-warning mb-3">Pers&ouml;nliche Daten</h5>
-                                </div>
-                                
-                                <div class="col-md-6">
-                                    <label class="form-label fw-medium">Vorname *</label>
-                                    <input type="text" name="firstName" class="form-control border-2" required>
-                                </div>
-                                
-                                <div class="col-md-6">
-                                    <label class="form-label fw-medium">Nachname *</label>
-                                    <input type="text" name="lastName" class="form-control border-2" required>
-                                </div>
-                                
-                                <div class="col-md-6">
-                                    <label class="form-label fw-medium">E-Mail *</label>
-                                    <input type="email" name="email" class="form-control border-2" placeholder="ihre.email@beispiel.de" required>
-                                </div>
-                                
-                                <div class="col-md-6">
-                                    <label class="form-label fw-medium">Telefon *</label>
-                                    <input type="tel" name="phone" id="phone" class="form-control border-2" placeholder="0123 45678901" required>
-                                </div>
-                                
-                                <div class="col-12">
-                                    <label class="form-label fw-medium">Adresse *</label>
-                                    <input type="text" name="address" class="form-control border-2" placeholder="StraÃŸe und Hausnummer" required>
-                                </div>
-                                
-                                <div class="col-md-6">
-                                    <label class="form-label fw-medium">PLZ *</label>
-                                    <input type="text" name="postalCode" class="form-control border-2" placeholder="12345" required>
-                                </div>
-                                
-                                <div class="col-md-6">
-                                    <label class="form-label fw-medium">Stadt *</label>
-                                    <input type="text" name="city" class="form-control border-2" placeholder="Berlin" required>
-                                </div>
-                                
                                 <!-- Hidden fields mirror quick bar selections -->
                                 <input type="hidden" name="pickupLocation" id="pickupLocation">
                                 <input type="hidden" name="dropoffLocation" id="dropoffLocation">
@@ -248,16 +238,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 <!-- Vehicle Summary -->
                 <div class="col-lg-4 mb-4">
-                    <div class="bg-white rounded-4 p-4 shadow-sm border">
+                    <div class="bg-white rounded-4 p-4 shadow-sm border summary-card">
                         <h5 class="fw-bold mb-4">Fahrzeug\u00fcbersicht</h5>
                         
-                        <div class="text-center mb-4">
+                        <div class="text-center mb-3">
                             <img src="${vehicle.image_url}" alt="${vehicle.make} ${vehicle.model}" 
-                                 class="img-fluid rounded-3 mb-3" style="height: 200px; object-fit: cover;">
+                                 class="img-fluid rounded-3 mb-2" style="height: 200px; object-fit: cover;">
                             <h6 class="fw-bold">${vehicle.make} ${vehicle.model}</h6>
                         </div>
                         
-                        <div class="row g-3 mb-4">
+                        <div class="row g-3 mb-3">
                             <div class="col-6">
                                 <small class="text-muted d-block">Getriebe</small>
                                 <strong>${vehicle.transmission_type}</strong>
@@ -266,35 +256,43 @@ document.addEventListener('DOMContentLoaded', () => {
                                 <small class="text-muted d-block">Kraftstoff</small>
                                 <strong>${vehicle.fuel_type}</strong>
                             </div>
-                            <div class="col-6">
-                                <small class="text-muted d-block">Sitzpl\u00e4tze</small>
-                                <strong>${vehicle.seating_capacity}</strong>
-                            </div>
-                            <div class="col-6">
-                                <small class="text-muted d-block">Preis/Tag</small>
-                                <strong class="text-warning">&euro;${vehicle.daily_rate}</strong>
+                        </div>
+
+                        <div class="rounded-3 p-3 mb-3 summary-box" style="background:#f7f7f7;">
+                            <h6 class="fw-bold mb-2">Abholung & R\u00fcckgabe</h6>
+                            <div class="small">
+                                <div class="mb-2">
+                                    <span class="text-muted">Abholung:</span>
+                                    <div><i class="bi bi-geo-alt me-1"></i><span id="summary-pickup-loc">-</span></div>
+                                    <div><i class="bi bi-calendar me-1"></i><span id="summary-pickup-date">-</span> <span class="ms-2"><i class="bi bi-clock me-1"></i><span id="summary-pickup-time">-</span></span></div>
+                                </div>
+                                <div>
+                                    <span class="text-muted">R\u00fcckgabe:</span>
+                                    <div><i class="bi bi-geo-alt me-1"></i><span id="summary-dropoff-loc">-</span></div>
+                                    <div><i class="bi bi-calendar me-1"></i><span id="summary-dropoff-date">-</span> <span class="ms-2"><i class="bi bi-clock me-1"></i><span id="summary-dropoff-time">-</span></span></div>
+                                </div>
                             </div>
                         </div>
                         
-                        <div class="bg-light rounded-3 p-3">
+                        <div class="bg-light rounded-3 p-3 summary-box">
                             <h6 class="fw-bold mb-2">Preis\u00fcbersicht</h6>
                             <div id="price-breakdown">
                                 <div class="d-flex justify-content-between mb-2">
-                                    <span>Grundpreis (1 Tag)</span>
-                                    <span>&euro;${vehicle.daily_rate}</span>
+                                    <span id="base-price-label">Grundpreis (1 Tag)</span>
+                                    <span id="base-price">&euro;${Math.floor(Number(vehicle.daily_rate))}</span>
                                 </div>
                                 <div class="d-flex justify-content-between mb-2">
                                     <span>Versicherung</span>
                                     <span id="insurance-price">&euro;0</span>
                                 </div>
                                 <div class="d-flex justify-content-between mb-2">
-                                    <span>ZusÃ¤tzliche Services</span>
+                                    <span>Zus\u00e4tzliche Leistungen</span>
                                     <span id="additional-services-price">&euro;0</span>
                                 </div>
                                 <hr>
-                                <div class="d-flex justify-content-between fw-bold">
+                                <div class="d-flex justify-content-between fw-bold total-row">
                                     <span>Gesamtpreis</span>
-                                    <span id="total-price">&euro;${vehicle.daily_rate}</span>
+                                    <span id="total-price">&euro;${Math.floor(Number(vehicle.daily_rate))}</span>
                                 </div>
                             </div>
                         </div>
@@ -313,11 +311,8 @@ document.addEventListener('DOMContentLoaded', () => {
         initQuickFormSync(vehicle);
         // Initial price & validation
         updatePrice(vehicle);
-        (function initInsuranceDefault(){
-            const first = document.querySelector('#insurance-packages .insurance-card');
-            if (first) first.classList.add('selected');
-            validateInsuranceRequired();
-        })();
+        // Do not preselect insurance by default; require user selection
+        validateInsuranceRequired();
     }
 
     // UI render helpers for cards
@@ -357,12 +352,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const fDropoffTime = document.getElementById('dropoffTime');
 
         const min = new Date().toISOString().split('T')[0];
-        // initialize flatpickr in German
+        let fpPick = null, fpDrop = null;
+        // initialize flatpickr in German (ensure labels are de, not tr)
         if (window.flatpickr) {
             flatpickr.localize(flatpickr.l10ns.de);
-            const opts = { dateFormat: 'd.m.Y', minDate: 'today' };
-            const fpPick = flatpickr(pDate, opts);
-            const fpDrop = flatpickr(dDate, opts);
+            const opts = { dateFormat: 'd.m.Y', minDate: 'today', locale: flatpickr.l10ns.de };
+            fpPick = flatpickr(pDate, { ...opts, onChange: () => { updateDropoffDateMin(); updateTimeConstraints(); updateSubmitEnabled(); } });
+            fpDrop = flatpickr(dDate, { ...opts, onChange: () => { updateTimeConstraints(); updateSubmitEnabled(); } });
         }
 
         function sync() {
@@ -373,6 +369,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (pTime && fPickupTime) fPickupTime.value = pTime.value;
             if (dTime && fDropoffTime) fDropoffTime.value = dTime.value;
             updatePrice(vehicle);
+            updateSummaryBlocks();
+            markSelections();
         }
 
         function formatISO(dotted) {
@@ -382,14 +380,93 @@ document.addEventListener('DOMContentLoaded', () => {
             return `${m[3]}-${m[2]}-${m[1]}`;
         }
 
+        function parseDotted(dotted) {
+            const m = (dotted||'').match(/(\d{2})\.(\d{2})\.(\d{4})/);
+            if (!m) return null;
+            return new Date(Number(m[3]), Number(m[2]) - 1, Number(m[1]));
+        }
+
+        function updateDropoffDateMin() {
+            const pu = parseDotted(pDate?.value);
+            if (!pu) return;
+            // min dropoff date is the same pickup date (or today if later)
+            const today = new Date(); today.setHours(0,0,0,0);
+            const minDate = pu > today ? pu : today;
+            if (fpDrop) fpDrop.set('minDate', minDate);
+            // If current dropoff date is before min, set to min
+            const dd = parseDotted(dDate?.value);
+            if (dd && dd < minDate) {
+                const day = String(minDate.getDate()).padStart(2,'0');
+                const mon = String(minDate.getMonth()+1).padStart(2,'0');
+                const yr  = String(minDate.getFullYear());
+                dDate.value = `${day}.${mon}.${yr}`;
+                if (fpDrop) fpDrop.setDate(dDate.value, false, 'd.m.Y');
+            }
+        }
+
+        function toMinutes(hhmm) {
+            const m = (hhmm||'').match(/(\d{2}):(\d{2})/);
+            if (!m) return null;
+            return Number(m[1])*60 + Number(m[2]);
+        }
+
+        function minutesToHHMM(mins) {
+            const h = Math.floor(mins/60);
+            const m = mins%60;
+            return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
+        }
+
+        function updateTimeConstraints() {
+            // Disable Rückgabezeiten earlier than Abholzeit + 60 minutes when same day
+            if (!pDate || !dDate || !pTime || !dTime) return;
+            const sameDay = (pDate.value && dDate.value && pDate.value === dDate.value);
+            const minMinutes = sameDay ? (toMinutes(pTime.value||'') ?? null) : null;
+            const required = (minMinutes !== null) ? minMinutes + 60 : null;
+            Array.from(dTime.options).forEach(opt => {
+                if (!opt.value) { opt.disabled = false; return; }
+                if (required === null) { opt.disabled = false; opt.classList.remove('text-muted'); return; }
+                const t = toMinutes(opt.value);
+                const dis = sameDay && t !== null && t < required;
+                opt.disabled = dis;
+                opt.classList.toggle('text-muted', dis);
+            });
+            // If current selection violates constraint, clear it
+            if (dTime.value) {
+                const cur = toMinutes(dTime.value);
+                if (required !== null && (cur === null || cur < required)) {
+                    dTime.value = '';
+                }
+            }
+        }
+
         ;[pickupLoc, dropoffLoc, pDate, dDate, pTime, dTime].forEach(el => {
-            if (el) el.addEventListener('change', sync);
+            if (el) el.addEventListener('change', () => { sync(); updateSubmitEnabled(); });
         });
 
         // no toggle needed
 
         // initial sync
         sync();
+        // initial mark
+        markSelections();
+        
+        function markSelections() {
+            const groups = [
+                pDate?.closest('.input-group'),
+                pTime?.closest('.input-group'),
+                dDate?.closest('.input-group'),
+                dTime?.closest('.input-group'),
+                pickupLoc?.closest('.input-group'),
+                dropoffLoc?.closest('.input-group')
+            ].filter(Boolean);
+            groups.forEach(g => g.classList.remove('qr-selected'));
+            if (pDate?.value) { pDate.classList.add('selected'); pDate.closest('.input-group')?.classList.add('qr-selected'); }
+            if (pTime?.value) { pTime.classList.add('selected'); pTime.closest('.input-group')?.classList.add('qr-selected'); }
+            if (dDate?.value) { dDate.classList.add('selected'); dDate.closest('.input-group')?.classList.add('qr-selected'); }
+            if (dTime?.value) { dTime.classList.add('selected'); dTime.closest('.input-group')?.classList.add('qr-selected'); }
+            if (pickupLoc?.value) { pickupLoc.classList.add('selected'); pickupLoc.closest('.input-group')?.classList.add('qr-selected'); }
+            if (dropoffLoc?.value) { dropoffLoc.classList.add('selected'); dropoffLoc.closest('.input-group')?.classList.add('qr-selected'); }
+        }
     }
 
     window.renderExtraCard = function(key, title, price, unit) {
@@ -439,21 +516,36 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
         // insurance cards & extras
-        document.getElementById('insurance-packages').addEventListener('click', (e) => {
-            const card = e.target.closest('.insurance-card');
-            if (!card) return;
-            document.querySelectorAll('.insurance-card').forEach(c => c.classList.remove('selected'));
-            card.classList.add('selected');
-            updatePrice(vehicle);
-            validateInsuranceRequired();
-        });
-        document.getElementById('extras').addEventListener('click', (e) => {
-            const card = e.target.closest('.extra-card');
-            if (!card) return;
-            card.classList.toggle('selected');
-            updatePrice(vehicle);
-        });
+        const insContainer = document.getElementById('insurance-packages');
+        if (insContainer) {
+            insContainer.addEventListener('click', (e) => {
+                const card = e.target.closest('.insurance-card');
+                if (!card) return;
+                document.querySelectorAll('.insurance-card').forEach(c => c.classList.remove('selected'));
+                card.classList.add('selected');
+                updatePrice(vehicle);
+                validateInsuranceRequired();
+                updateSubmitEnabled();
+            });
+        }
+        const extrasContainer = document.getElementById('extras');
+        if (extrasContainer) {
+            extrasContainer.addEventListener('click', (e) => {
+                const card = e.target.closest('.extra-card');
+                if (!card) return;
+                card.classList.toggle('selected');
+                updatePrice(vehicle);
+            });
+        }
         
+        // Enable button only when terms are checked
+        const termsCheckbox = document.getElementById('terms');
+        if (termsCheckbox && submitBtn) {
+            submitBtn.disabled = !termsCheckbox.checked;
+            termsCheckbox.addEventListener('change', () => {
+                updateSubmitEnabled();
+            });
+        }
         // Form submission
         form.addEventListener('submit', (e) => {
             e.preventDefault();
@@ -486,7 +578,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const start = new Date(pickupDate);
         const end = new Date(dropoffDate);
-        const days = Math.ceil((end - start) / (1000 * 60 * 60 * 24)) || 1;
+        const days = Math.max(1, Math.ceil((end - start) / (1000 * 60 * 60 * 24)));
         
         // Insurance
         let insurance = 0;
@@ -502,13 +594,33 @@ document.addEventListener('DOMContentLoaded', () => {
             additionalServices += unit === 'einmalig' ? price : price * days;
         });
         
-        const basePrice = vehicle.daily_rate * days;
+        const basePrice = Math.floor(Number(vehicle.daily_rate)) * days;
         const totalPrice = basePrice + insurance + additionalServices;
         
         // Update price display
-        document.getElementById('insurance-price').textContent = `â‚¬${insurance}`;
-        document.getElementById('additional-services-price').textContent = `â‚¬${additionalServices}`;
-        document.getElementById('total-price').textContent = `â‚¬${totalPrice}`;
+        const baseLabel = document.getElementById('base-price-label');
+        const baseEl = document.getElementById('base-price');
+        if (baseLabel) baseLabel.textContent = `Grundpreis (${days} Tag${days>1?'e':''})`;
+        if (baseEl) baseEl.textContent = `€${basePrice}`;
+        document.getElementById('insurance-price').textContent = `€${insurance}`;
+        document.getElementById('additional-services-price').textContent = `€${additionalServices}`;
+        document.getElementById('total-price').textContent = `€${totalPrice}`;
+    }
+
+    function updateSummaryBlocks() {
+        const pl = document.getElementById('qr-pickup-location');
+        const dl = document.getElementById('qr-dropoff-location');
+        const pd = document.getElementById('qr-pickup-date');
+        const dd = document.getElementById('qr-dropoff-date');
+        const pt = document.getElementById('qr-pickup-time');
+        const dt = document.getElementById('qr-dropoff-time');
+        const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val || '-'; };
+        set('summary-pickup-loc', pl ? pl.options[pl.selectedIndex]?.text : '');
+        set('summary-dropoff-loc', dl ? dl.options[dl.selectedIndex]?.text || (pl?.options[pl.selectedIndex]?.text || '') : '');
+        set('summary-pickup-date', pd ? pd.value : '');
+        set('summary-dropoff-date', dd ? dd.value : '');
+        set('summary-pickup-time', pt ? pt.value : '');
+        set('summary-dropoff-time', dt ? dt.value : '');
     }
 
     function validateInsuranceRequired() {

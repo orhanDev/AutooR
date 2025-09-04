@@ -528,6 +528,8 @@ html, body {
     100% { transform: rotate(360deg); }
 }
 
+/* Page-specific backgrounds handled per page; no global body background here */
+
 /* Image fallback styles */
 .car-image img[src*="default-car.jpg"] {
     opacity: 0.7;
