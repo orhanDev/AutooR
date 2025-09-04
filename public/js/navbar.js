@@ -53,7 +53,7 @@ function createNavbar() {
                             <li class="nav-item side-item" data-submenu="extras"><a class="nav-link" href="#">Extras</a></li>
                             <li class="nav-item side-item" data-submenu="business"><a class="nav-link" href="#">Business</a></li>
                             <li class="nav-item side-item" data-submenu="standorte"><a class="nav-link" href="#">Standorte</a></li>
-                        </ul>
+                    </ul>
                     </div>
                     <div class="side-right submenu-panel" id="submenu-panel" aria-hidden="true"></div>
                 </div>
@@ -199,9 +199,9 @@ function testNavbarUpdate() {
 
 // Add hamburger menu close listener
 function addHamburgerMenuCloseListener() {
-    const navbarNav = document.getElementById('navbarNav');
-    const navbarToggler = document.querySelector('.navbar-toggler');
-
+        const navbarNav = document.getElementById('navbarNav');
+        const navbarToggler = document.querySelector('.navbar-toggler');
+        
     if (!navbarNav) return;
 
     // Bootstrap Collapse instance (create if not exists)
