@@ -69,14 +69,12 @@ body { margin-top: 0 !important; }
     top: 100%;
     right: 0;
     margin-top: 0.5rem;
-    background: rgba(26, 26, 26, 0.92);
-    backdrop-filter: blur(18px) saturate(140%);
-    -webkit-backdrop-filter: blur(18px) saturate(140%);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 14px;
-    box-shadow: 0 24px 60px rgba(0,0,0,0.35);
-    padding: 0.5rem 0.5rem 0.75rem 0.5rem;
-    width: 240px;
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    padding: 0.5rem 0;
+    width: 220px;
     transform: translateY(-8px);
     opacity: 0;
     pointer-events: none;
@@ -91,12 +89,16 @@ body { margin-top: 0 !important; }
 }
 
 .account-header {
-    font-size: 0.8rem;
-    font-weight: 700;
-    color: rgba(255,255,255,0.6);
-    padding: 0.5rem 0.75rem 0.25rem 0.75rem;
-    text-transform: uppercase;
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 800;
+    color: rgb(245 245 245);
+    background-color: #ffc10700;
+    padding: 0;
+    text-transform: capitalize;
     letter-spacing: 0.08rem;
+    text-align: center;
+    
 }
 
 .account-item {
@@ -106,9 +108,77 @@ body { margin-top: 0 !important; }
     color: #ffffff !important;
     text-decoration: none !important;
     font-weight: 600;
+    background: transparent !important;
+    border: none !important;
 }
 
 .account-item:hover { background: rgba(255,255,255,0.12); }
+
+/* Yeni auth buttons container stili */
+.auth-buttons-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.auth-link {
+    color: white !important;
+    text-decoration: none !important;
+    font-weight: 500;
+    font-size: 0.9rem;
+    transition: color 0.2s ease;
+}
+
+.auth-link:hover {
+    color: #ffc107 !important;
+}
+
+.auth-separator {
+    color: white;
+    font-weight: 300;
+    margin: 0 0.25rem;
+}
+
+/* Yeni menu item stilleri */
+.menu-item {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    color: #333;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.menu-item:hover {
+    background-color: #f5f5f5;
+}
+
+.menu-item i {
+    color: #666;
+    font-size: 1rem;
+    width: 20px;
+}
+
+.menu-separator {
+    height: 1px;
+    background-color: #e0e0e0;
+    margin: 0.5rem 0;
+}
+
+.logout-item {
+    color: #dc3545;
+}
+
+.logout-item:hover {
+    background-color: #f8d7da;
+}
+
+.logout-item i {
+    color: #dc3545;
+}
 .nav-link {
     font-weight: 500;
     color: #000000 !important;

@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: autor_postgres
+    environment:
+      POSTGRES_DB: autor_db
+      POSTGRES_USER: autor_user
+      POSTGRES_PASSWORD: autor_password123
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    restart: unless-stopped
+    networks:
+      - autor_network
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: autor_pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@autor.de
+      PGADMIN_DEFAULT_PASSWORD: admin123
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    ports:
+      - "8080:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    depends_on:
+      - postgres
+    restart: unless-stopped
+    networks:
+      - autor_network
+
+volumes:
+  postgres_data:
+  pgadmin_data:
+
+networks:
+  autor_network:
+    driver: bridge

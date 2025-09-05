@@ -5,9 +5,9 @@ const express = require('express');
 process.env.JWT_SECRET = process.env.JWT_SECRET || 'your_super_secret_jwt_key_here_change_this_in_production';
 
 // Database configuration - Update according to your pgAdmin database
-process.env.PGUSER = process.env.PGUSER || 'cinetime';
+process.env.PGUSER = process.env.PGUSER || 'autor_user';
 process.env.PGHOST = process.env.PGHOST || 'localhost';
-process.env.PGDATABASE = process.env.PGDATABASE || 'rentacar_db';
+process.env.PGDATABASE = process.env.PGDATABASE || 'autor_db';
 process.env.PGPASSWORD = process.env.PGPASSWORD || 'Vekil4023.';
 process.env.PGPORT = process.env.PGPORT || '5432';
 const path = require('path');
@@ -19,6 +19,9 @@ const adminRouter = require('./routes/admin');
 const adminToolsRouter = require('./routes/admin_tools');
 const contactRouter = require('./routes/contact');
 const paymentsRouter = require('./routes/payments');
+const usersRouter = require('./routes/users');
+const googleAuthRouter = require('./routes/google-auth');
+const testGoogleAuthRouter = require('./routes/test-google-auth');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -51,6 +54,9 @@ app.use('/api/admin', adminRouter);
 app.use('/api/admin-tools', adminToolsRouter);
 app.use('/api/contact', contactRouter);
 app.use('/api/payments', paymentsRouter);
+app.use('/api/users', usersRouter);
+app.use('/auth', googleAuthRouter);
+app.use('/test', testGoogleAuthRouter);
 
 // Admin Panel HTML page routes
 app.get('/views/admin/locations.html', (req, res) => {
@@ -109,10 +115,6 @@ app.get('/register', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'register.html'));
 });
 
-app.get('/login', (req, res) => {
-    console.log('Login route accessed');
-    res.sendFile(path.join(__dirname, 'public', 'login.html'));
-});
 
 
 
@@ -126,6 +128,18 @@ app.get('/ueber-uns', (req, res) => {
 app.get('/kontakt', (req, res) => {
     console.log('Kontakt route accessed');
     res.sendFile(path.join(__dirname, 'public', 'kontakt.html'));
+});
+
+// Datenschutz page
+app.get('/datenschutz', (req, res) => {
+    console.log('Datenschutz route accessed');
+    res.sendFile(path.join(__dirname, 'public', 'datenschutz.html'));
+});
+
+// Bedingungen page
+app.get('/bedingungen', (req, res) => {
+    console.log('Bedingungen route accessed');
+    res.sendFile(path.join(__dirname, 'public', 'bedingungen.html'));
 });
 
 // Login page (direct route)
@@ -156,6 +170,11 @@ app.get('/payment', (req, res) => {
 app.get('/payment-success', (req, res) => {
     console.log('Payment success route accessed');
     res.sendFile(path.join(__dirname, 'public', 'payment-success.html'));
+});
+
+app.get('/google-oauth', (req, res) => {
+    console.log('Google OAuth route accessed');
+    res.sendFile(path.join(__dirname, 'public', 'google-oauth.html'));
 });
 
 // Login page
@@ -201,6 +220,27 @@ app.get('/views/car_details.html', (req, res) => {
 // Reservation confirmation page
 app.get('/views/reservation_confirmation.html', (req, res) => {
     res.sendFile(path.join(__dirname, 'views', 'reservation_confirmation.html'));
+});
+
+// Account pages
+app.get('/buchungen', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'buchungen.html'));
+});
+
+app.get('/abos', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'abos.html'));
+});
+
+app.get('/persoenliche-daten', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'persoenliche-daten.html'));
+});
+
+app.get('/profile', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'profile.html'));
+});
+
+app.get('/hilfe', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'hilfe.html'));
 });
 
 // Test navbar page kaldırıldı

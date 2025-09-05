@@ -2175,10 +2175,17 @@
         body > :not(#navbar-container):not(style):not(script) { display: none !important; }
     </style>
 </head>
-<body style="background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('images/cars/autocente.jpg') !important; background-size: cover !important; background-position: center !important; background-attachment: fixed !important; background-repeat: no-repeat !important;">
+<body style="background-image:url('images/cars/backgraund.png') !important; background-size: cover !important; background-position: center !important; background-attachment: fixed !important; background-repeat: no-repeat !important;">
     <!-- Modern Navbar -->
     <div id="navbar-container">
         <!-- Navbar JavaScript ile yüklenecek -->
+    </div>
+
+    <!-- Login Button for Non-Logged Users -->
+    <div id="login-button-container" style="position: fixed; top: 20px; right: 20px; z-index: 1000; display: none;">
+        <button class="btn btn-warning" onclick="window.location.href='/register'" style="background: #ffc107; border: none; color: black; font-weight: 600; padding: 10px 20px; border-radius: 8px;">
+            <i class="bi bi-person-circle me-2"></i>Anmelden
+        </button>
     </div>
 
     <!-- Hero Section - Porsche Style -->
@@ -4008,7 +4015,7 @@
                         </div>
                 <div class="col-lg-6">
                     <div class="text-center">
-                                                 <img src="images/cars/überunsfotom.jpg" 
+                                                 <img src="images/cars/autocenter.jpg" 
                               alt="AutOr" class="img-fluid rounded-4" style="max-width: 100%; height: auto;">
                     </div>
                 </div>
@@ -4245,6 +4252,25 @@
     <script src="js/app.js"></script>
     <script src="js/navbar.js"></script>
     
+    <!-- Login Button Control -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is logged in and show/hide login button
+            setTimeout(() => {
+                const userData = localStorage.getItem('userData');
+                const loginButtonContainer = document.getElementById('login-button-container');
+                
+                if (!userData && loginButtonContainer) {
+                    // User is not logged in, show login button
+                    loginButtonContainer.style.display = 'block';
+                } else if (userData && loginButtonContainer) {
+                    // User is logged in, hide login button
+                    loginButtonContainer.style.display = 'none';
+                }
+            }, 500);
+        });
+    </script>
+    
     <!-- Search Form Functionality -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -4357,6 +4383,11 @@
                     this.prevBtn = document.getElementById(prevBtnId);
                     this.nextBtn = document.getElementById(nextBtnId);
                     
+                    // Create calendar elements if they don't exist
+                    if (!this.calendar && this.input) {
+                        this.createCalendarElements(calendarId, titleId, daysId, prevBtnId, nextBtnId);
+                    }
+                    
                     console.log('Elements found:', {
                         input: this.input,
                         calendar: this.calendar,
@@ -4371,6 +4402,43 @@
                     this.isOpen = false;
                     
                     this.init();
+                }
+                
+                createCalendarElements(calendarId, titleId, daysId, prevBtnId, nextBtnId) {
+                    // Create calendar container
+                    this.calendar = document.createElement('div');
+                    this.calendar.id = calendarId;
+                    this.calendar.className = 'custom-calendar';
+                    
+                    // Create title
+                    this.title = document.createElement('div');
+                    this.title.id = titleId;
+                    this.title.className = 'calendar-title';
+                    
+                    // Create days container
+                    this.daysContainer = document.createElement('div');
+                    this.daysContainer.id = daysId;
+                    this.daysContainer.className = 'calendar-days';
+                    
+                    // Create navigation buttons
+                    this.prevBtn = document.createElement('button');
+                    this.prevBtn.id = prevBtnId;
+                    this.prevBtn.className = 'calendar-nav-btn';
+                    this.prevBtn.innerHTML = '‹';
+                    
+                    this.nextBtn = document.createElement('button');
+                    this.nextBtn.id = nextBtnId;
+                    this.nextBtn.className = 'calendar-nav-btn';
+                    this.nextBtn.innerHTML = '›';
+                    
+                    // Assemble calendar
+                    this.calendar.appendChild(this.title);
+                    this.calendar.appendChild(this.prevBtn);
+                    this.calendar.appendChild(this.nextBtn);
+                    this.calendar.appendChild(this.daysContainer);
+                    
+                    // Insert after input
+                    this.input.parentNode.insertBefore(this.calendar, this.input.nextSibling);
                 }
                 
                 init() {
@@ -4998,6 +5066,37 @@
                 }
             });
         });
+        
+        // Google OAuth login success handler
+        const urlParams = new URLSearchParams(window.location.search);
+        const login = urlParams.get('login');
+        const userParam = urlParams.get('user');
+        
+        if (login === 'success' && userParam) {
+            try {
+                const userData = JSON.parse(decodeURIComponent(userParam));
+                console.log('Google OAuth login successful:', userData);
+                
+                // Store user data in localStorage
+                localStorage.setItem('userData', JSON.stringify(userData));
+                
+                // Update navbar
+                if (typeof updateNavbar === 'function') {
+                    updateNavbar();
+                }
+                
+                // Show success message
+                setTimeout(() => {
+                    alert('Erfolgreich angemeldet! Willkommen, ' + userData.firstName + '!');
+                }, 500);
+                
+                // Clean URL
+                window.history.replaceState({}, document.title, window.location.pathname);
+                
+            } catch (error) {
+                console.error('Error parsing user data:', error);
+            }
+        }
     </script>
 </body>
 </html>

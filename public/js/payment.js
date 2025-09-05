@@ -440,23 +440,73 @@ document.addEventListener('DOMContentLoaded', () => {
                 billingCity: formData.get('billingCity')
             };
             
+            // Get user data
+            const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+            if (!userData.email) {
+                alert('Bitte melden Sie sich zuerst an.');
+                return;
+            }
+            
             // Simulate payment processing
             const submitBtn = document.querySelector('button[type="submit"]');
             const originalText = submitBtn.innerHTML;
             submitBtn.innerHTML = '<i class="bi bi-hourglass-split me-2"></i>Zahlung wird verarbeitet...';
             submitBtn.disabled = true;
             
-            // Simulate API call
-            await new Promise(resolve => setTimeout(resolve, 2000));
+            // Parse expiry date
+            const [expiryMonth, expiryYear] = paymentData.expiryDate.split('/');
+            
+            // Save credit card to database
+            const cardResponse = await fetch('/api/payments/credit-card', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    userEmail: userData.email,
+                    cardHolderName: paymentData.cardHolder,
+                    cardNumber: paymentData.cardNumber,
+                    expiryMonth: parseInt(expiryMonth),
+                    expiryYear: parseInt('20' + expiryYear),
+                    cvv: paymentData.cvv
+                })
+            });
+            
+            const cardResult = await cardResponse.json();
+            if (!cardResult.success) {
+                throw new Error(cardResult.message);
+            }
+            
+            // Process payment
+            const reservationData = JSON.parse(localStorage.getItem('reservationData') || '{}');
+            const currentBookingId = localStorage.getItem('currentBookingId');
+            
+            const paymentResponse = await fetch('/api/payments/process', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    userEmail: userData.email,
+                    cardId: cardResult.card.id,
+                    amount: reservationData.totalPrice || 0,
+                    currency: 'EUR',
+                    paymentMethod: 'credit_card',
+                    reservationId: currentBookingId
+                })
+            });
+            
+            const paymentResult = await paymentResponse.json();
+            if (!paymentResult.success) {
+                throw new Error(paymentResult.message);
+            }
             
             // Store payment data
             localStorage.setItem('paymentData', JSON.stringify(paymentData));
+            localStorage.setItem('lastPayment', JSON.stringify(paymentResult.payment));
             
             // Redirect to success page
-            console.log('Redirecting to payment-success page...');
-            console.log('Current URL:', window.location.href);
-            
-            // Try multiple redirect methods with cache busting
+            console.log('Payment successful, redirecting...');
             const timestamp = new Date().getTime();
             const successUrl = `/payment-success?t=${timestamp}`;
             

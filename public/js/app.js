@@ -42,7 +42,7 @@ function loadPopularCars() {
             transmission_type: 'Automatik',
             fuel_type: 'Benzin',
             seating_capacity: 2,
-            image_url: '/images/cars/porsche-911-gt3.jpg'
+            image_url: '/images/cars/porsche-911-carrera-4s-coupe-2d-silver-2019-JV.png'
         },
         {
             car_id: 102,
@@ -52,7 +52,7 @@ function loadPopularCars() {
             transmission_type: 'Automatik',
             fuel_type: 'Hybrid',
             seating_capacity: 2,
-            image_url: '/images/cars/mercedes-amg-gt.jpg'
+            image_url: '/images/cars/mb-sl63-amg-convertible-silver-2022.png'
         },
         {
             car_id: 103,
@@ -62,7 +62,7 @@ function loadPopularCars() {
             transmission_type: 'Automatik',
             fuel_type: 'Benzin',
             seating_capacity: 2,
-            image_url: '/images/cars/audi-q8-rs.jpg'
+            image_url: '/images/cars/audi-a6-avant-stw-black-2025.png'
         },
         {
             car_id: 104,
@@ -72,7 +72,7 @@ function loadPopularCars() {
             transmission_type: 'Automatik',
             fuel_type: 'Benzin',
             seating_capacity: 4,
-            image_url: '/images/cars/rolls-royce-phantom.jpg'
+            image_url: '/images/cars/bmw-7-4d-blue-2023.png'
         },
         {
             car_id: 105,
@@ -82,7 +82,7 @@ function loadPopularCars() {
             transmission_type: 'Automatik',
             fuel_type: 'Benzin',
             seating_capacity: 4,
-            image_url: '/images/cars/bentley-continental.jpg'
+            image_url: '/images/cars/bmw-8-gran-coupe-grey-2022.png'
         },
         {
             car_id: 106,
@@ -92,7 +92,7 @@ function loadPopularCars() {
             transmission_type: 'Automatik',
             fuel_type: 'Benzin',
             seating_capacity: 2,
-            image_url: '/images/cars/bmw-m8.jpg'
+            image_url: '/images/cars/bmw-m8-coupe-2d-black-2023-JV.png'
         },
         {
             car_id: 107,
@@ -102,7 +102,7 @@ function loadPopularCars() {
             transmission_type: 'Automatik',
             fuel_type: 'Benzin',
             seating_capacity: 4,
-            image_url: '/images/cars/mercedes-s-class.jpg'
+            image_url: '/images/cars/mb-s-long-sedan-4d-silver-2021-JV.png'
         },
         {
             car_id: 108,
@@ -112,7 +112,7 @@ function loadPopularCars() {
             transmission_type: 'Automatik',
             fuel_type: 'Benzin',
             seating_capacity: 2,
-            image_url: '/images/cars/audi-q8-rs.jpg'
+            image_url: '/images/cars/aston-martin-vantage-2d-red-2024.png'
         }
     ];
     

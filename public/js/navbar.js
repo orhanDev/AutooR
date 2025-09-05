@@ -58,13 +58,38 @@ function createNavbar() {
                     <div class="side-right submenu-panel" id="submenu-panel" aria-hidden="true"></div>
                 </div>
                 <div class="account ms-auto position-relative">
-                    <button class="btn account-btn d-flex align-items-center" id="account-btn" aria-expanded="false" aria-controls="account-menu" aria-label="Account">
-                        <i class="bi bi-person" style="font-size: 1.5rem;"></i>
-                    </button>
+                    <div class="d-flex align-items-center" id="user-info-container">
+                        <span class="user-name me-3" style="color: black; font-weight: 500;"></span>
+                        <button class="btn account-btn d-flex align-items-center" id="account-btn" aria-expanded="false" aria-controls="account-menu" aria-label="Account">
+                            <i class="bi bi-person" style="font-size: 1.5rem;"></i>
+                        </button>
+                    </div>
                     <div class="account-menu" id="account-menu" aria-hidden="true">
-                        <div class="account-header">Account</div>
-                        <a href="/register" class="account-item">Registrieren</a>
-                        <a href="/login" class="account-item">Anmelden</a>
+                        <div class="menu-item" onclick="window.location.href='/buchungen'">
+                            <i class="bi bi-car-front me-2"></i>
+                            <span>Buchungen</span>
+                        </div>
+                        <div class="menu-item" onclick="window.location.href='/abos'">
+                            <i class="bi bi-clock-history me-2"></i>
+                            <span>Abos</span>
+                        </div>
+                        <div class="menu-item" onclick="window.location.href='/persoenliche-daten'">
+                            <i class="bi bi-person me-2"></i>
+                            <span>Persönliche Daten</span>
+                        </div>
+                        <div class="menu-item" onclick="window.location.href='/profile'">
+                            <i class="bi bi-person-badge me-2"></i>
+                            <span>Profile</span>
+                        </div>
+                        <div class="menu-separator"></div>
+                        <div class="menu-item" onclick="window.location.href='/hilfe'">
+                            <i class="bi bi-question-circle me-2"></i>
+                            <span>Hilfe</span>
+                        </div>
+                        <div class="menu-item logout-item" onclick="logout()">
+                            <i class="bi bi-box-arrow-right me-2"></i>
+                            <span>Abmelden</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -91,58 +116,57 @@ function addNavbarCSS() {}
 function updateNavbar() {
     console.log('updateNavbar called');
     
+    // Check both old and new user data formats
     const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
     const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    const userData = JSON.parse(localStorage.getItem('userData') || '{}');
     const currentPage = window.location.pathname;
     
     console.log('isLoggedIn:', isLoggedIn);
     console.log('currentUser:', currentUser);
+    console.log('userData:', userData);
     console.log('currentPage:', currentPage);
     
-    const authButtonsContainer = document.getElementById('auth-buttons-container');
-    if (!authButtonsContainer) {
-        console.log('auth-buttons-container not found');
+    const userInfoContainer = document.getElementById('user-info-container');
+    const accountMenu = document.getElementById('account-menu');
+    
+    if (!userInfoContainer || !accountMenu) {
+        console.log('Required containers not found');
         return;
     }
     
-    console.log('auth-buttons-container found, updating...');
+    console.log('Containers found, updating...');
     
-    if (isLoggedIn && currentUser.firstName) {
-        console.log('User is logged in, showing welcome message');
-        // User is logged in - show welcome message and logout button
-        authButtonsContainer.innerHTML = `
-            <li class="nav-item">
-                <a class="nav-link" href="#" onclick="logout()">Abmelden</a>
-            </li>
-        `;
-    } else {
-        console.log('User is not logged in, checking current page');
-        
-        // Check if we're on the register or login page
-        if (currentPage === '/register') {
-            console.log('On register page, showing only login button');
-            // On register page - show only login button
-            authButtonsContainer.innerHTML = `
-                <li class="nav-item">
-                    <a class="nav-link" href="/login">Anmelden</a>
-                </li>
-            `;
-        } else if (currentPage === '/login') {
-            console.log('On login page, showing no buttons');
-            // On login page - show no buttons, only logo
-            authButtonsContainer.innerHTML = '';
-        } else {
-            console.log('Not on register or login page, showing login/register buttons');
-            // Not on register or login page - show login/register buttons
-            authButtonsContainer.innerHTML = `
-                <li class="nav-item">
-                    <a class="nav-link" href="/register">Registrieren</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/login">Anmelden</a>
-                </li>
-            `;
+    // Check if user is logged in (either old format or new format)
+    const userIsLoggedIn = (isLoggedIn && currentUser.firstName) || (userData.verified && userData.name);
+    const fullUserName = currentUser.firstName || userData.name;
+    const userName = fullUserName ? fullUserName.split(' ')[0] : '';
+    
+    if (userIsLoggedIn && userName) {
+        console.log('User is logged in, showing user name in navbar');
+        // User is logged in - show user name in navbar and full menu
+        const userNameSpan = userInfoContainer.querySelector('.user-name');
+        if (userNameSpan) {
+            userNameSpan.textContent = userName;
         }
+        
+        // Show full menu with all options
+        accountMenu.style.display = 'block';
+    } else {
+        console.log('User is not logged in, hiding user name');
+        // User is not logged in - hide user name and show simple auth menu
+        const userNameSpan = userInfoContainer.querySelector('.user-name');
+        if (userNameSpan) {
+            userNameSpan.textContent = '';
+        }
+
+        // Show simple auth menu
+        accountMenu.innerHTML = `
+            <div class="menu-item">
+                <i class="bi bi-person-plus me-2"></i>
+                <a href="/register" style="color: inherit; text-decoration: none;">Anmelden</a>
+            </div>
+        `;
     }
     
     // Mobilde auth butonlarını diğer linklerle yan yana getir
@@ -165,8 +189,12 @@ function updateNavbar() {
 
 // Logout function
 function logout() {
+    // Remove all user data (both old and new formats)
     localStorage.removeItem('isLoggedIn');
     localStorage.removeItem('currentUser');
+    localStorage.removeItem('userData');
+    localStorage.removeItem('pendingEmail');
+    
     alert('Sie wurden erfolgreich abgemeldet.');
     window.location.href = '/';
 }

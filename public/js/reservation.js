@@ -2,7 +2,7 @@
 
 document.addEventListener('DOMContentLoaded', () => {
     const container = document.getElementById('reservation-container');
-
+    
     // Enable/disable submit button based on required selections
     function updateSubmitEnabled() {
         const submitBtn = document.getElementById('submitBtn');
@@ -62,9 +62,43 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>`;
     }
     
-    // Get selected vehicle
-    const selectedCarId = localStorage.getItem('selectedCarId');
-    const selectedVehicle = localStorage.getItem('selectedVehicle');
+    // Get selected vehicle or booking ID from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const bookingId = urlParams.get('id');
+    
+    let selectedCarId = localStorage.getItem('selectedCarId');
+    let selectedVehicle = localStorage.getItem('selectedVehicle');
+    
+    // If we have a booking ID, load the vehicle and booking data
+    if (bookingId) {
+        const booking = getBookingById(bookingId);
+        if (booking) {
+            // Create a vehicle object from booking data
+            selectedVehicle = JSON.stringify({
+                car_id: booking.id,
+                make: booking.car.split(' ')[0],
+                model: booking.car.split(' ').slice(1).join(' '),
+                title: booking.car,
+                image_url: booking.image,
+                daily_rate: Math.round(booking.totalPrice / 5), // Approximate daily rate
+                category: 'Luxury',
+                transmission: 'Automatik',
+                fuel_type: 'Benzin',
+                seats: 5
+            });
+            localStorage.setItem('selectedVehicle', selectedVehicle);
+            
+            // Save booking data for form pre-filling
+            localStorage.setItem('bookingData', JSON.stringify({
+                pickupDate: booking.pickupDate,
+                returnDate: booking.returnDate,
+                pickupLocation: booking.pickupLocation,
+                returnLocation: booking.returnLocation,
+                totalPrice: booking.totalPrice,
+                status: booking.status
+            }));
+        }
+    }
     
     if (!selectedCarId && !selectedVehicle) {
         showError('Kein Fahrzeug ausgewählt');
@@ -73,6 +107,52 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Load reservation form
     loadReservationForm();
+    
+    // Function to get booking by ID
+    function getBookingById(bookingId) {
+        // Sample bookings data (same as in buchungen.js)
+        const sampleBookings = [
+            {
+                id: 'AUT-2024-001',
+                car: 'BMW X5',
+                pickupDate: '2024-01-15',
+                returnDate: '2024-01-20',
+                pickupLocation: 'München Flughafen',
+                returnLocation: 'München Flughafen',
+                status: 'active',
+                totalPrice: 450,
+                image: '/images/cars/bmw-x5-suv-4d-grey-2023-JV.png'
+            },
+            {
+                id: 'AUT-2024-002',
+                car: 'Audi A6',
+                pickupDate: '2024-01-10',
+                returnDate: '2024-01-12',
+                pickupLocation: 'Berlin Hauptbahnhof',
+                returnLocation: 'Berlin Hauptbahnhof',
+                status: 'completed',
+                totalPrice: 280,
+                image: '/images/cars/audi-a6-avant-stw-black-2025.png'
+            },
+            {
+                id: 'AUT-2024-003',
+                car: 'Mercedes E-Klasse',
+                pickupDate: '2024-01-05',
+                returnDate: '2024-01-08',
+                pickupLocation: 'Hamburg Zentrum',
+                returnLocation: 'Hamburg Zentrum',
+                status: 'cancelled',
+                totalPrice: 320,
+                image: '/images/cars/mb-s-long-sedan-4d-silver-2021-JV.png'
+            }
+        ];
+        
+        // Check if user has any bookings in localStorage
+        const userBookings = JSON.parse(localStorage.getItem('userBookings') || '[]');
+        const allBookings = userBookings.length > 0 ? userBookings : sampleBookings;
+        
+        return allBookings.find(booking => booking.id === bookingId);
+    }
     
     function loadReservationForm() {
         try {
@@ -102,9 +182,117 @@ document.addEventListener('DOMContentLoaded', () => {
             
             displayReservationForm(vehicle);
             
+            // Pre-fill form with booking data ONLY if we have a booking ID (wait for Flatpickr to initialize)
+            if (bookingId) {
+                setTimeout(() => {
+                    prefillFormWithBookingData();
+                }, 500);
+            }
+            
         } catch (error) {
             console.error('Error loading reservation form:', error);
             showError('Fehler beim Laden der Reservierung');
+        }
+    }
+    
+    // Function to convert date format for Flatpickr
+    function convertDateFormat(dateString) {
+        if (!dateString) return '';
+        
+        // If already in YYYY-MM-DD format, convert to DD.MM.YYYY
+        if (dateString.includes('-') && dateString.length === 10) {
+            const parts = dateString.split('-');
+            if (parts.length === 3) {
+                const year = parts[0];
+                const month = parts[1];
+                const day = parts[2];
+                return `${day}.${month}.${year}`;
+            }
+        }
+        
+        // If already in DD.MM.YYYY format, return as is
+        if (dateString.includes('.')) {
+            return dateString;
+        }
+        
+        return dateString;
+    }
+    
+    // Function to pre-fill form with booking data
+    function prefillFormWithBookingData() {
+        const bookingData = localStorage.getItem('bookingData');
+        if (!bookingData) {
+            console.log('No booking data found in localStorage');
+            return;
+        }
+        
+        try {
+            const booking = JSON.parse(bookingData);
+            console.log('Booking data loaded:', booking);
+            
+            // Pre-fill pickup location
+            const pickupLocation = document.getElementById('qr-pickup-location');
+            if (pickupLocation) {
+                // Find and select the matching option
+                for (let option of pickupLocation.options) {
+                    if (option.text.includes(booking.pickupLocation) || booking.pickupLocation.includes(option.text)) {
+                        pickupLocation.value = option.value;
+                        break;
+                    }
+                }
+            }
+            
+            // Pre-fill return location
+            const returnLocation = document.getElementById('qr-dropoff-location');
+            if (returnLocation) {
+                for (let option of returnLocation.options) {
+                    if (option.text.includes(booking.returnLocation) || booking.returnLocation.includes(option.text)) {
+                        returnLocation.value = option.value;
+                        break;
+                    }
+                }
+            }
+            
+            // Pre-fill pickup date (use DD.MM.YYYY format)
+            const pickupDateInput = document.getElementById('qr-pickup-date');
+            if (pickupDateInput) {
+                const formattedPickupDate = convertDateFormat(booking.pickupDate);
+                console.log('Setting pickup date:', booking.pickupDate, '->', formattedPickupDate);
+                pickupDateInput.value = formattedPickupDate;
+                // Trigger change event to update Flatpickr
+                pickupDateInput.dispatchEvent(new Event('change', { bubbles: true }));
+            } else {
+                console.log('Pickup date input not found');
+            }
+
+            // Pre-fill return date (use DD.MM.YYYY format)
+            const returnDateInput = document.getElementById('qr-dropoff-date');
+            if (returnDateInput) {
+                const formattedReturnDate = convertDateFormat(booking.returnDate);
+                console.log('Setting return date:', booking.returnDate, '->', formattedReturnDate);
+                returnDateInput.value = formattedReturnDate;
+                // Trigger change event to update Flatpickr
+                returnDateInput.dispatchEvent(new Event('change', { bubbles: true }));
+            } else {
+                console.log('Return date input not found');
+            }
+            
+            // Pre-fill pickup time (default to 08:00)
+            const pickupTime = document.getElementById('qr-pickup-time');
+            if (pickupTime) {
+                pickupTime.value = '08:00';
+            }
+            
+            // Pre-fill return time (default to 18:00)
+            const returnTime = document.getElementById('qr-dropoff-time');
+            if (returnTime) {
+                returnTime.value = '18:00';
+            }
+            
+            console.log('Form pre-filled with booking data:', booking);
+            
+        } catch (error) {
+            console.error('Error pre-filling form:', error);
         }
     }
     
@@ -145,28 +333,28 @@ document.addEventListener('DOMContentLoaded', () => {
                                         <span class="input-group-text bg-white"><i class="bi bi-geo-alt"></i></span>
                                         <select id="qr-pickup-location" class="form-select border-2 qr-select">
                                             <option value="">Bitte wählen</option>
-                                            <option value="berlin_airport">Berlin Flughafen</option>
-                                            <option value="berlin_center">Berlin Zentrum</option>
+                                        <option value="berlin_airport">Berlin Flughafen</option>
+                                        <option value="berlin_center">Berlin Zentrum</option>
                                             <option value="munich_airport">M&uuml;nchen Flughafen</option>
                                             <option value="munich_center">M&uuml;nchen Zentrum</option>
-                                            <option value="hamburg_airport">Hamburg Flughafen</option>
-                                            <option value="hamburg_center">Hamburg Zentrum</option>
-                                        </select>
-                                    </div>
+                                        <option value="hamburg_airport">Hamburg Flughafen</option>
+                                        <option value="hamburg_center">Hamburg Zentrum</option>
+                                    </select>
+                                </div>
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="input-group qr-loc">
                                         <span class="input-group-text bg-white"><i class="bi bi-geo-alt"></i></span>
                                         <select id="qr-dropoff-location" class="form-select border-2 qr-select">
                                             <option value="">Bitte wählen</option>
-                                            <option value="berlin_airport">Berlin Flughafen</option>
-                                            <option value="berlin_center">Berlin Zentrum</option>
+                                        <option value="berlin_airport">Berlin Flughafen</option>
+                                        <option value="berlin_center">Berlin Zentrum</option>
                                             <option value="munich_airport">M&uuml;nchen Flughafen</option>
                                             <option value="munich_center">M&uuml;nchen Zentrum</option>
-                                            <option value="hamburg_airport">Hamburg Flughafen</option>
-                                            <option value="hamburg_center">Hamburg Zentrum</option>
-                                        </select>
-                                    </div>
+                                        <option value="hamburg_airport">Hamburg Flughafen</option>
+                                        <option value="hamburg_center">Hamburg Zentrum</option>
+                                    </select>
+                                </div>
                                 </div>
                                 <div class="col-md-6 col-xl-3">
                                     <label class="form-label small text-muted mb-1">Abholdatum</label>
@@ -178,8 +366,8 @@ document.addEventListener('DOMContentLoaded', () => {
                                             <option value="">Zeit</option>
                                             <option>08:00</option><option>09:00</option><option>10:00</option><option>11:00</option><option>12:00</option>
                                             <option>13:00</option><option>14:00</option><option>15:00</option><option>16:00</option><option>17:00</option><option>18:00</option>
-                                        </select>
-                                    </div>
+                                    </select>
+                                </div>
                                 </div>
                                 <div class="col-md-6 col-xl-3">
                                     <label class="form-label small text-muted mb-1">Rückgabedatum</label>
@@ -191,14 +379,14 @@ document.addEventListener('DOMContentLoaded', () => {
                                             <option value="">Zeit</option>
                                             <option>08:00</option><option>09:00</option><option>10:00</option><option>11:00</option><option>12:00</option>
                                             <option>13:00</option><option>14:00</option><option>15:00</option><option>16:00</option><option>17:00</option><option>18:00</option>
-                                        </select>
-                                    </div>
+                                    </select>
+                                </div>
                                 </div>
                             </div>
-                        </div>
-                        
+                                </div>
+                                
                         <form id="reservation-form">
-                            <div class="row g-3">
+                                    <div class="row g-3">
                                 <!-- Hidden fields mirror quick bar selections -->
                                 <input type="hidden" name="pickupLocation" id="pickupLocation">
                                 <input type="hidden" name="dropoffLocation" id="dropoffLocation">
@@ -214,8 +402,8 @@ document.addEventListener('DOMContentLoaded', () => {
                                         ${renderInsuranceCard('premium', 'Empfohlen', 'Premium Schutz', 45, ['Vollkasko ohne Selbstbeteiligung','Unfallschutz inklusive','Diebstahlschutz','24/7 Pannenhilfe','Reiseabbruchschutz'])}
                                         ${renderInsuranceCard('standard', 'Beliebt', 'Standard Schutz', 25, ['Teilkasko (â‚¬500 SB)','Unfallschutz','Diebstahlschutz','Pannenhilfe'])}
                                         ${renderInsuranceCard('basic', 'G\u00fcnstig', 'Basis Schutz', 15, ['Haftpflicht inklusive','Teilkasko (\u20ac1000 SB)','Grundschutz'])}
-                                    </div>
-                                </div>
+                                            </div>
+                                        </div>
                                 
                                 <!-- Extras -->
                                 <div class="col-12 mt-4">
@@ -288,7 +476,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                     <span class="text-muted">Rückgabe:</span>
                                     <div><i class="bi bi-geo-alt me-1"></i><span id="summary-dropoff-loc">-</span></div>
                                     <div><i class="bi bi-calendar me-1"></i><span id="summary-dropoff-date">-</span> <span class="ms-2"><i class="bi bi-clock me-1"></i><span id="summary-dropoff-time">-</span></span></div>
-                                </div>
+                            </div>
                             </div>
                         </div>
                         
@@ -731,8 +919,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 dropoffLocationName: dropoffLocationName
             };
             
-            // Store reservation data
-            localStorage.setItem('reservationData', JSON.stringify(reservationData));
+                    // Store reservation data
+        localStorage.setItem('reservationData', JSON.stringify(reservationData));
+        
+        // Save to database if user is logged in
+        const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+        if (userData.email) {
+            saveReservationToDatabase(reservationData, userData.email);
+        }
             
             // Redirect to payment
             window.location.href = '/payment';
@@ -757,4 +951,45 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
     }
 });
+
+// Save reservation to database
+async function saveReservationToDatabase(reservationData, userEmail) {
+    try {
+        const response = await fetch('/api/reservations/create', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                userEmail: userEmail,
+                vehicleId: reservationData.vehicle.id,
+                vehicleName: reservationData.vehicle.name,
+                vehicleImage: reservationData.vehicle.image_url,
+                pickupLocation: reservationData.pickupLocation,
+                dropoffLocation: reservationData.dropoffLocation,
+                pickupDate: reservationData.pickupDate,
+                pickupTime: reservationData.pickupTime,
+                dropoffDate: reservationData.dropoffDate,
+                dropoffTime: reservationData.dropoffTime,
+                totalPrice: reservationData.totalPrice,
+                basePrice: reservationData.basePrice,
+                insurancePrice: reservationData.insurancePrice,
+                extrasPrice: reservationData.extrasPrice,
+                insuranceType: reservationData.insuranceType,
+                extras: reservationData.extras
+            })
+        });
+        
+        const result = await response.json();
+        if (result.success) {
+            console.log('Rezervasyon veritabanına kaydedildi:', result.reservation);
+            // Store booking ID for later use
+            localStorage.setItem('currentBookingId', result.reservation.booking_id);
+        } else {
+            console.error('Rezervasyon kayıt hatası:', result.message);
+        }
+    } catch (error) {
+        console.error('Veritabanı kayıt hatası:', error);
+    }
+}
 
