@@ -23,15 +23,19 @@ document.addEventListener('DOMContentLoaded', () => {
             
             if (selectedVehicle) {
                 vehicle = JSON.parse(selectedVehicle);
-                // Check if it's the correct vehicle
                 if (vehicle.car_id.toString() !== carId) {
-                    // Find in LOCAL_CARS if different vehicle
                     vehicle = LOCAL_CARS.find(car => car.car_id.toString() === carId);
                 }
             } else {
-                // Find in LOCAL_CARS
                 vehicle = LOCAL_CARS.find(car => car.car_id.toString() === carId);
             }
+            try {
+                const normalizedImg = resolveVehicleImage(vehicle);
+                if (normalizedImg) {
+                    vehicle.image_url = normalizedImg;
+                    localStorage.setItem('selectedVehicle', JSON.stringify(vehicle));
+                }
+            } catch (e) { /* ignore */ }
             
             if (!vehicle) {
                 throw new Error('Fahrzeug nicht gefunden');
@@ -46,6 +50,30 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     function displayVehicleDetails(vehicle) {
+        // Robust image resolver (handles Windows paths and best-match fallback)
+        const IMG_INDEX = [
+            'aston-martin-vantage-2d-red-2024.png','audi-a6-avant-stw-black-2025.png','audi-a7-4d-blau-2019.png','bmw-1-hatch-4d-black-2025.png','bmw-2-activ-tourer-grey-2022.png','bmw-2-gran-coupe-4d-grey-2021.png','bmw-3-sedan-4d-white-2023-JV.png','bmw-3-touring-stw-4d-grey-2023-JV.png','bmw-5-touring-stw-black-2024.png','bmw-7-4d-blue-2023.png','bmw-8-gran-coupe-grey-2022.png','bmw-m235i-grancoupe-4d-blue-2023.png','bmw-m3-amg-stw-lila-2023.png','bmw-m8-coupe-2d-black-2023-JV.png','bmw-x1-m35-suv-grey-2025.png','bmw-x3-m50-suv-black-2025.png','bmw-x3-suv-silver-2025.png','bmw-x5-suv-4d-grey-2023-JV.png','bmw-x5m-suv-4d-black-2023-JV.png','bmw-x7-m60i-suv-white-2023.png','bmw-x7-suv-4d-silver-2023-JV.png','cupra-formentor-suv-grey-2025.png','land-rover-range-rover-hse-suv-black-2025.png','land-rover-range-rover-sport-5d-suv-grey-2022.png','maserati-grecale-suv-4d-blue-2023-JV.png','mb-gls63-amg-suv-4d-grey-2025.png','mb-s-long-sedan-4d-silver-2021-JV.png','mb-sl63-amg-convertible-silver-2022.png','mb-v-class-extralong-van-black-2024.png','mb-vito-van-black-2020.png','nissan-primastar-van-white-2022.png','opel-combo-van-black-2024.png','peugeot-408-4d-white-2022.png','porsche-911-carrera-4s-convertible-2d-blue-2024.png','porsche-911-carrera-4s-coupe-2d-silver-2019-JV.png','porsche-macan-suv-white-2025.png','porsche-panamera-sedan-4d-black-2021-JV.png','vw-golf-variant-stw-4d-grey-2022.png','vw-t-roc-convertible-white-open-2023.png','vw-t-roc-suv-4d-white-2022-JV.png','vw-tiguan-suv-black-2024.png','vw-touran-van-grey-2021.png'
+        ];
+        const normalize = (s) => String(s||'').toLowerCase().replace(/[^a-z0-9]+/g,' ');
+        const score = (name, pattern) => { const n = normalize(name), p = normalize(pattern); let sc = 0; p.split(' ').filter(Boolean).forEach(tok => { if (n.includes(tok)) sc += tok.length; }); return sc; };
+        function findBestImage(make, model) {
+            const target = `${make||''} ${model||''}`.trim();
+            let best = ''; let bestScore = 0;
+            IMG_INDEX.forEach(file => { const s = score(file, target); if (s > bestScore) { bestScore = s; best = file; } });
+            return best ? `/images/cars/${best}` : '';
+        }
+        function resolveVehicleImage(v) {
+            let img = v.image_url || v.image || '';
+            if (img && (/^[a-zA-Z]:\\/.test(img) || img.includes('\\'))) {
+                img = `/images/cars/${img.split('\\').pop()}`;
+            }
+            if (img && !img.startsWith('/')) {
+                img = img.startsWith('images/') ? `/${img}` : `/images/cars/${img}`;
+            }
+            if (/\.jpg$/i.test(img)) img = img.replace(/\.jpg$/i, '.png');
+            if (!img) img = findBestImage(v.make, v.model);
+            return img || '/images/cars/vw-t-roc-suv-4d-white-2022-JV.png';
+        }
         container.innerHTML = `
             <!-- Breadcrumb -->
             <nav aria-label="breadcrumb" class="mb-4">
@@ -61,10 +89,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 <!-- Vehicle Image -->
                 <div class="col-lg-6 mb-4">
                     <div class="position-relative">
-                        <img src="${vehicle.image_url}" alt="${vehicle.make} ${vehicle.model}" 
-                             class="img-fluid rounded-4 shadow-lg w-100" style="height: 400px; object-fit: cover;">
+                        <img src="${resolveVehicleImage(vehicle)}" alt="${vehicle.make} ${vehicle.model}" 
+                             class="img-fluid rounded-4 shadow-lg w-100" style="height: 400px; object-fit: cover;"
+                             onerror="this.onerror=null; this.src='/images/cars/vw-t-roc-suv-4d-white-2022-JV.png';">
                         <div class="position-absolute top-0 end-0 m-3">
-                            <span class="badge bg-warning fs-6 px-3 py-2">â‚¬${vehicle.daily_rate}/Tag</span>
+                            <span class="badge bg-warning fs-6 px-3 py-2">€${Math.floor(Number(vehicle.daily_rate))}/Tag</span>
                         </div>
                     </div>
                 </div>
@@ -98,7 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 <div class="d-flex align-items-center">
                                     <i class="bi bi-people text-warning fs-4 me-3"></i>
                                     <div>
-                                        <small class="text-muted d-block">SitzplÃ¤tze</small>
+                                        <small class="text-muted d-block">Sitzplätze</small>
                                         <strong>${vehicle.seating_capacity}</strong>
                                     </div>
                                 </div>
@@ -118,7 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <div class="bg-light rounded-3 p-3 mb-4">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div>
-                                    <h3 class="fw-bold text-warning mb-0">â‚¬${vehicle.daily_rate}</h3>
+                                    <h3 class="fw-bold text-warning mb-0">€${Math.floor(Number(vehicle.daily_rate))}</h3>
                                     <small class="text-muted">pro Tag</small>
                                 </div>
                                 <div class="text-end">
@@ -136,7 +165,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             </button>
                             <button class="nav-link-text" onclick="window.history.back()">
                                 <i class="bi bi-arrow-left me-2"></i>
-                                ZurÃ¼ck zur Ãœbersicht
+                                Zurück zur Übersicht
                             </button>
                         </div>
                     </div>
@@ -200,7 +229,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                         <strong>${vehicle.usb_port ? 'Ja' : 'Nein'}</strong>
                                     </div>
                                     <div class="col-6">
-                                        <small class="text-muted d-block">RÃ¼ckfahrkamera</small>
+                                        <small class="text-muted d-block">Rückfahrkamera</small>
                                         <strong>${vehicle.backup_camera ? 'Ja' : 'Nein'}</strong>
                                     </div>
                                     <div class="col-6">
@@ -218,7 +247,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="row mt-5">
                 <div class="col-12">
                     <div class="bg-white rounded-4 p-4 shadow-sm border">
-                        <h3 class="fw-bold mb-4">Warum dieses Fahrzeug wÃ¤hlen?</h3>
+                        <h3 class="fw-bold mb-4">Warum dieses Fahrzeug wählen?</h3>
                         
                         <div class="row g-4">
                             <div class="col-md-4">
@@ -226,8 +255,8 @@ document.addEventListener('DOMContentLoaded', () => {
                                     <div class="bg-warning rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
                                         <i class="bi bi-shield-check text-white fs-4"></i>
                                     </div>
-                                    <h6 class="fw-bold">Sicher & ZuverlÃ¤ssig</h6>
-                                    <p class="text-muted small">RegelmÃ¤ÃŸig gewartet und vollversichert</p>
+                                    <h6 class="fw-bold">Sicher & Zuverlässig</h6>
+                                    <p class="text-muted small">Regelmäßig gewartet und vollversichert</p>
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -236,7 +265,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                         <i class="bi bi-fuel-pump text-white fs-4"></i>
                                     </div>
                                     <h6 class="fw-bold">Spritsparend</h6>
-                                    <p class="text-muted small">Moderne Technik fÃ¼r niedrigen Verbrauch</p>
+                                    <p class="text-muted small">Moderne Technik für niedrigen Verbrauch</p>
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -244,8 +273,8 @@ document.addEventListener('DOMContentLoaded', () => {
                                     <div class="bg-warning rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
                                         <i class="bi bi-star text-white fs-4"></i>
                                     </div>
-                                    <h6 class="fw-bold">Premium QualitÃ¤t</h6>
-                                    <p class="text-muted small">HÃ¶chste Standards fÃ¼r Ihren Komfort</p>
+                                    <h6 class="fw-bold">Premium Qualität</h6>
+                                    <p class="text-muted small">Höchste Standards für Ihren Komfort</p>
                                 </div>
                             </div>
                         </div>
@@ -263,7 +292,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <p class="text-muted">Das Fahrzeug konnte nicht geladen werden.</p>
                 <a href="/fahrzeuge" class="nav-link-text">
                     <i class="bi bi-arrow-left me-2"></i>
-                    ZurÃ¼ck zu den Fahrzeugen
+                    Zurück zu den Fahrzeugen
                 </a>
             </div>
         `;

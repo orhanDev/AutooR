@@ -46,13 +46,13 @@ function createNavbar() {
                 <div class="collapse navbar-collapse flex-grow-1" id="navbarNav">
                     <div class="side-left">
                         <ul class="navbar-nav" id="navbar-menu-container">
-                            <li class="nav-item side-item" data-submenu="mietwagen"><a class="nav-link" href="#">Mietwagen</a></li>
+                            <li class="nav-item side-item" data-submenu="fahrzeuge"><a class="nav-link" href="#">Fahrzeuge</a></li>
                             <li class="nav-item side-item" data-submenu="angebote"><a class="nav-link" href="#">Angebote</a></li>
-                            <li class="nav-item side-item" data-submenu="loyalty"><a class="nav-link" href="#">Loyalty</a></li>
                             <li class="nav-item side-item" data-submenu="selfservices"><a class="nav-link" href="#">Self‑Services</a></li>
                             <li class="nav-item side-item" data-submenu="extras"><a class="nav-link" href="#">Extras</a></li>
-                            <li class="nav-item side-item" data-submenu="business"><a class="nav-link" href="#">Business</a></li>
+                            <li class="nav-item side-item" data-submenu="business"><a class="nav-link" href="#">Geschäftskunden</a></li>
                             <li class="nav-item side-item" data-submenu="standorte"><a class="nav-link" href="#">Standorte</a></li>
+                            <li class="nav-item side-item" data-submenu="hilfe"><a class="nav-link" href="#">Hilfe & Kontakt</a></li>
                     </ul>
                     </div>
                     <div class="side-right submenu-panel" id="submenu-panel" aria-hidden="true"></div>
@@ -250,9 +250,10 @@ function initSideMenu() {
     if (!panel || !collapse) return;
 
     const contentByKey = {
-        mietwagen: `
+        
+        fahrzeuge: `
             <div class="submenu submenu-static">
-                <div class="submenu-header">Mietwagen</div>
+                <div class="submenu-header">Fahrzeuge</div>
                 <div class="vehicle-cards" id="vehicle-cards"></div>
             </div>
         `,
@@ -263,15 +264,6 @@ function initSideMenu() {
                     <li><a href="#">Mietwagen Angebote</a></li>
                     <li><a href="#">Partnerangebote</a></li>
                     <li><a href="#">Auto‑Abo</a></li>
-                </ul>
-            </div>
-        `,
-        loyalty: `
-            <div class="submenu">
-                <div class="submenu-header">Loyalty</div>
-                <ul class="submenu-list">
-                    <li><a href="#">Kostenloses Treueprogramm (Preferred)</a></li>
-                    <li><a href="#">Vorteils‑Flatrate Drive</a></li>
                 </ul>
             </div>
         `,
@@ -301,7 +293,7 @@ function initSideMenu() {
         `,
         business: `
             <div class="submenu">
-                <div class="submenu-header">Business</div>
+                <div class="submenu-header">Geschäftskunden</div>
                 <ul class="submenu-list">
                     <li><a href="#">Firmenkundenprogramme</a></li>
                     <li><a href="#">Kleine & Mittelständische Unternehmen</a></li>
@@ -333,6 +325,16 @@ function initSideMenu() {
                     <li><a href="#">Karlsruhe</a></li>
                 </ul>
             </div>
+        `,
+        hilfe: `
+            <div class="submenu">
+                <div class="submenu-header">Hilfe & Kontakt</div>
+                <ul class="submenu-list">
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Kontaktformular</a></li>
+                    <li><a href="#">Pannenhilfe</a></li>
+                </ul>
+            </div>
         `
     };
 
@@ -342,7 +344,7 @@ function initSideMenu() {
         panel.innerHTML = contentByKey[key];
         panel.setAttribute('aria-hidden', 'false');
         panel.classList.add('open');
-        if (key === 'mietwagen') {
+        if (key === 'fahrzeuge') {
             renderVehicleCards(panel.querySelector('#vehicle-cards'));
         }
     };
@@ -615,7 +617,7 @@ async function renderVehicleCards(container) {
 
     container.innerHTML = cars.map((c, idx) => {
         const title = toTitle(c);
-        const img = toImg(c) || 'images/cars/default-car.jpg';
+        const img = (typeof resolveVehicleImage === 'function' ? resolveVehicleImage(c) : (toImg(c) || '/images/cars/vw-t-roc-suv-4d-white-2022-JV.png'));
         const transmission = toTransmission(c);
         const fuel = toFuel(c);
         const seats = toSeats(c);

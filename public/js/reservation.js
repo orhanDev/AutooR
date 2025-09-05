@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const selectedVehicle = localStorage.getItem('selectedVehicle');
     
     if (!selectedCarId && !selectedVehicle) {
-        showError('Kein Fahrzeug ausgewÃ¤hlt');
+        showError('Kein Fahrzeug ausgewählt');
         return;
     }
     
@@ -80,9 +80,20 @@ document.addEventListener('DOMContentLoaded', () => {
             
             if (selectedVehicle) {
                 vehicle = JSON.parse(selectedVehicle);
+                try {
+                    // Normalize image path and persist back
+                    const normalizedImg = resolveVehicleImage(vehicle);
+                    if (normalizedImg) {
+                        vehicle.image_url = normalizedImg;
+                        localStorage.setItem('selectedVehicle', JSON.stringify(vehicle));
+                    }
+                } catch (e) { /* ignore */ }
             } else {
                 // Find vehicle in LOCAL_CARS
                 vehicle = LOCAL_CARS.find(car => car.car_id.toString() === selectedCarId);
+                try {
+                    vehicle.image_url = resolveVehicleImage(vehicle);
+                } catch (e) { /* ignore */ }
             }
             
             if (!vehicle) {
@@ -98,6 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     function displayReservationForm(vehicle) {
+
         container.innerHTML = `
             <!-- Breadcrumb -->
             <nav aria-label="breadcrumb" class="mb-4">
@@ -114,7 +126,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="col-lg-8 mb-4">
                     <div id="reservation-main-card" class="bg-white rounded-4 p-4 shadow-sm border">
                         <h2 class="fw-bold mb-4">
-                            <i class="bi bi-calendar-check text-warning me-2"></i>
+                            <span class="heading-badge me-2" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" focusable="false">
+                                    <circle cx="12" cy="12" r="8"/>
+                                    <path d="M9 12l2 2 4-4"/>
+                                </svg>
+                            </span>
                             Reservierung
                         </h2>
                         <!-- Quick search form (Porsche-like) -->
@@ -239,11 +256,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 <!-- Vehicle Summary -->
                 <div class="col-lg-4 mb-4">
                     <div class="bg-white rounded-4 p-4 shadow-sm border summary-card">
-                        <h5 class="fw-bold mb-4">Fahrzeug\u00fcbersicht</h5>
+                        <h5 class="fw-bold mb-4">Fahrzeugübersicht</h5>
                         
                         <div class="text-center mb-3">
-                            <img src="${vehicle.image_url}" alt="${vehicle.make} ${vehicle.model}" 
-                                 class="img-fluid rounded-3 mb-2" style="height: 200px; object-fit: cover;">
+                            <img src="${resolveVehicleImage(vehicle)}" alt="${vehicle.make} ${vehicle.model}" 
+                                 class="img-fluid rounded-3 mb-2" style="height: 200px; object-fit: cover;"
+                                 onerror="this.onerror=null; this.src='/images/cars/vw-t-roc-suv-4d-white-2022-JV.png';">
                             <h6 class="fw-bold">${vehicle.make} ${vehicle.model}</h6>
                         </div>
                         
@@ -259,7 +277,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         </div>
 
                         <div class="rounded-3 p-3 mb-3 summary-box" style="background:#f7f7f7;">
-                            <h6 class="fw-bold mb-2">Abholung & R\u00fcckgabe</h6>
+                            <h6 class="fw-bold mb-2">Abholung & Rückgabe</h6>
                             <div class="small">
                                 <div class="mb-2">
                                     <span class="text-muted">Abholung:</span>
@@ -267,7 +285,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                     <div><i class="bi bi-calendar me-1"></i><span id="summary-pickup-date">-</span> <span class="ms-2"><i class="bi bi-clock me-1"></i><span id="summary-pickup-time">-</span></span></div>
                                 </div>
                                 <div>
-                                    <span class="text-muted">R\u00fcckgabe:</span>
+                                    <span class="text-muted">Rückgabe:</span>
                                     <div><i class="bi bi-geo-alt me-1"></i><span id="summary-dropoff-loc">-</span></div>
                                     <div><i class="bi bi-calendar me-1"></i><span id="summary-dropoff-date">-</span> <span class="ms-2"><i class="bi bi-clock me-1"></i><span id="summary-dropoff-time">-</span></span></div>
                                 </div>
@@ -275,7 +293,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         </div>
                         
                         <div class="bg-light rounded-3 p-3 summary-box">
-                            <h6 class="fw-bold mb-2">Preis\u00fcbersicht</h6>
+                            <h6 class="fw-bold mb-2">Preisübersicht</h6>
                             <div id="price-breakdown">
                                 <div class="d-flex justify-content-between mb-2">
                                     <span id="base-price-label">Grundpreis (1 Tag)</span>
@@ -286,7 +304,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                     <span id="insurance-price">&euro;0</span>
                                 </div>
                                 <div class="d-flex justify-content-between mb-2">
-                                    <span>Zus\u00e4tzliche Leistungen</span>
+                                    <span>Zusätzliche Leistungen</span>
                                     <span id="additional-services-price">&euro;0</span>
                                 </div>
                                 <hr>
@@ -356,7 +374,10 @@ document.addEventListener('DOMContentLoaded', () => {
         // initialize flatpickr in German (ensure labels are de, not tr)
         if (window.flatpickr) {
             flatpickr.localize(flatpickr.l10ns.de);
-            const opts = { dateFormat: 'd.m.Y', minDate: 'today', locale: flatpickr.l10ns.de };
+            if (flatpickr.setDefaults) {
+                flatpickr.setDefaults({ locale: flatpickr.l10ns.de });
+            }
+            const opts = { dateFormat: 'd.m.Y', minDate: 'today', locale: flatpickr.l10ns.de, disableMobile: true, allowInput: true };
             fpPick = flatpickr(pDate, { ...opts, onChange: () => { updateDropoffDateMin(); updateTimeConstraints(); updateSubmitEnabled(); } });
             fpDrop = flatpickr(dDate, { ...opts, onChange: () => { updateTimeConstraints(); updateSubmitEnabled(); } });
         }
@@ -638,7 +659,46 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
             
-            const formData = new FormData(document.getElementById('reservation-form'));
+            const formEl = document.getElementById('reservation-form');
+            const formData = new FormData(formEl);
+
+            // Compute pricing snapshot to persist
+            const isoPickup = formData.get('pickupDate');
+            const isoDropoff = formData.get('dropoffDate');
+            const days = (() => {
+                if (!isoPickup || !isoDropoff) return 1;
+                const start = new Date(isoPickup);
+                const end = new Date(isoDropoff);
+                const d = Math.max(1, Math.ceil((end - start) / (1000 * 60 * 60 * 24)));
+                return d;
+            })();
+            const insurancePerDay = (() => {
+                const selIns = document.querySelector('.insurance-card.selected');
+                const price = selIns ? Number(selIns.getAttribute('data-price')) : 0;
+                return isNaN(price) ? 0 : price;
+            })();
+            let extrasAmount = 0;
+            document.querySelectorAll('.extra-card.selected').forEach(card => {
+                const price = Number(card.getAttribute('data-price'));
+                const unit = card.getAttribute('data-unit');
+                extrasAmount += unit === 'einmalig' ? price : price * days;
+            });
+            const basePrice = Math.floor(Number(vehicle.daily_rate || 0)) * days;
+            const insuranceAmount = insurancePerDay * days;
+            const totalPrice = basePrice + insuranceAmount + extrasAmount;
+
+            // Display strings
+            const dotted = (iso) => {
+                if (!iso) return '';
+                const m = (iso||'').match(/(\d{4})-(\d{2})-(\d{2})/);
+                if (!m) return iso;
+                return `${m[3]}.${m[2]}.${m[1]}`;
+            };
+            const pickupLocSel = document.getElementById('qr-pickup-location');
+            const dropoffLocSel = document.getElementById('qr-dropoff-location');
+            const pickupLocationName = pickupLocSel ? pickupLocSel.options[pickupLocSel.selectedIndex]?.text : '';
+            const dropoffLocationName = dropoffLocSel ? (dropoffLocSel.options[dropoffLocSel.selectedIndex]?.text || pickupLocationName) : pickupLocationName;
+
             const reservationData = {
                 carId: vehicle.car_id,
                 firstName: formData.get('firstName'),
@@ -657,8 +717,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 additionalDriver: formData.get('additionalDriver') === 'on',
                 childSeat: formData.get('childSeat') === 'on',
                 gps: formData.get('gps') === 'on',
-                insurance: formData.get('insurance') === 'on',
-                vehicle: vehicle
+                insurance: insurancePerDay > 0,
+                vehicle: vehicle,
+                // snapshot for payment page
+                days: days,
+                basePrice: basePrice,
+                insuranceAmount: insuranceAmount,
+                extrasAmount: extrasAmount,
+                totalPrice: totalPrice,
+                pickupDateDisplay: dotted(isoPickup),
+                dropoffDateDisplay: dotted(isoDropoff),
+                pickupLocationName: pickupLocationName,
+                dropoffLocationName: dropoffLocationName
             };
             
             // Store reservation data

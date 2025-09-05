@@ -89,19 +89,11 @@ document.addEventListener('DOMContentLoaded', () => {
         return best ? `/images/cars/${best}` : '';
     }
     function toImg(vehicle) {
-        // If catalog image is absolute windows path, strip to filename
-        let img = vehicle.image_url || '';
-        if (img && (/^[a-zA-Z]:\\/.test(img) || img.includes('\\'))) {
-            const base = img.split('\\').pop();
-            img = `/images/cars/${base}`;
-        }
-        if (img && !img.startsWith('/')) {
-            if (img.startsWith('images/')) img = '/' + img.replace(/^\/+/, '');
-            else img = `/images/cars/${img}`;
-        }
-        // Prefer best match from index
+        // Use shared resolver to normalize to an existing .png path
+        try { return resolveVehicleImage(vehicle); } catch (e) { /* no-op */ }
+        // Fallback simple logic
         const best = findBestImage(vehicle.make, vehicle.model);
-        return best || img;
+        return best || '/images/cars/vw-t-roc-suv-4d-white-2022-JV.png';
     }
 
 

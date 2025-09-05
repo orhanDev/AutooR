@@ -152,6 +152,12 @@ app.get('/payment', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'payment.html'));
 });
 
+// Payment success page
+app.get('/payment-success', (req, res) => {
+    console.log('Payment success route accessed');
+    res.sendFile(path.join(__dirname, 'public', 'payment-success.html'));
+});
+
 // Login page
 app.get('/views/login.html', (req, res) => {
     res.sendFile(path.join(__dirname, 'views', 'login.html'));

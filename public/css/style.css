@@ -1,4 +1,6 @@
-﻿/* Reset and Base Styles */
+﻿@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+/* Reset and Base Styles */
 * {
     box-sizing: border-box;
 }
@@ -8,7 +10,7 @@ html, body {
     padding: 0;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     line-height: 1.6;
-    color: #212529;
+    color: #242921;
     background-color: #ffffff;
     min-height: 100vh;
 }
@@ -153,6 +155,7 @@ html, body {
     border-radius: 12px;
     padding: 0.75rem 1rem;
     font-weight: 500;
+    font-size: 0.8rem;
     transition: all 0.3s ease;
     color: #000000;
 }
@@ -491,6 +494,49 @@ html, body {
     background-color: #B10000 !important;
 }
 
+/* Breadcrumb – neutral colors, completed vs current */
+.breadcrumb {
+    --bs-breadcrumb-divider: '›';
+    background: transparent;
+    padding: 0;
+    margin-bottom: 1rem;
+}
+.breadcrumb .breadcrumb-item + .breadcrumb-item::before {
+    color: #b5b5b5;
+}
+.breadcrumb .breadcrumb-item a {
+    color: #1a1a1a;
+    opacity: 0.6;
+    text-decoration: none;
+    border-bottom: 1px dashed transparent;
+    transition: color .2s ease, opacity .2s ease, border-color .2s ease;
+}
+.breadcrumb .breadcrumb-item a:hover {
+    opacity: 1;
+    color: #000000;
+    border-bottom-color: #ffc107;
+}
+.breadcrumb .breadcrumb-item.active {
+    color: #000000;
+    font-weight: 700;
+    opacity: 1;
+}
+
+.heading-badge {
+    display: inline-flex;
+    width: 32px;
+    height: 32px;
+    border: 2px solid #ffc107;
+    border-radius: 8px;
+    align-items: center;
+    justify-content: center;
+    background: #fff8e1;
+    box-shadow: 0 2px 10px rgba(0,0,0,.04);
+}
+.heading-badge svg { width: 18px; height: 18px; }
+.heading-badge svg circle { fill: none; stroke: #000; stroke-width: 2; }
+.heading-badge svg path { fill: none; stroke: #000; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
 /* Animation Classes */
 .fade-in {
     opacity: 0;
@@ -602,6 +648,8 @@ html, body {
 
 .btn-lg {
     padding: 0.75rem 2rem;
+    margin-top: 2rem;
+    margin-bottom: 1.75rem;
     font-size: 1rem;
     font-weight: 600;
     border-radius: 8px;
@@ -1928,4 +1976,23 @@ html, body {
         padding: 0 0.1rem !important;
     }
 }
+
+/* Shared summary styles (used in reservation and payment) */
+.summary-card { border: 2px solid #ffc107 !important; box-shadow: 0 8px 28px rgba(0,0,0,.06); }
+.summary-card h5 { border-bottom: 1px solid #eee; padding-bottom: .5rem; }
+.summary-box { border: 1.5px solid #ffc107 !important; }
+.total-row span:last-child { font-size: 1.25rem; color:#000; }
+#total-price { background:#fff8e1; border:2px solid #ffc107; border-radius:10px; padding: .15rem .6rem; font-weight:800; }
+
+/* Payment submit button styling */
+#pay-submit-btn { border: 2px solid #000 !important; background:#ffffff !important; color:#000 !important; transition: all .15s ease !important; }
+#pay-submit-btn:hover:not(:disabled), #pay-submit-btn:focus:not(:disabled) { background:#ffc107 !important; border-color:#ffc107 !important; color:#000 !important; }
+#pay-submit-btn:disabled { opacity:.6; cursor:not-allowed; background:#ffffff !important; border-color:#000 !important; color:#000 !important; box-shadow:none !important; }
+
+/* Highlight selected payment method */
+#method-credit-container, #method-paypal-container { transition: border-color .15s ease; border-width: 2px !important; }
+#method-credit-container.selected, #method-paypal-container.selected { border-color: #ffc107 !important; box-shadow: 0 0 0 2px rgba(255,193,7,.15); }
+
+/* Highlight filled credit card inputs */
+#credit-card-details .form-control.filled { border-color: #ffc107 !important; box-shadow: 0 0 0 1px rgba(255,193,7,.25); }
 

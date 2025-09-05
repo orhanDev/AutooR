@@ -15,6 +15,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="/css/navbar.css">
     <style>
         :root {
             --primary-red: #dc3545;
@@ -632,28 +633,7 @@
 </head>
 <body style="overflow-x: hidden;">
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-light fixed-top shadow-sm" style="background: #384456 !important;">
-        <div class="container">
-            <a class="navbar-brand fw-bold fs-3" href="/" style="text-decoration: none;">
-                <i class="bi bi-car-front me-2" style="color: #000000;"></i>
-                <span style="color: #000000; font-family: 'Explorer Print Sans Bold', sans-serif;">AuTor</span>
-            </a>
-            
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            
-                    <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav me-auto">
-                                    <li class="nav-item">
-                        <a class="nav-link-text" href="/fahrzeuge?clear=1" style="margin-left: 15px;">Autos</a>
-                    </li>
-            </ul>
-            <ul class="navbar-nav ms-auto" id="auth-buttons-container">
-            </ul>
-        </div>
-        </div>
-    </nav>
+    <div id="navbar-container"></div>
 
 
 
