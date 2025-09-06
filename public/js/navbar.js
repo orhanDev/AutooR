@@ -152,7 +152,7 @@ function updateNavbar() {
         
         // Show full menu with all options
         accountMenu.style.display = 'block';
-    } else {
+        } else {
         console.log('User is not logged in, hiding user name');
         // User is not logged in - hide user name and show simple auth menu
         const userNameSpan = userInfoContainer.querySelector('.user-name');

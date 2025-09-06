@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             Sichere Zahlung
                         </h2>
                         
-                        <form id="payment-form" novalidate>
+                        <form id="payment-form" novalidate autocomplete="off">
                             <div class="row g-3">
                                 <!-- Payment Method -->
                                 <div class="col-12">
@@ -107,17 +107,17 @@ document.addEventListener('DOMContentLoaded', () => {
                                 <div id="credit-card-details">
                                     <div class="col-12">
                                         <label class="form-label fw-medium">Karteninhaber *</label>
-                                        <input type="text" name="cardHolder" id="cardHolder" class="form-control border-2" placeholder="Max Mustermann" required>
+                                        <input type="text" name="cardHolder" id="cardHolder" class="form-control border-2" placeholder="Orhan YILMAZ" required>
                                     </div>
                                     
                                     <div class="col-12">
                                         <label class="form-label fw-medium">Kartennummer *</label>
-                                        <input type="text" name="cardNumber" id="cardNumber" class="form-control border-2" placeholder="1234 5678 9012 3456" maxlength="19" inputmode="numeric" autocomplete="cc-number" pattern="^\\d{4}\\s\\d{4}\\s\\d{4}\\s\\d{4}$" required>
+                                        <input type="text" name="cardNumber" id="cardNumber" class="form-control border-2" placeholder="1234 5678 9012 3456" maxlength="19" inputmode="numeric" pattern="^\\d{4}\\s\\d{4}\\s\\d{4}\\s\\d{4}$" required>
                                     </div>
                                     
                                     <div class="col-md-6">
                                         <label class="form-label fw-medium">Ablaufdatum *</label>
-                                        <input type="text" name="expiryDate" id="expiryDate" class="form-control border-2" placeholder="MM/YY" maxlength="5" inputmode="numeric" autocomplete="cc-exp" pattern="^(0[1-9]|1[0-2])\/\d{2}$" required>
+                                        <input type="text" name="expiryDate" id="expiryDate" class="form-control border-2" placeholder="MM/YY" maxlength="5" inputmode="numeric" pattern="^(0[1-9]|1[0-2])\/\d{2}$" required>
                                     </div>
                                     
                                     <div class="col-md-6">

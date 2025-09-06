@@ -1,5 +1,9 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     const container = document.getElementById('payment-success-container');
+    
+    // Create reservation after successful payment
+    await createReservationAfterPayment();
+    
     try {
         const reservationData = JSON.parse(localStorage.getItem('reservationData') || '{}');
         const vehicle = reservationData.vehicle || {};
@@ -53,5 +57,58 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
     }
 });
+
+// Create reservation after successful payment
+async function createReservationAfterPayment() {
+    try {
+        const reservationData = JSON.parse(localStorage.getItem('reservationData') || '{}');
+        const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+        
+        if (!reservationData.vehicle || !userData.email) {
+            console.log('Missing reservation or user data');
+            return;
+        }
+        
+        const reservationPayload = {
+            userEmail: userData.email,
+            vehicleId: reservationData.vehicle.id,
+            vehicleName: reservationData.vehicle.name,
+            vehicleImage: reservationData.vehicle.image_url,
+            pickupLocation: reservationData.pickupLocation,
+            dropoffLocation: reservationData.dropoffLocation,
+            pickupDate: reservationData.pickupDate,
+            pickupTime: reservationData.pickupTime,
+            dropoffDate: reservationData.dropoffDate,
+            dropoffTime: reservationData.dropoffTime,
+            totalPrice: reservationData.totalPrice,
+            basePrice: reservationData.basePrice,
+            insurancePrice: reservationData.insurancePrice,
+            extrasPrice: reservationData.extrasPrice,
+            insuranceType: reservationData.insuranceType,
+            extras: reservationData.extras
+        };
+        
+        const response = await fetch('/api/reservations/create', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(reservationPayload)
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            console.log('Reservation created successfully:', result.reservation);
+            // Store reservation ID for future reference
+            localStorage.setItem('lastReservationId', result.reservation.id);
+        } else {
+            console.error('Failed to create reservation:', result.message);
+        }
+        
+    } catch (error) {
+        console.error('Error creating reservation:', error);
+    }
+}
 
 

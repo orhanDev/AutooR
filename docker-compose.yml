@@ -7,8 +7,8 @@ services:
     environment:
       POSTGRES_DB: autor_db
       POSTGRES_USER: autor_user
-      POSTGRES_PASSWORD: autor_password123
-      POSTGRES_HOST_AUTH_METHOD: trust
+      POSTGRES_PASSWORD: Vekil4023.
+      POSTGRES_HOST_AUTH_METHOD: md5
     ports:
       - "5432:5432"
     volumes:
@@ -23,7 +23,7 @@ services:
     container_name: autor_pgadmin
     environment:
       PGADMIN_DEFAULT_EMAIL: admin@autor.de
-      PGADMIN_DEFAULT_PASSWORD: admin123
+      PGADMIN_DEFAULT_PASSWORD: Vekil4023.
       PGADMIN_CONFIG_SERVER_MODE: 'False'
     ports:
       - "8080:80"

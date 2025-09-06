@@ -64,12 +64,12 @@ router.post('/create', async (req, res) => {
         const reservation = await pool.query(
             `INSERT INTO reservations (
                 user_id, booking_id, vehicle_id, vehicle_name, vehicle_image,
-                pickup_location, dropoff_location, pickup_date, pickup_time,
-                dropoff_date, dropoff_time, total_price, base_price,
+                pickup_location, return_location, pickup_date, pickup_time,
+                return_date, return_time, total_price, base_price,
                 insurance_price, extras_price, insurance_type, extras,
                 status, payment_status, created_at
             ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19) 
-            RETURNING id, booking_id, vehicle_name, pickup_location, dropoff_location, 
+            RETURNING id, booking_id, vehicle_name, pickup_location, return_location, 
                      pickup_date, dropoff_date, total_price, status, payment_status, created_at`,
             [
                 userId, bookingId, vehicleId, vehicleName, vehicleImage,
@@ -117,7 +117,7 @@ router.get('/user/:userEmail', async (req, res) => {
         // Rezervasyonları getir
         const reservations = await pool.query(
             `SELECT id, booking_id, vehicle_name, vehicle_image, pickup_location, 
-                    dropoff_location, pickup_date, pickup_time, dropoff_date, dropoff_time,
+                    return_location, pickup_date, pickup_time, return_date, return_time,
                     total_price, status, payment_status, created_at
              FROM reservations 
              WHERE user_id = $1 
@@ -184,7 +184,7 @@ router.put('/:bookingId', async (req, res) => {
         const reservation = await pool.query(
             `UPDATE reservations SET
                 pickup_location = COALESCE($1, pickup_location),
-                dropoff_location = COALESCE($2, dropoff_location),
+                return_location = COALESCE($2, return_location),
                 pickup_date = COALESCE($3, pickup_date),
                 pickup_time = COALESCE($4, pickup_time),
                 dropoff_date = COALESCE($5, dropoff_date),
@@ -197,7 +197,7 @@ router.put('/:bookingId', async (req, res) => {
                 extras = COALESCE($12, extras),
                 updated_at = CURRENT_TIMESTAMP
              WHERE booking_id = $13
-             RETURNING id, booking_id, vehicle_name, pickup_location, dropoff_location,
+             RETURNING id, booking_id, vehicle_name, pickup_location, return_location,
                       pickup_date, dropoff_date, total_price, status, payment_status`,
             [
                 pickupLocation, dropoffLocation, pickupDate, pickupTime,

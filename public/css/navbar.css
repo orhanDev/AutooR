@@ -365,7 +365,7 @@ body { margin-top: 0 !important; }
     font-weight: 600;
 }
 .side-left .nav-item.active .nav-link,
-.side-left .nav-link:hover { background: #f3f4f6; border-color:#ffc107; }
+.side-left .nav-link:hover { background: #f3f4f6; border-color:#ffc10719; }
 .side-left .nav-item + .nav-item { margin-top: 0.25rem; }
 
 /* Replace underline pseudo with chevron for side-left links */
