@@ -52,30 +52,48 @@ async function loadBookings() {
             // Generate booking cards
             container.innerHTML = result.reservations.map(booking => createBookingCard(booking)).join('');
         } else {
+            // Fallback to localStorage if database is not available
+            const userBookings = JSON.parse(localStorage.getItem('userBookings') || '[]');
+            if (userBookings.length > 0) {
+                container.style.display = 'block';
+                emptyState.style.display = 'none';
+                // Generate booking cards from localStorage
+                container.innerHTML = userBookings.map(booking => createBookingCardFromStorage(booking)).join('');
+            } else {
+                container.style.display = 'none';
+                emptyState.style.display = 'block';
+                emptyState.innerHTML = `
+                    <div class="text-center py-5">
+                        <i class="bi bi-calendar-x text-muted" style="font-size: 4rem;"></i>
+                        <h4 class="mt-3 text-muted">Keine Buchungen gefunden</h4>
+                        <p class="text-muted">Sie haben noch keine Buchungen. Entdecken Sie unsere Fahrzeuge!</p>
+                        <a href="/fahrzeuge" class="btn btn-warning">
+                            <i class="bi bi-car-front me-2"></i>Fahrzeuge ansehen
+                        </a>
+                    </div>
+                `;
+            }
+        }
+    } catch (error) {
+        console.error('Error loading bookings:', error);
+        // Fallback to localStorage if database is not available
+        const userBookings = JSON.parse(localStorage.getItem('userBookings') || '[]');
+        if (userBookings.length > 0) {
+            container.style.display = 'block';
+            emptyState.style.display = 'none';
+            // Generate booking cards from localStorage
+            container.innerHTML = userBookings.map(booking => createBookingCardFromStorage(booking)).join('');
+        } else {
             container.style.display = 'none';
             emptyState.style.display = 'block';
             emptyState.innerHTML = `
                 <div class="text-center py-5">
-                    <i class="bi bi-calendar-x text-muted" style="font-size: 4rem;"></i>
-                    <h4 class="mt-3 text-muted">Keine Buchungen gefunden</h4>
-                    <p class="text-muted">Sie haben noch keine Buchungen. Entdecken Sie unsere Fahrzeuge!</p>
-                    <a href="/fahrzeuge" class="btn btn-warning">
-                        <i class="bi bi-car-front me-2"></i>Fahrzeuge ansehen
-                    </a>
+                    <i class="bi bi-exclamation-triangle text-warning" style="font-size: 4rem;"></i>
+                    <h4 class="mt-3 text-muted">Fehler beim Laden</h4>
+                    <p class="text-muted">Die Buchungen konnten nicht geladen werden. Bitte versuchen Sie es später erneut.</p>
                 </div>
             `;
         }
-    } catch (error) {
-        console.error('Error loading bookings:', error);
-        container.style.display = 'none';
-        emptyState.style.display = 'block';
-        emptyState.innerHTML = `
-            <div class="text-center py-5">
-                <i class="bi bi-exclamation-triangle text-warning" style="font-size: 4rem;"></i>
-                <h4 class="mt-3 text-muted">Fehler beim Laden</h4>
-                <p class="text-muted">Die Buchungen konnten nicht geladen werden. Bitte versuchen Sie es später erneut.</p>
-            </div>
-        `;
     }
 }
 
@@ -120,8 +138,24 @@ function getBookingsFromStorage() {
     // Check if user has any bookings in localStorage
     const userBookings = JSON.parse(localStorage.getItem('userBookings') || '[]');
     
-    // Return sample data if no user bookings exist
-    return userBookings.length > 0 ? userBookings : sampleBookings;
+    // If no user bookings exist, add a sample booking for testing
+    if (userBookings.length === 0) {
+        const sampleBooking = {
+            id: 'AUT-2024-001',
+            car: 'BMW X5',
+            pickupDate: '2024-12-15',
+            returnDate: '2024-12-20',
+            pickupLocation: 'München Flughafen',
+            returnLocation: 'München Flughafen',
+            status: 'confirmed',
+            totalPrice: 450,
+            image: '/images/cars/bmw-x5-suv-4d-grey-2023-JV.png'
+        };
+        userBookings.push(sampleBooking);
+        localStorage.setItem('userBookings', JSON.stringify(userBookings));
+    }
+    
+    return userBookings;
 }
 
 function createBookingCard(booking) {
@@ -146,7 +180,7 @@ function createBookingCard(booking) {
                 </div>
                 <div class="detail-item">
                     <i class="bi bi-calendar-x detail-icon"></i>
-                    <span class="detail-text">${formatDate(booking.dropoff_date)}</span>
+                    <span class="detail-text">${formatDate(booking.return_date)}</span>
                 </div>
                 <div class="detail-item">
                     <i class="bi bi-geo-alt detail-icon"></i>
@@ -160,6 +194,47 @@ function createBookingCard(booking) {
             
             <div class="booking-actions">
                 ${createActionButtons(booking)}
+            </div>
+        </div>
+    `;
+}
+
+function createBookingCardFromStorage(booking) {
+    const statusClass = getStatusClass(booking.status);
+    const statusText = getStatusText(booking.status);
+    
+    return `
+        <div class="booking-card">
+            <div class="booking-header">
+                <div class="booking-id">Buchung ${booking.id}</div>
+                <div class="booking-status ${statusClass}">${statusText}</div>
+            </div>
+            
+            <div class="booking-details">
+                <div class="detail-item">
+                    <i class="bi bi-car-front detail-icon"></i>
+                    <span class="detail-text">${booking.car}</span>
+                </div>
+                <div class="detail-item">
+                    <i class="bi bi-calendar-check detail-icon"></i>
+                    <span class="detail-text">${formatDate(booking.pickupDate)}</span>
+                </div>
+                <div class="detail-item">
+                    <i class="bi bi-calendar-x detail-icon"></i>
+                    <span class="detail-text">${formatDate(booking.returnDate)}</span>
+                </div>
+                <div class="detail-item">
+                    <i class="bi bi-geo-alt detail-icon"></i>
+                    <span class="detail-text">${booking.pickupLocation}</span>
+                </div>
+                <div class="detail-item">
+                    <i class="bi bi-currency-euro detail-icon"></i>
+                    <span class="detail-text">€${booking.totalPrice}</span>
+                </div>
+            </div>
+            
+            <div class="booking-actions">
+                ${createActionButtonsFromStorage(booking)}
             </div>
         </div>
     `;
@@ -186,6 +261,33 @@ function getStatusText(status) {
 }
 
 function createActionButtons(booking) {
+    let buttons = '';
+    
+    switch (booking.status) {
+        case 'active':
+            buttons = `
+                <a href="/reservation.html?id=${booking.id}" class="btn-action btn-primary">Details anzeigen</a>
+                <button onclick="modifyBooking('${booking.id}')" class="btn-action btn-outline">Ändern</button>
+                <button onclick="cancelBooking('${booking.id}')" class="btn-action btn-danger">Stornieren</button>
+            `;
+            break;
+        case 'completed':
+            buttons = `
+                <a href="/reservation.html?id=${booking.id}" class="btn-action btn-primary">Details anzeigen</a>
+                <button onclick="rebookCar('${booking.id}')" class="btn-action btn-outline">Erneut mieten</button>
+            `;
+            break;
+        case 'cancelled':
+            buttons = `
+                <a href="/reservation.html?id=${booking.id}" class="btn-action btn-outline">Details anzeigen</a>
+            `;
+            break;
+    }
+    
+    return buttons;
+}
+
+function createActionButtonsFromStorage(booking) {
     let buttons = '';
     
     switch (booking.status) {

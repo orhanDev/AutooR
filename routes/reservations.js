@@ -70,7 +70,7 @@ router.post('/create', async (req, res) => {
                 status, payment_status, created_at
             ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19) 
             RETURNING id, booking_id, vehicle_name, pickup_location, return_location, 
-                     pickup_date, dropoff_date, total_price, status, payment_status, created_at`,
+                     pickup_date, return_date, total_price, status, payment_status, created_at`,
             [
                 userId, bookingId, vehicleId, vehicleName, vehicleImage,
                 pickupLocation, dropoffLocation, pickupDate, pickupTime,
@@ -187,8 +187,8 @@ router.put('/:bookingId', async (req, res) => {
                 return_location = COALESCE($2, return_location),
                 pickup_date = COALESCE($3, pickup_date),
                 pickup_time = COALESCE($4, pickup_time),
-                dropoff_date = COALESCE($5, dropoff_date),
-                dropoff_time = COALESCE($6, dropoff_time),
+                return_date = COALESCE($5, return_date),
+                return_time = COALESCE($6, return_time),
                 total_price = COALESCE($7, total_price),
                 base_price = COALESCE($8, base_price),
                 insurance_price = COALESCE($9, insurance_price),
@@ -198,7 +198,7 @@ router.put('/:bookingId', async (req, res) => {
                 updated_at = CURRENT_TIMESTAMP
              WHERE booking_id = $13
              RETURNING id, booking_id, vehicle_name, pickup_location, return_location,
-                      pickup_date, dropoff_date, total_price, status, payment_status`,
+                      pickup_date, return_date, total_price, status, payment_status`,
             [
                 pickupLocation, dropoffLocation, pickupDate, pickupTime,
                 dropoffDate, dropoffTime, totalPrice, basePrice,

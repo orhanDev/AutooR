@@ -3,6 +3,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Fahrzeuge page loaded');
     const carsContainer = document.getElementById('cars-container');
+    console.log('carsContainer found:', carsContainer);
     const dateLocationForm = document.getElementById('date-location-form');
     const pickupLocationSelector = document.getElementById('pickup-location-selector');
     const dropoffLocationSelector = document.getElementById('dropoff-location-selector');
@@ -119,7 +120,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initialize page
     initializeDateLocationSelector();
-    loadVehicles();
+    
+    // Load cars data first, then load vehicles
+    loadCarsData().then(() => {
+        loadVehicles();
+    });
+    
     initializeFilters();
     
     if (shouldClear !== '1') {
@@ -329,8 +335,34 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('Search completed. Found vehicles:', filteredVehicles.length);
     }
 
+    // Load cars data from cars-data.js
+    function loadCarsData() {
+        return new Promise((resolve) => {
+            if (window.CAR_CATALOG && window.CAR_CATALOG.length > 0) {
+                console.log('CAR_CATALOG already loaded:', window.CAR_CATALOG.length, 'cars');
+                resolve();
+                return;
+            }
+            
+            console.log('Loading cars-data.js...');
+            const script = document.createElement('script');
+            script.src = '/js/cars-data.js';
+            script.onload = () => {
+                console.log('cars-data.js loaded, CAR_CATALOG:', window.CAR_CATALOG);
+                resolve();
+            };
+            script.onerror = () => {
+                console.warn('Failed to load cars-data.js');
+                resolve(); // Continue anyway
+            };
+            document.head.appendChild(script);
+        });
+    }
+
     // Load vehicles from central catalog
     function loadVehicles() {
+        console.log('loadVehicles called');
+        console.log('window.CAR_CATALOG:', window.CAR_CATALOG);
         const catalog = (window.CAR_CATALOG || []).map((c, idx) => ({
             car_id: (c.id !== undefined && c.id !== null) ? c.id : (idx + 1),
             make: c.brand,
@@ -361,8 +393,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Display vehicles
     function displayVehicles() {
-        console.log('Displaying vehicles...');
+        console.log('displayVehicles called');
         console.log('Filtered vehicles count:', filteredVehicles.length);
+        console.log('carsContainer:', carsContainer);
         
         if (filteredVehicles.length === 0) {
             carsContainer.innerHTML = `
@@ -764,5 +797,100 @@ document.addEventListener('DOMContentLoaded', () => {
     window.clearAllSelections = function() {
         clearAllSelections();
     };
+
+    // Apply filters
+    function applyFilters() {
+        filteredVehicles = [...allVehicles];
+        
+        // Apply type filter
+        if (vehicleTypeFilter && vehicleTypeFilter.value) {
+            filteredVehicles = filteredVehicles.filter(vehicle => 
+                vehicle.type.toLowerCase().includes(vehicleTypeFilter.value.toLowerCase())
+            );
+        }
+        
+        // Apply brand filter
+        if (vehicleModelFilter && vehicleModelFilter.value) {
+            filteredVehicles = filteredVehicles.filter(vehicle => 
+                vehicle.make.toLowerCase().includes(vehicleModelFilter.value.toLowerCase())
+            );
+        }
+        
+        // Apply fuel filter
+        if (fuelTypeFilter && fuelTypeFilter.value) {
+            filteredVehicles = filteredVehicles.filter(vehicle => 
+                vehicle.fuel_type.toLowerCase().includes(fuelTypeFilter.value.toLowerCase())
+            );
+        }
+        
+        // Apply transmission filter
+        if (transmissionFilter && transmissionFilter.value) {
+            filteredVehicles = filteredVehicles.filter(vehicle => 
+                vehicle.transmission_type.toLowerCase().includes(transmissionFilter.value.toLowerCase())
+            );
+        }
+        
+        // Apply price filter
+        if (priceFilter && priceFilter.value) {
+            const maxPrice = parseFloat(priceFilter.value);
+            filteredVehicles = filteredVehicles.filter(vehicle => 
+                vehicle.daily_rate <= maxPrice
+            );
+        }
+        
+        // Apply sorting
+        if (sortFilter && sortFilter.value) {
+            switch (sortFilter.value) {
+                case 'price-low':
+                    filteredVehicles.sort((a, b) => a.daily_rate - b.daily_rate);
+                    break;
+                case 'price-high':
+                    filteredVehicles.sort((a, b) => b.daily_rate - a.daily_rate);
+                    break;
+                case 'name':
+                    filteredVehicles.sort((a, b) => `${a.make} ${a.model}`.localeCompare(`${b.make} ${b.model}`));
+                    break;
+            }
+        }
+        
+        displayVehicles();
+    }
+
+    // Initialize filters
+    function initializeFilters() {
+        if (vehicleTypeFilter) {
+            vehicleTypeFilter.addEventListener('change', applyFilters);
+        }
+        if (vehicleModelFilter) {
+            vehicleModelFilter.addEventListener('change', applyFilters);
+        }
+        if (fuelTypeFilter) {
+            fuelTypeFilter.addEventListener('change', applyFilters);
+        }
+        if (sortFilter) {
+            sortFilter.addEventListener('change', applyFilters);
+        }
+        if (transmissionFilter) {
+            transmissionFilter.addEventListener('change', applyFilters);
+        }
+        if (priceFilter) {
+            priceFilter.addEventListener('change', applyFilters);
+        }
+    }
+
+    // Initialize the page
+    console.log('Initializing page...');
+    if (carsContainer) {
+        console.log('Clearing loading state...');
+        carsContainer.innerHTML = ''; // Clear loading state
+    }
+    
+    // Load cars data first, then load vehicles
+    loadCarsData().then(() => {
+        loadVehicles();
+    });
+    
+    initializeDateLocationSelector();
+    initializeFilters();
 });
 

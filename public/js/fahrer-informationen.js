@@ -449,7 +449,7 @@ function setupCountryDropdown() {
                      </div>
                      <div class="form-group">
                          <label for="card-holder">Karteninhaber *</label>
-                         <input type="text" id="card-holder" class="form-control" placeholder="Max Mustermann" required>
+                         <input type="text" id="card-holder" class="form-control" placeholder=""HALEN DAHA KIRALADIGIM ARABA REREVEMDE GÖRÜNMÜYRR§"" required>
                      </div>
                      <div class="payment-actions">
                          <button type="button" class="nav-link-text" onclick="closeCreditCardForm()">Abbrechen</button>

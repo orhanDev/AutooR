@@ -74,8 +74,20 @@ function openGoogleOAuthPopup() {
             popup.close();
             window.removeEventListener('message', messageListener);
             
-            // Redirect to homepage
-            window.location.href = '/';
+            // Check if there's a pending reservation
+            const pendingReservation = localStorage.getItem('pendingReservationData');
+            if (pendingReservation) {
+                console.log('Pending reservation found, moving to payment');
+                // Move pending reservation to active reservation
+                localStorage.setItem('reservationData', pendingReservation);
+                localStorage.removeItem('pendingReservationData');
+                
+                // Redirect to payment page
+                window.location.href = '/payment';
+            } else {
+                // Redirect to homepage
+                window.location.href = '/';
+            }
             
         } else if (event.data.type === 'GOOGLE_OAUTH_CANCEL') {
             console.log('Google OAuth cancelled');

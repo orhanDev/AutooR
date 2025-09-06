@@ -46,7 +46,7 @@ function createNavbar() {
                 <div class="collapse navbar-collapse flex-grow-1" id="navbarNav">
                     <div class="side-left">
                         <ul class="navbar-nav" id="navbar-menu-container">
-                            <li class="nav-item side-item" data-submenu="fahrzeuge"><a class="nav-link" href="#">Fahrzeuge</a></li>
+                            <li class="nav-item side-item" data-submenu="fahrzeuge"><a class="nav-link" href="/fahrzeuge">Fahrzeuge</a></li>
                             <li class="nav-item side-item" data-submenu="angebote"><a class="nav-link" href="#">Angebote</a></li>
                             <li class="nav-item side-item" data-submenu="selfservices"><a class="nav-link" href="#">Self‑Services</a></li>
                             <li class="nav-item side-item" data-submenu="extras"><a class="nav-link" href="#">Extras</a></li>
@@ -408,13 +408,35 @@ async function renderVehicleCards(container) {
     container.innerHTML = '<div style="padding:0.5rem;color:#6b7280;">Laden...</div>';
 
     let cars = [];
-    try {
-        const res = await fetch('/api/cars');
-        if (res.ok) {
-            cars = await res.json();
+    
+    // First try to use CAR_CATALOG if already loaded
+    if (Array.isArray(window.CAR_CATALOG) && window.CAR_CATALOG.length > 0) {
+        console.log('Using existing CAR_CATALOG:', window.CAR_CATALOG.length, 'cars');
+        cars = window.CAR_CATALOG.map(x => ({
+            id: x.id,
+            make: x.brand,
+            model: x.model || x.name,
+            image: x.image,
+            transmission_type: x.transmission || x.specs?.transmission,
+            fuel_type: x.fuel || x.specs?.fuel,
+            seating_capacity: x.seats || x.specs?.seats,
+            baggage_large: x.bags,
+            baggage_small: x.handBags,
+            doors: x.doors,
+            daily_rate: x.price
+        }));
+    }
+    
+    // If still empty, try API
+    if (!cars || cars.length === 0) {
+        try {
+            const res = await fetch('/api/cars');
+            if (res.ok) {
+                cars = await res.json();
+            }
+        } catch (e) {
+            console.warn('Konnte Autos nicht laden, fallback wird benutzt.', e);
         }
-    } catch (e) {
-        console.warn('Konnte Autos nicht laden, fallback wird benutzt.', e);
     }
 
     // If still empty, try the search API (returns only available cars)
@@ -445,6 +467,7 @@ async function renderVehicleCards(container) {
     if (!Array.isArray(cars) || cars.length === 0) {
         // as a final fallback, load static local data file if available
         try {
+            console.log('Loading cars-data.js...');
             await new Promise((resolve, reject) => {
                 const s = document.createElement('script');
                 s.src = '/js/cars-data.js';
@@ -452,7 +475,10 @@ async function renderVehicleCards(container) {
                 s.onerror = resolve; // continue even if fails
                 document.head.appendChild(s);
             });
-            if (Array.isArray(window.CAR_CATALOG)) {
+            console.log('cars-data.js loaded, CAR_CATALOG:', window.CAR_CATALOG);
+            
+            if (Array.isArray(window.CAR_CATALOG) && window.CAR_CATALOG.length > 0) {
+                console.log('Using CAR_CATALOG from cars-data.js:', window.CAR_CATALOG.length, 'cars');
                 cars = window.CAR_CATALOG.map(x => ({
                     id: x.id,
                     make: x.brand,
@@ -467,6 +493,7 @@ async function renderVehicleCards(container) {
                     daily_rate: x.price
                 }));
             } else if (Array.isArray(window.CARS_DATA)) {
+                console.log('Using CARS_DATA:', window.CARS_DATA.length, 'cars');
                 cars = window.CARS_DATA.map(x => ({
                     make: x.brand,
                     model: x.name,
@@ -643,6 +670,7 @@ async function renderVehicleCards(container) {
     // Sort by make/model for consistent order
     cars.sort((a, b) => (toTitle(a)).localeCompare(toTitle(b)));
 
+    console.log('Rendering', cars.length, 'vehicle cards');
     container.innerHTML = cars.map((c, idx) => {
         const title = toTitle(c);
         const img = (typeof resolveVehicleImage === 'function' ? resolveVehicleImage(c) : (toImg(c) || '/images/cars/vw-t-roc-suv-4d-white-2022-JV.png'));

@@ -507,10 +507,16 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
         `;
         
-        // Set minimum dates
-        const today = new Date().toISOString().split('T')[0];
-        document.getElementById('pickupDate').min = today;
-        document.getElementById('dropoffDate').min = today;
+        // Set minimum dates - today is the earliest possible date
+        const today = new Date();
+        today.setHours(0, 0, 0, 0); // Start of today
+        const todayISO = today.toISOString().split('T')[0];
+        
+        // Set minimum dates for hidden inputs
+        const pickupDateInput = document.getElementById('pickupDate');
+        const dropoffDateInput = document.getElementById('dropoffDate');
+        if (pickupDateInput) pickupDateInput.min = todayISO;
+        if (dropoffDateInput) dropoffDateInput.min = todayISO;
         
         // Add event listeners
         setupEventListeners(vehicle);
@@ -557,15 +563,23 @@ document.addEventListener('DOMContentLoaded', () => {
         const fPickupTime = document.getElementById('pickupTime');
         const fDropoffTime = document.getElementById('dropoffTime');
 
-        const min = new Date().toISOString().split('T')[0];
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
         let fpPick = null, fpDrop = null;
+        
         // initialize flatpickr in German (ensure labels are de, not tr)
         if (window.flatpickr) {
             flatpickr.localize(flatpickr.l10ns.de);
             if (flatpickr.setDefaults) {
                 flatpickr.setDefaults({ locale: flatpickr.l10ns.de });
             }
-            const opts = { dateFormat: 'd.m.Y', minDate: 'today', locale: flatpickr.l10ns.de, disableMobile: true, allowInput: true };
+            const opts = { 
+                dateFormat: 'd.m.Y', 
+                minDate: today, // Today is the earliest possible date
+                locale: flatpickr.l10ns.de, 
+                disableMobile: true, 
+                allowInput: true 
+            };
             fpPick = flatpickr(pDate, { ...opts, onChange: () => { updateDropoffDateMin(); updateTimeConstraints(); updateSubmitEnabled(); } });
             fpDrop = flatpickr(dDate, { ...opts, onChange: () => { updateTimeConstraints(); updateSubmitEnabled(); } });
         }
@@ -626,11 +640,39 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         function updateTimeConstraints() {
-            // Disable Rückgabezeiten earlier than Abholzeit + 60 minutes when same day
+            // Disable past times for today and future times based on pickup time
             if (!pDate || !dDate || !pTime || !dTime) return;
+            
+            const now = new Date();
+            const currentHour = now.getHours();
+            const currentMinute = now.getMinutes();
+            const currentTimeInMinutes = currentHour * 60 + currentMinute;
+            
+            const pickupDate = parseDotted(pDate.value);
+            const isToday = pickupDate && pickupDate.toDateString() === now.toDateString();
+            
+            // Update pickup time options - disable past times if today is selected
+            Array.from(pTime.options).forEach(opt => {
+                if (!opt.value) { opt.disabled = false; return; }
+                const timeInMinutes = toMinutes(opt.value);
+                const isPastTime = isToday && timeInMinutes !== null && timeInMinutes <= currentTimeInMinutes;
+                opt.disabled = isPastTime;
+                opt.classList.toggle('text-muted', isPastTime);
+            });
+            
+            // If current pickup time is in the past, clear it
+            if (pTime.value && isToday) {
+                const pickupTimeInMinutes = toMinutes(pTime.value);
+                if (pickupTimeInMinutes !== null && pickupTimeInMinutes <= currentTimeInMinutes) {
+                    pTime.value = '';
+                }
+            }
+            
+            // Disable Rückgabezeiten earlier than Abholzeit + 60 minutes when same day
             const sameDay = (pDate.value && dDate.value && pDate.value === dDate.value);
             const minMinutes = sameDay ? (toMinutes(pTime.value||'') ?? null) : null;
             const required = (minMinutes !== null) ? minMinutes + 60 : null;
+            
             Array.from(dTime.options).forEach(opt => {
                 if (!opt.value) { opt.disabled = false; return; }
                 if (required === null) { opt.disabled = false; opt.classList.remove('text-muted'); return; }
@@ -639,6 +681,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 opt.disabled = dis;
                 opt.classList.toggle('text-muted', dis);
             });
+            
             // If current selection violates constraint, clear it
             if (dTime.value) {
                 const cur = toMinutes(dTime.value);
@@ -847,6 +890,93 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
             
+            // Check if user is logged in
+            const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+            if (!userData.email) {
+                // User is not logged in - save reservation data and redirect to login
+                console.log('User not logged in, saving reservation data and redirecting to login');
+                
+                const formEl = document.getElementById('reservation-form');
+                const formData = new FormData(formEl);
+
+                // Compute pricing snapshot to persist
+                const isoPickup = formData.get('pickupDate');
+                const isoDropoff = formData.get('dropoffDate');
+                const days = (() => {
+                    if (!isoPickup || !isoDropoff) return 1;
+                    const start = new Date(isoPickup);
+                    const end = new Date(isoDropoff);
+                    const d = Math.max(1, Math.ceil((end - start) / (1000 * 60 * 60 * 24)));
+                    return d;
+                })();
+                const insurancePerDay = (() => {
+                    const selIns = document.querySelector('.insurance-card.selected');
+                    const price = selIns ? Number(selIns.getAttribute('data-price')) : 0;
+                    return isNaN(price) ? 0 : price;
+                })();
+                let extrasAmount = 0;
+                document.querySelectorAll('.extra-card.selected').forEach(card => {
+                    const price = Number(card.getAttribute('data-price'));
+                    const unit = card.getAttribute('data-unit');
+                    extrasAmount += unit === 'einmalig' ? price : price * days;
+                });
+                const basePrice = Math.floor(Number(vehicle.daily_rate || 0)) * days;
+                const insuranceAmount = insurancePerDay * days;
+                const totalPrice = basePrice + insuranceAmount + extrasAmount;
+
+                // Display strings
+                const dotted = (iso) => {
+                    if (!iso) return '';
+                    const m = (iso||'').match(/(\d{4})-(\d{2})-(\d{2})/);
+                    if (!m) return iso;
+                    return `${m[3]}.${m[2]}.${m[1]}`;
+                };
+                const pickupLocSel = document.getElementById('qr-pickup-location');
+                const dropoffLocSel = document.getElementById('qr-dropoff-location');
+                const pickupLocationName = pickupLocSel ? pickupLocSel.options[pickupLocSel.selectedIndex]?.text : '';
+                const dropoffLocationName = dropoffLocSel ? (dropoffLocSel.options[dropoffLocSel.selectedIndex]?.text || pickupLocationName) : pickupLocationName;
+
+                const reservationData = {
+                    carId: vehicle.car_id,
+                    firstName: formData.get('firstName'),
+                    lastName: formData.get('lastName'),
+                    email: formData.get('email'),
+                    phone: formData.get('phone'),
+                    address: formData.get('address'),
+                    postalCode: formData.get('postalCode'),
+                    city: formData.get('city'),
+                    pickupLocation: formData.get('pickupLocation'),
+                    dropoffLocation: formData.get('dropoffLocation'),
+                    pickupDate: formData.get('pickupDate'),
+                    dropoffDate: formData.get('dropoffDate'),
+                    pickupTime: formData.get('pickupTime'),
+                    dropoffTime: formData.get('dropoffTime'),
+                    additionalDriver: formData.get('additionalDriver') === 'on',
+                    childSeat: formData.get('childSeat') === 'on',
+                    gps: formData.get('gps') === 'on',
+                    insurance: insurancePerDay > 0,
+                    vehicle: vehicle,
+                    // snapshot for payment page
+                    days: days,
+                    basePrice: basePrice,
+                    insuranceAmount: insuranceAmount,
+                    extrasAmount: extrasAmount,
+                    totalPrice: totalPrice,
+                    pickupDateDisplay: dotted(isoPickup),
+                    dropoffDateDisplay: dotted(isoDropoff),
+                    pickupLocationName: pickupLocationName,
+                    dropoffLocationName: dropoffLocationName
+                };
+                
+                // Store reservation data temporarily
+                localStorage.setItem('pendingReservationData', JSON.stringify(reservationData));
+                
+                // Redirect to login page
+                window.location.href = '/register';
+                return;
+            }
+            
+            // User is logged in - proceed with normal flow
             const formEl = document.getElementById('reservation-form');
             const formData = new FormData(formEl);
 
@@ -919,15 +1049,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 dropoffLocationName: dropoffLocationName
             };
             
-                    // Store reservation data
-        localStorage.setItem('reservationData', JSON.stringify(reservationData));
-        
-        // Save to database if user is logged in
-        const userData = JSON.parse(localStorage.getItem('userData') || '{}');
-        if (userData.email) {
-            saveReservationToDatabase(reservationData, userData.email);
-        }
+            // Store reservation data
+            localStorage.setItem('reservationData', JSON.stringify(reservationData));
             
+            // Save to database if user is logged in
+            if (userData.email) {
+                saveReservationToDatabase(reservationData, userData.email);
+            }
+                
             // Redirect to payment
             window.location.href = '/payment';
             
