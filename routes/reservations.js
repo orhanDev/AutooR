@@ -114,7 +114,7 @@ router.get('/user/:userEmail', async (req, res) => {
 
         const userId = user.rows[0].id;
 
-        // Rezervasyonları getir
+        // Rezervasyonları getir (tüm rezervasyonlar)
         const reservations = await pool.query(
             `SELECT id, booking_id, vehicle_name, vehicle_image, pickup_location, 
                     return_location, pickup_date, pickup_time, return_date, return_time,
@@ -256,6 +256,49 @@ router.put('/:bookingId/cancel', async (req, res) => {
         });
     } catch (error) {
         console.error('Rezervasyon iptal hatası:', error);
+        res.status(500).json({ 
+            success: false, 
+            message: 'Sunucu hatası' 
+        });
+    }
+});
+
+// Payment status update
+router.put('/:bookingId/payment-status', async (req, res) => {
+    try {
+        const { bookingId } = req.params;
+        const { paymentStatus } = req.body;
+        
+        if (!paymentStatus || !['pending', 'completed', 'failed'].includes(paymentStatus)) {
+            return res.status(400).json({ 
+                success: false, 
+                message: 'Geçersiz ödeme durumu' 
+            });
+        }
+        
+        const reservation = await pool.query(
+            `UPDATE reservations SET
+                payment_status = $1,
+                updated_at = CURRENT_TIMESTAMP
+             WHERE booking_id = $2
+             RETURNING id, booking_id, vehicle_name, payment_status`,
+            [paymentStatus, bookingId]
+        );
+
+        if (reservation.rows.length === 0) {
+            return res.status(404).json({ 
+                success: false, 
+                message: 'Rezervasyon bulunamadı' 
+            });
+        }
+
+        res.json({
+            success: true,
+            message: 'Ödeme durumu başarıyla güncellendi',
+            reservation: reservation.rows[0]
+        });
+    } catch (error) {
+        console.error('Ödeme durumu güncelleme hatası:', error);
         res.status(500).json({ 
             success: false, 
             message: 'Sunucu hatası' 

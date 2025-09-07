@@ -42,24 +42,24 @@ function createNavbar() {
                     <span class="navbar-toggler-icon"></span>
                     <span class="menu-label ms-2">Menü</span>
                 </button>
-                <a class="brand-center" href="/">AuTor</a>
+                <a class="brand-center" href="/">AutoR</a>
                 <div class="collapse navbar-collapse flex-grow-1" id="navbarNav">
                     <div class="side-left">
                         <ul class="navbar-nav" id="navbar-menu-container">
                             <li class="nav-item side-item" data-submenu="fahrzeuge"><a class="nav-link" href="/fahrzeuge">Fahrzeuge</a></li>
-                            <li class="nav-item side-item" data-submenu="angebote"><a class="nav-link" href="#">Angebote</a></li>
-                            <li class="nav-item side-item" data-submenu="selfservices"><a class="nav-link" href="#">Self‑Services</a></li>
-                            <li class="nav-item side-item" data-submenu="extras"><a class="nav-link" href="#">Extras</a></li>
-                            <li class="nav-item side-item" data-submenu="business"><a class="nav-link" href="#">Geschäftskunden</a></li>
-                            <li class="nav-item side-item" data-submenu="standorte"><a class="nav-link" href="#">Standorte</a></li>
-                            <li class="nav-item side-item" data-submenu="hilfe"><a class="nav-link" href="#">Hilfe & Kontakt</a></li>
+                            <li class="nav-item side-item"><a class="nav-link" href="/angebote">Angebote</a></li>
+                            <li class="nav-item side-item"><a class="nav-link" href="/self-services">Self‑Services</a></li>
+                            <li class="nav-item side-item"><a class="nav-link" href="/extras-versicherung">Extras</a></li>
+                            <li class="nav-item side-item"><a class="nav-link" href="/geschaeftskunden">Geschäftskunden</a></li>
+                            <li class="nav-item side-item"><a class="nav-link" href="/standorte">Standorte</a></li>
+                            <li class="nav-item side-item"><a class="nav-link" href="/hilfe">Hilfe & Kontakt</a></li>
                     </ul>
                     </div>
                     <div class="side-right submenu-panel" id="submenu-panel" aria-hidden="true"></div>
                 </div>
                 <div class="account ms-auto position-relative">
                     <div class="d-flex align-items-center" id="user-info-container">
-                        <span class="user-name me-3" style="color: black; font-weight: 500;"></span>
+                        <span class="user-name me-3" style="color: #ffc107; font-weight: 500;"></span>
                         <button class="btn account-btn d-flex align-items-center" id="account-btn" aria-expanded="false" aria-controls="account-menu" aria-label="Account">
                             <i class="bi bi-person" style="font-size: 1.5rem;"></i>
                         </button>
@@ -334,23 +334,23 @@ function initSideMenu() {
             <div class="submenu submenu-static">
                 <div class="submenu-header">Standorte (Deutschland)</div>
                 <ul class="submenu-list columns">
-                    <li><a href="#">Berlin</a></li>
-                    <li><a href="#">München</a></li>
-                    <li><a href="#">Hamburg</a></li>
-                    <li><a href="#">Köln</a></li>
-                    <li><a href="#">Frankfurt</a></li>
-                    <li><a href="#">Stuttgart</a></li>
-                    <li><a href="#">Düsseldorf</a></li>
-                    <li><a href="#">Leipzig</a></li>
-                    <li><a href="#">Hannover</a></li>
-                    <li><a href="#">Nürnberg</a></li>
-                    <li><a href="#">Bremen</a></li>
-                    <li><a href="#">Dresden</a></li>
-                    <li><a href="#">Dortmund</a></li>
-                    <li><a href="#">Essen</a></li>
-                    <li><a href="#">Bonn</a></li>
-                    <li><a href="#">Mannheim</a></li>
-                    <li><a href="#">Karlsruhe</a></li>
+                    <li><a href="#">Köln Zentrum</a></li>
+                    <li><a href="#">München Zentrum</a></li>
+                    <li><a href="#">Hamburg Zentrum</a></li>
+                    <li><a href="#">Köln Zentrum</a></li>
+                    <li><a href="#">Frankfurt am Main Zentrum</a></li>
+                    <li><a href="#">Stuttgart Zentrum</a></li>
+                    <li><a href="#">Düsseldorf Zentrum</a></li>
+                    <li><a href="#">Leipzig Zentrum</a></li>
+                    <li><a href="#">Hannover Zentrum</a></li>
+                    <li><a href="#">Nürnberg Zentrum</a></li>
+                    <li><a href="#">Bremen Zentrum</a></li>
+                    <li><a href="#">Dresden Zentrum</a></li>
+                    <li><a href="#">Dortmund Zentrum</a></li>
+                    <li><a href="#">Essen Zentrum</a></li>
+                    <li><a href="#">Bonn Zentrum</a></li>
+                    <li><a href="#">Mannheim Zentrum</a></li>
+                    <li><a href="#">Karlsruhe Zentrum</a></li>
                 </ul>
             </div>
         `,

@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Standorte - AutOr</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/navbar.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #ffffff;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        .main-container {
+            margin-top: 80px;
+            padding: 2rem;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-subtitle {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 2rem;
+        }
+
+        .search-section {
+            background: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            border-radius: 0.5rem;
+            padding: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .search-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .search-form {
+            display: flex;
+            gap: 1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 0.75rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 0.25rem;
+            font-size: 1rem;
+        }
+
+        .search-btn {
+            background: #ffc107;
+            color: #333;
+            border: 1px solid #ffc107;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.25rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .search-btn:hover {
+            background: #e0a800;
+            border-color: #e0a800;
+        }
+
+        .locations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .location-card {
+            background: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 0.5rem;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .location-card:hover {
+            border-color: #ffc107;
+            box-shadow: 0 4px 12px rgba(255, 193, 7, 0.1);
+        }
+
+        .location-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .location-icon {
+            font-size: 2rem;
+            color: #ffc107;
+            margin-right: 1rem;
+        }
+
+        .location-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #333;
+            margin: 0;
+        }
+
+        .location-address {
+            color: #666;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .location-details {
+            margin-bottom: 1.5rem;
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            color: #666;
+        }
+
+        .detail-icon {
+            color: #ffc107;
+            margin-right: 0.5rem;
+            width: 16px;
+        }
+
+        .location-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: #ffc107;
+            color: #333;
+            border: 1px solid #ffc107;
+            padding: 0.5rem 1rem;
+            border-radius: 0.25rem;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary:hover {
+            background: #e0a800;
+            border-color: #e0a800;
+            color: #333;
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: #333;
+            border: 1px solid #e0e0e0;
+            padding: 0.5rem 1rem;
+            border-radius: 0.25rem;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            font-size: 0.9rem;
+        }
+
+        .btn-outline:hover {
+            background: #f8f9fa;
+            border-color: #ffc107;
+        }
+
+        .map-section {
+            background: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            border-radius: 0.5rem;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        .map-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .map-placeholder {
+            background: #e9ecef;
+            border: 2px dashed #adb5bd;
+            border-radius: 0.5rem;
+            padding: 3rem;
+            color: #6c757d;
+            font-size: 1.1rem;
+        }
+
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 1rem;
+            }
+            
+            .page-title {
+                font-size: 2rem;
+            }
+            
+            .search-form {
+                flex-direction: column;
+            }
+            
+            .locations-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .location-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="navbar-container"></div>
+    
+    <div class="main-container">
+        <div class="page-header">
+            <h1 class="page-title">Standorte</h1>
+            <p class="page-subtitle">Finden Sie unsere Autovermietungsstandorte in Ihrer Nähe</p>
+        </div>
+
+        <div class="search-section">
+            <h3 class="search-title">Standort suchen</h3>
+            <form class="search-form">
+                <input type="text" class="search-input" placeholder="Stadt, PLZ oder Adresse eingeben...">
+                <button type="submit" class="search-btn">Suchen</button>
+            </form>
+        </div>
+
+        <div class="locations-grid">
+            <div class="location-card" id="berlin">
+                <div class="location-header">
+                    <i class="bi bi-geo-alt location-icon"></i>
+                    <h3 class="location-title">Berlin Zentrum</h3>
+                </div>
+                <div class="location-address">
+                    Europaplatz 1<br>
+                    10557 Berlin
+                </div>
+                <div class="location-details">
+                    <div class="detail-item">
+                        <i class="bi bi-clock detail-icon"></i>
+                        <span>Mo-So: 05:30 - 23:30</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="bi bi-telephone detail-icon"></i>
+                        <span>+49 30 123 456 78</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="bi bi-car-front detail-icon"></i>
+                        <span>120+ Fahrzeuge verfügbar</span>
+                    </div>
+                </div>
+                 <div class="location-actions">
+                     <a href="#" class="btn-primary">Fahrzeug mieten</a>
+                     <a href="#" class="btn-outline" onclick="showLocationOnMap('berlin')">Route anzeigen</a>
+                 </div>
+             </div>
+
+             <div class="location-card" id="hamburg">
+                <div class="location-header">
+                    <i class="bi bi-geo-alt location-icon"></i>
+                    <h3 class="location-title">Hamburg Zentrum</h3>
+                </div>
+                <div class="location-address">
+                    Mönckebergstraße 1<br>
+                    20095 Hamburg
+                </div>
+                <div class="location-details">
+                    <div class="detail-item">
+                        <i class="bi bi-clock detail-icon"></i>
+                        <span>Mo-Fr: 07:00 - 20:00, Sa: 08:00 - 18:00</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="bi bi-telephone detail-icon"></i>
+                        <span>+49 40 987 654 32</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="bi bi-car-front detail-icon"></i>
+                        <span>80+ Fahrzeuge verfügbar</span>
+                    </div>
+                </div>
+                 <div class="location-actions">
+                     <a href="#" class="btn-primary">Fahrzeug mieten</a>
+                     <a href="#" class="btn-outline" onclick="showLocationOnMap('hamburg')">Route anzeigen</a>
+                 </div>
+             </div>
+
+             <div class="location-card" id="münchen">
+                <div class="location-header">
+                    <i class="bi bi-geo-alt location-icon"></i>
+                    <h3 class="location-title">München Zentrum</h3>
+                </div>
+                <div class="location-address">
+                    Marienplatz 1<br>
+                    80331 München
+                </div>
+                <div class="location-details">
+                    <div class="detail-item">
+                        <i class="bi bi-clock detail-icon"></i>
+                        <span>Mo-So: 06:00 - 23:00</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="bi bi-telephone detail-icon"></i>
+                        <span>+49 89 975 123 45</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="bi bi-car-front detail-icon"></i>
+                        <span>150+ Fahrzeuge verfügbar</span>
+                    </div>
+                </div>
+                 <div class="location-actions">
+                     <a href="#" class="btn-primary">Fahrzeug mieten</a>
+                     <a href="#" class="btn-outline" onclick="showLocationOnMap('münchen')">Route anzeigen</a>
+                 </div>
+             </div>
+
+             <div class="location-card" id="köln">
+                <div class="location-header">
+                    <i class="bi bi-geo-alt location-icon"></i>
+                    <h3 class="location-title">Köln Zentrum</h3>
+                </div>
+                <div class="location-address">
+                    Domplatz 1<br>
+                    50667 Köln
+                </div>
+                <div class="location-details">
+                    <div class="detail-item">
+                        <i class="bi bi-clock detail-icon"></i>
+                        <span>Mo-So: 06:00 - 22:00</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="bi bi-telephone detail-icon"></i>
+                        <span>+49 221 777 888 99</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="bi bi-car-front detail-icon"></i>
+                        <span>90+ Fahrzeuge verfügbar</span>
+                    </div>
+                </div>
+                 <div class="location-actions">
+                     <a href="#" class="btn-primary">Fahrzeug mieten</a>
+                     <a href="#" class="btn-outline" onclick="showLocationOnMap('köln')">Route anzeigen</a>
+                 </div>
+             </div>
+
+             <div class="location-card" id="frankfurt">
+                <div class="location-header">
+                    <i class="bi bi-geo-alt location-icon"></i>
+                    <h3 class="location-title">Frankfurt am Main Zentrum</h3>
+                </div>
+                <div class="location-address">
+                    Römerberg 1<br>
+                    60311 Frankfurt am Main
+                </div>
+                <div class="location-details">
+                    <div class="detail-item">
+                        <i class="bi bi-clock detail-icon"></i>
+                        <span>Mo-So: 06:00 - 23:00</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="bi bi-telephone detail-icon"></i>
+                        <span>+49 69 555 123 45</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="bi bi-car-front detail-icon"></i>
+                        <span>200+ Fahrzeuge verfügbar</span>
+                    </div>
+                </div>
+                 <div class="location-actions">
+                     <a href="#" class="btn-primary">Fahrzeug mieten</a>
+                     <a href="#" class="btn-outline" onclick="showLocationOnMap('frankfurt')">Route anzeigen</a>
+                 </div>
+             </div>
+
+             <div class="location-card" id="stuttgart">
+                <div class="location-header">
+                    <i class="bi bi-geo-alt location-icon"></i>
+                    <h3 class="location-title">Stuttgart Zentrum</h3>
+                </div>
+                <div class="location-address">
+                    Königstraße 1<br>
+                    70173 Stuttgart
+                </div>
+                <div class="location-details">
+                    <div class="detail-item">
+                        <i class="bi bi-clock detail-icon"></i>
+                        <span>Mo-Fr: 07:00 - 19:00, Sa: 08:00 - 16:00</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="bi bi-telephone detail-icon"></i>
+                        <span>+49 711 333 444 55</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="bi bi-car-front detail-icon"></i>
+                        <span>70+ Fahrzeuge verfügbar</span>
+                    </div>
+                </div>
+                 <div class="location-actions">
+                     <a href="#" class="btn-primary">Fahrzeug mieten</a>
+                     <a href="#" class="btn-outline" onclick="showLocationOnMap('stuttgart')">Route anzeigen</a>
+                 </div>
+             </div>
+         </div>
+
+        <div class="map-section">
+            <h3 class="map-title">Alle Standorte auf der Karte</h3>
+            <div id="map" style="height: 500px; width: 100%; border-radius: 0.5rem; border: 1px solid #e0e0e0;"></div>
+            <p style="text-align: center; color: #666; margin-top: 1rem; font-size: 0.9rem;">
+                <i class="bi bi-info-circle" style="color: #ffc107;"></i>
+                Klicken Sie auf die Marker für Standortdetails
+            </p>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/navbar.js"></script>
+    <script>
+        // Standorte koordinaten
+        const standorte = [
+            {
+                name: "Berlin Zentrum",
+                address: "Europaplatz 1, 10557 Berlin",
+                lat: 52.5256,
+                lng: 13.3695,
+                phone: "+49 30 123 456 78",
+                vehicles: "120+ Fahrzeuge verfügbar"
+            },
+            {
+                name: "Hamburg Zentrum",
+                address: "Mönckebergstraße 1, 20095 Hamburg",
+                lat: 53.5511,
+                lng: 9.9937,
+                phone: "+49 40 987 654 32",
+                vehicles: "80+ Fahrzeuge verfügbar"
+            },
+            {
+                name: "München Zentrum",
+                address: "Marienplatz 1, 80331 München",
+                lat: 48.1374,
+                lng: 11.5755,
+                phone: "+49 89 975 123 45",
+                vehicles: "150+ Fahrzeuge verfügbar"
+            },
+            {
+                name: "Köln Zentrum",
+                address: "Domplatz 1, 50667 Köln",
+                lat: 50.9375,
+                lng: 6.9603,
+                phone: "+49 221 777 888 99",
+                vehicles: "90+ Fahrzeuge verfügbar"
+            },
+            {
+                name: "Frankfurt am Main Zentrum",
+                address: "Römerberg 1, 60311 Frankfurt am Main",
+                lat: 50.1109,
+                lng: 8.6821,
+                phone: "+49 69 555 123 45",
+                vehicles: "200+ Fahrzeuge verfügbar"
+            },
+            {
+                name: "Stuttgart Zentrum",
+                address: "Königstraße 1, 70173 Stuttgart",
+                lat: 48.7758,
+                lng: 9.1829,
+                phone: "+49 711 333 444 55",
+                vehicles: "70+ Fahrzeuge verfügbar"
+            }
+        ];
+
+
+        function showFallbackMap() {
+            const mapDiv = document.getElementById('map');
+            mapDiv.innerHTML = `
+                <div style="height: 500px; width: 100%; background: #f8f9fa; display: flex; align-items: center; justify-content: center; flex-direction: column; border-radius: 0.5rem;">
+                    <div style="text-align: center; color: #666;">
+                        <i class="bi bi-map" style="font-size: 3rem; color: #ffc107; margin-bottom: 1rem;"></i>
+                        <h4 style="color: #333; margin-bottom: 0.5rem;">Interaktive Karte</h4>
+                        <p style="margin-bottom: 1rem;">Alle <span style="color: #ffc107;">AutOr</span>-Standorte in Deutschland</p>
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; max-width: 600px; margin: 0 auto;">
+                            <div style="padding: 0.5rem; background: white; border: 1px solid #e0e0e0; border-radius: 0.25rem; cursor: pointer;" onclick="showLocationOnMap('berlin')">
+                                <strong style="color: #ffc107;">📍 Berlin</strong><br>
+                                <small>Zentrum</small>
+                            </div>
+                            <div style="padding: 0.5rem; background: white; border: 1px solid #e0e0e0; border-radius: 0.25rem; cursor: pointer;" onclick="showLocationOnMap('hamburg')">
+                                <strong style="color: #ffc107;">📍 Hamburg</strong><br>
+                                <small>Zentrum</small>
+                            </div>
+                            <div style="padding: 0.5rem; background: white; border: 1px solid #e0e0e0; border-radius: 0.25rem; cursor: pointer;" onclick="showLocationOnMap('münchen')">
+                                <strong style="color: #ffc107;">📍 München</strong><br>
+                                <small>Zentrum</small>
+                            </div>
+                            <div style="padding: 0.5rem; background: white; border: 1px solid #e0e0e0; border-radius: 0.25rem; cursor: pointer;" onclick="showLocationOnMap('köln')">
+                                <strong style="color: #ffc107;">📍 Köln</strong><br>
+                                <small>Zentrum</small>
+                            </div>
+                            <div style="padding: 0.5rem; background: white; border: 1px solid #e0e0e0; border-radius: 0.25rem; cursor: pointer;" onclick="showLocationOnMap('frankfurt')">
+                                <strong style="color: #ffc107;">📍 Frankfurt</strong><br>
+                                <small>Zentrum</small>
+                            </div>
+                            <div style="padding: 0.5rem; background: white; border: 1px solid #e0e0e0; border-radius: 0.25rem; cursor: pointer;" onclick="showLocationOnMap('stuttgart')">
+                                <strong style="color: #ffc107;">📍 Stuttgart</strong><br>
+                                <small>Zentrum</small>
+                            </div>
+                        </div>
+                        <p style="margin-top: 1rem; font-size: 0.9rem; color: #999;">
+                            <i class="bi bi-info-circle" style="color: #ffc107;"></i>
+                            Klicken Sie auf die Standorte für Details
+                        </p>
+                    </div>
+                </div>
+            `;
+        }
+
+        function showLocationOnMap(locationId) {
+            // Location ID'ye göre standort bul
+            const locationMap = {
+                'berlin': 0,
+                'hamburg': 1,
+                'münchen': 2,
+                'köln': 3,
+                'frankfurt': 4,
+                'stuttgart': 5
+            };
+            
+            const index = locationMap[locationId];
+            if (index !== undefined && standorte[index]) {
+                const standort = standorte[index];
+                
+                // Harita bölümüne scroll yap
+                document.querySelector('.map-section').scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'center'
+                });
+                
+                // Seçilen lokasyonu highlight et
+                setTimeout(() => {
+                    const mapDiv = document.getElementById('map');
+                    mapDiv.innerHTML = `
+                        <div style="height: 500px; width: 100%; background: #f8f9fa; display: flex; align-items: center; justify-content: center; flex-direction: column; border-radius: 0.5rem;">
+                            <div style="text-align: center; color: #666; padding: 2rem;">
+                                <i class="bi bi-geo-alt-fill" style="font-size: 4rem; color: #ffc107; margin-bottom: 1rem;"></i>
+                                <h3 style="color: #333; margin-bottom: 1rem;">${standort.name}</h3>
+                                <p style="margin-bottom: 0.5rem; font-size: 1.1rem;">${standort.address}</p>
+                                <p style="margin-bottom: 0.5rem; color: #ffc107; font-weight: 600;">📞 ${standort.phone}</p>
+                                <p style="margin-bottom: 2rem; color: #ffc107; font-weight: 600;">🚗 ${standort.vehicles}</p>
+                                <div style="display: flex; gap: 1rem; justify-content: center;">
+                                    <button onclick="window.open('https://www.google.com/maps/search/${encodeURIComponent(standort.address)}', '_blank')" 
+                                            style="background: #ffc107; color: #333; border: none; padding: 0.75rem 1.5rem; border-radius: 0.25rem; font-weight: 500; cursor: pointer;">
+                                        <i class="bi bi-map"></i> Google Maps'te Aç
+                                    </button>
+                                    <button onclick="showFallbackMap()" 
+                                            style="background: #6c757d; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.25rem; font-weight: 500; cursor: pointer;">
+                                        <i class="bi bi-arrow-left"></i> Geri Dön
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }, 500);
+            }
+        }
+
+
+        function scrollToLocation(locationId) {
+            const element = document.getElementById(locationId);
+            if (element) {
+                element.scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'center'
+                });
+                
+                // Highlight effect
+                element.style.border = '2px solid #ffc107';
+                element.style.boxShadow = '0 4px 12px rgba(255, 193, 7, 0.3)';
+                
+                // Remove highlight after 3 seconds
+                setTimeout(() => {
+                    element.style.border = '1px solid #e0e0e0';
+                    element.style.boxShadow = 'none';
+                }, 3000);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Navbar initialization
+            setTimeout(() => {
+                if (typeof createNavbar === 'function') {
+                    createNavbar();
+                }
+                if (typeof updateNavbar === 'function') {
+                    updateNavbar();
+                }
+            }, 100);
+            
+            // Show fallback map on page load
+            showFallbackMap();
+        });
+    </script>
+</body>
+</html>

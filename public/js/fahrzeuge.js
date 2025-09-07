@@ -100,11 +100,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Location names mapping
     const locationNames = {
-        '1': 'Berlin Hauptbahnhof',
-        '2': 'MÃ¼nchen Flughafen',
-        '3': 'Hamburg Zentrum',
-        '4': 'KÃ¶ln Dom',
-        '5': 'Frankfurt Flughafen'
+        'berlin': 'Berlin Zentrum',
+        'hamburg': 'Hamburg Zentrum',
+        'münchen': 'München Zentrum',
+        'köln': 'Köln Zentrum',
+        'frankfurt': 'Frankfurt am Main Zentrum',
+        'stuttgart': 'Stuttgart Zentrum'
     };
 
     // Check if we should clear selections

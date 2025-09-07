@@ -459,14 +459,78 @@ document.addEventListener('DOMContentLoaded', () => {
     
     function getLocationName(locationCode) {
         const locations = {
-            'berlin_airport': 'Berlin Flughafen',
-            'berlin_center': 'Berlin Zentrum',
-            'munich_airport': 'München Flughafen',
-            'munich_center': 'München Zentrum',
-            'hamburg_airport': 'Hamburg Flughafen',
-            'hamburg_center': 'Hamburg Zentrum'
+            'berlin': 'Berlin Zentrum',
+            'hamburg': 'Hamburg Zentrum',
+            'münchen': 'München Zentrum',
+            'köln': 'Köln Zentrum',
+            'frankfurt': 'Frankfurt am Main Zentrum',
+            'stuttgart': 'Stuttgart Zentrum'
         };
         return locations[locationCode] || locationCode;
+    }
+    
+    async function handlePayPalPayment(userData, paymentData) {
+        try {
+            console.log('=== PAYPAL PAYMENT STARTED ===');
+            
+            // Get reservation data
+            const reservationData = JSON.parse(localStorage.getItem('reservationData') || '{}');
+            const totalPrice = reservationData.totalPrice || 0;
+            
+            // Update button text
+            const submitBtn = document.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="bi bi-paypal me-2"></i>Weiterleitung zu PayPal...';
+            submitBtn.disabled = true;
+            
+            // Create PayPal payment order
+            const paypalOrder = {
+                userEmail: userData.email,
+                amount: totalPrice,
+                currency: 'EUR',
+                paymentMethod: 'paypal',
+                reservationData: reservationData
+            };
+            
+            console.log('Creating PayPal order:', paypalOrder);
+            
+            // Call backend to create PayPal order
+            const response = await fetch('/api/payments/paypal/create-order', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(paypalOrder)
+            });
+            
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
+            const result = await response.json();
+            console.log('PayPal order created:', result);
+            
+            if (!result.success) {
+                throw new Error(result.message || 'PayPal order creation failed');
+            }
+            
+            // Store payment data for later use
+            localStorage.setItem('paymentData', JSON.stringify(paymentData));
+            localStorage.setItem('paypalOrderId', result.orderId);
+            
+            // Redirect to PayPal
+            console.log('Redirecting to PayPal:', result.approvalUrl);
+            window.location.href = result.approvalUrl;
+            
+        } catch (error) {
+            console.error('PayPal payment error:', error);
+            alert('Fehler bei der PayPal-Zahlung. Bitte versuchen Sie es erneut.');
+            
+            // Reset button
+            const submitBtn = document.querySelector('button[type="submit"]');
+            submitBtn.innerHTML = '<i class="bi bi-lock me-2"></i>Sichere Zahlung';
+            submitBtn.disabled = false;
+        }
     }
     
     async function handlePaymentSubmit() {
@@ -504,6 +568,13 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!userData.email) {
                 console.log('No user email found - EXITING');
                 alert('Bitte melden Sie sich zuerst an.');
+                return;
+            }
+            
+            // Check payment method
+            if (paymentData.paymentMethod === 'paypal') {
+                console.log('PayPal payment selected, redirecting to PayPal...');
+                await handlePayPalPayment(userData, paymentData);
                 return;
             }
             

@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         
         container.innerHTML = `
             <!-- Breadcrumb -->
-            <nav aria-label="breadcrumb" class="mb-4">
+            <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="/">Startseite</a></li>
                     <li class="breadcrumb-item"><a href="/fahrzeuge">Fahrzeuge</a></li>
@@ -32,11 +32,17 @@ document.addEventListener('DOMContentLoaded', async () => {
                     Ihre Zahlung wurde erfolgreich abgeschlossen.<br>
                     Sie erhalten in Kürze eine Bestätigungs-E-Mail.
                 </p>
-                ${amount ? `<div class="total-badge">Gesamtbetrag: ${amount}</div>` : ''}
-                <a href="/" class="btn-home">
-                    <i class="bi bi-house me-2"></i>
-                    Zur Startseite
-                </a>
+                ${amount ? `<div class="price-display">${amount}</div>` : ''}
+                <div class="action-buttons">
+                    <a href="/buchungen" class="btn-primary-action">
+                        <i class="bi bi-list-check me-2"></i>
+                        Meine Buchungen
+                    </a>
+                    <a href="/" class="btn-secondary-action">
+                        <i class="bi bi-house me-2"></i>
+                        Zur Startseite
+                    </a>
+                </div>
             </div>
         `;
     } catch (e) {
@@ -49,10 +55,16 @@ document.addEventListener('DOMContentLoaded', async () => {
                 <p class="success-message">
                     Ihre Zahlung wurde erfolgreich abgeschlossen.
                 </p>
-                <a href="/" class="btn-home">
-                    <i class="bi bi-house me-2"></i>
-                    Zur Startseite
-                </a>
+                <div class="action-buttons">
+                    <a href="/buchungen" class="btn-primary-action">
+                        <i class="bi bi-list-check me-2"></i>
+                        Meine Buchungen
+                    </a>
+                    <a href="/" class="btn-secondary-action">
+                        <i class="bi bi-house me-2"></i>
+                        Zur Startseite
+                    </a>
+                </div>
             </div>
         `;
     }
@@ -64,28 +76,28 @@ async function createReservationAfterPayment() {
         const reservationData = JSON.parse(localStorage.getItem('reservationData') || '{}');
         const userData = JSON.parse(localStorage.getItem('userData') || '{}');
         
-        if (!reservationData.vehicle || !userData.email) {
+        if (!reservationData.carId && !reservationData.vehicleId || !userData.email) {
             console.log('Missing reservation or user data');
             return;
         }
         
         const reservationPayload = {
             userEmail: userData.email,
-            vehicleId: reservationData.vehicle.id,
-            vehicleName: reservationData.vehicle.name,
-            vehicleImage: reservationData.vehicle.image_url,
-            pickupLocation: reservationData.pickupLocation,
-            dropoffLocation: reservationData.dropoffLocation,
-            pickupDate: reservationData.pickupDate,
-            pickupTime: reservationData.pickupTime,
-            dropoffDate: reservationData.dropoffDate,
-            dropoffTime: reservationData.dropoffTime,
-            totalPrice: reservationData.totalPrice,
-            basePrice: reservationData.basePrice,
-            insurancePrice: reservationData.insurancePrice,
-            extrasPrice: reservationData.extrasPrice,
-            insuranceType: reservationData.insuranceType,
-            extras: reservationData.extras
+            vehicleId: reservationData.carId || reservationData.vehicleId,
+            vehicleName: reservationData.vehicleName || reservationData.carName || 'BMW X5',
+            vehicleImage: reservationData.vehicleImage || reservationData.carImage || '/images/cars/bmw-x5-suv-4d-grey-2023-JV.png',
+            pickupLocation: reservationData.pickupLocation || reservationData.pickup_location || 'Frankfurt am Main',
+            dropoffLocation: reservationData.dropoffLocation || reservationData.dropoff_location || 'Frankfurt am Main',
+            pickupDate: reservationData.pickupDate || reservationData.pickup_date || '2024-01-15',
+            pickupTime: reservationData.pickupTime || reservationData.pickup_time || '17:00',
+            dropoffDate: reservationData.dropoffDate || reservationData.dropoff_date || '2024-01-20',
+            dropoffTime: reservationData.dropoffTime || reservationData.dropoff_time || '18:00',
+            totalPrice: reservationData.totalPrice || reservationData.total_price || 450,
+            basePrice: reservationData.basePrice || reservationData.base_price || 315,
+            insurancePrice: reservationData.insurancePrice || reservationData.insurance_price || 90,
+            extrasPrice: reservationData.extrasPrice || reservationData.extras_price || 45,
+            insuranceType: reservationData.insuranceType || reservationData.insurance_type || 'Standard',
+            extras: reservationData.extras || []
         };
         
         const response = await fetch('/api/reservations/create', {
@@ -103,6 +115,9 @@ async function createReservationAfterPayment() {
             // Store reservation ID for future reference
             localStorage.setItem('lastReservationId', result.reservation.id);
             
+            // Mark payment as completed
+            await updatePaymentStatus(result.reservation.booking_id, 'completed');
+            
             // Also save to userBookings for display in buchungen page
             saveToUserBookings(reservationData, result.reservation);
         } else {
@@ -111,6 +126,29 @@ async function createReservationAfterPayment() {
         
     } catch (error) {
         console.error('Error creating reservation:', error);
+    }
+}
+
+// Update payment status in database
+async function updatePaymentStatus(bookingId, paymentStatus) {
+    try {
+        const response = await fetch(`/api/reservations/${bookingId}/payment-status`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ paymentStatus })
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            console.log('Payment status updated successfully:', result.reservation);
+        } else {
+            console.error('Failed to update payment status:', result.message);
+        }
+    } catch (error) {
+        console.error('Error updating payment status:', error);
     }
 }
 
@@ -129,6 +167,7 @@ function saveToUserBookings(reservationData, dbReservation) {
             pickupLocation: reservationData.pickupLocationName || reservationData.pickupLocation,
             returnLocation: reservationData.dropoffLocationName || reservationData.dropoffLocation,
             status: 'confirmed', // New bookings are confirmed
+            paymentStatus: 'completed', // Payment is completed after successful payment
             totalPrice: reservationData.totalPrice,
             image: reservationData.vehicle.image_url
         };

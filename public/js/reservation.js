@@ -117,8 +117,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 car: 'BMW X5',
                 pickupDate: '2024-01-15',
                 returnDate: '2024-01-20',
-                pickupLocation: 'München Flughafen',
-                returnLocation: 'München Flughafen',
+                pickupLocation: 'Frankfurt am Main',
+                returnLocation: 'Frankfurt am Main',
                 status: 'active',
                 totalPrice: 450,
                 image: '/images/cars/bmw-x5-suv-4d-grey-2023-JV.png'
@@ -128,8 +128,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 car: 'Audi A6',
                 pickupDate: '2024-01-10',
                 returnDate: '2024-01-12',
-                pickupLocation: 'Berlin Hauptbahnhof',
-                returnLocation: 'Berlin Hauptbahnhof',
+                pickupLocation: 'Berlin Zentrum',
+                returnLocation: 'Berlin Zentrum',
                 status: 'completed',
                 totalPrice: 280,
                 image: '/images/cars/audi-a6-avant-stw-black-2025.png'
@@ -333,12 +333,12 @@ document.addEventListener('DOMContentLoaded', () => {
                                         <span class="input-group-text bg-white"><i class="bi bi-geo-alt"></i></span>
                                         <select id="qr-pickup-location" class="form-select border-2 qr-select">
                                             <option value="">Bitte wählen</option>
-                                        <option value="berlin_airport">Berlin Flughafen</option>
-                                        <option value="berlin_center">Berlin Zentrum</option>
-                                            <option value="munich_airport">M&uuml;nchen Flughafen</option>
-                                            <option value="munich_center">M&uuml;nchen Zentrum</option>
-                                        <option value="hamburg_airport">Hamburg Flughafen</option>
-                                        <option value="hamburg_center">Hamburg Zentrum</option>
+                                        <option value="berlin">Berlin Zentrum</option>
+                                        <option value="hamburg">Hamburg Zentrum</option>
+                                        <option value="münchen">München Zentrum</option>
+                                        <option value="köln">Köln Zentrum</option>
+                                        <option value="frankfurt">Frankfurt am Main Zentrum</option>
+                                        <option value="stuttgart">Stuttgart Zentrum</option>
                                     </select>
                                 </div>
                                 </div>
@@ -347,12 +347,12 @@ document.addEventListener('DOMContentLoaded', () => {
                                         <span class="input-group-text bg-white"><i class="bi bi-geo-alt"></i></span>
                                         <select id="qr-dropoff-location" class="form-select border-2 qr-select">
                                             <option value="">Bitte wählen</option>
-                                        <option value="berlin_airport">Berlin Flughafen</option>
-                                        <option value="berlin_center">Berlin Zentrum</option>
-                                            <option value="munich_airport">M&uuml;nchen Flughafen</option>
-                                            <option value="munich_center">M&uuml;nchen Zentrum</option>
-                                        <option value="hamburg_airport">Hamburg Flughafen</option>
-                                        <option value="hamburg_center">Hamburg Zentrum</option>
+                                        <option value="berlin">Berlin Zentrum</option>
+                                        <option value="hamburg">Hamburg Zentrum</option>
+                                        <option value="münchen">München Zentrum</option>
+                                        <option value="köln">Köln Zentrum</option>
+                                        <option value="frankfurt">Frankfurt am Main Zentrum</option>
+                                        <option value="stuttgart">Stuttgart Zentrum</option>
                                     </select>
                                 </div>
                                 </div>

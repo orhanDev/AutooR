@@ -35,6 +35,16 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (userName) {
                         localStorage.setItem('welcome_name', userName);
                         console.log('welcome_name localStorage\'a kaydedildi:', userName);
+                        
+                        // userData'yı da localStorage'a kaydet
+                        const userData = {
+                            firstName: user.user.first_name,
+                            lastName: user.user.last_name,
+                            email: user.user.email,
+                            id: user.user.id
+                        };
+                        localStorage.setItem('userData', JSON.stringify(userData));
+                        console.log('userData localStorage\'a kaydedildi:', userData);
                     }
                 } else {
                     console.error('Response not ok:', res.status, res.statusText);
@@ -42,6 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     localStorage.removeItem('token');
                     localStorage.removeItem('welcome_name');
                     localStorage.removeItem('user');
+                    localStorage.removeItem('userData');
                     showLoginLinks();
                     return;
                 }
@@ -52,6 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 localStorage.removeItem('token');
                 localStorage.removeItem('welcome_name');
                 localStorage.removeItem('user');
+                localStorage.removeItem('userData');
                 showLoginLinks();
                 return;
             }
@@ -105,6 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.removeItem('token');
         localStorage.removeItem('welcome_name');
         localStorage.removeItem('user');
+        localStorage.removeItem('userData');
         window.location.href = '/';
     }
 

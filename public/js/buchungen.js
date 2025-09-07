@@ -25,7 +25,12 @@ async function loadBookings() {
     
     // Check if user is logged in
     const userData = JSON.parse(localStorage.getItem('userData') || '{}');
-    if (!userData.email) {
+    const token = localStorage.getItem('token');
+    
+    console.log('Buchungen - userData:', userData);
+    console.log('Buchungen - token:', token);
+    
+    if (!userData.email && !token) {
         container.style.display = 'none';
         emptyState.style.display = 'block';
         emptyState.innerHTML = `
@@ -42,8 +47,31 @@ async function loadBookings() {
     }
     
     try {
+        // Get user email from userData or fetch from API if not available
+        let userEmail = userData.email;
+        
+        if (!userEmail && token) {
+            // Try to get user info from API
+            try {
+                const userResponse = await fetch('/api/auth/user', {
+                    headers: { 'x-auth-token': token }
+                });
+                if (userResponse.ok) {
+                    const userInfo = await userResponse.json();
+                    userEmail = userInfo.user.email;
+                    console.log('Got email from API:', userEmail);
+                }
+            } catch (error) {
+                console.error('Error fetching user info:', error);
+            }
+        }
+        
+        if (!userEmail) {
+            throw new Error('No user email available');
+        }
+        
         // Get bookings from database
-        const response = await fetch(`/api/reservations/user/${userData.email}`);
+        const response = await fetch(`/api/reservations/user/${userEmail}`);
         const result = await response.json();
         
         if (result.success && result.reservations.length > 0) {
@@ -105,8 +133,8 @@ function getBookingsFromStorage() {
             car: 'BMW X5',
             pickupDate: '2024-01-15',
             returnDate: '2024-01-20',
-            pickupLocation: 'München Flughafen',
-            returnLocation: 'München Flughafen',
+            pickupLocation: 'Frankfurt am Main',
+            returnLocation: 'Frankfurt am Main',
             status: 'active',
             totalPrice: 450,
             image: '/images/cars/bmw-x5-suv-4d-grey-2023-JV.png'
@@ -116,8 +144,8 @@ function getBookingsFromStorage() {
             car: 'Audi A6',
             pickupDate: '2024-01-10',
             returnDate: '2024-01-12',
-            pickupLocation: 'Berlin Hauptbahnhof',
-            returnLocation: 'Berlin Hauptbahnhof',
+            pickupLocation: 'Berlin Zentrum',
+            returnLocation: 'Berlin Zentrum',
             status: 'completed',
             totalPrice: 280,
             image: '/images/cars/audi-a6-avant-stw-black-2025.png'
@@ -145,8 +173,8 @@ function getBookingsFromStorage() {
             car: 'BMW X5',
             pickupDate: '2024-12-15',
             returnDate: '2024-12-20',
-            pickupLocation: 'München Flughafen',
-            returnLocation: 'München Flughafen',
+            pickupLocation: 'Frankfurt am Main',
+            returnLocation: 'Frankfurt am Main',
             status: 'confirmed',
             totalPrice: 450,
             image: '/images/cars/bmw-x5-suv-4d-grey-2023-JV.png'
@@ -161,34 +189,74 @@ function getBookingsFromStorage() {
 function createBookingCard(booking) {
     const statusClass = getStatusClass(booking.status);
     const statusText = getStatusText(booking.status);
+    const paymentStatusClass = getPaymentStatusClass(booking.payment_status);
+    const paymentStatusText = getPaymentStatusText(booking.payment_status);
     
     return `
         <div class="booking-card">
             <div class="booking-header">
                 <div class="booking-id">Buchung ${booking.booking_id}</div>
-                <div class="booking-status ${statusClass}">${statusText}</div>
+                <div class="booking-status-container">
+                    <div class="booking-status ${statusClass}">${statusText}</div>
+                    <div class="booking-status ${paymentStatusClass}">${paymentStatusText}</div>
+                </div>
             </div>
             
-            <div class="booking-details">
-                <div class="detail-item">
-                    <i class="bi bi-car-front detail-icon"></i>
-                    <span class="detail-text">${booking.vehicle_name}</span>
+            <!-- Fahrzeugübersicht -->
+            <div class="vehicle-section">
+                <h6 class="section-title">Fahrzeugübersicht</h6>
+                <div class="vehicle-info">
+                    <img src="${booking.vehicle_image || '/images/cars/bmw-x5-suv-4d-grey-2023-JV.png'}" 
+                         alt="${booking.vehicle_name}" 
+                         class="vehicle-image"
+                         onerror="this.src='/images/cars/bmw-x5-suv-4d-grey-2023-JV.png'">
+                    <div class="vehicle-details">
+                        <h6 class="vehicle-name">${booking.vehicle_name}</h6>
+                        <div class="vehicle-specs">
+                            <span class="spec-item">Getriebe: Automatik</span>
+                            <span class="spec-item">Kraftstoff: Benzin</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="detail-item">
-                    <i class="bi bi-calendar-check detail-icon"></i>
-                    <span class="detail-text">${formatDate(booking.pickup_date)}</span>
+            </div>
+
+            <!-- Abholung & Rückgabe -->
+            <div class="pickup-section">
+                <h6 class="section-title">Abholung & Rückgabe</h6>
+                <div class="pickup-info">
+                    <div class="pickup-item">
+                        <strong>Abholung:</strong><br>
+                        <i class="bi bi-geo-alt me-1"></i>${booking.pickup_location}<br>
+                        <i class="bi bi-calendar me-1"></i>${formatDate(booking.pickup_date)} ${booking.pickup_time || '17:00'}
+                    </div>
+                    <div class="pickup-item">
+                        <strong>Rückgabe:</strong><br>
+                        <i class="bi bi-geo-alt me-1"></i>${booking.return_location}<br>
+                        <i class="bi bi-calendar me-1"></i>${formatDate(booking.return_date)} ${booking.return_time || '18:00'}
+                    </div>
                 </div>
-                <div class="detail-item">
-                    <i class="bi bi-calendar-x detail-icon"></i>
-                    <span class="detail-text">${formatDate(booking.return_date)}</span>
-                </div>
-                <div class="detail-item">
-                    <i class="bi bi-geo-alt detail-icon"></i>
-                    <span class="detail-text">${booking.pickup_location}</span>
-                </div>
-                <div class="detail-item">
-                    <i class="bi bi-currency-euro detail-icon"></i>
-                    <span class="detail-text">€${booking.total_price}</span>
+            </div>
+
+            <!-- Preisübersicht -->
+            <div class="price-section">
+                <h6 class="section-title">Preisübersicht</h6>
+                <div class="price-breakdown">
+                    <div class="price-item">
+                        <span>Grundpreis (1 Tag)</span>
+                        <span>€${booking.base_price || Math.round(booking.total_price * 0.7)}</span>
+                    </div>
+                    <div class="price-item">
+                        <span>Versicherung</span>
+                        <span>€${booking.insurance_price || Math.round(booking.total_price * 0.2)}</span>
+                    </div>
+                    <div class="price-item">
+                        <span>Zusätzliche Leistungen</span>
+                        <span>€${booking.extras_price || Math.round(booking.total_price * 0.1)}</span>
+                    </div>
+                    <div class="price-item total">
+                        <span><strong>Gesamtpreis</strong></span>
+                        <span><strong>€${booking.total_price}</strong></span>
+                    </div>
                 </div>
             </div>
             
@@ -202,34 +270,74 @@ function createBookingCard(booking) {
 function createBookingCardFromStorage(booking) {
     const statusClass = getStatusClass(booking.status);
     const statusText = getStatusText(booking.status);
+    const paymentStatusClass = getPaymentStatusClass(booking.paymentStatus);
+    const paymentStatusText = getPaymentStatusText(booking.paymentStatus);
     
     return `
         <div class="booking-card">
             <div class="booking-header">
                 <div class="booking-id">Buchung ${booking.id}</div>
-                <div class="booking-status ${statusClass}">${statusText}</div>
+                <div class="booking-status-container">
+                    <div class="booking-status ${statusClass}">${statusText}</div>
+                    <div class="booking-status ${paymentStatusClass}">${paymentStatusText}</div>
+                </div>
             </div>
             
-            <div class="booking-details">
-                <div class="detail-item">
-                    <i class="bi bi-car-front detail-icon"></i>
-                    <span class="detail-text">${booking.car}</span>
+            <!-- Fahrzeugübersicht -->
+            <div class="vehicle-section">
+                <h6 class="section-title">Fahrzeugübersicht</h6>
+                <div class="vehicle-info">
+                    <img src="${booking.image || '/images/cars/bmw-x5-suv-4d-grey-2023-JV.png'}" 
+                         alt="${booking.car}" 
+                         class="vehicle-image"
+                         onerror="this.src='/images/cars/bmw-x5-suv-4d-grey-2023-JV.png'">
+                    <div class="vehicle-details">
+                        <h6 class="vehicle-name">${booking.car}</h6>
+                        <div class="vehicle-specs">
+                            <span class="spec-item">Getriebe: Automatik</span>
+                            <span class="spec-item">Kraftstoff: Benzin</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="detail-item">
-                    <i class="bi bi-calendar-check detail-icon"></i>
-                    <span class="detail-text">${formatDate(booking.pickupDate)}</span>
+            </div>
+
+            <!-- Abholung & Rückgabe -->
+            <div class="pickup-section">
+                <h6 class="section-title">Abholung & Rückgabe</h6>
+                <div class="pickup-info">
+                    <div class="pickup-item">
+                        <strong>Abholung:</strong><br>
+                        <i class="bi bi-geo-alt me-1"></i>${booking.pickupLocation}<br>
+                        <i class="bi bi-calendar me-1"></i>${formatDate(booking.pickupDate)} 17:00
+                    </div>
+                    <div class="pickup-item">
+                        <strong>Rückgabe:</strong><br>
+                        <i class="bi bi-geo-alt me-1"></i>${booking.returnLocation}<br>
+                        <i class="bi bi-calendar me-1"></i>${formatDate(booking.returnDate)} 18:00
+                    </div>
                 </div>
-                <div class="detail-item">
-                    <i class="bi bi-calendar-x detail-icon"></i>
-                    <span class="detail-text">${formatDate(booking.returnDate)}</span>
-                </div>
-                <div class="detail-item">
-                    <i class="bi bi-geo-alt detail-icon"></i>
-                    <span class="detail-text">${booking.pickupLocation}</span>
-                </div>
-                <div class="detail-item">
-                    <i class="bi bi-currency-euro detail-icon"></i>
-                    <span class="detail-text">€${booking.totalPrice}</span>
+            </div>
+
+            <!-- Preisübersicht -->
+            <div class="price-section">
+                <h6 class="section-title">Preisübersicht</h6>
+                <div class="price-breakdown">
+                    <div class="price-item">
+                        <span>Grundpreis (1 Tag)</span>
+                        <span>€${Math.round(booking.totalPrice * 0.7)}</span>
+                    </div>
+                    <div class="price-item">
+                        <span>Versicherung</span>
+                        <span>€${Math.round(booking.totalPrice * 0.2)}</span>
+                    </div>
+                    <div class="price-item">
+                        <span>Zusätzliche Leistungen</span>
+                        <span>€${Math.round(booking.totalPrice * 0.1)}</span>
+                    </div>
+                    <div class="price-item total">
+                        <span><strong>Gesamtpreis</strong></span>
+                        <span><strong>€${booking.totalPrice}</strong></span>
+                    </div>
                 </div>
             </div>
             
@@ -260,28 +368,59 @@ function getStatusText(status) {
     }
 }
 
+function getPaymentStatusClass(paymentStatus) {
+    switch (paymentStatus) {
+        case 'completed': return 'status-completed';
+        case 'pending': return 'status-pending';
+        case 'failed': return 'status-cancelled';
+        default: return 'status-pending';
+    }
+}
+
+function getPaymentStatusText(paymentStatus) {
+    switch (paymentStatus) {
+        case 'completed': return 'Bezahlt';
+        case 'pending': return 'Ausstehend';
+        case 'failed': return 'Fehlgeschlagen';
+        default: return 'Ausstehend';
+    }
+}
+
 function createActionButtons(booking) {
     let buttons = '';
     
-    switch (booking.status) {
-        case 'active':
-            buttons = `
-                <a href="/reservation.html?id=${booking.id}" class="btn-action btn-primary">Details anzeigen</a>
-                <button onclick="modifyBooking('${booking.id}')" class="btn-action btn-outline">Ändern</button>
-                <button onclick="cancelBooking('${booking.id}')" class="btn-action btn-danger">Stornieren</button>
-            `;
-            break;
-        case 'completed':
-            buttons = `
-                <a href="/reservation.html?id=${booking.id}" class="btn-action btn-primary">Details anzeigen</a>
-                <button onclick="rebookCar('${booking.id}')" class="btn-action btn-outline">Erneut mieten</button>
-            `;
-            break;
-        case 'cancelled':
-            buttons = `
-                <a href="/reservation.html?id=${booking.id}" class="btn-action btn-outline">Details anzeigen</a>
-            `;
-            break;
+    // Payment status'a göre butonları belirle
+    if (booking.payment_status === 'completed') {
+        buttons = `
+            <button onclick="rebookCar('${booking.id}', '${booking.vehicle_id}', '${booking.vehicle_name}', '${booking.vehicle_image}')" class="btn-action btn-primary">Erneut mieten</button>
+        `;
+    } else if (booking.payment_status === 'pending') {
+        buttons = `
+            <button onclick="modifyBooking('${booking.id}')" class="btn-action btn-outline">Ändern</button>
+            <button onclick="cancelBooking('${booking.id}')" class="btn-action btn-danger">Stornieren</button>
+        `;
+    } else if (booking.payment_status === 'failed') {
+        buttons = `
+            <button onclick="retryPayment('${booking.id}')" class="btn-action btn-primary">Zahlung wiederholen</button>
+        `;
+    } else {
+        // Fallback to status-based buttons
+        switch (booking.status) {
+            case 'active':
+                buttons = `
+                    <button onclick="modifyBooking('${booking.id}')" class="btn-action btn-outline">Ändern</button>
+                    <button onclick="cancelBooking('${booking.id}')" class="btn-action btn-danger">Stornieren</button>
+                `;
+                break;
+            case 'completed':
+                buttons = `
+                    <button onclick="rebookCar('${booking.id}', '${booking.vehicle_id}', '${booking.vehicle_name}', '${booking.vehicle_image}')" class="btn-action btn-primary">Erneut mieten</button>
+                `;
+                break;
+            case 'cancelled':
+                buttons = ``;
+                break;
+        }
     }
     
     return buttons;
@@ -290,25 +429,38 @@ function createActionButtons(booking) {
 function createActionButtonsFromStorage(booking) {
     let buttons = '';
     
-    switch (booking.status) {
-        case 'active':
-            buttons = `
-                <a href="/reservation.html?id=${booking.id}" class="btn-action btn-primary">Details anzeigen</a>
-                <button onclick="modifyBooking('${booking.id}')" class="btn-action btn-outline">Ändern</button>
-                <button onclick="cancelBooking('${booking.id}')" class="btn-action btn-danger">Stornieren</button>
-            `;
-            break;
-        case 'completed':
-            buttons = `
-                <a href="/reservation.html?id=${booking.id}" class="btn-action btn-primary">Details anzeigen</a>
-                <button onclick="rebookCar('${booking.id}')" class="btn-action btn-outline">Erneut mieten</button>
-            `;
-            break;
-        case 'cancelled':
-            buttons = `
-                <a href="/reservation.html?id=${booking.id}" class="btn-action btn-outline">Details anzeigen</a>
-            `;
-            break;
+    // Payment status'a göre butonları belirle
+    if (booking.paymentStatus === 'completed') {
+        buttons = `
+            <button onclick="rebookCar('${booking.id}', '${booking.vehicleId || ''}', '${booking.car}', '${booking.image}')" class="btn-action btn-primary">Erneut mieten</button>
+        `;
+    } else if (booking.paymentStatus === 'pending') {
+        buttons = `
+            <button onclick="modifyBooking('${booking.id}')" class="btn-action btn-outline">Ändern</button>
+            <button onclick="cancelBooking('${booking.id}')" class="btn-action btn-danger">Stornieren</button>
+        `;
+    } else if (booking.paymentStatus === 'failed') {
+        buttons = `
+            <button onclick="retryPayment('${booking.id}')" class="btn-action btn-primary">Zahlung wiederholen</button>
+        `;
+    } else {
+        // Fallback to status-based buttons
+        switch (booking.status) {
+            case 'active':
+                buttons = `
+                    <button onclick="modifyBooking('${booking.id}')" class="btn-action btn-outline">Ändern</button>
+                    <button onclick="cancelBooking('${booking.id}')" class="btn-action btn-danger">Stornieren</button>
+                `;
+                break;
+            case 'completed':
+                buttons = `
+                    <button onclick="rebookCar('${booking.id}', '${booking.vehicleId || ''}', '${booking.car}', '${booking.image}')" class="btn-action btn-primary">Erneut mieten</button>
+                `;
+                break;
+            case 'cancelled':
+                buttons = ``;
+                break;
+        }
     }
     
     return buttons;
@@ -339,8 +491,32 @@ function cancelBooking(bookingId) {
     }
 }
 
-function rebookCar(bookingId) {
-    console.log('Rebook car for booking:', bookingId);
-    // In a real app, this would redirect to the booking page with pre-filled data
-    window.location.href = '/';
+function rebookCar(bookingId, vehicleId, vehicleName, vehicleImage) {
+    console.log('Rebook car for booking:', bookingId, 'Vehicle:', vehicleId, vehicleName);
+    
+    // Store the vehicle info in localStorage for the reservation page
+    if (vehicleId && vehicleName) {
+        localStorage.setItem('selectedVehicle', JSON.stringify({
+            id: vehicleId,
+            name: vehicleName,
+            image: vehicleImage || '/images/cars/bmw-x5-suv-4d-grey-2023-JV.png'
+        }));
+        
+        // Also store the vehicle ID for the reservation page
+        localStorage.setItem('selectedCarId', vehicleId);
+    }
+    
+    // Redirect to reservation page with vehicle ID as parameter
+    if (vehicleId) {
+        window.location.href = `/reservation?id=${vehicleId}`;
+    } else {
+        // Fallback to reservation page without ID
+        window.location.href = '/reservation';
+    }
+}
+
+function retryPayment(bookingId) {
+    console.log('Retry payment for booking:', bookingId);
+    // In a real app, this would redirect to the payment page
+    alert('Zahlungswiederholung wird in Kürze verfügbar sein.');
 }

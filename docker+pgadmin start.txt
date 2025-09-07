@@ -1,0 +1,5 @@
+powershell terminalde -> 
+PS C:\Users\ooorh\OneDrive\Desktop\autar> Start-Process "Docker Desktop"
+docker-compose up -d
+
+sonra da pg admini aç 

@@ -331,4 +331,145 @@ router.get('/history/:userEmail', async (req, res) => {
     }
 });
 
+// PayPal Order Creation
+router.post('/paypal/create-order', async (req, res) => {
+    try {
+        const { userEmail, amount, currency, paymentMethod, reservationData } = req.body;
+        
+        if (!userEmail || !amount || !currency) {
+            return res.status(400).json({ 
+                success: false, 
+                message: 'Gerekli bilgiler eksik' 
+            });
+        }
+
+        // Kullanıcıyı bul
+        const user = await pool.query(
+            'SELECT id FROM users WHERE email = $1',
+            [userEmail]
+        );
+
+        if (user.rows.length === 0) {
+            return res.status(404).json({ 
+                success: false, 
+                message: 'Kullanıcı bulunamadı' 
+            });
+        }
+
+        const userId = user.rows[0].id;
+
+        // PayPal order ID oluştur
+        const orderId = 'PAYPAL_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+        
+        // PayPal order'ı veritabanına kaydet
+        await pool.query(
+            'INSERT INTO paypal_orders (order_id, user_id, amount, currency, status, reservation_data) VALUES ($1, $2, $3, $4, $5, $6)',
+            [orderId, userId, amount, currency, 'created', JSON.stringify(reservationData)]
+        );
+
+        // PayPal approval URL oluştur (demo için - gerçek PayPal ekranını simüle eder)
+        const approvalUrl = `/paypal-success?token=${orderId}&PayerID=DEMO_PAYER_${Date.now()}&paymentId=PAY_${Date.now()}`;
+        
+        res.json({
+            success: true,
+            orderId: orderId,
+            approvalUrl: approvalUrl,
+            message: 'PayPal order created successfully'
+        });
+    } catch (error) {
+        console.error('PayPal order creation error:', error);
+        res.status(500).json({ 
+            success: false, 
+            message: 'Sunucu hatası' 
+        });
+    }
+});
+
+// PayPal Payment Success Callback
+router.post('/paypal/success', async (req, res) => {
+    try {
+        const { orderId, payerId, paymentId } = req.body;
+        
+        if (!orderId) {
+            return res.status(400).json({ 
+                success: false, 
+                message: 'Order ID gerekli' 
+            });
+        }
+
+        // PayPal order'ı bul
+        const order = await pool.query(
+            'SELECT * FROM paypal_orders WHERE order_id = $1',
+            [orderId]
+        );
+
+        if (order.rows.length === 0) {
+            return res.status(404).json({ 
+                success: false, 
+                message: 'PayPal order bulunamadı' 
+            });
+        }
+
+        const orderData = order.rows[0];
+
+        // Order durumunu güncelle
+        await pool.query(
+            'UPDATE paypal_orders SET status = $1, payer_id = $2, payment_id = $3, completed_at = NOW() WHERE order_id = $4',
+            ['completed', payerId, paymentId, orderId]
+        );
+
+        // Ödeme kaydını oluştur
+        const transactionId = 'PAYPAL_TXN_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+        const payment = await pool.query(
+            'INSERT INTO payments (user_id, amount, currency, payment_method, transaction_id, status, payment_gateway, gateway_response) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id, transaction_id, status, amount, created_at',
+            [orderData.user_id, orderData.amount, orderData.currency, 'paypal', transactionId, 'success', 'paypal', JSON.stringify({ orderId, payerId, paymentId })]
+        );
+
+        res.json({
+            success: true,
+            message: 'PayPal payment completed successfully',
+            payment: payment.rows[0],
+            orderId: orderId
+        });
+    } catch (error) {
+        console.error('PayPal success callback error:', error);
+        res.status(500).json({ 
+            success: false, 
+            message: 'Sunucu hatası' 
+        });
+    }
+});
+
+// PayPal Payment Cancel Callback
+router.post('/paypal/cancel', async (req, res) => {
+    try {
+        const { orderId } = req.body;
+        
+        if (!orderId) {
+            return res.status(400).json({ 
+                success: false, 
+                message: 'Order ID gerekli' 
+            });
+        }
+
+        // PayPal order durumunu güncelle
+        await pool.query(
+            'UPDATE paypal_orders SET status = $1, cancelled_at = NOW() WHERE order_id = $2',
+            ['cancelled', orderId]
+        );
+
+        res.json({
+            success: true,
+            message: 'PayPal payment cancelled',
+            orderId: orderId
+        });
+    } catch (error) {
+        console.error('PayPal cancel callback error:', error);
+        res.status(500).json({ 
+            success: false, 
+            message: 'Sunucu hatası' 
+        });
+    }
+});
+
 module.exports = router;

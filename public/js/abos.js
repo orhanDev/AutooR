@@ -13,9 +13,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }, 100);
     
-    // Load and display subscriptions
-    loadSubscriptions();
-    loadAvailablePlans();
+    // Load and display all plans
+    loadAllPlans();
 });
 
 function loadSubscriptions() {
@@ -41,10 +40,13 @@ function loadSubscriptions() {
 }
 
 function getSubscriptionsFromStorage() {
-    // Sample subscriptions data (in a real app, this would come from an API)
-    const sampleSubscriptions = [
-        {
-            id: 'SUB-2024-001',
+    // Check if user has any subscriptions in localStorage
+    let userSubscriptions = JSON.parse(localStorage.getItem('userSubscriptions') || '[]');
+    
+    // If no subscriptions exist, create a default Premium Plan subscription
+    if (userSubscriptions.length === 0) {
+        const defaultSubscription = {
+            id: 'SUB-DEFAULT-001',
             name: 'Premium Plan',
             type: 'premium',
             price: 99,
@@ -59,31 +61,14 @@ function getSubscriptionsFromStorage() {
                 'Gratis Stornierung',
                 'Prioritätsreservierung'
             ]
-        },
-        {
-            id: 'SUB-2024-002',
-            name: 'Business Plan',
-            type: 'business',
-            price: 199,
-            period: 'monatlich',
-            status: 'active',
-            startDate: '2024-01-15',
-            endDate: '2024-12-31',
-            features: [
-                'Alle Premium Features',
-                'Business Fahrzeuge',
-                'Dedicated Account Manager',
-                'Rechnungsstellung',
-                'Firmenrabatte'
-            ]
-        }
-    ];
+        };
+        
+        // Save default subscription to localStorage
+        localStorage.setItem('userSubscriptions', JSON.stringify([defaultSubscription]));
+        userSubscriptions = [defaultSubscription];
+    }
     
-    // Check if user has any subscriptions in localStorage
-    const userSubscriptions = JSON.parse(localStorage.getItem('userSubscriptions') || '[]');
-    
-    // Return sample data if no user subscriptions exist
-    return userSubscriptions.length > 0 ? userSubscriptions : sampleSubscriptions;
+    return userSubscriptions;
 }
 
 function createSubscriptionCard(subscription) {
@@ -133,10 +118,10 @@ function createSubscriptionActions(subscription) {
     return actions;
 }
 
-function loadAvailablePlans() {
-    console.log('Loading available plans...');
+function loadAllPlans() {
+    console.log('Loading all plans...');
     
-    const availablePlans = [
+    const allPlans = [
         {
             id: 'PLAN-BASIC',
             name: 'Basic Plan',
@@ -177,8 +162,54 @@ function loadAvailablePlans() {
         }
     ];
     
-    const container = document.getElementById('plans-container');
-    container.innerHTML = availablePlans.map(plan => createPlanCard(plan)).join('');
+    // Get active subscriptions
+    const activeSubscriptions = getSubscriptionsFromStorage().filter(sub => sub.status === 'active');
+    
+    const container = document.getElementById('all-plans-container');
+    container.innerHTML = allPlans.map(plan => createAllPlanCard(plan, activeSubscriptions)).join('');
+}
+
+function createAllPlanCard(plan, activeSubscriptions) {
+    // Check if user is already subscribed to this plan
+    const isSubscribed = activeSubscriptions.some(sub => 
+        sub.name === plan.name || 
+        (sub.name === 'Premium Plan' && plan.name === 'Premium Plan') ||
+        (sub.name === 'Business Plan' && plan.name === 'Business Plan')
+    );
+    
+    const cardClass = isSubscribed ? 'plan-card subscribed' : 'plan-card';
+    const buttonText = isSubscribed ? 'Bereits abonniert' : 'Jetzt abonnieren';
+    const buttonClass = isSubscribed ? 'btn-action btn-outline' : 'btn-action btn-primary';
+    const buttonDisabled = isSubscribed ? 'disabled' : '';
+    const statusBadge = isSubscribed ? '<div class="subscription-badge badge-active">Aktiv</div>' : '';
+    
+    return `
+        <div class="${cardClass}">
+            <div class="subscription-header">
+                <h3 class="subscription-title">${plan.name}</h3>
+                ${statusBadge}
+            </div>
+            
+            <div class="subscription-price">€${plan.price}/${plan.period}</div>
+            
+            <ul class="subscription-features">
+                ${plan.features.map(feature => `
+                    <li>
+                        <i class="bi bi-check-circle feature-icon"></i>
+                        <span>${feature}</span>
+                    </li>
+                `).join('')}
+            </ul>
+            
+            <div class="subscription-actions">
+                <button onclick="${isSubscribed ? 'viewSubscription()' : `subscribeToPlan('${plan.id}')`}" 
+                        class="${buttonClass}" 
+                        ${buttonDisabled}>
+                    ${buttonText}
+                </button>
+            </div>
+        </div>
+    `;
 }
 
 function createPlanCard(plan) {
@@ -235,5 +266,77 @@ function renewSubscription(subscriptionId) {
 
 function subscribeToPlan(planId) {
     console.log('Subscribe to plan:', planId);
-    alert('Abonnement-Abschluss wird in Kürze verfügbar sein.');
+    
+    // Get all plans data
+    const allPlans = [
+        {
+            id: 'PLAN-BASIC',
+            name: 'Basic Plan',
+            price: 29,
+            period: 'monatlich',
+            features: [
+                'Bis zu 5 Fahrten/Monat',
+                'Standard Fahrzeuge',
+                'Email Support',
+                'Flexible Stornierung'
+            ]
+        },
+        {
+            id: 'PLAN-PREMIUM',
+            name: 'Premium Plan',
+            price: 99,
+            period: 'monatlich',
+            features: [
+                'Unbegrenzte Fahrten',
+                'Premium Fahrzeuge',
+                '24/7 Kundensupport',
+                'Gratis Stornierung',
+                'Prioritätsreservierung'
+            ]
+        },
+        {
+            id: 'PLAN-BUSINESS',
+            name: 'Business Plan',
+            price: 199,
+            period: 'monatlich',
+            features: [
+                'Alle Premium Features',
+                'Business Fahrzeuge',
+                'Dedicated Account Manager',
+                'Rechnungsstellung',
+                'Firmenrabatte'
+            ]
+        }
+    ];
+    
+    // Find the selected plan
+    const selectedPlan = allPlans.find(plan => plan.id === planId);
+    
+    if (selectedPlan) {
+        // Update localStorage with only the selected plan as active
+        const newSubscription = {
+            id: `SUB-${Date.now()}`,
+            name: selectedPlan.name,
+            type: selectedPlan.id.toLowerCase().replace('plan-', ''),
+            price: selectedPlan.price,
+            period: selectedPlan.period,
+            status: 'active',
+            startDate: new Date().toISOString().split('T')[0],
+            endDate: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], // 1 year from now
+            features: selectedPlan.features
+        };
+        
+        // Save only the selected plan as active
+        localStorage.setItem('userSubscriptions', JSON.stringify([newSubscription]));
+        
+        // Reload the page to show updated state
+        loadAllPlans();
+        
+        alert(`${selectedPlan.name} wurde erfolgreich abonniert!`);
+    }
+}
+
+function viewSubscription() {
+    console.log('View subscription details');
+    alert('Sie sind bereits für diesen Plan abonniert. Siehe "Meine Abos" für Details.');
 }

@@ -172,6 +172,18 @@ app.get('/payment-success', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'payment-success.html'));
 });
 
+// PayPal success page
+app.get('/paypal-success', (req, res) => {
+    console.log('PayPal success route accessed');
+    res.sendFile(path.join(__dirname, 'public', 'paypal-success.html'));
+});
+
+// PayPal cancel page
+app.get('/paypal-cancel', (req, res) => {
+    console.log('PayPal cancel route accessed');
+    res.sendFile(path.join(__dirname, 'public', 'paypal-cancel.html'));
+});
+
 app.get('/google-oauth', (req, res) => {
     console.log('Google OAuth route accessed');
     res.sendFile(path.join(__dirname, 'public', 'google-oauth.html'));
@@ -225,6 +237,28 @@ app.get('/views/reservation_confirmation.html', (req, res) => {
 // Account pages
 app.get('/buchungen', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'buchungen.html'));
+});
+
+app.get('/angebote', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'angebote.html'));
+});
+
+// Self-Services page
+app.get('/self-services', (req, res) => {
+    console.log('Self-Services route accessed');
+    res.sendFile(path.join(__dirname, 'public', 'self-services.html'));
+});
+
+// Geschäftskunden page
+app.get('/geschaeftskunden', (req, res) => {
+    console.log('Geschäftskunden route accessed');
+    res.sendFile(path.join(__dirname, 'public', 'geschaeftskunden.html'));
+});
+
+// Standorte page
+app.get('/standorte', (req, res) => {
+    console.log('Standorte route accessed');
+    res.sendFile(path.join(__dirname, 'public', 'standorte.html'));
 });
 
 app.get('/abos', (req, res) => {

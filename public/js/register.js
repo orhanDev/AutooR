@@ -42,7 +42,7 @@ function openGoogleOAuthPopup() {
     }
     
     // Listen for messages from popup
-    const messageListener = function(event) {
+    const messageListener = async function(event) {
         if (event.origin !== window.location.origin) {
             return;
         }
@@ -67,8 +67,8 @@ function openGoogleOAuthPopup() {
             
             localStorage.setItem('userData', JSON.stringify(userData));
             
-            // Save user to database
-            saveUserToDatabase(userData);
+            // Save user to database and wait for token
+            await saveUserToDatabase(userData);
             
             // Close popup and remove listener
             popup.close();
@@ -127,7 +127,13 @@ async function saveUserToDatabase(userData) {
         
         if (result.success) {
             console.log('Kullanıcı veritabanına kaydedildi:', result.user);
-    } else {
+            
+            // Token'ı localStorage'a kaydet
+            if (result.token) {
+                localStorage.setItem('token', result.token);
+                console.log('Token localStorage\'a kaydedildi:', result.token);
+            }
+        } else {
             console.error('Kullanıcı kayıt hatası:', result.message);
         }
     } catch (error) {

@@ -80,9 +80,12 @@ CREATE TABLE IF NOT EXISTS reservations (
 
 -- Örnek veriler ekle
 INSERT INTO locations (name, city) VALUES 
-    ('Berlin Hauptbahnhof', 'Berlin'),
-    ('Hamburg Flughafen', 'Hamburg'),
-    ('München Zentrum', 'München')
+    ('Berlin Zentrum', 'Berlin'),
+    ('Hamburg Zentrum', 'Hamburg'),
+    ('München Zentrum', 'München'),
+    ('Köln Zentrum', 'Köln'),
+    ('Frankfurt am Main Zentrum', 'Frankfurt am Main'),
+    ('Stuttgart Zentrum', 'Stuttgart')
 ON CONFLICT DO NOTHING;
 
 INSERT INTO car_features (feature_name) VALUES 

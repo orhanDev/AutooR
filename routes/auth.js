@@ -25,19 +25,19 @@ router.post('/register', async (req, res) => {
         const newUser = await query(`
             INSERT INTO users (first_name, last_name, email, password_hash, phone_number, address)
             VALUES ($1, $2, $3, $4, $5, $6)
-            RETURNING user_id, first_name, last_name, email, phone_number, address, is_admin, created_at
+            RETURNING id, first_name, last_name, email, phone_number, address, is_admin, created_at
         `, [first_name, last_name, email, passwordHash, phone_number, address]);
 
         // JWT token oluşturma (is_admin dahil)
         const token = jwt.sign(
-            { userId: newUser.rows[0].user_id, email: newUser.rows[0].email, is_admin: newUser.rows[0].is_admin },
+            { userId: newUser.rows[0].id, email: newUser.rows[0].email, is_admin: newUser.rows[0].is_admin },
             process.env.JWT_SECRET,
             { expiresIn: '24h' }
         );
 
         res.status(201).json({
             message: 'Registrierung erfolgreich',
-            user: { id: newUser.rows[0].user_id, email: newUser.rows[0].email }
+            user: { id: newUser.rows[0].id, email: newUser.rows[0].email }
         });
 
     } catch (error) {
@@ -65,7 +65,7 @@ router.post('/login', async (req, res) => {
 
         // JWT token oluşturma (is_admin dahil)
         const token = jwt.sign(
-            { userId: user.rows[0].user_id, email: user.rows[0].email, is_admin: user.rows[0].is_admin },
+            { userId: user.rows[0].id, email: user.rows[0].email, is_admin: user.rows[0].is_admin },
             process.env.JWT_SECRET,
             { expiresIn: '24h' }
         );
@@ -73,7 +73,7 @@ router.post('/login', async (req, res) => {
         res.json({
             message: 'Anmeldung erfolgreich',
             token,
-            user: { id: user.rows[0].user_id, email: user.rows[0].email }
+            user: { id: user.rows[0].id, email: user.rows[0].email }
         });
 
     } catch (error) {
@@ -88,10 +88,10 @@ router.get('/profile', authMiddleware, async (req, res) => {
         const userId = req.user.userId;
 
         const user = await query(`
-            SELECT user_id, first_name, last_name, email, phone_number, address, 
+            SELECT id, first_name, last_name, email, phone_number, address, 
                    payment_card_json, payment_paypal_json, payment_klarna_json, 
                    is_admin, created_at 
-            FROM users WHERE user_id = $1
+            FROM users WHERE id = $1
         `, [userId]);
 
         if (user.rows.length === 0) {
@@ -119,9 +119,9 @@ router.get('/user', authMiddleware, async (req, res) => {
         console.log('userId:', userId);
 
         const user = await query(`
-            SELECT user_id, first_name, last_name, email, phone_number, address, 
+            SELECT id, first_name, last_name, email, phone_number, address, 
                    is_admin, created_at 
-            FROM users WHERE user_id = $1
+            FROM users WHERE id = $1
         `, [userId]);
         
         console.log('Database query sonucu:', user.rows);

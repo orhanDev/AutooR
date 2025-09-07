@@ -1,5 +1,6 @@
 const express = require('express');
 const { Pool } = require('pg');
+const jwt = require('jsonwebtoken');
 const router = express.Router();
 
 // PostgreSQL bağlantı havuzu
@@ -29,31 +30,37 @@ router.post('/register', async (req, res) => {
             [email]
         );
 
+        let user;
+        
         if (existingUser.rows.length > 0) {
             // Kullanıcı zaten var, güncelle
             const updatedUser = await pool.query(
                 'UPDATE users SET first_name = $1, last_name = $2, login_method = $3, updated_at = CURRENT_TIMESTAMP WHERE email = $4 RETURNING id, email, first_name, last_name, is_verified, login_method',
                 [firstName, lastName, loginMethod, email]
             );
-            
-            return res.json({
-                success: true,
-                message: 'Kullanıcı güncellendi',
-                user: updatedUser.rows[0]
-            });
+            user = updatedUser.rows[0];
         } else {
             // Yeni kullanıcı oluştur
             const newUser = await pool.query(
                 'INSERT INTO users (email, first_name, last_name, login_method, is_verified) VALUES ($1, $2, $3, $4, $5) RETURNING id, email, first_name, last_name, is_verified, login_method',
                 [email, firstName, lastName, loginMethod, true]
             );
-            
-            return res.json({
-                success: true,
-                message: 'Kullanıcı başarıyla kaydedildi',
-                user: newUser.rows[0]
-            });
+            user = newUser.rows[0];
         }
+        
+        // JWT token oluştur
+        const token = jwt.sign(
+            { userId: user.id, email: user.email, is_admin: false },
+            process.env.JWT_SECRET || 'your-secret-key',
+            { expiresIn: '24h' }
+        );
+        
+        return res.json({
+            success: true,
+            message: 'Kullanıcı başarıyla kaydedildi',
+            user: user,
+            token: token
+        });
     } catch (error) {
         console.error('Kullanıcı kayıt hatası:', error);
         res.status(500).json({ 
