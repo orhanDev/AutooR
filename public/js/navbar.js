@@ -45,6 +45,12 @@ function createNavbar() {
                 <a class="brand-center" href="/">AutoR</a>
                 <div class="collapse navbar-collapse flex-grow-1" id="navbarNav">
                     <div class="side-left">
+                        <div class="menu-header d-flex justify-content-between align-items-center mb-4 d-md-none">
+                            <h2 class="menu-title mb-0">Menü</h2>
+                            <button class="btn-close-menu" type="button" aria-label="Menüyü Kapat">
+                                <span>&times;</span>
+                            </button>
+                        </div>
                         <ul class="navbar-nav" id="navbar-menu-container">
                             <li class="nav-item side-item" data-submenu="fahrzeuge"><a class="nav-link" href="/fahrzeuge">Fahrzeuge</a></li>
                             <li class="nav-item side-item"><a class="nav-link" href="/angebote">Angebote</a></li>
@@ -59,7 +65,7 @@ function createNavbar() {
                 </div>
                 <div class="account ms-auto position-relative">
                     <div class="d-flex align-items-center" id="user-info-container">
-                        <span class="user-name me-3" style="color: #ffc107; font-weight: 500;"></span>
+                        <span class="user-name me-3" style="color: #000000; font-weight: 500;"></span>
                         <button class="btn account-btn d-flex align-items-center" id="account-btn" aria-expanded="false" aria-controls="account-menu" aria-label="Account">
                             <i class="bi bi-person" style="font-size: 1.5rem;"></i>
                         </button>
@@ -102,6 +108,9 @@ function createNavbar() {
     
     // Add click outside to close hamburger menu
     addHamburgerMenuCloseListener();
+    
+    // Add close button functionality
+    addCloseButtonListener();
 
     // Initialize side menu interactions
     initSideMenu();
@@ -223,6 +232,31 @@ function testNavbarUpdate() {
     }));
     
     updateNavbar();
+}
+
+// Add close button functionality
+function addCloseButtonListener() {
+    document.addEventListener('click', function(e) {
+        if (e.target.closest('.btn-close-menu')) {
+            const navbarNav = document.getElementById('navbarNav');
+            if (navbarNav && navbarNav.classList.contains('show')) {
+                navbarNav.classList.remove('show');
+                document.body.style.overflow = '';
+            }
+        }
+    });
+    
+    // Add body scroll lock when menu opens
+    document.addEventListener('click', function(e) {
+        if (e.target.closest('.navbar-toggler')) {
+            setTimeout(() => {
+                const navbarNav = document.getElementById('navbarNav');
+                if (navbarNav && navbarNav.classList.contains('show')) {
+                    document.body.style.overflow = 'hidden';
+                }
+            }, 100);
+        }
+    });
 }
 
 // Add hamburger menu close listener
