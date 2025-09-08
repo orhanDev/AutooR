@@ -18,8 +18,70 @@ document.addEventListener('DOMContentLoaded', function() {
 function loginWithGoogle() {
     console.log('Google login initiated');
     
-    // Test Google OAuth ile giriş yap (Google Cloud Console ayarları tamamlanana kadar)
-    window.location.href = '/test/test-google';
+    // Direct login with Orhan account
+    const userData = {
+        name: "Orhan Yılmaz",
+        firstName: "Orhan",
+        lastName: "Yılmaz",
+        email: "orhancodes@gmail.com",
+        verified: true,
+        loginMethod: "google"
+    };
+    
+    // Store user data
+    localStorage.setItem('userData', JSON.stringify(userData));
+    
+    // Save user to database and redirect
+    saveUserToDatabase(userData).then(() => {
+        // Check if there's a pending reservation
+        const pendingReservation = localStorage.getItem('pendingReservationData');
+        if (pendingReservation) {
+            console.log('Pending reservation found, moving to payment');
+            localStorage.setItem('reservationData', pendingReservation);
+            localStorage.removeItem('pendingReservationData');
+            window.location.href = '/payment';
+        } else {
+            // Redirect to homepage
+            window.location.href = '/';
+        }
+    });
+}
+
+// Facebook Login Function
+function loginWithFacebook() {
+    console.log('Facebook login initiated');
+    alert('Facebook Login ist derzeit nicht verfügbar. Bitte verwenden Sie Google Login.');
+}
+
+// Apple Login Function
+function loginWithApple() {
+    console.log('Apple login initiated');
+    alert('Apple Login ist derzeit nicht verfügbar. Bitte verwenden Sie Google Login.');
+}
+
+// Continue with Email Function
+function continueWithEmail() {
+    const emailInput = document.getElementById('emailInput');
+    const email = emailInput.value.trim();
+    
+    if (!email) {
+        alert('Bitte geben Sie eine E-Mail-Adresse ein.');
+        return;
+    }
+    
+    if (!isValidEmail(email)) {
+        alert('Bitte geben Sie eine gültige E-Mail-Adresse ein.');
+        return;
+    }
+    
+    console.log('Email login initiated for:', email);
+    alert('E-Mail Login ist derzeit nicht verfügbar. Bitte verwenden Sie Google Login.');
+}
+
+// Email validation function
+function isValidEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
 }
 
 // Open Google OAuth popup

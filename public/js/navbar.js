@@ -204,8 +204,77 @@ function logout() {
     localStorage.removeItem('userData');
     localStorage.removeItem('pendingEmail');
     
-    alert('Sie wurden erfolgreich abgemeldet.');
-    window.location.href = '/';
+    // Create a more sophisticated logout notification
+    showLogoutNotification();
+    setTimeout(() => {
+        window.location.href = '/';
+    }, 2000);
+}
+
+// Show sophisticated logout notification
+function showLogoutNotification() {
+    // Create notification container
+    const notification = document.createElement('div');
+    notification.style.cssText = `
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: linear-gradient(135deg, #ffc107, #e0a800);
+        color: #000000;
+        padding: 2rem 3rem;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        z-index: 10000;
+        text-align: center;
+        font-family: 'Inter', sans-serif;
+        font-weight: 600;
+        font-size: 18px;
+        min-width: 300px;
+        animation: fadeInScale 0.5s ease-out;
+    `;
+    
+    // Add animation keyframes
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes fadeInScale {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.8);
+            }
+            100% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+    `;
+    document.head.appendChild(style);
+    
+    // Add content
+    notification.innerHTML = `
+        <div style="margin-bottom: 1rem;">
+            <i class="bi bi-check-circle-fill" style="font-size: 2rem; color: #000000;"></i>
+        </div>
+        <div style="font-size: 20px; font-weight: 700; margin-bottom: 0.5rem;">
+            Auf Wiedersehen!
+        </div>
+        <div style="font-size: 16px; opacity: 0.8;">
+            Sie wurden erfolgreich abgemeldet.<br>
+            Vielen Dank für Ihren Besuch bei AutoR.
+        </div>
+    `;
+    
+    // Add to page
+    document.body.appendChild(notification);
+    
+    // Add fade out animation before redirect
+    setTimeout(() => {
+        notification.style.animation = 'fadeOut 0.5s ease-out';
+    }, 1500);
 }
 
 // Check if user is logged in

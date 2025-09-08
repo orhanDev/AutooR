@@ -279,10 +279,35 @@ app.get('/hilfe', (req, res) => {
 
 // Test navbar page kaldırıldı
 
-// Start server
-const server = app.listen(PORT, () => {
-  console.log(`Server läuft auf http://localhost:3000`);
-});
+// Start server (HTTPS if certs available, otherwise HTTP)
+let server;
+try {
+  const fs = require('fs');
+  const https = require('https');
+  const certDir = path.join(__dirname, 'certs');
+  const keyPath = process.env.SSL_KEY_PATH || path.join(certDir, 'localhost-key.pem');
+  const certPath = process.env.SSL_CERT_PATH || path.join(certDir, 'localhost-cert.pem');
+
+  if (fs.existsSync(keyPath) && fs.existsSync(certPath)) {
+    const httpsOptions = {
+      key: fs.readFileSync(keyPath),
+      cert: fs.readFileSync(certPath),
+    };
+    const HTTPS_PORT = process.env.HTTPS_PORT || 3443;
+    server = https.createServer(httpsOptions, app).listen(HTTPS_PORT, () => {
+      console.log(`🔒 HTTPS läuft auf https://localhost:${HTTPS_PORT}`);
+    });
+  } else {
+    server = app.listen(PORT, () => {
+      console.log(`HTTP läuft auf http://localhost:${PORT}`);
+    });
+  }
+} catch (e) {
+  console.warn('HTTPS initialisierung fehlgeschlagen, falle auf HTTP zurück:', e.message);
+  server = app.listen(PORT, () => {
+    console.log(`HTTP läuft auf http://localhost:${PORT}`);
+  });
+}
 
 // Make keep-alive connections not keep the process alive too long during shutdown
 server.keepAliveTimeout = 1000; // 1s
