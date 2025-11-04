@@ -17,22 +17,15 @@ router.post('/create', async (req, res) => {
         const { 
             userEmail, 
             vehicleId, 
-            vehicleName, 
-            vehicleImage, 
             pickupLocation, 
             dropoffLocation, 
             pickupDate, 
             pickupTime, 
             dropoffDate, 
             dropoffTime, 
-            totalPrice, 
-            basePrice, 
-            insurancePrice, 
-            extrasPrice,
-            insuranceType,
-            extras
+            totalPrice
         } = req.body;
-        
+
         if (!userEmail || !vehicleId || !pickupLocation || !dropoffLocation || !pickupDate || !dropoffDate || !totalPrice) {
             return res.status(400).json({ 
                 success: false, 
@@ -40,13 +33,19 @@ router.post('/create', async (req, res) => {
             });
         }
 
-        // Kullanıcıyı bul
-        const user = await pool.query(
-            'SELECT id FROM users WHERE email = $1',
-            [userEmail]
-        );
+        // Kullanıcıyı bul (id ya da user_id desteği)
+        let user;
+        try {
+            user = await pool.query('SELECT id FROM users WHERE email = $1', [userEmail]);
+        } catch (e) {
+            if (e && e.code === '42703') { // undefined_column
+                user = await pool.query('SELECT user_id AS id FROM users WHERE email = $1', [userEmail]);
+            } else {
+                throw e;
+            }
+        }
 
-        if (user.rows.length === 0) {
+        if (!user || user.rows.length === 0) {
             return res.status(404).json({ 
                 success: false, 
                 message: 'Kullanıcı bulunamadı' 
@@ -55,30 +54,73 @@ router.post('/create', async (req, res) => {
 
         const userId = user.rows[0].id;
 
-        // Benzersiz booking ID oluştur
-        const bookingId = 'AUT-' + new Date().getFullYear() + '-' + 
-                         String(Date.now()).slice(-6) + '-' + 
-                         Math.random().toString(36).substr(2, 3).toUpperCase();
+        // Lokasyon tablosu var mı kontrol et
+        let hasLocationsTable = true;
+        try {
+            await pool.query('SELECT 1 FROM locations LIMIT 1');
+        } catch (e) {
+            if (e && e.code === '42P01') { // undefined_table
+                hasLocationsTable = false;
+            } else {
+                throw e;
+            }
+        }
 
-        // Rezervasyon oluştur
-        const reservation = await pool.query(
-            `INSERT INTO reservations (
-                user_id, booking_id, vehicle_id, vehicle_name, vehicle_image,
-                pickup_location, return_location, pickup_date, pickup_time,
-                return_date, return_time, total_price, base_price,
-                insurance_price, extras_price, insurance_type, extras,
-                status, payment_status, created_at
-            ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19) 
-            RETURNING id, booking_id, vehicle_name, pickup_location, return_location, 
-                     pickup_date, return_date, total_price, status, payment_status, created_at`,
-            [
-                userId, bookingId, vehicleId, vehicleName, vehicleImage,
-                pickupLocation, dropoffLocation, pickupDate, pickupTime,
-                dropoffDate, dropoffTime, totalPrice, basePrice,
-                insurancePrice, extrasPrice, insuranceType, JSON.stringify(extras),
-                'confirmed', 'pending', new Date()
-            ]
-        );
+        let pickupLocationId = null;
+        let dropoffLocationId = null;
+        if (hasLocationsTable) {
+            const pickupLoc = await pool.query(
+                'SELECT location_id FROM locations WHERE name = $1 OR CAST(location_id AS TEXT) = $1',
+                [pickupLocation]
+            );
+            const dropoffLoc = await pool.query(
+                'SELECT location_id FROM locations WHERE name = $1 OR CAST(location_id AS TEXT) = $1',
+                [dropoffLocation]
+            );
+
+            if (pickupLoc.rows.length === 0 || dropoffLoc.rows.length === 0) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Lokasyon bulunamadı'
+                });
+            }
+
+            pickupLocationId = pickupLoc.rows[0].location_id;
+            dropoffLocationId = dropoffLoc.rows[0].location_id;
+        }
+
+        // Tarih ve saatleri veritabanı tipleriyle uyumlu hale getir
+        const pickupTimeStr = pickupTime && pickupTime.length === 5 ? pickupTime + ':00' : (pickupTime || '09:00:00');
+        const dropoffTimeStr = dropoffTime && dropoffTime.length === 5 ? dropoffTime + ':00' : (dropoffTime || '10:00:00');
+
+        let reservation;
+        if (hasLocationsTable) {
+            // Şema: location_id kolonları mevcut
+            reservation = await pool.query(
+                `INSERT INTO reservations (
+                    user_id, car_id, pickup_date, dropoff_date, pickup_time, dropoff_time,
+                    pickup_location_id, dropoff_location_id, total_price, status, created_at
+                ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, 'Beklemede', CURRENT_TIMESTAMP)
+                RETURNING reservation_id, user_id, car_id, pickup_date, dropoff_date, total_price, status, created_at`,
+                [
+                    userId, vehicleId, pickupDate, dropoffDate, pickupTimeStr, dropoffTimeStr,
+                    pickupLocationId, dropoffLocationId, totalPrice
+                ]
+            );
+        } else {
+            // Eski/alternatif şema: metin kolonları (pickup_location, return_location)
+            reservation = await pool.query(
+                `INSERT INTO reservations (
+                    user_id, car_id, pickup_date, dropoff_date, pickup_time, dropoff_time,
+                    pickup_location, return_location, total_price, status, created_at
+                ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, 'Beklemede', CURRENT_TIMESTAMP)
+                RETURNING reservation_id, user_id, car_id, pickup_date, dropoff_date, total_price, status, created_at`,
+                [
+                    userId, vehicleId, pickupDate, dropoffDate, pickupTimeStr, dropoffTimeStr,
+                    pickupLocation, dropoffLocation, totalPrice
+                ]
+            );
+        }
 
         res.json({
             success: true,
@@ -89,7 +131,9 @@ router.post('/create', async (req, res) => {
         console.error('Rezervasyon oluşturma hatası:', error);
         res.status(500).json({ 
             success: false, 
-            message: 'Sunucu hatası' 
+            message: 'Sunucu hatası',
+            code: error && error.code,
+            detail: error && (error.detail || error.message)
         });
     }
 });

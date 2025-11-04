@@ -1,4 +1,4 @@
-﻿// AUTOR - Modern Car Rental JavaScript
+﻿// AutoR - Modern Car Rental JavaScript
 
 // Global variables
 let popularCarsContainer;

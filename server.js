@@ -30,6 +30,19 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json()); // Parse JSON request body
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded request body
 
+// Security headers (HTTP only; browsers ignore meta X-Frame-Options)
+app.use((req, res, next) => {
+  // Clickjacking protection
+  res.setHeader('X-Frame-Options', 'SAMEORIGIN');
+  // MIME sniffing protection
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  // Basic Referrer policy
+  res.setHeader('Referrer-Policy', 'no-referrer-when-downgrade');
+  // Reasonable CSP (keeps your current setup but prevents mixed content)
+  res.setHeader('Content-Security-Policy', 'upgrade-insecure-requests; block-all-mixed-content');
+  next();
+});
+
 // Serve static files from public folder
 app.use(express.static(path.join(__dirname, 'public')));
 

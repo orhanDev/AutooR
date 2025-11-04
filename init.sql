@@ -1,4 +1,4 @@
--- AutOr Database Schema
+-- AutoR Database Schema
 -- Kullanıcı ve ödeme bilgileri için tablolar
 
 -- Kullanıcılar tablosu
