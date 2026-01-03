@@ -55,10 +55,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 updateNavbar();
             }
             
-            // Redirect to homepage after short delay
-            setTimeout(() => {
-                window.location.href = '/';
-            }, 1500);
+            // Check if there's pending reservation data
+            const pendingReservationData = localStorage.getItem('pendingReservationData');
+            if (pendingReservationData) {
+                console.log('Pending reservation found, redirecting to payment');
+                // Store user data in localStorage for payment page
+                localStorage.setItem('userData', JSON.stringify(userDataToStore));
+                // Redirect to payment page
+                setTimeout(() => {
+                    window.location.href = '/zahlungsinformationen';
+                }, 1500);
+            } else {
+                // Redirect to homepage after short delay
+                setTimeout(() => {
+                    window.location.href = '/';
+                }, 1500);
+            }
             
             return; // Don't continue with normal login form setup
         } catch (error) {
@@ -190,28 +202,60 @@ document.addEventListener('DOMContentLoaded', () => {
                         
                         console.log('User data stored in sessionStorage');
                         
-                        // Show success message
-                        showAlert('Erfolgreich angemeldet! Weiterleitung...', 'success');
-                        
-                        // Redirect to homepage after short delay
-                        setTimeout(() => {
-                            window.location.href = '/';
-                        }, 1000);
+                        // Check if there's pending reservation data
+                        const pendingReservationData = localStorage.getItem('pendingReservationData');
+                        if (pendingReservationData) {
+                            console.log('Pending reservation found, redirecting to payment');
+                            // Store user data in localStorage for payment page
+                            localStorage.setItem('userData', JSON.stringify(userDataToStore));
+                            // Show success message
+                            showAlert('Erfolgreich angemeldet! Weiterleitung zur Zahlung...', 'success');
+                            // Redirect to payment page
+                            setTimeout(() => {
+                                window.location.href = '/zahlungsinformationen';
+                            }, 1000);
+                        } else {
+                            // Show success message
+                            showAlert('Erfolgreich angemeldet! Weiterleitung...', 'success');
+                            
+                            // Redirect to homepage after short delay
+                            setTimeout(() => {
+                                window.location.href = '/';
+                            }, 1000);
+                        }
                     } else {
                         // Token stored but user data fetch failed - still redirect
                         console.warn('User data fetch failed, but token is stored');
+                        // Check if there's pending reservation data
+                        const pendingReservationData = localStorage.getItem('pendingReservationData');
+                        if (pendingReservationData) {
+                            showAlert('Anmeldung erfolgreich! Weiterleitung zur Zahlung...', 'success');
+                            setTimeout(() => {
+                                window.location.href = '/zahlungsinformationen';
+                            }, 1000);
+                        } else {
+                            showAlert('Anmeldung erfolgreich! Weiterleitung...', 'success');
+                            setTimeout(() => {
+                                window.location.href = '/';
+                            }, 1000);
+                        }
+                    }
+                } catch (userError) {
+                    console.error('Error fetching user data:', userError);
+                    // Token is stored, redirect anyway
+                    // Check if there's pending reservation data
+                    const pendingReservationData = localStorage.getItem('pendingReservationData');
+                    if (pendingReservationData) {
+                        showAlert('Anmeldung erfolgreich! Weiterleitung zur Zahlung...', 'success');
+                        setTimeout(() => {
+                            window.location.href = '/zahlungsinformationen';
+                        }, 1000);
+                    } else {
                         showAlert('Anmeldung erfolgreich! Weiterleitung...', 'success');
                         setTimeout(() => {
                             window.location.href = '/';
                         }, 1000);
                     }
-                } catch (userError) {
-                    console.error('Error fetching user data:', userError);
-                    // Token is stored, redirect anyway
-                    showAlert('Anmeldung erfolgreich! Weiterleitung...', 'success');
-                    setTimeout(() => {
-                        window.location.href = '/';
-                    }, 1000);
                 }
             } else {
                 // Login failed

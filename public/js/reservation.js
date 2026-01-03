@@ -972,7 +972,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 localStorage.setItem('pendingReservationData', JSON.stringify(reservationData));
                 
                 // Redirect to login page
-                window.location.href = '/register';
+                window.location.href = '/login';
                 return;
             }
             

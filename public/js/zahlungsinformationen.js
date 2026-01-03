@@ -25,6 +25,57 @@ document.addEventListener('DOMContentLoaded', () => {
     let selectedInsurance = {};
     let selectedProducts = [];
 
+    // Check for pending reservation data (from login redirect)
+    const pendingReservationData = localStorage.getItem('pendingReservationData');
+    if (pendingReservationData) {
+        try {
+            const reservationData = JSON.parse(pendingReservationData);
+            console.log('Pending reservation data found:', reservationData);
+            
+            // Store as reservationData for payment processing
+            localStorage.setItem('reservationData', pendingReservationData);
+            
+            // Extract vehicle data
+            if (reservationData.vehicle) {
+                selectedVehicle = reservationData.vehicle;
+                localStorage.setItem('selectedVehicle', JSON.stringify(reservationData.vehicle));
+            }
+            
+            // Extract search data
+            if (reservationData.pickupDate && reservationData.dropoffDate) {
+                const start = new Date(reservationData.pickupDate);
+                const end = new Date(reservationData.dropoffDate);
+                const days = Math.max(1, Math.ceil((end - start) / (1000 * 60 * 60 * 24)));
+                searchData = {
+                    days: days,
+                    pickupDate: reservationData.pickupDate,
+                    dropoffDate: reservationData.dropoffDate,
+                    pickupLocation: reservationData.pickupLocation,
+                    dropoffLocation: reservationData.dropoffLocation
+                };
+                localStorage.setItem('searchData', JSON.stringify(searchData));
+            }
+            
+            // Extract insurance data
+            if (reservationData.insurance) {
+                // Find insurance type from reservation data
+                const insuranceTypes = {
+                    'premium': { key: 'premium', price: 45 },
+                    'standard': { key: 'standard', price: 25 },
+                    'basic': { key: 'basic', price: 15 }
+                };
+                // Default to standard if insurance is true but type not specified
+                selectedInsurance = insuranceTypes.standard;
+                localStorage.setItem('selectedInsurance', JSON.stringify(selectedInsurance));
+            }
+            
+            // Clear pending reservation data after processing
+            localStorage.removeItem('pendingReservationData');
+        } catch (error) {
+            console.error('Error parsing pending reservation data:', error);
+        }
+    }
+
     // Clear any invalid localStorage data first
     const localStorageKeys = ['selectedVehicle', 'searchData', 'selectedInsurance', 'selectedProducts'];
     localStorageKeys.forEach(key => {
