@@ -15,6 +15,12 @@ html, body {
     min-height: 100vh;
 }
 
+/* Navbar altında boşluk - fixed navbar için */
+/* Ana sayfa hariç tüm sayfalarda navbar altında boşluk olmalı */
+body {
+    padding-top: 80px;
+}
+
 /* Navbar styles moved to /css/navbar.css */
 
 /* Auth Buttons - Porsche Style */
@@ -241,14 +247,14 @@ html, body {
     position: absolute;
     top: 1rem;
     right: 1rem;
-    background: #B10000;
-    color: #ffffff;
+    background: #ffd43b !important; /* sarı arka plan */
+    color: #000000 !important; /* siyah yazı */
     padding: 0.5rem 1rem;
     border-radius: 50px;
     font-weight: 700;
     font-size: 0.9rem;
     z-index: 2;
-    box-shadow: 0 4px 12px rgba(213, 0, 28, 0.3);
+    box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
 }
 
 .car-details {
@@ -1081,8 +1087,8 @@ html, body {
     position: absolute;
     top: 20px;
     right: 20px;
-    background: rgba(0, 0, 0, 0.8);
-    color: white;
+    background: #ffd43b; /* sarı arka plan */
+    color: #000000; /* siyah yazı */
     padding: 8px 16px;
     border-radius: 25px;
     font-size: 0.9rem;

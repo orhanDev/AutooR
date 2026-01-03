@@ -75,7 +75,7 @@
 
         /* Navbar için boşluk */
         body {
-            padding: 0;
+            padding-top: 80px; /* Navbar için boşluk */
             margin: 0;
         }
 
@@ -310,6 +310,7 @@
             min-height: 360px;
             display: flex;
             flex-direction: column;
+            position: relative;
         }
         .cars-grid .vehicle-card img {
             height: 220px;
@@ -318,6 +319,19 @@
         }
         .cars-grid .vehicle-meta {
             margin-top: auto;
+        }
+        .cars-grid .vehicle-card .price-badge {
+            position: absolute;
+            top: 0.6rem;
+            right: 0.6rem;
+            background: #ffd43b !important; /* sari */
+            color: #000000 !important; /* siyah yazi */
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.7rem;
+            box-shadow: 0 2px 8px rgba(212, 175, 55, 0.3);
+            z-index: 10;
         }
         
         /* Car Card - Matching main page style */
@@ -393,17 +407,19 @@
             transform: scale(1.1);
         }
         
-        .car-card .price-badge {
+        .car-card .price-badge,
+        .vehicle-card .price-badge {
             position: absolute;
             top: 0.6rem;
             right: 0.6rem;
-            background: #ffd43b; /* sari */
-            color: #000000; /* siyah yazi */
+            background: #ffd43b !important; /* sari */
+            color: #000000 !important; /* siyah yazi */
             padding: 0.25rem 0.5rem;
             border-radius: 12px;
             font-weight: 700;
             font-size: 0.7rem;
             box-shadow: 0 2px 8px rgba(212, 175, 55, 0.3);
+            z-index: 10;
         }
         
         .car-details {

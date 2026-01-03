@@ -667,20 +667,33 @@ document.addEventListener('DOMContentLoaded', () => {
             if (response.ok && result.token) {
                 console.log('Registration successful:', result);
                 
-                // Store token in sessionStorage
+                // Store token in both sessionStorage and localStorage
                 sessionStorage.setItem('token', result.token);
+                localStorage.setItem('token', result.token);
                 
-                // Store user data in sessionStorage
+                // Store user data in both sessionStorage and localStorage
                 if (result.user) {
                     const userDataToStore = {
                         firstName: result.user.first_name,
                         lastName: result.user.last_name,
                         email: result.user.email,
-                        id: result.user.id || result.user.user_id
+                        id: result.user.id || result.user.user_id,
+                        name: `${result.user.first_name} ${result.user.last_name}`.trim() // Add name field for navbar compatibility
                     };
+                    
+                    // Store in sessionStorage
                     sessionStorage.setItem('userData', JSON.stringify(userDataToStore));
                     sessionStorage.setItem('isLoggedIn', 'true');
                     sessionStorage.setItem('currentUser', JSON.stringify({
+                        firstName: result.user.first_name,
+                        lastName: result.user.last_name,
+                        email: result.user.email
+                    }));
+                    
+                    // Also store in localStorage for persistence across page reloads
+                    localStorage.setItem('userData', JSON.stringify(userDataToStore));
+                    localStorage.setItem('isLoggedIn', 'true');
+                    localStorage.setItem('currentUser', JSON.stringify({
                         firstName: result.user.first_name,
                         lastName: result.user.last_name,
                         email: result.user.email

@@ -5,29 +5,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const authLinksContainer = document.getElementById('auth-links');
     console.log('auth-links container:', authLinksContainer);
     
-    // Sayfa ilk açıldığında localStorage'daki eski auth verilerini temizle
-    // (Eğer sessionStorage'da yoksa, bu yeni bir oturum demektir)
-    if (!sessionStorage.getItem('token')) {
-        localStorage.removeItem('token');
-        localStorage.removeItem('welcome_name');
-        localStorage.removeItem('user');
-        localStorage.removeItem('userData');
-        localStorage.removeItem('isLoggedIn');
-        localStorage.removeItem('currentUser');
-        console.log('Eski localStorage auth verileri temizlendi');
-    }
-    
     // sessionStorage'dan token al (tarayıcı kapanınca otomatik silinir)
+    // localStorage'dan da kontrol et (kalıcı oturum için)
     const token = sessionStorage.getItem('token') || localStorage.getItem('token');
-    console.log('Token sessionStorage\'dan:', token);
+    console.log('Token:', token ? 'found' : 'not found');
 
-    // Sayfa kapatıldığında sessionStorage'ı temizle
+    // Sayfa kapatıldığında sadece sessionStorage'ı temizle
+    // localStorage kalıcı olmalı (sayfa yenilendiğinde veya başka sayfaya gidildiğinde hatırlansın)
+    // Sadece tarayıcı tamamen kapatıldığında sessionStorage temizlenir (otomatik)
     window.addEventListener('beforeunload', () => {
+        // Sadece sessionStorage'ı temizle, localStorage'ı koru
         sessionStorage.removeItem('token');
         sessionStorage.removeItem('userData');
         sessionStorage.removeItem('isLoggedIn');
         sessionStorage.removeItem('currentUser');
-        console.log('Session temizlendi (sayfa kapatıldı)');
+        sessionStorage.removeItem('welcome_name');
+        console.log('SessionStorage temizlendi (sayfa kapatıldı), localStorage korundu');
     });
 
     async function updateAuthLinks() {

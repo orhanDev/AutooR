@@ -1,8 +1,49 @@
 ﻿// Navbar JavaScript
 document.addEventListener('DOMContentLoaded', function() {
     console.log('DOM loaded, calling updateNavbar');
+    
+    // Check if browser was closed and reopened (sessionStorage empty but localStorage has data)
+    // If so, restore session from localStorage
+    const hasLocalStorageData = localStorage.getItem('userData') && localStorage.getItem('isLoggedIn') === 'true';
+    const hasSessionStorageData = sessionStorage.getItem('userData') && sessionStorage.getItem('isLoggedIn') === 'true';
+    
+    if (hasLocalStorageData && !hasSessionStorageData) {
+        // Browser was closed and reopened - restore session from localStorage
+        console.log('Restoring session from localStorage');
+        const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+        const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+        const token = localStorage.getItem('token');
+        
+        if (userData && userData.email) {
+            sessionStorage.setItem('userData', JSON.stringify(userData));
+            sessionStorage.setItem('isLoggedIn', 'true');
+            sessionStorage.setItem('currentUser', JSON.stringify(currentUser));
+            if (token) {
+                sessionStorage.setItem('token', token);
+            }
+        }
+    }
+    
     createNavbar();
-    updateNavbar();
+    
+    // Update navbar with a slight delay to ensure DOM is ready
+    setTimeout(() => {
+        updateNavbar();
+    }, 100);
+    
+    // Also update navbar after a longer delay to catch any late-loading elements
+    setTimeout(() => {
+        updateNavbar();
+    }, 500);
+    
+    // Update navbar when page becomes visible (user switches tabs back)
+    document.addEventListener('visibilitychange', function() {
+        if (!document.hidden) {
+            setTimeout(() => {
+                updateNavbar();
+            }, 100);
+        }
+    });
 });
 
 // Shared vehicle dataset for submenu (images and details)
@@ -125,10 +166,11 @@ function addNavbarCSS() {}
 function updateNavbar() {
     console.log('updateNavbar called');
     
-    // sessionStorage'dan kontrol et (öncelikli), yoksa localStorage'dan
-    const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true' || localStorage.getItem('isLoggedIn') === 'true';
-    const currentUser = JSON.parse(sessionStorage.getItem('currentUser') || localStorage.getItem('currentUser') || '{}');
-    const userData = JSON.parse(sessionStorage.getItem('userData') || localStorage.getItem('userData') || '{}');
+    // localStorage'dan kontrol et (öncelikli) - kalıcı oturum için
+    // sessionStorage sadece tarayıcı kapanınca silinir, localStorage kalıcıdır
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true' || sessionStorage.getItem('isLoggedIn') === 'true';
+    const currentUser = JSON.parse(localStorage.getItem('currentUser') || sessionStorage.getItem('currentUser') || '{}');
+    const userData = JSON.parse(localStorage.getItem('userData') || sessionStorage.getItem('userData') || '{}');
     const currentPage = window.location.pathname;
     
     console.log('isLoggedIn:', isLoggedIn);
@@ -147,8 +189,23 @@ function updateNavbar() {
     console.log('Containers found, updating...');
     
     // Check if user is logged in (either old format or new format)
-    const userIsLoggedIn = (isLoggedIn && currentUser.firstName) || (userData.verified && userData.name);
-    const fullUserName = currentUser.firstName || userData.name;
+    // Support multiple formats: currentUser.firstName, userData.firstName, userData.name
+    const userIsLoggedIn = (isLoggedIn && (currentUser.firstName || userData.firstName || userData.name)) || 
+                           (userData && (userData.firstName || userData.email));
+    
+    // Get user name from multiple possible sources
+    let fullUserName = '';
+    if (currentUser && currentUser.firstName) {
+        fullUserName = currentUser.firstName;
+    } else if (userData && userData.firstName) {
+        fullUserName = userData.firstName;
+        if (userData.lastName) {
+            fullUserName = `${userData.firstName} ${userData.lastName}`;
+        }
+    } else if (userData && userData.name) {
+        fullUserName = userData.name;
+    }
+    
     const userName = fullUserName ? fullUserName.split(' ')[0] : '';
     
     if (userIsLoggedIn && userName) {

@@ -876,34 +876,15 @@ document.addEventListener('DOMContentLoaded', () => {
     function processPaymentDirectly(paymentMethod) {
         console.log('Processing payment with method:', paymentMethod);
         
-        switch(paymentMethod) {
-            case 'kreditkarte':
-            case 'credit-card':
-                showCreditCardForm();
-                break;
-            case 'paypal':
-                redirectToPayPal();
-                break;
-            case 'klarna':
-                redirectToKlarna();
-                break;
-            case 'googlepay':
-                processGooglePay();
-                break;
-            case 'sofort':
-                redirectToSofort();
-                break;
-            case 'cash':
-            case 'barzahlung':
-                processCashPayment();
-                break;
-            default:
-                showCreditCardForm(); // Default to credit card
-        }
+        // All payment methods show the same demo message
+        showDemoMessage();
     }
     
-    // Show credit card form
+    // Show credit card form - REMOVED: All payment methods now show demo message
     function showCreditCardForm() {
+        // Directly show demo message instead of credit card form
+        showDemoMessage();
+        return;
         const creditCardHTML = `
             <div class="credit-card-overlay" id="credit-card-overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 9999; display: flex; align-items: center; justify-content: center;">
                 <div class="credit-card-modal" style="background: white; padding: 30px; border-radius: 10px; max-width: 500px; width: 90%; max-height: 90vh; overflow-y: auto;">
@@ -1011,12 +992,11 @@ document.addEventListener('DOMContentLoaded', () => {
             submitBtn.innerHTML = '<i class="bi bi-hourglass-split me-2"></i>Zahlung wird verarbeitet...';
         }
         
-        // Simulate payment processing
+        // Show demo message
         setTimeout(() => {
-            alert('Zahlung erfolgreich! Ihre Reservierung wurde bestätigt.');
             closeCreditCardForm();
-            window.location.href = '/reservation-confirmation';
-        }, 2000);
+            showDemoMessage();
+        }, 1000);
     }
     
     // Close credit card form
@@ -1027,50 +1007,104 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
     
+    // Show demo message for all payment methods
+    function showDemoMessage() {
+        const demoModalHTML = `
+            <div class="modal fade" id="demoPaymentModal" tabindex="-1" aria-labelledby="demoPaymentModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header bg-warning">
+                            <h5 class="modal-title" id="demoPaymentModalLabel">
+                                <i class="bi bi-info-circle me-2"></i>
+                                Demo-Version
+                            </h5>
+                        </div>
+                        <div class="modal-body text-center">
+                            <div class="mb-4">
+                                <i class="bi bi-exclamation-triangle-fill text-warning" style="font-size: 3rem;"></i>
+                            </div>
+                            <h5 class="mb-3">Dies ist eine Demo-Version</h5>
+                            <p class="mb-3">
+                                Dies ist keine echte Autovermietungs-Website. 
+                                Es handelt sich um eine Demo-Version zu Übungszwecken.
+                            </p>
+                            <p class="text-muted mb-0">
+                                <strong>Keine Zahlung kann durchgeführt werden.</strong>
+                            </p>
+                        </div>
+                        <div class="modal-footer justify-content-center gap-2">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                Verstanden
+                            </button>
+                            <button type="button" class="btn btn-warning" onclick="goToHomepage()">
+                                <i class="bi bi-house me-2"></i>
+                                Zur Startseite
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        // Remove existing modal if any
+        const existingModal = document.getElementById('demoPaymentModal');
+        if (existingModal) {
+            existingModal.remove();
+        }
+        
+        // Add modal to body
+        document.body.insertAdjacentHTML('beforeend', demoModalHTML);
+        
+        // Initialize Bootstrap modal
+        const modalElement = document.getElementById('demoPaymentModal');
+        const modal = new bootstrap.Modal(modalElement);
+        modal.show();
+        
+        // Clean up modal when hidden
+        modalElement.addEventListener('hidden.bs.modal', () => {
+            modalElement.remove();
+        });
+    }
+    
     // Redirect to PayPal
     function redirectToPayPal() {
-        alert('Sie werden zu PayPal weitergeleitet...');
-        setTimeout(() => {
-            alert('PayPal-Zahlung erfolgreich! Ihre Reservierung wurde bestätigt.');
-            window.location.href = '/reservation-confirmation';
-        }, 2000);
+        showDemoMessage();
     }
     
     // Redirect to Klarna
     function redirectToKlarna() {
-        alert('Sie werden zu Klarna weitergeleitet...');
-        setTimeout(() => {
-            alert('Klarna-Zahlung erfolgreich! Ihre Reservierung wurde bestätigt.');
-            window.location.href = '/reservation-confirmation';
-        }, 2000);
+        showDemoMessage();
     }
     
     // Process Google Pay
     function processGooglePay() {
-        alert('Google Pay wird verarbeitet...');
-        setTimeout(() => {
-            alert('Google Pay-Zahlung erfolgreich! Ihre Reservierung wurde bestätigt.');
-            window.location.href = '/reservation-confirmation';
-        }, 2000);
+        showDemoMessage();
     }
     
     // Process cash payment
     function processCashPayment() {
-        alert('Barzahlung wird verarbeitet...');
-        setTimeout(() => {
-            alert('Barzahlung erfolgreich! Ihre Reservierung wurde bestätigt.');
-            window.location.href = '/reservation-confirmation';
-        }, 2000);
+        showDemoMessage();
     }
     
     // Redirect to Sofort
     function redirectToSofort() {
-        alert('Sie werden zu Sofortüberweisung weitergeleitet...');
-        setTimeout(() => {
-            alert('Sofortüberweisung erfolgreich! Ihre Reservierung wurde bestätigt.');
-            window.location.href = '/reservation-confirmation';
-        }, 2000);
+        showDemoMessage();
     }
+    
+    // Go to homepage and ensure navbar is updated
+    window.goToHomepage = function() {
+        // Close modal first
+        const modalElement = document.getElementById('demoPaymentModal');
+        if (modalElement) {
+            const modal = bootstrap.Modal.getInstance(modalElement);
+            if (modal) {
+                modal.hide();
+            }
+        }
+        
+        // Navigate to homepage
+        window.location.href = '/';
+    };
 
 });
 

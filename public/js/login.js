@@ -15,19 +15,32 @@ document.addEventListener('DOMContentLoaded', () => {
             const loginMethod = userInfo.loginMethod || 'google';
             console.log(`${loginMethod.charAt(0).toUpperCase() + loginMethod.slice(1)} OAuth login successful:`, userInfo);
             
-            // Store token in sessionStorage
+            // Store token in both sessionStorage and localStorage
             sessionStorage.setItem('token', token);
+            localStorage.setItem('token', token);
             
-            // Store user data in sessionStorage
+            // Store user data in both sessionStorage and localStorage
             const userDataToStore = {
                 firstName: userInfo.firstName,
                 lastName: userInfo.lastName,
                 email: userInfo.email,
-                id: userInfo.id || userInfo.user_id
+                id: userInfo.id || userInfo.user_id,
+                name: `${userInfo.firstName} ${userInfo.lastName}`.trim() // Add name field for navbar compatibility
             };
+            
+            // Store in sessionStorage
             sessionStorage.setItem('userData', JSON.stringify(userDataToStore));
             sessionStorage.setItem('isLoggedIn', 'true');
             sessionStorage.setItem('currentUser', JSON.stringify({
+                firstName: userInfo.firstName,
+                lastName: userInfo.lastName,
+                email: userInfo.email
+            }));
+            
+            // Also store in localStorage for persistence across page reloads
+            localStorage.setItem('userData', JSON.stringify(userDataToStore));
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('currentUser', JSON.stringify({
                 firstName: userInfo.firstName,
                 lastName: userInfo.lastName,
                 email: userInfo.email
@@ -168,8 +181,9 @@ document.addEventListener('DOMContentLoaded', () => {
             if (response.ok && result.token) {
                 console.log('Login successful:', result);
                 
-                // Store token in sessionStorage (tarayıcı kapanınca otomatik silinir)
+                // Store token in both sessionStorage and localStorage
                 sessionStorage.setItem('token', result.token);
+                localStorage.setItem('token', result.token);
                 
                 // Get user details
                 try {
@@ -185,13 +199,16 @@ document.addEventListener('DOMContentLoaded', () => {
                         
                         console.log('User data received:', user);
                         
-                        // Store user data in sessionStorage
+                        // Store user data in both sessionStorage and localStorage
                         const userDataToStore = {
                             firstName: user.first_name,
                             lastName: user.last_name,
                             email: user.email,
-                            id: user.user_id || user.id
+                            id: user.user_id || user.id,
+                            name: `${user.first_name} ${user.last_name}`.trim() // Add name field for navbar compatibility
                         };
+                        
+                        // Store in sessionStorage
                         sessionStorage.setItem('userData', JSON.stringify(userDataToStore));
                         sessionStorage.setItem('isLoggedIn', 'true');
                         sessionStorage.setItem('currentUser', JSON.stringify({
@@ -200,7 +217,16 @@ document.addEventListener('DOMContentLoaded', () => {
                             email: user.email
                         }));
                         
-                        console.log('User data stored in sessionStorage');
+                        // Also store in localStorage for persistence across page reloads
+                        localStorage.setItem('userData', JSON.stringify(userDataToStore));
+                        localStorage.setItem('isLoggedIn', 'true');
+                        localStorage.setItem('currentUser', JSON.stringify({
+                            firstName: user.first_name,
+                            lastName: user.last_name,
+                            email: user.email
+                        }));
+                        
+                        console.log('User data stored in both sessionStorage and localStorage');
                         
                         // Check if there's pending reservation data
                         const pendingReservationData = localStorage.getItem('pendingReservationData');

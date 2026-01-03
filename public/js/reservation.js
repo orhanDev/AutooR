@@ -65,6 +65,18 @@ document.addEventListener('DOMContentLoaded', () => {
     // Get selected vehicle or booking ID from URL
     const urlParams = new URLSearchParams(window.location.search);
     const bookingId = urlParams.get('id');
+    const offerId = urlParams.get('offer');
+    const offerType = urlParams.get('type');
+    const offerCategory = urlParams.get('category');
+    
+    // Store offer information for discount calculation
+    if (offerId) {
+        localStorage.setItem('activeOffer', JSON.stringify({
+            id: offerId,
+            type: offerType,
+            category: offerCategory
+        }));
+    }
     
     let selectedCarId = localStorage.getItem('selectedCarId');
     let selectedVehicle = localStorage.getItem('selectedVehicle');
@@ -486,6 +498,10 @@ document.addEventListener('DOMContentLoaded', () => {
                                 <div class="d-flex justify-content-between mb-2">
                                     <span id="base-price-label">Grundpreis (1 Tag)</span>
                                     <span id="base-price">&euro;${Math.floor(Number(vehicle.daily_rate))}</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2" id="discount-row" style="display: none;">
+                                    <span style="color: #28a745;">Rabatt</span>
+                                    <span id="discount-price" style="color: #28a745; font-weight: bold;"></span>
                                 </div>
                                 <div class="d-flex justify-content-between mb-2">
                                     <span>Versicherung</span>
@@ -1003,16 +1019,132 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
         
-        const totalPrice = Math.round((basePrice + insurance + additionalServices) * 100) / 100;
+        // Calculate discount based on active offer
+        let discount = 0;
+        let discountPercent = 0;
+        let discountLabel = '';
+        const activeOfferData = localStorage.getItem('activeOffer');
+        
+        if (activeOfferData) {
+            try {
+                const offer = JSON.parse(activeOfferData);
+                discountPercent = getDiscountPercent(offer.id, offer.type, offer.category, vehicle, pickupDate, dropoffDate, diffHours);
+                
+                if (discountPercent > 0) {
+                    // Apply discount only to base price (not insurance or extras)
+                    discount = Math.round((basePrice * discountPercent / 100) * 100) / 100;
+                    discountLabel = getDiscountLabel(offer.id);
+                }
+            } catch (e) {
+                console.error('Error parsing offer data:', e);
+            }
+        }
+        
+        const discountedBasePrice = Math.round((basePrice - discount) * 100) / 100;
+        const totalPrice = Math.round((discountedBasePrice + insurance + additionalServices) * 100) / 100;
         
         // Update price display
         const baseLabel = document.getElementById('base-price-label');
         const baseEl = document.getElementById('base-price');
         if (baseLabel) baseLabel.textContent = priceLabel;
-        if (baseEl) baseEl.textContent = `€${basePrice.toFixed(2)}`;
+        if (baseEl) {
+            if (discount > 0) {
+                baseEl.innerHTML = `<span style="text-decoration: line-through; color: #999; margin-right: 0.5rem;">€${basePrice.toFixed(2)}</span><span style="color: #28a745; font-weight: bold;">€${discountedBasePrice.toFixed(2)}</span>`;
+            } else {
+                baseEl.textContent = `€${basePrice.toFixed(2)}`;
+            }
+        }
+        
+        // Show discount if applicable
+        const discountRow = document.getElementById('discount-row');
+        const discountEl = document.getElementById('discount-price');
+        if (discountRow && discountEl) {
+            if (discount > 0) {
+                discountEl.textContent = `-€${discount.toFixed(2)} (${discountLabel})`;
+                discountRow.style.display = 'flex';
+                discountEl.style.color = '#28a745';
+                discountEl.style.fontWeight = 'bold';
+            } else {
+                discountRow.style.display = 'none';
+            }
+        }
+        
         document.getElementById('insurance-price').textContent = `€${insurance.toFixed(2)}`;
         document.getElementById('additional-services-price').textContent = `€${additionalServices.toFixed(2)}`;
         document.getElementById('total-price').textContent = `€${totalPrice.toFixed(2)}`;
+    }
+    
+    // Get discount percentage based on offer ID and conditions
+    function getDiscountPercent(offerId, offerType, offerCategory, vehicle, pickupDate, dropoffDate, diffHours) {
+        if (!offerId) return 0;
+        
+        // Calculate days between pickup and dropoff
+        const pickup = new Date(pickupDate);
+        const dropoff = new Date(dropoffDate);
+        const daysUntilPickup = Math.ceil((pickup - new Date()) / (1000 * 60 * 60 * 24));
+        const rentalDays = Math.ceil(diffHours / 24);
+        
+        switch (offerId) {
+            case 'offer-1': // Frühbucher-Rabatt - 20%
+                // Requires booking at least 14 days in advance
+                if (daysUntilPickup >= 14 && rentalDays >= 3) {
+                    return 20;
+                }
+                return 0;
+                
+            case 'offer-2': // Wochenend-Special - 15%
+                // Friday to Sunday
+                const pickupDay = pickup.getDay(); // 0 = Sunday, 5 = Friday
+                const dropoffDay = dropoff.getDay();
+                if ((pickupDay === 5 && dropoffDay === 0) || (pickupDay === 5 && dropoffDay === 6)) {
+                    return 15;
+                }
+                return 0;
+                
+            case 'offer-3': // Langzeit-Miete - 30%
+                // 30 days or more
+                if (rentalDays >= 30) {
+                    return 30;
+                }
+                return 0;
+                
+            case 'offer-4': // Studenten-Rabatt - 25%
+                // Student offer - always applicable if selected
+                if (offerType === 'student') {
+                    return 25;
+                }
+                return 0;
+                
+            case 'offer-5': // Premium-Paket - 10%
+                // Premium category vehicles
+                if (offerCategory === 'premium' || vehicle.category === 'Premium' || vehicle.category === 'Oberklasse') {
+                    return 10;
+                }
+                return 0;
+                
+            case 'offer-6': // Familien-Angebot - 18%
+                // Family-friendly vehicles (SUVs, Minivans)
+                if (offerType === 'family' || vehicle.category === 'SUV' || vehicle.category === 'Minivan') {
+                    return 18;
+                }
+                return 0;
+                
+            default:
+                return 0;
+        }
+    }
+    
+    // Get discount label for display
+    function getDiscountLabel(offerId) {
+        const labels = {
+            'offer-1': 'Frühbucher-Rabatt 20%',
+            'offer-2': 'Wochenend-Special 15%',
+            'offer-3': 'Langzeit-Miete 30%',
+            'offer-4': 'Studenten-Rabatt 25%',
+            'offer-5': 'Premium-Paket 10%',
+            'offer-6': 'Familien-Angebot 18%'
+        };
+        return labels[offerId] || 'Rabatt';
     }
 
     function updateSummaryBlocks() {
@@ -1046,11 +1178,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
             
-            // Check if user is logged in
-            const userData = JSON.parse(localStorage.getItem('userData') || '{}');
-            if (!userData.email) {
-                // User is not logged in - save reservation data and redirect to login
-                console.log('User not logged in, saving reservation data and redirecting to login');
+            // Check if user is logged in - check multiple sources for reliability
+            const userData = JSON.parse(sessionStorage.getItem('userData') || localStorage.getItem('userData') || '{}');
+            const token = sessionStorage.getItem('token') || localStorage.getItem('token');
+            const isLoggedInFlag = sessionStorage.getItem('isLoggedIn') === 'true' || localStorage.getItem('isLoggedIn') === 'true';
+            
+            // User is logged in if they have: (userData with email) OR (token) OR (isLoggedIn flag)
+            const isLoggedIn = !!(userData && userData.email) || !!token || isLoggedInFlag;
+            
+            console.log('Login check:', {
+                hasUserData: !!(userData && userData.email),
+                hasToken: !!token,
+                hasFlag: isLoggedInFlag,
+                isLoggedIn: isLoggedIn
+            });
+            
+            if (!isLoggedIn) {
+                // User is not logged in - save reservation data and show guest/login modal
+                console.log('User not logged in, showing guest/login modal');
                 
                 const formEl = document.getElementById('reservation-form');
                 const formData = new FormData(formEl);
@@ -1327,8 +1472,9 @@ document.addEventListener('DOMContentLoaded', () => {
             localStorage.setItem('reservationData', JSON.stringify(reservationData));
             
             // Save to database if user is logged in
-            if (userData.email) {
-                saveReservationToDatabase(reservationData, userData.email);
+            const loggedInUserData = JSON.parse(sessionStorage.getItem('userData') || localStorage.getItem('userData') || '{}');
+            if (loggedInUserData && loggedInUserData.email) {
+                saveReservationToDatabase(reservationData, loggedInUserData.email);
             }
                 
             // Redirect to payment information page
