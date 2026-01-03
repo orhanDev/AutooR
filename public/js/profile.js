@@ -114,7 +114,7 @@ function downloadData() {
     
     const link = document.createElement('a');
     link.href = url;
-    link.download = `autor-data-${new Date().toISOString().split('T')[0]}.json`;
+    link.download = `AutooR-data-${new Date().toISOString().split('T')[0]}.json`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);

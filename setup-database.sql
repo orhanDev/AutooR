@@ -2,16 +2,16 @@
 -- Bu scripti pgAdmin veya psql ile çalıştırın
 
 -- Veritabanı oluştur
-CREATE DATABASE autor_db;
+CREATE DATABASE AutooR_db;
 
 -- Kullanıcı oluştur
-CREATE USER autor_user WITH PASSWORD 'autor_password123';
+CREATE USER AutooR_user WITH PASSWORD 'AutooR_password123';
 
 -- Yetkileri ver
-GRANT ALL PRIVILEGES ON DATABASE autor_db TO autor_user;
+GRANT ALL PRIVILEGES ON DATABASE AutooR_db TO AutooR_user;
 
 -- Veritabanına bağlan
-\c autor_db;
+\c AutooR_db;
 
 -- Kullanıcılar tablosu
 CREATE TABLE IF NOT EXISTS users (
@@ -146,5 +146,5 @@ INSERT INTO vehicles (car_id, make, model, year, category, transmission, fuel_ty
 ON CONFLICT (car_id) DO NOTHING;
 
 -- Yetkileri güncelle
-GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO autor_user;
-GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO autor_user;
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO AutooR_user;
+GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO AutooR_user;

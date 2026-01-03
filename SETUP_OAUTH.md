@@ -21,9 +21,9 @@ APPLE_CLIENT_SECRET=your-apple-client-secret
 APPLE_REDIRECT_URI=https://localhost:3443/auth/apple/callback
 
 # PostgreSQL Database Configuration
-PGUSER=autor_user
+PGUSER=AutooR_user
 PGHOST=localhost
-PGDATABASE=autor_db
+PGDATABASE=AutooR_db
 PGPASSWORD=Vekil4023.
 PGPORT=5432
 

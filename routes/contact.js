@@ -28,7 +28,7 @@ router.post('/send', async (req, res) => {
         }
 
         const mailOptions = {
-            from: process.env.EMAIL_USER || 'noreply@autor.com',
+            from: process.env.EMAIL_USER || 'noreply@AutooR.com',
             to: to || 'orhancode@gmail.com',
             subject: `Neue Kontaktanfrage: ${subject}`,
             html: `

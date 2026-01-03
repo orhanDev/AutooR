@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (error === 'oauth_error') {
             errorMessage = 'OAuth-Fehler. Bitte versuchen Sie es erneut.';
         } else if (error === 'no_code') {
-            errorMessage = 'Autorisierung fehlgeschlagen. Bitte versuchen Sie es erneut.';
+            errorMessage = 'AutooRisierung fehlgeschlagen. Bitte versuchen Sie es erneut.';
         } else if (error === 'email_not_provided') {
             errorMessage = 'E-Mail-Adresse konnte nicht abgerufen werden.';
         } else if (error === 'database_error') {

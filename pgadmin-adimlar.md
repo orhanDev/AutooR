@@ -44,7 +44,7 @@ Eğer şifreyi bilmiyorsanız veya unuttuysanız:
    ```
 10. **`pg_hba.conf` dosyasını geri alın** (md5 veya scram-sha-256)
 
-## Adım 4: autor_user Kullanıcısını Oluşturun
+## Adım 4: AutooR_user Kullanıcısını Oluşturun
 
 PostgreSQL'e bağlandıktan sonra:
 
@@ -52,15 +52,15 @@ PostgreSQL'e bağlandıktan sonra:
 2. **Aşağıdaki SQL'i çalıştırın:**
 
 ```sql
--- autor_user kullanıcısını oluştur
-CREATE USER autor_user WITH PASSWORD 'Vekil4023.';
-ALTER USER autor_user CREATEDB;
+-- AutooR_user kullanıcısını oluştur
+CREATE USER AutooR_user WITH PASSWORD 'Vekil4023.';
+ALTER USER AutooR_user CREATEDB;
 
--- autor_db veritabanını oluştur
-CREATE DATABASE autor_db OWNER autor_user;
+-- AutooR_db veritabanını oluştur
+CREATE DATABASE AutooR_db OWNER AutooR_user;
 
 -- Yetkileri ver
-GRANT ALL PRIVILEGES ON DATABASE autor_db TO autor_user;
+GRANT ALL PRIVILEGES ON DATABASE AutooR_db TO AutooR_user;
 ```
 
 ## Adım 5: Yeni Sunucu Bağlantısı Oluşturun
@@ -72,8 +72,8 @@ GRANT ALL PRIVILEGES ON DATABASE autor_db TO autor_user;
 4. **Connection sekmesi:**
    - Host name/address: `localhost`
    - Port: `5432`
-   - Maintenance database: `autor_db`
-   - Username: `autor_user`
+   - Maintenance database: `AutooR_db`
+   - Username: `AutooR_user`
    - Password: `Vekil4023.`
    - "Save password" seçeneğini işaretleyin
 5. **"Save" butonuna tıklayın**
@@ -81,7 +81,7 @@ GRANT ALL PRIVILEGES ON DATABASE autor_db TO autor_user;
 ## Adım 6: Veritabanı Tablolarını Oluşturun
 
 1. **"AutooR Database" sunucusuna bağlanın**
-2. **"autor_db" veritabanına sağ tıklayın**
+2. **"AutooR_db" veritabanına sağ tıklayın**
 3. **Query Tool'u açın**
 4. **`db/init.sql` dosyasının içeriğini Query Tool'a yapıştırın**
 5. **F5 ile çalıştırın**

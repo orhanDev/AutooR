@@ -5,9 +5,9 @@ GOOGLE_CLIENT_SECRET=your-google-client-secret
 GOOGLE_REDIRECT_URI=http://localhost:3000/auth/google/callback
 
 # PostgreSQL Database Configuration
-PGUSER=autor_user
+PGUSER=AutooR_user
 PGHOST=localhost
-PGDATABASE=autor_db
+PGDATABASE=AutooR_db
 PGPASSWORD=Vekil4023.
 PGPORT=5432
 

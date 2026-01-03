@@ -175,7 +175,7 @@ function bookWeekend(offerId) {
 
 function requestLongTerm(offerId) {
     console.log('Request long term offer:', offerId);
-    alert('Für Langzeit-Mieten kontaktieren Sie bitte unseren Kundenservice unter +49 123 456 789 oder per E-Mail an info@autor.de');
+    alert('Für Langzeit-Mieten kontaktieren Sie bitte unseren Kundenservice unter +49 123 456 789 oder per E-Mail an info@AutooR.de');
 }
 
 function bookStudent(offerId) {

@@ -5,9 +5,9 @@ const express = require('express');
 process.env.JWT_SECRET = process.env.JWT_SECRET || 'your_super_secret_jwt_key_here_change_this_in_production';
 
 // Database configuration - Update according to your pgAdmin database
-process.env.PGUSER = process.env.PGUSER || 'autor_user';
+process.env.PGUSER = process.env.PGUSER || 'AutooR_user';
 process.env.PGHOST = process.env.PGHOST || 'localhost';
-process.env.PGDATABASE = process.env.PGDATABASE || 'autor_db';
+process.env.PGDATABASE = process.env.PGDATABASE || 'AutooR_db';
 process.env.PGPASSWORD = process.env.PGPASSWORD || 'Vekil4023.';
 process.env.PGPORT = process.env.PGPORT || '5432';
 const path = require('path');
