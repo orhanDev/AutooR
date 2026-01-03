@@ -40,7 +40,12 @@ app.use((req, res, next) => {
   // Basic Referrer policy
   res.setHeader('Referrer-Policy', 'no-referrer-when-downgrade');
   // Reasonable CSP (keeps your current setup but prevents mixed content)
-  res.setHeader('Content-Security-Policy', 'upgrade-insecure-requests; block-all-mixed-content');
+  // Allow Chrome DevTools and localhost connections for development
+  const isDevelopment = process.env.NODE_ENV !== 'production';
+  const cspPolicy = isDevelopment 
+    ? "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; font-src 'self' https://cdn.jsdelivr.net https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://localhost:* http://localhost:* ws://localhost:* wss://localhost:* https://*.netlify.app; upgrade-insecure-requests; block-all-mixed-content"
+    : "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; font-src 'self' https://cdn.jsdelivr.net https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://*.netlify.app; upgrade-insecure-requests; block-all-mixed-content";
+  res.setHeader('Content-Security-Policy', cspPolicy);
   next();
 });
 
