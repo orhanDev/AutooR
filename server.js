@@ -43,7 +43,7 @@ app.use((req, res, next) => {
   // Allow Chrome DevTools and localhost connections for development
   const isDevelopment = process.env.NODE_ENV !== 'production';
   const cspPolicy = isDevelopment 
-    ? "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; font-src 'self' https://cdn.jsdelivr.net https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://localhost:* http://localhost:* ws://localhost:* wss://localhost:* https://*.netlify.app; upgrade-insecure-requests; block-all-mixed-content"
+    ? "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; font-src 'self' https://cdn.jsdelivr.net https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://localhost:* http://localhost:* ws://localhost:* wss://localhost:* https://*.netlify.app chrome-extension:; frame-src 'self'; upgrade-insecure-requests; block-all-mixed-content"
     : "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; font-src 'self' https://cdn.jsdelivr.net https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://*.netlify.app; upgrade-insecure-requests; block-all-mixed-content";
   res.setHeader('Content-Security-Policy', cspPolicy);
   next();
@@ -167,6 +167,18 @@ app.get('/bedingungen', (req, res) => {
 app.get('/login', (req, res) => {
     console.log('Login route accessed');
     res.sendFile(path.join(__dirname, 'views', 'login.html'));
+});
+
+// Forgot password page
+app.get('/forgot-password', (req, res) => {
+    console.log('Forgot password route accessed');
+    res.sendFile(path.join(__dirname, 'public', 'forgot-password.html'));
+});
+
+// Reset password page
+app.get('/reset-password', (req, res) => {
+    console.log('Reset password route accessed');
+    res.sendFile(path.join(__dirname, 'public', 'reset-password.html'));
 });
 
 // Vehicle details page
