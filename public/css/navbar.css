@@ -504,18 +504,23 @@ ease;
     box-shadow: 0 1px 2px rgba(0,0,0,0.06);
 }
 
+/* Fiyat etiketi - sarı arka plan, siyah yazı */
 .vehicle-card .price-badge,
+.vehicle-cards .price-badge,
+#navbar-container .price-badge,
 .price-badge {
-    position: absolute;
-    top: 0.75rem;
-    right: 0.75rem;
+    position: absolute !important;
+    top: 0.75rem !important;
+    right: 0.75rem !important;
     background: #ffd43b !important; /* sarı arka plan */
+    background-color: #ffd43b !important; /* sarı arka plan */
     color: #000000 !important; /* siyah yazı */
-    border-radius: 10px;
-    padding: 0.35rem 0.6rem;
-    font-weight: 800;
-    font-size: 0.8rem;
-    box-shadow: 0 2px 8px rgba(212, 175, 55, 0.3);
+    border-radius: 10px !important;
+    padding: 0.35rem 0.6rem !important;
+    font-weight: 800 !important;
+    font-size: 0.8rem !important;
+    box-shadow: 0 2px 8px rgba(212, 175, 55, 0.3) !important;
+    z-index: 10 !important;
 }
 
 .vehicle-meta {
