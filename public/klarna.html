@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Klarna Zahlung - AutooR</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/navbar.css">
+    <style>
+        body {
+            background: #f7f7f7;
+        }
+        .klarna-container {
+            max-width: 600px;
+            margin: 100px auto 50px;
+            padding: 0 15px;
+        }
+        .klarna-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .klarna-logo {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .klarna-logo img {
+            max-width: 150px;
+        }
+        .payment-option {
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .payment-option:hover {
+            border-color: #ffb3c7;
+            background: #fff5f8;
+        }
+        .payment-option.selected {
+            border-color: #ff6b9d;
+            background: #fff5f8;
+        }
+        .payment-option-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        .payment-option-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: #333;
+        }
+        .payment-option-price {
+            font-weight: 700;
+            color: #ff6b9d;
+            font-size: 1.2rem;
+        }
+        .payment-option-desc {
+            color: #666;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+        .btn-klarna {
+            background: linear-gradient(135deg, #ffb3c7 0%, #ff6b9d 100%);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            width: 100%;
+            margin-top: 1.5rem;
+        }
+        .btn-klarna:hover {
+            background: linear-gradient(135deg, #ff9db8 0%, #ff5a8a 100%);
+            color: white;
+        }
+        .order-summary {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .summary-item:last-child {
+            border-bottom: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #ff6b9d;
+        }
+    </style>
+</head>
+<body>
+    <div id="navbar-container"></div>
+    
+    <div class="klarna-container">
+        <div class="klarna-card">
+            <div class="klarna-logo">
+                <div style="background: linear-gradient(135deg, #ffb3c7 0%, #ff6b9d 100%); color: white; padding: 1rem 2rem; border-radius: 8px; display: inline-block; font-size: 2rem; font-weight: 700;">
+                    Klarna
+                </div>
+            </div>
+            
+            <h3 class="text-center mb-4">Wie möchten Sie bezahlen?</h3>
+            
+            <!-- Order Summary -->
+            <div class="order-summary" id="order-summary">
+                <div class="summary-item">
+                    <span>Gesamtbetrag:</span>
+                    <span id="total-amount">€0.00</span>
+                </div>
+            </div>
+            
+            <!-- Payment Options -->
+            <div id="payment-options">
+                <div class="payment-option" data-plan="sofort" onclick="selectPlan('sofort')">
+                    <div class="payment-option-header">
+                        <span class="payment-option-title">Sofort bezahlen</span>
+                        <span class="payment-option-price" id="price-sofort">€0.00</span>
+                    </div>
+                    <div class="payment-option-desc">Zahlen Sie den vollen Betrag sofort</div>
+                </div>
+                
+                <div class="payment-option" data-plan="3" onclick="selectPlan('3')">
+                    <div class="payment-option-header">
+                        <span class="payment-option-title">3 Raten</span>
+                        <span class="payment-option-price" id="price-3">€0.00</span>
+                    </div>
+                    <div class="payment-option-desc">Zahlen Sie in 3 monatlichen Raten (0% Zinsen)</div>
+                </div>
+                
+                <div class="payment-option" data-plan="6" onclick="selectPlan('6')">
+                    <div class="payment-option-header">
+                        <span class="payment-option-title">6 Raten</span>
+                        <span class="payment-option-price" id="price-6">€0.00</span>
+                    </div>
+                    <div class="payment-option-desc">Zahlen Sie in 6 monatlichen Raten (0% Zinsen)</div>
+                </div>
+                
+                <div class="payment-option" data-plan="12" onclick="selectPlan('12')">
+                    <div class="payment-option-header">
+                        <span class="payment-option-title">12 Raten</span>
+                        <span class="payment-option-price" id="price-12">€0.00</span>
+                    </div>
+                    <div class="payment-option-desc">Zahlen Sie in 12 monatlichen Raten (0% Zinsen)</div>
+                </div>
+            </div>
+            
+            <button class="btn btn-klarna" id="confirm-btn" onclick="confirmPayment()" disabled>
+                <i class="bi bi-lock me-2"></i>
+                Zahlung bestätigen
+            </button>
+            
+            <div class="text-center mt-3">
+                <a href="/zahlungsinformationen" class="text-muted" style="text-decoration: none;">
+                    <i class="bi bi-arrow-left me-2"></i>Zurück
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/navbar.js"></script>
+    <script>
+        let selectedPlan = null;
+        let totalAmount = 0;
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            // Load total amount from localStorage
+            const reservationData = JSON.parse(localStorage.getItem('reservationData') || '{}');
+            totalAmount = parseFloat(reservationData.totalPrice || 0);
+            
+            if (totalAmount > 0) {
+                document.getElementById('total-amount').textContent = `€${totalAmount.toFixed(2)}`;
+                updatePrices();
+            } else {
+                // Try to get from driver information
+                const driverInfo = JSON.parse(localStorage.getItem('driverInformation') || '{}');
+                if (driverInfo.totalAmount) {
+                    totalAmount = parseFloat(driverInfo.totalAmount);
+                    document.getElementById('total-amount').textContent = `€${totalAmount.toFixed(2)}`;
+                    updatePrices();
+                }
+            }
+        });
+        
+        function updatePrices() {
+            document.getElementById('price-sofort').textContent = `€${totalAmount.toFixed(2)}`;
+            document.getElementById('price-3').textContent = `€${(totalAmount / 3).toFixed(2)}/Monat`;
+            document.getElementById('price-6').textContent = `€${(totalAmount / 6).toFixed(2)}/Monat`;
+            document.getElementById('price-12').textContent = `€${(totalAmount / 12).toFixed(2)}/Monat`;
+        }
+        
+        function selectPlan(plan) {
+            selectedPlan = plan;
+            
+            // Remove selected class from all options
+            document.querySelectorAll('.payment-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            
+            // Add selected class to clicked option
+            event.currentTarget.classList.add('selected');
+            
+            // Enable confirm button
+            document.getElementById('confirm-btn').disabled = false;
+        }
+        
+        function confirmPayment() {
+            if (!selectedPlan) {
+                alert('Bitte wählen Sie eine Zahlungsoption aus.');
+                return;
+            }
+            
+            // Store selected plan
+            localStorage.setItem('klarnaPlan', selectedPlan);
+            
+            // Show processing message
+            document.getElementById('confirm-btn').disabled = true;
+            document.getElementById('confirm-btn').innerHTML = '<i class="bi bi-hourglass-split me-2"></i>Wird verarbeitet...';
+            
+            // Simulate payment processing
+            setTimeout(() => {
+                // Clear sensitive data
+                localStorage.removeItem('driverInformation');
+                
+                // Redirect to confirmation
+                window.location.href = '/reservation-confirmation';
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
+

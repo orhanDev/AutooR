@@ -49,10 +49,30 @@ app.use((req, res, next) => {
   next();
 });
 
-// Reservation confirmation page (must be before static middleware)
+// Payment pages (must be before static middleware)
 app.get('/reservation-confirmation', (req, res) => {
     console.log('Reservation confirmation route accessed');
     res.sendFile(path.join(__dirname, 'public', 'reservation-confirmation.html'));
+});
+
+app.get('/klarna', (req, res) => {
+    console.log('Klarna payment route accessed');
+    res.sendFile(path.join(__dirname, 'public', 'klarna.html'));
+});
+
+app.get('/paypal', (req, res) => {
+    console.log('PayPal payment route accessed');
+    res.sendFile(path.join(__dirname, 'public', 'paypal.html'));
+});
+
+app.get('/sofort', (req, res) => {
+    console.log('Sofortüberweisung payment route accessed');
+    res.sendFile(path.join(__dirname, 'public', 'sofort.html'));
+});
+
+app.get('/google-pay', (req, res) => {
+    console.log('Google Pay payment route accessed');
+    res.sendFile(path.join(__dirname, 'public', 'google-pay.html'));
 });
 
 // Serve static files from public folder
@@ -222,6 +242,7 @@ app.get('/paypal-cancel', (req, res) => {
     console.log('PayPal cancel route accessed');
     res.sendFile(path.join(__dirname, 'public', 'paypal-cancel.html'));
 });
+
 
 app.get('/google-oauth', (req, res) => {
     console.log('Google OAuth route accessed');

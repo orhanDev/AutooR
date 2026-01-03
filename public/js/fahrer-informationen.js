@@ -406,15 +406,23 @@ function setupCountryDropdown() {
          case 'klarna':
              redirectToKlarna();
              break;
-         case 'googlepay':
-             processGooglePay();
-             break;
-         case 'sofort':
-             redirectToSofort();
-             break;
-         default:
-             showCreditCardForm(); // Default to credit card
-     }
+        case 'googlepay':
+        case 'google-pay':
+            processGooglePay();
+            break;
+        case 'sofort':
+            redirectToSofort();
+            break;
+        case 'cash':
+        case 'barzahlung':
+            processCashPayment();
+            break;
+        case 'credit-card':
+            showCreditCardForm();
+            break;
+        default:
+            showCreditCardForm(); // Default to credit card
+    }
  }
 
  // Show credit card form
@@ -527,58 +535,57 @@ function setupCountryDropdown() {
      }
  }
 
- // Redirect to PayPal
- function redirectToPayPal() {
-     alert('Sie werden zu PayPal weitergeleitet...');
-     setTimeout(() => {
-         // Clear sensitive data after successful payment
-         localStorage.removeItem('driverInformation');
-         console.log('Cleared driver information after successful PayPal payment');
-         
-         // Simulate PayPal redirect
-         alert('PayPal-Zahlung erfolgreich! Ihre Reservierung wurde bestÃ¤tigt.');
-         window.location.href = '/reservation-confirmation';
-     }, 2000);
- }
+// Redirect to PayPal
+function redirectToPayPal() {
+    // Store reservation data for PayPal page
+    const reservationData = JSON.parse(localStorage.getItem('reservationData') || '{}');
+    localStorage.setItem('reservationData', JSON.stringify(reservationData));
+    
+    // Redirect to PayPal payment page
+    window.location.href = '/paypal';
+}
 
- // Redirect to Klarna
- function redirectToKlarna() {
-     alert('Sie werden zu Klarna weitergeleitet...');
-     setTimeout(() => {
-         // Clear sensitive data after successful payment
-         localStorage.removeItem('driverInformation');
-         console.log('Cleared driver information after successful Klarna payment');
-         
-         // Simulate Klarna redirect
-         alert('Klarna-Zahlung erfolgreich! Ihre Reservierung wurde bestÃ¤tigt.');
-         window.location.href = '/reservation-confirmation';
-     }, 2000);
- }
+// Redirect to Klarna
+function redirectToKlarna() {
+    // Store reservation data for Klarna page
+    const reservationData = JSON.parse(localStorage.getItem('reservationData') || '{}');
+    localStorage.setItem('reservationData', JSON.stringify(reservationData));
+    
+    // Redirect to Klarna payment page
+    window.location.href = '/klarna';
+}
 
- // Process Google Pay
- function processGooglePay() {
-     alert('Google Pay wird verarbeitet...');
-     setTimeout(() => {
-         // Clear sensitive data after successful payment
-         localStorage.removeItem('driverInformation');
-         console.log('Cleared driver information after successful Google Pay payment');
-         
-         alert('Google Pay-Zahlung erfolgreich! Ihre Reservierung wurde bestÃ¤tigt.');
-         window.location.href = '/reservation-confirmation';
-     }, 2000);
- }
+// Process Google Pay
+function processGooglePay() {
+    // Store reservation data for Google Pay page
+    const reservationData = JSON.parse(localStorage.getItem('reservationData') || '{}');
+    localStorage.setItem('reservationData', JSON.stringify(reservationData));
+    
+    // Redirect to Google Pay payment page
+    window.location.href = '/google-pay';
+}
 
- // Redirect to Sofort
- function redirectToSofort() {
-     alert('Sie werden zu SofortÃ¼berweisung weitergeleitet...');
-     setTimeout(() => {
-         // Clear sensitive data after successful payment
-         localStorage.removeItem('driverInformation');
-         console.log('Cleared driver information after successful Sofort payment');
-         
-         // Simulate Sofort redirect
-         alert('SofortÃ¼berweisung erfolgreich! Ihre Reservierung wurde bestÃ¤tigt.');
-         window.location.href = '/reservation-confirmation';
-     }, 2000);
- }
+// Process cash payment
+function processCashPayment() {
+    alert('Barzahlung wird verarbeitet...');
+    setTimeout(() => {
+        // Clear sensitive data after successful payment
+        localStorage.removeItem('driverInformation');
+        console.log('Cleared driver information after successful cash payment');
+        
+        // Simulate cash payment success
+        alert('Barzahlung erfolgreich! Ihre Reservierung wurde bestätigt.');
+        window.location.href = '/reservation-confirmation';
+    }, 2000);
+}
+
+// Redirect to Sofort
+function redirectToSofort() {
+    // Store reservation data for Sofort page
+    const reservationData = JSON.parse(localStorage.getItem('reservationData') || '{}');
+    localStorage.setItem('reservationData', JSON.stringify(reservationData));
+    
+    // Redirect to Sofort payment page
+    window.location.href = '/sofort';
+}
 
