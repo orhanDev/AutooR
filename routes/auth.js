@@ -757,10 +757,13 @@ function generateResetToken() {
 // Şifremi unuttum - Email'e sıfırlama linki gönder
 router.post('/forgot-password', async (req, res) => {
     try {
+        console.log('=== FORGOT PASSWORD REQUEST ===');
         const { email } = req.body;
+        console.log('Email received:', email);
         
         // Email validation
         if (!email || !email.trim()) {
+            console.log('Email validation failed: empty');
             return res.status(400).json({ 
                 error: 'E-Mail ist erforderlich',
                 field: 'email'
@@ -769,6 +772,7 @@ router.post('/forgot-password', async (req, res) => {
         
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(email)) {
+            console.log('Email validation failed: invalid format');
             return res.status(400).json({ 
                 error: 'Ungültige E-Mail-Adresse',
                 field: 'email'
@@ -776,7 +780,9 @@ router.post('/forgot-password', async (req, res) => {
         }
         
         // Kullanıcıyı bul
+        console.log('Checking if user exists...');
         const user = await query('SELECT * FROM users WHERE email = $1', [email]);
+        console.log('User found:', user.rows.length > 0);
         
         // Güvenlik nedeniyle: Kullanıcı bulunamasa bile başarılı mesaj göster
         if (user.rows.length === 0) {
@@ -787,17 +793,70 @@ router.post('/forgot-password', async (req, res) => {
         }
         
         // Token oluştur
+        console.log('Generating reset token...');
         const token = generateResetToken();
         const expiresAt = new Date(Date.now() + 60 * 60 * 1000); // 1 saat geçerli
+        console.log('Token generated, expires at:', expiresAt);
         
         // Eski token'ları temizle
-        await query('DELETE FROM password_reset_tokens WHERE email = $1', [email]);
+        try {
+            console.log('Deleting old tokens...');
+            await query('DELETE FROM password_reset_tokens WHERE email = $1', [email]);
+            console.log('Old tokens deleted');
+        } catch (deleteError) {
+            console.error('Error deleting old tokens:', deleteError);
+            // Tablo yoksa devam et, yeni token kaydederken oluşturulabilir
+        }
         
         // Yeni token kaydet
-        await query(
-            'INSERT INTO password_reset_tokens (email, token, expires_at) VALUES ($1, $2, $3)',
-            [email, token, expiresAt]
-        );
+        try {
+            console.log('Inserting new token...');
+            await query(
+                'INSERT INTO password_reset_tokens (email, token, expires_at) VALUES ($1, $2, $3)',
+                [email, token, expiresAt]
+            );
+            console.log('Token inserted successfully');
+        } catch (insertError) {
+            console.error('Error inserting token:', insertError);
+            console.error('Insert error details:', {
+                message: insertError.message,
+                code: insertError.code,
+                detail: insertError.detail
+            });
+            // Tablo yoksa oluşturmayı dene
+            if (insertError.message && insertError.message.includes('does not exist')) {
+                console.log('password_reset_tokens table does not exist, attempting to create...');
+                try {
+                    await query(`
+                        CREATE TABLE IF NOT EXISTS password_reset_tokens (
+                            id SERIAL PRIMARY KEY,
+                            email VARCHAR(255) NOT NULL,
+                            token VARCHAR(255) NOT NULL UNIQUE,
+                            expires_at TIMESTAMP NOT NULL,
+                            used BOOLEAN DEFAULT FALSE,
+                            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                        )
+                    `);
+                    await query(`
+                        CREATE INDEX IF NOT EXISTS idx_password_reset_tokens_email ON password_reset_tokens(email)
+                    `);
+                    await query(`
+                        CREATE INDEX IF NOT EXISTS idx_password_reset_tokens_token ON password_reset_tokens(token)
+                    `);
+                    // Tekrar dene
+                    await query(
+                        'INSERT INTO password_reset_tokens (email, token, expires_at) VALUES ($1, $2, $3)',
+                        [email, token, expiresAt]
+                    );
+                    console.log('password_reset_tokens table created and token inserted successfully');
+                } catch (createError) {
+                    console.error('Error creating password_reset_tokens table:', createError);
+                    throw createError;
+                }
+            } else {
+                throw insertError;
+            }
+        }
         
         // Email gönder
         const emailTransporter = createEmailTransporter();
@@ -883,10 +942,26 @@ Das AutooR Team
         console.error('=== ŞİFRE SIFIRLAMA HATASI ===');
         console.error('Error:', error);
         console.error('Error message:', error.message);
+        console.error('Error code:', error.code);
+        console.error('Error detail:', error.detail);
         console.error('Error stack:', error.stack);
+        
+        // Daha açıklayıcı hata mesajı
+        let errorMessage = 'Ein unerwarteter Fehler ist aufgetreten.';
+        
+        if (error.code === '42P01') {
+            // Tablo yok
+            errorMessage = 'Die Datenbanktabelle existiert nicht. Bitte kontaktieren Sie den Administrator.';
+        } else if (error.code === '23505') {
+            // Unique constraint violation (token zaten var)
+            errorMessage = 'Ein Token wurde bereits erstellt. Bitte überprüfen Sie Ihr E-Mail-Postfach.';
+        } else if (error.message) {
+            errorMessage = error.message;
+        }
+        
         res.status(500).json({ 
             error: 'Serverfehler',
-            message: error.message || 'Ein unerwarteter Fehler ist aufgetreten.'
+            message: errorMessage
         });
     }
 });

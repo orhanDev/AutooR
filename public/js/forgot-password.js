@@ -70,7 +70,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 body: JSON.stringify({ email })
             });
             
-            const result = await response.json();
+            let result;
+            try {
+                result = await response.json();
+            } catch (jsonError) {
+                console.error('JSON parse error:', jsonError);
+                showAlert('Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.', 'danger');
+                emailInput.classList.add('is-invalid');
+                emailInput.classList.remove('is-valid');
+                return;
+            }
             
             if (response.ok) {
                 showAlert('Ein Link zum Zurücksetzen Ihres Passworts wurde an Ihre E-Mail-Adresse gesendet. Bitte überprüfen Sie Ihr Postfach.', 'success');
@@ -78,8 +87,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 emailInput.classList.remove('is-valid', 'is-invalid');
             } else {
                 // Email bulunamadıysa bile güvenlik nedeniyle aynı mesajı göster
-                if (result.error && result.error.includes('nicht gefunden')) {
-                    showAlert('Falls diese E-Mail-Adresse registriert ist, wurde ein Link zum Zurücksetzen Ihres Passworts gesendet.', 'info');
+                if (result.error && (result.error.includes('nicht gefunden') || result.error === 'Serverfehler')) {
+                    // Server hatası veya email bulunamadı - güvenlik için aynı mesajı göster
+                    showAlert('Falls diese E-Mail-Adresse registriert ist, wurde ein Link zum Zurücksetzen Ihres Passworts gesendet. Bitte überprüfen Sie Ihr Postfach.', 'info');
                 } else {
                     showAlert(result.error || result.message || 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.', 'danger');
                 }
@@ -88,7 +98,18 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         } catch (error) {
             console.error('Error sending password reset:', error);
-            showAlert('Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.', 'danger');
+            console.error('Error details:', {
+                message: error.message,
+                stack: error.stack,
+                name: error.name
+            });
+            
+            // Network hatası mı kontrol et
+            if (error.message && error.message.includes('fetch')) {
+                showAlert('Verbindungsfehler. Bitte überprüfen Sie Ihre Internetverbindung und versuchen Sie es erneut.', 'danger');
+            } else {
+                showAlert('Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut. Falls das Problem weiterhin besteht, kontaktieren Sie bitte den Support.', 'danger');
+            }
             emailInput.classList.add('is-invalid');
             emailInput.classList.remove('is-valid');
         } finally {
