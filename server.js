@@ -11,6 +11,7 @@ process.env.PGDATABASE = process.env.PGDATABASE || 'autor_db';
 process.env.PGPASSWORD = process.env.PGPASSWORD || 'Vekil4023.';
 process.env.PGPORT = process.env.PGPORT || '5432';
 const path = require('path');
+const fs = require('fs');
 const carsRouter = require('./routes/cars');
 const locationsRouter = require('./routes/locations');
 const reservationsRouter = require('./routes/reservations');
@@ -69,6 +70,8 @@ app.use('/api/contact', contactRouter);
 app.use('/api/payments', paymentsRouter);
 app.use('/api/users', usersRouter);
 app.use('/auth', googleAuthRouter);
+app.use('/auth', require('./routes/facebook-auth'));
+app.use('/auth', require('./routes/apple-auth'));
 app.use('/test', testGoogleAuthRouter);
 
 // Admin Panel HTML page routes
@@ -125,7 +128,7 @@ app.get('/fahrer-informationen', (req, res) => {
 
 app.get('/register', (req, res) => {
     console.log('Register route accessed');
-    res.sendFile(path.join(__dirname, 'public', 'register.html'));
+    res.sendFile(path.join(__dirname, 'views', 'register.html'));
 });
 
 
@@ -290,12 +293,41 @@ app.get('/hilfe', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'hilfe.html'));
 });
 
+// React Router catch-all removed - using old HTML pages
+
 // Test navbar page kaldırıldı
+
+// Port'un kullanılabilir olup olmadığını kontrol et
+function isPortAvailable(port) {
+  try {
+    const { execSync } = require('child_process');
+    if (process.platform === 'win32') {
+      const result = execSync(`netstat -ano | findstr :${port} | findstr LISTENING`, { encoding: 'utf8', stdio: 'pipe' });
+      return result.trim().length === 0;
+    } else {
+      const result = execSync(`lsof -i :${port}`, { encoding: 'utf8', stdio: 'pipe' });
+      return result.trim().length === 0;
+    }
+  } catch (e) {
+    // Komut başarısız olduysa port muhtemelen boş
+    return true;
+  }
+}
+
+// Kullanılabilir bir port bul
+function findAvailablePort(startPort, maxAttempts = 10) {
+  for (let i = 0; i < maxAttempts; i++) {
+    const port = startPort + i;
+    if (isPortAvailable(port)) {
+      return port;
+    }
+  }
+  return null;
+}
 
 // Start server (HTTPS if certs available, otherwise HTTP)
 let server;
 try {
-  const fs = require('fs');
   const https = require('https');
   const certDir = path.join(__dirname, 'certs');
   const keyPath = process.env.SSL_KEY_PATH || path.join(certDir, 'localhost-key.pem');
@@ -306,20 +338,165 @@ try {
       key: fs.readFileSync(keyPath),
       cert: fs.readFileSync(certPath),
     };
-    const HTTPS_PORT = process.env.HTTPS_PORT || 3443;
-    server = https.createServer(httpsOptions, app).listen(HTTPS_PORT, () => {
+    let HTTPS_PORT = parseInt(process.env.HTTPS_PORT) || 3443;
+    
+    // Port kullanımdaysa alternatif port bul
+    // NOT: Google OAuth için port değişmemeli, bu yüzden önce process'i öldürmeyi dene
+    if (!isPortAvailable(HTTPS_PORT)) {
+      console.log(`⚠️ Port ${HTTPS_PORT} kullanımda...`);
+      
+      // Windows'ta port'u kullanan Node.js process'ini öldürmeyi dene
+      if (process.platform === 'win32') {
+        try {
+          const { execSync } = require('child_process');
+          const result = execSync(`netstat -ano | findstr :${HTTPS_PORT} | findstr LISTENING`, { encoding: 'utf8', stdio: 'pipe' });
+          const lines = result.trim().split('\n').filter(line => line.trim());
+          
+          for (const line of lines) {
+            const parts = line.trim().split(/\s+/);
+            const pid = parts[parts.length - 1];
+            if (pid && !isNaN(pid) && pid !== '0' && pid !== process.pid.toString()) {
+              try {
+                const processInfo = execSync(`tasklist /FI "PID eq ${pid}" /FO CSV`, { encoding: 'utf8', stdio: 'pipe' });
+                if (processInfo.includes('node.exe')) {
+                  console.log(`🔄 Port ${HTTPS_PORT} kullanan Node.js process'i (PID: ${pid}) sonlandırılıyor...`);
+                  execSync(`taskkill /PID ${pid} /F`, { stdio: 'ignore' });
+                  require('child_process').execSync('timeout /t 1 /nobreak >nul 2>&1', { stdio: 'ignore' });
+                  console.log(`✅ Port ${HTTPS_PORT} temizlendi`);
+                  break;
+                }
+              } catch (e) {
+                // Process zaten yok
+              }
+            }
+          }
+        } catch (e) {
+          // Port boş veya hata
+        }
+      }
+      
+      // Hala kullanımdaysa alternatif port bul
+      if (!isPortAvailable(HTTPS_PORT)) {
+        console.log(`⚠️ Port ${HTTPS_PORT} hala kullanımda, alternatif port aranıyor...`);
+        const altPort = findAvailablePort(HTTPS_PORT);
+        if (altPort) {
+          HTTPS_PORT = altPort;
+          console.log(`✅ Port ${HTTPS_PORT} kullanılacak`);
+          console.log(`⚠️ DİKKAT: Google Cloud Console'a şu redirect URI'yi ekleyin:`);
+          console.log(`   https://localhost:${HTTPS_PORT}/auth/google/callback`);
+        } else {
+          console.error(`❌ ${HTTPS_PORT} ve sonraki portlar kullanımda!`);
+          process.exit(1);
+        }
+      }
+    }
+    
+    // Kullanılan portu environment variable'a kaydet (Google OAuth için)
+    process.env.ACTUAL_HTTPS_PORT = HTTPS_PORT.toString();
+    
+    server = https.createServer(httpsOptions, app);
+    server.on('error', (err) => {
+      if (err.code === 'EADDRINUSE') {
+        console.log(`\n⚠️ Port ${HTTPS_PORT} kullanımda, alternatif port aranıyor...`);
+        const altPort = findAvailablePort(HTTPS_PORT);
+        if (altPort) {
+          HTTPS_PORT = altPort;
+          console.log(`✅ Port ${HTTPS_PORT} kullanılacak`);
+          server.listen(HTTPS_PORT, () => {
+            console.log(`🔒 HTTPS läuft auf https://localhost:${HTTPS_PORT}`);
+          });
+        } else {
+          console.error(`❌ Port ${HTTPS_PORT} ve sonraki portlar kullanımda!`);
+          process.exit(1);
+        }
+      } else {
+        console.error('Server error:', err);
+        throw err;
+      }
+    });
+    server.listen(HTTPS_PORT, () => {
       console.log(`🔒 HTTPS läuft auf https://localhost:${HTTPS_PORT}`);
     });
   } else {
-    server = app.listen(PORT, () => {
-      console.log(`HTTP läuft auf http://localhost:${PORT}`);
+    // HTTP için port kontrolü
+    let httpPort = PORT;
+    if (!isPortAvailable(httpPort)) {
+      console.log(`⚠️ Port ${httpPort} kullanımda, alternatif port aranıyor...`);
+      const altPort = findAvailablePort(httpPort);
+      if (altPort) {
+        httpPort = altPort;
+        console.log(`✅ Port ${httpPort} kullanılacak`);
+      }
+    }
+    server = app.listen(httpPort, () => {
+      console.log(`HTTP läuft auf http://localhost:${httpPort}`);
     });
   }
 } catch (e) {
-  console.warn('HTTPS initialisierung fehlgeschlagen, falle auf HTTP zurück:', e.message);
-  server = app.listen(PORT, () => {
-    console.log(`HTTP läuft auf http://localhost:${PORT}`);
-  });
+  if (e.code === 'EADDRINUSE') {
+    let port = parseInt(process.env.HTTPS_PORT) || 3443;
+    console.log(`\n⚠️ Port ${port} kullanımda, alternatif port aranıyor...`);
+    const altPort = findAvailablePort(port);
+    if (altPort) {
+      port = altPort;
+      console.log(`✅ Port ${port} kullanılacak`);
+      try {
+        const https = require('https');
+        const certDir = path.join(__dirname, 'certs');
+        const keyPath = process.env.SSL_KEY_PATH || path.join(certDir, 'localhost-key.pem');
+        const certPath = process.env.SSL_CERT_PATH || path.join(certDir, 'localhost-cert.pem');
+        if (fs.existsSync(keyPath) && fs.existsSync(certPath)) {
+          const httpsOptions = {
+            key: fs.readFileSync(keyPath),
+            cert: fs.readFileSync(certPath),
+          };
+          server = https.createServer(httpsOptions, app);
+          server.listen(port, () => {
+            console.log(`🔒 HTTPS läuft auf https://localhost:${port}`);
+          });
+        }
+      } catch (retryErr) {
+        console.error(`❌ Port ${port} başlatılamadı!`);
+        process.exit(1);
+      }
+    } else {
+      console.error(`❌ Port ${port} ve sonraki portlar kullanımda!`);
+      process.exit(1);
+    }
+  } else {
+    console.warn('HTTPS initialisierung fehlgeschlagen, falle auf HTTP zurück:', e.message);
+    let httpPort = PORT;
+    if (!isPortAvailable(httpPort)) {
+      console.log(`⚠️ Port ${httpPort} kullanımda, alternatif port aranıyor...`);
+      const altPort = findAvailablePort(httpPort);
+      if (altPort) {
+        httpPort = altPort;
+        console.log(`✅ Port ${httpPort} kullanılacak`);
+      }
+    }
+    try {
+      server = app.listen(httpPort, () => {
+        console.log(`HTTP läuft auf http://localhost:${httpPort}`);
+      });
+    } catch (httpErr) {
+      if (httpErr.code === 'EADDRINUSE') {
+        console.log(`\n⚠️ Port ${httpPort} kullanımda, alternatif port aranıyor...`);
+        const altPort = findAvailablePort(httpPort);
+        if (altPort) {
+          httpPort = altPort;
+          console.log(`✅ Port ${httpPort} kullanılacak`);
+          server = app.listen(httpPort, () => {
+            console.log(`HTTP läuft auf http://localhost:${httpPort}`);
+          });
+        } else {
+          console.error(`❌ Port ${httpPort} ve sonraki portlar kullanımda!`);
+          process.exit(1);
+        }
+      } else {
+        throw httpErr;
+      }
+    }
+  }
 }
 
 // Make keep-alive connections not keep the process alive too long during shutdown

@@ -288,7 +288,7 @@
 
     // Quick book
     window.quickBook = function(carId) {
-        const token = localStorage.getItem('token');
+        const token = sessionStorage.getItem('token') || localStorage.getItem('token');
         if (!token) {
             alert('Bitte melden Sie sich an, um ein Fahrzeug zu buchen.');
             window.location.href = '/views/login.html';

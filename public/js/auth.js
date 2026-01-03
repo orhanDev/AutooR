@@ -1,14 +1,34 @@
 ﻿// public/js/auth.js
 
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('=== Auth.js Ã§alÄ±ÅŸÄ±yor ===');
+    console.log('=== Auth.js çalışıyor ===');
     const authLinksContainer = document.getElementById('auth-links');
     console.log('auth-links container:', authLinksContainer);
     
-    const token = localStorage.getItem('token');
-    console.log('Token localStorage\'dan:', token);
+    // Sayfa ilk açıldığında localStorage'daki eski auth verilerini temizle
+    // (Eğer sessionStorage'da yoksa, bu yeni bir oturum demektir)
+    if (!sessionStorage.getItem('token')) {
+        localStorage.removeItem('token');
+        localStorage.removeItem('welcome_name');
+        localStorage.removeItem('user');
+        localStorage.removeItem('userData');
+        localStorage.removeItem('isLoggedIn');
+        localStorage.removeItem('currentUser');
+        console.log('Eski localStorage auth verileri temizlendi');
+    }
+    
+    // sessionStorage'dan token al (tarayıcı kapanınca otomatik silinir)
+    const token = sessionStorage.getItem('token') || localStorage.getItem('token');
+    console.log('Token sessionStorage\'dan:', token);
 
-    // Oturumu otomatik silme kaldÄ±rÄ±ldÄ±; yalnÄ±zca explicit logout ile silinecek
+    // Sayfa kapatıldığında sessionStorage'ı temizle
+    window.addEventListener('beforeunload', () => {
+        sessionStorage.removeItem('token');
+        sessionStorage.removeItem('userData');
+        sessionStorage.removeItem('isLoggedIn');
+        sessionStorage.removeItem('currentUser');
+        console.log('Session temizlendi (sayfa kapatıldı)');
+    });
 
     async function updateAuthLinks() {
         console.log('=== updateAuthLinks Ã§alÄ±ÅŸÄ±yor ===');
@@ -33,22 +53,27 @@ document.addEventListener('DOMContentLoaded', () => {
                     console.log('Extracted userName:', userName);
                     
                     if (userName) {
-                        localStorage.setItem('welcome_name', userName);
-                        console.log('welcome_name localStorage\'a kaydedildi:', userName);
+                        // sessionStorage kullan (tarayıcı kapanınca otomatik silinir)
+                        sessionStorage.setItem('welcome_name', userName);
+                        console.log('welcome_name sessionStorage\'a kaydedildi:', userName);
                         
-                        // userData'yı da localStorage'a kaydet
+                        // userData'yı da sessionStorage'a kaydet
                         const userData = {
                             firstName: user.user.first_name,
                             lastName: user.user.last_name,
                             email: user.user.email,
                             id: user.user.id
                         };
-                        localStorage.setItem('userData', JSON.stringify(userData));
-                        console.log('userData localStorage\'a kaydedildi:', userData);
+                        sessionStorage.setItem('userData', JSON.stringify(userData));
+                        console.log('userData sessionStorage\'a kaydedildi:', userData);
                     }
                 } else {
                     console.error('Response not ok:', res.status, res.statusText);
-                    // Token geÃ§ersiz, temizle
+                    // Token geçersiz, temizle
+                    sessionStorage.removeItem('token');
+                    sessionStorage.removeItem('welcome_name');
+                    sessionStorage.removeItem('user');
+                    sessionStorage.removeItem('userData');
                     localStorage.removeItem('token');
                     localStorage.removeItem('welcome_name');
                     localStorage.removeItem('user');
@@ -59,7 +84,11 @@ document.addEventListener('DOMContentLoaded', () => {
             } catch (e) { 
                 userName = ''; 
                 console.error('Error fetching user data:', e);
-                // Hata durumunda token'Ä± temizle
+                // Hata durumunda token'ı temizle
+                sessionStorage.removeItem('token');
+                sessionStorage.removeItem('welcome_name');
+                sessionStorage.removeItem('user');
+                sessionStorage.removeItem('userData');
                 localStorage.removeItem('token');
                 localStorage.removeItem('welcome_name');
                 localStorage.removeItem('user');
@@ -113,11 +142,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Logout function
     function logout() {
-        console.log('Logout Ã§alÄ±ÅŸÄ±yor');
+        console.log('Logout çalışıyor');
+        // Hem sessionStorage hem localStorage'ı temizle
+        sessionStorage.removeItem('token');
+        sessionStorage.removeItem('welcome_name');
+        sessionStorage.removeItem('user');
+        sessionStorage.removeItem('userData');
+        sessionStorage.removeItem('isLoggedIn');
+        sessionStorage.removeItem('currentUser');
         localStorage.removeItem('token');
         localStorage.removeItem('welcome_name');
         localStorage.removeItem('user');
         localStorage.removeItem('userData');
+        localStorage.removeItem('isLoggedIn');
+        localStorage.removeItem('currentUser');
         window.location.href = '/';
     }
 

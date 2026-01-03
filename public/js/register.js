@@ -18,45 +18,22 @@ document.addEventListener('DOMContentLoaded', function() {
 function loginWithGoogle() {
     console.log('Google login initiated');
     
-    // Direct login with Orhan account
-    const userData = {
-        name: "Orhan Yılmaz",
-        firstName: "Orhan",
-        lastName: "Yılmaz",
-        email: "orhancodes@gmail.com",
-        verified: true,
-        loginMethod: "google"
-    };
-    
-    // Store user data
-    localStorage.setItem('userData', JSON.stringify(userData));
-    
-    // Save user to database and redirect
-    saveUserToDatabase(userData).then(() => {
-        // Check if there's a pending reservation
-        const pendingReservation = localStorage.getItem('pendingReservationData');
-        if (pendingReservation) {
-            console.log('Pending reservation found, moving to payment');
-            localStorage.setItem('reservationData', pendingReservation);
-            localStorage.removeItem('pendingReservationData');
-            window.location.href = '/payment';
-        } else {
-            // Redirect to homepage
-            window.location.href = '/';
-        }
-    });
+    // Redirect to Google OAuth endpoint
+    window.location.href = '/auth/google';
 }
 
 // Facebook Login Function
 function loginWithFacebook() {
     console.log('Facebook login initiated');
-    alert('Facebook Login ist derzeit nicht verfügbar. Bitte verwenden Sie Google Login.');
+    // Facebook login henüz implement edilmedi
+    showUnavailableMessage('Facebook Login ist derzeit nicht verfügbar. Bitte verwenden Sie Google Login.');
 }
 
 // Apple Login Function
 function loginWithApple() {
     console.log('Apple login initiated');
-    alert('Apple Login ist derzeit nicht verfügbar. Bitte verwenden Sie Google Login.');
+    // Apple login henüz implement edilmedi
+    showUnavailableMessage('Apple Login ist derzeit nicht verfügbar. Bitte verwenden Sie Google Login.');
 }
 
 // Continue with Email Function
@@ -65,17 +42,67 @@ function continueWithEmail() {
     const email = emailInput.value.trim();
     
     if (!email) {
-        alert('Bitte geben Sie eine E-Mail-Adresse ein.');
+        showUnavailableMessage('Bitte geben Sie eine E-Mail-Adresse ein.');
         return;
     }
     
     if (!isValidEmail(email)) {
-        alert('Bitte geben Sie eine gültige E-Mail-Adresse ein.');
+        showUnavailableMessage('Bitte geben Sie eine gültige E-Mail-Adresse ein.');
         return;
     }
     
     console.log('Email login initiated for:', email);
-    alert('E-Mail Login ist derzeit nicht verfügbar. Bitte verwenden Sie Google Login.');
+    // Email ile giriş için login sayfasına yönlendir
+    // Email'i URL parametresi olarak gönder (opsiyonel)
+    window.location.href = '/login';
+}
+
+// Unavailable message göster (alert yerine daha iyi UX)
+function showUnavailableMessage(message) {
+    // Modal veya toast notification göster
+    const modal = document.createElement('div');
+    modal.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10000;
+    `;
+    
+    const modalContent = document.createElement('div');
+    modalContent.style.cssText = `
+        background: white;
+        padding: 2rem;
+        border-radius: 8px;
+        max-width: 400px;
+        text-align: center;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    `;
+    
+    modalContent.innerHTML = `
+        <h3 style="margin-bottom: 1rem; color: #333;">Hinweis</h3>
+        <p style="margin-bottom: 1.5rem; color: #666;">${message}</p>
+        <button onclick="this.closest('div[style*=\"position: fixed\"]').remove()" 
+                style="background: #ffc107; color: #000; border: none; padding: 0.75rem 2rem; 
+                       border-radius: 6px; font-weight: 600; cursor: pointer;">
+            OK
+        </button>
+    `;
+    
+    modal.appendChild(modalContent);
+    document.body.appendChild(modal);
+    
+    // Modal dışına tıklanınca kapat
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.remove();
+        }
+    });
 }
 
 // Email validation function
@@ -127,7 +154,8 @@ function openGoogleOAuthPopup() {
                 loginMethod: 'google'
             };
             
-            localStorage.setItem('userData', JSON.stringify(userData));
+            // sessionStorage kullan (tarayıcı kapanınca otomatik silinir)
+            sessionStorage.setItem('userData', JSON.stringify(userData));
             
             // Save user to database and wait for token
             await saveUserToDatabase(userData);
@@ -190,10 +218,10 @@ async function saveUserToDatabase(userData) {
         if (result.success) {
             console.log('Kullanıcı veritabanına kaydedildi:', result.user);
             
-            // Token'ı localStorage'a kaydet
+            // Token'ı sessionStorage'a kaydet (tarayıcı kapanınca otomatik silinir)
             if (result.token) {
-                localStorage.setItem('token', result.token);
-                console.log('Token localStorage\'a kaydedildi:', result.token);
+                sessionStorage.setItem('token', result.token);
+                console.log('Token sessionStorage\'a kaydedildi:', result.token);
             }
         } else {
             console.error('Kullanıcı kayıt hatası:', result.message);

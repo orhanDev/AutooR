@@ -36,13 +36,13 @@ function createNavbar() {
     
     // Create navbar HTML with ana sayfa styling
     navbarContainer.innerHTML = `
-        <nav class="navbar">
+        <nav class="navbar fixed-top">
             <div class="container d-flex align-items-center">
                 <button class="navbar-toggler me-2 d-flex align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-label="Menü">
                     <span class="navbar-toggler-icon"></span>
                     <span class="menu-label ms-2">Menü</span>
                 </button>
-                <a class="brand-center" href="/">AutoR</a>
+                <a class="brand-center" href="/">AutooR</a>
                 <div class="collapse navbar-collapse flex-grow-1" id="navbarNav">
                     <div class="side-left">
                         <div class="menu-header d-flex justify-content-between align-items-center mb-4 d-md-none">
@@ -125,10 +125,10 @@ function addNavbarCSS() {}
 function updateNavbar() {
     console.log('updateNavbar called');
     
-    // Check both old and new user data formats
-    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
-    const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+    // sessionStorage'dan kontrol et (öncelikli), yoksa localStorage'dan
+    const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true' || localStorage.getItem('isLoggedIn') === 'true';
+    const currentUser = JSON.parse(sessionStorage.getItem('currentUser') || localStorage.getItem('currentUser') || '{}');
+    const userData = JSON.parse(sessionStorage.getItem('userData') || localStorage.getItem('userData') || '{}');
     const currentPage = window.location.pathname;
     
     console.log('isLoggedIn:', isLoggedIn);
@@ -163,17 +163,22 @@ function updateNavbar() {
         accountMenu.style.display = 'block';
         } else {
         console.log('User is not logged in, hiding user name');
-        // User is not logged in - hide user name and show simple auth menu
+        // User is not logged in - hide user name and show auth menu
         const userNameSpan = userInfoContainer.querySelector('.user-name');
         if (userNameSpan) {
             userNameSpan.textContent = '';
         }
 
-        // Show simple auth menu
+        // Show auth menu with both Anmelden and Registrieren
+        accountMenu.style.display = 'block';
         accountMenu.innerHTML = `
             <div class="menu-item">
+                <i class="bi bi-box-arrow-in-right me-2"></i>
+                <a href="/login" style="color: inherit; text-decoration: none;">Anmelden</a>
+            </div>
+            <div class="menu-item">
                 <i class="bi bi-person-plus me-2"></i>
-                <a href="/register" style="color: inherit; text-decoration: none;">Anmelden</a>
+                <a href="/register" style="color: inherit; text-decoration: none;">Registrieren</a>
             </div>
         `;
     }
@@ -198,10 +203,17 @@ function updateNavbar() {
 
 // Logout function
 function logout() {
-    // Remove all user data (both old and new formats)
+    // Remove all user data (both sessionStorage and localStorage)
+    sessionStorage.removeItem('isLoggedIn');
+    sessionStorage.removeItem('currentUser');
+    sessionStorage.removeItem('userData');
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('welcome_name');
     localStorage.removeItem('isLoggedIn');
     localStorage.removeItem('currentUser');
     localStorage.removeItem('userData');
+    localStorage.removeItem('token');
+    localStorage.removeItem('welcome_name');
     localStorage.removeItem('pendingEmail');
     
     // Create a more sophisticated logout notification
@@ -264,7 +276,7 @@ function showLogoutNotification() {
         </div>
         <div style="font-size: 16px; opacity: 0.8;">
             Sie wurden erfolgreich abgemeldet.<br>
-            Vielen Dank für Ihren Besuch bei AutoR.
+            Vielen Dank für Ihren Besuch bei AutooR.
         </div>
     `;
     
@@ -279,12 +291,12 @@ function showLogoutNotification() {
 
 // Check if user is logged in
 function isUserLoggedIn() {
-    return localStorage.getItem('isLoggedIn') === 'true';
+    return sessionStorage.getItem('isLoggedIn') === 'true' || localStorage.getItem('isLoggedIn') === 'true';
 }
 
 // Get current user
 function getCurrentUser() {
-    const userData = localStorage.getItem('currentUser');
+    const userData = sessionStorage.getItem('currentUser') || localStorage.getItem('currentUser');
     return userData ? JSON.parse(userData) : null;
 }
 
@@ -292,9 +304,9 @@ function getCurrentUser() {
 function testNavbarUpdate() {
     console.log('Testing navbar update...');
     
-    // Set test user data
-    localStorage.setItem('isLoggedIn', 'true');
-    localStorage.setItem('currentUser', JSON.stringify({
+    // Set test user data (sessionStorage kullan)
+    sessionStorage.setItem('isLoggedIn', 'true');
+    sessionStorage.setItem('currentUser', JSON.stringify({
         firstName: 'Test',
         lastName: 'User',
         email: 'test@example.com'

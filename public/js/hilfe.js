@@ -34,7 +34,7 @@ function loadFAQ() {
         },
         {
             question: "Kann ich mein Auto an einem anderen Ort zurückgeben?",
-            answer: "Ja, Sie können Ihr Auto an einem anderen AutoR-Standort zurückgeben. Es fallen zusätzliche Gebühren an, die bei der Buchung angezeigt werden."
+            answer: "Ja, Sie können Ihr Auto an einem anderen AutooR-Standort zurückgeben. Es fallen zusätzliche Gebühren an, die bei der Buchung angezeigt werden."
         },
         {
             question: "Was ist im Preis enthalten?",

@@ -34,7 +34,7 @@ router.post('/send', async (req, res) => {
             html: `
                 <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
                     <h2 style="color: #f39c12; border-bottom: 2px solid #f39c12; padding-bottom: 10px;">
-                        Neue Kontaktanfrage von AutoR Website
+                        Neue Kontaktanfrage von AutooR Website
                     </h2>
                     
                     <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
@@ -51,7 +51,7 @@ router.post('/send', async (req, res) => {
                     </div>
                     
                     <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #e9ecef; color: #6c757d; font-size: 14px;">
-                        <p>Diese Nachricht wurde automatisch von der AutoR Website gesendet.</p>
+                        <p>Diese Nachricht wurde automatisch von der AutooR Website gesendet.</p>
                         <p>Antworten Sie direkt an: <a href="mailto:${email}">${email}</a></p>
                     </div>
                 </div>

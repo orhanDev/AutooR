@@ -19,7 +19,7 @@ router.get('/test-google', (req, res) => {
         <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Test Google Anmeldung - AutoR</title>
+            <title>Test Google Anmeldung - AutooR</title>
             <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
             <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
             <style>
@@ -141,7 +141,7 @@ router.get('/test-google', (req, res) => {
         <body>
             <div class="main-container">
                 <div class="oauth-container">
-                    <h1 class="oauth-title">AutoR</h1>
+                    <h1 class="oauth-title">AutooR</h1>
                     <p class="oauth-subtitle">Test Google Anmeldung</p>
                     
                     <div class="test-info">

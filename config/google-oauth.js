@@ -1,15 +1,26 @@
 const { OAuth2Client } = require('google-auth-library');
 
-// Google OAuth 2.0 konfigürasyonu
-const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || 'your-google-client-id.apps.googleusercontent.com';
-const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET || 'your-google-client-secret';
-const GOOGLE_REDIRECT_URI = process.env.GOOGLE_REDIRECT_URI || 'http://localhost:3000/auth/google/callback';
-
-// Google OAuth istemcisi
-const googleClient = new OAuth2Client(GOOGLE_CLIENT_ID);
+// Google OAuth 2.0 konfigürasyonu - değerleri fonksiyon içinde al
+function getGoogleClient() {
+    const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || 'your-google-client-id.apps.googleusercontent.com';
+    const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET || 'your-google-client-secret';
+    const GOOGLE_REDIRECT_URI = process.env.GOOGLE_REDIRECT_URI || 'https://localhost:3443/auth/google/callback';
+    
+    return new OAuth2Client(
+        GOOGLE_CLIENT_ID,
+        GOOGLE_CLIENT_SECRET,
+        GOOGLE_REDIRECT_URI
+    );
+}
 
 // Google OAuth URL oluşturma
-function getGoogleAuthURL() {
+function getGoogleAuthURL(state = 'home') {
+    const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || 'your-google-client-id.apps.googleusercontent.com';
+    const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET || 'your-google-client-secret';
+    const GOOGLE_REDIRECT_URI = process.env.GOOGLE_REDIRECT_URI || 'https://localhost:3443/auth/google/callback';
+    
+    const googleClient = getGoogleClient();
+    
     const scopes = [
         'https://www.googleapis.com/auth/userinfo.email',
         'https://www.googleapis.com/auth/userinfo.profile'
@@ -19,13 +30,17 @@ function getGoogleAuthURL() {
         access_type: 'offline',
         scope: scopes,
         redirect_uri: GOOGLE_REDIRECT_URI,
-        prompt: 'select_account' // Kullanıcıyı hesap seçmeye zorla
+        prompt: 'select_account', // Kullanıcıyı hesap seçmeye zorla
+        state: state // Redirect bilgisi
     });
 }
 
 // Google OAuth token doğrulama
 async function verifyGoogleToken(token) {
     try {
+        const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || 'your-google-client-id.apps.googleusercontent.com';
+        const googleClient = getGoogleClient();
+        
         const ticket = await googleClient.verifyIdToken({
             idToken: token,
             audience: GOOGLE_CLIENT_ID
@@ -57,10 +72,8 @@ async function verifyGoogleToken(token) {
 // Google OAuth authorization code ile token alma
 async function getGoogleTokens(code) {
     try {
-        const { tokens } = await googleClient.getToken({
-            code: code,
-            redirect_uri: GOOGLE_REDIRECT_URI
-        });
+        const googleClient = getGoogleClient();
+        const { tokens } = await googleClient.getToken(code);
         
         googleClient.setCredentials(tokens);
         
@@ -75,10 +88,10 @@ async function getGoogleTokens(code) {
                 googleId: response.data.id,
                 email: response.data.email,
                 name: response.data.name,
-                firstName: response.data.given_name,
-                lastName: response.data.family_name,
+                firstName: response.data.given_name || response.data.name?.split(' ')[0] || '',
+                lastName: response.data.family_name || response.data.name?.split(' ').slice(1).join(' ') || '',
                 picture: response.data.picture,
-                emailVerified: response.data.verified_email
+                emailVerified: response.data.verified_email || false
             },
             tokens: tokens
         };
@@ -95,7 +108,5 @@ module.exports = {
     getGoogleAuthURL,
     verifyGoogleToken,
     getGoogleTokens,
-    GOOGLE_CLIENT_ID,
-    GOOGLE_CLIENT_SECRET,
-    GOOGLE_REDIRECT_URI
+    getGoogleClient
 };

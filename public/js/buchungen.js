@@ -23,9 +23,9 @@ async function loadBookings() {
     const container = document.getElementById('bookings-container');
     const emptyState = document.getElementById('empty-state');
     
-    // Check if user is logged in
-    const userData = JSON.parse(localStorage.getItem('userData') || '{}');
-    const token = localStorage.getItem('token');
+    // Check if user is logged in (sessionStorage öncelikli, yoksa localStorage)
+    const userData = JSON.parse(sessionStorage.getItem('userData') || localStorage.getItem('userData') || '{}');
+    const token = sessionStorage.getItem('token') || localStorage.getItem('token');
     
     console.log('Buchungen - userData:', userData);
     console.log('Buchungen - token:', token);

@@ -136,7 +136,9 @@ function setupLogout() {
         logoutBtn.addEventListener('click', (e) => {
             e.preventDefault();
             
-            // Clear local storage
+            // Clear session and local storage
+            sessionStorage.removeItem('token');
+            sessionStorage.removeItem('user');
             localStorage.removeItem('token');
             localStorage.removeItem('user');
             
@@ -148,7 +150,7 @@ function setupLogout() {
 
 // Check authentication status
 function checkAuth() {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token') || localStorage.getItem('token');
     if (!token) {
         // No token, redirect to login
         window.location.href = '/views/login.html';
@@ -162,12 +164,16 @@ function checkAuth() {
         
         if (payload.exp < currentTime) {
             // Token expired
+            sessionStorage.removeItem('token');
+            sessionStorage.removeItem('user');
             localStorage.removeItem('token');
             localStorage.removeItem('user');
             window.location.href = '/views/login.html';
         }
     } catch (error) {
         // Invalid token
+        sessionStorage.removeItem('token');
+        sessionStorage.removeItem('user');
         localStorage.removeItem('token');
         localStorage.removeItem('user');
         window.location.href = '/views/login.html';

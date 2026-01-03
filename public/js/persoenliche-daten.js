@@ -21,7 +21,7 @@ function loadUserData() {
     console.log('Loading user data...');
     
     // Get user data from localStorage
-    const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+    const userData = JSON.parse(sessionStorage.getItem('userData') || localStorage.getItem('userData') || '{}');
     const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
     
     // Fill form with existing data

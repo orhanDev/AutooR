@@ -21,7 +21,7 @@ function loadProfileData() {
     console.log('Loading profile data...');
     
     // Get user data from localStorage
-    const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+    const userData = JSON.parse(sessionStorage.getItem('userData') || localStorage.getItem('userData') || '{}');
     const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
     
     // Set profile name and email
@@ -95,7 +95,7 @@ function downloadData() {
     console.log('Download data clicked');
     
     // Get user data
-    const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+    const userData = JSON.parse(sessionStorage.getItem('userData') || localStorage.getItem('userData') || '{}');
     const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
     const bookings = JSON.parse(localStorage.getItem('userBookings') || '[]');
     

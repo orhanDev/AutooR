@@ -7,14 +7,20 @@ CREATE TABLE IF NOT EXISTS users (
     first_name VARCHAR(100) NOT NULL,
     last_name VARCHAR(100) NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
-    password_hash VARCHAR(255) NOT NULL,
+    password_hash VARCHAR(255), -- NULL olabilir (Google OAuth için)
     phone_number VARCHAR(20),
     address TEXT,
     payment_card_json JSONB,
     payment_paypal_json JSONB,
     payment_klarna_json JSONB,
     is_admin BOOLEAN DEFAULT FALSE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    login_method VARCHAR(50) DEFAULT 'email', -- 'email', 'google', 'facebook', 'apple'
+    is_verified BOOLEAN DEFAULT FALSE,
+    google_id VARCHAR(255),
+    facebook_id VARCHAR(255),
+    apple_id VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Locations tablosu
