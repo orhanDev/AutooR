@@ -8,7 +8,7 @@ Proje kök dizininde `.env` dosyası oluşturun ve aşağıdaki içeriği ekleyi
 # Google OAuth 2.0 Credentials
 GOOGLE_CLIENT_ID=your-google-client-id.apps.googleusercontent.com
 GOOGLE_CLIENT_SECRET=your-google-client-secret
-GOOGLE_REDIRECT_URI=https://localhost:3443/auth/google/callback
+GOOGLE_REDIRECT_URI=image.pnghttps://localhost:3443/auth/google/callback
 
 # Facebook OAuth Credentials
 FACEBOOK_APP_ID=your-facebook-app-id
@@ -23,7 +23,7 @@ APPLE_REDIRECT_URI=https://localhost:3443/auth/apple/callback
 # PostgreSQL Database Configuration
 PGUSER=AutooR_user
 PGHOST=localhost
-PGDATABASE=AutooR_db
+PGDATABASE=AutooR
 PGPASSWORD=Vekil4023.
 PGPORT=5432
 

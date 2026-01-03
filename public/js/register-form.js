@@ -9,10 +9,78 @@ document.addEventListener('DOMContentLoaded', () => {
     const alertContainer = document.getElementById('alert-container');
     const passwordToggleBtn = document.getElementById('password-toggle-btn');
     const passwordToggleIcon = document.getElementById('password-toggle-icon');
+    const emailInput = document.getElementById('email');
+    const sendCodeBtn = document.getElementById('send-code-btn');
+    const verificationCodeInput = document.getElementById('verification-code');
+    const verificationCodeGroup = document.getElementById('verification-code-group');
+    const emailCodeStatus = document.getElementById('email-code-status');
+    const newsletterCheckbox = document.getElementById('newsletter');
     
     if (!form || !passwordInput) {
         console.error('Form elements not found');
         return;
+    }
+    
+    // Newsletter checkbox kontrolü - Submit butonunu aktif/pasif yap
+    function updateSubmitButtonState() {
+        if (newsletterCheckbox && submitBtn) {
+            if (!newsletterCheckbox.checked) {
+                submitBtn.disabled = true;
+                submitBtn.style.opacity = '0.6';
+                submitBtn.style.cursor = 'not-allowed';
+            } else {
+                submitBtn.disabled = false;
+                submitBtn.style.opacity = '1';
+                submitBtn.style.cursor = 'pointer';
+            }
+        }
+    }
+    
+    // Code senden butonunu kontrol et - Vorname, Nachname, Password ve Newsletter checkbox dolu olmalı
+    function updateSendCodeButtonState() {
+        if (sendCodeBtn) {
+            const firstName = document.getElementById('first-name').value.trim();
+            const lastName = document.getElementById('last-name').value.trim();
+            const password = passwordInput.value.trim();
+            const isPasswordValid = password && validatePassword(password);
+            const isNewsletterChecked = newsletterCheckbox && newsletterCheckbox.checked;
+            
+            if (!firstName || !lastName || !isPasswordValid || !isNewsletterChecked) {
+                sendCodeBtn.disabled = true;
+                sendCodeBtn.style.opacity = '0.6';
+                sendCodeBtn.style.cursor = 'not-allowed';
+            } else {
+                sendCodeBtn.disabled = false;
+                sendCodeBtn.style.opacity = '1';
+                sendCodeBtn.style.cursor = 'pointer';
+            }
+        }
+    }
+    
+    // Sayfa yüklendiğinde kontrol et
+    updateSubmitButtonState();
+    updateSendCodeButtonState();
+    
+    // Checkbox değiştiğinde kontrol et
+    if (newsletterCheckbox) {
+        newsletterCheckbox.addEventListener('change', () => {
+            updateSubmitButtonState();
+            updateSendCodeButtonState();
+        });
+    }
+    
+    // Vorname, Nachname ve Password değiştiğinde Code senden butonunu kontrol et
+    const firstNameInput = document.getElementById('first-name');
+    const lastNameInput = document.getElementById('last-name');
+    
+    if (firstNameInput) {
+        firstNameInput.addEventListener('input', updateSendCodeButtonState);
+        firstNameInput.addEventListener('blur', updateSendCodeButtonState);
+    }
+    
+    if (lastNameInput) {
+        lastNameInput.addEventListener('input', updateSendCodeButtonState);
+        lastNameInput.addEventListener('blur', updateSendCodeButtonState);
     }
     
     // Password toggle functionality
@@ -199,7 +267,13 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             passwordInput.classList.remove('is-valid', 'is-invalid');
         }
+        
+        // Code senden butonunu güncelle
+        updateSendCodeButtonState();
     });
+    
+    // Password blur event
+    passwordInput.addEventListener('blur', updateSendCodeButtonState);
     
     // Show alert function
     function showAlert(message, type = 'danger') {
@@ -362,12 +436,158 @@ document.addEventListener('DOMContentLoaded', () => {
         return isValid;
     }
     
+    // Send verification code handler
+    if (sendCodeBtn && emailInput) {
+        sendCodeBtn.addEventListener('click', async () => {
+            // Önce Vorname, Nachname ve Password kontrolü
+            const firstName = document.getElementById('first-name').value.trim();
+            const lastName = document.getElementById('last-name').value.trim();
+            const password = passwordInput.value.trim();
+            
+            // Vorname kontrolü
+            if (!firstName) {
+                showAlert('Bitte geben Sie zuerst Ihren Vornamen ein.', 'warning');
+                const firstNameInput = document.getElementById('first-name');
+                firstNameInput.classList.add('is-invalid');
+                firstNameInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                firstNameInput.focus();
+                return;
+            }
+            
+            // Nachname kontrolü
+            if (!lastName) {
+                showAlert('Bitte geben Sie zuerst Ihren Nachnamen ein.', 'warning');
+                const lastNameInput = document.getElementById('last-name');
+                lastNameInput.classList.add('is-invalid');
+                lastNameInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                lastNameInput.focus();
+                return;
+            }
+            
+            // Password kontrolü
+            if (!password) {
+                showAlert('Bitte bestimmen Sie zuerst ein Passwort.', 'warning');
+                passwordInput.classList.add('is-invalid');
+                passwordInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                passwordInput.focus();
+                return;
+            }
+            
+            // Password geçerliliği kontrolü
+            if (!validatePassword(password)) {
+                showAlert('Bitte geben Sie ein gültiges Passwort ein, das alle Anforderungen erfüllt.', 'warning');
+                passwordInput.classList.add('is-invalid');
+                passwordInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                passwordInput.focus();
+                return;
+            }
+            
+            // Newsletter checkbox kontrolü
+            if (!newsletterCheckbox || !newsletterCheckbox.checked) {
+                showAlert('Bitte akzeptieren Sie die Newsletter-Einwilligung, um fortzufahren.', 'warning');
+                if (newsletterCheckbox) {
+                    newsletterCheckbox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    newsletterCheckbox.focus();
+                }
+                return;
+            }
+            
+            const email = emailInput.value.trim();
+            
+            // Email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!email || !emailRegex.test(email)) {
+                showAlert('Bitte geben Sie eine gültige E-Mail-Adresse ein.', 'danger');
+                emailInput.classList.add('is-invalid');
+                emailInput.focus();
+                return;
+            }
+            
+            // Disable button
+            sendCodeBtn.disabled = true;
+            const originalText = sendCodeBtn.innerHTML;
+            sendCodeBtn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Wird gesendet...';
+            
+            try {
+                const response = await fetch('/api/auth/send-verification-code', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email })
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    showAlert('Bestätigungscode wurde an Ihre E-Mail-Adresse gesendet.', 'success');
+                    emailInput.classList.add('is-valid');
+                    emailCodeStatus.style.display = 'block';
+                    verificationCodeGroup.style.display = 'block';
+                    verificationCodeInput.focus();
+                    
+                    // Start countdown (60 seconds)
+                    let countdown = 60;
+                    const countdownInterval = setInterval(() => {
+                        if (countdown > 0) {
+                            sendCodeBtn.innerHTML = `Erneut senden (${countdown}s)`;
+                            countdown--;
+                        } else {
+                            clearInterval(countdownInterval);
+                            sendCodeBtn.disabled = false;
+                            sendCodeBtn.innerHTML = originalText;
+                        }
+                    }, 1000);
+                } else {
+                    // Daha detaylı hata mesajı göster
+                    let errorMessage = result.error || result.message || 'Fehler beim Senden des Codes.';
+                    if (result.details) {
+                        errorMessage += ' Details: ' + result.details;
+                    }
+                    if (result.message && result.message.includes('Migration')) {
+                        errorMessage = 'Database-Tabelle fehlt. Bitte führen Sie die Migration in pgAdmin aus: db/create_email_verification_table.sql';
+                    }
+                    showAlert(errorMessage, 'danger');
+                    emailInput.classList.add('is-invalid');
+                    sendCodeBtn.disabled = false;
+                    sendCodeBtn.innerHTML = originalText;
+                }
+            } catch (error) {
+                console.error('Error sending verification code:', error);
+                showAlert('Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.', 'danger');
+                sendCodeBtn.disabled = false;
+                sendCodeBtn.innerHTML = originalText;
+            }
+        });
+    }
+    
     // Form submit handler
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
         e.stopPropagation();
         
         console.log('Register form submitted');
+        
+        // Newsletter checkbox kontrolü
+        if (!newsletterCheckbox || !newsletterCheckbox.checked) {
+            showAlert('Bitte akzeptieren Sie die Newsletter-Einwilligung, um fortzufahren.', 'warning');
+            if (newsletterCheckbox) {
+                newsletterCheckbox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                newsletterCheckbox.focus();
+            }
+            return;
+        }
+        
+        // Check if verification code is required and provided
+        if (verificationCodeGroup && verificationCodeGroup.style.display !== 'none') {
+            const code = verificationCodeInput.value.trim();
+            if (!code || code.length !== 6) {
+                showAlert('Bitte geben Sie den 6-stelligen Bestätigungscode ein.', 'danger');
+                verificationCodeInput.classList.add('is-invalid');
+                verificationCodeInput.focus();
+                return;
+            }
+        }
         
         // Validate form
         if (!validateForm()) {
@@ -403,12 +623,25 @@ document.addEventListener('DOMContentLoaded', () => {
             last_name: document.getElementById('last-name').value.trim(),
             email: document.getElementById('email').value.trim(),
             password: passwordInput.value,
-            newsletter: document.getElementById('newsletter').checked
+            verification_code: verificationCodeInput ? verificationCodeInput.value.trim() : '',
+            phone_number: document.getElementById('phone') ? document.getElementById('phone').value.trim() : null,
+            address: document.getElementById('address') ? document.getElementById('address').value.trim() : null,
+            newsletter: document.getElementById('newsletter') ? document.getElementById('newsletter').checked : false
         };
         
+        // Check if verification code is required
+        if (verificationCodeGroup && verificationCodeGroup.style.display !== 'none' && !formData.verification_code) {
+            showAlert('Bitte geben Sie den Bestätigungscode ein.', 'danger');
+            verificationCodeInput.classList.add('is-invalid');
+            verificationCodeInput.focus();
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalText;
+            return;
+        }
+        
         try {
-            // Send registration request
-            const response = await fetch('/api/auth/register', {
+            // Send registration request with verification
+            const response = await fetch('/api/auth/verify-and-register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

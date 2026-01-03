@@ -2,14 +2,45 @@ const express = require('express');
 const nodemailer = require('nodemailer');
 const router = express.Router();
 
-// Gmail SMTP ayarları
-const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user: process.env.EMAIL_USER || 'your-email@gmail.com',
-        pass: process.env.EMAIL_PASS || 'your-app-password'
+// Email transporter - Tüm email servislerini destekler
+function createEmailTransporter() {
+    const emailUser = process.env.EMAIL_USER;
+    const emailPass = process.env.EMAIL_PASS;
+    const emailHost = process.env.EMAIL_HOST || 'smtp.gmail.com';
+    const emailPort = process.env.EMAIL_PORT || 587;
+    const emailSecure = process.env.EMAIL_SECURE === 'true' || false;
+    
+    if (!emailUser || !emailPass) {
+        return null;
     }
-});
+    
+    // Gmail için service kullan, diğerleri için host/port
+    if (emailUser.includes('@gmail.com')) {
+        return nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: emailUser,
+                pass: emailPass
+            }
+        });
+    } else {
+        // Diğer email servisleri için (Outlook, Yahoo, custom SMTP)
+        return nodemailer.createTransport({
+            host: emailHost,
+            port: parseInt(emailPort),
+            secure: emailSecure,
+            auth: {
+                user: emailUser,
+                pass: emailPass
+            },
+            tls: {
+                rejectUnauthorized: false
+            }
+        });
+    }
+}
+
+const transporter = createEmailTransporter();
 
 // Send contact form email
 router.post('/send', async (req, res) => {

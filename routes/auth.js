@@ -1,12 +1,437 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const nodemailer = require('nodemailer');
 const { query } = require('../db/database');
 const authMiddleware = require('../middleware/authMiddleware');
 
 const router = express.Router();
 
-// Kayıt
+// Email transporter - Tüm email servislerini destekler (Gmail, Outlook, Yahoo, vb.)
+function createEmailTransporter() {
+    const emailUser = process.env.EMAIL_USER;
+    const emailPass = process.env.EMAIL_PASS;
+    const emailHost = process.env.EMAIL_HOST || 'smtp.gmail.com';
+    const emailPort = process.env.EMAIL_PORT || 587;
+    const emailSecure = process.env.EMAIL_SECURE === 'true' || false;
+    
+    if (!emailUser || !emailPass) {
+        return null;
+    }
+    
+    // Gmail için service kullan, diğerleri için host/port
+    if (emailUser.includes('@gmail.com')) {
+        return nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: emailUser,
+                pass: emailPass
+            }
+        });
+    } else {
+        // Diğer email servisleri için (Outlook, Yahoo, custom SMTP)
+        return nodemailer.createTransport({
+            host: emailHost,
+            port: parseInt(emailPort),
+            secure: emailSecure, // true for 465, false for diğer portlar
+            auth: {
+                user: emailUser,
+                pass: emailPass
+            },
+            tls: {
+                rejectUnauthorized: false // Development için, production'da true olmalı
+            }
+        });
+    }
+}
+
+// 6 haneli doğrulama kodu oluştur
+function generateVerificationCode() {
+    return Math.floor(100000 + Math.random() * 900000).toString();
+}
+
+// Email doğrulama kodu gönder
+router.post('/send-verification-code', async (req, res) => {
+    try {
+        console.log('=== SEND VERIFICATION CODE REQUEST ===');
+        const { email } = req.body;
+        console.log('Email:', email);
+
+        // Email validation
+        if (!email || !email.trim()) {
+            return res.status(400).json({ 
+                error: 'E-Mail ist erforderlich',
+                field: 'email'
+            });
+        }
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            return res.status(400).json({ 
+                error: 'Ungültige E-Mail-Adresse',
+                field: 'email'
+            });
+        }
+
+        // Email zaten kayıtlı mı kontrol et
+        console.log('Checking if email exists...');
+        const existingUser = await query('SELECT * FROM users WHERE email = $1', [email]);
+        if (existingUser.rows.length > 0) {
+            console.log('Email already registered');
+            return res.status(400).json({ 
+                error: 'E-Mail bereits registriert',
+                field: 'email',
+                message: 'Diese E-Mail-Adresse ist bereits registriert.'
+            });
+        }
+
+        // 6 haneli kod oluştur
+        const code = generateVerificationCode();
+        const expiresAt = new Date(Date.now() + 15 * 60 * 1000); // 15 dakika geçerli
+        console.log('Generated code:', code);
+        console.log('Expires at:', expiresAt);
+
+        // Eski kodları temizle (aynı email için)
+        try {
+            console.log('Deleting old codes...');
+            await query('DELETE FROM email_verification_codes WHERE email = $1', [email]);
+            console.log('Old codes deleted');
+        } catch (dbError) {
+            console.error('Database error (DELETE):', dbError);
+            console.error('Error code:', dbError.code);
+            console.error('Error message:', dbError.message);
+            // Tablo yoksa oluşturmayı dene veya devam et
+            if (dbError.code === '42P01') { // Table does not exist
+                console.error('Table does not exist!');
+                return res.status(500).json({ 
+                    error: 'Database-Tabelle fehlt',
+                    message: 'Bitte führen Sie die Migration aus: db/create_email_verification_table.sql in pgAdmin',
+                    details: dbError.message
+                });
+            }
+            throw dbError;
+        }
+
+        // Yeni kodu kaydet
+        try {
+            console.log('Inserting new code...');
+            await query(
+                'INSERT INTO email_verification_codes (email, code, expires_at) VALUES ($1, $2, $3)',
+                [email, code, expiresAt]
+            );
+            console.log('Code inserted successfully');
+        } catch (dbError) {
+            console.error('Database error (INSERT):', dbError);
+            console.error('Error code:', dbError.code);
+            console.error('Error message:', dbError.message);
+            console.error('Error detail:', dbError.detail);
+            if (dbError.code === '42P01') { // Table does not exist
+                console.error('Table does not exist!');
+                return res.status(500).json({ 
+                    error: 'Database-Tabelle fehlt',
+                    message: 'Bitte führen Sie die Migration aus: db/create_email_verification_table.sql in pgAdmin',
+                    details: dbError.message
+                });
+            }
+            throw dbError;
+        }
+
+        // Email gönder - Spam önleme ile
+        const emailTransporter = createEmailTransporter();
+        const emailUser = process.env.EMAIL_USER;
+        const emailFromName = process.env.EMAIL_FROM_NAME || 'AutooR';
+        
+        if (emailTransporter && emailUser && emailUser !== 'your-email@gmail.com' && process.env.EMAIL_PASS !== 'your-app-password') {
+            try {
+                const mailOptions = {
+                    from: `"${emailFromName}" <${emailUser}>`, // Gönderen adı ve email
+                    replyTo: emailUser, // Reply-To header
+                    to: email,
+                    subject: 'AutooR - E-Mail-Bestätigungscode',
+                    // Text versiyonu (spam filtreleri için önemli)
+                    text: `
+AutooR E-Mail-Bestätigung
+
+Vielen Dank für Ihre Registrierung bei AutooR!
+
+Ihr Bestätigungscode lautet: ${code}
+
+Dieser Code ist 15 Minuten gültig.
+
+Wenn Sie sich nicht registriert haben, ignorieren Sie diese E-Mail bitte.
+
+Mit freundlichen Grüßen,
+Das AutooR Team
+                    `,
+                    // HTML versiyonu
+                    html: `
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f5f5f5;">
+    <table role="presentation" style="width: 100%; border-collapse: collapse;">
+        <tr>
+            <td style="padding: 20px 0; text-align: center;">
+                <table role="presentation" style="width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                    <tr>
+                        <td style="padding: 40px 40px 20px 40px; text-align: center; border-bottom: 2px solid #ffc107;">
+                            <h1 style="margin: 0; color: #000000; font-size: 28px; font-weight: bold;">AutooR</h1>
+                            <h2 style="margin: 10px 0 0 0; color: #000000; font-size: 20px; font-weight: normal;">E-Mail-Bestätigung</h2>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 30px 40px;">
+                            <p style="margin: 0 0 20px 0; font-size: 16px; color: #333333; line-height: 1.6;">
+                                Vielen Dank für Ihre Registrierung bei AutooR!
+                            </p>
+                            <p style="margin: 0 0 20px 0; font-size: 16px; color: #333333; line-height: 1.6;">
+                                Ihr Bestätigungscode lautet:
+                            </p>
+                            <div style="background-color: #ffc107; color: #000000; padding: 25px; text-align: center; font-size: 36px; font-weight: bold; letter-spacing: 8px; border-radius: 8px; margin: 30px 0;">
+                                ${code}
+                            </div>
+                            <p style="margin: 20px 0 0 0; font-size: 14px; color: #666666; line-height: 1.6;">
+                                Dieser Code ist <strong>15 Minuten</strong> gültig.
+                            </p>
+                            <p style="margin: 20px 0 0 0; font-size: 14px; color: #999999; line-height: 1.6;">
+                                Wenn Sie sich nicht registriert haben, ignorieren Sie diese E-Mail bitte.
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 20px 40px; background-color: #f8f9fa; border-top: 1px solid #e9ecef; text-align: center;">
+                            <p style="margin: 0; font-size: 12px; color: #666666;">
+                                Mit freundlichen Grüßen,<br>
+                                <strong>Das AutooR Team</strong>
+                            </p>
+                            <p style="margin: 15px 0 0 0; font-size: 11px; color: #999999;">
+                                Diese E-Mail wurde automatisch generiert. Bitte antworten Sie nicht auf diese E-Mail.
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
+                    `,
+                    // Spam önleme için headers
+                    headers: {
+                        'X-Priority': '1',
+                        'X-MSMail-Priority': 'High',
+                        'Importance': 'high',
+                        'List-Unsubscribe': `<mailto:${emailUser}?subject=unsubscribe>`,
+                        'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click'
+                    },
+                    // Message-ID ve Date otomatik eklenir
+                    date: new Date()
+                };
+
+                await emailTransporter.sendMail(mailOptions);
+                console.log(`✅ Verification code sent to ${email}: ${code}`);
+            } catch (emailError) {
+                console.error('❌ Email gönderme hatası:', emailError);
+                console.error('Error details:', emailError.message);
+                // Kod kaydedildi ama email gönderilemedi - development için console'a yazdır
+                console.log(`\n=== DEVELOPMENT MODE ===`);
+                console.log(`Email gönderilemedi, ancak kod kaydedildi:`);
+                console.log(`Email: ${email}`);
+                console.log(`Code: ${code}`);
+                console.log(`========================\n`);
+            }
+        } else {
+            // Email ayarları yok - development modu
+            console.log(`\n=== DEVELOPMENT MODE ===`);
+            console.log(`Email ayarları yapılandırılmamış. Kod konsola yazdırılıyor:`);
+            console.log(`Email: ${email}`);
+            console.log(`Code: ${code}`);
+            console.log(`========================\n`);
+        }
+
+        res.json({
+            message: 'Bestätigungscode wurde an Ihre E-Mail-Adresse gesendet',
+            success: true
+        });
+
+    } catch (error) {
+        console.error('=== VERIFICATION CODE SEND ERROR ===');
+        console.error('Error type:', error.constructor.name);
+        console.error('Error message:', error.message);
+        console.error('Error code:', error.code);
+        console.error('Error detail:', error.detail);
+        console.error('Error stack:', error.stack);
+        console.error('====================================');
+        res.status(500).json({ 
+            error: 'Serverfehler',
+            message: 'Der Bestätigungscode konnte nicht gesendet werden.',
+            details: error.message,
+            code: error.code
+        });
+    }
+});
+
+// Email doğrula ve kayıt yap
+router.post('/verify-and-register', async (req, res) => {
+    try {
+        const { first_name, last_name, email, password, verification_code, phone_number, address } = req.body;
+
+        // Field validation
+        if (!first_name || !first_name.trim()) {
+            return res.status(400).json({ 
+                error: 'Vorname ist erforderlich',
+                field: 'first_name'
+            });
+        }
+        
+        if (!last_name || !last_name.trim()) {
+            return res.status(400).json({ 
+                error: 'Nachname ist erforderlich',
+                field: 'last_name'
+            });
+        }
+        
+        if (!email || !email.trim()) {
+            return res.status(400).json({ 
+                error: 'E-Mail ist erforderlich',
+                field: 'email'
+            });
+        }
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            return res.status(400).json({ 
+                error: 'Ungültige E-Mail-Adresse',
+                field: 'email'
+            });
+        }
+
+        if (!password || !password.trim()) {
+            return res.status(400).json({ 
+                error: 'Passwort ist erforderlich',
+                field: 'password'
+            });
+        }
+
+        if (!verification_code || !verification_code.trim()) {
+            return res.status(400).json({ 
+                error: 'Bestätigungscode ist erforderlich',
+                field: 'verification_code'
+            });
+        }
+
+        // Password validation
+        if (password.length < 10 || password.length > 40) {
+            return res.status(400).json({ 
+                error: 'Passwort-Länge ungültig',
+                field: 'password'
+            });
+        }
+        
+        if (!/[a-z]/.test(password)) {
+            return res.status(400).json({ 
+                error: 'Passwort-Anforderung nicht erfüllt',
+                field: 'password'
+            });
+        }
+        
+        if (!/[A-Z]/.test(password)) {
+            return res.status(400).json({ 
+                error: 'Passwort-Anforderung nicht erfüllt',
+                field: 'password'
+            });
+        }
+        
+        if (!/[0-9]/.test(password)) {
+            return res.status(400).json({ 
+                error: 'Passwort-Anforderung nicht erfüllt',
+                field: 'password'
+            });
+        }
+        
+        if (!/[-.\/',;&@#*)(_+:"~]/.test(password)) {
+            return res.status(400).json({ 
+                error: 'Passwort-Anforderung nicht erfüllt',
+                field: 'password'
+            });
+        }
+
+        // Email kontrolü
+        const existingUser = await query('SELECT * FROM users WHERE email = $1', [email]);
+        if (existingUser.rows.length > 0) {
+            return res.status(400).json({ 
+                error: 'E-Mail bereits registriert',
+                field: 'email'
+            });
+        }
+
+        // Doğrulama kodunu kontrol et
+        const codeResult = await query(
+            'SELECT * FROM email_verification_codes WHERE email = $1 AND code = $2 AND used = FALSE AND expires_at > NOW() ORDER BY created_at DESC LIMIT 1',
+            [email, verification_code]
+        );
+
+        if (codeResult.rows.length === 0) {
+            return res.status(400).json({ 
+                error: 'Ungültiger oder abgelaufener Bestätigungscode',
+                field: 'verification_code'
+            });
+        }
+
+        // Kodu kullanıldı olarak işaretle
+        await query(
+            'UPDATE email_verification_codes SET used = TRUE WHERE id = $1',
+            [codeResult.rows[0].id]
+        );
+
+        // Şifre hash'leme
+        const saltRounds = 10;
+        const passwordHash = await bcrypt.hash(password, saltRounds);
+
+        // Yeni kullanıcı oluşturma
+        const newUser = await query(`
+            INSERT INTO users (first_name, last_name, email, password_hash, phone_number, address, is_verified)
+            VALUES ($1, $2, $3, $4, $5, $6, TRUE)
+            RETURNING user_id, first_name, last_name, email, phone_number, address, is_admin, created_at
+        `, [first_name, last_name, email, passwordHash, phone_number || null, address || null]);
+
+        const userId = newUser.rows[0].user_id;
+        const userEmail = newUser.rows[0].email;
+        const isAdmin = newUser.rows[0].is_admin || false;
+
+        // JWT token oluşturma
+        const token = jwt.sign(
+            { userId: userId, email: userEmail, is_admin: isAdmin },
+            process.env.JWT_SECRET,
+            { expiresIn: '24h' }
+        );
+
+        res.status(201).json({
+            message: 'Registrierung erfolgreich',
+            token: token,
+            user: { 
+                id: userId, 
+                user_id: userId,
+                email: userEmail,
+                first_name: newUser.rows[0].first_name,
+                last_name: newUser.rows[0].last_name
+            }
+        });
+
+    } catch (error) {
+        console.error('=== KAYIT HATASI ===');
+        console.error('Error:', error);
+        res.status(500).json({ 
+            error: 'Serverfehler',
+            message: error.message || 'Ein unerwarteter Fehler ist aufgetreten.'
+        });
+    }
+});
+
+// Eski kayıt endpoint'i - artık kullanılmıyor (geriye dönük uyumluluk için bırakıldı)
 router.post('/register', async (req, res) => {
     try {
         const { first_name, last_name, email, password, phone_number, address } = req.body;
@@ -102,9 +527,15 @@ router.post('/register', async (req, res) => {
                 field: 'email',
                 message: 'Diese E-Mail-Adresse ist bereits registriert. Bitte verwenden Sie eine andere E-Mail-Adresse oder melden Sie sich an.'
             });
-        } 
+        }
 
-        // Şifre hash'leme
+        // Eski endpoint - artık email doğrulama gerekiyor
+        return res.status(400).json({
+            error: 'Email-Verifizierung erforderlich',
+            message: 'Bitte verwenden Sie /api/auth/send-verification-code und /api/auth/verify-and-register'
+        });
+
+        // Şifre hash'leme (artık çalışmayacak)
         const saltRounds = 10;
         const passwordHash = await bcrypt.hash(password, saltRounds);
 

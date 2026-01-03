@@ -8,7 +8,7 @@ const router = express.Router();
 const pool = new Pool({
     user: process.env.PGUSER || 'AutooR_user',
     host: process.env.PGHOST || 'localhost',
-    database: process.env.PGDATABASE || 'AutooR_db',
+    database: process.env.PGDATABASE || 'AutooR',
     password: process.env.PGPASSWORD || 'Vekil4023.',
     port: process.env.PGPORT || 5432,
 });
@@ -64,12 +64,16 @@ router.get('/google', (req, res) => {
         
         const state = req.query.state || 'login';
         
-        // Request'ten dinamik olarak redirect URI oluştur
-        // Önce environment variable'dan gerçek portu al, yoksa request'ten al
-        const actualPort = process.env.ACTUAL_HTTPS_PORT || (req.get('host')?.split(':')[1]) || '3443';
-        const protocol = req.protocol === 'https' ? 'https' : 'https'; // HTTPS kullanıyoruz
-        const host = `localhost:${actualPort}`;
-        const GOOGLE_REDIRECT_URI = `${protocol}://${host}/auth/google/callback`;
+        // Önce .env'deki GOOGLE_REDIRECT_URI'yi kullan, yoksa dinamik oluştur
+        let GOOGLE_REDIRECT_URI = process.env.GOOGLE_REDIRECT_URI;
+        
+        if (!GOOGLE_REDIRECT_URI || GOOGLE_REDIRECT_URI.includes('your-') || GOOGLE_REDIRECT_URI.includes('localhost:3000')) {
+            // .env'de yoksa veya placeholder ise, request'ten dinamik oluştur
+            const actualPort = process.env.ACTUAL_HTTPS_PORT || (req.get('host')?.split(':')[1]) || '3443';
+            const protocol = req.protocol === 'https' ? 'https' : 'https';
+            const host = `localhost:${actualPort}`;
+            GOOGLE_REDIRECT_URI = `${protocol}://${host}/auth/google/callback`;
+        }
         
         const googleClient = getGoogleClient(GOOGLE_REDIRECT_URI);
         
@@ -84,8 +88,13 @@ router.get('/google', (req, res) => {
             state: state
         });
         
-        console.log('Redirecting to Google OAuth:', authURL);
+        console.log('=== GOOGLE OAUTH REDIRECT ===');
         console.log('Using redirect URI:', GOOGLE_REDIRECT_URI);
+        console.log('Client ID:', GOOGLE_CLIENT_ID?.substring(0, 20) + '...');
+        console.log('Has Client Secret:', !!GOOGLE_CLIENT_SECRET);
+        console.log('State:', state);
+        console.log('Redirecting to Google OAuth:', authURL);
+        console.log('=============================');
         res.redirect(authURL);
     } catch (error) {
         console.error('Google OAuth error:', error);
@@ -113,13 +122,23 @@ router.get('/google/callback', async (req, res) => {
             return res.redirect('/login?error=no_code');
         }
         
-        // Google Client oluştur - Environment variable'dan gerçek portu al
-        const actualPort = process.env.ACTUAL_HTTPS_PORT || (req.get('host')?.split(':')[1]) || '3443';
-        const protocol = req.protocol === 'https' ? 'https' : 'https';
-        const host = `localhost:${actualPort}`;
-        const GOOGLE_REDIRECT_URI = `${protocol}://${host}/auth/google/callback`;
+        // Google Client oluştur - Önce .env'deki GOOGLE_REDIRECT_URI'yi kullan
+        let GOOGLE_REDIRECT_URI = process.env.GOOGLE_REDIRECT_URI;
+        
+        if (!GOOGLE_REDIRECT_URI || GOOGLE_REDIRECT_URI.includes('your-') || GOOGLE_REDIRECT_URI.includes('localhost:3000')) {
+            // .env'de yoksa veya placeholder ise, request'ten dinamik oluştur
+            const actualPort = process.env.ACTUAL_HTTPS_PORT || (req.get('host')?.split(':')[1]) || '3443';
+            const protocol = req.protocol === 'https' ? 'https' : 'https';
+            const host = `localhost:${actualPort}`;
+            GOOGLE_REDIRECT_URI = `${protocol}://${host}/auth/google/callback`;
+        }
+        
         const googleClient = getGoogleClient(GOOGLE_REDIRECT_URI);
         
+        console.log('=== GOOGLE OAUTH CALLBACK ===');
+        console.log('Using redirect URI:', GOOGLE_REDIRECT_URI);
+        console.log('Authorization code received:', code ? 'YES' : 'NO');
+        console.log('State:', state);
         console.log('Google token alınıyor...');
         // Token al
         const { tokens } = await googleClient.getToken(code);

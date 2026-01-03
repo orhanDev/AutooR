@@ -108,50 +108,8 @@ document.addEventListener('DOMContentLoaded', () => {
         window.history.replaceState({}, document.title, window.location.pathname);
     }
     
-    // Check OAuth provider status and show/hide buttons accordingly
-    async function checkOAuthStatus() {
-        try {
-            const [googleStatus, facebookStatus, appleStatus] = await Promise.all([
-                fetch('/auth/google/status').then(r => r.json()).catch(() => ({ configured: false })),
-                fetch('/auth/facebook/status').then(r => r.json()).catch(() => ({ configured: false })),
-                fetch('/auth/apple/status').then(r => r.json()).catch(() => ({ configured: false }))
-            ]);
-            
-            // Show/hide buttons based on configuration
-            const googleBtn = document.getElementById('google-login-btn');
-            const facebookBtn = document.getElementById('facebook-login-btn');
-            const appleBtn = document.getElementById('apple-login-btn');
-            
-            if (googleBtn) {
-                if (!googleStatus.configured) {
-                    googleBtn.style.opacity = '0.6';
-                    googleBtn.style.cursor = 'not-allowed';
-                    googleBtn.title = 'Google Login ist nicht konfiguriert';
-                }
-            }
-            
-            if (facebookBtn) {
-                if (!facebookStatus.configured) {
-                    facebookBtn.style.opacity = '0.6';
-                    facebookBtn.style.cursor = 'not-allowed';
-                    facebookBtn.title = 'Facebook Login ist nicht konfiguriert';
-                }
-            }
-            
-            if (appleBtn) {
-                if (!appleStatus.configured) {
-                    appleBtn.style.opacity = '0.6';
-                    appleBtn.style.cursor = 'not-allowed';
-                    appleBtn.title = 'Apple Login ist nicht konfiguriert';
-                }
-            }
-        } catch (error) {
-            console.error('Error checking OAuth status:', error);
-        }
-    }
-    
-    // Check OAuth status on page load
-    checkOAuthStatus();
+    // OAuth kontrolü devre dışı bırakıldı - sadece email/password login kullanılıyor
+    // checkOAuthStatus() fonksiyonu kaldırıldı
     
     if (!loginForm) {
         console.error('Login form not found');

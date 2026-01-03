@@ -367,6 +367,7 @@
             background-color: #cccccc;
             cursor: not-allowed;
             transform: none;
+            opacity: 0.6;
         }
         
         #generate-password-btn {
@@ -489,22 +490,6 @@
                     <div class="invalid-feedback"></div>
         </div>
 
-                <!-- E-Mail -->
-                <div class="form-group">
-                    <label for="email" class="form-label">
-                        E-Mail<span class="required">*</span>
-                    </label>
-                    <input 
-                        type="email" 
-                        class="form-control" 
-                        id="email" 
-                        name="email"
-                        required
-                        autocomplete="email"
-                    >
-                    <div class="invalid-feedback"></div>
-                        </div>
-
                 <!-- Passwort -->
                 <div class="form-group">
                     <label for="password" class="form-label">
@@ -568,6 +553,57 @@
                         </div>
                         </div>
 
+                <!-- E-Mail -->
+                <div class="form-group">
+                    <label for="email" class="form-label">
+                        E-Mail<span class="required">*</span>
+                    </label>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <input 
+                            type="email" 
+                            class="form-control" 
+                            id="email" 
+                            name="email"
+                            required
+                            autocomplete="email"
+                            style="flex: 1;"
+                        >
+                        <button 
+                            type="button" 
+                            id="send-code-btn" 
+                            class="btn btn-warning"
+                            style="white-space: nowrap; padding: 0.75rem 1rem; font-weight: 600;"
+                        >
+                            Code senden
+                        </button>
+                    </div>
+                    <div class="invalid-feedback"></div>
+                    <small id="email-code-status" style="display: none; color: #28a745; margin-top: 0.25rem;">
+                        <i class="bi bi-check-circle"></i> Bestätigungscode wurde gesendet
+                    </small>
+                </div>
+
+                <!-- Verification Code -->
+                <div class="form-group" id="verification-code-group" style="display: none;">
+                    <label for="verification-code" class="form-label">
+                        Bestätigungscode<span class="required">*</span>
+                    </label>
+                    <input 
+                        type="text" 
+                        class="form-control" 
+                        id="verification-code" 
+                        name="verification_code"
+                        placeholder="6-stelliger Code"
+                        maxlength="6"
+                        pattern="[0-9]{6}"
+                        autocomplete="one-time-code"
+                    >
+                    <div class="invalid-feedback"></div>
+                    <small style="color: #666666; margin-top: 0.25rem; display: block;">
+                        Geben Sie den 6-stelligen Code ein, den wir an Ihre E-Mail-Adresse gesendet haben.
+                    </small>
+                </div>
+
                 <!-- Newsletter Checkbox -->
                 <div class="newsletter-section">
                     <div class="form-check">
@@ -576,6 +612,7 @@
                             type="checkbox" 
                             id="newsletter" 
                             name="newsletter"
+                            required
                         >
                         <label class="form-check-label" for="newsletter">
                             Bleiben Sie up-to-date zu Produkten und Services aus dem AutooR Universum!<br>

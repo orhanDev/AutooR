@@ -8,7 +8,7 @@ const router = express.Router();
 const pool = new Pool({
     user: process.env.PGUSER || 'AutooR_user',
     host: process.env.PGHOST || 'localhost',
-    database: process.env.PGDATABASE || 'AutooR_db',
+    database: process.env.PGDATABASE || 'AutooR',
     password: process.env.PGPASSWORD || 'Vekil4023.',
     port: process.env.PGPORT || 5432,
 });
