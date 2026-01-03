@@ -131,11 +131,6 @@ app.get('/zahlungsinformationen', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'zahlungsinformationen.html'));
 });
 
-// Fahrer Informationen page
-app.get('/fahrer-informationen', (req, res) => {
-    console.log('Fahrer Informationen route accessed');
-    res.sendFile(path.join(__dirname, 'public', 'fahrer-informationen.html'));
-});
 
 app.get('/register', (req, res) => {
     console.log('Register route accessed');

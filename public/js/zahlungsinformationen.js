@@ -560,8 +560,8 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Try to get from URL parameters
             if (!carId) {
-                const urlParams = new URLSearchParams(window.location.search);
-                carId = urlParams.get('car_id');
+            const urlParams = new URLSearchParams(window.location.search);
+            carId = urlParams.get('car_id');
             }
         }
 
@@ -573,10 +573,10 @@ document.addEventListener('DOMContentLoaded', () => {
             if (car) {
                 console.log('Car found in LOCAL_CARS:', car);
                 if (carImage) {
-                    carImage.src = car.image_url || '/images/cars/default-car.jpg';
+                carImage.src = car.image_url || '/images/cars/default-car.jpg';
                 }
                 if (carTitle) {
-                    carTitle.textContent = `${car.make} ${car.model}`;
+                carTitle.textContent = `${car.make} ${car.model}`;
                 }
                 
                 // Set overlay price
@@ -586,28 +586,28 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 // Set car specifications with fallbacks
                 if (carTransmission) {
-                    carTransmission.textContent = car.transmission_type || 'Automatik';
+                carTransmission.textContent = car.transmission_type || 'Automatik';
                 }
                 if (carFuel) {
-                    carFuel.textContent = car.fuel_type || 'Benzin';
+                carFuel.textContent = car.fuel_type || 'Benzin';
                 }
                 if (carSeats) {
-                    carSeats.textContent = car.seating_capacity || '5';
+                carSeats.textContent = car.seating_capacity || '5';
                 }
                 if (carPower) {
-                    carPower.textContent = car.engine_power ? `${car.engine_power} PS` : '150 PS';
+                carPower.textContent = car.engine_power ? `${car.engine_power} PS` : '150 PS';
                 }
                 if (carType) {
-                    carType.textContent = car.vehicle_type || 'Sedan';
+                carType.textContent = car.vehicle_type || 'Sedan';
                 }
                 if (carYear) {
-                    carYear.textContent = car.year || '2023';
+                carYear.textContent = car.year || '2023';
                 }
                 if (carColor) {
                     carColor.textContent = car.color || 'Weiß';
                 }
                 if (carClimate) {
-                    carClimate.textContent = car.air_conditioning ? 'Ja' : 'Nein';
+                carClimate.textContent = car.air_conditioning ? 'Ja' : 'Nein';
                 }
             } else {
                 console.error('Car not found for ID:', carId);
@@ -706,85 +706,85 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            // Try to get car_id from different possible sources
-            let carId = null;
-            
-            if (selectedVehicle && selectedVehicle.car_id) {
-                carId = selectedVehicle.car_id;
-            } else if (selectedVehicle && selectedVehicle.id) {
-                carId = selectedVehicle.id;
-            } else {
-                // Try to get from URL parameters
-                const urlParams = new URLSearchParams(window.location.search);
-                carId = urlParams.get('car_id');
-            }
+        // Try to get car_id from different possible sources
+        let carId = null;
+        
+        if (selectedVehicle && selectedVehicle.car_id) {
+            carId = selectedVehicle.car_id;
+        } else if (selectedVehicle && selectedVehicle.id) {
+            carId = selectedVehicle.id;
+        } else {
+            // Try to get from URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            carId = urlParams.get('car_id');
+        }
 
-            // Car rental
-            if (carId) {
-                const car = window.LOCAL_CARS.find(c => c.car_id == carId);
-                if (car) {
-                    const days = parseInt(searchData.days) || 1;
-                    const carPrice = car.daily_rate * days;
-                    totalPrice += carPrice;
-                    summaryHTML += `
-                        <div class="summary-item">
-                            <span class="summary-label">
-                                <i class="bi bi-car-front me-2"></i>
-                                Fahrzeugmiete (${days} Tag(e))
-                            </span>
-                            <span class="summary-value">€${carPrice.toFixed(2)}</span>
-                        </div>
-                    `;
-                }
-            }
-
-            // Insurance
-            if (selectedInsurance && selectedInsurance.id && selectedInsurance.name && selectedInsurance.daily_rate) {
+        // Car rental
+        if (carId) {
+            const car = window.LOCAL_CARS.find(c => c.car_id == carId);
+            if (car) {
                 const days = parseInt(searchData.days) || 1;
-                const insurancePrice = selectedInsurance.daily_rate * days;
-                totalPrice += insurancePrice;
+                const carPrice = car.daily_rate * days;
+                totalPrice += carPrice;
                 summaryHTML += `
                     <div class="summary-item">
                         <span class="summary-label">
-                            <i class="bi bi-shield-check me-2"></i>
-                            ${selectedInsurance.name}
+                            <i class="bi bi-car-front me-2"></i>
+                            Fahrzeugmiete (${days} Tag(e))
                         </span>
-                        <span class="summary-value">€${insurancePrice.toFixed(2)}</span>
+                            <span class="summary-value">€${carPrice.toFixed(2)}</span>
                     </div>
                 `;
             }
+        }
 
-            // Additional products
-            if (selectedProducts && Array.isArray(selectedProducts) && selectedProducts.length > 0) {
-                selectedProducts.forEach(product => {
-                    if (product && product.name && product.daily_rate) {
-                        const days = parseInt(searchData.days) || 1;
-                        const productPrice = product.daily_rate * days;
-                        totalPrice += productPrice;
-                        
-                        // Choose appropriate icon based on product name
-                        let icon = 'bi-box';
-                        if (product.name.toLowerCase().includes('gps') || product.name.toLowerCase().includes('navigation')) {
-                            icon = 'bi-geo-alt';
-                        } else if (product.name.toLowerCase().includes('kindersitz') || product.name.toLowerCase().includes('child')) {
-                            icon = 'bi-emoji-smile';
-                        } else if (product.name.toLowerCase().includes('winter') || product.name.toLowerCase().includes('reifen')) {
-                            icon = 'bi-snow';
-                        } else if (product.name.toLowerCase().includes('dach') || product.name.toLowerCase().includes('box')) {
-                            icon = 'bi-box-seam';
-                        }
-                        
-                        summaryHTML += `
-                            <div class="summary-item">
-                                <span class="summary-label">
-                                    <i class="bi ${icon} me-2"></i>
-                                    ${product.name}
-                                </span>
-                                <span class="summary-value">€${productPrice.toFixed(2)}</span>
-                            </div>
-                        `;
+        // Insurance
+        if (selectedInsurance && selectedInsurance.id && selectedInsurance.name && selectedInsurance.daily_rate) {
+            const days = parseInt(searchData.days) || 1;
+            const insurancePrice = selectedInsurance.daily_rate * days;
+            totalPrice += insurancePrice;
+            summaryHTML += `
+                <div class="summary-item">
+                    <span class="summary-label">
+                        <i class="bi bi-shield-check me-2"></i>
+                        ${selectedInsurance.name}
+                    </span>
+                        <span class="summary-value">€${insurancePrice.toFixed(2)}</span>
+                </div>
+            `;
+        }
+
+        // Additional products
+        if (selectedProducts && Array.isArray(selectedProducts) && selectedProducts.length > 0) {
+            selectedProducts.forEach(product => {
+                if (product && product.name && product.daily_rate) {
+                    const days = parseInt(searchData.days) || 1;
+                    const productPrice = product.daily_rate * days;
+                    totalPrice += productPrice;
+                    
+                    // Choose appropriate icon based on product name
+                    let icon = 'bi-box';
+                    if (product.name.toLowerCase().includes('gps') || product.name.toLowerCase().includes('navigation')) {
+                        icon = 'bi-geo-alt';
+                    } else if (product.name.toLowerCase().includes('kindersitz') || product.name.toLowerCase().includes('child')) {
+                        icon = 'bi-emoji-smile';
+                    } else if (product.name.toLowerCase().includes('winter') || product.name.toLowerCase().includes('reifen')) {
+                        icon = 'bi-snow';
+                    } else if (product.name.toLowerCase().includes('dach') || product.name.toLowerCase().includes('box')) {
+                        icon = 'bi-box-seam';
                     }
-                });
+                    
+                    summaryHTML += `
+                        <div class="summary-item">
+                            <span class="summary-label">
+                                <i class="bi ${icon} me-2"></i>
+                                ${product.name}
+                            </span>
+                                <span class="summary-value">€${productPrice.toFixed(2)}</span>
+                        </div>
+                    `;
+                }
+            });
             }
         }
 
@@ -800,7 +800,7 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
 
         if (orderDetails) {
-            orderDetails.innerHTML = summaryHTML;
+        orderDetails.innerHTML = summaryHTML;
         }
         
         // Debug: Log the calculation
@@ -858,7 +858,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return false;
     };
 
-    // Process payment
+    // Process payment directly
     window.processPayment = function() {
         if (!selectedPaymentMethod) {
             alert('Bitte wählen Sie eine Zahlungsmethode aus.');
@@ -868,9 +868,209 @@ document.addEventListener('DOMContentLoaded', () => {
         // Store selected payment method
         localStorage.setItem('selectedPaymentMethod', selectedPaymentMethod);
         
-        // Redirect to driver information page
-        window.location.href = '/fahrer-informationen';
+        // Process payment directly based on selected method
+        processPaymentDirectly(selectedPaymentMethod);
     };
+    
+    // Process payment directly without redirecting to driver information page
+    function processPaymentDirectly(paymentMethod) {
+        console.log('Processing payment with method:', paymentMethod);
+        
+        switch(paymentMethod) {
+            case 'kreditkarte':
+            case 'credit-card':
+                showCreditCardForm();
+                break;
+            case 'paypal':
+                redirectToPayPal();
+                break;
+            case 'klarna':
+                redirectToKlarna();
+                break;
+            case 'googlepay':
+                processGooglePay();
+                break;
+            case 'sofort':
+                redirectToSofort();
+                break;
+            case 'cash':
+            case 'barzahlung':
+                processCashPayment();
+                break;
+            default:
+                showCreditCardForm(); // Default to credit card
+        }
+    }
+    
+    // Show credit card form
+    function showCreditCardForm() {
+        const creditCardHTML = `
+            <div class="credit-card-overlay" id="credit-card-overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 9999; display: flex; align-items: center; justify-content: center;">
+                <div class="credit-card-modal" style="background: white; padding: 30px; border-radius: 10px; max-width: 500px; width: 90%; max-height: 90vh; overflow-y: auto;">
+                    <div class="modal-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <h3>Kreditkarteninformationen</h3>
+                        <button type="button" class="close-btn" onclick="closeCreditCardForm()" style="background: none; border: none; font-size: 24px; cursor: pointer;">
+                            <i class="bi bi-x-lg"></i>
+                        </button>
+                    </div>
+                    <form id="credit-card-form">
+                        <div class="form-group mb-3">
+                            <label for="card-number">Kartennummer *</label>
+                            <input type="text" id="card-number" class="form-control" placeholder="1234 5678 9012 3456" maxlength="19" required>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label for="expiry-date">Ablaufdatum *</label>
+                                    <input type="text" id="expiry-date" class="form-control" placeholder="MM/YY" maxlength="5" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label for="cvv">CVV *</label>
+                                    <input type="text" id="cvv" class="form-control" placeholder="123" maxlength="4" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="card-holder">Karteninhaber *</label>
+                            <input type="text" id="card-holder" class="form-control" placeholder="Max Mustermann" required>
+                        </div>
+                        <div class="payment-actions" style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px;">
+                            <button type="button" class="btn btn-secondary" onclick="closeCreditCardForm()">Abbrechen</button>
+                            <button type="submit" class="btn btn-warning">Zahlung bestätigen</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        `;
+        
+        // Remove existing overlay if any
+        const existingOverlay = document.getElementById('credit-card-overlay');
+        if (existingOverlay) {
+            existingOverlay.remove();
+        }
+        
+        // Add overlay to body
+        document.body.insertAdjacentHTML('beforeend', creditCardHTML);
+        
+        // Setup form submission
+        setupCreditCardForm();
+    }
+    
+    // Setup credit card form
+    function setupCreditCardForm() {
+        const form = document.getElementById('credit-card-form');
+        if (!form) return;
+        
+        // Format card number
+        const cardNumberInput = document.getElementById('card-number');
+        if (cardNumberInput) {
+            cardNumberInput.addEventListener('input', (e) => {
+                let value = e.target.value.replace(/\s/g, '');
+                if (value.length > 0) {
+                    value = value.match(/.{1,4}/g).join(' ');
+                    if (value.length > 19) value = value.slice(0, 19);
+                }
+                e.target.value = value;
+            });
+        }
+        
+        // Format expiry date
+        const expiryInput = document.getElementById('expiry-date');
+        if (expiryInput) {
+            expiryInput.addEventListener('input', (e) => {
+                let value = e.target.value.replace(/\D/g, '');
+                if (value.length >= 2) {
+                    value = value.slice(0, 2) + '/' + value.slice(2, 4);
+                }
+                e.target.value = value;
+            });
+        }
+        
+        // Format CVV
+        const cvvInput = document.getElementById('cvv');
+        if (cvvInput) {
+            cvvInput.addEventListener('input', (e) => {
+                e.target.value = e.target.value.replace(/\D/g, '').slice(0, 4);
+            });
+        }
+        
+        // Handle form submission
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            processCreditCardPayment();
+        });
+    }
+    
+    // Process credit card payment
+    function processCreditCardPayment() {
+        const submitBtn = document.querySelector('#credit-card-form button[type="submit"]');
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="bi bi-hourglass-split me-2"></i>Zahlung wird verarbeitet...';
+        }
+        
+        // Simulate payment processing
+        setTimeout(() => {
+            alert('Zahlung erfolgreich! Ihre Reservierung wurde bestätigt.');
+            closeCreditCardForm();
+            window.location.href = '/reservation-confirmation';
+        }, 2000);
+    }
+    
+    // Close credit card form
+    window.closeCreditCardForm = function() {
+        const overlay = document.getElementById('credit-card-overlay');
+        if (overlay) {
+            overlay.remove();
+        }
+    };
+    
+    // Redirect to PayPal
+    function redirectToPayPal() {
+        alert('Sie werden zu PayPal weitergeleitet...');
+        setTimeout(() => {
+            alert('PayPal-Zahlung erfolgreich! Ihre Reservierung wurde bestätigt.');
+            window.location.href = '/reservation-confirmation';
+        }, 2000);
+    }
+    
+    // Redirect to Klarna
+    function redirectToKlarna() {
+        alert('Sie werden zu Klarna weitergeleitet...');
+        setTimeout(() => {
+            alert('Klarna-Zahlung erfolgreich! Ihre Reservierung wurde bestätigt.');
+            window.location.href = '/reservation-confirmation';
+        }, 2000);
+    }
+    
+    // Process Google Pay
+    function processGooglePay() {
+        alert('Google Pay wird verarbeitet...');
+        setTimeout(() => {
+            alert('Google Pay-Zahlung erfolgreich! Ihre Reservierung wurde bestätigt.');
+            window.location.href = '/reservation-confirmation';
+        }, 2000);
+    }
+    
+    // Process cash payment
+    function processCashPayment() {
+        alert('Barzahlung wird verarbeitet...');
+        setTimeout(() => {
+            alert('Barzahlung erfolgreich! Ihre Reservierung wurde bestätigt.');
+            window.location.href = '/reservation-confirmation';
+        }, 2000);
+    }
+    
+    // Redirect to Sofort
+    function redirectToSofort() {
+        alert('Sie werden zu Sofortüberweisung weitergeleitet...');
+        setTimeout(() => {
+            alert('Sofortüberweisung erfolgreich! Ihre Reservierung wurde bestätigt.');
+            window.location.href = '/reservation-confirmation';
+        }, 2000);
+    }
 
 });
 
