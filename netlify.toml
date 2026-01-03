@@ -20,13 +20,23 @@
 #   status = 200
 #   force = true
 
-# SPA routing - Tüm sayfa isteklerini index.html'e yönlendir
+# Login ve Register sayfaları için doğrudan HTML dosyalarına yönlendir
+[[redirects]]
+  from = "/login"
+  to = "/login.html"
+  status = 200
+
+[[redirects]]
+  from = "/register"
+  to = "/register.html"
+  status = 200
+
+# SPA routing - Diğer tüm istekleri index.html'e yönlendir
 # API ve auth route'ları hariç
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
-  conditions = {Role = ["admin"]}
 
 # Static files
 [[headers]]

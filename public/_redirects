@@ -1,7 +1,11 @@
 # Netlify redirects file
-# SPA routing için tüm istekleri index.html'e yönlendir
-/*    /index.html   200
+# Login ve Register sayfaları için doğrudan HTML dosyalarına yönlendir
+/login    /login.html   200
+/register    /register.html   200
 
 # API routes için backend proxy (eğer backend ayrı bir serviste ise)
 # /api/*  https://your-backend-url.com/api/:splat  200
+
+# SPA routing - Diğer tüm istekleri index.html'e yönlendir
+/*    /index.html   200
 

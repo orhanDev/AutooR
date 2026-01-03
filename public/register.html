@@ -1,307 +1,649 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AutooR</title>
+    <title>AutooR ID REGISTRIERUNG - AutooR</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
     
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- Navbar CSS -->
     <link href="/css/navbar.css" rel="stylesheet">
     
     <style>
-        body {
-            background-color: #ffffff;
-            min-height: 100vh;
-            font-family: 'Inter', sans-serif;
+        * {
             margin: 0;
             padding: 0;
-            color: #000000;
-            overflow-x: hidden;
-            overflow-y: hidden;
+            box-sizing: border-box;
         }
-
-        /* Hide scrollbar but keep scrolling functionality */
-        body::-webkit-scrollbar {
-            display: none;
-        }
-
+        
         body {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-
-        .main-content {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: calc(100vh - 80px);
-            padding: 1rem;
-            margin-top: 20px;
-        }
-
-        .login-container {
-            max-width: 320px;
-            width: 100%;
-            text-align: center;
-        }
-
-        .logo {
-            font-size: 16px;
-            font-weight: 700;
-            color: #676767;
-            margin-bottom: 1.5rem;
-        }
-
-        .form-title {
-            font-size: 16px;
-            font-weight: 700;
-            color: #676767;
-            margin-bottom: 1.5rem;
-        }
-
-        .social-login-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .social-button {
-            background: transparent;
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9fa;
             color: #000000;
-            border: 2px solid #000000;
-            padding: 12px 20px;
-            border-radius: 6px;
-            font-weight: 600;
-            font-size: 14px;
-            transition: all 0.3s ease;
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            text-decoration: none;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
         }
-
-        .social-button:hover {
-            background-color: transparent;
-            color: #000000;
-            transform: translateY(-2px);
-        }
-
-        .social-button.google:hover {
-            background: #ffffff;
-            color: #000000;
-        }
-
-        .social-button.facebook:hover {
-            background: #1877f2;
-            color: #ffffff;
-            border-color: #1877f2;
-        }
-
-        .social-button.apple:hover {
-            background: #000000;
-            color: #ffffff;
-            border-color: #ffffff;
-        }
-
-        .social-button i {
-            font-size: 16px;
-            color: #000000;
-        }
-
-        .social-button.google i {
-            color: #4285f4;
-        }
-
-        .social-button.facebook i {
-            color: #1877f2;
-        }
-
-        .social-button.apple i {
-            color: #000000;
-        }
-
-        .divider {
-            text-align: center;
-            margin: 1.5rem 0;
-            position: relative;
-        }
-
-        .divider::before {
-            content: '';
-            position: absolute;
-            top: 50%;
+        
+        #navbar-container {
+            position: fixed;
+            top: 0;
             left: 0;
             right: 0;
-            height: 1px;
-            background: #333333;
+            z-index: 1050;
+            background-color: #ffffff;
         }
-
-        .divider span {
-            background: #ffffff;
-            padding: 0 0.75rem;
+        
+        #navbar-container .navbar {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            z-index: 1050 !important;
+        }
+        
+        .register-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+            padding-top: 100px;
+        }
+        
+        .register-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .register-header h1 {
+            font-size: 2rem;
+            font-weight: 800;
             color: #000000;
-            font-size: 12px;
-        }
-
-        .email-section {
-            margin-bottom: 1.5rem;
-        }
-
-        .email-label {
-            display: block;
-            text-align: left;
-            color: #000000;
-            font-size: 12px;
-            font-weight: 600;
             margin-bottom: 0.5rem;
+            letter-spacing: -0.5px;
         }
-
-        .email-input {
-            background: transparent;
-            border: 2px solid #333333;
-            color: #000000;
-            padding: 12px;
-            border-radius: 6px;
-            font-size: 14px;
-            width: 100%;
-            transition: border-color 0.3s ease;
-        }
-
-        .email-input:focus {
-            outline: none;
-            border-color: #000000;
-        }
-
-        .email-input::placeholder {
+        
+        .register-header .login-link {
             color: #666666;
-        }
-
-        .continue-button {
-            background: #ffc107;
-            color: #000000;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 6px;
-            font-weight: 700;
-            font-size: 14px;
-            width: 100%;
-            transition: all 0.3s ease;
-            margin-bottom: 1.5rem;
-        }
-
-        .continue-button:hover {
-            background: #e0a800;
-            transform: translateY(-2px);
-        }
-
-        .signup-link {
-            color: #000000;
+            font-size: 0.9rem;
             text-decoration: none;
-            font-size: 10px;
+            transition: color 0.3s ease;
         }
-
-        .signup-link:hover {
+        
+        .register-header .login-link:hover {
             color: #ffc107;
             text-decoration: underline;
         }
-
-
+        
+        .register-card {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 2.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e9ecef;
+        }
+        
+        .required-note {
+            color: #666666;
+            font-size: 0.85rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #000000;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+        
+        .form-label .required {
+            color: #dc3545;
+            margin-left: 2px;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid #dee2e6;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            background-color: #ffffff;
+            color: #000000;
+        }
+        
+        #password {
+            padding-right: 220px; /* Butonlar için yer bırak (göz + güçlü şifre) */
+        }
+        
+        .password-toggle-btn {
+            position: absolute;
+            right: 180px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent;
+            border: none;
+            color: #666;
+            cursor: pointer;
+            padding: 0.5rem;
+            z-index: 10;
+            transition: color 0.3s ease;
+        }
+        
+        .password-toggle-btn:hover {
+            color: #ffc107;
+        }
+        
+        @media (max-width: 576px) {
+            #password {
+                padding-right: 180px; /* Mobilde daha az yer */
+            }
+            
+            .password-toggle-btn {
+                right: 120px;
+            }
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: #ffc107;
+            box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.1);
+        }
+        
+        /* Autofill detection */
+        @keyframes onAutoFillStart {
+            from { opacity: 0; }
+            to { opacity: 0; }
+        }
+        
+        @keyframes onAutoFillCancel {
+            from { opacity: 0; }
+            to { opacity: 0; }
+        }
+        
+        .form-control:-webkit-autofill {
+            animation-name: onAutoFillStart;
+            animation-duration: 0.001s;
+        }
+        
+        .form-control:not(:-webkit-autofill) {
+            animation-name: onAutoFillCancel;
+            animation-duration: 0.001s;
+        }
+        
+        .form-control.is-invalid {
+            border-color: #dc3545;
+        }
+        
+        .form-control.is-valid {
+            border-color: #28a745;
+        }
+        
+        .invalid-feedback {
+            display: none;
+            color: #dc3545;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            font-weight: 500;
+            padding: 0.5rem;
+            background-color: #fff5f5;
+            border-left: 3px solid #dc3545;
+            border-radius: 4px;
+        }
+        
+        .form-control.is-invalid {
+            border-color: #dc3545 !important;
+            border-width: 2px !important;
+            background-color: #fff5f5 !important;
+            box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.25) !important;
+            animation: shake 0.5s ease-in-out;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+        
+        .form-control.is-valid {
+            border-color: #28a745 !important;
+            background-color: #f0fff4;
+        }
+        
+        .form-control.is-invalid ~ .invalid-feedback,
+        .form-control.is-invalid + .invalid-feedback {
+            display: block !important;
+        }
+        
+        .form-label.error-label {
+            color: #dc3545;
+            font-weight: 700;
+        }
+        
+        .form-label.error-label .required {
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .password-requirements {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 6px;
+            padding: 1rem;
+            margin-top: 0.5rem;
+            font-size: 0.85rem;
+            color: #495057;
+        }
+        
+        .password-requirements h6 {
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: #000000;
+        }
+        
+        .password-requirements ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .password-requirements li {
+            padding: 0.25rem 0;
+            display: flex;
+            align-items: center;
+        }
+        
+        .password-requirements li i {
+            margin-right: 0.5rem;
+            font-size: 0.75rem;
+            width: 16px;
+        }
+        
+        .password-requirements li.valid {
+            color: #28a745;
+        }
+        
+        .password-requirements li.invalid {
+            color: #6c757d;
+        }
+        
+        .newsletter-section {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 6px;
+            padding: 1.25rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-check {
+            margin-bottom: 0;
+        }
+        
+        .form-check-input {
+            margin-top: 0.25rem;
+            width: 1.25rem;
+            height: 1.25rem;
+            cursor: pointer;
+        }
+        
+        .form-check-input:checked {
+            background-color: #ffc107;
+            border-color: #ffc107;
+        }
+        
+        .form-check-label {
+            font-size: 0.9rem;
+            color: #495057;
+            line-height: 1.5;
+            cursor: pointer;
+            margin-left: 0.5rem;
+        }
+        
+        .form-check-label a {
+            color: #ffc107;
+            text-decoration: none;
+        }
+        
+        .form-check-label a:hover {
+            text-decoration: underline;
+        }
+        
+        .hcaptcha-note {
+            font-size: 0.75rem;
+            color: #6c757d;
+            text-align: center;
+            margin-top: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .hcaptcha-note a {
+            color: #6c757d;
+            text-decoration: none;
+        }
+        
+        .hcaptcha-note a:hover {
+            text-decoration: underline;
+        }
+        
+        .submit-btn {
+            width: 100%;
+            padding: 0.875rem 1.5rem;
+            background-color: #ffc107;
+            color: #000000;
+            border: none;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .submit-btn:hover {
+            background-color: #e0a800;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .submit-btn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+            transform: none;
+            opacity: 0.6;
+        }
+        
+        #generate-password-btn {
+            transition: all 0.3s ease;
+        }
+        
+        #generate-password-btn:hover {
+            background-color: #e0a800 !important;
+            transform: translateY(-50%) scale(1.05);
+        }
+        
+        #generate-password-btn:active {
+            transform: translateY(-50%) scale(0.95);
+        }
+        
+        .alert {
+            border-radius: 6px;
+            margin-bottom: 1.5rem;
+        }
+        
         @media (max-width: 768px) {
-            .main-content {
+            body {
+                padding-top: 0;
+            }
+            
+            #navbar-container {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                z-index: 1050;
+            }
+            
+            .register-container {
+                padding-top: 80px;
+            }
+            
+            .register-container {
+                padding: 1rem;
+            }
+            
+            .register-card {
+                padding: 1.5rem;
+            }
+            
+            .register-header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .password-requirements {
+                font-size: 0.8rem;
                 padding: 0.75rem;
-                margin-top: 0;
             }
-
-            .login-container {
-                max-width: 180px;
+            
+            #password {
+                padding-right: 200px; /* Mobilde butonlar için yer (göz + güçlü şifre) */
             }
-
-            .logo {
-                font-size: 18px;
-                margin-bottom: 0.75rem;
+            
+            .password-toggle-btn {
+                right: 160px;
+                padding: 0.4rem;
             }
-
-            .form-title {
-                font-size: 14px;
-                margin-bottom: 1rem;
-            }
-
-            .social-button {
-                padding: 10px 16px;
-                font-size: 13px;
-            }
-
-            .email-input {
-                padding: 10px;
-                font-size: 13px;
-            }
-
-            .continue-button {
-                padding: 10px 16px;
-                font-size: 13px;
+            
+            #generate-password-btn {
+                font-size: 0.65rem;
+                padding: 0.2rem 0.4rem;
             }
         }
     </style>
 </head>
 <body>
     <!-- Navbar -->
-    <div id="navbar-container">
-        <!-- Navbar JavaScript ile yüklenecek -->
-    </div>
+        <div id="navbar-container">
+            <!-- Navbar JavaScript ile yüklenecek -->
+        </div>
 
-    <main class="main-content">
-        <div class="login-container">
-            <div class="logo">Bei AutooR anmelden</div>
+    <div class="register-container">
+        <div class="register-header">
+            <h1>AutooR ID REGISTRIERUNG</h1>
+            <a href="/login" class="login-link">
+                Sie haben bereits eine AutooR ID? Melden Sie sich hier an.
+            </a>
+                </div>
+
+        <div class="register-card">
+            <div class="required-note">*Pflichtfelder</div>
             
-                     
-            <div class="social-login-buttons">
-                <button class="social-button google" onclick="loginWithGoogle()">
-                    <i class="bi bi-google"></i>
-                    Weiter mit Google
-                </button>
-                
-                <button class="social-button facebook" onclick="loginWithFacebook()">
-                    <i class="bi bi-facebook"></i>
-                    Weiter mit Facebook
-                </button>
-                
-                <button class="social-button apple" onclick="loginWithApple()">
-                    <i class="bi bi-apple"></i>
-                    Weiter mit Apple
-                </button>
+            <div id="alert-container"></div>
+            
+            <form id="register-form" novalidate>
+                <!-- Vorname -->
+                <div class="form-group">
+                    <label for="first-name" class="form-label">
+                        Vorname<span class="required">*</span>
+                    </label>
+                    <input 
+                        type="text" 
+                        class="form-control" 
+                        id="first-name" 
+                        name="first_name"
+                        required
+                        autocomplete="given-name"
+                    >
+                    <div class="invalid-feedback"></div>
             </div>
-            
-            <div class="divider">
-                <span>oder</span>
+
+                <!-- Nachname -->
+                <div class="form-group">
+                    <label for="last-name" class="form-label">
+                        Nachname<span class="required">*</span>
+                    </label>
+                    <input 
+                        type="text" 
+                        class="form-control" 
+                        id="last-name" 
+                        name="last_name"
+                        required
+                        autocomplete="family-name"
+                    >
+                    <div class="invalid-feedback"></div>
+        </div>
+
+                <!-- Passwort -->
+                <div class="form-group">
+                    <label for="password" class="form-label">
+                        Passwort<span class="required">*</span>
+                    </label>
+                    <div style="position: relative;">
+                        <input 
+                            type="password" 
+                            class="form-control" 
+                            id="password" 
+                            name="password"
+                            required
+                            autocomplete="new-password"
+                        >
+                        <button 
+                            type="button" 
+                            class="password-toggle-btn" 
+                            id="password-toggle-btn"
+                            title="Şifreyi göster/gizle"
+                            aria-label="Şifreyi göster/gizle"
+                        >
+                            <i class="bi bi-eye" id="password-toggle-icon"></i>
+                        </button>
+                        <button 
+                            type="button" 
+                            class="btn btn-sm" 
+                            id="generate-password-btn"
+                            style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%); background: #ffc107; color: #000; border: none; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.7rem; font-weight: 600; cursor: pointer; z-index: 10; white-space: nowrap;"
+                            title="Starkes Passwort generieren"
+                        >
+                            <i class="bi bi-key-fill me-1"></i>Starkes Passwort
+                        </button>
+                        </div>
+                    <div class="invalid-feedback"></div>
+                    
+                    <!-- Password Requirements -->
+                    <div class="password-requirements" id="password-requirements">
+                        <h6>Passwort-Anforderungen:</h6>
+                        <ul>
+                            <li id="req-length" class="invalid">
+                                <i class="bi bi-circle"></i>
+                                Eine Länge zwischen 10 und 40 Zeichen.
+                            </li>
+                            <li id="req-lowercase" class="invalid">
+                                <i class="bi bi-circle"></i>
+                                Mindestens einen Kleinbuchstaben (a-z).
+                            </li>
+                            <li id="req-uppercase" class="invalid">
+                                <i class="bi bi-circle"></i>
+                                Mindestens einen Großbuchstaben (A-Z).
+                            </li>
+                            <li id="req-number" class="invalid">
+                                <i class="bi bi-circle"></i>
+                                Mindestens eine Zahl (0-9).
+                            </li>
+                            <li id="req-special" class="invalid">
+                                <i class="bi bi-circle"></i>
+                                Mindestens eines der folgenden Sonderzeichen: - . / ' , ; & @ # * ) ( _ + : " ~
+                            </li>
+                        </ul>
+                        </div>
+                        </div>
+
+                <!-- E-Mail -->
+                <div class="form-group">
+                    <label for="email" class="form-label">
+                        E-Mail<span class="required">*</span>
+                    </label>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <input 
+                            type="email" 
+                            class="form-control" 
+                            id="email" 
+                            name="email"
+                            required
+                            autocomplete="email"
+                            style="flex: 1;"
+                        >
+                        <button 
+                            type="button" 
+                            id="send-code-btn" 
+                            class="btn btn-warning"
+                            style="white-space: nowrap; padding: 0.75rem 1rem; font-weight: 600;"
+                        >
+                            Code senden
+                        </button>
+                    </div>
+                    <div class="invalid-feedback"></div>
+                    <small id="email-code-status" style="display: none; color: #28a745; margin-top: 0.25rem;">
+                        <i class="bi bi-check-circle"></i> Bestätigungscode wurde gesendet
+                    </small>
+                </div>
+
+                <!-- Verification Code -->
+                <div class="form-group" id="verification-code-group" style="display: none;">
+                    <label for="verification-code" class="form-label">
+                        Bestätigungscode<span class="required">*</span>
+                    </label>
+                    <input 
+                        type="text" 
+                        class="form-control" 
+                        id="verification-code" 
+                        name="verification_code"
+                        placeholder="6-stelliger Code"
+                        maxlength="6"
+                        pattern="[0-9]{6}"
+                        autocomplete="one-time-code"
+                    >
+                    <div class="invalid-feedback"></div>
+                    <small style="color: #666666; margin-top: 0.25rem; display: block;">
+                        Geben Sie den 6-stelligen Code ein, den wir an Ihre E-Mail-Adresse gesendet haben.
+                    </small>
+                </div>
+
+                <!-- Newsletter Checkbox -->
+                <div class="newsletter-section">
+                    <div class="form-check">
+                        <input 
+                            class="form-check-input" 
+                            type="checkbox" 
+                            id="newsletter" 
+                            name="newsletter"
+                            required
+                        >
+                        <label class="form-check-label" for="newsletter">
+                            Bleiben Sie up-to-date zu Produkten und Services aus dem AutooR Universum!<br>
+                            <small style="color: #6c757d;">
+                                Ich möchte spannende Informationen und Angebote erhalten. Um personalisierte Neuigkeiten zu erfahren, dürfen meine Präferenzen und Verhaltensweisen und meine Nutzung von AutooR Produkten und Dienstleistungen ausgewertet werden. Ausgewählte AutooR Gesellschaften sowie einzelne AutooRisierte Vertriebs- und Service Partner dürfen mich in meinen Apps der AutooR, per E-Mail, durch Kommunikation im Fahrzeug (In-Car), per Post und per Telefon / Messenger Dienste, beispielsweise zu aktuellen Vorteilen, werblich kontaktieren.<br>
+                                Meine Einwilligung kann ich jederzeit widerrufen.
+                            </small>
+                        </label>
+                </div>
             </div>
-            
-            <div class="email-section">
-                <label class="email-label">E-Mail-Adresse oder Benutzername</label>
-                <input type="text" class="email-input" placeholder="E-Mail-Adresse oder Benutzername" id="emailInput">
-            </div>
-            
-            <button class="continue-button" onclick="continueWithEmail()">
-                Weitermachen
-            </button>
-            
-            <div style="text-align: center;">
-                <span style="color: #000000; font-size: 10px;">Sie haben noch kein Konto? </span>
-                <a href="#" class="signup-link">Melden Sie sich bei AutooR an</a>
+
+                <!-- hCaptcha Note -->
+                <div class="hcaptcha-note">
+                    Diese Seite verwendet hCaptcha. Weitere Informationen finden Sie unter 
+                    <a href="/datenschutz">"Rechtlicher Hinweis"</a> oder 
+                    <a href="/datenschutz">"Datenschutz"</a>.
+        </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="submit-btn" id="submit-btn">
+                    Jetzt registrieren
+                </button>
+            </form>
             </div>
         </div>
-    </main>
 
+    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Navbar JS -->
     <script src="/js/navbar.js"></script>
-    <script src="/js/register.js"></script>
+    <!-- Register Form JS -->
+    <script src="/js/register-form.js"></script>
 </body>
 </html>
