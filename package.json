@@ -6,6 +6,7 @@
     "start": "node server.js",
     "dev": "nodemon server.js",
     "dev:simple": "node server.js",
+    "build": "echo 'Build completed'",
     "db:setup": "node scripts/db_setup.js",
     "db:update-prices": "node scripts/update_prices.js",
     "db:update-prices-max400": "node scripts/update_prices_max400.js",

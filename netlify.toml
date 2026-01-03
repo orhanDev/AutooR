@@ -1,0 +1,55 @@
+[build]
+  command = "npm install"
+  publish = "public"
+
+[build.environment]
+  NODE_VERSION = "18"
+
+# API proxy - Backend için (Backend URL'ini buraya ekleyeceğiz)
+# Örnek: Backend Railway'de ise
+# [[redirects]]
+#   from = "/api/*"
+#   to = "https://autoor-backend.railway.app/api/:splat"
+#   status = 200
+#   force = true
+
+# Auth routes için proxy
+# [[redirects]]
+#   from = "/auth/*"
+#   to = "https://autoor-backend.railway.app/auth/:splat"
+#   status = 200
+#   force = true
+
+# SPA routing - Tüm sayfa isteklerini index.html'e yönlendir
+# API ve auth route'ları hariç
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+  conditions = {Role = ["admin"]}
+
+# Static files
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "no-referrer-when-downgrade"
+    Content-Security-Policy = "upgrade-insecure-requests; block-all-mixed-content"
+
+# Cache static assets
+[[headers]]
+  for = "/images/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/css/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/js/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
