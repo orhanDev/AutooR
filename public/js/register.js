@@ -172,8 +172,8 @@ function openGoogleOAuthPopup() {
                 localStorage.setItem('reservationData', pendingReservation);
                 localStorage.removeItem('pendingReservationData');
                 
-                // Redirect to payment page
-                window.location.href = '/payment';
+                // Redirect to payment information page
+                window.location.href = '/zahlungsinformationen';
             } else {
                 // Redirect to homepage
                 window.location.href = '/';

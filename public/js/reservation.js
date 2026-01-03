@@ -914,15 +914,31 @@ document.addEventListener('DOMContentLoaded', () => {
                     const price = selIns ? Number(selIns.getAttribute('data-price')) : 0;
                     return isNaN(price) ? 0 : price;
                 })();
+                const insuranceType = (() => {
+                    const selIns = document.querySelector('.insurance-card.selected');
+                    if (selIns) {
+                        const key = selIns.getAttribute('data-key');
+                        const insuranceNames = {
+                            'premium': 'Premium Schutz',
+                            'standard': 'Standard Schutz',
+                            'basic': 'Basis Schutz'
+                        };
+                        return insuranceNames[key] || 'Standard Schutz';
+                    }
+                    return null;
+                })();
                 let extrasAmount = 0;
                 document.querySelectorAll('.extra-card.selected').forEach(card => {
                     const price = Number(card.getAttribute('data-price'));
                     const unit = card.getAttribute('data-unit');
                     extrasAmount += unit === 'einmalig' ? price : price * days;
                 });
-                const basePrice = Math.floor(Number(vehicle.daily_rate || 0)) * days;
-                const insuranceAmount = insurancePerDay * days;
-                const totalPrice = basePrice + insuranceAmount + extrasAmount;
+                extrasAmount = Math.round(extrasAmount * 100) / 100;
+                // Calculate base price - use Math.round for better accuracy
+                const dailyRate = Number(vehicle.daily_rate || 0);
+                const basePrice = Math.round(dailyRate * days * 100) / 100; // Round to 2 decimals
+                const insuranceAmount = Math.round(insurancePerDay * days * 100) / 100;
+                const totalPrice = Math.round((basePrice + insuranceAmount + extrasAmount) * 100) / 100;
 
                 // Display strings
                 const dotted = (iso) => {
@@ -955,6 +971,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     childSeat: formData.get('childSeat') === 'on',
                     gps: formData.get('gps') === 'on',
                     insurance: insurancePerDay > 0,
+                    insuranceType: insuranceType,
                     vehicle: vehicle,
                     // snapshot for payment page
                     days: days,
@@ -995,15 +1012,31 @@ document.addEventListener('DOMContentLoaded', () => {
                 const price = selIns ? Number(selIns.getAttribute('data-price')) : 0;
                 return isNaN(price) ? 0 : price;
             })();
+            const insuranceType = (() => {
+                const selIns = document.querySelector('.insurance-card.selected');
+                if (selIns) {
+                    const key = selIns.getAttribute('data-key');
+                    const insuranceNames = {
+                        'premium': 'Premium Schutz',
+                        'standard': 'Standard Schutz',
+                        'basic': 'Basis Schutz'
+                    };
+                    return insuranceNames[key] || 'Standard Schutz';
+                }
+                return null;
+            })();
             let extrasAmount = 0;
             document.querySelectorAll('.extra-card.selected').forEach(card => {
                 const price = Number(card.getAttribute('data-price'));
                 const unit = card.getAttribute('data-unit');
                 extrasAmount += unit === 'einmalig' ? price : price * days;
             });
-            const basePrice = Math.floor(Number(vehicle.daily_rate || 0)) * days;
-            const insuranceAmount = insurancePerDay * days;
-            const totalPrice = basePrice + insuranceAmount + extrasAmount;
+            extrasAmount = Math.round(extrasAmount * 100) / 100;
+            // Calculate base price - use Math.round for better accuracy
+            const dailyRate = Number(vehicle.daily_rate || 0);
+            const basePrice = Math.round(dailyRate * days * 100) / 100; // Round to 2 decimals
+            const insuranceAmount = Math.round(insurancePerDay * days * 100) / 100;
+            const totalPrice = Math.round((basePrice + insuranceAmount + extrasAmount) * 100) / 100;
 
             // Display strings
             const dotted = (iso) => {
@@ -1036,6 +1069,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 childSeat: formData.get('childSeat') === 'on',
                 gps: formData.get('gps') === 'on',
                 insurance: insurancePerDay > 0,
+                insuranceType: insuranceType,
                 vehicle: vehicle,
                 // snapshot for payment page
                 days: days,
@@ -1057,8 +1091,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 saveReservationToDatabase(reservationData, userData.email);
             }
                 
-            // Redirect to payment
-            window.location.href = '/payment';
+            // Redirect to payment information page
+            window.location.href = '/zahlungsinformationen';
             
         } catch (error) {
             console.error('Reservation error:', error);

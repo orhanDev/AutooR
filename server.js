@@ -43,10 +43,16 @@ app.use((req, res, next) => {
   // Allow Chrome DevTools and localhost connections for development
   const isDevelopment = process.env.NODE_ENV !== 'production';
   const cspPolicy = isDevelopment 
-    ? "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; font-src 'self' https://cdn.jsdelivr.net https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://localhost:* http://localhost:* ws://localhost:* wss://localhost:* https://*.netlify.app chrome-extension:; frame-src 'self'; upgrade-insecure-requests; block-all-mixed-content"
-    : "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; font-src 'self' https://cdn.jsdelivr.net https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://*.netlify.app; upgrade-insecure-requests; block-all-mixed-content";
+    ? "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; font-src 'self' https://cdn.jsdelivr.net https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://localhost:* http://localhost:* ws://localhost:* wss://localhost:* https://*.netlify.app https://cdn.jsdelivr.net chrome-extension:; frame-src 'self'; upgrade-insecure-requests; block-all-mixed-content"
+    : "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; font-src 'self' https://cdn.jsdelivr.net https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://*.netlify.app https://cdn.jsdelivr.net; upgrade-insecure-requests; block-all-mixed-content";
   res.setHeader('Content-Security-Policy', cspPolicy);
   next();
+});
+
+// Reservation confirmation page (must be before static middleware)
+app.get('/reservation-confirmation', (req, res) => {
+    console.log('Reservation confirmation route accessed');
+    res.sendFile(path.join(__dirname, 'public', 'reservation-confirmation.html'));
 });
 
 // Serve static files from public folder
