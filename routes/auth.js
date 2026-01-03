@@ -2,6 +2,7 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
+const crypto = require('crypto');
 const { query } = require('../db/database');
 const authMiddleware = require('../middleware/authMiddleware');
 
@@ -745,6 +746,262 @@ router.put('/profile', authMiddleware, async (req, res) => {
     } catch (error) {
         console.error('Profil güncelleme hatası:', error);
         res.status(500).json({ error: 'Serverfehler' });
+    }
+});
+
+// Şifre sıfırlama token'ı oluştur
+function generateResetToken() {
+    return crypto.randomBytes(32).toString('hex');
+}
+
+// Şifremi unuttum - Email'e sıfırlama linki gönder
+router.post('/forgot-password', async (req, res) => {
+    try {
+        const { email } = req.body;
+        
+        // Email validation
+        if (!email || !email.trim()) {
+            return res.status(400).json({ 
+                error: 'E-Mail ist erforderlich',
+                field: 'email'
+            });
+        }
+        
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            return res.status(400).json({ 
+                error: 'Ungültige E-Mail-Adresse',
+                field: 'email'
+            });
+        }
+        
+        // Kullanıcıyı bul
+        const user = await query('SELECT * FROM users WHERE email = $1', [email]);
+        
+        // Güvenlik nedeniyle: Kullanıcı bulunamasa bile başarılı mesaj göster
+        if (user.rows.length === 0) {
+            // Gerçek uygulamada bu mesajı göster, ama email gönderme
+            return res.status(200).json({ 
+                message: 'Falls diese E-Mail-Adresse registriert ist, wurde ein Link zum Zurücksetzen Ihres Passworts gesendet.'
+            });
+        }
+        
+        // Token oluştur
+        const token = generateResetToken();
+        const expiresAt = new Date(Date.now() + 60 * 60 * 1000); // 1 saat geçerli
+        
+        // Eski token'ları temizle
+        await query('DELETE FROM password_reset_tokens WHERE email = $1', [email]);
+        
+        // Yeni token kaydet
+        await query(
+            'INSERT INTO password_reset_tokens (email, token, expires_at) VALUES ($1, $2, $3)',
+            [email, token, expiresAt]
+        );
+        
+        // Email gönder
+        const emailTransporter = createEmailTransporter();
+        const emailUser = process.env.EMAIL_USER;
+        const emailFromName = process.env.EMAIL_FROM_NAME || 'AutooR';
+        const baseUrl = process.env.BASE_URL || 'https://localhost:3443';
+        
+        if (emailTransporter && emailUser && emailUser !== 'your-email@gmail.com' && process.env.EMAIL_PASS !== 'your-app-password') {
+            try {
+                const resetLink = `${baseUrl}/reset-password?token=${token}`;
+                
+                const mailOptions = {
+                    from: `"${emailFromName}" <${emailUser}>`,
+                    replyTo: emailUser,
+                    to: email,
+                    subject: 'AutooR - Passwort zurücksetzen',
+                    text: `
+AutooR Passwort zurücksetzen
+
+Sie haben eine Anfrage zum Zurücksetzen Ihres Passworts gestellt.
+
+Klicken Sie auf den folgenden Link, um ein neues Passwort festzulegen:
+${resetLink}
+
+Dieser Link ist 1 Stunde gültig.
+
+Wenn Sie diese Anfrage nicht gestellt haben, ignorieren Sie diese E-Mail bitte.
+
+Mit freundlichen Grüßen,
+Das AutooR Team
+                    `,
+                    html: `
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .button { display: inline-block; padding: 12px 24px; background-color: #ffc107; color: #000; text-decoration: none; border-radius: 6px; font-weight: 600; margin: 20px 0; }
+        .button:hover { background-color: #e0a800; }
+        .footer { margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee; font-size: 12px; color: #666; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Passwort zurücksetzen</h2>
+        <p>Sie haben eine Anfrage zum Zurücksetzen Ihres Passworts gestellt.</p>
+        <p>Klicken Sie auf den folgenden Button, um ein neues Passwort festzulegen:</p>
+        <a href="${resetLink}" class="button">Passwort zurücksetzen</a>
+        <p>Oder kopieren Sie diesen Link in Ihren Browser:</p>
+        <p style="word-break: break-all; color: #666; font-size: 12px;">${resetLink}</p>
+        <p><strong>Dieser Link ist 1 Stunde gültig.</strong></p>
+        <p>Wenn Sie diese Anfrage nicht gestellt haben, ignorieren Sie diese E-Mail bitte.</p>
+        <div class="footer">
+            <p>Mit freundlichen Grüßen,<br>Das AutooR Team</p>
+        </div>
+    </div>
+</body>
+</html>
+                    `
+                };
+                
+                await emailTransporter.sendMail(mailOptions);
+                console.log('Password reset email sent to:', email);
+            } catch (emailError) {
+                console.error('Email gönderme hatası:', emailError);
+                // Email gönderilemese bile token oluşturuldu, kullanıcıya başarılı mesaj göster
+            }
+        } else {
+            // Development mode - token'ı konsola yazdır
+            console.log('=== DEVELOPMENT MODE ===');
+            console.log('Password reset token:', token);
+            console.log('Reset link:', `${baseUrl}/reset-password?token=${token}`);
+            console.log('========================');
+        }
+        
+        res.status(200).json({ 
+            message: 'Falls diese E-Mail-Adresse registriert ist, wurde ein Link zum Zurücksetzen Ihres Passworts gesendet.'
+        });
+        
+    } catch (error) {
+        console.error('=== ŞİFRE SIFIRLAMA HATASI ===');
+        console.error('Error:', error);
+        console.error('Error message:', error.message);
+        console.error('Error stack:', error.stack);
+        res.status(500).json({ 
+            error: 'Serverfehler',
+            message: error.message || 'Ein unerwarteter Fehler ist aufgetreten.'
+        });
+    }
+});
+
+// Şifre sıfırla - Token ile yeni şifre belirle
+router.post('/reset-password', async (req, res) => {
+    try {
+        const { token, password } = req.body;
+        
+        // Validation
+        if (!token) {
+            return res.status(400).json({ 
+                error: 'Token ist erforderlich'
+            });
+        }
+        
+        if (!password) {
+            return res.status(400).json({ 
+                error: 'Passwort ist erforderlich',
+                field: 'password'
+            });
+        }
+        
+        // Password validation
+        if (password.length < 10 || password.length > 40) {
+            return res.status(400).json({ 
+                error: 'Passwort-Länge ungültig',
+                field: 'password',
+                message: 'Das Passwort muss zwischen 10 und 40 Zeichen lang sein.'
+            });
+        }
+        
+        if (!/[a-z]/.test(password)) {
+            return res.status(400).json({ 
+                error: 'Passwort-Anforderung nicht erfüllt',
+                field: 'password',
+                message: 'Das Passwort muss mindestens einen Kleinbuchstaben enthalten.'
+            });
+        }
+        
+        if (!/[A-Z]/.test(password)) {
+            return res.status(400).json({ 
+                error: 'Passwort-Anforderung nicht erfüllt',
+                field: 'password',
+                message: 'Das Passwort muss mindestens einen Großbuchstaben enthalten.'
+            });
+        }
+        
+        if (!/[0-9]/.test(password)) {
+            return res.status(400).json({ 
+                error: 'Passwort-Anforderung nicht erfüllt',
+                field: 'password',
+                message: 'Das Passwort muss mindestens eine Zahl enthalten.'
+            });
+        }
+        
+        if (!/[-.\/',;&@#*)(_+:"~]/.test(password)) {
+            return res.status(400).json({ 
+                error: 'Passwort-Anforderung nicht erfüllt',
+                field: 'password',
+                message: 'Das Passwort muss mindestens ein Sonderzeichen enthalten: - . / \' , ; & @ # * ) ( _ + : " ~'
+            });
+        }
+        
+        // Token'ı kontrol et
+        const tokenResult = await query(
+            'SELECT * FROM password_reset_tokens WHERE token = $1 AND used = FALSE AND expires_at > NOW()',
+            [token]
+        );
+        
+        if (tokenResult.rows.length === 0) {
+            return res.status(400).json({ 
+                error: 'Ungültiger oder abgelaufener Token',
+                message: 'Der Token ist ungültig oder abgelaufen. Bitte fordern Sie einen neuen Link an.'
+            });
+        }
+        
+        const tokenData = tokenResult.rows[0];
+        const email = tokenData.email;
+        
+        // Şifreyi hash'le
+        const saltRounds = 10;
+        const passwordHash = await bcrypt.hash(password, saltRounds);
+        
+        // Kullanıcının şifresini güncelle
+        await query(
+            'UPDATE users SET password_hash = $1 WHERE email = $2',
+            [passwordHash, email]
+        );
+        
+        // Token'ı kullanıldı olarak işaretle
+        await query(
+            'UPDATE password_reset_tokens SET used = TRUE WHERE token = $1',
+            [token]
+        );
+        
+        // Aynı email için diğer token'ları da geçersiz kıl
+        await query(
+            'UPDATE password_reset_tokens SET used = TRUE WHERE email = $1 AND token != $2',
+            [email, token]
+        );
+        
+        res.status(200).json({ 
+            message: 'Ihr Passwort wurde erfolgreich zurückgesetzt.'
+        });
+        
+    } catch (error) {
+        console.error('=== ŞİFRE SIFIRLAMA HATASI ===');
+        console.error('Error:', error);
+        console.error('Error message:', error.message);
+        console.error('Error stack:', error.stack);
+        res.status(500).json({ 
+            error: 'Serverfehler',
+            message: error.message || 'Ein unerwarteter Fehler ist aufgetreten.'
+        });
     }
 });
 

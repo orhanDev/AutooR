@@ -31,6 +31,16 @@
   to = "/register.html"
   status = 200
 
+[[redirects]]
+  from = "/forgot-password"
+  to = "/forgot-password.html"
+  status = 200
+
+[[redirects]]
+  from = "/reset-password"
+  to = "/reset-password.html"
+  status = 200
+
 # SPA routing - Diğer tüm istekleri index.html'e yönlendir
 # API ve auth route'ları hariç
 [[redirects]]
