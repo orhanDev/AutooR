@@ -6,6 +6,9 @@ document.addEventListener('DOMContentLoaded', function() {
     localStorage.removeItem('driverInformation');
     console.log('Cleared existing driver information for security');
     
+    // Show demo warning modal
+    showDemoWarningModal();
+    
     // Load user data if logged in
     loadUserData();
     
@@ -24,6 +27,306 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('Cleared driver information on page unload');
     });
 });
+
+// Show demo warning modal
+function showDemoWarningModal() {
+    const selectedPaymentMethod = localStorage.getItem('selectedPaymentMethod') || 'unknown';
+    
+    // Payment method names in German
+    const paymentMethodNames = {
+        'paypal': 'PayPal',
+        'klarna': 'Klarna',
+        'credit-card': 'Kreditkarte',
+        'cash': 'Barzahlung',
+        'google-pay': 'Google Pay',
+        'googlepay': 'Google Pay',
+        'sofort': 'Sofortüberweisung',
+        'unknown': 'Zahlungsmethode'
+    };
+    
+    const paymentMethodName = paymentMethodNames[selectedPaymentMethod] || 'Zahlungsmethode';
+    
+    // Create modal HTML
+    const modalHTML = `
+        <div class="demo-warning-modal" id="demo-warning-modal">
+            <div class="demo-warning-content">
+                <div class="demo-warning-header">
+                    <div class="demo-warning-icon">
+                        <i class="bi bi-info-circle-fill"></i>
+                    </div>
+                    <button type="button" class="demo-warning-close" onclick="closeDemoWarning()">
+                        <i class="bi bi-x-lg"></i>
+                    </button>
+                </div>
+                <div class="demo-warning-body">
+                    <h3 class="demo-warning-title">Demo-Version</h3>
+                    <p class="demo-warning-message">
+                        Dies ist eine <strong>Demo-Website</strong> für Übungszwecke und stellt keine echte Autovermietungsplattform dar.
+                    </p>
+                    <div class="demo-warning-highlight">
+                        <i class="bi bi-credit-card-2-front me-2"></i>
+                        <span>Die Zahlung mit <strong>${paymentMethodName}</strong> kann in dieser Demo-Version nicht durchgeführt werden.</span>
+                    </div>
+                    <p class="demo-warning-note">
+                        Alle Zahlungsvorgänge sind simuliert und führen zu keinen echten Transaktionen.
+                    </p>
+                </div>
+                <div class="demo-warning-footer">
+                    <button type="button" class="demo-warning-button" onclick="closeDemoWarning()">
+                        <i class="bi bi-check-circle me-2"></i>
+                        Verstanden
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    // Add modal to body
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+    
+    // Add styles if not already added
+    if (!document.getElementById('demo-warning-styles')) {
+        const styleSheet = document.createElement('style');
+        styleSheet.id = 'demo-warning-styles';
+        styleSheet.textContent = `
+            .demo-warning-modal {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.7);
+                backdrop-filter: blur(5px);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 10000;
+                animation: fadeIn 0.3s ease;
+            }
+            
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                }
+                to {
+                    opacity: 1;
+                }
+            }
+            
+            .demo-warning-content {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                border-radius: 20px;
+                max-width: 500px;
+                width: 90%;
+                box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+                overflow: hidden;
+                animation: slideUp 0.4s ease;
+                position: relative;
+            }
+            
+            @keyframes slideUp {
+                from {
+                    transform: translateY(50px);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateY(0);
+                    opacity: 1;
+                }
+            }
+            
+            .demo-warning-content::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 4px;
+                background: linear-gradient(90deg, #ffc107, #ff6b35, #ffc107);
+                background-size: 200% 100%;
+                animation: shimmer 2s linear infinite;
+            }
+            
+            @keyframes shimmer {
+                0% {
+                    background-position: 200% 0;
+                }
+                100% {
+                    background-position: -200% 0;
+                }
+            }
+            
+            .demo-warning-header {
+                padding: 25px 25px 15px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                background: rgba(255, 255, 255, 0.1);
+            }
+            
+            .demo-warning-icon {
+                width: 60px;
+                height: 60px;
+                background: rgba(255, 255, 255, 0.2);
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 28px;
+                color: white;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            }
+            
+            .demo-warning-close {
+                background: rgba(255, 255, 255, 0.2);
+                border: none;
+                border-radius: 50%;
+                width: 35px;
+                height: 35px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: white;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                font-size: 18px;
+            }
+            
+            .demo-warning-close:hover {
+                background: rgba(255, 255, 255, 0.3);
+                transform: rotate(90deg);
+            }
+            
+            .demo-warning-body {
+                padding: 25px;
+                background: white;
+            }
+            
+            .demo-warning-title {
+                font-size: 24px;
+                font-weight: 700;
+                color: #333;
+                margin-bottom: 15px;
+                text-align: center;
+            }
+            
+            .demo-warning-message {
+                font-size: 16px;
+                color: #666;
+                line-height: 1.6;
+                margin-bottom: 20px;
+                text-align: center;
+            }
+            
+            .demo-warning-highlight {
+                background: linear-gradient(135deg, #fff3cd 0%, #ffe69c 100%);
+                border-left: 4px solid #ffc107;
+                padding: 15px 20px;
+                border-radius: 8px;
+                margin: 20px 0;
+                display: flex;
+                align-items: center;
+                font-size: 15px;
+                color: #856404;
+                box-shadow: 0 2px 10px rgba(255, 193, 7, 0.2);
+            }
+            
+            .demo-warning-highlight i {
+                font-size: 20px;
+                color: #ffc107;
+            }
+            
+            .demo-warning-note {
+                font-size: 14px;
+                color: #888;
+                line-height: 1.5;
+                text-align: center;
+                margin-top: 15px;
+                font-style: italic;
+            }
+            
+            .demo-warning-footer {
+                padding: 20px 25px;
+                background: rgba(255, 255, 255, 0.05);
+                display: flex;
+                justify-content: center;
+            }
+            
+            .demo-warning-button {
+                background: white;
+                color: #667eea;
+                border: none;
+                padding: 12px 30px;
+                border-radius: 25px;
+                font-weight: 600;
+                font-size: 16px;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                display: flex;
+                align-items: center;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            }
+            
+            .demo-warning-button:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+                background: #f8f9fa;
+            }
+            
+            .demo-warning-button:active {
+                transform: translateY(0);
+            }
+            
+            @media (max-width: 576px) {
+                .demo-warning-content {
+                    width: 95%;
+                    border-radius: 15px;
+                }
+                
+                .demo-warning-body {
+                    padding: 20px;
+                }
+                
+                .demo-warning-title {
+                    font-size: 20px;
+                }
+                
+                .demo-warning-message {
+                    font-size: 14px;
+                }
+            }
+        `;
+        document.head.appendChild(styleSheet);
+    }
+}
+
+// Close demo warning modal
+function closeDemoWarning() {
+    const modal = document.getElementById('demo-warning-modal');
+    if (modal) {
+        modal.style.animation = 'fadeOut 0.3s ease';
+        setTimeout(() => {
+            modal.remove();
+        }, 300);
+    }
+}
+
+// Add fadeOut animation
+if (!document.getElementById('demo-warning-animations')) {
+    const styleSheet = document.createElement('style');
+    styleSheet.id = 'demo-warning-animations';
+    styleSheet.textContent = `
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+            }
+            to {
+                opacity: 0;
+            }
+        }
+    `;
+    document.head.appendChild(styleSheet);
+}
 
 // Load user data if logged in
 function loadUserData() {
@@ -406,10 +709,9 @@ function setupCountryDropdown() {
          case 'klarna':
              redirectToKlarna();
              break;
-        case 'googlepay':
-        case 'google-pay':
-            processGooglePay();
-            break;
+         case 'googlepay':
+             processGooglePay();
+             break;
         case 'sofort':
             redirectToSofort();
             break;
@@ -535,35 +837,46 @@ function setupCountryDropdown() {
      }
  }
 
-// Redirect to PayPal
-function redirectToPayPal() {
-    // Store reservation data for PayPal page
-    const reservationData = JSON.parse(localStorage.getItem('reservationData') || '{}');
-    localStorage.setItem('reservationData', JSON.stringify(reservationData));
-    
-    // Redirect to PayPal payment page
-    window.location.href = '/paypal';
-}
+ // Redirect to PayPal
+ function redirectToPayPal() {
+     alert('Sie werden zu PayPal weitergeleitet...');
+     setTimeout(() => {
+         // Clear sensitive data after successful payment
+         localStorage.removeItem('driverInformation');
+         console.log('Cleared driver information after successful PayPal payment');
+         
+         // Simulate PayPal redirect
+         alert('PayPal-Zahlung erfolgreich! Ihre Reservierung wurde bestÃ¤tigt.');
+         window.location.href = '/reservation-confirmation';
+     }, 2000);
+ }
 
-// Redirect to Klarna
-function redirectToKlarna() {
-    // Store reservation data for Klarna page
-    const reservationData = JSON.parse(localStorage.getItem('reservationData') || '{}');
-    localStorage.setItem('reservationData', JSON.stringify(reservationData));
-    
-    // Redirect to Klarna payment page
-    window.location.href = '/klarna';
-}
+ // Redirect to Klarna
+ function redirectToKlarna() {
+     alert('Sie werden zu Klarna weitergeleitet...');
+     setTimeout(() => {
+         // Clear sensitive data after successful payment
+         localStorage.removeItem('driverInformation');
+         console.log('Cleared driver information after successful Klarna payment');
+         
+         // Simulate Klarna redirect
+         alert('Klarna-Zahlung erfolgreich! Ihre Reservierung wurde bestÃ¤tigt.');
+         window.location.href = '/reservation-confirmation';
+     }, 2000);
+ }
 
-// Process Google Pay
-function processGooglePay() {
-    // Store reservation data for Google Pay page
-    const reservationData = JSON.parse(localStorage.getItem('reservationData') || '{}');
-    localStorage.setItem('reservationData', JSON.stringify(reservationData));
-    
-    // Redirect to Google Pay payment page
-    window.location.href = '/google-pay';
-}
+ // Process Google Pay
+ function processGooglePay() {
+     alert('Google Pay wird verarbeitet...');
+     setTimeout(() => {
+         // Clear sensitive data after successful payment
+         localStorage.removeItem('driverInformation');
+         console.log('Cleared driver information after successful Google Pay payment');
+         
+         alert('Google Pay-Zahlung erfolgreich! Ihre Reservierung wurde bestÃ¤tigt.');
+         window.location.href = '/reservation-confirmation';
+     }, 2000);
+ }
 
 // Process cash payment
 function processCashPayment() {
@@ -581,11 +894,15 @@ function processCashPayment() {
 
 // Redirect to Sofort
 function redirectToSofort() {
-    // Store reservation data for Sofort page
-    const reservationData = JSON.parse(localStorage.getItem('reservationData') || '{}');
-    localStorage.setItem('reservationData', JSON.stringify(reservationData));
-    
-    // Redirect to Sofort payment page
-    window.location.href = '/sofort';
-}
+     alert('Sie werden zu SofortÃ¼berweisung weitergeleitet...');
+     setTimeout(() => {
+         // Clear sensitive data after successful payment
+         localStorage.removeItem('driverInformation');
+         console.log('Cleared driver information after successful Sofort payment');
+         
+         // Simulate Sofort redirect
+         alert('SofortÃ¼berweisung erfolgreich! Ihre Reservierung wurde bestÃ¤tigt.');
+         window.location.href = '/reservation-confirmation';
+     }, 2000);
+ }
 

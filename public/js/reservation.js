@@ -399,7 +399,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 <div class="col-12 mt-4">
                                     <h5 class="fw-bold text-warning mb-3">Versicherungspakete</h5>
                                     <div class="row g-3" id="insurance-packages">
-                                        ${renderInsuranceCard('premium', 'Empfohlen', 'Premium Schutz', 45, ['Vollkasko ohne Selbstbeteiligung','Unfallschutz inklusive','Diebstahlschutz','24/7 Pannenhilfe','Reiseabbruchschutz'])}
+                                        ${renderInsuranceCard('premium', 'Empfohlen', 'Premium Schutz', 35, ['Vollkasko ohne Selbstbeteiligung','Unfallschutz inklusive','Diebstahlschutz','24/7 Pannenhilfe','Reiseabbruchschutz'])}
                                         ${renderInsuranceCard('standard', 'Beliebt', 'Standard Schutz', 25, ['Teilkasko (â‚¬500 SB)','Unfallschutz','Diebstahlschutz','Pannenhilfe'])}
                                         ${renderInsuranceCard('basic', 'G\u00fcnstig', 'Basis Schutz', 15, ['Haftpflicht inklusive','Teilkasko (\u20ac1000 SB)','Grundschutz'])}
                                             </div>
@@ -759,6 +759,32 @@ document.addEventListener('DOMContentLoaded', () => {
             updatePrice(vehicle);
         });
         
+        // Update price when time changes
+        const pickupTimeSelect = document.getElementById('qr-pickup-time');
+        const dropoffTimeSelect = document.getElementById('qr-dropoff-time');
+        
+        if (pickupTimeSelect) {
+            pickupTimeSelect.addEventListener('change', () => {
+                // Sync to hidden input
+                const hiddenPickupTime = document.getElementById('pickupTime');
+                if (hiddenPickupTime) {
+                    hiddenPickupTime.value = pickupTimeSelect.value;
+                }
+                updatePrice(vehicle);
+            });
+        }
+        
+        if (dropoffTimeSelect) {
+            dropoffTimeSelect.addEventListener('change', () => {
+                // Sync to hidden input
+                const hiddenDropoffTime = document.getElementById('dropoffTime');
+                if (hiddenDropoffTime) {
+                    hiddenDropoffTime.value = dropoffTimeSelect.value;
+                }
+                updatePrice(vehicle);
+            });
+        }
+        
         // Additional services price update
         const checkboxes = document.querySelectorAll('input[type="checkbox"]');
         checkboxes.forEach(checkbox => {
@@ -826,37 +852,167 @@ document.addEventListener('DOMContentLoaded', () => {
         const pickupDate = document.getElementById('pickupDate').value;
         const dropoffDate = document.getElementById('dropoffDate').value;
         
+        // Get time from visible selectors first, then fallback to hidden inputs
+        const qrPickupTime = document.getElementById('qr-pickup-time');
+        const qrDropoffTime = document.getElementById('qr-dropoff-time');
+        const hiddenPickupTime = document.getElementById('pickupTime');
+        const hiddenDropoffTime = document.getElementById('dropoffTime');
+        
+        const pickupTime = (qrPickupTime?.value || hiddenPickupTime?.value || '08:00').trim();
+        const dropoffTime = (qrDropoffTime?.value || hiddenDropoffTime?.value || '08:00').trim();
+        
         if (!pickupDate || !dropoffDate) return;
         
-        const start = new Date(pickupDate);
-        const end = new Date(dropoffDate);
-        const days = Math.max(1, Math.ceil((end - start) / (1000 * 60 * 60 * 24)));
+        console.log('Date/Time calculation:', {
+            pickupDate,
+            pickupTime,
+            dropoffDate,
+            dropoffTime
+        });
         
-        // Insurance
+        // Combine date and time for accurate calculation (avoid timezone issues)
+        // Ensure time format is HH:MM
+        const pickupTimeFormatted = pickupTime.includes(':') ? pickupTime : `${pickupTime.substring(0, 2)}:${pickupTime.substring(2)}`;
+        const dropoffTimeFormatted = dropoffTime.includes(':') ? dropoffTime : `${dropoffTime.substring(0, 2)}:${dropoffTime.substring(2)}`;
+        
+        // Parse date and time components manually to avoid timezone issues
+        const [pickupYear, pickupMonth, pickupDayNum] = pickupDate.split('-').map(Number);
+        const [pickupHour, pickupMin] = pickupTimeFormatted.split(':').map(Number);
+        
+        const [dropoffYear, dropoffMonth, dropoffDayNum] = dropoffDate.split('-').map(Number);
+        const [dropoffHour, dropoffMin] = dropoffTimeFormatted.split(':').map(Number);
+        
+        // Create Date objects using local time (no timezone conversion)
+        const start = new Date(pickupYear, pickupMonth - 1, pickupDayNum, pickupHour, pickupMin, 0);
+        const end = new Date(dropoffYear, dropoffMonth - 1, dropoffDayNum, dropoffHour, dropoffMin, 0);
+        
+        console.log('Calculated dates:', {
+            pickup: `${pickupDate} ${pickupTimeFormatted}`,
+            dropoff: `${dropoffDate} ${dropoffTimeFormatted}`,
+            start: start.toString(),
+            end: end.toString()
+        });
+        
+        // Calculate difference in hours (precise calculation)
+        const diffMs = end - start;
+        const diffHours = diffMs / (1000 * 60 * 60);
+        
+        console.log('Difference in hours:', diffHours, 'hours');
+        console.log('Breakdown:', {
+            pickup: `${pickupDate} ${pickupTimeFormatted}`,
+            dropoff: `${dropoffDate} ${dropoffTimeFormatted}`,
+            hours: diffHours,
+            minutes: diffHours * 60
+        });
+        
+        // Calculate days based on rental logic:
+        // - If pickup and dropoff are on different calendar days, count each day
+        // Check if pickup and dropoff are on different calendar days
+        const pickupDayStr = new Date(pickupYear, pickupMonth - 1, pickupDayNum).toDateString();
+        const dropoffDayStr = new Date(dropoffYear, dropoffMonth - 1, dropoffDayNum).toDateString();
+        const isDifferentDays = pickupDayStr !== dropoffDayStr;
+        
+        // Calculate hours for base price (hourly pricing)
+        const hours = diffHours <= 0 ? 1 : Math.ceil(diffHours);
+        
+        console.log('Calculated hours:', hours, 'isDifferentDays:', isDifferentDays, 'diffHours:', diffHours);
+        
+        // Calculate base price based on hours
+        // Each hour costs the daily rate (84 euro/hour)
+        const dailyRate = Number(vehicle.daily_rate);
+        let basePrice;
+        let priceLabel;
+        
+        if (diffHours <= 0) {
+            // Minimum 1 hour charge
+            basePrice = Math.round(dailyRate * 1 * 100) / 100;
+            priceLabel = `Grundpreis (1 Stunde)`;
+        } else if (diffHours < 1) {
+            // Less than 1 hour = 1 hour minimum
+            basePrice = Math.round(dailyRate * 1 * 100) / 100;
+            priceLabel = `Grundpreis (1 Stunde)`;
+        } else {
+            // Calculate based on actual hours (round up to nearest hour)
+            // Always round up: 10.1 hours = 11 hours, 10.9 hours = 11 hours
+            const hours = Math.ceil(diffHours);
+            basePrice = Math.round(dailyRate * hours * 100) / 100;
+            priceLabel = `Grundpreis (${hours} Stunde${hours > 1 ? 'n' : ''})`;
+            
+            console.log('Price calculation:', {
+                diffHours,
+                roundedHours: hours,
+                dailyRate,
+                basePrice
+            });
+        }
+        
+        // Insurance - calculate based on days (each day costs the daily insurance rate)
+        // For insurance: if less than 24 hours = 1 day, otherwise calculate based on actual calendar days
         let insurance = 0;
         const selIns = document.querySelector('.insurance-card.selected');
         if (selIns) {
-            insurance = Number(selIns.getAttribute('data-price')) * days;
+            const insuranceDailyRate = Number(selIns.getAttribute('data-price'));
+            // Calculate insurance days:
+            // - If less than 24 hours = 1 day (regardless of calendar days)
+            // - If 24 hours or more and different calendar days = count calendar days
+            let insuranceDays;
+            
+            if (diffHours <= 0) {
+                insuranceDays = 1; // Minimum 1 day
+            } else if (diffHours < 24) {
+                // Less than 24 hours = always 1 day, regardless of calendar days
+                insuranceDays = 1;
+            } else if (isDifferentDays) {
+                // 24 hours or more and different calendar days: count the number of calendar days
+                // Example: 04.01.2026 08:00 - 05.01.2026 18:00 = 34 hours = 2 days (04.01 and 05.01)
+                // Example: 04.01.2026 08:00 - 06.01.2026 18:00 = 58 hours = 3 days (04.01, 05.01, 06.01)
+                const startDate = new Date(pickupYear, pickupMonth - 1, pickupDayNum);
+                const endDate = new Date(dropoffYear, dropoffMonth - 1, dropoffDayNum);
+                // Calculate difference in calendar days
+                const timeDiff = endDate - startDate;
+                const daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+                insuranceDays = Math.max(1, daysDiff + 1); // +1 because we count both start and end day
+            } else {
+                // Same calendar day but 24 hours or more: calculate days (round up)
+                insuranceDays = Math.ceil(diffHours / 24);
+            }
+            
+            insurance = Math.round(insuranceDailyRate * insuranceDays * 100) / 100;
+            console.log('Insurance calculation:', {
+                pickupDate: `${pickupDate} ${pickupTimeFormatted}`,
+                dropoffDate: `${dropoffDate} ${dropoffTimeFormatted}`,
+                diffHours,
+                isDifferentDays,
+                insuranceDays,
+                insuranceDailyRate,
+                insurance
+            });
         }
-        // Extras
+        
+        // Extras - calculate based on hours for daily items
         let additionalServices = 0;
         document.querySelectorAll('.extra-card.selected').forEach(card => {
             const price = Number(card.getAttribute('data-price'));
             const unit = card.getAttribute('data-unit');
-            additionalServices += unit === 'einmalig' ? price : price * days;
+            if (unit === 'einmalig') {
+                additionalServices += price;
+            } else {
+                // Daily rate items: multiply daily rate by hours
+                const hours = Math.max(1, Math.ceil(diffHours));
+                additionalServices += Math.round(price * hours * 100) / 100;
+            }
         });
         
-        const basePrice = Math.floor(Number(vehicle.daily_rate)) * days;
-        const totalPrice = basePrice + insurance + additionalServices;
+        const totalPrice = Math.round((basePrice + insurance + additionalServices) * 100) / 100;
         
         // Update price display
         const baseLabel = document.getElementById('base-price-label');
         const baseEl = document.getElementById('base-price');
-        if (baseLabel) baseLabel.textContent = `Grundpreis (${days} Tag${days>1?'e':''})`;
-        if (baseEl) baseEl.textContent = `€${basePrice}`;
-        document.getElementById('insurance-price').textContent = `€${insurance}`;
-        document.getElementById('additional-services-price').textContent = `€${additionalServices}`;
-        document.getElementById('total-price').textContent = `€${totalPrice}`;
+        if (baseLabel) baseLabel.textContent = priceLabel;
+        if (baseEl) baseEl.textContent = `€${basePrice.toFixed(2)}`;
+        document.getElementById('insurance-price').textContent = `€${insurance.toFixed(2)}`;
+        document.getElementById('additional-services-price').textContent = `€${additionalServices.toFixed(2)}`;
+        document.getElementById('total-price').textContent = `€${totalPrice.toFixed(2)}`;
     }
 
     function updateSummaryBlocks() {
@@ -902,13 +1058,53 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Compute pricing snapshot to persist
                 const isoPickup = formData.get('pickupDate');
                 const isoDropoff = formData.get('dropoffDate');
-                const days = (() => {
-                    if (!isoPickup || !isoDropoff) return 1;
-                    const start = new Date(isoPickup);
-                    const end = new Date(isoDropoff);
-                    const d = Math.max(1, Math.ceil((end - start) / (1000 * 60 * 60 * 24)));
-                    return d;
-                })();
+                const pickupTime = formData.get('pickupTime') || '08:00';
+                const dropoffTime = formData.get('dropoffTime') || '08:00';
+                
+                // Parse date and time components manually to avoid timezone issues
+                const [pickupYear, pickupMonth, pickupDayNum] = isoPickup.split('-').map(Number);
+                const [pickupHour, pickupMin] = pickupTime.split(':').map(Number);
+                
+                const [dropoffYear, dropoffMonth, dropoffDayNum] = isoDropoff.split('-').map(Number);
+                const [dropoffHour, dropoffMin] = dropoffTime.split(':').map(Number);
+                
+                // Create Date objects using local time (no timezone conversion)
+                const start = new Date(pickupYear, pickupMonth - 1, pickupDayNum, pickupHour, pickupMin, 0);
+                const end = new Date(dropoffYear, dropoffMonth - 1, dropoffDayNum, dropoffHour, dropoffMin, 0);
+                
+                // Calculate difference in hours (precise calculation)
+                const diffMs = end - start;
+                const diffHours = diffMs / (1000 * 60 * 60);
+                
+                // Check if pickup and dropoff are on different calendar days
+                const pickupDayStr = new Date(pickupYear, pickupMonth - 1, pickupDayNum).toDateString();
+                const dropoffDayStr = new Date(dropoffYear, dropoffMonth - 1, dropoffDayNum).toDateString();
+                const isDifferentDays = pickupDayStr !== dropoffDayStr;
+                
+                // Calculate hours for base price (hourly pricing)
+                const hours = diffHours <= 0 ? 1 : Math.ceil(diffHours);
+                
+                // Calculate insurance days (separate from rental days)
+                // - If less than 24 hours = 1 day (regardless of calendar days)
+                // - If 24 hours or more and different calendar days = count calendar days
+                let insuranceDays;
+                if (diffHours <= 0) {
+                    insuranceDays = 1; // Minimum 1 day
+                } else if (diffHours < 24) {
+                    // Less than 24 hours = always 1 day, regardless of calendar days
+                    insuranceDays = 1;
+                } else if (isDifferentDays) {
+                    // 24 hours or more and different calendar days: count the number of calendar days
+                    const startDate = new Date(pickupYear, pickupMonth - 1, pickupDayNum);
+                    const endDate = new Date(dropoffYear, dropoffMonth - 1, dropoffDayNum);
+                    const timeDiff = endDate - startDate;
+                    const daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+                    insuranceDays = Math.max(1, daysDiff + 1); // +1 because we count both start and end day
+                } else {
+                    // Same calendar day but 24 hours or more: calculate days (round up)
+                    insuranceDays = Math.ceil(diffHours / 24);
+                }
+                
                 const insurancePerDay = (() => {
                     const selIns = document.querySelector('.insurance-card.selected');
                     const price = selIns ? Number(selIns.getAttribute('data-price')) : 0;
@@ -931,13 +1127,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.querySelectorAll('.extra-card.selected').forEach(card => {
                     const price = Number(card.getAttribute('data-price'));
                     const unit = card.getAttribute('data-unit');
-                    extrasAmount += unit === 'einmalig' ? price : price * days;
+                    // For extras, use hours for daily units, or one-time price
+                    extrasAmount += unit === 'einmalig' ? price : price * hours;
                 });
                 extrasAmount = Math.round(extrasAmount * 100) / 100;
-                // Calculate base price - use Math.round for better accuracy
+                // Calculate base price - hourly pricing
                 const dailyRate = Number(vehicle.daily_rate || 0);
-                const basePrice = Math.round(dailyRate * days * 100) / 100; // Round to 2 decimals
-                const insuranceAmount = Math.round(insurancePerDay * days * 100) / 100;
+                const basePrice = Math.round(dailyRate * hours * 100) / 100; // Round to 2 decimals
+                const insuranceAmount = Math.round(insurancePerDay * insuranceDays * 100) / 100;
                 const totalPrice = Math.round((basePrice + insuranceAmount + extrasAmount) * 100) / 100;
 
                 // Display strings
@@ -974,7 +1171,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     insuranceType: insuranceType,
                     vehicle: vehicle,
                     // snapshot for payment page
-                    days: days,
+                    hours: hours,
+                    insuranceDays: insuranceDays,
                     basePrice: basePrice,
                     insuranceAmount: insuranceAmount,
                     extrasAmount: extrasAmount,
@@ -988,8 +1186,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Store reservation data temporarily
                 localStorage.setItem('pendingReservationData', JSON.stringify(reservationData));
                 
-                // Redirect to login page
-                window.location.href = '/login';
+                // Show modal with guest or login options
+                showGuestOrLoginModal();
                 return;
             }
             
@@ -1000,13 +1198,53 @@ document.addEventListener('DOMContentLoaded', () => {
             // Compute pricing snapshot to persist
             const isoPickup = formData.get('pickupDate');
             const isoDropoff = formData.get('dropoffDate');
-            const days = (() => {
-                if (!isoPickup || !isoDropoff) return 1;
-                const start = new Date(isoPickup);
-                const end = new Date(isoDropoff);
-                const d = Math.max(1, Math.ceil((end - start) / (1000 * 60 * 60 * 24)));
-                return d;
-            })();
+            const pickupTime = formData.get('pickupTime') || '08:00';
+            const dropoffTime = formData.get('dropoffTime') || '08:00';
+            
+            // Parse date and time components manually to avoid timezone issues
+            const [pickupYear, pickupMonth, pickupDayNum] = isoPickup.split('-').map(Number);
+            const [pickupHour, pickupMin] = pickupTime.split(':').map(Number);
+            
+            const [dropoffYear, dropoffMonth, dropoffDayNum] = isoDropoff.split('-').map(Number);
+            const [dropoffHour, dropoffMin] = dropoffTime.split(':').map(Number);
+            
+            // Create Date objects using local time (no timezone conversion)
+            const start = new Date(pickupYear, pickupMonth - 1, pickupDayNum, pickupHour, pickupMin, 0);
+            const end = new Date(dropoffYear, dropoffMonth - 1, dropoffDayNum, dropoffHour, dropoffMin, 0);
+            
+            // Calculate difference in hours (precise calculation)
+            const diffMs = end - start;
+            const diffHours = diffMs / (1000 * 60 * 60);
+            
+            // Check if pickup and dropoff are on different calendar days
+            const pickupDayStr = new Date(pickupYear, pickupMonth - 1, pickupDayNum).toDateString();
+            const dropoffDayStr = new Date(dropoffYear, dropoffMonth - 1, dropoffDayNum).toDateString();
+            const isDifferentDays = pickupDayStr !== dropoffDayStr;
+            
+            // Calculate hours for base price (hourly pricing)
+            const hours = diffHours <= 0 ? 1 : Math.ceil(diffHours);
+            
+            // Calculate insurance days (separate from rental days)
+            // - If less than 24 hours = 1 day (regardless of calendar days)
+            // - If 24 hours or more and different calendar days = count calendar days
+            let insuranceDays;
+            if (diffHours <= 0) {
+                insuranceDays = 1; // Minimum 1 day
+            } else if (diffHours < 24) {
+                // Less than 24 hours = always 1 day, regardless of calendar days
+                insuranceDays = 1;
+            } else if (isDifferentDays) {
+                // 24 hours or more and different calendar days: count the number of calendar days
+                const startDate = new Date(pickupYear, pickupMonth - 1, pickupDayNum);
+                const endDate = new Date(dropoffYear, dropoffMonth - 1, dropoffDayNum);
+                const timeDiff = endDate - startDate;
+                const daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+                insuranceDays = Math.max(1, daysDiff + 1); // +1 because we count both start and end day
+            } else {
+                // Same calendar day but 24 hours or more: calculate days (round up)
+                insuranceDays = Math.ceil(diffHours / 24);
+            }
+            
             const insurancePerDay = (() => {
                 const selIns = document.querySelector('.insurance-card.selected');
                 const price = selIns ? Number(selIns.getAttribute('data-price')) : 0;
@@ -1029,13 +1267,14 @@ document.addEventListener('DOMContentLoaded', () => {
             document.querySelectorAll('.extra-card.selected').forEach(card => {
                 const price = Number(card.getAttribute('data-price'));
                 const unit = card.getAttribute('data-unit');
-                extrasAmount += unit === 'einmalig' ? price : price * days;
+                // For extras, use hours for daily units, or one-time price
+                extrasAmount += unit === 'einmalig' ? price : price * hours;
             });
             extrasAmount = Math.round(extrasAmount * 100) / 100;
-            // Calculate base price - use Math.round for better accuracy
+            // Calculate base price - hourly pricing
             const dailyRate = Number(vehicle.daily_rate || 0);
-            const basePrice = Math.round(dailyRate * days * 100) / 100; // Round to 2 decimals
-            const insuranceAmount = Math.round(insurancePerDay * days * 100) / 100;
+            const basePrice = Math.round(dailyRate * hours * 100) / 100; // Round to 2 decimals
+            const insuranceAmount = Math.round(insurancePerDay * insuranceDays * 100) / 100;
             const totalPrice = Math.round((basePrice + insuranceAmount + extrasAmount) * 100) / 100;
 
             // Display strings
@@ -1072,7 +1311,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 insuranceType: insuranceType,
                 vehicle: vehicle,
                 // snapshot for payment page
-                days: days,
+                hours: hours,
+                insuranceDays: insuranceDays,
                 basePrice: basePrice,
                 insuranceAmount: insuranceAmount,
                 extrasAmount: extrasAmount,
@@ -1114,6 +1354,76 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
     }
 });
+
+// Show modal with guest or login options
+function showGuestOrLoginModal() {
+    // Create modal HTML
+    const modalHTML = `
+        <div class="modal fade" id="guestOrLoginModal" tabindex="-1" aria-labelledby="guestOrLoginModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="guestOrLoginModalLabel">
+                            <i class="bi bi-person-circle me-2"></i>
+                            Reservierung fortsetzen
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <p class="mb-4">Wie möchten Sie fortfahren?</p>
+                        <div class="d-grid gap-3">
+                            <button type="button" class="btn btn-outline-primary btn-lg" id="continueAsGuestBtn">
+                                <i class="bi bi-person me-2"></i>
+                                Als Gast fortfahren
+                            </button>
+                            <button type="button" class="btn btn-warning btn-lg" id="loginBtn">
+                                <i class="bi bi-box-arrow-in-right me-2"></i>
+                                Anmelden
+                            </button>
+                        </div>
+                        <p class="text-muted mt-3 small">
+                            Als Gast können Sie ohne Anmeldung reservieren. 
+                            Sie können sich später jederzeit anmelden.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    // Remove existing modal if any
+    const existingModal = document.getElementById('guestOrLoginModal');
+    if (existingModal) {
+        existingModal.remove();
+    }
+    
+    // Add modal to body
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+    
+    // Initialize Bootstrap modal
+    const modalElement = document.getElementById('guestOrLoginModal');
+    const modal = new bootstrap.Modal(modalElement);
+    modal.show();
+    
+    // Handle continue as guest
+    document.getElementById('continueAsGuestBtn').addEventListener('click', () => {
+        modal.hide();
+        // Continue to payment page as guest
+        window.location.href = '/zahlungsinformationen';
+    });
+    
+    // Handle login
+    document.getElementById('loginBtn').addEventListener('click', () => {
+        modal.hide();
+        // Redirect to login page
+        window.location.href = '/login';
+    });
+    
+    // Clean up modal when hidden
+    modalElement.addEventListener('hidden.bs.modal', () => {
+        modalElement.remove();
+    });
+}
 
 // Save reservation to database
 async function saveReservationToDatabase(reservationData, userEmail) {

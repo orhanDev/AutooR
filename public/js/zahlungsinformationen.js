@@ -57,10 +57,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             
             // Extract insurance data - use the calculated insuranceAmount to determine type
-            if (reservationData.insuranceAmount && reservationData.days) {
-                const insurancePerDay = reservationData.insuranceAmount / reservationData.days;
+            if (reservationData.insuranceAmount && reservationData.insuranceDays) {
+                const insurancePerDay = reservationData.insuranceAmount / reservationData.insuranceDays;
                 const insuranceTypes = {
-                    45: { key: 'premium', name: 'Premium Schutz', daily_rate: 45 },
+                    35: { key: 'premium', name: 'Premium Schutz', daily_rate: 35 },
                     25: { key: 'standard', name: 'Standard Schutz', daily_rate: 25 },
                     15: { key: 'basic', name: 'Basis Schutz', daily_rate: 15 }
                 };
@@ -645,13 +645,13 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Base price (car rental)
             if (reservationData.basePrice !== undefined && reservationData.basePrice !== null) {
-                const days = reservationData.days || 1;
+                const hours = reservationData.hours || 1;
                 const basePrice = Number(reservationData.basePrice);
                 summaryHTML += `
                     <div class="summary-item">
                         <span class="summary-label">
                             <i class="bi bi-car-front me-2"></i>
-                            Fahrzeugmiete (${days} Tag${days > 1 ? 'e' : ''})
+                            Fahrzeugmiete (${hours} Stunde${hours > 1 ? 'n' : ''})
                         </span>
                         <span class="summary-value">€${basePrice.toFixed(2)}</span>
                     </div>
