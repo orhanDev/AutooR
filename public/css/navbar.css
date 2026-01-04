@@ -833,12 +833,84 @@ ease;
             background: #ffffff !important;
         }
         
+        /* Hide navbar elements when menu is open on mobile */
+        .navbar .collapse.navbar-collapse.show ~ .container .navbar-toggler,
+        .navbar .collapse.navbar-collapse.show ~ .container .brand-center,
+        .navbar .collapse.navbar-collapse.show ~ .container .account {
+            display: none !important;
+        }
+        
+        /* Hide navbar itself when menu is open - show only menu */
+        .navbar:has(.collapse.navbar-collapse.show) {
+            background: transparent !important;
+            box-shadow: none !important;
+        }
+        
+        /* Alternative for browsers that don't support :has() */
+        .navbar.menu-open {
+            background: transparent !important;
+            box-shadow: none !important;
+        }
+        
+        .navbar.menu-open .container > .navbar-toggler,
+        .navbar.menu-open .container > .brand-center,
+        .navbar.menu-open .container > .account {
+            display: none !important;
+        }
+        
         /* Menu header - better mobile */
         .menu-header {
             padding: 1.25rem 1rem !important;
             border-bottom: 1px solid #e5e7eb;
             margin-bottom: 0 !important;
             background: #ffffff !important;
+            position: relative;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+        }
+        
+        /* Back button in menu header - hidden by default, shown when submenu is open */
+        .btn-back-menu {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent !important;
+            border: none !important;
+            color: #000000 !important;
+            padding: 0.5rem !important;
+            cursor: pointer;
+            display: none !important; /* Hidden by default */
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            min-width: 44px;
+            min-height: 44px;
+        }
+        
+        .btn-back-menu:hover {
+            background: #f3f4f6 !important;
+            border-radius: 4px;
+        }
+        
+        /* Show back button when submenu is open */
+        .submenu-panel.open ~ .side-left .btn-back-menu,
+        .navbar-collapse.show .submenu-panel.open ~ .side-left .btn-back-menu {
+            display: flex !important;
+        }
+        
+        /* Menu title - centered when back button is visible */
+        .menu-header .menu-title {
+            flex: 1;
+            text-align: center;
+            margin: 0 !important;
+        }
+        
+        /* Adjust menu title when back button is visible */
+        .menu-header:has(.btn-back-menu[style*="display: flex"]) .menu-title,
+        .submenu-panel.open ~ .side-left .menu-header .menu-title {
+            margin-left: 2.5rem !important;
         }
         
         /* Menu list container */
@@ -859,6 +931,10 @@ ease;
             border: none !important;
             color: #000000 !important;
             cursor: pointer;
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
         }
         
         .btn-close-menu:hover {

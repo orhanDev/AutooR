@@ -145,6 +145,9 @@ function createNavbar() {
                 <div class="collapse navbar-collapse flex-grow-1" id="navbarNav">
                     <div class="side-left">
                         <div class="menu-header d-flex justify-content-between align-items-center mb-4 d-md-none">
+                            <button class="btn-back-menu" type="button" aria-label="Zurück" style="display: none;">
+                                <i class="bi bi-arrow-left" style="font-size: 1.25rem;"></i>
+                            </button>
                             <h2 class="menu-title mb-0">Menü</h2>
                             <button class="btn-close-menu" type="button" aria-label="Menüyü Kapat">
                                 <span>&times;</span>
@@ -564,6 +567,15 @@ function addHamburgerMenuCloseListener() {
                     backdrop.classList.remove('show');
                 }
             }
+            // Toggle menu-open class on navbar
+            const navbar = document.querySelector('.navbar');
+            if (navbar) {
+                if (!isOpen) {
+                    navbar.classList.add('menu-open');
+                } else {
+                    navbar.classList.remove('menu-open');
+                }
+            }
             e.stopPropagation();
         });
     }
@@ -690,15 +702,20 @@ function initSideMenu() {
     };
 
     // helper to open a submenu programmatically
-    const openSubmenu = (key) => {
-        if (!key || !contentByKey[key]) return;
-        panel.innerHTML = contentByKey[key];
-        panel.setAttribute('aria-hidden', 'false');
-        panel.classList.add('open');
-        if (key === 'fahrzeuge') {
-            renderVehicleCards(panel.querySelector('#vehicle-cards'));
-        }
-    };
+        const openSubmenu = (key) => {
+            if (!key || !contentByKey[key]) return;
+            panel.innerHTML = contentByKey[key];
+            panel.setAttribute('aria-hidden', 'false');
+            panel.classList.add('open');
+            // Show back button when submenu is open
+            const backBtn = document.querySelector('.btn-back-menu');
+            if (backBtn) {
+                backBtn.style.display = 'flex';
+            }
+            if (key === 'fahrzeuge') {
+                renderVehicleCards(panel.querySelector('#vehicle-cards'));
+            }
+        };
 
     // Check if mobile (max-width: 751px)
     const isMobile = window.innerWidth <= 751;
@@ -721,17 +738,35 @@ function initSideMenu() {
             });
         });
 
-    // Close submenu when menu collapses
-    collapse.addEventListener('hidden.bs.collapse', () => {
-        panel.classList.remove('open');
-        panel.setAttribute('aria-hidden', 'true');
-        panel.innerHTML = '';
-        // Hide backdrop
-        const backdrop = document.getElementById('mobile-menu-backdrop');
-        if (backdrop) {
-            backdrop.classList.remove('show');
+        // Close submenu when menu collapses
+        collapse.addEventListener('hidden.bs.collapse', () => {
+            panel.classList.remove('open');
+            panel.setAttribute('aria-hidden', 'true');
+            panel.innerHTML = '';
+            // Hide back button
+            const backBtn = document.querySelector('.btn-back-menu');
+            if (backBtn) {
+                backBtn.style.display = 'none';
+            }
+            // Hide backdrop
+            const backdrop = document.getElementById('mobile-menu-backdrop');
+            if (backdrop) {
+                backdrop.classList.remove('show');
+            }
+        });
+        
+        // Add back button click handler
+        const backBtn = document.querySelector('.btn-back-menu');
+        if (backBtn) {
+            backBtn.addEventListener('click', function() {
+                // Close submenu
+                panel.classList.remove('open');
+                panel.setAttribute('aria-hidden', 'true');
+                panel.innerHTML = '';
+                // Hide back button
+                backBtn.style.display = 'none';
+            });
         }
-    });
     
     // Show backdrop when menu opens
     collapse.addEventListener('shown.bs.collapse', () => {
@@ -741,6 +776,11 @@ function initSideMenu() {
         }
         document.body.style.overflow = 'hidden';
         document.body.classList.add('menu-open');
+        // Hide navbar elements
+        const navbar = document.querySelector('.navbar');
+        if (navbar) {
+            navbar.classList.add('menu-open');
+        }
     });
     
     // Hide backdrop when menu closes
@@ -751,6 +791,11 @@ function initSideMenu() {
         }
         document.body.style.overflow = '';
         document.body.classList.remove('menu-open');
+        // Show navbar elements
+        const navbar = document.querySelector('.navbar');
+        if (navbar) {
+            navbar.classList.remove('menu-open');
+        }
     });
 
     // Open Mietwagen by default on first open of the hamburger menu
