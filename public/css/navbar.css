@@ -899,6 +899,15 @@ ease;
             overflow: hidden !important;
         }
         
+        /* Hide account button when menu is open */
+        .navbar .collapse.navbar-collapse.show ~ .account,
+        .navbar.menu-open .account,
+        body.menu-open .navbar .account {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+        }
+        
         /* Left menu section - better mobile layout */
         .navbar .collapse .side-left {
             width: 100% !important;
