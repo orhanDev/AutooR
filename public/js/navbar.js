@@ -152,8 +152,10 @@ function createNavbar() {
     // Add click outside to close hamburger menu
     addHamburgerMenuCloseListener();
     
-    // Add close button functionality
-    addCloseButtonListener();
+    // Add close button functionality - call after a short delay to ensure DOM is ready
+    setTimeout(() => {
+        addCloseButtonListener();
+    }, 100);
 
     // Initialize side menu interactions
     initSideMenu();
@@ -376,18 +378,65 @@ function testNavbarUpdate() {
 
 // Add close button functionality
 function addCloseButtonListener() {
-    document.addEventListener('click', function(e) {
-        if (e.target.closest('.btn-close-menu')) {
+    // Get close button elements (may be multiple if navbar is recreated)
+    const closeButtons = document.querySelectorAll('.btn-close-menu');
+    
+    closeButtons.forEach(closeBtn => {
+        // Remove any existing listeners to avoid duplicates
+        const newCloseBtn = closeBtn.cloneNode(true);
+        closeBtn.parentNode.replaceChild(newCloseBtn, closeBtn);
+        
+        // Add click listener to new button
+        newCloseBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            console.log('Close button clicked');
+            
             const navbarNav = document.getElementById('navbarNav');
-            if (navbarNav && navbarNav.classList.contains('show')) {
-                navbarNav.classList.remove('show');
-                document.body.style.overflow = '';
-                document.body.classList.remove('menu-open');
-                // Hide backdrop
-                const backdrop = document.getElementById('mobile-menu-backdrop');
-                if (backdrop) {
-                    backdrop.classList.remove('show');
+            if (!navbarNav) {
+                console.log('navbarNav not found');
+                return;
+            }
+            
+            // Use Bootstrap collapse instance if available
+            let collapseInstance = null;
+            try {
+                if (window.bootstrap && window.bootstrap.Collapse) {
+                    collapseInstance = window.bootstrap.Collapse.getInstance(navbarNav);
+                    if (!collapseInstance) {
+                        collapseInstance = new window.bootstrap.Collapse(navbarNav, { toggle: false });
+                    }
                 }
+            } catch (err) {
+                console.log('Bootstrap Collapse not available, using manual close', err);
+            }
+            
+            // Close menu
+            if (collapseInstance) {
+                console.log('Closing menu with Bootstrap collapse');
+                collapseInstance.hide();
+            } else {
+                console.log('Closing menu manually');
+                navbarNav.classList.remove('show');
+                // Trigger hidden event manually
+                const hiddenEvent = new Event('hidden.bs.collapse', { bubbles: true });
+                navbarNav.dispatchEvent(hiddenEvent);
+            }
+            
+            // Clean up will be handled by hidden.bs.collapse event
+        });
+    });
+    
+    // Also use event delegation as fallback
+    document.addEventListener('click', function(e) {
+        // Check if clicked element is close button or its child (the × span)
+        if (e.target.closest('.btn-close-menu') || e.target.classList.contains('btn-close-menu')) {
+            const closeBtn = e.target.closest('.btn-close-menu') || e.target;
+            if (closeBtn) {
+                e.preventDefault();
+                e.stopPropagation();
+                closeBtn.click(); // Trigger the click handler we added above
             }
         }
     });
@@ -629,6 +678,18 @@ function initSideMenu() {
         if (backdrop && window.innerWidth <= 751) {
             backdrop.classList.add('show');
         }
+        document.body.style.overflow = 'hidden';
+        document.body.classList.add('menu-open');
+    });
+    
+    // Hide backdrop when menu closes
+    collapse.addEventListener('hidden.bs.collapse', () => {
+        const backdrop = document.getElementById('mobile-menu-backdrop');
+        if (backdrop) {
+            backdrop.classList.remove('show');
+        }
+        document.body.style.overflow = '';
+        document.body.classList.remove('menu-open');
     });
 
     // Open Mietwagen by default on first open of the hamburger menu
