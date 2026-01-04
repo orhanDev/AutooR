@@ -839,63 +839,30 @@ ease;
             background: #ffffff !important;
         }
         
-        /* Hide navbar elements when menu is open on mobile - but keep menu visible */
-        /* This applies when menu is open OR when submenu is open */
-        .navbar .collapse.navbar-collapse.show ~ .container .navbar-toggler,
-        .navbar .collapse.navbar-collapse.show ~ .container .brand-center,
-        .navbar .collapse.navbar-collapse.show ~ .container .account,
-        .navbar .submenu-panel.open ~ .container .navbar-toggler,
-        .navbar .submenu-panel.open ~ .container .brand-center,
-        .navbar .submenu-panel.open ~ .container .account {
+        /* Hide navbar elements when menu is open on mobile */
+        .navbar.menu-open .container .navbar-toggler,
+        .navbar.menu-open .container .brand-center,
+        .navbar.menu-open .container .account,
+        .navbar.submenu-open .container .navbar-toggler,
+        .navbar.submenu-open .container .brand-center,
+        .navbar.submenu-open .container .account {
             display: none !important;
             opacity: 0 !important;
             visibility: hidden !important;
             pointer-events: none !important;
+            height: 0 !important;
+            width: 0 !important;
+            overflow: hidden !important;
         }
         
-        /* Keep menu visible and on top */
-        .navbar .collapse.navbar-collapse.show {
-            display: flex !important;
-            opacity: 1 !important;
-            pointer-events: auto !important;
-            position: fixed !important;
-            top: 0 !important;
-            left: 0 !important;
-            right: 0 !important;
-            bottom: 0 !important;
-            z-index: 1051 !important;
-            width: 100vw !important;
-            height: 100vh !important;
-        }
-        
-        /* Hide navbar background when menu is open - show only menu */
-        /* Also hide when submenu is open */
-        .navbar:has(.collapse.navbar-collapse.show),
-        .navbar:has(.submenu-panel.open) {
-            background: transparent !important;
-            box-shadow: none !important;
-        }
-        
-        /* Alternative for browsers that don't support :has() */
+        /* Hide navbar background when menu is open */
         .navbar.menu-open,
         .navbar.submenu-open {
             background: transparent !important;
             box-shadow: none !important;
         }
         
-        .navbar.menu-open .container > .navbar-toggler,
-        .navbar.menu-open .container > .brand-center,
-        .navbar.menu-open .container > .account,
-        .navbar.submenu-open .container > .navbar-toggler,
-        .navbar.submenu-open .container > .brand-center,
-        .navbar.submenu-open .container > .account {
-            display: none !important;
-            opacity: 0 !important;
-            visibility: hidden !important;
-            pointer-events: none !important;
-        }
-        
-        /* Ensure menu is visible when navbar has menu-open class */
+        /* Keep menu visible and on top */
         .navbar.menu-open .collapse.navbar-collapse.show,
         .navbar.submenu-open .collapse.navbar-collapse.show {
             display: flex !important;
@@ -907,6 +874,9 @@ ease;
             right: 0 !important;
             bottom: 0 !important;
             z-index: 1051 !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            visibility: visible !important;
         }
         
         /* Menu header - better mobile */
