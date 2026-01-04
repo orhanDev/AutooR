@@ -1807,11 +1807,12 @@ function initAccountMenu() {
     
     const positionMenu = () => {
         if (window.innerWidth <= 751) {
-            // On mobile, position menu below account button
+            // On mobile, position menu below account button, aligned to right
             const btnRect = btn.getBoundingClientRect();
             const menuTop = btnRect.bottom + 8; // 8px gap
             menu.style.top = menuTop + 'px';
-            menu.style.left = btnRect.left + 'px';
+            menu.style.left = 'auto';
+            menu.style.right = (window.innerWidth - btnRect.right) + 'px';
         }
     };
 

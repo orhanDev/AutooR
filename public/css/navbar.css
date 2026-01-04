@@ -104,8 +104,8 @@ body { margin-top: 0 !important; }
         position: fixed !important;
         top: auto !important;
         bottom: auto !important;
-        left: 1rem !important;
-        right: auto !important;
+        left: auto !important;
+        right: 1rem !important;
         margin-top: 0 !important;
         overflow: visible !important;
         width: 220px !important;
