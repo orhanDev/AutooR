@@ -114,39 +114,53 @@ function createMobileMenuNavbar() {
 // Show/hide mobile menu navbar
 function toggleMobileMenuNavbar(show) {
     const mobileNavbar = document.getElementById('mobile-menu-navbar');
-    const originalNavbar = document.querySelector('.navbar.fixed-top:not(.mobile-menu-navbar)');
+    // Find original navbar - exclude mobile-menu-navbar
+    const allNavbars = document.querySelectorAll('.navbar.fixed-top');
+    let originalNavbar = null;
+    allNavbars.forEach(nav => {
+        if (!nav.classList.contains('mobile-menu-navbar') && nav.id !== 'mobile-menu-navbar') {
+            originalNavbar = nav;
+        }
+    });
+    
+    console.log('toggleMobileMenuNavbar:', { show, hasMobileNavbar: !!mobileNavbar, hasOriginalNavbar: !!originalNavbar, width: window.innerWidth });
     
     if (window.innerWidth <= 751) {
         if (show) {
             // Hide original navbar, show mobile menu navbar
             if (originalNavbar) {
-                originalNavbar.style.display = 'none';
+                originalNavbar.style.cssText = 'display: none !important; visibility: hidden !important; opacity: 0 !important;';
+                console.log('Original navbar hidden');
             }
             if (mobileNavbar) {
-                mobileNavbar.style.display = 'block';
+                mobileNavbar.style.cssText = 'display: block !important; visibility: visible !important; opacity: 1 !important; z-index: 1052; background: #ffffff;';
+                console.log('Mobile menu navbar shown');
             } else {
                 createMobileMenuNavbar();
                 const newMobileNavbar = document.getElementById('mobile-menu-navbar');
                 if (newMobileNavbar) {
-                    newMobileNavbar.style.display = 'block';
+                    newMobileNavbar.style.cssText = 'display: block !important; visibility: visible !important; opacity: 1 !important; z-index: 1052; background: #ffffff;';
+                    console.log('Mobile menu navbar created and shown');
                 }
             }
         } else {
             // Show original navbar, hide mobile menu navbar
             if (originalNavbar) {
-                originalNavbar.style.display = '';
+                originalNavbar.style.cssText = '';
+                console.log('Original navbar shown');
             }
             if (mobileNavbar) {
-                mobileNavbar.style.display = 'none';
+                mobileNavbar.style.cssText = 'display: none !important;';
+                console.log('Mobile menu navbar hidden');
             }
         }
     } else {
         // Desktop: always show original navbar
         if (originalNavbar) {
-            originalNavbar.style.display = '';
+            originalNavbar.style.cssText = '';
         }
         if (mobileNavbar) {
-            mobileNavbar.style.display = 'none';
+            mobileNavbar.style.cssText = 'display: none !important;';
         }
     }
 }
