@@ -549,9 +549,21 @@ function initSideMenu() {
         }
     };
 
+    // Check if mobile (max-width: 751px)
+    const isMobile = window.innerWidth <= 751;
+    
     collapse.querySelectorAll('.side-item[data-submenu]')
         .forEach(item => {
             item.addEventListener('click', (e) => {
+                // On mobile, allow direct navigation to the link
+                if (isMobile) {
+                    const link = item.querySelector('.nav-link');
+                    if (link && link.href) {
+                        // Let the link work normally on mobile
+                        return; // Don't prevent default, let browser navigate
+                    }
+                }
+                // On desktop, show submenu
                 e.preventDefault();
                 const key = item.getAttribute('data-submenu');
                 openSubmenu(key);

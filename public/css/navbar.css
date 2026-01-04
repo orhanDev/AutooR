@@ -733,7 +733,126 @@ ease;
          display: none;
      }
      
-     .navbar-collapse .submenu.show {
+     /* Mobile menu improvements (max-width: 751px) */
+    @media (max-width: 751px) {
+        /* Make hamburger menu button more visible */
+        .navbar-toggler {
+            display: flex !important;
+            align-items: center;
+            padding: 0.5rem 0.75rem !important;
+            border: 2px solid #000000 !important;
+            background: #ffffff !important;
+            border-radius: 8px !important;
+            min-width: 80px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+        }
+        
+        .navbar-toggler:hover,
+        .navbar-toggler:focus {
+            background: #ffc107 !important;
+            border-color: #ffc107 !important;
+            box-shadow: 0 4px 12px rgba(255, 193, 7, 0.3) !important;
+        }
+        
+        .navbar-toggler-icon {
+            width: 24px;
+            height: 24px;
+        }
+        
+        .menu-label {
+            font-size: 0.875rem !important;
+            font-weight: 600 !important;
+            margin-left: 0.5rem !important;
+        }
+        
+        /* Menu drawer - full width on mobile */
+        .navbar .collapse.navbar-collapse {
+            width: 85vw !important;
+            max-width: 400px !important;
+        }
+        
+        .navbar .collapsing {
+            width: 85vw !important;
+            max-width: 400px !important;
+        }
+        
+        /* Left menu section - better mobile layout */
+        .navbar .collapse .side-left {
+            width: 100% !important;
+            flex: 1 1 100% !important;
+            padding: 1rem 0.75rem !important;
+        }
+        
+        /* Menu header - better mobile */
+        .menu-header {
+            padding: 1rem 0.75rem !important;
+            border-bottom: 1px solid #e5e7eb;
+            margin-bottom: 1rem !important;
+        }
+        
+        .menu-title {
+            font-size: 1.25rem !important;
+            font-weight: 700 !important;
+        }
+        
+        .btn-close-menu {
+            font-size: 1.5rem !important;
+            padding: 0.25rem 0.5rem !important;
+            background: transparent !important;
+            border: none !important;
+            color: #000000 !important;
+            cursor: pointer;
+        }
+        
+        .btn-close-menu:hover {
+            background: #f3f4f6 !important;
+            border-radius: 4px;
+        }
+        
+        /* Menu items - better spacing on mobile */
+        .side-left .nav-link {
+            padding: 0.875rem 1rem !important;
+            font-size: 0.9375rem !important;
+            margin-bottom: 0.25rem;
+        }
+        
+        .side-left .nav-item + .nav-item {
+            margin-top: 0.125rem;
+        }
+        
+        /* Submenu panel - hide on mobile or make it work better */
+        .submenu-panel {
+            display: none !important; /* Hide submenu on mobile - links go directly */
+        }
+        
+        /* Vehicle cards in submenu - hide on mobile since submenu is hidden */
+        .submenu-panel .vehicle-cards {
+            display: none !important;
+        }
+        
+        /* Make sure menu items are clickable and go to their pages */
+        .side-item[data-submenu] .nav-link::after {
+            content: '' !important; /* Remove chevron on mobile since submenu is hidden */
+        }
+        
+        /* Account button - better mobile */
+        .account-btn {
+            padding: 0.5rem !important;
+            min-width: 44px; /* Better touch target */
+        }
+        
+        .account-btn i {
+            font-size: 1.25rem !important;
+        }
+        
+        /* Brand center - adjust for mobile */
+        .brand-center {
+            font-size: 1.2rem !important;
+            letter-spacing: 0.2rem !important;
+        }
+    }
+    
+    .navbar-collapse .submenu.show {
          display: block;
      }
      
