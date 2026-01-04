@@ -419,11 +419,19 @@ document.addEventListener('DOMContentLoaded', function() {
         document.body.classList.remove('home-page');
     }
     
-    // Add fahrzeuge-page class to body if on fahrzeuge page
+    // Add fahrzeuge-page class to body if on fahrzeuge page (for backward compatibility)
     if (currentPath === '/fahrzeuge' || currentPath === '/fahrzeuge.html') {
         document.body.classList.add('fahrzeuge-page');
     } else {
         document.body.classList.remove('fahrzeuge-page');
+    }
+    
+    // Add not-home-page class to body if NOT on home page
+    // This will show back button and hide menu button on all pages except home
+    if (currentPath !== '/' && currentPath !== '/index.html') {
+        document.body.classList.add('not-home-page');
+    } else {
+        document.body.classList.remove('not-home-page');
     }
     
     // Check if browser was closed and reopened (sessionStorage empty but localStorage has data)

@@ -835,7 +835,7 @@ ease;
             margin-right: 0 !important;
         }
         
-        /* Back button - show on fahrzeuge page instead of menu button */
+        /* Back button - show on all pages except home page instead of menu button */
         .navbar-back-btn {
             display: none !important;
             border: none !important;
@@ -845,7 +845,25 @@ ease;
             cursor: pointer !important;
         }
         
-        /* On fahrzeuge page: back button on left, account on right */
+        /* On all pages except home: back button on left, account on right */
+        body.not-home-page .navbar-back-btn {
+            display: flex !important;
+            order: 1 !important;
+            margin-left: 0 !important;
+            margin-right: auto !important;
+        }
+        
+        body.not-home-page .navbar .account {
+            order: 3 !important;
+            margin-left: auto !important;
+            margin-right: 0 !important;
+        }
+        
+        body.not-home-page .navbar-toggler {
+            display: none !important;
+        }
+        
+        /* Backward compatibility: fahrzeuge-page class still works */
         body.fahrzeuge-page .navbar-back-btn {
             display: flex !important;
             order: 1 !important;
