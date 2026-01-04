@@ -46,7 +46,7 @@ postgresql://postgres:password@hostname:5432/railway
 
 ---
 
-## 🔐 Adım 4: Environment Variables (Çevre Değişkenleri) Ekleme
+## 🔐 Adım 5: Environment Variables (Çevre Değişkenleri) Ekleme
 
 Railway dashboard'da projenizin **"Variables"** sekmesine gidin ve şu değişkenleri ekleyin:
 
@@ -106,7 +106,7 @@ NODE_ENV=production
 
 ---
 
-## 📝 Adım 5: Database Migration (Veritabanı Tablolarını Oluşturma)
+## 📝 Adım 6: Database Migration (Veritabanı Tablolarını Oluşturma)
 
 Railway'de database oluşturulduktan sonra, tabloları oluşturmanız gerekiyor:
 
@@ -142,7 +142,7 @@ Railway'de database oluşturulduktan sonra, tabloları oluşturmanız gerekiyor:
 
 ---
 
-## 🚀 Adım 6: Deploy ve Test
+## 🚀 Adım 7: Deploy ve Test
 
 1. Railway otomatik olarak GitHub'dan değişiklikleri çeker
 2. **"Deployments"** sekmesinde deploy durumunu izleyin
@@ -151,7 +151,7 @@ Railway'de database oluşturulduktan sonra, tabloları oluşturmanız gerekiyor:
 
 ---
 
-## 🔗 Adım 7: Netlify ile Bağlama
+## 🔗 Adım 8: Netlify ile Bağlama
 
 Backend URL'inizi aldıktan sonra:
 
