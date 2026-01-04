@@ -226,9 +226,10 @@ function setupMobileMenuNavbarWatcher() {
     function checkMenuState() {
         const currentState = navbarNav.classList.contains('show');
         const isMobile = window.innerWidth <= 751;
+        const shouldShowNavbar = localStorage.getItem('mobileMenuNavbarVisible') === 'true';
         
         if (currentState !== previousState) {
-            console.log('Menu state CHANGED:', { previous: previousState, current: currentState, isMobile });
+            console.log('Menu state CHANGED:', { previous: previousState, current: currentState, isMobile, shouldShowNavbar });
             previousState = currentState;
             if (isMobile) {
                 if (currentState) {
@@ -238,10 +239,21 @@ function setupMobileMenuNavbarWatcher() {
                         toggleMobileMenuNavbar(true);
                     }, 300);
                 } else {
-                    // Menu closing - hide immediately
-                    toggleMobileMenuNavbar(false);
+                    // Menu closing - but check localStorage first
+                    // If localStorage says navbar should be visible, keep it visible
+                    if (shouldShowNavbar) {
+                        console.log('Menu closed but localStorage says navbar should be visible, keeping it visible');
+                        toggleMobileMenuNavbar(true);
+                    } else {
+                        toggleMobileMenuNavbar(false);
+                    }
                 }
             }
+        } else if (isMobile && shouldShowNavbar && !currentState) {
+            // Menu is closed but localStorage says navbar should be visible
+            // This happens when page loads after navigation from menu link
+            console.log('Menu is closed but localStorage says navbar should be visible, showing it');
+            toggleMobileMenuNavbar(true);
         }
     }
     
@@ -303,17 +315,24 @@ function setupMobileMenuNavbarWatcher() {
         }
     });
     
-    // Periodic check as backup (every 500ms) - but don't auto-show 2nd navbar
+    // Periodic check as backup (every 500ms)
     setInterval(() => {
         if (window.innerWidth <= 751) {
-            // Only check state, don't auto-show 2nd navbar
             const currentState = navbarNav.classList.contains('show');
+            const shouldShowNavbar = localStorage.getItem('mobileMenuNavbarVisible') === 'true';
+            
             if (currentState !== previousState) {
                 previousState = currentState;
-                // Only hide 2nd navbar if menu closed, don't show it automatically
-                if (!currentState) {
+                // If menu closed but localStorage says navbar should be visible, keep it visible
+                if (!currentState && shouldShowNavbar) {
+                    console.log('Periodic check: Menu closed but localStorage says navbar should be visible');
+                    toggleMobileMenuNavbar(true);
+                } else if (!currentState && !shouldShowNavbar) {
                     toggleMobileMenuNavbar(false);
                 }
+            } else if (!currentState && shouldShowNavbar) {
+                // Menu is closed but localStorage says navbar should be visible
+                toggleMobileMenuNavbar(true);
             }
         }
     }, 500);
