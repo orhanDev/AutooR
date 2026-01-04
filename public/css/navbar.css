@@ -101,16 +101,19 @@ body { margin-top: 0 !important; }
 @media (max-width: 751px) {
     .account-menu {
         z-index: 1101 !important;
-        position: absolute !important;
-        top: 100% !important;
-        left: 0 !important;
+        position: fixed !important;
+        top: auto !important;
+        bottom: auto !important;
+        left: 1rem !important;
         right: auto !important;
-        margin-top: 0.5rem !important;
+        margin-top: 0 !important;
         overflow: visible !important;
         width: 220px !important;
+        max-height: calc(100vh - 80px) !important;
+        overflow-y: auto !important;
     }
     
-    /* Ensure account container doesn't clip the menu */
+    /* Calculate top position based on account button position */
     .account {
         overflow: visible !important;
         z-index: 1100 !important;
@@ -124,6 +127,14 @@ body { margin-top: 0 !important; }
     
     .navbar .container {
         overflow: visible !important;
+    }
+    
+    /* Ensure account menu is fully visible - use JavaScript to position it */
+    .account-menu.open {
+        transform: translateY(0) !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+        visibility: visible !important;
     }
 }
 

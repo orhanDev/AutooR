@@ -1804,16 +1804,35 @@ function initAccountMenu() {
         menu.setAttribute('aria-hidden', 'true');
         btn.setAttribute('aria-expanded', 'false');
     };
+    
+    const positionMenu = () => {
+        if (window.innerWidth <= 751) {
+            // On mobile, position menu below account button
+            const btnRect = btn.getBoundingClientRect();
+            const menuTop = btnRect.bottom + 8; // 8px gap
+            menu.style.top = menuTop + 'px';
+            menu.style.left = btnRect.left + 'px';
+        }
+    };
 
     btn.addEventListener('click', (e) => {
         e.preventDefault();
         const willOpen = !menu.classList.contains('open');
         if (willOpen) {
+            // Position menu before opening
+            positionMenu();
             menu.classList.add('open');
             menu.setAttribute('aria-hidden', 'false');
             btn.setAttribute('aria-expanded', 'true');
         } else {
             closeMenu();
+        }
+    });
+    
+    // Reposition on resize
+    window.addEventListener('resize', () => {
+        if (menu.classList.contains('open')) {
+            positionMenu();
         }
     });
 
