@@ -506,28 +506,38 @@ document.addEventListener('DOMContentLoaded', () => {
                         </div>
                         
                         <div class="bg-light rounded-3 p-3 summary-box">
-                            <h6 class="fw-bold mb-2">Preisübersicht</h6>
+                            <h6 class="fw-bold mb-3">Preisübersicht</h6>
                             <div id="price-breakdown">
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center mb-1">
+                                        <span class="text-muted small" id="base-price-label">Grundpreis</span>
+                                        <div id="base-price" class="text-end">
+                                            <span class="text-muted small text-decoration-line-through me-2" id="original-price" style="display: none;"></span>
+                                            <span class="fw-bold" id="current-price">€${Math.floor(Number(vehicle.daily_rate))}</span>
+                                        </div>
+                                    </div>
+                                    <div id="discount-row" style="display: none;" class="mt-1">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <span class="text-success small">
+                                                <i class="bi bi-tag-fill me-1"></i>
+                                                <span id="discount-label-text"></span>
+                                            </span>
+                                            <span id="discount-price" class="text-success fw-semibold"></span>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="d-flex justify-content-between mb-2">
-                                    <span id="base-price-label">Grundpreis (1 Tag)</span>
-                                    <span id="base-price">&euro;${Math.floor(Number(vehicle.daily_rate))}</span>
-                                </div>
-                                <div class="d-flex justify-content-between mb-2" id="discount-row" style="display: none;">
-                                    <span style="color: #28a745;">Rabatt</span>
-                                    <span id="discount-price" style="color: #28a745; font-weight: bold;"></span>
+                                    <span class="text-muted small">Versicherung</span>
+                                    <span id="insurance-price" class="text-muted">€0</span>
                                 </div>
                                 <div class="d-flex justify-content-between mb-2">
-                                    <span>Versicherung</span>
-                                    <span id="insurance-price">&euro;0</span>
+                                    <span class="text-muted small">Zusatzleistungen</span>
+                                    <span id="additional-services-price" class="text-muted">€0</span>
                                 </div>
-                                <div class="d-flex justify-content-between mb-2">
-                                    <span>Zusätzliche Leistungen</span>
-                                    <span id="additional-services-price">&euro;0</span>
-                                </div>
-                                <hr>
-                                <div class="d-flex justify-content-between fw-bold total-row">
-                                    <span>Gesamtpreis</span>
-                                    <span id="total-price">&euro;${Math.floor(Number(vehicle.daily_rate))}</span>
+                                <hr class="my-3">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="fw-bold">Gesamtpreis</span>
+                                    <span id="total-price" class="fw-bold fs-5 text-warning">€${Math.floor(Number(vehicle.daily_rate))}</span>
                                 </div>
                             </div>
                         </div>
@@ -1058,25 +1068,44 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Update price display
         const baseLabel = document.getElementById('base-price-label');
-        const baseEl = document.getElementById('base-price');
-        if (baseLabel) baseLabel.textContent = priceLabel;
-        if (baseEl) {
+        const originalPriceEl = document.getElementById('original-price');
+        const currentPriceEl = document.getElementById('current-price');
+        const discountRow = document.getElementById('discount-row');
+        const discountEl = document.getElementById('discount-price');
+        const discountLabelText = document.getElementById('discount-label-text');
+        
+        if (baseLabel) {
+            // Extract just the label part (e.g., "Grundpreis" from "Grundpreis (122 Stunden)")
+            const labelMatch = priceLabel.match(/^([^(]+)/);
+            baseLabel.textContent = labelMatch ? labelMatch[1].trim() : 'Grundpreis';
+        }
+        
+        if (currentPriceEl) {
             if (discount > 0) {
-                baseEl.innerHTML = `<span style="text-decoration: line-through; color: #999; margin-right: 0.5rem;">€${Math.floor(basePrice)}</span><span style="color: #28a745; font-weight: bold;">€${Math.floor(discountedBasePrice)}</span>`;
+                // Show original price crossed out
+                if (originalPriceEl) {
+                    originalPriceEl.textContent = `€${Math.floor(basePrice)}`;
+                    originalPriceEl.style.display = 'inline';
+                }
+                // Show discounted price
+                currentPriceEl.textContent = `€${Math.floor(discountedBasePrice)}`;
+                currentPriceEl.className = 'fw-bold text-success';
             } else {
-                baseEl.textContent = `€${Math.floor(basePrice)}`;
+                // Hide original price if no discount
+                if (originalPriceEl) {
+                    originalPriceEl.style.display = 'none';
+                }
+                currentPriceEl.textContent = `€${Math.floor(basePrice)}`;
+                currentPriceEl.className = 'fw-bold';
             }
         }
         
-        // Show discount if applicable
-        const discountRow = document.getElementById('discount-row');
-        const discountEl = document.getElementById('discount-price');
-        if (discountRow && discountEl) {
+        // Show discount row if applicable
+        if (discountRow && discountEl && discountLabelText) {
             if (discount > 0) {
-                discountEl.textContent = `-€${Math.floor(discount)} (${discountLabel})`;
-                discountRow.style.display = 'flex';
-                discountEl.style.color = '#28a745';
-                discountEl.style.fontWeight = 'bold';
+                discountLabelText.textContent = discountLabel.replace(/\s+\d+%$/, ''); // Remove percentage from label
+                discountEl.textContent = `-€${Math.floor(discount)}`;
+                discountRow.style.display = 'block';
             } else {
                 discountRow.style.display = 'none';
             }
