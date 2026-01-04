@@ -713,9 +713,11 @@ function initSideMenu() {
                 backBtn.style.display = 'flex';
             }
             // Add submenu-open class to navbar to keep navbar hidden
+            // Also ensure menu-open class is present
             const navbar = document.querySelector('.navbar');
             if (navbar) {
                 navbar.classList.add('submenu-open');
+                navbar.classList.add('menu-open'); // Keep menu-open when submenu is open
             }
             if (key === 'fahrzeuge') {
                 renderVehicleCards(panel.querySelector('#vehicle-cards'));
