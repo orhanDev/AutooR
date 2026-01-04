@@ -94,6 +94,36 @@ body { margin-top: 0 !important; }
     pointer-events: none;
     transition: all 0.2s ease;
     z-index: 1100;
+    overflow: visible !important;
+}
+
+/* Ensure account menu is visible on mobile */
+@media (max-width: 751px) {
+    .account-menu {
+        z-index: 1101 !important;
+        position: fixed !important;
+        top: auto !important;
+        bottom: auto !important;
+        right: 1rem !important;
+        margin-top: 0.5rem !important;
+        overflow: visible !important;
+    }
+    
+    /* Ensure account container doesn't clip the menu */
+    .account {
+        overflow: visible !important;
+        z-index: 1100 !important;
+        position: relative !important;
+    }
+    
+    /* Ensure navbar doesn't clip account menu */
+    .navbar {
+        overflow: visible !important;
+    }
+    
+    .navbar .container {
+        overflow: visible !important;
+    }
 }
 
 .account-menu.open {
