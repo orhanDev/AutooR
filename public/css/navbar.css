@@ -839,7 +839,9 @@ ease;
             background: #ffffff !important;
         }
         
-        /* TEST: Make navbar red on mobile to verify CSS is working */
+        /* TEST: Make navbar red on mobile to verify CSS is working - ONLY ON MOBILE */
+        /* This should only appear when screen width is 751px or less */
+        /* NOTE: This test CSS is inside @media (max-width: 751px) block */
         .navbar {
             background-color: red !important;
             border: 3px solid darkred !important;
