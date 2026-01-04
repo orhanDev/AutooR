@@ -358,23 +358,31 @@ function setupMobileMenuNavbarWatcher() {
 document.addEventListener('DOMContentLoaded', function() {
     console.log('=== DOMContentLoaded - Mobile Menu Navbar Setup ===');
     
-        // Wait for navbar to be created
-        setTimeout(() => {
-            setupMobileMenuNavbarWatcher();
+    // Check localStorage immediately (before waiting for navbar creation)
+    const shouldShowNavbar = localStorage.getItem('mobileMenuNavbarVisible') === 'true';
+    console.log('DOMContentLoaded: shouldShowNavbar from localStorage:', shouldShowNavbar);
+    
+    // Wait for navbar to be created
+    setTimeout(() => {
+        setupMobileMenuNavbarWatcher();
+        
+        // Check if 2nd navbar should be visible (from previous page navigation)
+        // Do this AFTER setupMobileMenuNavbarWatcher to ensure mobile navbar is created
+        if (window.innerWidth <= 751 && shouldShowNavbar) {
+            console.log('Restoring 2nd navbar state from previous navigation');
+            // Show 2nd navbar even if menu is closed (user came from menu link)
+            // Use multiple attempts to ensure it shows
+            setTimeout(() => {
+                console.log('Attempt 1: Showing 2nd navbar');
+                toggleMobileMenuNavbar(true);
+            }, 200);
             
-            // Check if 2nd navbar should be visible (from previous page navigation)
-            if (window.innerWidth <= 751) {
-                const shouldShowNavbar = localStorage.getItem('mobileMenuNavbarVisible') === 'true';
-                
-                if (shouldShowNavbar) {
-                    console.log('Restoring 2nd navbar state from previous navigation');
-                    // Show 2nd navbar even if menu is closed (user came from menu link)
-                    setTimeout(() => {
-                        toggleMobileMenuNavbar(true);
-                    }, 500);
-                }
-            }
-        }, 1000);
+            setTimeout(() => {
+                console.log('Attempt 2: Showing 2nd navbar (backup)');
+                toggleMobileMenuNavbar(true);
+            }, 800);
+        }
+    }, 1000);
     
     // Also watch for window resize
     window.addEventListener('resize', function() {
