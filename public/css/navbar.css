@@ -756,6 +756,16 @@ ease;
      
      /* Mobile menu improvements (max-width: 751px) */
     @media (max-width: 751px) {
+        /* Hide brand-center on mobile except on home page */
+        .brand-center {
+            display: none !important;
+        }
+        
+        /* Show brand-center on home page */
+        body.home-page .brand-center {
+            display: block !important;
+        }
+        
         /* Make hamburger menu button more visible */
         .navbar-toggler {
             display: flex !important;
