@@ -812,38 +812,69 @@ function initSideMenu() {
         return;
     }
     
+    // Track previous state to detect changes
+    let previousMenuState = collapse.classList.contains('show');
+    
     // PRIMARY METHOD: Use MutationObserver to watch for 'show' class changes
     const observer = new MutationObserver(function(mutations) {
+        const currentState = collapse.classList.contains('show');
+        const isMobile = window.innerWidth <= 751;
+        
+        // Only act if state actually changed
+        if (currentState !== previousMenuState) {
+            console.log('MutationObserver: Menu state CHANGED!', { 
+                previous: previousMenuState,
+                current: currentState,
+                isMobile,
+                classes: collapse.className
+            });
+            
+            previousMenuState = currentState;
+            
+            if (currentState && isMobile) {
+                console.log('MutationObserver: Menu OPENED - transforming navbar NOW');
+                // Transform immediately
+                hideNavbarElements();
+            } else if (!currentState && isMobile) {
+                console.log('MutationObserver: Menu CLOSED - restoring navbar NOW');
+                // Restore immediately
+                showNavbarElements();
+            }
+        }
+    });
+    
+    // Start observing with more aggressive settings
+    observer.observe(collapse, {
+        attributes: true,
+        attributeFilter: ['class'],
+        attributeOldValue: false,
+        childList: false,
+        subtree: false
+    });
+    
+    // Also observe the document for any changes to collapse (in case Bootstrap manipulates it differently)
+    const documentObserver = new MutationObserver(function(mutations) {
         mutations.forEach(function(mutation) {
-            if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
-                const isOpen = collapse.classList.contains('show');
-                const isMobile = window.innerWidth <= 751;
-                
-                console.log('MutationObserver: Menu class changed', { 
-                    isOpen, 
-                    isMobile, 
-                    hasShow: collapse.classList.contains('show'),
-                    classes: collapse.className
-                });
-                
-                if (isOpen && isMobile) {
-                    console.log('MutationObserver: Menu OPENED - transforming navbar NOW');
-                    // Transform immediately
-                    hideNavbarElements();
-                } else if (!isOpen && isMobile) {
-                    console.log('MutationObserver: Menu CLOSED - restoring navbar NOW');
-                    // Restore immediately
-                    showNavbarElements();
+            if (mutation.type === 'attributes' && mutation.target === collapse) {
+                const currentState = collapse.classList.contains('show');
+                if (currentState !== previousMenuState) {
+                    console.log('DocumentObserver: Menu state changed via document observer');
+                    previousMenuState = currentState;
+                    if (currentState && window.innerWidth <= 751) {
+                        hideNavbarElements();
+                    } else if (!currentState && window.innerWidth <= 751) {
+                        showNavbarElements();
+                    }
                 }
             }
         });
     });
     
-    // Start observing
-    observer.observe(collapse, {
+    documentObserver.observe(document.body, {
         attributes: true,
         attributeFilter: ['class'],
-        attributeOldValue: true
+        childList: true,
+        subtree: true
     });
     
     console.log('MutationObserver started for navbar collapse');
