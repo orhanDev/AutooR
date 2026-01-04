@@ -766,6 +766,33 @@ ease;
             display: block !important;
         }
         
+        /* Swap menu and account button positions on mobile */
+        .navbar .container {
+            display: flex !important;
+            flex-direction: row !important;
+            justify-content: space-between !important;
+            align-items: center !important;
+        }
+        
+        /* Account button on left */
+        .navbar .account {
+            order: 1 !important;
+            margin-left: 0 !important;
+            margin-right: auto !important;
+        }
+        
+        /* Brand center in middle (if visible) */
+        .navbar .brand-center {
+            order: 2 !important;
+        }
+        
+        /* Menu button on right */
+        .navbar .navbar-toggler {
+            order: 3 !important;
+            margin-left: auto !important;
+            margin-right: 0 !important;
+        }
+        
         /* Make hamburger menu button more visible */
         .navbar-toggler {
             display: flex !important;
