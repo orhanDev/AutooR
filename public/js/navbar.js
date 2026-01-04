@@ -505,7 +505,7 @@ function addCloseButtonListener() {
         }
     });
     
-    // Add body scroll lock when menu opens AND hide navbar elements
+    // Add body scroll lock when menu opens AND transform navbar elements
     document.addEventListener('click', function(e) {
         if (e.target.closest('.navbar-toggler')) {
             setTimeout(() => {
@@ -513,18 +513,20 @@ function addCloseButtonListener() {
                 if (navbarNav && navbarNav.classList.contains('show')) {
                     document.body.style.overflow = 'hidden';
                     document.body.classList.add('menu-open');
-                    // Also hide navbar elements when toggler is clicked
+                    // Transform navbar elements when toggler is clicked
                     if (window.innerWidth <= 751) {
+                        console.log('Toggler clicked - menu opened, transforming navbar');
                         hideNavbarElements();
                     }
                 } else {
                     document.body.style.overflow = '';
                     document.body.classList.remove('menu-open');
                     if (window.innerWidth <= 751) {
+                        console.log('Toggler clicked - menu closed, restoring navbar');
                         showNavbarElements();
                     }
                 }
-            }, 100);
+            }, 150); // Increased delay to ensure Bootstrap has updated the DOM
         }
     });
     
@@ -647,22 +649,33 @@ function addHamburgerMenuCloseListener() {
 
 // Function to transform navbar when menu is open (like Porsche example)
 function hideNavbarElements() {
-    if (window.innerWidth > 751) return; // Only on mobile
+    if (window.innerWidth > 751) {
+        console.log('hideNavbarElements: Not mobile, skipping');
+        return; // Only on mobile
+    }
+    
+    console.log('hideNavbarElements: Starting transformation...');
     
     const navbar = document.querySelector('.navbar');
     const container = navbar?.querySelector('.container');
-    if (!navbar || !container) return;
+    if (!navbar || !container) {
+        console.error('hideNavbarElements: Navbar or container not found');
+        return;
+    }
     
     const toggler = container.querySelector('.navbar-toggler');
     const brand = container.querySelector('.brand-center');
     const account = container.querySelector('.account');
     const accountBtn = account?.querySelector('.account-btn');
     
+    console.log('hideNavbarElements: Elements found', { toggler: !!toggler, brand: !!brand, account: !!account, accountBtn: !!accountBtn });
+    
     // Transform navbar-toggler to back arrow
     if (toggler) {
-        // Store original content
+        // Store original content if not already stored
         if (!toggler.dataset.originalContent) {
             toggler.dataset.originalContent = toggler.innerHTML;
+            console.log('hideNavbarElements: Stored original toggler content');
         }
         // Replace with back arrow
         toggler.innerHTML = '<i class="bi bi-arrow-left" style="font-size: 1.5rem;"></i>';
@@ -701,22 +714,25 @@ function hideNavbarElements() {
                 }
             }
         };
+        console.log('hideNavbarElements: Toggler transformed to back arrow');
     }
     
     // Brand stays visible (centered)
     if (brand) {
         brand.style.cssText = 'display: block !important; visibility: visible !important; opacity: 1 !important;';
+        console.log('hideNavbarElements: Brand kept visible');
     }
     
     // Transform account button to close (X) button
     if (account && accountBtn) {
-        // Store original content
+        // Store original content if not already stored
         if (!accountBtn.dataset.originalContent) {
             accountBtn.dataset.originalContent = accountBtn.innerHTML;
+            console.log('hideNavbarElements: Stored original account button content');
         }
         // Replace with X button
         accountBtn.innerHTML = '<span style="font-size: 1.5rem; font-weight: 300;">&times;</span>';
-        accountBtn.style.cssText = 'display: flex !important; align-items: center !important; padding: 0.5rem !important; border: none !important; background: transparent !important;';
+        accountBtn.style.cssText = 'display: flex !important; align-items: center !important; padding: 0.5rem !important; border: none !important; background: transparent !important; cursor: pointer !important;';
         // Remove account menu functionality
         accountBtn.removeAttribute('data-bs-toggle');
         accountBtn.removeAttribute('aria-expanded');
@@ -739,10 +755,11 @@ function hideNavbarElements() {
                 }
             }
         };
+        console.log('hideNavbarElements: Account button transformed to X');
     }
     
     navbar.classList.add('menu-open');
-    console.log('Navbar transformed: hamburger → back arrow, account → X button');
+    console.log('hideNavbarElements: Navbar transformation complete - hamburger → back arrow, account → X button');
 }
 
 // Function to restore navbar when menu is closed
@@ -791,19 +808,26 @@ function initSideMenu() {
     const collapse = document.getElementById('navbarNav');
     if (!panel || !collapse) return;
     
+    // Function to check and transform navbar based on menu state
+    function checkAndTransformNavbar() {
+        const isOpen = collapse.classList.contains('show');
+        const isMobile = window.innerWidth <= 751;
+        console.log('checkAndTransformNavbar called:', { isOpen, isMobile });
+        
+        if (isOpen && isMobile) {
+            console.log('Menu is open on mobile - transforming navbar');
+            hideNavbarElements();
+        } else if (!isOpen) {
+            console.log('Menu is closed - restoring navbar');
+            showNavbarElements();
+        }
+    }
+    
     // Use MutationObserver to detect when menu opens/closes
     const observer = new MutationObserver(function(mutations) {
         mutations.forEach(function(mutation) {
             if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
-                const isOpen = collapse.classList.contains('show');
-                console.log('MutationObserver: Menu state changed, isOpen:', isOpen, 'width:', window.innerWidth);
-                if (isOpen && window.innerWidth <= 751) {
-                    console.log('MutationObserver: Hiding navbar elements');
-                    hideNavbarElements();
-                } else if (!isOpen) {
-                    console.log('MutationObserver: Showing navbar elements');
-                    showNavbarElements();
-                }
+                setTimeout(checkAndTransformNavbar, 50); // Small delay to ensure DOM is updated
             }
         });
     });
@@ -816,21 +840,34 @@ function initSideMenu() {
     // Also listen to Bootstrap collapse events
     collapse.addEventListener('shown.bs.collapse', function() {
         console.log('Bootstrap shown.bs.collapse event fired');
-        if (window.innerWidth <= 751) {
-            hideNavbarElements();
-        }
+        setTimeout(() => {
+            if (window.innerWidth <= 751) {
+                hideNavbarElements();
+            }
+        }, 50);
     });
     
     collapse.addEventListener('hidden.bs.collapse', function() {
         console.log('Bootstrap hidden.bs.collapse event fired');
-        showNavbarElements();
+        setTimeout(() => {
+            showNavbarElements();
+        }, 50);
     });
     
-    // Also check immediately
-    if (collapse.classList.contains('show') && window.innerWidth <= 751) {
-        console.log('Initial check: Menu is open, hiding navbar elements');
-        hideNavbarElements();
-    }
+    // Also check immediately and set up interval check
+    checkAndTransformNavbar();
+    
+    // Set up periodic check as fallback (every 200ms)
+    const checkInterval = setInterval(() => {
+        if (window.innerWidth <= 751) {
+            checkAndTransformNavbar();
+        }
+    }, 200);
+    
+    // Clean up interval when page unloads
+    window.addEventListener('beforeunload', () => {
+        clearInterval(checkInterval);
+    });
 
     const contentByKey = {
         
