@@ -853,23 +853,28 @@ function initSideMenu() {
         document.body.classList.add('menu-open');
         // Hide navbar elements directly
         const navbar = document.querySelector('.navbar');
-        if (navbar) {
+        if (navbar && window.innerWidth <= 751) {
             navbar.classList.add('menu-open');
-            // Also hide elements directly via inline styles as backup
-            const toggler = navbar.querySelector('.navbar-toggler');
-            const brand = navbar.querySelector('.brand-center');
-            const account = navbar.querySelector('.account');
-            if (toggler) {
-                toggler.style.display = 'none';
-                toggler.style.visibility = 'hidden';
+            // Hide container completely
+            const container = navbar.querySelector('.container');
+            if (container) {
+                container.style.display = 'none';
+                container.style.visibility = 'hidden';
+                container.style.height = '0';
+                container.style.overflow = 'hidden';
             }
-            if (brand) {
-                brand.style.display = 'none';
-                brand.style.visibility = 'hidden';
-            }
-            if (account) {
-                account.style.display = 'none';
-                account.style.visibility = 'hidden';
+            // Move menu outside container to navbar directly
+            if (collapse && collapse.parentElement === container) {
+                navbar.appendChild(collapse);
+                collapse.style.position = 'fixed';
+                collapse.style.top = '0';
+                collapse.style.left = '0';
+                collapse.style.right = '0';
+                collapse.style.bottom = '0';
+                collapse.style.zIndex = '1051';
+                collapse.style.width = '100vw';
+                collapse.style.height = '100vh';
+                collapse.style.background = '#ffffff';
             }
         }
     });
@@ -886,21 +891,26 @@ function initSideMenu() {
         const navbar = document.querySelector('.navbar');
         if (navbar) {
             navbar.classList.remove('menu-open');
-            // Show elements directly via inline styles
-            const toggler = navbar.querySelector('.navbar-toggler');
-            const brand = navbar.querySelector('.brand-center');
-            const account = navbar.querySelector('.account');
-            if (toggler) {
-                toggler.style.display = '';
-                toggler.style.visibility = '';
+            // Show container
+            const container = navbar.querySelector('.container');
+            if (container) {
+                container.style.display = '';
+                container.style.visibility = '';
+                container.style.height = '';
+                container.style.overflow = '';
             }
-            if (brand) {
-                brand.style.display = '';
-                brand.style.visibility = '';
-            }
-            if (account) {
-                account.style.display = '';
-                account.style.visibility = '';
+            // Move menu back to container
+            if (collapse && collapse.parentElement === navbar) {
+                container.appendChild(collapse);
+                collapse.style.position = '';
+                collapse.style.top = '';
+                collapse.style.left = '';
+                collapse.style.right = '';
+                collapse.style.bottom = '';
+                collapse.style.zIndex = '';
+                collapse.style.width = '';
+                collapse.style.height = '';
+                collapse.style.background = '';
             }
         }
     });
