@@ -100,7 +100,7 @@ body { margin-top: 0 !important; }
 /* Ensure account menu is visible on mobile */
 @media (max-width: 751px) {
     .account-menu {
-        z-index: 1101 !important;
+        z-index: 1200 !important;
         position: absolute !important;
         top: 100% !important;
         right: 0 !important;
@@ -108,10 +108,16 @@ body { margin-top: 0 !important; }
         margin-top: 0.5rem !important;
         overflow: visible !important;
         transform: translateY(-8px) !important;
+        visibility: visible !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
     }
     
     .account-menu.open {
         transform: translateY(0) !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+        visibility: visible !important;
     }
     
     /* Ensure account container doesn't clip the menu */
@@ -128,6 +134,13 @@ body { margin-top: 0 !important; }
     
     .navbar .container {
         overflow: visible !important;
+        position: relative !important;
+    }
+    
+    /* Ensure account menu is not hidden by mobile menu navbar */
+    #mobile-menu-navbar ~ * .account-menu,
+    #mobile-menu-navbar.active ~ * .account-menu {
+        z-index: 1200 !important;
     }
 }
 
