@@ -755,12 +755,18 @@ function initSideMenu() {
             if (backBtn) {
                 backBtn.style.display = 'none';
             }
-            // Remove submenu-open class from navbar
-            const navbar = document.querySelector('.navbar');
-            if (navbar) {
-                navbar.classList.remove('submenu-open');
-            }
-            // Hide backdrop
+                // Remove submenu-open class from navbar
+                // But keep menu-open if menu is still open
+                const navbar = document.querySelector('.navbar');
+                if (navbar) {
+                    navbar.classList.remove('submenu-open');
+                    // Check if menu is still open
+                    const navbarNav = document.getElementById('navbarNav');
+                    if (navbarNav && !navbarNav.classList.contains('show')) {
+                        navbar.classList.remove('menu-open');
+                    }
+                }
+                // Hide backdrop
             const backdrop = document.getElementById('mobile-menu-backdrop');
             if (backdrop) {
                 backdrop.classList.remove('show');
