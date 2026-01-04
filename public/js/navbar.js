@@ -235,7 +235,16 @@ function setupMobileMenuNavbarWatcher() {
             console.log('Menu state CHANGED:', { previous: previousState, current: currentState, isMobile });
             previousState = currentState;
             if (isMobile) {
-                toggleMobileMenuNavbar(currentState);
+                if (currentState) {
+                    // Menu opening - wait for animation to complete
+                    setTimeout(() => {
+                        console.log('Menu fully opened (from checkMenuState), now showing 2nd navbar');
+                        toggleMobileMenuNavbar(true);
+                    }, 300);
+                } else {
+                    // Menu closing - hide immediately
+                    toggleMobileMenuNavbar(false);
+                }
             }
         }
     }
@@ -261,13 +270,18 @@ function setupMobileMenuNavbarWatcher() {
         console.log('Bootstrap shown.bs.collapse event fired');
         previousState = true;
         if (window.innerWidth <= 751) {
-            toggleMobileMenuNavbar(true);
+            // Wait for menu to fully open before showing 2nd navbar
+            setTimeout(() => {
+                console.log('Menu fully opened, now showing 2nd navbar');
+                toggleMobileMenuNavbar(true);
+            }, 300); // Delay to let menu animation complete
         }
     });
     
     navbarNav.addEventListener('hidden.bs.collapse', function() {
         console.log('Bootstrap hidden.bs.collapse event fired');
         previousState = false;
+        // Hide 2nd navbar immediately when menu closes
         toggleMobileMenuNavbar(false);
     });
     
@@ -275,10 +289,11 @@ function setupMobileMenuNavbarWatcher() {
     document.addEventListener('click', function(e) {
         const toggler = e.target.closest('.navbar-toggler');
         if (toggler && window.innerWidth <= 751) {
-            console.log('Toggler clicked, checking menu state after delay...');
+            console.log('Toggler clicked, waiting for menu to open...');
+            // Wait longer for menu to fully open
             setTimeout(() => {
                 checkMenuState();
-            }, 300);
+            }, 500);
         }
     });
     
