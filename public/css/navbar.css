@@ -839,16 +839,13 @@ ease;
             background: #ffffff !important;
         }
         
-        /* Hide navbar container when menu is open on mobile - use collapse.show as trigger */
-        .navbar .collapse.navbar-collapse.show ~ .container,
+        /* Hide navbar elements when menu is open on mobile - but keep container visible (menu is inside) */
         .navbar .collapse.navbar-collapse.show ~ .container .navbar-toggler,
         .navbar .collapse.navbar-collapse.show ~ .container .brand-center,
         .navbar .collapse.navbar-collapse.show ~ .container .account,
-        .navbar.menu-open .container,
         .navbar.menu-open .container .navbar-toggler,
         .navbar.menu-open .container .brand-center,
         .navbar.menu-open .container .account,
-        .navbar.submenu-open .container,
         .navbar.submenu-open .container .navbar-toggler,
         .navbar.submenu-open .container .brand-center,
         .navbar.submenu-open .container .account {
@@ -856,23 +853,14 @@ ease;
             opacity: 0 !important;
             visibility: hidden !important;
             pointer-events: none !important;
-            height: 0 !important;
-            width: 0 !important;
-            overflow: hidden !important;
             position: absolute !important;
             left: -9999px !important;
+            width: 0 !important;
+            height: 0 !important;
+            overflow: hidden !important;
         }
         
-        /* Hide container itself when menu is open */
-        .navbar:has(.collapse.navbar-collapse.show) .container:not(.collapse) {
-            display: none !important;
-        }
-        
-        /* Alternative for browsers without :has() */
-        .navbar.menu-open .container:not(.collapse),
-        .navbar.submenu-open .container:not(.collapse) {
-            display: none !important;
-        }
+        /* DO NOT hide container - menu is inside it! */
         
         /* Hide navbar background when menu is open */
         .navbar.menu-open,

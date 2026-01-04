@@ -646,23 +646,24 @@ function hideNavbarElements() {
     const container = navbar?.querySelector('.container');
     if (!navbar || !container) return;
     
+    // Hide only specific elements, NOT the container (because menu is inside container)
     const toggler = container.querySelector('.navbar-toggler');
     const brand = container.querySelector('.brand-center');
     const account = container.querySelector('.account');
     
     if (toggler) {
-        toggler.style.cssText = 'display: none !important; visibility: hidden !important; opacity: 0 !important;';
+        toggler.style.cssText = 'display: none !important; visibility: hidden !important; opacity: 0 !important; position: absolute !important; left: -9999px !important;';
     }
     if (brand) {
-        brand.style.cssText = 'display: none !important; visibility: hidden !important; opacity: 0 !important;';
+        brand.style.cssText = 'display: none !important; visibility: hidden !important; opacity: 0 !important; position: absolute !important; left: -9999px !important;';
     }
     if (account) {
-        account.style.cssText = 'display: none !important; visibility: hidden !important; opacity: 0 !important;';
+        account.style.cssText = 'display: none !important; visibility: hidden !important; opacity: 0 !important; position: absolute !important; left: -9999px !important;';
     }
-    container.style.cssText = 'display: none !important; visibility: hidden !important; height: 0 !important; width: 0 !important; overflow: hidden !important; opacity: 0 !important;';
+    // DO NOT hide container - menu is inside it!
     
     navbar.classList.add('menu-open');
-    console.log('Navbar elements hidden');
+    console.log('Navbar elements hidden (container kept visible for menu)');
 }
 
 // Function to show navbar elements when menu is closed
