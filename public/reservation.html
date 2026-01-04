@@ -159,6 +159,254 @@
         /* Main reservation card success border */
         #reservation-main-card { border-width:2px !important; }
         #reservation-main-card.ready { border-color:#ffc107 !important; box-shadow: 0 0 0 3px rgba(255,193,7,.15); }
+        
+        /* Mobile Responsive Styles (max-width: 751px) */
+        @media (max-width: 751px) {
+            /* Container padding */
+            .container {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+            
+            /* Main card padding */
+            #reservation-main-card {
+                padding: 1.25rem !important;
+                border-radius: 1rem !important;
+            }
+            
+            /* Heading */
+            #reservation-main-card h2 {
+                font-size: 1.5rem !important;
+                margin-bottom: 1.25rem !important;
+            }
+            
+            /* Quick search form */
+            .summary-box {
+                padding: 1rem !important;
+                border-radius: 0.75rem !important;
+                margin-bottom: 1.25rem !important;
+            }
+            
+            /* Form labels */
+            .form-label {
+                font-size: 0.75rem !important;
+                margin-bottom: 0.5rem !important;
+            }
+            
+            /* Location selects - full width on mobile */
+            .col-lg-6 {
+                margin-bottom: 0.75rem;
+            }
+            
+            /* Date/Time inputs - stack vertically */
+            .col-md-6.col-xl-3 {
+                width: 100% !important;
+                margin-bottom: 0.75rem;
+            }
+            
+            /* Input groups - better spacing */
+            .input-group {
+                margin-bottom: 0.5rem;
+            }
+            
+            /* Input group text icons - smaller */
+            .input-group-text {
+                padding: 0.5rem 0.75rem !important;
+                font-size: 0.875rem;
+            }
+            
+            /* Form controls - better touch targets */
+            .form-control,
+            .form-select {
+                padding: 0.625rem 0.75rem !important;
+                font-size: 0.875rem !important;
+                min-height: 44px; /* Better touch target */
+            }
+            
+            /* Date/time input groups - better layout */
+            .input-group.flex-nowrap {
+                flex-wrap: wrap !important;
+            }
+            
+            .input-group.flex-nowrap .form-control {
+                flex: 1 1 60%;
+                min-width: 120px;
+            }
+            
+            .input-group.flex-nowrap .form-select {
+                flex: 1 1 40%;
+                min-width: 80px;
+            }
+            
+            /* Insurance and extra cards - single column */
+            #insurance-packages .col-md-4,
+            #additional-services .col-md-4 {
+                width: 100% !important;
+                margin-bottom: 0.75rem;
+            }
+            
+            /* Insurance/Extra card padding */
+            .insurance-card,
+            .extra-card {
+                margin-bottom: 0.75rem;
+            }
+            
+            .insurance-card .card-body,
+            .extra-card .card-body {
+                padding: 1rem !important;
+            }
+            
+            /* Section headings */
+            h5.fw-bold {
+                font-size: 1.125rem !important;
+                margin-bottom: 1rem !important;
+            }
+            
+            /* Summary box - better mobile layout */
+            .summary-box {
+                padding: 1rem !important;
+            }
+            
+            .summary-box h6 {
+                font-size: 1rem !important;
+                margin-bottom: 0.75rem !important;
+            }
+            
+            /* Price breakdown - better spacing */
+            #price-breakdown .d-flex {
+                margin-bottom: 0.75rem !important;
+                font-size: 0.875rem;
+            }
+            
+            /* Total price - larger on mobile */
+            #total-price {
+                font-size: 1.5rem !important;
+                padding: 0.5rem 0.75rem !important;
+            }
+            
+            /* Personal information form */
+            .row.g-3 > .col-md-6 {
+                width: 100% !important;
+                margin-bottom: 0.75rem;
+            }
+            
+            /* Submit button */
+            #submitBtn {
+                width: 100% !important;
+                padding: 0.875rem 1.5rem !important;
+                font-size: 1rem !important;
+                margin-top: 1rem;
+            }
+            
+            /* Breadcrumb - smaller */
+            .breadcrumb {
+                font-size: 0.75rem;
+                margin-bottom: 0.75rem;
+            }
+            
+            .breadcrumb-item {
+                max-width: 120px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+            
+            /* Vehicle summary card - better mobile layout */
+            .col-lg-4 {
+                width: 100% !important;
+                margin-top: 1.5rem;
+            }
+            
+            /* Summary blocks */
+            .summary-blocks {
+                padding: 1rem !important;
+            }
+            
+            .summary-blocks .row {
+                margin-bottom: 0.75rem;
+            }
+            
+            /* Terms checkbox */
+            .form-check {
+                margin-top: 1rem;
+                padding-left: 1.75rem;
+            }
+            
+            .form-check-label {
+                font-size: 0.875rem;
+            }
+            
+            /* Summary blocks - better mobile layout */
+            .summary-blocks .small {
+                font-size: 0.8125rem !important;
+            }
+            
+            .summary-blocks .mb-2 {
+                margin-bottom: 0.75rem !important;
+            }
+            
+            /* Price breakdown - better mobile spacing */
+            #price-breakdown .mb-3 {
+                margin-bottom: 1rem !important;
+            }
+            
+            #price-breakdown .mb-2 {
+                margin-bottom: 0.75rem !important;
+            }
+            
+            #price-breakdown .my-3 {
+                margin-top: 1rem !important;
+                margin-bottom: 1rem !important;
+            }
+            
+            /* Vehicle image in summary */
+            .summary-blocks img {
+                max-width: 100%;
+                height: auto;
+                border-radius: 0.5rem;
+            }
+            
+            /* Input group flex-nowrap - better mobile behavior */
+            .input-group.flex-nowrap {
+                display: flex;
+                flex-wrap: wrap;
+            }
+            
+            .input-group.flex-nowrap > .input-group-text:first-child {
+                flex: 0 0 auto;
+                width: auto;
+            }
+            
+            .input-group.flex-nowrap > .form-control {
+                flex: 1 1 auto;
+                min-width: 0;
+            }
+            
+            .input-group.flex-nowrap > .input-group-text:last-child {
+                flex: 0 0 auto;
+                width: auto;
+            }
+            
+            .input-group.flex-nowrap > .form-select:last-child {
+                flex: 1 1 auto;
+                min-width: 0;
+            }
+            
+            /* Better spacing for location selects */
+            .qr-loc {
+                margin-bottom: 0.75rem;
+            }
+            
+            /* Section spacing */
+            .mt-4 {
+                margin-top: 1.5rem !important;
+            }
+            
+            /* Card body padding */
+            .card-body {
+                padding: 1rem !important;
+            }
+        }
     </style>
     <!-- Standard Navbar Placeholder -->
     <div id="navbar-container"></div>
