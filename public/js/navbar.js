@@ -411,6 +411,14 @@ document.addEventListener('DOMContentLoaded', function() {
 document.addEventListener('DOMContentLoaded', function() {
     console.log('DOM loaded, calling updateNavbar');
     
+    // Add home-page class to body if on home page
+    const currentPath = window.location.pathname;
+    if (currentPath === '/' || currentPath === '/index.html') {
+        document.body.classList.add('home-page');
+    } else {
+        document.body.classList.remove('home-page');
+    }
+    
     // Check if browser was closed and reopened (sessionStorage empty but localStorage has data)
     // If so, restore session from localStorage
     const hasLocalStorageData = localStorage.getItem('userData') && localStorage.getItem('isLoggedIn') === 'true';
