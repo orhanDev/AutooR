@@ -23,12 +23,18 @@ function getPageTitle() {
 
 // Create mobile menu navbar (2nd navbar that appears when menu is open)
 function createMobileMenuNavbar() {
+    console.log('=== createMobileMenuNavbar CALLED ===');
+    
     // Check if already exists
-    if (document.getElementById('mobile-menu-navbar')) {
+    const existing = document.getElementById('mobile-menu-navbar');
+    if (existing) {
+        console.log('Mobile menu navbar already exists, skipping creation');
         return;
     }
     
     const pageTitle = getPageTitle();
+    console.log('Page title:', pageTitle);
+    
     const navbar = document.createElement('nav');
     navbar.id = 'mobile-menu-navbar';
     navbar.className = 'navbar fixed-top mobile-menu-navbar';
@@ -47,28 +53,53 @@ function createMobileMenuNavbar() {
     `;
     
     // Insert before original navbar
-    const originalNavbar = document.querySelector('.navbar.fixed-top');
-    if (originalNavbar && originalNavbar.parentNode) {
+    const originalNavbar = document.querySelector('.navbar.fixed-top:not(.mobile-menu-navbar)');
+    const navbarContainer = document.getElementById('navbar-container');
+    
+    console.log('Insertion check:', {
+        originalNavbar: !!originalNavbar,
+        navbarContainer: !!navbarContainer,
+        originalNavbarParent: originalNavbar?.parentNode,
+        navbarContainerParent: navbarContainer?.parentNode
+    });
+    
+    if (navbarContainer && navbarContainer.parentNode) {
+        console.log('Inserting mobile navbar before navbar-container');
+        navbarContainer.parentNode.insertBefore(navbar, navbarContainer);
+    } else if (originalNavbar && originalNavbar.parentNode) {
+        console.log('Inserting mobile navbar before original navbar');
         originalNavbar.parentNode.insertBefore(navbar, originalNavbar);
     } else {
+        console.log('Inserting mobile navbar at body start');
         document.body.insertBefore(navbar, document.body.firstChild);
     }
+    
+    console.log('Mobile navbar inserted, checking DOM:', {
+        exists: !!document.getElementById('mobile-menu-navbar'),
+        parent: document.getElementById('mobile-menu-navbar')?.parentNode,
+        nextSibling: document.getElementById('mobile-menu-navbar')?.nextSibling
+    });
     
     // Add event listeners
     const backBtn = navbar.querySelector('.btn-back-navbar');
     const closeBtn = navbar.querySelector('.btn-close-navbar');
     
+    console.log('Event listeners setup:', { backBtn: !!backBtn, closeBtn: !!closeBtn });
+    
     if (backBtn) {
         backBtn.addEventListener('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
+            console.log('Back button clicked');
             // Close submenu if open, otherwise close menu
             const submenuPanel = document.getElementById('submenu-panel');
             if (submenuPanel && submenuPanel.classList.contains('open')) {
+                console.log('Closing submenu');
                 submenuPanel.classList.remove('open');
                 submenuPanel.setAttribute('aria-hidden', 'true');
                 submenuPanel.innerHTML = '';
             } else {
+                console.log('Closing menu');
                 // Close menu
                 const navbarNav = document.getElementById('navbarNav');
                 if (navbarNav) {
@@ -80,6 +111,7 @@ function createMobileMenuNavbar() {
                             navbarNav.classList.remove('show');
                         }
                     } catch (err) {
+                        console.error('Error closing menu:', err);
                         navbarNav.classList.remove('show');
                     }
                 }
@@ -91,6 +123,7 @@ function createMobileMenuNavbar() {
         closeBtn.addEventListener('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
+            console.log('Close button clicked');
             // Close menu
             const navbarNav = document.getElementById('navbarNav');
             if (navbarNav) {
@@ -102,54 +135,113 @@ function createMobileMenuNavbar() {
                         navbarNav.classList.remove('show');
                     }
                 } catch (err) {
+                    console.error('Error closing menu:', err);
                     navbarNav.classList.remove('show');
                 }
             }
         });
     }
     
-    console.log('Mobile menu navbar created');
+    console.log('=== createMobileMenuNavbar COMPLETED ===');
 }
 
 // Show/hide mobile menu navbar
 function toggleMobileMenuNavbar(show) {
+    console.log('=== toggleMobileMenuNavbar CALLED ===');
+    console.log('Parameters:', { show, width: window.innerWidth, isMobile: window.innerWidth <= 751 });
+    
     const mobileNavbar = document.getElementById('mobile-menu-navbar');
-    // Hide navbar-container (which contains the original navbar)
     const navbarContainer = document.getElementById('navbar-container');
+    const originalNavbar = document.querySelector('.navbar.fixed-top:not(.mobile-menu-navbar)');
+    
+    console.log('Elements found:', {
+        mobileNavbar: !!mobileNavbar,
+        navbarContainer: !!navbarContainer,
+        originalNavbar: !!originalNavbar,
+        mobileNavbarElement: mobileNavbar,
+        navbarContainerElement: navbarContainer,
+        originalNavbarElement: originalNavbar
+    });
     
     if (window.innerWidth <= 751) {
+        console.log('Mobile mode - processing...');
         if (show) {
-            // Hide navbar-container (original navbar), show mobile menu navbar
+            console.log('SHOWING mobile menu navbar, HIDING original navbar');
+            
+            // Hide navbar-container (original navbar)
             if (navbarContainer) {
+                console.log('Hiding navbar-container');
+                const beforeStyle = navbarContainer.style.cssText;
                 navbarContainer.style.cssText = 'display: none !important; visibility: hidden !important; opacity: 0 !important; height: 0 !important; overflow: hidden !important;';
-            }
-            if (mobileNavbar) {
-                mobileNavbar.style.cssText = 'display: block !important; visibility: visible !important; opacity: 1 !important; z-index: 1052 !important; background: #ffffff !important; position: fixed !important; top: 0 !important; left: 0 !important; right: 0 !important;';
+                console.log('navbar-container style changed:', {
+                    before: beforeStyle,
+                    after: navbarContainer.style.cssText,
+                    computedDisplay: window.getComputedStyle(navbarContainer).display
+                });
             } else {
+                console.error('ERROR: navbar-container NOT FOUND!');
+            }
+            
+            // Also hide original navbar directly (backup)
+            if (originalNavbar) {
+                console.log('Hiding original navbar directly (backup)');
+                originalNavbar.style.cssText = 'display: none !important; visibility: hidden !important; opacity: 0 !important;';
+            }
+            
+            // Show mobile menu navbar
+            if (mobileNavbar) {
+                console.log('Showing existing mobile menu navbar');
+                mobileNavbar.style.cssText = 'display: block !important; visibility: visible !important; opacity: 1 !important; z-index: 1052 !important; background: #ffffff !important; position: fixed !important; top: 0 !important; left: 0 !important; right: 0 !important;';
+                console.log('Mobile navbar style applied:', mobileNavbar.style.cssText);
+            } else {
+                console.log('Mobile navbar not found, creating new one...');
                 createMobileMenuNavbar();
                 const newMobileNavbar = document.getElementById('mobile-menu-navbar');
                 if (newMobileNavbar) {
+                    console.log('New mobile navbar created, showing it');
                     newMobileNavbar.style.cssText = 'display: block !important; visibility: visible !important; opacity: 1 !important; z-index: 1052 !important; background: #ffffff !important; position: fixed !important; top: 0 !important; left: 0 !important; right: 0 !important;';
+                    console.log('New mobile navbar style applied:', newMobileNavbar.style.cssText);
+                } else {
+                    console.error('ERROR: Failed to create mobile menu navbar!');
                 }
             }
         } else {
-            // Show navbar-container (original navbar), hide mobile menu navbar
+            console.log('HIDING mobile menu navbar, SHOWING original navbar');
+            
+            // Show navbar-container (original navbar)
             if (navbarContainer) {
+                console.log('Showing navbar-container');
                 navbarContainer.style.cssText = '';
+                console.log('navbar-container style cleared, computed display:', window.getComputedStyle(navbarContainer).display);
             }
+            
+            // Also show original navbar directly (backup)
+            if (originalNavbar) {
+                console.log('Showing original navbar directly (backup)');
+                originalNavbar.style.cssText = '';
+            }
+            
+            // Hide mobile menu navbar
             if (mobileNavbar) {
+                console.log('Hiding mobile menu navbar');
                 mobileNavbar.style.cssText = 'display: none !important;';
             }
         }
     } else {
+        console.log('Desktop mode - showing original navbar, hiding mobile navbar');
         // Desktop: always show original navbar
         if (navbarContainer) {
             navbarContainer.style.cssText = '';
+        }
+        if (originalNavbar) {
+            originalNavbar.style.cssText = '';
         }
         if (mobileNavbar) {
             mobileNavbar.style.cssText = 'display: none !important;';
         }
     }
+    
+    console.log('=== toggleMobileMenuNavbar COMPLETED ===');
 }
 
 // Watch for menu open/close
