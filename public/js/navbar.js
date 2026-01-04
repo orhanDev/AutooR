@@ -569,11 +569,43 @@ function addHamburgerMenuCloseListener() {
             }
             // Toggle menu-open class on navbar
             const navbar = document.querySelector('.navbar');
-            if (navbar) {
+            if (navbar && window.innerWidth <= 751) {
                 if (!isOpen) {
                     navbar.classList.add('menu-open');
+                    // Hide navbar elements directly
+                    const toggler = navbar.querySelector('.navbar-toggler');
+                    const brand = navbar.querySelector('.brand-center');
+                    const account = navbar.querySelector('.account');
+                    if (toggler) {
+                        toggler.style.display = 'none';
+                        toggler.style.visibility = 'hidden';
+                    }
+                    if (brand) {
+                        brand.style.display = 'none';
+                        brand.style.visibility = 'hidden';
+                    }
+                    if (account) {
+                        account.style.display = 'none';
+                        account.style.visibility = 'hidden';
+                    }
                 } else {
                     navbar.classList.remove('menu-open');
+                    // Show navbar elements
+                    const toggler = navbar.querySelector('.navbar-toggler');
+                    const brand = navbar.querySelector('.brand-center');
+                    const account = navbar.querySelector('.account');
+                    if (toggler) {
+                        toggler.style.display = '';
+                        toggler.style.visibility = '';
+                    }
+                    if (brand) {
+                        brand.style.display = '';
+                        brand.style.visibility = '';
+                    }
+                    if (account) {
+                        account.style.display = '';
+                        account.style.visibility = '';
+                    }
                 }
             }
             e.stopPropagation();
