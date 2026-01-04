@@ -688,50 +688,6 @@ function hideNavbarElements() {
     
     navbar.classList.add('menu-open');
     console.log('hideNavbarElements: STEP 1 TEST COMPLETE - hamburger → back arrow');
-    
-    // Brand stays visible (centered)
-    if (brand) {
-        brand.style.cssText = 'display: block !important; visibility: visible !important; opacity: 1 !important;';
-        console.log('hideNavbarElements: Brand kept visible');
-    }
-    
-    // Transform account button to close (X) button
-    if (account && accountBtn) {
-        // Store original content if not already stored
-        if (!accountBtn.dataset.originalContent) {
-            accountBtn.dataset.originalContent = accountBtn.innerHTML;
-            console.log('hideNavbarElements: Stored original account button content');
-        }
-        // Replace with X button
-        accountBtn.innerHTML = '<span style="font-size: 1.5rem; font-weight: 300;">&times;</span>';
-        accountBtn.style.cssText = 'display: flex !important; align-items: center !important; padding: 0.5rem !important; border: none !important; background: transparent !important; cursor: pointer !important;';
-        // Remove account menu functionality
-        accountBtn.removeAttribute('data-bs-toggle');
-        accountBtn.removeAttribute('aria-expanded');
-        accountBtn.removeAttribute('aria-controls');
-        // Add click handler for close menu
-        accountBtn.onclick = function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            const navbarNav = document.getElementById('navbarNav');
-            if (navbarNav) {
-                try {
-                    const collapseInstance = window.bootstrap?.Collapse?.getInstance(navbarNav);
-                    if (collapseInstance) {
-                        collapseInstance.hide();
-                    } else {
-                        navbarNav.classList.remove('show');
-                    }
-                } catch (err) {
-                    navbarNav.classList.remove('show');
-                }
-            }
-        };
-        console.log('hideNavbarElements: Account button transformed to X');
-    }
-    
-    navbar.classList.add('menu-open');
-    console.log('hideNavbarElements: Navbar transformation complete - hamburger → back arrow, account → X button');
 }
 
 // Function to restore navbar when menu is closed
