@@ -644,6 +644,10 @@
                 transform: none !important;
                 margin-bottom: 2rem !important;
                 padding: 0 !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                box-sizing: border-box !important;
+                overflow-x: hidden !important;
             }
             
             /* Vehicle card - Porsche style: light grey, rounded, shadow */
@@ -721,10 +725,32 @@
                 display: none !important; /* Hide meta info on mobile like Porsche */
             }
             
-            /* Ensure cards are full width */
+            /* Ensure cards are full width and don't overflow */
             .cars-grid .vehicle-card {
                 width: 100% !important;
                 max-width: 100% !important;
+                box-sizing: border-box !important;
+                overflow: hidden !important;
+                margin-left: 0 !important;
+                margin-right: 0 !important;
+            }
+            
+            /* Ensure container doesn't cause overflow */
+            #cars-container {
+                width: 100% !important;
+                max-width: 100% !important;
+                box-sizing: border-box !important;
+                overflow-x: hidden !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+            
+            /* Ensure main container doesn't overflow */
+            .main-content {
+                width: 100% !important;
+                max-width: 100% !important;
+                box-sizing: border-box !important;
+                overflow-x: hidden !important;
             }
         }
 
