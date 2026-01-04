@@ -73,6 +73,17 @@ Backend servisi eklendikten sonra:
 Railway dashboard'da projenizin **"Variables"** sekmesine gidin ve şu değişkenleri ekleyin:
 
 ### PostgreSQL Database Ayarları
+
+Railway'de PostgreSQL database adı **"railway"** olur (değiştirilemez). Kodunuz `PGDATABASE` kullandığı için şu değişkenleri ekleyin:
+
+**Seçenek 1: DATABASE_URL Kullanın (Önerilen - Daha Kolay)**
+```
+DATABASE_URL=<Railway PostgreSQL'in Variables sekmesinden kopyaladığınız DATABASE_URL>
+```
+**Not:** Kodunuz şu an DATABASE_URL kullanmıyor, bu yüzden kodda küçük bir değişiklik gerekebilir.
+
+**Seçenek 2: Ayrı Değişkenler (Mevcut Kod ile Uyumlu)**
+Railway PostgreSQL servisinin **"Variables"** sekmesine gidin ve şu değişkenleri kopyalayın:
 ```
 PGHOST=<Railway PostgreSQL hostname>
 PGPORT=5432
@@ -81,10 +92,7 @@ PGUSER=postgres
 PGPASSWORD=<Railway PostgreSQL password>
 ```
 
-**VEYA** (daha kolay):
-```
-DATABASE_URL=<Railway'dan kopyaladığınız DATABASE_URL>
-```
+**Önemli:** Railway'de database adı **"railway"** olur (local'deki "AutooR" değil). Bu Railway'in varsayılan adıdır ve değiştirilemez.
 
 ### JWT Secret (Güvenlik için önemli!)
 ```
