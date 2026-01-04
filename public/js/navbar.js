@@ -273,9 +273,9 @@ function setupMobileMenuNavbarWatcher() {
         console.log('Bootstrap hidden.bs.collapse event fired');
         previousState = false;
         // Hide 2nd navbar immediately when menu closes
+        // BUT: Don't clear localStorage here - it might be cleared by user clicking X/back button
+        // localStorage will be cleared when user explicitly closes via X or back button
         toggleMobileMenuNavbar(false);
-        // Clear the stored state
-        localStorage.removeItem('mobileMenuNavbarVisible');
     });
     
     // Watch for menu link clicks - show 2nd navbar when user clicks a link
