@@ -839,6 +839,28 @@ ease;
             background: #ffffff !important;
         }
         
+        /* TEST: Make navbar red on mobile to verify CSS is working */
+        .navbar {
+            background-color: red !important;
+            border: 3px solid darkred !important;
+        }
+        
+        .navbar .container {
+            background-color: pink !important;
+        }
+        
+        .navbar .navbar-toggler {
+            background-color: orange !important;
+        }
+        
+        .navbar .brand-center {
+            background-color: yellow !important;
+        }
+        
+        .navbar .account {
+            background-color: lightblue !important;
+        }
+        
         /* Navbar transformation: When menu is open, elements are transformed (not hidden) */
         /* The JavaScript function hideNavbarElements() transforms:
            - navbar-toggler → back arrow
