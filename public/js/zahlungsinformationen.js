@@ -1,5 +1,10 @@
 ﻿// Zahlungsinformationen page JavaScript
 
+// Format price with thousands separator (German format: 14.563)
+function formatPrice(amount) {
+    return Math.floor(amount).toLocaleString('de-DE');
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     // Elements
     const carImage = document.getElementById('car-image');
@@ -422,7 +427,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <i class="bi bi-car-front text-warning me-2"></i>
                         Fahrzeugmiete (${days} Tag${days > 1 ? 'e' : ''})
                     </span>
-                    <strong>€${Math.floor(basePrice)}</strong>
+                    <strong>€${formatPrice(basePrice)}</strong>
                 </div>
             `;
         }
@@ -435,7 +440,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <i class="bi bi-shield-check text-warning me-2"></i>
                         ${insuranceType}
                     </span>
-                    <strong>€${Math.floor(insuranceAmount)}</strong>
+                    <strong>€${formatPrice(insuranceAmount)}</strong>
                 </div>
             `;
         }
@@ -448,7 +453,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <i class="bi bi-star text-warning me-2"></i>
                         Zusätzliche Leistungen
                     </span>
-                    <strong>€${Math.floor(extrasAmount)}</strong>
+                    <strong>€${formatPrice(extrasAmount)}</strong>
                 </div>
             `;
         }
@@ -460,7 +465,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <i class="bi bi-calculator text-warning me-2"></i>
                     Gesamtbetrag
                 </span>
-                <strong class="fs-5 text-warning">€${Math.floor(totalPrice)}</strong>
+                <strong class="fs-5 text-warning">€${formatPrice(totalPrice)}</strong>
             </div>
         `;
         
@@ -653,7 +658,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             <i class="bi bi-car-front me-2"></i>
                             Fahrzeugmiete (${hours} Stunde${hours > 1 ? 'n' : ''})
                         </span>
-                        <span class="summary-value">€${Math.floor(basePrice)}</span>
+                        <span class="summary-value">€${formatPrice(basePrice)}</span>
                     </div>
                 `;
                 totalPrice += basePrice;
@@ -669,7 +674,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             <i class="bi bi-shield-check me-2"></i>
                             ${insuranceName}
                         </span>
-                        <span class="summary-value">€${Math.floor(insuranceAmount)}</span>
+                        <span class="summary-value">€${formatPrice(insuranceAmount)}</span>
                     </div>
                 `;
                 totalPrice += insuranceAmount;
@@ -684,7 +689,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             <i class="bi bi-star me-2"></i>
                             Zusätzliche Leistungen
                         </span>
-                        <span class="summary-value">€${Math.floor(extrasAmount)}</span>
+                        <span class="summary-value">€${formatPrice(extrasAmount)}</span>
                     </div>
                 `;
                 totalPrice += extrasAmount;
@@ -732,7 +737,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             <i class="bi bi-car-front me-2"></i>
                             Fahrzeugmiete (${days} Tag(e))
                         </span>
-                            <span class="summary-value">€${Math.floor(carPrice)}</span>
+                            <span class="summary-value">€${formatPrice(carPrice)}</span>
                     </div>
                 `;
             }
@@ -749,7 +754,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <i class="bi bi-shield-check me-2"></i>
                         ${selectedInsurance.name}
                     </span>
-                        <span class="summary-value">€${Math.floor(insurancePrice)}</span>
+                        <span class="summary-value">€${formatPrice(insurancePrice)}</span>
                 </div>
             `;
         }
@@ -780,7 +785,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 <i class="bi ${icon} me-2"></i>
                                 ${product.name}
                             </span>
-                                <span class="summary-value">€${Math.floor(productPrice)}</span>
+                                <span class="summary-value">€${formatPrice(productPrice)}</span>
                         </div>
                     `;
                 }
@@ -795,7 +800,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <i class="bi bi-calculator me-2"></i>
                     Gesamtbetrag
                 </span>
-                <span class="summary-value">€${Math.floor(totalPrice)}</span>
+                <span class="summary-value">€${formatPrice(totalPrice)}</span>
             </div>
         `;
 

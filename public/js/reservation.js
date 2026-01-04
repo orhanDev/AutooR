@@ -513,7 +513,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                         <span class="text-muted small" id="base-price-label">Grundpreis</span>
                                         <div id="base-price" class="text-end">
                                             <span class="text-muted small text-decoration-line-through me-2" id="original-price" style="display: none;"></span>
-                                            <span class="fw-bold" id="current-price">€${Math.floor(Number(vehicle.daily_rate))}</span>
+                                            <span class="fw-bold" id="current-price">€${Math.floor(Number(vehicle.daily_rate)).toLocaleString('de-DE')}</span>
                                         </div>
                                     </div>
                                     <div id="discount-row" style="display: none;" class="mt-1">
@@ -537,7 +537,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 <hr class="my-3">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <span class="fw-bold">Gesamtpreis</span>
-                                    <span id="total-price" class="fw-bold fs-5 text-warning">€${Math.floor(Number(vehicle.daily_rate))}</span>
+                                    <span id="total-price" class="fw-bold fs-5 text-warning">€${Math.floor(Number(vehicle.daily_rate)).toLocaleString('de-DE')}</span>
                                 </div>
                             </div>
                         </div>
@@ -887,6 +887,11 @@ document.addEventListener('DOMContentLoaded', () => {
         e.target.value = value;
     }
     
+    // Format price with thousands separator (German format: 14.563)
+    function formatPrice(amount) {
+        return Math.floor(amount).toLocaleString('de-DE');
+    }
+    
     function updatePrice(vehicle) {
         const pickupDate = document.getElementById('pickupDate').value;
         const dropoffDate = document.getElementById('dropoffDate').value;
@@ -1104,18 +1109,18 @@ document.addEventListener('DOMContentLoaded', () => {
             if (discount > 0) {
                 // Show original price crossed out
                 if (originalPriceEl) {
-                    originalPriceEl.textContent = `€${Math.floor(basePrice)}`;
+                    originalPriceEl.textContent = `€${formatPrice(basePrice)}`;
                     originalPriceEl.style.display = 'inline';
                 }
                 // Show discounted price
-                currentPriceEl.textContent = `€${Math.floor(discountedBasePrice)}`;
+                currentPriceEl.textContent = `€${formatPrice(discountedBasePrice)}`;
                 currentPriceEl.className = 'fw-bold text-success';
             } else {
                 // Hide original price if no discount
                 if (originalPriceEl) {
                     originalPriceEl.style.display = 'none';
                 }
-                currentPriceEl.textContent = `€${Math.floor(basePrice)}`;
+                currentPriceEl.textContent = `€${formatPrice(basePrice)}`;
                 currentPriceEl.className = 'fw-bold';
             }
         }
@@ -1124,16 +1129,16 @@ document.addEventListener('DOMContentLoaded', () => {
         if (discountRow && discountEl && discountLabelText) {
             if (discount > 0) {
                 discountLabelText.textContent = discountLabel.replace(/\s+\d+%$/, ''); // Remove percentage from label
-                discountEl.textContent = `-€${Math.floor(discount)}`;
+                discountEl.textContent = `-€${formatPrice(discount)}`;
                 discountRow.style.display = 'block';
             } else {
                 discountRow.style.display = 'none';
             }
         }
         
-        document.getElementById('insurance-price').textContent = `€${Math.floor(insurance)}`;
-        document.getElementById('additional-services-price').textContent = `€${Math.floor(additionalServices)}`;
-        document.getElementById('total-price').textContent = `€${Math.floor(totalPrice)}`;
+        document.getElementById('insurance-price').textContent = `€${formatPrice(insurance)}`;
+        document.getElementById('additional-services-price').textContent = `€${formatPrice(additionalServices)}`;
+        document.getElementById('total-price').textContent = `€${formatPrice(totalPrice)}`;
     }
     
     // Get discount percentage based on offer ID and conditions
