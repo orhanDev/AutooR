@@ -803,9 +803,14 @@ function showNavbarElements() {
 
 // Side menu logic: show right panel submenu when clicking left items
 function initSideMenu() {
+    console.log('initSideMenu called');
     const panel = document.getElementById('submenu-panel');
     const collapse = document.getElementById('navbarNav');
-    if (!panel || !collapse) return;
+    console.log('initSideMenu: panel found:', !!panel, 'collapse found:', !!collapse);
+    if (!panel || !collapse) {
+        console.error('initSideMenu: panel or collapse not found!');
+        return;
+    }
     
     // PRIMARY METHOD: Use MutationObserver to watch for 'show' class changes
     const observer = new MutationObserver(function(mutations) {
