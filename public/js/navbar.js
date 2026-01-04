@@ -505,36 +505,28 @@ function addCloseButtonListener() {
         }
     });
     
-    // Track menu state
-    let menuIsOpen = false;
-    
     // Add body scroll lock when menu opens AND transform navbar elements
     document.addEventListener('click', function(e) {
-        const toggler = e.target.closest('.navbar-toggler');
-        if (toggler) {
+        if (e.target.closest('.navbar-toggler')) {
             const navbarNav = document.getElementById('navbarNav');
             if (navbarNav) {
-                // Toggle menu state
-                menuIsOpen = !menuIsOpen;
-                console.log('Toggler clicked - menuIsOpen:', menuIsOpen);
-                
-                if (menuIsOpen && window.innerWidth <= 751) {
-                    // Menu is opening - transform navbar immediately
-                    setTimeout(() => {
-                        console.log('Menu opening - transforming navbar');
+                // Check current state after a delay (Bootstrap needs time to update)
+                setTimeout(() => {
+                    const isOpen = navbarNav.classList.contains('show');
+                    console.log('Toggler clicked - checking menu state:', isOpen, 'width:', window.innerWidth);
+                    
+                    if (isOpen && window.innerWidth <= 751) {
+                        console.log('Menu is OPEN - transforming navbar');
                         hideNavbarElements();
                         document.body.style.overflow = 'hidden';
                         document.body.classList.add('menu-open');
-                    }, 100);
-                } else if (!menuIsOpen && window.innerWidth <= 751) {
-                    // Menu is closing - restore navbar
-                    setTimeout(() => {
-                        console.log('Menu closing - restoring navbar');
+                    } else if (!isOpen && window.innerWidth <= 751) {
+                        console.log('Menu is CLOSED - restoring navbar');
                         showNavbarElements();
                         document.body.style.overflow = '';
                         document.body.classList.remove('menu-open');
-                    }, 100);
-                }
+                    }
+                }, 200); // Give Bootstrap time to add/remove 'show' class
             }
         }
     });
