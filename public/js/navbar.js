@@ -638,11 +638,87 @@ function addHamburgerMenuCloseListener() {
     });
 }
 
+// Function to hide navbar elements when menu is open
+function hideNavbarElements() {
+    if (window.innerWidth > 751) return; // Only on mobile
+    
+    const navbar = document.querySelector('.navbar');
+    const container = navbar?.querySelector('.container');
+    if (!navbar || !container) return;
+    
+    const toggler = container.querySelector('.navbar-toggler');
+    const brand = container.querySelector('.brand-center');
+    const account = container.querySelector('.account');
+    
+    if (toggler) {
+        toggler.style.cssText = 'display: none !important; visibility: hidden !important; opacity: 0 !important;';
+    }
+    if (brand) {
+        brand.style.cssText = 'display: none !important; visibility: hidden !important; opacity: 0 !important;';
+    }
+    if (account) {
+        account.style.cssText = 'display: none !important; visibility: hidden !important; opacity: 0 !important;';
+    }
+    container.style.cssText = 'display: none !important; visibility: hidden !important; height: 0 !important; width: 0 !important; overflow: hidden !important; opacity: 0 !important;';
+    
+    navbar.classList.add('menu-open');
+    console.log('Navbar elements hidden');
+}
+
+// Function to show navbar elements when menu is closed
+function showNavbarElements() {
+    const navbar = document.querySelector('.navbar');
+    const container = navbar?.querySelector('.container');
+    if (!navbar || !container) return;
+    
+    const toggler = container.querySelector('.navbar-toggler');
+    const brand = container.querySelector('.brand-center');
+    const account = container.querySelector('.account');
+    
+    if (toggler) {
+        toggler.style.cssText = '';
+    }
+    if (brand) {
+        brand.style.cssText = '';
+    }
+    if (account) {
+        account.style.cssText = '';
+    }
+    container.style.cssText = '';
+    
+    navbar.classList.remove('menu-open');
+    console.log('Navbar elements shown');
+}
+
 // Side menu logic: show right panel submenu when clicking left items
 function initSideMenu() {
     const panel = document.getElementById('submenu-panel');
     const collapse = document.getElementById('navbarNav');
     if (!panel || !collapse) return;
+    
+    // Use MutationObserver to detect when menu opens/closes
+    const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+                const isOpen = collapse.classList.contains('show');
+                if (isOpen && window.innerWidth <= 751) {
+                    hideNavbarElements();
+                } else if (!isOpen) {
+                    showNavbarElements();
+                }
+            }
+        });
+    });
+    
+    observer.observe(collapse, {
+        attributes: true,
+        attributeFilter: ['class']
+    });
+    
+    // Also check immediately
+    if (collapse.classList.contains('show') && window.innerWidth <= 751) {
+        hideNavbarElements();
+    }
 
     const contentByKey = {
         
@@ -878,6 +954,7 @@ function initSideMenu() {
     
     // Hide backdrop when menu closes
     collapse.addEventListener('hidden.bs.collapse', () => {
+        console.log('Menu closed - hidden.bs.collapse event');
         const backdrop = document.getElementById('mobile-menu-backdrop');
         if (backdrop) {
             backdrop.classList.remove('show');
@@ -885,28 +962,7 @@ function initSideMenu() {
         document.body.style.overflow = '';
         document.body.classList.remove('menu-open');
         // Show navbar elements
-        const navbar = document.querySelector('.navbar');
-        if (navbar) {
-            navbar.classList.remove('menu-open');
-            // Show container and all its children
-            const container = navbar.querySelector('.container');
-            if (container) {
-                container.style.cssText = '';
-                // Show all children
-                const toggler = container.querySelector('.navbar-toggler');
-                const brand = container.querySelector('.brand-center');
-                const account = container.querySelector('.account');
-                if (toggler) {
-                    toggler.style.cssText = '';
-                }
-                if (brand) {
-                    brand.style.cssText = '';
-                }
-                if (account) {
-                    account.style.cssText = '';
-                }
-            }
-        }
+        showNavbarElements();
     });
 
     // Open Mietwagen by default on first open of the hamburger menu
