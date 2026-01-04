@@ -330,24 +330,23 @@ function setupMobileMenuNavbarWatcher() {
 document.addEventListener('DOMContentLoaded', function() {
     console.log('=== DOMContentLoaded - Mobile Menu Navbar Setup ===');
     
-    // Wait for navbar to be created
-    setTimeout(() => {
-        setupMobileMenuNavbarWatcher();
-        
-        // Check if 2nd navbar should be visible (from previous page navigation)
-        if (window.innerWidth <= 751) {
-            const shouldShowNavbar = localStorage.getItem('mobileMenuNavbarVisible') === 'true';
-            const navbarNav = document.getElementById('navbarNav');
-            const isMenuOpen = navbarNav && navbarNav.classList.contains('show');
+        // Wait for navbar to be created
+        setTimeout(() => {
+            setupMobileMenuNavbarWatcher();
             
-            if (shouldShowNavbar || isMenuOpen) {
-                console.log('Restoring 2nd navbar state from previous navigation');
-                setTimeout(() => {
-                    toggleMobileMenuNavbar(true);
-                }, 300);
+            // Check if 2nd navbar should be visible (from previous page navigation)
+            if (window.innerWidth <= 751) {
+                const shouldShowNavbar = localStorage.getItem('mobileMenuNavbarVisible') === 'true';
+                
+                if (shouldShowNavbar) {
+                    console.log('Restoring 2nd navbar state from previous navigation');
+                    // Show 2nd navbar even if menu is closed (user came from menu link)
+                    setTimeout(() => {
+                        toggleMobileMenuNavbar(true);
+                    }, 500);
+                }
             }
-        }
-    }, 1000);
+        }, 1000);
     
     // Also watch for window resize
     window.addEventListener('resize', function() {
