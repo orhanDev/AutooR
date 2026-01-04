@@ -377,13 +377,22 @@ function findAvailablePort(startPort, maxAttempts = 10) {
 
 // Start server (HTTPS if certs available, otherwise HTTP)
 let server;
+// Railway/Production'da HTTPS kullanma - Railway kendi HTTPS'ini yönetir
+const isProduction = process.env.NODE_ENV === 'production';
+
 try {
   const https = require('https');
   const certDir = path.join(__dirname, 'certs');
   const keyPath = process.env.SSL_KEY_PATH || path.join(certDir, 'localhost-key.pem');
   const certPath = process.env.SSL_CERT_PATH || path.join(certDir, 'localhost-cert.pem');
 
-  if (fs.existsSync(keyPath) && fs.existsSync(certPath)) {
+  // Production'da sadece HTTP kullan (Railway HTTPS yönetir)
+  if (isProduction) {
+    // Railway'de PORT environment variable otomatik set edilir
+    server = app.listen(PORT, '0.0.0.0', () => {
+      console.log(`HTTP läuft auf http://0.0.0.0:${PORT}`);
+    });
+  } else if (fs.existsSync(keyPath) && fs.existsSync(certPath)) {
     const httpsOptions = {
       key: fs.readFileSync(keyPath),
       cert: fs.readFileSync(certPath),
