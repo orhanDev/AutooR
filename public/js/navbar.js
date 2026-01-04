@@ -645,7 +645,7 @@ function addHamburgerMenuCloseListener() {
     });
 }
 
-// Function to hide navbar elements when menu is open
+// Function to transform navbar when menu is open (like Porsche example)
 function hideNavbarElements() {
     if (window.innerWidth > 751) return; // Only on mobile
     
@@ -653,34 +653,99 @@ function hideNavbarElements() {
     const container = navbar?.querySelector('.container');
     if (!navbar || !container) return;
     
-    // Hide only specific elements, NOT the container (because menu is inside container)
     const toggler = container.querySelector('.navbar-toggler');
     const brand = container.querySelector('.brand-center');
     const account = container.querySelector('.account');
+    const accountBtn = account?.querySelector('.account-btn');
     
-    // Use multiple methods to ensure elements are hidden
-    [toggler, brand, account].forEach(el => {
-        if (el) {
-            // Method 1: Inline styles (highest priority)
-            el.style.setProperty('display', 'none', 'important');
-            el.style.setProperty('visibility', 'hidden', 'important');
-            el.style.setProperty('opacity', '0', 'important');
-            el.style.setProperty('position', 'absolute', 'important');
-            el.style.setProperty('left', '-9999px', 'important');
-            el.style.setProperty('width', '0', 'important');
-            el.style.setProperty('height', '0', 'important');
-            el.style.setProperty('overflow', 'hidden', 'important');
-            el.style.setProperty('pointer-events', 'none', 'important');
-            // Method 2: Add a class for CSS targeting
-            el.classList.add('menu-hidden');
+    // Transform navbar-toggler to back arrow
+    if (toggler) {
+        // Store original content
+        if (!toggler.dataset.originalContent) {
+            toggler.dataset.originalContent = toggler.innerHTML;
         }
-    });
+        // Replace with back arrow
+        toggler.innerHTML = '<i class="bi bi-arrow-left" style="font-size: 1.5rem;"></i>';
+        toggler.style.cssText = 'display: flex !important; align-items: center !important; padding: 0.5rem !important; border: none !important; background: transparent !important; cursor: pointer !important;';
+        // Remove Bootstrap toggle functionality temporarily
+        toggler.removeAttribute('data-bs-toggle');
+        toggler.removeAttribute('data-bs-target');
+        // Add click handler for back - close submenu if open, otherwise close menu
+        toggler.onclick = function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const submenuPanel = document.getElementById('submenu-panel');
+            if (submenuPanel && submenuPanel.classList.contains('open')) {
+                // Close submenu
+                submenuPanel.classList.remove('open');
+                submenuPanel.setAttribute('aria-hidden', 'true');
+                submenuPanel.innerHTML = '';
+                const navbar = document.querySelector('.navbar');
+                if (navbar) {
+                    navbar.classList.remove('submenu-open');
+                }
+            } else {
+                // Close menu
+                const navbarNav = document.getElementById('navbarNav');
+                if (navbarNav) {
+                    try {
+                        const collapseInstance = window.bootstrap?.Collapse?.getInstance(navbarNav);
+                        if (collapseInstance) {
+                            collapseInstance.hide();
+                        } else {
+                            navbarNav.classList.remove('show');
+                        }
+                    } catch (err) {
+                        navbarNav.classList.remove('show');
+                    }
+                }
+            }
+        };
+    }
+    
+    // Brand stays visible (centered)
+    if (brand) {
+        brand.style.cssText = 'display: block !important; visibility: visible !important; opacity: 1 !important;';
+    }
+    
+    // Transform account button to close (X) button
+    if (account && accountBtn) {
+        // Store original content
+        if (!accountBtn.dataset.originalContent) {
+            accountBtn.dataset.originalContent = accountBtn.innerHTML;
+        }
+        // Replace with X button
+        accountBtn.innerHTML = '<span style="font-size: 1.5rem; font-weight: 300;">&times;</span>';
+        accountBtn.style.cssText = 'display: flex !important; align-items: center !important; padding: 0.5rem !important; border: none !important; background: transparent !important;';
+        // Remove account menu functionality
+        accountBtn.removeAttribute('data-bs-toggle');
+        accountBtn.removeAttribute('aria-expanded');
+        accountBtn.removeAttribute('aria-controls');
+        // Add click handler for close menu
+        accountBtn.onclick = function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const navbarNav = document.getElementById('navbarNav');
+            if (navbarNav) {
+                try {
+                    const collapseInstance = window.bootstrap?.Collapse?.getInstance(navbarNav);
+                    if (collapseInstance) {
+                        collapseInstance.hide();
+                    } else {
+                        navbarNav.classList.remove('show');
+                    }
+                } catch (err) {
+                    navbarNav.classList.remove('show');
+                }
+            }
+        };
+    }
     
     navbar.classList.add('menu-open');
-    console.log('Navbar elements hidden (container kept visible for menu)', { toggler: !!toggler, brand: !!brand, account: !!account });
+    console.log('Navbar transformed: hamburger → back arrow, account → X button');
 }
 
-// Function to show navbar elements when menu is closed
+// Function to restore navbar when menu is closed
 function showNavbarElements() {
     const navbar = document.querySelector('.navbar');
     const container = navbar?.querySelector('.container');
@@ -689,25 +754,35 @@ function showNavbarElements() {
     const toggler = container.querySelector('.navbar-toggler');
     const brand = container.querySelector('.brand-center');
     const account = container.querySelector('.account');
+    const accountBtn = account?.querySelector('.account-btn');
     
-    // Remove all inline styles and classes
-    [toggler, brand, account].forEach(el => {
-        if (el) {
-            el.style.removeProperty('display');
-            el.style.removeProperty('visibility');
-            el.style.removeProperty('opacity');
-            el.style.removeProperty('position');
-            el.style.removeProperty('left');
-            el.style.removeProperty('width');
-            el.style.removeProperty('height');
-            el.style.removeProperty('overflow');
-            el.style.removeProperty('pointer-events');
-            el.classList.remove('menu-hidden');
-        }
-    });
+    // Restore navbar-toggler to hamburger menu
+    if (toggler && toggler.dataset.originalContent) {
+        toggler.innerHTML = toggler.dataset.originalContent;
+        toggler.style.cssText = '';
+        // Restore Bootstrap toggle functionality
+        toggler.setAttribute('data-bs-toggle', 'collapse');
+        toggler.setAttribute('data-bs-target', '#navbarNav');
+    }
+    
+    // Brand stays visible
+    if (brand) {
+        brand.style.cssText = '';
+    }
+    
+    // Restore account button to person icon
+    if (account && accountBtn && accountBtn.dataset.originalContent) {
+        accountBtn.innerHTML = accountBtn.dataset.originalContent;
+        accountBtn.style.cssText = '';
+        // Restore account menu functionality
+        accountBtn.setAttribute('aria-expanded', 'false');
+        accountBtn.setAttribute('aria-controls', 'account-menu');
+        accountBtn.onclick = null; // Remove close handler
+    }
     
     navbar.classList.remove('menu-open');
-    console.log('Navbar elements shown');
+    navbar.classList.remove('submenu-open');
+    console.log('Navbar restored: back arrow → hamburger, X → person icon');
 }
 
 // Side menu logic: show right panel submenu when clicking left items
@@ -857,28 +932,14 @@ function initSideMenu() {
             if (backBtn) {
                 backBtn.style.display = 'flex';
             }
-            // Add submenu-open class to navbar to keep navbar hidden
+            // Add submenu-open class to navbar to keep navbar transformed
             // Also ensure menu-open class is present
             const navbar = document.querySelector('.navbar');
             if (navbar && window.innerWidth <= 751) {
                 navbar.classList.add('submenu-open');
                 navbar.classList.add('menu-open'); // Keep menu-open when submenu is open
-                // Hide navbar elements directly via inline styles
-                const toggler = navbar.querySelector('.navbar-toggler');
-                const brand = navbar.querySelector('.brand-center');
-                const account = navbar.querySelector('.account');
-                if (toggler) {
-                    toggler.style.display = 'none';
-                    toggler.style.visibility = 'hidden';
-                }
-                if (brand) {
-                    brand.style.display = 'none';
-                    brand.style.visibility = 'hidden';
-                }
-                if (account) {
-                    account.style.display = 'none';
-                    account.style.visibility = 'hidden';
-                }
+                // Ensure navbar is transformed (back arrow + X button)
+                hideNavbarElements();
             }
             if (key === 'fahrzeuge') {
                 renderVehicleCards(panel.querySelector('#vehicle-cards'));

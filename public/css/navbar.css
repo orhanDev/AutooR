@@ -839,40 +839,30 @@ ease;
             background: #ffffff !important;
         }
         
-        /* Hide navbar elements when menu is open on mobile - but keep container visible (menu is inside) */
-        /* Structure: .container > [.navbar-toggler, .brand-center, .collapse, .account] */
+        /* Navbar transformation: When menu is open, elements are transformed (not hidden) */
+        /* The JavaScript function hideNavbarElements() transforms:
+           - navbar-toggler → back arrow
+           - account button → X button
+           - brand-center stays visible
+        */
         
-        /* Method 1: When collapse has 'show' class (using :has() - modern browsers) */
-        .navbar .container:has(.collapse.navbar-collapse.show) .navbar-toggler,
-        .navbar .container:has(.collapse.navbar-collapse.show) .brand-center,
-        .navbar .container:has(.collapse.navbar-collapse.show) .account,
-        
-        /* Method 2: When navbar has menu-open class (set by JavaScript) */
-        .navbar.menu-open .container .navbar-toggler,
+        /* Ensure brand-center is visible when menu is open */
         .navbar.menu-open .container .brand-center,
-        .navbar.menu-open .container .account,
-        
-        /* Method 3: When navbar has submenu-open class */
-        .navbar.submenu-open .container .navbar-toggler,
-        .navbar.submenu-open .container .brand-center,
-        .navbar.submenu-open .container .account,
-        
-        /* Method 4: When element has menu-hidden class (set by JavaScript) */
-        .navbar .container .navbar-toggler.menu-hidden,
-        .navbar .container .brand-center.menu-hidden,
-        .navbar .container .account.menu-hidden {
-            display: none !important;
-            opacity: 0 !important;
-            visibility: hidden !important;
-            pointer-events: none !important;
-            position: absolute !important;
-            left: -9999px !important;
-            width: 0 !important;
-            height: 0 !important;
-            overflow: hidden !important;
+        .navbar.submenu-open .container .brand-center {
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
         }
         
-        /* DO NOT hide container - menu is inside it! */
+        /* Ensure transformed elements are visible */
+        .navbar.menu-open .container .navbar-toggler,
+        .navbar.submenu-open .container .navbar-toggler,
+        .navbar.menu-open .container .account,
+        .navbar.submenu-open .container .account {
+            display: flex !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+        }
         
         /* Hide navbar background when menu is open */
         .navbar.menu-open,
