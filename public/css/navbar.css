@@ -838,6 +838,27 @@ ease;
         .navbar .collapse.navbar-collapse.show ~ .container .brand-center,
         .navbar .collapse.navbar-collapse.show ~ .container .account {
             display: none !important;
+            opacity: 0 !important;
+            visibility: hidden !important;
+        }
+        
+        /* Hide navbar container when menu is open - but keep menu visible */
+        .navbar .collapse.navbar-collapse.show ~ .container {
+            opacity: 0 !important;
+            pointer-events: none !important;
+            height: 0 !important;
+            overflow: hidden !important;
+        }
+        
+        /* Keep menu visible even when container is hidden */
+        .navbar .collapse.navbar-collapse.show {
+            opacity: 1 !important;
+            pointer-events: auto !important;
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            bottom: 0 !important;
         }
         
         /* Hide navbar itself when menu is open - show only menu */
@@ -856,6 +877,13 @@ ease;
         .navbar.menu-open .container > .brand-center,
         .navbar.menu-open .container > .account {
             display: none !important;
+            opacity: 0 !important;
+            visibility: hidden !important;
+        }
+        
+        .navbar.menu-open .container {
+            opacity: 0 !important;
+            pointer-events: none !important;
         }
         
         /* Menu header - better mobile */

@@ -755,18 +755,22 @@ function initSideMenu() {
             }
         });
         
-        // Add back button click handler
-        const backBtn = document.querySelector('.btn-back-menu');
-        if (backBtn) {
-            backBtn.addEventListener('click', function() {
+        // Add back button click handler - use event delegation for dynamic elements
+        document.addEventListener('click', function(e) {
+            if (e.target.closest('.btn-back-menu')) {
+                e.preventDefault();
+                e.stopPropagation();
                 // Close submenu
                 panel.classList.remove('open');
                 panel.setAttribute('aria-hidden', 'true');
                 panel.innerHTML = '';
                 // Hide back button
-                backBtn.style.display = 'none';
-            });
-        }
+                const backBtn = document.querySelector('.btn-back-menu');
+                if (backBtn) {
+                    backBtn.style.display = 'none';
+                }
+            }
+        });
     
     // Show backdrop when menu opens
     collapse.addEventListener('shown.bs.collapse', () => {
