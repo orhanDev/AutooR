@@ -337,9 +337,18 @@ function setupMobileMenuNavbarWatcher() {
         }
     }, 500);
     
-    // Initial check
+    // Initial check - also check localStorage
     if (window.innerWidth <= 751) {
         checkMenuState();
+        // Also check localStorage immediately
+        const shouldShowNavbar = localStorage.getItem('mobileMenuNavbarVisible') === 'true';
+        const isMenuOpen = navbarNav.classList.contains('show');
+        if (shouldShowNavbar && !isMenuOpen) {
+            console.log('Initial check: localStorage says navbar should be visible, showing it');
+            setTimeout(() => {
+                toggleMobileMenuNavbar(true);
+            }, 100);
+        }
     }
     
     console.log('=== setupMobileMenuNavbarWatcher COMPLETED ===');
