@@ -35,14 +35,36 @@ postgresql://postgres:password@hostname:5432/railway
 
 ---
 
-## ⚙️ Adım 3: Backend Service Ayarları
+## ⚙️ Adım 3: Backend Service Ekleme
 
-1. Railway dashboard'da projenizin içinde **"AutooR"** servisini bulun
-2. **"Settings"** sekmesine tıklayın
-3. **"Root Directory"** ayarını kontrol edin (boş bırakın veya `/` olarak ayarlayın)
-4. **"Start Command"** ayarını kontrol edin:
+Railway'de backend servisini eklemek için:
+
+1. Railway dashboard'da projenizin içinde **"+ New"** butonuna tıklayın
+2. **"GitHub Repo"** seçeneğini seçin
+3. **"Deploy from GitHub repo"** seçeneğini seçin
+4. Eğer repository listesi açılmazsa:
+   - **"Configure GitHub App"** butonuna tıklayın
+   - GitHub hesabınızı bağlayın
+   - Repository'leri seçin (AutooR repository'sini seçin)
+5. Repository listesinden **`orhanDev/AutooR`** repository'sini seçin
+6. Railway otomatik olarak deploy başlatacak
+
+**Not:** İlk deploy biraz zaman alabilir (2-5 dakika)
+
+---
+
+## ⚙️ Adım 4: Backend Service Ayarları
+
+Backend servisi eklendikten sonra:
+
+1. Railway dashboard'da projenizin içinde **backend servisinizi** bulun (repository adı ile görünecek, örneğin "AutooR")
+2. Servise tıklayın
+3. **"Settings"** sekmesine tıklayın
+4. **"Root Directory"** ayarını kontrol edin (boş bırakın veya `/` olarak ayarlayın)
+5. **"Start Command"** ayarını kontrol edin:
    - Eğer boşsa: `npm start` yazın
    - Veya `node server.js` yazın
+6. **"Save"** butonuna tıklayın
 
 ---
 
@@ -106,7 +128,7 @@ NODE_ENV=production
 
 ---
 
-## 📝 Adım 6: Database Migration (Veritabanı Tablolarını Oluşturma)
+## 📝 Adım 5: Database Migration (Veritabanı Tablolarını Oluşturma)
 
 Railway'de database oluşturulduktan sonra, tabloları oluşturmanız gerekiyor:
 
