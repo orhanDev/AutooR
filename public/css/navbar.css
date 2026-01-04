@@ -840,9 +840,13 @@ ease;
         }
         
         /* Hide navbar elements when menu is open on mobile - but keep menu visible */
+        /* This applies when menu is open OR when submenu is open */
         .navbar .collapse.navbar-collapse.show ~ .container .navbar-toggler,
         .navbar .collapse.navbar-collapse.show ~ .container .brand-center,
-        .navbar .collapse.navbar-collapse.show ~ .container .account {
+        .navbar .collapse.navbar-collapse.show ~ .container .account,
+        .navbar .submenu-panel.open ~ .container .navbar-toggler,
+        .navbar .submenu-panel.open ~ .container .brand-center,
+        .navbar .submenu-panel.open ~ .container .account {
             display: none !important;
             opacity: 0 !important;
             visibility: hidden !important;
@@ -865,20 +869,26 @@ ease;
         }
         
         /* Hide navbar background when menu is open - show only menu */
-        .navbar:has(.collapse.navbar-collapse.show) {
+        /* Also hide when submenu is open */
+        .navbar:has(.collapse.navbar-collapse.show),
+        .navbar:has(.submenu-panel.open) {
             background: transparent !important;
             box-shadow: none !important;
         }
         
         /* Alternative for browsers that don't support :has() */
-        .navbar.menu-open {
+        .navbar.menu-open,
+        .navbar.submenu-open {
             background: transparent !important;
             box-shadow: none !important;
         }
         
         .navbar.menu-open .container > .navbar-toggler,
         .navbar.menu-open .container > .brand-center,
-        .navbar.menu-open .container > .account {
+        .navbar.menu-open .container > .account,
+        .navbar.submenu-open .container > .navbar-toggler,
+        .navbar.submenu-open .container > .brand-center,
+        .navbar.submenu-open .container > .account {
             display: none !important;
             opacity: 0 !important;
             visibility: hidden !important;
@@ -886,7 +896,8 @@ ease;
         }
         
         /* Ensure menu is visible when navbar has menu-open class */
-        .navbar.menu-open .collapse.navbar-collapse.show {
+        .navbar.menu-open .collapse.navbar-collapse.show,
+        .navbar.submenu-open .collapse.navbar-collapse.show {
             display: flex !important;
             opacity: 1 !important;
             pointer-events: auto !important;

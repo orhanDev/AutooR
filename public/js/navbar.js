@@ -712,6 +712,11 @@ function initSideMenu() {
             if (backBtn) {
                 backBtn.style.display = 'flex';
             }
+            // Add submenu-open class to navbar to keep navbar hidden
+            const navbar = document.querySelector('.navbar');
+            if (navbar) {
+                navbar.classList.add('submenu-open');
+            }
             if (key === 'fahrzeuge') {
                 renderVehicleCards(panel.querySelector('#vehicle-cards'));
             }
@@ -748,6 +753,11 @@ function initSideMenu() {
             if (backBtn) {
                 backBtn.style.display = 'none';
             }
+            // Remove submenu-open class from navbar
+            const navbar = document.querySelector('.navbar');
+            if (navbar) {
+                navbar.classList.remove('submenu-open');
+            }
             // Hide backdrop
             const backdrop = document.getElementById('mobile-menu-backdrop');
             if (backdrop) {
@@ -768,6 +778,11 @@ function initSideMenu() {
                 const backBtn = document.querySelector('.btn-back-menu');
                 if (backBtn) {
                     backBtn.style.display = 'none';
+                }
+                // Remove submenu-open class from navbar
+                const navbar = document.querySelector('.navbar');
+                if (navbar) {
+                    navbar.classList.remove('submenu-open');
                 }
             }
         });
