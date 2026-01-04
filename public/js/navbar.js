@@ -419,6 +419,13 @@ document.addEventListener('DOMContentLoaded', function() {
         document.body.classList.remove('home-page');
     }
     
+    // Add fahrzeuge-page class to body if on fahrzeuge page
+    if (currentPath === '/fahrzeuge' || currentPath === '/fahrzeuge.html') {
+        document.body.classList.add('fahrzeuge-page');
+    } else {
+        document.body.classList.remove('fahrzeuge-page');
+    }
+    
     // Check if browser was closed and reopened (sessionStorage empty but localStorage has data)
     // If so, restore session from localStorage
     const hasLocalStorageData = localStorage.getItem('userData') && localStorage.getItem('isLoggedIn') === 'true';
