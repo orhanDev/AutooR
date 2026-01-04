@@ -863,23 +863,26 @@ ease;
             display: none !important;
         }
         
-        /* Make hamburger menu button more visible */
+        /* Make hamburger menu button simple and transparent */
         .navbar-toggler {
             display: flex !important;
             align-items: center;
-            padding: 0.5rem 0.75rem !important;
-            border: 2px solid #000000 !important;
-            background: #ffffff !important;
-            border-radius: 8px !important;
-            min-width: 80px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+            justify-content: center;
+            padding: 0.5rem !important;
+            border: none !important;
+            background: transparent !important;
+            border-radius: 0 !important;
+            min-width: auto !important;
+            box-shadow: none !important;
+            margin: 0 !important;
         }
         
         .navbar-toggler:hover,
         .navbar-toggler:focus {
-            background: #ffc107 !important;
-            border-color: #ffc107 !important;
-            box-shadow: 0 4px 12px rgba(255, 193, 7, 0.3) !important;
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            opacity: 0.7 !important;
         }
         
         .navbar-toggler-icon {
@@ -888,9 +891,7 @@ ease;
         }
         
         .menu-label {
-            font-size: 0.875rem !important;
-            font-weight: 600 !important;
-            margin-left: 0.5rem !important;
+            display: none !important;
         }
         
         /* Menu drawer - full screen on mobile (Porsche style) */
