@@ -839,13 +839,14 @@ ease;
             background: #ffffff !important;
         }
         
-        /* Hide navbar elements when menu is open on mobile */
-        .navbar.menu-open .container .navbar-toggler,
-        .navbar.menu-open .container .brand-center,
-        .navbar.menu-open .container .account,
-        .navbar.submenu-open .container .navbar-toggler,
-        .navbar.submenu-open .container .brand-center,
-        .navbar.submenu-open .container .account {
+        /* Hide navbar elements when menu is open on mobile - but keep menu visible */
+        /* Use more specific selectors to ensure they work */
+        .navbar.menu-open .container > .navbar-toggler,
+        .navbar.menu-open .container > .brand-center,
+        .navbar.menu-open .container > .account,
+        .navbar.submenu-open .container > .navbar-toggler,
+        .navbar.submenu-open .container > .brand-center,
+        .navbar.submenu-open .container > .account {
             display: none !important;
             opacity: 0 !important;
             visibility: hidden !important;
@@ -853,6 +854,8 @@ ease;
             height: 0 !important;
             width: 0 !important;
             overflow: hidden !important;
+            position: absolute !important;
+            left: -9999px !important;
         }
         
         /* Hide navbar background when menu is open */
@@ -860,6 +863,15 @@ ease;
         .navbar.submenu-open {
             background: transparent !important;
             box-shadow: none !important;
+        }
+        
+        /* Ensure menu header is always visible when menu is open */
+        .navbar.menu-open .collapse.navbar-collapse.show .menu-header,
+        .navbar.submenu-open .collapse.navbar-collapse.show .menu-header {
+            display: flex !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+            pointer-events: auto !important;
         }
         
         /* Keep menu visible and on top */
