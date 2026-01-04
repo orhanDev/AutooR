@@ -563,7 +563,6 @@ function createNavbar() {
             <div class="container d-flex align-items-center">
                 <button class="navbar-toggler me-2 d-flex align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-label="Menü">
                     <span class="navbar-toggler-icon"></span>
-                    <span class="menu-label ms-2">Menü</span>
                 </button>
                 <button class="navbar-back-btn me-2 d-flex align-items-center" type="button" aria-label="Zurück" style="display: none;">
                     <i class="bi bi-arrow-left" style="font-size: 1.5rem;"></i>
