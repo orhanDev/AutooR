@@ -152,6 +152,18 @@ function toggleMobileMenuNavbar(show) {
     
     if (window.innerWidth <= 751) {
         if (show) {
+            // Ensure mobile navbar exists first
+            if (!mobileNavbar) {
+                console.log('Mobile navbar does not exist, creating it...');
+                createMobileMenuNavbar();
+            }
+            
+            const finalMobileNavbar = document.getElementById('mobile-menu-navbar');
+            if (!finalMobileNavbar) {
+                console.error('ERROR: Mobile navbar still does not exist after creation attempt!');
+                return;
+            }
+            
             // Hide navbar-container using class (CSS will handle it)
             if (navbarContainer) {
                 navbarContainer.classList.add('mobile-menu-active');
@@ -160,19 +172,20 @@ function toggleMobileMenuNavbar(show) {
             }
             
             // Show mobile menu navbar
-            if (mobileNavbar) {
-                mobileNavbar.classList.add('active');
-                mobileNavbar.style.cssText = 'display: block !important; visibility: visible !important; opacity: 1 !important; z-index: 1052 !important; background: #ffffff !important; position: fixed !important; top: 0 !important; left: 0 !important; right: 0 !important;';
-                console.log('Mobile navbar shown');
-            } else {
-                createMobileMenuNavbar();
-                const newMobileNavbar = document.getElementById('mobile-menu-navbar');
-                if (newMobileNavbar) {
-                    newMobileNavbar.classList.add('active');
-                    newMobileNavbar.style.cssText = 'display: block !important; visibility: visible !important; opacity: 1 !important; z-index: 1052 !important; background: #ffffff !important; position: fixed !important; top: 0 !important; left: 0 !important; right: 0 !important;';
-                    console.log('Mobile navbar created and shown');
-                }
-            }
+            finalMobileNavbar.classList.add('active');
+            finalMobileNavbar.style.cssText = 'display: block !important; visibility: visible !important; opacity: 1 !important; z-index: 1052 !important; background: #ffffff !important; position: fixed !important; top: 0 !important; left: 0 !important; right: 0 !important;';
+            console.log('Mobile navbar shown with inline styles');
+            
+            // Double check it's actually visible
+            setTimeout(() => {
+                const computedStyle = window.getComputedStyle(finalMobileNavbar);
+                console.log('Mobile navbar computed style:', {
+                    display: computedStyle.display,
+                    visibility: computedStyle.visibility,
+                    opacity: computedStyle.opacity,
+                    zIndex: computedStyle.zIndex
+                });
+            }, 100);
         } else {
             // Show navbar-container
             if (navbarContainer) {
