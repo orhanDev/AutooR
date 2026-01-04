@@ -505,28 +505,37 @@ function addCloseButtonListener() {
         }
     });
     
+    // Track menu state
+    let menuIsOpen = false;
+    
     // Add body scroll lock when menu opens AND transform navbar elements
     document.addEventListener('click', function(e) {
-        if (e.target.closest('.navbar-toggler')) {
-            setTimeout(() => {
-                const navbarNav = document.getElementById('navbarNav');
-                if (navbarNav && navbarNav.classList.contains('show')) {
-                    document.body.style.overflow = 'hidden';
-                    document.body.classList.add('menu-open');
-                    // Transform navbar elements when toggler is clicked
-                    if (window.innerWidth <= 751) {
-                        console.log('Toggler clicked - menu opened, transforming navbar');
+        const toggler = e.target.closest('.navbar-toggler');
+        if (toggler) {
+            const navbarNav = document.getElementById('navbarNav');
+            if (navbarNav) {
+                // Toggle menu state
+                menuIsOpen = !menuIsOpen;
+                console.log('Toggler clicked - menuIsOpen:', menuIsOpen);
+                
+                if (menuIsOpen && window.innerWidth <= 751) {
+                    // Menu is opening - transform navbar immediately
+                    setTimeout(() => {
+                        console.log('Menu opening - transforming navbar');
                         hideNavbarElements();
-                    }
-                } else {
-                    document.body.style.overflow = '';
-                    document.body.classList.remove('menu-open');
-                    if (window.innerWidth <= 751) {
-                        console.log('Toggler clicked - menu closed, restoring navbar');
+                        document.body.style.overflow = 'hidden';
+                        document.body.classList.add('menu-open');
+                    }, 100);
+                } else if (!menuIsOpen && window.innerWidth <= 751) {
+                    // Menu is closing - restore navbar
+                    setTimeout(() => {
+                        console.log('Menu closing - restoring navbar');
                         showNavbarElements();
-                    }
+                        document.body.style.overflow = '';
+                        document.body.classList.remove('menu-open');
+                    }, 100);
                 }
-            }, 150); // Increased delay to ensure Bootstrap has updated the DOM
+            }
         }
     });
     
@@ -808,26 +817,42 @@ function initSideMenu() {
     const collapse = document.getElementById('navbarNav');
     if (!panel || !collapse) return;
     
-    // Function to check and transform navbar based on menu state
-    function checkAndTransformNavbar() {
-        const isOpen = collapse.classList.contains('show');
-        const isMobile = window.innerWidth <= 751;
-        console.log('checkAndTransformNavbar called:', { isOpen, isMobile });
-        
-        if (isOpen && isMobile) {
-            console.log('Menu is open on mobile - transforming navbar');
-            hideNavbarElements();
-        } else if (!isOpen) {
-            console.log('Menu is closed - restoring navbar');
-            showNavbarElements();
+    // Listen to Bootstrap collapse events - PRIMARY METHOD
+    collapse.addEventListener('shown.bs.collapse', function() {
+        console.log('Bootstrap shown.bs.collapse event fired - menu is OPEN');
+        if (window.innerWidth <= 751) {
+            setTimeout(() => {
+                hideNavbarElements();
+            }, 50);
         }
-    }
+    });
     
-    // Use MutationObserver to detect when menu opens/closes
+    collapse.addEventListener('hidden.bs.collapse', function() {
+        console.log('Bootstrap hidden.bs.collapse event fired - menu is CLOSED');
+        setTimeout(() => {
+            showNavbarElements();
+        }, 50);
+    });
+    
+    // Use MutationObserver as backup - detect when 'show' class is added/removed
     const observer = new MutationObserver(function(mutations) {
         mutations.forEach(function(mutation) {
             if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
-                setTimeout(checkAndTransformNavbar, 50); // Small delay to ensure DOM is updated
+                const isOpen = collapse.classList.contains('show');
+                const isMobile = window.innerWidth <= 751;
+                console.log('MutationObserver: Menu state changed', { isOpen, isMobile });
+                
+                if (isOpen && isMobile) {
+                    setTimeout(() => {
+                        console.log('MutationObserver: Menu opened - transforming navbar');
+                        hideNavbarElements();
+                    }, 100);
+                } else if (!isOpen && isMobile) {
+                    setTimeout(() => {
+                        console.log('MutationObserver: Menu closed - restoring navbar');
+                        showNavbarElements();
+                    }, 100);
+                }
             }
         });
     });
@@ -837,37 +862,11 @@ function initSideMenu() {
         attributeFilter: ['class']
     });
     
-    // Also listen to Bootstrap collapse events
-    collapse.addEventListener('shown.bs.collapse', function() {
-        console.log('Bootstrap shown.bs.collapse event fired');
-        setTimeout(() => {
-            if (window.innerWidth <= 751) {
-                hideNavbarElements();
-            }
-        }, 50);
-    });
-    
-    collapse.addEventListener('hidden.bs.collapse', function() {
-        console.log('Bootstrap hidden.bs.collapse event fired');
-        setTimeout(() => {
-            showNavbarElements();
-        }, 50);
-    });
-    
-    // Also check immediately and set up interval check
-    checkAndTransformNavbar();
-    
-    // Set up periodic check as fallback (every 200ms)
-    const checkInterval = setInterval(() => {
-        if (window.innerWidth <= 751) {
-            checkAndTransformNavbar();
-        }
-    }, 200);
-    
-    // Clean up interval when page unloads
-    window.addEventListener('beforeunload', () => {
-        clearInterval(checkInterval);
-    });
+    // Initial check
+    if (collapse.classList.contains('show') && window.innerWidth <= 751) {
+        console.log('Initial check: Menu is already open - transforming navbar');
+        hideNavbarElements();
+    }
 
     const contentByKey = {
         
