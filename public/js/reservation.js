@@ -112,6 +112,18 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     
+    // If offer is active but no vehicle selected, redirect to fahrzeuge page
+    if (offerId && !selectedCarId && !selectedVehicle) {
+        // Store offer information for discount calculation
+        localStorage.setItem('activeOffer', JSON.stringify({
+            id: offerId,
+            type: offerType,
+            category: offerCategory
+        }));
+        window.location.href = `/fahrzeuge?offer=${offerId}`;
+        return;
+    }
+    
     if (!selectedCarId && !selectedVehicle) {
         showError('Kein Fahrzeug ausgewählt');
         return;
@@ -1074,15 +1086,63 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('total-price').textContent = `€${totalPrice.toFixed(2)}`;
     }
     
+    // Helper function to parse date (handles both DD.MM.YYYY and YYYY-MM-DD formats)
+    function parseDate(dateString) {
+        if (!dateString) return null;
+        
+        // Try YYYY-MM-DD format first
+        if (dateString.includes('-') && dateString.length === 10) {
+            const parts = dateString.split('-');
+            if (parts.length === 3) {
+                const year = parseInt(parts[0], 10);
+                const month = parseInt(parts[1], 10) - 1; // Month is 0-indexed
+                const day = parseInt(parts[2], 10);
+                return new Date(year, month, day);
+            }
+        }
+        
+        // Try DD.MM.YYYY format
+        if (dateString.includes('.')) {
+            const parts = dateString.split('.');
+            if (parts.length === 3) {
+                const day = parseInt(parts[0], 10);
+                const month = parseInt(parts[1], 10) - 1; // Month is 0-indexed
+                const year = parseInt(parts[2], 10);
+                return new Date(year, month, day);
+            }
+        }
+        
+        // Fallback to default Date parsing
+        return new Date(dateString);
+    }
+    
     // Get discount percentage based on offer ID and conditions
     function getDiscountPercent(offerId, offerType, offerCategory, vehicle, pickupDate, dropoffDate, diffHours) {
         if (!offerId) return 0;
         
-        // Calculate days between pickup and dropoff
-        const pickup = new Date(pickupDate);
-        const dropoff = new Date(dropoffDate);
-        const daysUntilPickup = Math.ceil((pickup - new Date()) / (1000 * 60 * 60 * 24));
+        // Parse dates (handles both formats)
+        const pickup = parseDate(pickupDate);
+        const dropoff = parseDate(dropoffDate);
+        
+        if (!pickup || !dropoff || isNaN(pickup.getTime()) || isNaN(dropoff.getTime())) {
+            console.error('Invalid date format:', pickupDate, dropoffDate);
+            return 0;
+        }
+        
+        // Calculate days until pickup (from today)
+        const today = new Date();
+        today.setHours(0, 0, 0, 0); // Reset time to midnight for accurate day calculation
+        pickup.setHours(0, 0, 0, 0);
+        const daysUntilPickup = Math.ceil((pickup - today) / (1000 * 60 * 60 * 24));
         const rentalDays = Math.ceil(diffHours / 24);
+        
+        console.log('Discount calculation:', {
+            offerId,
+            daysUntilPickup,
+            rentalDays,
+            pickupDate,
+            dropoffDate
+        });
         
         switch (offerId) {
             case 'offer-1': // Frühbucher-Rabatt - 20%

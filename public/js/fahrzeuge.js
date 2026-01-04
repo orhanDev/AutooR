@@ -2,6 +2,19 @@
 
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Fahrzeuge page loaded');
+    
+    // Check for offer parameter in URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const offerId = urlParams.get('offer');
+    if (offerId) {
+        // Store offer information for discount calculation
+        localStorage.setItem('activeOffer', JSON.stringify({
+            id: offerId,
+            type: null,
+            category: null
+        }));
+        console.log('Offer stored:', offerId);
+    }
     const carsContainer = document.getElementById('cars-container');
     console.log('carsContainer found:', carsContainer);
     const dateLocationForm = document.getElementById('date-location-form');
@@ -451,7 +464,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     const v = allVehicles.find(v => v.car_id === parseInt(carId));
                     if (v) {
                         localStorage.setItem('selectedVehicle', JSON.stringify(v));
-                        window.location.href = '/reservation.html';
+                        // Preserve offer in URL if exists
+                        const urlParams = new URLSearchParams(window.location.search);
+                        const offerId = urlParams.get('offer');
+                        if (offerId) {
+                            window.location.href = `/reservation.html?offer=${offerId}`;
+                        } else {
+                            window.location.href = '/reservation.html';
+                        }
                     }
                 }
             });
@@ -595,9 +615,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Save to localStorage
             localStorage.setItem('bookingDetails', JSON.stringify(formData));
-
-            // Redirect to extras page
-            window.location.href = `/extras-versicherung.html?carId=${formData.carId}&days=${days}`;
+            
+            // Preserve offer in URL if exists
+            const urlParams = new URLSearchParams(window.location.search);
+            const offerId = urlParams.get('offer');
+            if (offerId) {
+                window.location.href = `/extras-versicherung.html?carId=${formData.carId}&days=${days}&offer=${offerId}`;
+            } else {
+                window.location.href = `/extras-versicherung.html?carId=${formData.carId}&days=${days}`;
+            }
         });
     }
 

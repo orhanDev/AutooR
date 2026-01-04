@@ -153,8 +153,14 @@ function createOfferCard(offer) {
 // Action functions
 function bookOffer(offerId) {
     console.log('Book offer:', offerId);
-    // Redirect to reservation page with offer pre-selected
-    window.location.href = `/reservation?offer=${offerId}`;
+    // Store offer information for discount calculation
+    localStorage.setItem('activeOffer', JSON.stringify({
+        id: offerId,
+        type: null,
+        category: null
+    }));
+    // Redirect to fahrzeuge page to select a vehicle
+    window.location.href = `/fahrzeuge?offer=${offerId}`;
 }
 
 function bookWeekend(offerId) {

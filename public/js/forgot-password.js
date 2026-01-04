@@ -75,10 +75,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 result = await response.json();
             } catch (jsonError) {
                 console.error('JSON parse error:', jsonError);
-                // Demo modu - backend yoksa demo mesajı göster
-                showAlert('Dies ist eine Demo-Version. In der Live-Version würde ein Link zum Zurücksetzen Ihres Passworts an Ihre E-Mail-Adresse gesendet werden.', 'info');
-                emailInput.value = '';
-                emailInput.classList.remove('is-valid', 'is-invalid');
+                showAlert('Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.', 'danger');
+                emailInput.classList.add('is-invalid');
+                emailInput.classList.remove('is-valid');
                 return;
             }
             
@@ -105,14 +104,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 name: error.name
             });
             
-            // Network hatası - Demo modu mesajı göster
-            if (error.message && (error.message.includes('fetch') || error.message.includes('Failed to fetch') || error.message.includes('NetworkError'))) {
-                showAlert('Dies ist eine Demo-Version. In der Live-Version würde ein Link zum Zurücksetzen Ihres Passworts an Ihre E-Mail-Adresse gesendet werden. Bitte testen Sie diese Funktion auf localhost:3443.', 'info');
+            // Network hatası mı kontrol et
+            if (error.message && error.message.includes('fetch')) {
+                showAlert('Verbindungsfehler. Bitte überprüfen Sie Ihre Internetverbindung und versuchen Sie es erneut.', 'danger');
             } else {
-                showAlert('Dies ist eine Demo-Version. In der Live-Version würde ein Link zum Zurücksetzen Ihres Passworts an Ihre E-Mail-Adresse gesendet werden.', 'info');
+                showAlert('Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut. Falls das Problem weiterhin besteht, kontaktieren Sie bitte den Support.', 'danger');
             }
-            emailInput.value = '';
-            emailInput.classList.remove('is-valid', 'is-invalid');
+            emailInput.classList.add('is-invalid');
+            emailInput.classList.remove('is-valid');
         } finally {
             // Re-enable button
             submitBtn.disabled = false;
