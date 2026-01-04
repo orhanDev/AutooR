@@ -75,7 +75,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 result = await response.json();
             } catch (jsonError) {
                 console.error('JSON parse error:', jsonError);
-                showAlert('Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.', 'danger');
+                console.error('Response status:', response.status);
+                
+                // Backend'e ulaşılamıyorsa daha açıklayıcı mesaj
+                if (response.status === 0 || response.status >= 500) {
+                    showAlert('Backend-Server ist derzeit nicht erreichbar. Bitte versuchen Sie es später erneut oder kontaktieren Sie den Support.', 'danger');
+                } else {
+                    showAlert('Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.', 'danger');
+                }
                 emailInput.classList.add('is-invalid');
                 emailInput.classList.remove('is-valid');
                 return;
