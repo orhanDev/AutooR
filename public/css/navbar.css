@@ -101,12 +101,17 @@ body { margin-top: 0 !important; }
 @media (max-width: 751px) {
     .account-menu {
         z-index: 1101 !important;
-        position: fixed !important;
-        top: auto !important;
-        bottom: auto !important;
-        right: 1rem !important;
+        position: absolute !important;
+        top: 100% !important;
+        right: 0 !important;
+        left: auto !important;
         margin-top: 0.5rem !important;
         overflow: visible !important;
+        transform: translateY(-8px) !important;
+    }
+    
+    .account-menu.open {
+        transform: translateY(0) !important;
     }
     
     /* Ensure account container doesn't clip the menu */
