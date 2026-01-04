@@ -125,6 +125,8 @@ function createMobileMenuNavbar() {
                     navbarNav.classList.remove('show');
                 }
             }
+            // Clear stored state
+            localStorage.removeItem('mobileMenuNavbarVisible');
         });
     }
     
@@ -272,6 +274,8 @@ function setupMobileMenuNavbarWatcher() {
         previousState = false;
         // Hide 2nd navbar immediately when menu closes
         toggleMobileMenuNavbar(false);
+        // Clear the stored state
+        localStorage.removeItem('mobileMenuNavbarVisible');
     });
     
     // Watch for menu link clicks - show 2nd navbar when user clicks a link
@@ -281,7 +285,9 @@ function setupMobileMenuNavbarWatcher() {
         if (menuLink && window.innerWidth <= 751) {
             const navbarNav = document.getElementById('navbarNav');
             if (navbarNav && navbarNav.classList.contains('show')) {
-                console.log('Menu link clicked, showing 2nd navbar');
+                console.log('Menu link clicked, showing 2nd navbar and storing state');
+                // Store that menu is open and 2nd navbar should be shown
+                localStorage.setItem('mobileMenuNavbarVisible', 'true');
                 // Show 2nd navbar when user clicks a menu link
                 setTimeout(() => {
                     toggleMobileMenuNavbar(true);
@@ -327,6 +333,20 @@ document.addEventListener('DOMContentLoaded', function() {
     // Wait for navbar to be created
     setTimeout(() => {
         setupMobileMenuNavbarWatcher();
+        
+        // Check if 2nd navbar should be visible (from previous page navigation)
+        if (window.innerWidth <= 751) {
+            const shouldShowNavbar = localStorage.getItem('mobileMenuNavbarVisible') === 'true';
+            const navbarNav = document.getElementById('navbarNav');
+            const isMenuOpen = navbarNav && navbarNav.classList.contains('show');
+            
+            if (shouldShowNavbar || isMenuOpen) {
+                console.log('Restoring 2nd navbar state from previous navigation');
+                setTimeout(() => {
+                    toggleMobileMenuNavbar(true);
+                }, 300);
+            }
+        }
     }, 1000);
     
     // Also watch for window resize
@@ -334,7 +354,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const navbarNav = document.getElementById('navbarNav');
         if (navbarNav && window.innerWidth <= 751) {
             const isOpen = navbarNav.classList.contains('show');
-            toggleMobileMenuNavbar(isOpen);
+            const shouldShowNavbar = localStorage.getItem('mobileMenuNavbarVisible') === 'true';
+            toggleMobileMenuNavbar(isOpen || shouldShowNavbar);
         }
     });
 });
