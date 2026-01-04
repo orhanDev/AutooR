@@ -833,25 +833,19 @@ ease;
             background: #ffffff !important;
         }
         
-        /* Hide navbar elements when menu is open on mobile */
+        /* Hide navbar elements when menu is open on mobile - but keep menu visible */
         .navbar .collapse.navbar-collapse.show ~ .container .navbar-toggler,
         .navbar .collapse.navbar-collapse.show ~ .container .brand-center,
         .navbar .collapse.navbar-collapse.show ~ .container .account {
             display: none !important;
             opacity: 0 !important;
             visibility: hidden !important;
-        }
-        
-        /* Hide navbar container when menu is open - but keep menu visible */
-        .navbar .collapse.navbar-collapse.show ~ .container {
-            opacity: 0 !important;
             pointer-events: none !important;
-            height: 0 !important;
-            overflow: hidden !important;
         }
         
-        /* Keep menu visible even when container is hidden */
+        /* Keep menu visible and on top */
         .navbar .collapse.navbar-collapse.show {
+            display: flex !important;
             opacity: 1 !important;
             pointer-events: auto !important;
             position: fixed !important;
@@ -859,9 +853,12 @@ ease;
             left: 0 !important;
             right: 0 !important;
             bottom: 0 !important;
+            z-index: 1051 !important;
+            width: 100vw !important;
+            height: 100vh !important;
         }
         
-        /* Hide navbar itself when menu is open - show only menu */
+        /* Hide navbar background when menu is open - show only menu */
         .navbar:has(.collapse.navbar-collapse.show) {
             background: transparent !important;
             box-shadow: none !important;
@@ -879,11 +876,20 @@ ease;
             display: none !important;
             opacity: 0 !important;
             visibility: hidden !important;
+            pointer-events: none !important;
         }
         
-        .navbar.menu-open .container {
-            opacity: 0 !important;
-            pointer-events: none !important;
+        /* Ensure menu is visible when navbar has menu-open class */
+        .navbar.menu-open .collapse.navbar-collapse.show {
+            display: flex !important;
+            opacity: 1 !important;
+            pointer-events: auto !important;
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            bottom: 0 !important;
+            z-index: 1051 !important;
         }
         
         /* Menu header - better mobile */
