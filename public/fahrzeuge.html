@@ -604,6 +604,129 @@
                 transform: translateY(13rem);
             }
         }
+        
+        /* Porsche-style Mobile View (max-width: 751px) */
+        @media (max-width: 751px) {
+            /* Container padding */
+            .container {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+            
+            /* Filter section - hide or simplify on mobile */
+            .filter-section {
+                display: none !important;
+            }
+            
+            .filters-row {
+                display: none !important;
+            }
+            
+            .filter-title {
+                font-size: 1.5rem !important;
+                font-weight: 700 !important;
+                color: #000000 !important;
+                text-align: left !important;
+                padding: 1rem 0 !important;
+                margin-bottom: 1rem !important;
+                text-transform: none !important;
+                letter-spacing: 0 !important;
+            }
+            
+            .filter-title::after {
+                display: none !important;
+            }
+            
+            /* Cars grid - single column, Porsche style */
+            .cars-grid {
+                grid-template-columns: 1fr !important;
+                gap: 1rem !important;
+                transform: none !important;
+                margin-bottom: 2rem !important;
+                padding: 0 !important;
+            }
+            
+            /* Vehicle card - Porsche style: light grey, rounded, shadow */
+            .vehicle-card {
+                background: #f5f5f5 !important; /* Light grey like Porsche */
+                border-radius: 12px !important;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+                padding: 1rem !important;
+                margin-bottom: 0 !important;
+                min-height: auto !important;
+                display: flex !important;
+                flex-direction: column !important;
+                transition: all 0.2s ease !important;
+                border: none !important;
+                position: relative !important; /* For fuel badge positioning */
+            }
+            
+            .vehicle-card:hover {
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12) !important;
+                transform: translateY(-2px) !important;
+            }
+            
+            /* Vehicle title - large, bold, black (Porsche style) */
+            .vehicle-title {
+                font-size: 1.5rem !important;
+                font-weight: 700 !important;
+                color: #000000 !important;
+                margin-bottom: 0.5rem !important;
+                line-height: 1.2 !important;
+                text-align: left !important;
+            }
+            
+            /* Vehicle subtitle - smaller, grey */
+            .vehicle-subtitle {
+                font-size: 0.875rem !important;
+                color: #666666 !important;
+                margin-bottom: 1rem !important;
+                text-align: left !important;
+            }
+            
+            /* Vehicle image - better mobile layout */
+            .vehicle-card img {
+                width: 100% !important;
+                height: auto !important;
+                max-height: 200px !important;
+                object-fit: contain !important;
+                margin-bottom: 1rem !important;
+                background: #ffffff !important;
+                border-radius: 8px !important;
+                padding: 0.5rem !important;
+            }
+            
+            /* Price badge - hide on mobile or reposition */
+            .vehicle-card .price-badge {
+                display: none !important; /* Hide price badge on mobile like Porsche */
+            }
+            
+            /* Fuel type badge - Porsche style (white, rounded, border) */
+            .fuel-badge {
+                position: absolute;
+                bottom: 1rem;
+                left: 1rem;
+                background: #ffffff !important;
+                color: #000000 !important;
+                padding: 0.375rem 0.75rem !important;
+                border-radius: 6px !important;
+                border: 1px solid #e0e0e0 !important;
+                font-size: 0.75rem !important;
+                font-weight: 500 !important;
+                z-index: 5;
+            }
+            
+            /* Vehicle meta - hide chips on mobile or simplify */
+            .vehicle-meta {
+                display: none !important; /* Hide meta info on mobile like Porsche */
+            }
+            
+            /* Ensure cards are full width */
+            .cars-grid .vehicle-card {
+                width: 100% !important;
+                max-width: 100% !important;
+            }
+        }
 
         /* Loading Animation */
         .loading {

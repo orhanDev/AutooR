@@ -415,12 +415,23 @@ document.addEventListener('DOMContentLoaded', () => {
             const img = toImg(vehicle);
             const makeAttr = (vehicle.make || '').toString().replace(/"/g, '&quot;');
             const modelAttr = stripSimilar((vehicle.model || '').toString().replace(/"/g, '&quot;'));
+            // Fuel type mapping for badge (Porsche style)
+            const fuelTypeMap = {
+                'Benzin': 'Benzin',
+                'Diesel': 'Diesel',
+                'Elektrisch': 'Elektro',
+                'Hybrid': 'Hybrid',
+                'Hybrid Benzin': 'Hybrid Benzin'
+            };
+            const fuelBadge = fuelTypeMap[vehicle.fuel_type] || vehicle.fuel_type || 'Benzin';
+            
             return `
             <div class="vehicle-card" data-car-id="${vehicle.car_id}" data-make="${makeAttr}" data-model="${modelAttr}" data-img="${img}" data-price="${vehicle.daily_rate || ''}" data-trans="${vehicle.transmission_type || ''}" data-fuel="${vehicle.fuel_type || ''}" data-seats="${vehicle.seating_capacity || ''}" data-bags="${vehicle.baggage_large || ''}" data-hand="${vehicle.baggage_small || ''}" data-doors="${vehicle.doors || ''}">
                 <div class="vehicle-title">${title}</div>
                 <div class="vehicle-subtitle">${(vehicle.type || '').toString().replace(/"/g,'&quot;')} ${vehicle.transmission_type ? `<span class=\"nowrap\">• ${vehicle.transmission_type}</span>` : ''}</div>
                 <img src="${img}" alt="${title}" onerror="if(!this.dataset.try){this.dataset.try='png';this.src=this.src.replace(/\.jpg$/i,'.png');}else if(this.dataset.try==='png'){this.dataset.try='jpg';this.src=this.src.replace(/\.png$/i,'.jpg');}else{this.onerror=null;this.src='/images/cars/default-car.jpg';}" />
-                ${vehicle.daily_rate ? `<div class=\"price-badge\">€${Math.floor(Number(vehicle.daily_rate))}/Tag</div>` : ''}
+                ${vehicle.daily_rate ? `<div class=\"price-badge\">€${Math.floor(Number(vehicle.daily_rate)).toLocaleString('de-DE')}/Tag</div>` : ''}
+                ${vehicle.fuel_type ? `<div class="fuel-badge">${fuelBadge}</div>` : ''}
                 <div class="vehicle-meta">
                     ${vehicle.seating_capacity ? `<span class=\"vehicle-chip\">${vehicle.seating_capacity} Sitze</span>` : ''}
                     ${vehicle.baggage_large ? `<span class=\"vehicle-chip\">${vehicle.baggage_large} Koffer</span>` : ''}
