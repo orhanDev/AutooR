@@ -474,7 +474,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 window.location.href = `/reservation.html?offer=${offer.id}&type=${offer.type || ''}&category=${offer.category || ''}`;
                             } catch (e) {
                                 console.error('Error parsing pending offer:', e);
-                                window.location.href = '/reservation.html';
+                        window.location.href = '/reservation.html';
                             }
                         } else {
                             window.location.href = '/reservation.html';
