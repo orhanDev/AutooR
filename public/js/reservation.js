@@ -1140,33 +1140,49 @@ document.addEventListener('DOMContentLoaded', () => {
     function getDiscountPercent(offerId, offerType, offerCategory, vehicle, pickupDate, dropoffDate, diffHours) {
         if (!offerId) return 0;
         
-        // Calculate days between pickup and dropoff
-        const pickup = new Date(pickupDate);
-        const dropoff = new Date(dropoffDate);
+        // Parse dates correctly (ISO format: YYYY-MM-DD)
+        const [pickupYear, pickupMonth, pickupDay] = pickupDate.split('-').map(Number);
+        const [dropoffYear, dropoffMonth, dropoffDay] = dropoffDate.split('-').map(Number);
+        
+        const pickup = new Date(pickupYear, pickupMonth - 1, pickupDay);
+        const dropoff = new Date(dropoffYear, dropoffMonth - 1, dropoffDay);
         
         // Calculate days until pickup (from today)
         const today = new Date();
         today.setHours(0, 0, 0, 0);
         pickup.setHours(0, 0, 0, 0);
-        const daysUntilPickup = Math.ceil((pickup - today) / (1000 * 60 * 60 * 24));
-        const rentalDays = Math.ceil(diffHours / 24);
+        const daysUntilPickup = Math.floor((pickup.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+        
+        // Calculate rental duration in hours (minimum 3 days = 72 hours)
+        const rentalHours = diffHours;
         
         console.log('Discount calculation:', {
             offerId,
             pickupDate,
+            dropoffDate,
+            today: today.toISOString().split('T')[0],
+            pickup: pickup.toISOString().split('T')[0],
             daysUntilPickup,
-            rentalDays,
-            diffHours
+            rentalHours,
+            diffHours,
+            minimum3Days: rentalHours >= 72
         });
         
         switch (offerId) {
             case 'offer-1': // Frühbucher-Rabatt - 20%
-                // Requires booking at least 14 days in advance and minimum 3 days rental
-                if (daysUntilPickup >= 14 && rentalDays >= 3) {
+                // Requires booking at least 14 days in advance and minimum 3 days rental (72 hours)
+                if (daysUntilPickup >= 14 && rentalHours >= 72) {
                     console.log('Frühbucher-Rabatt applied: 20%');
                     return 20;
                 }
-                console.log('Frühbucher-Rabatt not applicable:', { daysUntilPickup, rentalDays });
+                console.log('Frühbucher-Rabatt not applicable:', { 
+                    daysUntilPickup, 
+                    requiredDays: 14,
+                    rentalHours, 
+                    requiredHours: 72,
+                    meetsDays: daysUntilPickup >= 14,
+                    meetsHours: rentalHours >= 72
+                });
                 return 0;
                 
             case 'offer-2': // Wochenend-Special - 15%
@@ -1179,8 +1195,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 return 0;
                 
             case 'offer-3': // Langzeit-Miete - 30%
-                // 30 days or more
-                if (rentalDays >= 30) {
+                // 30 days or more (720 hours)
+                if (rentalHours >= 720) {
                     return 30;
                 }
                 return 0;
