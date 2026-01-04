@@ -565,6 +565,9 @@ function createNavbar() {
                     <span class="navbar-toggler-icon"></span>
                     <span class="menu-label ms-2">Menü</span>
                 </button>
+                <button class="navbar-back-btn me-2 d-flex align-items-center" type="button" onclick="window.history.back()" aria-label="Zurück" style="display: none;">
+                    <i class="bi bi-arrow-left" style="font-size: 1.5rem;"></i>
+                </button>
                 <a class="brand-center" href="/">AutooR</a>
                 <div class="collapse navbar-collapse flex-grow-1" id="navbarNav">
                     <div class="side-left">
