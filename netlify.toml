@@ -41,23 +41,8 @@
   to = "/reset-password.html"
   status = 200
 
-# API proxy - Backend için (Backend URL'ini buraya ekleyin)
-# Backend Railway'de ise:
-# [[redirects]]
-#   from = "/api/*"
-#   to = "https://your-backend-url.railway.app/api/:splat"
-#   status = 200
-#   force = true
-
-# Auth routes için proxy
-# [[redirects]]
-#   from = "/auth/*"
-#   to = "https://your-backend-url.railway.app/auth/:splat"
-#   status = 200
-#   force = true
-
 # SPA routing - Diğer tüm istekleri index.html'e yönlendir
-# API ve auth route'ları hariç (yukarıdaki proxy'ler aktif olduğunda)
+# API ve auth route'ları hariç
 [[redirects]]
   from = "/*"
   to = "/index.html"

@@ -27,6 +27,38 @@ const testGoogleAuthRouter = require('./routes/test-google-auth');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// CORS Middleware - Railway/Netlify için
+app.use((req, res, next) => {
+  const allowedOrigins = [
+    'https://autoor-demo.netlify.app',
+    'https://*.netlify.app',
+    'http://localhost:3443',
+    'http://localhost:3000',
+    'https://localhost:3443'
+  ];
+  
+  const origin = req.headers.origin;
+  if (allowedOrigins.some(allowed => {
+    if (allowed.includes('*')) {
+      return origin && origin.includes(allowed.replace('*.', ''));
+    }
+    return origin === allowed;
+  })) {
+    res.setHeader('Access-Control-Allow-Origin', origin || '*');
+  } else if (process.env.NODE_ENV !== 'production') {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+  }
+  
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(200);
+  }
+  next();
+});
+
 // Middleware
 app.use(express.json()); // Parse JSON request body
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded request body
