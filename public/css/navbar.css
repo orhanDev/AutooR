@@ -333,6 +333,12 @@ body { margin-top: 0 !important; }
     display: flex;
 }
 
+/* Ensure menu is always visible when shown */
+.navbar .collapse.navbar-collapse.show {
+    display: flex !important;
+    visibility: visible !important;
+}
+
 .navbar .collapse.navbar-collapse.show {
     transform: translateX(0);
 }
