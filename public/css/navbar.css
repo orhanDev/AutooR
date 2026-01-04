@@ -839,30 +839,49 @@ ease;
             background: #ffffff !important;
         }
         
-        /* ADIM 2: Hamburger menüyü gizle, yerine geri ok (←) koy */
-        /* Menü açıldığında (collapse.show class'ı eklendiğinde) */
-        .navbar .collapse.navbar-collapse.show ~ .navbar-toggler,
-        .navbar .container:has(.collapse.navbar-collapse.show) .navbar-toggler {
-            /* Hamburger icon'u gizle */
+        /* TEST: Make navbar red on mobile to verify CSS is working - ONLY ON MOBILE */
+        /* This should only appear when screen width is 751px or less */
+        /* NOTE: This test CSS is inside @media (max-width: 751px) block */
+        .navbar {
+            background-color: red !important;
+            border: 3px solid darkred !important;
         }
         
-        .navbar .collapse.navbar-collapse.show ~ .navbar-toggler .navbar-toggler-icon,
+        .navbar .container {
+            background-color: pink !important;
+        }
+        
+        .navbar .navbar-toggler {
+            background-color: orange !important;
+        }
+        
+        .navbar .brand-center {
+            background-color: yellow !important;
+        }
+        
+        .navbar .account {
+            background-color: lightblue !important;
+        }
+        
+        /* ADIM 2: Hamburger menüyü gizle, yerine geri ok (←) koy */
+        /* Menü açıldığında (collapse.show class'ı eklendiğinde) */
+        /* Structure: .container > [.navbar-toggler, .brand-center, .collapse, .account] */
+        /* Toggler ve collapse aynı container içinde, sibling değil */
         .navbar .container:has(.collapse.navbar-collapse.show) .navbar-toggler .navbar-toggler-icon {
             display: none !important;
         }
         
-        .navbar .collapse.navbar-collapse.show ~ .navbar-toggler .menu-label,
         .navbar .container:has(.collapse.navbar-collapse.show) .navbar-toggler .menu-label {
             display: none !important;
         }
         
-        /* Geri ok ekle */
-        .navbar .collapse.navbar-collapse.show ~ .navbar-toggler::before,
+        /* Geri ok ekle - ::before pseudo-element kullan */
         .navbar .container:has(.collapse.navbar-collapse.show) .navbar-toggler::before {
             content: "←" !important;
             font-size: 1.5rem !important;
             font-weight: bold !important;
             display: inline-block !important;
+            margin-right: 0.5rem !important;
         }
         
         /* Navbar transformation: When menu is open, elements are transformed (not hidden) */
