@@ -834,8 +834,15 @@ ease;
             cursor: pointer !important;
         }
         
+        /* On fahrzeuge page: back button on left, account on right */
         body.fahrzeuge-page .navbar-back-btn {
             display: flex !important;
+            order: 1 !important;
+            margin-left: 0 !important;
+            margin-right: auto !important;
+        }
+        
+        body.fahrzeuge-page .navbar .account {
             order: 3 !important;
             margin-left: auto !important;
             margin-right: 0 !important;
