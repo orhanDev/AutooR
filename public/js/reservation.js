@@ -897,10 +897,30 @@ document.addEventListener('DOMContentLoaded', () => {
         const hiddenPickupTime = document.getElementById('pickupTime');
         const hiddenDropoffTime = document.getElementById('dropoffTime');
         
-        const pickupTime = (qrPickupTime?.value || hiddenPickupTime?.value || '08:00').trim();
-        const dropoffTime = (qrDropoffTime?.value || hiddenDropoffTime?.value || '08:00').trim();
+        // Get actual selected times (don't use default values)
+        const pickupTime = (qrPickupTime?.value || hiddenPickupTime?.value || '').trim();
+        const dropoffTime = (qrDropoffTime?.value || hiddenDropoffTime?.value || '').trim();
         
-        if (!pickupDate || !dropoffDate) return;
+        // If dates or times are not selected, hide price display
+        if (!pickupDate || !dropoffDate || !pickupTime || !dropoffTime) {
+            // Hide price display elements
+            const baseLabel = document.getElementById('base-price-label');
+            const originalPriceEl = document.getElementById('original-price');
+            const currentPriceEl = document.getElementById('current-price');
+            const discountRow = document.getElementById('discount-row');
+            const insurancePriceEl = document.getElementById('insurance-price');
+            const additionalServicesPriceEl = document.getElementById('additional-services-price');
+            const totalPriceEl = document.getElementById('total-price');
+            
+            if (baseLabel) baseLabel.textContent = 'Grundpreis';
+            if (originalPriceEl) originalPriceEl.style.display = 'none';
+            if (currentPriceEl) currentPriceEl.textContent = '-';
+            if (discountRow) discountRow.style.display = 'none';
+            if (insurancePriceEl) insurancePriceEl.textContent = '-';
+            if (additionalServicesPriceEl) additionalServicesPriceEl.textContent = '-';
+            if (totalPriceEl) totalPriceEl.textContent = '-';
+            return;
+        }
         
         console.log('Date/Time calculation:', {
             pickupDate,
