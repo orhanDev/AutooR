@@ -105,8 +105,10 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             
             // Network hatası mı kontrol et
-            if (error.message && error.message.includes('fetch')) {
-                showAlert('Verbindungsfehler. Bitte überprüfen Sie Ihre Internetverbindung und versuchen Sie es erneut.', 'danger');
+            if (error.message && (error.message.includes('fetch') || error.message.includes('Failed to fetch') || error.message.includes('NetworkError'))) {
+                showAlert('Verbindungsfehler. Backend-Server ist möglicherweise nicht erreichbar. Bitte versuchen Sie es später erneut oder kontaktieren Sie den Support.', 'danger');
+            } else if (error.message && error.message.includes('CORS')) {
+                showAlert('CORS-Fehler. Backend-Server-Konfiguration prüfen. Bitte kontaktieren Sie den Support.', 'danger');
             } else {
                 showAlert('Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut. Falls das Problem weiterhin besteht, kontaktieren Sie bitte den Support.', 'danger');
             }

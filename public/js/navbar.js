@@ -647,7 +647,7 @@ function createNavbar() {
     
     // Add close button functionality - call after a short delay to ensure DOM is ready
     setTimeout(() => {
-        addCloseButtonListener();
+    addCloseButtonListener();
     }, 100);
 
     // Initialize side menu interactions
@@ -945,19 +945,19 @@ function addCloseButtonListener() {
     // Body scroll lock when menu opens (icon change is handled globally above)
     document.addEventListener('click', function(e) {
         if (e.target.closest('.navbar-toggler')) {
-            const navbarNav = document.getElementById('navbarNav');
+                const navbarNav = document.getElementById('navbarNav');
             if (navbarNav) {
                 setTimeout(() => {
                     const isOpen = navbarNav.classList.contains('show');
                     if (isOpen) {
-                        document.body.style.overflow = 'hidden';
+                    document.body.style.overflow = 'hidden';
                         document.body.classList.add('menu-open');
                     } else {
                         document.body.style.overflow = '';
                         document.body.classList.remove('menu-open');
-                    }
+                }
                 }, 200);
-            }
+        }
         }
     });
     
@@ -967,7 +967,7 @@ function addCloseButtonListener() {
         navbarNav.addEventListener('hidden.bs.collapse', function() {
             document.body.style.overflow = '';
             document.body.classList.remove('menu-open');
-        });
+    });
     }
 }
 
@@ -1062,7 +1062,7 @@ function addHamburgerMenuCloseListener() {
             e.stopPropagation();
         });
     }
-    
+
     // Close menu when backdrop is clicked
     const backdrop = document.getElementById('mobile-menu-backdrop');
     if (backdrop) {
@@ -1351,11 +1351,11 @@ function initSideMenu() {
     };
 
     // helper to open a submenu programmatically
-        const openSubmenu = (key) => {
-            if (!key || !contentByKey[key]) return;
-            panel.innerHTML = contentByKey[key];
-            panel.setAttribute('aria-hidden', 'false');
-            panel.classList.add('open');
+    const openSubmenu = (key) => {
+        if (!key || !contentByKey[key]) return;
+        panel.innerHTML = contentByKey[key];
+        panel.setAttribute('aria-hidden', 'false');
+        panel.classList.add('open');
             // Show back button when submenu is open
             const backBtn = document.querySelector('.btn-back-menu');
             if (backBtn) {
@@ -1370,14 +1370,14 @@ function initSideMenu() {
                 // Ensure navbar is transformed (back arrow + X button)
                 hideNavbarElements();
             }
-            if (key === 'fahrzeuge') {
-                renderVehicleCards(panel.querySelector('#vehicle-cards'));
-            }
-        };
+        if (key === 'fahrzeuge') {
+            renderVehicleCards(panel.querySelector('#vehicle-cards'));
+        }
+    };
 
     // Check if mobile (max-width: 751px)
     const isMobile = window.innerWidth <= 751;
-    
+
     collapse.querySelectorAll('.side-item[data-submenu]')
         .forEach(item => {
             item.addEventListener('click', (e) => {
@@ -1396,11 +1396,11 @@ function initSideMenu() {
             });
         });
 
-        // Close submenu when menu collapses
-        collapse.addEventListener('hidden.bs.collapse', () => {
-            panel.classList.remove('open');
-            panel.setAttribute('aria-hidden', 'true');
-            panel.innerHTML = '';
+    // Close submenu when menu collapses
+    collapse.addEventListener('hidden.bs.collapse', () => {
+        panel.classList.remove('open');
+        panel.setAttribute('aria-hidden', 'true');
+        panel.innerHTML = '';
             // Hide back button
             const backBtn = document.querySelector('.btn-back-menu');
             if (backBtn) {
