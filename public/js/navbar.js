@@ -205,54 +205,113 @@ function toggleMobileMenuNavbar(show) {
     }
 }
 
-// Watch for menu open/close
-document.addEventListener('DOMContentLoaded', function() {
-    // Create mobile menu navbar on page load
+// Watch for menu open/close - set up after navbar is created
+function setupMobileMenuNavbarWatcher() {
+    console.log('=== setupMobileMenuNavbarWatcher CALLED ===');
+    
+    // Create mobile menu navbar
     createMobileMenuNavbar();
     
     // Watch for menu state changes
     const navbarNav = document.getElementById('navbarNav');
-    if (navbarNav) {
-        // MutationObserver to watch for 'show' class
-        const observer = new MutationObserver(function(mutations) {
-            mutations.forEach(function(mutation) {
-                if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
-                    const isOpen = navbarNav.classList.contains('show');
-                    if (window.innerWidth <= 751) {
-                        toggleMobileMenuNavbar(isOpen);
-                    }
-                }
-            });
-        });
+    console.log('navbarNav found:', !!navbarNav);
+    
+    if (!navbarNav) {
+        console.log('navbarNav not found, retrying in 500ms...');
+        setTimeout(setupMobileMenuNavbarWatcher, 500);
+        return;
+    }
+    
+    // Track previous state
+    let previousState = navbarNav.classList.contains('show');
+    console.log('Initial menu state:', previousState);
+    
+    // Function to check and update
+    function checkMenuState() {
+        const currentState = navbarNav.classList.contains('show');
+        const isMobile = window.innerWidth <= 751;
         
-        observer.observe(navbarNav, {
-            attributes: true,
-            attributeFilter: ['class']
-        });
-        
-        // Also listen to Bootstrap events
-        navbarNav.addEventListener('shown.bs.collapse', function() {
-            if (window.innerWidth <= 751) {
-                toggleMobileMenuNavbar(true);
+        if (currentState !== previousState) {
+            console.log('Menu state CHANGED:', { previous: previousState, current: currentState, isMobile });
+            previousState = currentState;
+            if (isMobile) {
+                toggleMobileMenuNavbar(currentState);
             }
-        });
-        
-        navbarNav.addEventListener('hidden.bs.collapse', function() {
-            toggleMobileMenuNavbar(false);
-        });
-        
-        // Initial check
-        if (navbarNav.classList.contains('show') && window.innerWidth <= 751) {
-            toggleMobileMenuNavbar(true);
         }
     }
+    
+    // MutationObserver to watch for 'show' class
+    const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+                console.log('MutationObserver: class attribute changed');
+                setTimeout(checkMenuState, 100); // Delay to ensure DOM updated
+            }
+        });
+    });
+    
+    observer.observe(navbarNav, {
+        attributes: true,
+        attributeFilter: ['class']
+    });
+    console.log('MutationObserver attached');
+    
+    // Bootstrap events - PRIMARY METHOD
+    navbarNav.addEventListener('shown.bs.collapse', function() {
+        console.log('Bootstrap shown.bs.collapse event fired');
+        previousState = true;
+        if (window.innerWidth <= 751) {
+            toggleMobileMenuNavbar(true);
+        }
+    });
+    
+    navbarNav.addEventListener('hidden.bs.collapse', function() {
+        console.log('Bootstrap hidden.bs.collapse event fired');
+        previousState = false;
+        toggleMobileMenuNavbar(false);
+    });
+    
+    // Also watch toggler clicks directly
+    document.addEventListener('click', function(e) {
+        const toggler = e.target.closest('.navbar-toggler');
+        if (toggler && window.innerWidth <= 751) {
+            console.log('Toggler clicked, checking menu state after delay...');
+            setTimeout(() => {
+                checkMenuState();
+            }, 300);
+        }
+    });
+    
+    // Periodic check as backup (every 500ms)
+    setInterval(() => {
+        if (window.innerWidth <= 751) {
+            checkMenuState();
+        }
+    }, 500);
+    
+    // Initial check
+    if (window.innerWidth <= 751) {
+        checkMenuState();
+    }
+    
+    console.log('=== setupMobileMenuNavbarWatcher COMPLETED ===');
+}
+
+// Watch for menu open/close
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('=== DOMContentLoaded - Mobile Menu Navbar Setup ===');
+    
+    // Wait for navbar to be created
+    setTimeout(() => {
+        setupMobileMenuNavbarWatcher();
+    }, 1000);
     
     // Also watch for window resize
     window.addEventListener('resize', function() {
         const navbarNav = document.getElementById('navbarNav');
-        if (navbarNav) {
+        if (navbarNav && window.innerWidth <= 751) {
             const isOpen = navbarNav.classList.contains('show');
-            toggleMobileMenuNavbar(isOpen && window.innerWidth <= 751);
+            toggleMobileMenuNavbar(isOpen);
         }
     });
 });
