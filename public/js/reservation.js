@@ -112,15 +112,16 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     
-    // If offer is active but no vehicle selected, redirect to fahrzeuge page
-    if (offerId && !selectedCarId && !selectedVehicle) {
-        // Store offer information for discount calculation
-        localStorage.setItem('activeOffer', JSON.stringify({
+    // If offer is active but no vehicle selected, redirect to vehicle selection
+    if (offerId && (!selectedCarId && !selectedVehicle)) {
+        // Store offer info for later use
+        localStorage.setItem('pendingOffer', JSON.stringify({
             id: offerId,
             type: offerType,
             category: offerCategory
         }));
-        window.location.href = `/fahrzeuge?offer=${offerId}`;
+        // Redirect to vehicle selection page
+        window.location.href = '/fahrzeuge';
         return;
     }
     
@@ -1086,70 +1087,37 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('total-price').textContent = `€${totalPrice.toFixed(2)}`;
     }
     
-    // Helper function to parse date (handles both DD.MM.YYYY and YYYY-MM-DD formats)
-    function parseDate(dateString) {
-        if (!dateString) return null;
-        
-        // Try YYYY-MM-DD format first
-        if (dateString.includes('-') && dateString.length === 10) {
-            const parts = dateString.split('-');
-            if (parts.length === 3) {
-                const year = parseInt(parts[0], 10);
-                const month = parseInt(parts[1], 10) - 1; // Month is 0-indexed
-                const day = parseInt(parts[2], 10);
-                return new Date(year, month, day);
-            }
-        }
-        
-        // Try DD.MM.YYYY format
-        if (dateString.includes('.')) {
-            const parts = dateString.split('.');
-            if (parts.length === 3) {
-                const day = parseInt(parts[0], 10);
-                const month = parseInt(parts[1], 10) - 1; // Month is 0-indexed
-                const year = parseInt(parts[2], 10);
-                return new Date(year, month, day);
-            }
-        }
-        
-        // Fallback to default Date parsing
-        return new Date(dateString);
-    }
-    
     // Get discount percentage based on offer ID and conditions
     function getDiscountPercent(offerId, offerType, offerCategory, vehicle, pickupDate, dropoffDate, diffHours) {
         if (!offerId) return 0;
         
-        // Parse dates (handles both formats)
-        const pickup = parseDate(pickupDate);
-        const dropoff = parseDate(dropoffDate);
-        
-        if (!pickup || !dropoff || isNaN(pickup.getTime()) || isNaN(dropoff.getTime())) {
-            console.error('Invalid date format:', pickupDate, dropoffDate);
-            return 0;
-        }
+        // Calculate days between pickup and dropoff
+        const pickup = new Date(pickupDate);
+        const dropoff = new Date(dropoffDate);
         
         // Calculate days until pickup (from today)
         const today = new Date();
-        today.setHours(0, 0, 0, 0); // Reset time to midnight for accurate day calculation
+        today.setHours(0, 0, 0, 0);
         pickup.setHours(0, 0, 0, 0);
         const daysUntilPickup = Math.ceil((pickup - today) / (1000 * 60 * 60 * 24));
         const rentalDays = Math.ceil(diffHours / 24);
         
         console.log('Discount calculation:', {
             offerId,
+            pickupDate,
             daysUntilPickup,
             rentalDays,
-            pickupDate,
-            dropoffDate
+            diffHours
         });
         
         switch (offerId) {
             case 'offer-1': // Frühbucher-Rabatt - 20%
-                // Requires booking at least 14 days in advance
+                // Requires booking at least 14 days in advance and minimum 3 days rental
                 if (daysUntilPickup >= 14 && rentalDays >= 3) {
+                    console.log('Frühbucher-Rabatt applied: 20%');
                     return 20;
                 }
+                console.log('Frühbucher-Rabatt not applicable:', { daysUntilPickup, rentalDays });
                 return 0;
                 
             case 'offer-2': // Wochenend-Special - 15%
