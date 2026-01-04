@@ -851,30 +851,27 @@ function initSideMenu() {
         }
         document.body.style.overflow = 'hidden';
         document.body.classList.add('menu-open');
-        // Hide navbar elements directly
+        // Hide navbar elements directly - AGGRESSIVE approach
         const navbar = document.querySelector('.navbar');
         if (navbar && window.innerWidth <= 751) {
             navbar.classList.add('menu-open');
-            // Hide container completely
+            // Hide container and all its children
             const container = navbar.querySelector('.container');
             if (container) {
-                container.style.display = 'none';
-                container.style.visibility = 'hidden';
-                container.style.height = '0';
-                container.style.overflow = 'hidden';
-            }
-            // Move menu outside container to navbar directly
-            if (collapse && collapse.parentElement === container) {
-                navbar.appendChild(collapse);
-                collapse.style.position = 'fixed';
-                collapse.style.top = '0';
-                collapse.style.left = '0';
-                collapse.style.right = '0';
-                collapse.style.bottom = '0';
-                collapse.style.zIndex = '1051';
-                collapse.style.width = '100vw';
-                collapse.style.height = '100vh';
-                collapse.style.background = '#ffffff';
+                container.style.cssText = 'display: none !important; visibility: hidden !important; height: 0 !important; width: 0 !important; overflow: hidden !important; opacity: 0 !important; pointer-events: none !important;';
+                // Hide all children
+                const toggler = container.querySelector('.navbar-toggler');
+                const brand = container.querySelector('.brand-center');
+                const account = container.querySelector('.account');
+                if (toggler) {
+                    toggler.style.cssText = 'display: none !important; visibility: hidden !important;';
+                }
+                if (brand) {
+                    brand.style.cssText = 'display: none !important; visibility: hidden !important;';
+                }
+                if (account) {
+                    account.style.cssText = 'display: none !important; visibility: hidden !important;';
+                }
             }
         }
     });
@@ -891,26 +888,23 @@ function initSideMenu() {
         const navbar = document.querySelector('.navbar');
         if (navbar) {
             navbar.classList.remove('menu-open');
-            // Show container
+            // Show container and all its children
             const container = navbar.querySelector('.container');
             if (container) {
-                container.style.display = '';
-                container.style.visibility = '';
-                container.style.height = '';
-                container.style.overflow = '';
-            }
-            // Move menu back to container
-            if (collapse && collapse.parentElement === navbar) {
-                container.appendChild(collapse);
-                collapse.style.position = '';
-                collapse.style.top = '';
-                collapse.style.left = '';
-                collapse.style.right = '';
-                collapse.style.bottom = '';
-                collapse.style.zIndex = '';
-                collapse.style.width = '';
-                collapse.style.height = '';
-                collapse.style.background = '';
+                container.style.cssText = '';
+                // Show all children
+                const toggler = container.querySelector('.navbar-toggler');
+                const brand = container.querySelector('.brand-center');
+                const account = container.querySelector('.account');
+                if (toggler) {
+                    toggler.style.cssText = '';
+                }
+                if (brand) {
+                    brand.style.cssText = '';
+                }
+                if (account) {
+                    account.style.cssText = '';
+                }
             }
         }
     });
