@@ -715,9 +715,25 @@ function initSideMenu() {
             // Add submenu-open class to navbar to keep navbar hidden
             // Also ensure menu-open class is present
             const navbar = document.querySelector('.navbar');
-            if (navbar) {
+            if (navbar && window.innerWidth <= 751) {
                 navbar.classList.add('submenu-open');
                 navbar.classList.add('menu-open'); // Keep menu-open when submenu is open
+                // Hide navbar elements directly via inline styles
+                const toggler = navbar.querySelector('.navbar-toggler');
+                const brand = navbar.querySelector('.brand-center');
+                const account = navbar.querySelector('.account');
+                if (toggler) {
+                    toggler.style.display = 'none';
+                    toggler.style.visibility = 'hidden';
+                }
+                if (brand) {
+                    brand.style.display = 'none';
+                    brand.style.visibility = 'hidden';
+                }
+                if (account) {
+                    account.style.display = 'none';
+                    account.style.visibility = 'hidden';
+                }
             }
             if (key === 'fahrzeuge') {
                 renderVehicleCards(panel.querySelector('#vehicle-cards'));
