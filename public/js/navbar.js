@@ -647,6 +647,7 @@ function addHamburgerMenuCloseListener() {
 }
 
 // Function to transform navbar when menu is open (like Porsche example)
+// STEP 1: Simple test - just change hamburger to back arrow
 function hideNavbarElements() {
     if (window.innerWidth > 751) {
         console.log('hideNavbarElements: Not mobile, skipping');
@@ -663,58 +664,30 @@ function hideNavbarElements() {
     }
     
     const toggler = container.querySelector('.navbar-toggler');
-    const brand = container.querySelector('.brand-center');
-    const account = container.querySelector('.account');
-    const accountBtn = account?.querySelector('.account-btn');
     
-    console.log('hideNavbarElements: Elements found', { toggler: !!toggler, brand: !!brand, account: !!account, accountBtn: !!accountBtn });
+    console.log('hideNavbarElements: Toggler found:', !!toggler);
     
-    // Transform navbar-toggler to back arrow
+    // STEP 1 TEST: Just change hamburger icon to back arrow
     if (toggler) {
+        console.log('hideNavbarElements: Current toggler HTML:', toggler.innerHTML);
+        
         // Store original content if not already stored
         if (!toggler.dataset.originalContent) {
             toggler.dataset.originalContent = toggler.innerHTML;
             console.log('hideNavbarElements: Stored original toggler content');
         }
-        // Replace with back arrow
+        
+        // Replace with back arrow - SIMPLE TEST
         toggler.innerHTML = '<i class="bi bi-arrow-left" style="font-size: 1.5rem;"></i>';
-        toggler.style.cssText = 'display: flex !important; align-items: center !important; padding: 0.5rem !important; border: none !important; background: transparent !important; cursor: pointer !important;';
-        // Remove Bootstrap toggle functionality temporarily
-        toggler.removeAttribute('data-bs-toggle');
-        toggler.removeAttribute('data-bs-target');
-        // Add click handler for back - close submenu if open, otherwise close menu
-        toggler.onclick = function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            const submenuPanel = document.getElementById('submenu-panel');
-            if (submenuPanel && submenuPanel.classList.contains('open')) {
-                // Close submenu
-                submenuPanel.classList.remove('open');
-                submenuPanel.setAttribute('aria-hidden', 'true');
-                submenuPanel.innerHTML = '';
-                const navbar = document.querySelector('.navbar');
-                if (navbar) {
-                    navbar.classList.remove('submenu-open');
-                }
-            } else {
-                // Close menu
-                const navbarNav = document.getElementById('navbarNav');
-                if (navbarNav) {
-                    try {
-                        const collapseInstance = window.bootstrap?.Collapse?.getInstance(navbarNav);
-                        if (collapseInstance) {
-                            collapseInstance.hide();
-                        } else {
-                            navbarNav.classList.remove('show');
-                        }
-                    } catch (err) {
-                        navbarNav.classList.remove('show');
-                    }
-                }
-            }
-        };
-        console.log('hideNavbarElements: Toggler transformed to back arrow');
+        console.log('hideNavbarElements: Changed to back arrow');
+        
+        // Keep Bootstrap functionality for now - just test the icon change
+        // toggler.removeAttribute('data-bs-toggle');
+        // toggler.removeAttribute('data-bs-target');
     }
+    
+    navbar.classList.add('menu-open');
+    console.log('hideNavbarElements: STEP 1 TEST COMPLETE - hamburger → back arrow');
     
     // Brand stays visible (centered)
     if (brand) {
