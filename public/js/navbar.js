@@ -1,4 +1,118 @@
 ﻿// Navbar JavaScript
+
+// Function to get page title based on current route
+function getPageTitle() {
+    const path = window.location.pathname;
+    const titleMap = {
+        '/': 'AutooR',
+        '/fahrzeuge': 'Fahrzeuge',
+        '/angebote': 'Angebote',
+        '/self-services': 'Self-Services',
+        '/extras-versicherung': 'Extras',
+        '/geschaeftskunden': 'Geschäftskunden',
+        '/standorte': 'Standorte',
+        '/hilfe': 'Hilfe & Kontakt',
+        '/reservation': 'Reservierung',
+        '/buchungen': 'Buchungen',
+        '/abos': 'Abos',
+        '/persoenliche-daten': 'Persönliche Daten',
+        '/profile': 'Profile'
+    };
+    return titleMap[path] || 'AutooR';
+}
+
+// STEP 1: Global event listener for toggler click - transform navbar when menu opens
+document.addEventListener('click', function(e) {
+    const toggler = e.target.closest('.navbar-toggler');
+    if (toggler && window.innerWidth <= 751) {
+        console.log('STEP 1: Toggler clicked!');
+        
+        const navbarNav = document.getElementById('navbarNav');
+        if (navbarNav) {
+            setTimeout(() => {
+                const isOpen = navbarNav.classList.contains('show');
+                console.log('STEP 1: Menu state:', isOpen);
+                
+                const navbar = document.querySelector('.navbar');
+                const container = navbar?.querySelector('.container');
+                const brand = container?.querySelector('.brand-center');
+                const account = container?.querySelector('.account');
+                const accountBtn = account?.querySelector('.account-btn');
+                
+                if (isOpen) {
+                    // Menu is open - transform navbar
+                    console.log('STEP 1: Menu OPENED - transforming navbar');
+                    
+                    // 1. Change hamburger to back arrow
+                    if (!toggler.dataset.originalContent) {
+                        toggler.dataset.originalContent = toggler.innerHTML;
+                    }
+                    toggler.innerHTML = '<i class="bi bi-arrow-left" style="font-size: 1.5rem;"></i>';
+                    
+                    // 2. Change "AutooR" to page title
+                    if (brand) {
+                        if (!brand.dataset.originalContent) {
+                            brand.dataset.originalContent = brand.textContent || brand.innerHTML;
+                        }
+                        const pageTitle = getPageTitle();
+                        brand.textContent = pageTitle;
+                        console.log('STEP 1: Changed brand to:', pageTitle);
+                    }
+                    
+                    // 3. Change person icon to X button
+                    if (accountBtn) {
+                        if (!accountBtn.dataset.originalContent) {
+                            accountBtn.dataset.originalContent = accountBtn.innerHTML;
+                        }
+                        accountBtn.innerHTML = '<span style="font-size: 1.5rem; font-weight: 300;">&times;</span>';
+                        // Make X button close the menu
+                        accountBtn.onclick = function(e) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            if (navbarNav) {
+                                try {
+                                    const collapseInstance = window.bootstrap?.Collapse?.getInstance(navbarNav);
+                                    if (collapseInstance) {
+                                        collapseInstance.hide();
+                                    } else {
+                                        navbarNav.classList.remove('show');
+                                    }
+                                } catch (err) {
+                                    navbarNav.classList.remove('show');
+                                }
+                            }
+                        };
+                        console.log('STEP 1: Changed account to X button');
+                    }
+                    
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    // Menu is closed - restore original
+                    console.log('STEP 1: Menu CLOSED - restoring navbar');
+                    
+                    // 1. Restore hamburger
+                    if (toggler.dataset.originalContent) {
+                        toggler.innerHTML = toggler.dataset.originalContent;
+                    }
+                    
+                    // 2. Restore "AutooR"
+                    if (brand && brand.dataset.originalContent) {
+                        brand.textContent = brand.dataset.originalContent;
+                    }
+                    
+                    // 3. Restore person icon
+                    if (accountBtn && accountBtn.dataset.originalContent) {
+                        accountBtn.innerHTML = accountBtn.dataset.originalContent;
+                        accountBtn.onclick = null; // Remove close handler
+                    }
+                    
+                    document.body.style.overflow = '';
+                }
+            }, 200);
+        }
+    }
+});
+
 document.addEventListener('DOMContentLoaded', function() {
     console.log('DOM loaded, calling updateNavbar');
     
