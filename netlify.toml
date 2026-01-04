@@ -5,18 +5,19 @@
 [build.environment]
   NODE_VERSION = "18"
 
-# API proxy - Backend için (Backend URL'ini buraya ekleyeceğiz)
+# API proxy - Backend için
+# NOT: Backend URL'ini production'da deploy ettikten sonra buraya ekleyin
 # Örnek: Backend Railway'de ise
 # [[redirects]]
 #   from = "/api/*"
-#   to = "https://autoor-backend.railway.app/api/:splat"
+#   to = "https://YOUR-BACKEND-URL.com/api/:splat"
 #   status = 200
 #   force = true
 
 # Auth routes için proxy
 # [[redirects]]
 #   from = "/auth/*"
-#   to = "https://autoor-backend.railway.app/auth/:splat"
+#   to = "https://YOUR-BACKEND-URL.com/auth/:splat"
 #   status = 200
 #   force = true
 
