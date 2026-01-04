@@ -839,10 +839,8 @@ ease;
             background: #ffffff !important;
         }
         
-        /* Hide navbar-container when mobile menu navbar is visible */
-        body:has(#mobile-menu-navbar[style*="display: block"]) #navbar-container,
-        #mobile-menu-navbar[style*="display: block"] ~ #navbar-container,
-        #mobile-menu-navbar[style*="display: block"] ~ * #navbar-container {
+        /* Hide navbar-container when mobile menu is active */
+        #navbar-container.mobile-menu-active {
             display: none !important;
             visibility: hidden !important;
             opacity: 0 !important;
@@ -850,10 +848,11 @@ ease;
             overflow: hidden !important;
             position: absolute !important;
             left: -9999px !important;
+            pointer-events: none !important;
         }
         
-        /* Show mobile menu navbar when it exists and has display:block */
-        #mobile-menu-navbar[style*="display: block"] {
+        /* Show mobile menu navbar when active */
+        #mobile-menu-navbar.active {
             display: block !important;
             visibility: visible !important;
             opacity: 1 !important;
