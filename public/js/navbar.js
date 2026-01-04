@@ -803,10 +803,26 @@ function initSideMenu() {
         }
         document.body.style.overflow = 'hidden';
         document.body.classList.add('menu-open');
-        // Hide navbar elements
+        // Hide navbar elements directly
         const navbar = document.querySelector('.navbar');
         if (navbar) {
             navbar.classList.add('menu-open');
+            // Also hide elements directly via inline styles as backup
+            const toggler = navbar.querySelector('.navbar-toggler');
+            const brand = navbar.querySelector('.brand-center');
+            const account = navbar.querySelector('.account');
+            if (toggler) {
+                toggler.style.display = 'none';
+                toggler.style.visibility = 'hidden';
+            }
+            if (brand) {
+                brand.style.display = 'none';
+                brand.style.visibility = 'hidden';
+            }
+            if (account) {
+                account.style.display = 'none';
+                account.style.visibility = 'hidden';
+            }
         }
     });
     
@@ -822,6 +838,22 @@ function initSideMenu() {
         const navbar = document.querySelector('.navbar');
         if (navbar) {
             navbar.classList.remove('menu-open');
+            // Show elements directly via inline styles
+            const toggler = navbar.querySelector('.navbar-toggler');
+            const brand = navbar.querySelector('.brand-center');
+            const account = navbar.querySelector('.account');
+            if (toggler) {
+                toggler.style.display = '';
+                toggler.style.visibility = '';
+            }
+            if (brand) {
+                brand.style.display = '';
+                brand.style.visibility = '';
+            }
+            if (account) {
+                account.style.display = '';
+                account.style.visibility = '';
+            }
         }
     });
 
