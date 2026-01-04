@@ -921,34 +921,16 @@ function initSideMenu() {
     
     // Show backdrop when menu opens
     collapse.addEventListener('shown.bs.collapse', () => {
+        console.log('Menu opened - shown.bs.collapse event');
         const backdrop = document.getElementById('mobile-menu-backdrop');
         if (backdrop && window.innerWidth <= 751) {
             backdrop.classList.add('show');
         }
         document.body.style.overflow = 'hidden';
         document.body.classList.add('menu-open');
-        // Hide navbar elements directly - AGGRESSIVE approach
-        const navbar = document.querySelector('.navbar');
-        if (navbar && window.innerWidth <= 751) {
-            navbar.classList.add('menu-open');
-            // Hide container and all its children
-            const container = navbar.querySelector('.container');
-            if (container) {
-                container.style.cssText = 'display: none !important; visibility: hidden !important; height: 0 !important; width: 0 !important; overflow: hidden !important; opacity: 0 !important; pointer-events: none !important;';
-                // Hide all children
-                const toggler = container.querySelector('.navbar-toggler');
-                const brand = container.querySelector('.brand-center');
-                const account = container.querySelector('.account');
-                if (toggler) {
-                    toggler.style.cssText = 'display: none !important; visibility: hidden !important;';
-                }
-                if (brand) {
-                    brand.style.cssText = 'display: none !important; visibility: hidden !important;';
-                }
-                if (account) {
-                    account.style.cssText = 'display: none !important; visibility: hidden !important;';
-                }
-            }
+        // Hide navbar elements
+        if (window.innerWidth <= 751) {
+            hideNavbarElements();
         }
     });
     
