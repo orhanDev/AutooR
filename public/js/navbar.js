@@ -263,13 +263,8 @@ function setupMobileMenuNavbarWatcher() {
     navbarNav.addEventListener('shown.bs.collapse', function() {
         console.log('Bootstrap shown.bs.collapse event fired');
         previousState = true;
-        if (window.innerWidth <= 751) {
-            // Wait for menu to fully open before showing 2nd navbar
-            setTimeout(() => {
-                console.log('Menu fully opened, now showing 2nd navbar');
-                toggleMobileMenuNavbar(true);
-            }, 300); // Delay to let menu animation complete
-        }
+        // Don't show 2nd navbar immediately - wait for user to click a menu link
+        // 2nd navbar will be shown when user clicks on a menu link
     });
     
     navbarNav.addEventListener('hidden.bs.collapse', function() {
@@ -279,22 +274,41 @@ function setupMobileMenuNavbarWatcher() {
         toggleMobileMenuNavbar(false);
     });
     
-    // Also watch toggler clicks directly
+    // Watch for menu link clicks - show 2nd navbar when user clicks a link
     document.addEventListener('click', function(e) {
+        // Check if clicked on a menu link
+        const menuLink = e.target.closest('.nav-link');
+        if (menuLink && window.innerWidth <= 751) {
+            const navbarNav = document.getElementById('navbarNav');
+            if (navbarNav && navbarNav.classList.contains('show')) {
+                console.log('Menu link clicked, showing 2nd navbar');
+                // Show 2nd navbar when user clicks a menu link
+                setTimeout(() => {
+                    toggleMobileMenuNavbar(true);
+                }, 100);
+            }
+        }
+        
+        // Also watch toggler clicks
         const toggler = e.target.closest('.navbar-toggler');
         if (toggler && window.innerWidth <= 751) {
-            console.log('Toggler clicked, waiting for menu to open...');
-            // Wait longer for menu to fully open
-            setTimeout(() => {
-                checkMenuState();
-            }, 500);
+            console.log('Toggler clicked, menu opening...');
+            // Don't show 2nd navbar on toggler click - wait for link click
         }
     });
     
-    // Periodic check as backup (every 500ms)
+    // Periodic check as backup (every 500ms) - but don't auto-show 2nd navbar
     setInterval(() => {
         if (window.innerWidth <= 751) {
-            checkMenuState();
+            // Only check state, don't auto-show 2nd navbar
+            const currentState = navbarNav.classList.contains('show');
+            if (currentState !== previousState) {
+                previousState = currentState;
+                // Only hide 2nd navbar if menu closed, don't show it automatically
+                if (!currentState) {
+                    toggleMobileMenuNavbar(false);
+                }
+            }
         }
     }, 500);
     
