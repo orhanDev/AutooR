@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Update navbar with a slight delay to ensure DOM is ready
     setTimeout(() => {
-        updateNavbar();
+    updateNavbar();
     }, 100);
     
     // Also update navbar after a longer delay to catch any late-loading elements
