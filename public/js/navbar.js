@@ -735,43 +735,23 @@ function hideNavbarElements() {
 }
 
 // Function to restore navbar when menu is closed
+// STEP 1: Simple test - just restore hamburger icon
 function showNavbarElements() {
     const navbar = document.querySelector('.navbar');
     const container = navbar?.querySelector('.container');
     if (!navbar || !container) return;
     
     const toggler = container.querySelector('.navbar-toggler');
-    const brand = container.querySelector('.brand-center');
-    const account = container.querySelector('.account');
-    const accountBtn = account?.querySelector('.account-btn');
     
-    // Restore navbar-toggler to hamburger menu
+    // STEP 1 TEST: Just restore hamburger icon
     if (toggler && toggler.dataset.originalContent) {
+        console.log('showNavbarElements: Restoring original toggler content');
         toggler.innerHTML = toggler.dataset.originalContent;
-        toggler.style.cssText = '';
-        // Restore Bootstrap toggle functionality
-        toggler.setAttribute('data-bs-toggle', 'collapse');
-        toggler.setAttribute('data-bs-target', '#navbarNav');
-    }
-    
-    // Brand stays visible
-    if (brand) {
-        brand.style.cssText = '';
-    }
-    
-    // Restore account button to person icon
-    if (account && accountBtn && accountBtn.dataset.originalContent) {
-        accountBtn.innerHTML = accountBtn.dataset.originalContent;
-        accountBtn.style.cssText = '';
-        // Restore account menu functionality
-        accountBtn.setAttribute('aria-expanded', 'false');
-        accountBtn.setAttribute('aria-controls', 'account-menu');
-        accountBtn.onclick = null; // Remove close handler
+        console.log('showNavbarElements: STEP 1 TEST COMPLETE - back arrow → hamburger');
     }
     
     navbar.classList.remove('menu-open');
     navbar.classList.remove('submenu-open');
-    console.log('Navbar restored: back arrow → hamburger, X → person icon');
 }
 
 // Side menu logic: show right panel submenu when clicking left items
