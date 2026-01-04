@@ -46,13 +46,29 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     // Add scroll effect to navbar - hide content behind navbar when scrolling
-    addNavbarScrollEffect();
+    // Wait for navbar to be created
+    setTimeout(() => {
+        addNavbarScrollEffect();
+    }, 200);
 });
 
 // Add scroll effect to navbar - make background opaque when scrolling
 function addNavbarScrollEffect() {
+    // Try to find navbar - retry if not found
     const navbar = document.querySelector('.navbar.fixed-top');
-    if (!navbar) return;
+    if (!navbar) {
+        // Retry after a short delay if navbar not found yet
+        setTimeout(() => {
+            addNavbarScrollEffect();
+        }, 100);
+        return;
+    }
+    
+    // Check if already initialized
+    if (navbar.dataset.scrollEffectInitialized === 'true') {
+        return;
+    }
+    navbar.dataset.scrollEffectInitialized = 'true';
     
     let ticking = false;
     
@@ -77,10 +93,13 @@ function addNavbarScrollEffect() {
         }
     }
     
+    // Add scroll listener
     window.addEventListener('scroll', requestTick, { passive: true });
     
     // Initial check
     updateNavbarOnScroll();
+    
+    console.log('Navbar scroll effect initialized');
 }
 
 // Shared vehicle dataset for submenu (images and details)
@@ -198,6 +217,11 @@ function createNavbar() {
     initSideMenu();
     // Initialize account dropdown
     initAccountMenu();
+    
+    // Initialize scroll effect after navbar is created
+    setTimeout(() => {
+        addNavbarScrollEffect();
+    }, 100);
 }
 
 // Add navbar CSS styles

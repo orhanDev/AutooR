@@ -37,6 +37,12 @@ body { margin-top: 0 !important; }
     transition: all 0.3s ease !important;
 }
 
+/* Ensure navbar background covers content on all pages */
+.navbar.fixed-top.navbar-scrolled {
+    background-color: #ffffff !important;
+    background: #ffffff !important;
+}
+
 .navbar-brand {
     font-weight: 800;
     font-size: 1.8rem;
