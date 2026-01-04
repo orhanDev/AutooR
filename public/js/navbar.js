@@ -702,9 +702,12 @@ function initSideMenu() {
         mutations.forEach(function(mutation) {
             if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
                 const isOpen = collapse.classList.contains('show');
+                console.log('MutationObserver: Menu state changed, isOpen:', isOpen, 'width:', window.innerWidth);
                 if (isOpen && window.innerWidth <= 751) {
+                    console.log('MutationObserver: Hiding navbar elements');
                     hideNavbarElements();
                 } else if (!isOpen) {
+                    console.log('MutationObserver: Showing navbar elements');
                     showNavbarElements();
                 }
             }
@@ -716,8 +719,22 @@ function initSideMenu() {
         attributeFilter: ['class']
     });
     
+    // Also listen to Bootstrap collapse events
+    collapse.addEventListener('shown.bs.collapse', function() {
+        console.log('Bootstrap shown.bs.collapse event fired');
+        if (window.innerWidth <= 751) {
+            hideNavbarElements();
+        }
+    });
+    
+    collapse.addEventListener('hidden.bs.collapse', function() {
+        console.log('Bootstrap hidden.bs.collapse event fired');
+        showNavbarElements();
+    });
+    
     // Also check immediately
     if (collapse.classList.contains('show') && window.innerWidth <= 751) {
+        console.log('Initial check: Menu is open, hiding navbar elements');
         hideNavbarElements();
     }
 

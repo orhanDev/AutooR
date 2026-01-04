@@ -840,12 +840,16 @@ ease;
         }
         
         /* Hide navbar elements when menu is open on mobile - but keep container visible (menu is inside) */
-        .navbar .collapse.navbar-collapse.show ~ .container .navbar-toggler,
-        .navbar .collapse.navbar-collapse.show ~ .container .brand-center,
-        .navbar .collapse.navbar-collapse.show ~ .container .account,
+        /* Structure: .container > [.navbar-toggler, .brand-center, .collapse, .account] */
+        /* When collapse has 'show' class, hide sibling elements in same container */
+        .navbar .container:has(.collapse.navbar-collapse.show) .navbar-toggler,
+        .navbar .container:has(.collapse.navbar-collapse.show) .brand-center,
+        .navbar .container:has(.collapse.navbar-collapse.show) .account,
+        /* When navbar has menu-open class, hide toggler, brand, and account */
         .navbar.menu-open .container .navbar-toggler,
         .navbar.menu-open .container .brand-center,
         .navbar.menu-open .container .account,
+        /* When navbar has submenu-open class, hide toggler, brand, and account */
         .navbar.submenu-open .container .navbar-toggler,
         .navbar.submenu-open .container .brand-center,
         .navbar.submenu-open .container .account {
