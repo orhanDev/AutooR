@@ -505,7 +505,7 @@ function addCloseButtonListener() {
         }
     });
     
-    // Add body scroll lock when menu opens
+    // Add body scroll lock when menu opens AND hide navbar elements
     document.addEventListener('click', function(e) {
         if (e.target.closest('.navbar-toggler')) {
             setTimeout(() => {
@@ -513,9 +513,16 @@ function addCloseButtonListener() {
                 if (navbarNav && navbarNav.classList.contains('show')) {
                     document.body.style.overflow = 'hidden';
                     document.body.classList.add('menu-open');
+                    // Also hide navbar elements when toggler is clicked
+                    if (window.innerWidth <= 751) {
+                        hideNavbarElements();
+                    }
                 } else {
                     document.body.style.overflow = '';
                     document.body.classList.remove('menu-open');
+                    if (window.innerWidth <= 751) {
+                        showNavbarElements();
+                    }
                 }
             }, 100);
         }
@@ -651,19 +658,26 @@ function hideNavbarElements() {
     const brand = container.querySelector('.brand-center');
     const account = container.querySelector('.account');
     
-    if (toggler) {
-        toggler.style.cssText = 'display: none !important; visibility: hidden !important; opacity: 0 !important; position: absolute !important; left: -9999px !important;';
-    }
-    if (brand) {
-        brand.style.cssText = 'display: none !important; visibility: hidden !important; opacity: 0 !important; position: absolute !important; left: -9999px !important;';
-    }
-    if (account) {
-        account.style.cssText = 'display: none !important; visibility: hidden !important; opacity: 0 !important; position: absolute !important; left: -9999px !important;';
-    }
-    // DO NOT hide container - menu is inside it!
+    // Use multiple methods to ensure elements are hidden
+    [toggler, brand, account].forEach(el => {
+        if (el) {
+            // Method 1: Inline styles (highest priority)
+            el.style.setProperty('display', 'none', 'important');
+            el.style.setProperty('visibility', 'hidden', 'important');
+            el.style.setProperty('opacity', '0', 'important');
+            el.style.setProperty('position', 'absolute', 'important');
+            el.style.setProperty('left', '-9999px', 'important');
+            el.style.setProperty('width', '0', 'important');
+            el.style.setProperty('height', '0', 'important');
+            el.style.setProperty('overflow', 'hidden', 'important');
+            el.style.setProperty('pointer-events', 'none', 'important');
+            // Method 2: Add a class for CSS targeting
+            el.classList.add('menu-hidden');
+        }
+    });
     
     navbar.classList.add('menu-open');
-    console.log('Navbar elements hidden (container kept visible for menu)');
+    console.log('Navbar elements hidden (container kept visible for menu)', { toggler: !!toggler, brand: !!brand, account: !!account });
 }
 
 // Function to show navbar elements when menu is closed
@@ -676,16 +690,21 @@ function showNavbarElements() {
     const brand = container.querySelector('.brand-center');
     const account = container.querySelector('.account');
     
-    if (toggler) {
-        toggler.style.cssText = '';
-    }
-    if (brand) {
-        brand.style.cssText = '';
-    }
-    if (account) {
-        account.style.cssText = '';
-    }
-    container.style.cssText = '';
+    // Remove all inline styles and classes
+    [toggler, brand, account].forEach(el => {
+        if (el) {
+            el.style.removeProperty('display');
+            el.style.removeProperty('visibility');
+            el.style.removeProperty('opacity');
+            el.style.removeProperty('position');
+            el.style.removeProperty('left');
+            el.style.removeProperty('width');
+            el.style.removeProperty('height');
+            el.style.removeProperty('overflow');
+            el.style.removeProperty('pointer-events');
+            el.classList.remove('menu-hidden');
+        }
+    });
     
     navbar.classList.remove('menu-open');
     console.log('Navbar elements shown');
