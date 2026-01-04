@@ -52,26 +52,12 @@ function createMobileMenuNavbar() {
         </div>
     `;
     
-    // Insert before original navbar
-    const originalNavbar = document.querySelector('.navbar.fixed-top:not(.mobile-menu-navbar)');
-    const navbarContainer = document.getElementById('navbar-container');
-    
-    console.log('Insertion check:', {
-        originalNavbar: !!originalNavbar,
-        navbarContainer: !!navbarContainer,
-        originalNavbarParent: originalNavbar?.parentNode,
-        navbarContainerParent: navbarContainer?.parentNode
-    });
-    
-    if (navbarContainer && navbarContainer.parentNode) {
-        console.log('Inserting mobile navbar before navbar-container');
-        navbarContainer.parentNode.insertBefore(navbar, navbarContainer);
-    } else if (originalNavbar && originalNavbar.parentNode) {
-        console.log('Inserting mobile navbar before original navbar');
-        originalNavbar.parentNode.insertBefore(navbar, originalNavbar);
-    } else {
-        console.log('Inserting mobile navbar at body start');
+    // Insert at the very top of body (before everything)
+    console.log('Inserting mobile navbar at body start');
+    if (document.body.firstChild) {
         document.body.insertBefore(navbar, document.body.firstChild);
+    } else {
+        document.body.appendChild(navbar);
     }
     
     console.log('Mobile navbar inserted, checking DOM:', {
@@ -90,7 +76,7 @@ function createMobileMenuNavbar() {
         backBtn.addEventListener('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
-            console.log('Back button clicked');
+            console.log('Back button clicked - preventing default menu close');
             // Close submenu if open, otherwise close menu
             const submenuPanel = document.getElementById('submenu-panel');
             if (submenuPanel && submenuPanel.classList.contains('open')) {
@@ -99,7 +85,7 @@ function createMobileMenuNavbar() {
                 submenuPanel.setAttribute('aria-hidden', 'true');
                 submenuPanel.innerHTML = '';
             } else {
-                console.log('Closing menu');
+                console.log('Closing menu via back button');
                 // Close menu
                 const navbarNav = document.getElementById('navbarNav');
                 if (navbarNav) {
@@ -123,7 +109,7 @@ function createMobileMenuNavbar() {
         closeBtn.addEventListener('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
-            console.log('Close button clicked');
+            console.log('Close button clicked - preventing default menu close');
             // Close menu
             const navbarNav = document.getElementById('navbarNav');
             if (navbarNav) {
@@ -141,6 +127,14 @@ function createMobileMenuNavbar() {
             }
         });
     }
+    
+    // Prevent clicks on mobile navbar from closing menu accidentally
+    navbar.addEventListener('click', function(e) {
+        // Only stop propagation if clicking on navbar itself, not buttons
+        if (e.target === navbar || e.target.closest('.navbar-title')) {
+            e.stopPropagation();
+        }
+    });
     
     console.log('=== createMobileMenuNavbar COMPLETED ===');
 }
@@ -885,6 +879,17 @@ function addHamburgerMenuCloseListener() {
     navbarNav.addEventListener('click', function(e) {
         e.stopPropagation();
     });
+    
+    // Prevent clicks on mobile menu navbar from closing the menu
+    const mobileMenuNavbar = document.getElementById('mobile-menu-navbar');
+    if (mobileMenuNavbar) {
+        mobileMenuNavbar.addEventListener('click', function(e) {
+            // Only stop propagation if not clicking on back/close buttons
+            if (!e.target.closest('.btn-back-navbar') && !e.target.closest('.btn-close-navbar')) {
+                e.stopPropagation();
+            }
+        });
+    }
 
     // Explicitly toggle on toggler click to avoid state desync
     if (navbarToggler) {
@@ -958,12 +963,21 @@ function addHamburgerMenuCloseListener() {
         });
     }
 
-    // Close only when clicking outside the drawer and the toggler
+    // Close only when clicking outside the drawer, the toggler, and the mobile menu navbar
     document.addEventListener('click', function(event) {
         const isOpen = navbarNav.classList.contains('show');
         const clickInsideDrawer = navbarNav.contains(event.target);
         const clickOnToggler = navbarToggler && navbarToggler.contains(event.target);
-        if (isOpen && !clickInsideDrawer && !clickOnToggler) {
+        const mobileMenuNavbar = document.getElementById('mobile-menu-navbar');
+        const clickOnMobileNavbar = mobileMenuNavbar && mobileMenuNavbar.contains(event.target);
+        
+        // Don't close if clicking on mobile menu navbar (except back/close buttons)
+        const clickOnMobileNavbarButton = clickOnMobileNavbar && (
+            event.target.closest('.btn-back-navbar') || 
+            event.target.closest('.btn-close-navbar')
+        );
+        
+        if (isOpen && !clickInsideDrawer && !clickOnToggler && !clickOnMobileNavbar) {
             if (collapseInstance) {
                 collapseInstance.hide();
             } else {
