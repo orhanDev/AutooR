@@ -505,28 +505,26 @@ function addCloseButtonListener() {
         }
     });
     
-    // Add body scroll lock when menu opens AND transform navbar elements
+    // Add body scroll lock when menu opens
+    // Note: Navbar transformation is handled by MutationObserver above
     document.addEventListener('click', function(e) {
         if (e.target.closest('.navbar-toggler')) {
+            console.log('Toggler clicked!');
             const navbarNav = document.getElementById('navbarNav');
             if (navbarNav) {
                 // Check current state after a delay (Bootstrap needs time to update)
                 setTimeout(() => {
                     const isOpen = navbarNav.classList.contains('show');
-                    console.log('Toggler clicked - checking menu state:', isOpen, 'width:', window.innerWidth);
+                    console.log('Toggler clicked - menu state after delay:', isOpen, 'width:', window.innerWidth);
                     
-                    if (isOpen && window.innerWidth <= 751) {
-                        console.log('Menu is OPEN - transforming navbar');
-                        hideNavbarElements();
+                    if (isOpen) {
                         document.body.style.overflow = 'hidden';
                         document.body.classList.add('menu-open');
-                    } else if (!isOpen && window.innerWidth <= 751) {
-                        console.log('Menu is CLOSED - restoring navbar');
-                        showNavbarElements();
+                    } else {
                         document.body.style.overflow = '';
                         document.body.classList.remove('menu-open');
                     }
-                }, 200); // Give Bootstrap time to add/remove 'show' class
+                }, 300); // Give Bootstrap time to add/remove 'show' class
             }
         }
     });
@@ -809,49 +807,55 @@ function initSideMenu() {
     const collapse = document.getElementById('navbarNav');
     if (!panel || !collapse) return;
     
-    // Listen to Bootstrap collapse events - PRIMARY METHOD
-    collapse.addEventListener('shown.bs.collapse', function() {
-        console.log('Bootstrap shown.bs.collapse event fired - menu is OPEN');
-        if (window.innerWidth <= 751) {
-            setTimeout(() => {
-                hideNavbarElements();
-            }, 50);
-        }
-    });
-    
-    collapse.addEventListener('hidden.bs.collapse', function() {
-        console.log('Bootstrap hidden.bs.collapse event fired - menu is CLOSED');
-        setTimeout(() => {
-            showNavbarElements();
-        }, 50);
-    });
-    
-    // Use MutationObserver as backup - detect when 'show' class is added/removed
+    // PRIMARY METHOD: Use MutationObserver to watch for 'show' class changes
     const observer = new MutationObserver(function(mutations) {
         mutations.forEach(function(mutation) {
             if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
                 const isOpen = collapse.classList.contains('show');
                 const isMobile = window.innerWidth <= 751;
-                console.log('MutationObserver: Menu state changed', { isOpen, isMobile });
+                
+                console.log('MutationObserver: Menu class changed', { 
+                    isOpen, 
+                    isMobile, 
+                    hasShow: collapse.classList.contains('show'),
+                    classes: collapse.className
+                });
                 
                 if (isOpen && isMobile) {
-                    setTimeout(() => {
-                        console.log('MutationObserver: Menu opened - transforming navbar');
-                        hideNavbarElements();
-                    }, 100);
+                    console.log('MutationObserver: Menu OPENED - transforming navbar NOW');
+                    // Transform immediately
+                    hideNavbarElements();
                 } else if (!isOpen && isMobile) {
-                    setTimeout(() => {
-                        console.log('MutationObserver: Menu closed - restoring navbar');
-                        showNavbarElements();
-                    }, 100);
+                    console.log('MutationObserver: Menu CLOSED - restoring navbar NOW');
+                    // Restore immediately
+                    showNavbarElements();
                 }
             }
         });
     });
     
+    // Start observing
     observer.observe(collapse, {
         attributes: true,
-        attributeFilter: ['class']
+        attributeFilter: ['class'],
+        attributeOldValue: true
+    });
+    
+    console.log('MutationObserver started for navbar collapse');
+    
+    // Also listen to Bootstrap collapse events as backup
+    collapse.addEventListener('shown.bs.collapse', function() {
+        console.log('Bootstrap shown.bs.collapse event fired');
+        if (window.innerWidth <= 751) {
+            hideNavbarElements();
+        }
+    });
+    
+    collapse.addEventListener('hidden.bs.collapse', function() {
+        console.log('Bootstrap hidden.bs.collapse event fired');
+        if (window.innerWidth <= 751) {
+            showNavbarElements();
+        }
     });
     
     // Initial check
