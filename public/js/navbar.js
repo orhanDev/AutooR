@@ -21,96 +21,186 @@ function getPageTitle() {
     return titleMap[path] || 'AutooR';
 }
 
-// STEP 1: Global event listener for toggler click - transform navbar when menu opens
-document.addEventListener('click', function(e) {
-    const toggler = e.target.closest('.navbar-toggler');
-    if (toggler && window.innerWidth <= 751) {
-        console.log('STEP 1: Toggler clicked!');
-        
-        const navbarNav = document.getElementById('navbarNav');
-        if (navbarNav) {
-            setTimeout(() => {
-                const isOpen = navbarNav.classList.contains('show');
-                console.log('STEP 1: Menu state:', isOpen);
-                
-                const navbar = document.querySelector('.navbar');
-                const container = navbar?.querySelector('.container');
-                const brand = container?.querySelector('.brand-center');
-                const account = container?.querySelector('.account');
-                const accountBtn = account?.querySelector('.account-btn');
-                
-                if (isOpen) {
-                    // Menu is open - transform navbar
-                    console.log('STEP 1: Menu OPENED - transforming navbar');
-                    
-                    // 1. Change hamburger to back arrow
-                    if (!toggler.dataset.originalContent) {
-                        toggler.dataset.originalContent = toggler.innerHTML;
-                    }
-                    toggler.innerHTML = '<i class="bi bi-arrow-left" style="font-size: 1.5rem;"></i>';
-                    
-                    // 2. Change "AutooR" to page title
-                    if (brand) {
-                        if (!brand.dataset.originalContent) {
-                            brand.dataset.originalContent = brand.textContent || brand.innerHTML;
+// Create mobile menu navbar (2nd navbar that appears when menu is open)
+function createMobileMenuNavbar() {
+    // Check if already exists
+    if (document.getElementById('mobile-menu-navbar')) {
+        return;
+    }
+    
+    const pageTitle = getPageTitle();
+    const navbar = document.createElement('nav');
+    navbar.id = 'mobile-menu-navbar';
+    navbar.className = 'navbar fixed-top mobile-menu-navbar';
+    navbar.style.cssText = 'display: none; z-index: 1052; background: #ffffff;';
+    
+    navbar.innerHTML = `
+        <div class="container d-flex align-items-center justify-content-between" style="padding: 0.5rem 1rem;">
+            <button class="btn btn-back-navbar" type="button" style="border: none; background: transparent; padding: 0.5rem;">
+                <i class="bi bi-arrow-left" style="font-size: 1.5rem;"></i>
+            </button>
+            <span class="navbar-title" style="font-weight: 600; font-size: 1.1rem;">${pageTitle}</span>
+            <button class="btn btn-close-navbar" type="button" style="border: none; background: transparent; padding: 0.5rem;">
+                <span style="font-size: 1.5rem; font-weight: 300;">&times;</span>
+            </button>
+        </div>
+    `;
+    
+    // Insert before original navbar
+    const originalNavbar = document.querySelector('.navbar.fixed-top');
+    if (originalNavbar && originalNavbar.parentNode) {
+        originalNavbar.parentNode.insertBefore(navbar, originalNavbar);
+    } else {
+        document.body.insertBefore(navbar, document.body.firstChild);
+    }
+    
+    // Add event listeners
+    const backBtn = navbar.querySelector('.btn-back-navbar');
+    const closeBtn = navbar.querySelector('.btn-close-navbar');
+    
+    if (backBtn) {
+        backBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            // Close submenu if open, otherwise close menu
+            const submenuPanel = document.getElementById('submenu-panel');
+            if (submenuPanel && submenuPanel.classList.contains('open')) {
+                submenuPanel.classList.remove('open');
+                submenuPanel.setAttribute('aria-hidden', 'true');
+                submenuPanel.innerHTML = '';
+            } else {
+                // Close menu
+                const navbarNav = document.getElementById('navbarNav');
+                if (navbarNav) {
+                    try {
+                        const collapseInstance = window.bootstrap?.Collapse?.getInstance(navbarNav);
+                        if (collapseInstance) {
+                            collapseInstance.hide();
+                        } else {
+                            navbarNav.classList.remove('show');
                         }
-                        const pageTitle = getPageTitle();
-                        brand.textContent = pageTitle;
-                        console.log('STEP 1: Changed brand to:', pageTitle);
+                    } catch (err) {
+                        navbarNav.classList.remove('show');
                     }
-                    
-                    // 3. Change person icon to X button
-                    if (accountBtn) {
-                        if (!accountBtn.dataset.originalContent) {
-                            accountBtn.dataset.originalContent = accountBtn.innerHTML;
-                        }
-                        accountBtn.innerHTML = '<span style="font-size: 1.5rem; font-weight: 300;">&times;</span>';
-                        // Make X button close the menu
-                        accountBtn.onclick = function(e) {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            if (navbarNav) {
-                                try {
-                                    const collapseInstance = window.bootstrap?.Collapse?.getInstance(navbarNav);
-                                    if (collapseInstance) {
-                                        collapseInstance.hide();
-                                    } else {
-                                        navbarNav.classList.remove('show');
-                                    }
-                                } catch (err) {
-                                    navbarNav.classList.remove('show');
-                                }
-                            }
-                        };
-                        console.log('STEP 1: Changed account to X button');
-                    }
-                    
-                    document.body.style.overflow = 'hidden';
-                } else {
-                    // Menu is closed - restore original
-                    console.log('STEP 1: Menu CLOSED - restoring navbar');
-                    
-                    // 1. Restore hamburger
-                    if (toggler.dataset.originalContent) {
-                        toggler.innerHTML = toggler.dataset.originalContent;
-                    }
-                    
-                    // 2. Restore "AutooR"
-                    if (brand && brand.dataset.originalContent) {
-                        brand.textContent = brand.dataset.originalContent;
-                    }
-                    
-                    // 3. Restore person icon
-                    if (accountBtn && accountBtn.dataset.originalContent) {
-                        accountBtn.innerHTML = accountBtn.dataset.originalContent;
-                        accountBtn.onclick = null; // Remove close handler
-                    }
-                    
-                    document.body.style.overflow = '';
                 }
-            }, 200);
+            }
+        });
+    }
+    
+    if (closeBtn) {
+        closeBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            // Close menu
+            const navbarNav = document.getElementById('navbarNav');
+            if (navbarNav) {
+                try {
+                    const collapseInstance = window.bootstrap?.Collapse?.getInstance(navbarNav);
+                    if (collapseInstance) {
+                        collapseInstance.hide();
+                    } else {
+                        navbarNav.classList.remove('show');
+                    }
+                } catch (err) {
+                    navbarNav.classList.remove('show');
+                }
+            }
+        });
+    }
+    
+    console.log('Mobile menu navbar created');
+}
+
+// Show/hide mobile menu navbar
+function toggleMobileMenuNavbar(show) {
+    const mobileNavbar = document.getElementById('mobile-menu-navbar');
+    const originalNavbar = document.querySelector('.navbar.fixed-top:not(.mobile-menu-navbar)');
+    
+    if (window.innerWidth <= 751) {
+        if (show) {
+            // Hide original navbar, show mobile menu navbar
+            if (originalNavbar) {
+                originalNavbar.style.display = 'none';
+            }
+            if (mobileNavbar) {
+                mobileNavbar.style.display = 'block';
+            } else {
+                createMobileMenuNavbar();
+                const newMobileNavbar = document.getElementById('mobile-menu-navbar');
+                if (newMobileNavbar) {
+                    newMobileNavbar.style.display = 'block';
+                }
+            }
+        } else {
+            // Show original navbar, hide mobile menu navbar
+            if (originalNavbar) {
+                originalNavbar.style.display = '';
+            }
+            if (mobileNavbar) {
+                mobileNavbar.style.display = 'none';
+            }
+        }
+    } else {
+        // Desktop: always show original navbar
+        if (originalNavbar) {
+            originalNavbar.style.display = '';
+        }
+        if (mobileNavbar) {
+            mobileNavbar.style.display = 'none';
         }
     }
+}
+
+// Watch for menu open/close
+document.addEventListener('DOMContentLoaded', function() {
+    // Create mobile menu navbar on page load
+    createMobileMenuNavbar();
+    
+    // Watch for menu state changes
+    const navbarNav = document.getElementById('navbarNav');
+    if (navbarNav) {
+        // MutationObserver to watch for 'show' class
+        const observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+                    const isOpen = navbarNav.classList.contains('show');
+                    if (window.innerWidth <= 751) {
+                        toggleMobileMenuNavbar(isOpen);
+                    }
+                }
+            });
+        });
+        
+        observer.observe(navbarNav, {
+            attributes: true,
+            attributeFilter: ['class']
+        });
+        
+        // Also listen to Bootstrap events
+        navbarNav.addEventListener('shown.bs.collapse', function() {
+            if (window.innerWidth <= 751) {
+                toggleMobileMenuNavbar(true);
+            }
+        });
+        
+        navbarNav.addEventListener('hidden.bs.collapse', function() {
+            toggleMobileMenuNavbar(false);
+        });
+        
+        // Initial check
+        if (navbarNav.classList.contains('show') && window.innerWidth <= 751) {
+            toggleMobileMenuNavbar(true);
+        }
+    }
+    
+    // Also watch for window resize
+    window.addEventListener('resize', function() {
+        const navbarNav = document.getElementById('navbarNav');
+        if (navbarNav) {
+            const isOpen = navbarNav.classList.contains('show');
+            toggleMobileMenuNavbar(isOpen && window.innerWidth <= 751);
+        }
+    });
 });
 
 document.addEventListener('DOMContentLoaded', function() {
