@@ -28,6 +28,15 @@ body { margin-top: 0 !important; }
     z-index: 1050 !important;
 }
 
+/* Navbar scroll effect - opaque background when scrolled */
+.navbar-scrolled {
+    background: #ffffff !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) !important;
+    transition: all 0.3s ease !important;
+}
+
 .navbar-brand {
     font-weight: 800;
     font-size: 1.8rem;

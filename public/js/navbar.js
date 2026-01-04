@@ -44,7 +44,44 @@ document.addEventListener('DOMContentLoaded', function() {
             }, 100);
         }
     });
+    
+    // Add scroll effect to navbar - hide content behind navbar when scrolling
+    addNavbarScrollEffect();
 });
+
+// Add scroll effect to navbar - make background opaque when scrolling
+function addNavbarScrollEffect() {
+    const navbar = document.querySelector('.navbar.fixed-top');
+    if (!navbar) return;
+    
+    let ticking = false;
+    
+    function updateNavbarOnScroll() {
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        
+        if (scrollTop > 10) {
+            // Scrolled down - add opaque background
+            navbar.classList.add('navbar-scrolled');
+        } else {
+            // At top - transparent background
+            navbar.classList.remove('navbar-scrolled');
+        }
+        
+        ticking = false;
+    }
+    
+    function requestTick() {
+        if (!ticking) {
+            window.requestAnimationFrame(updateNavbarOnScroll);
+            ticking = true;
+        }
+    }
+    
+    window.addEventListener('scroll', requestTick, { passive: true });
+    
+    // Initial check
+    updateNavbarOnScroll();
+}
 
 // Shared vehicle dataset for submenu (images and details)
 const NAV_VEHICLES = [
