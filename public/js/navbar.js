@@ -77,6 +77,8 @@ function createNavbar() {
     
     // Create navbar HTML with ana sayfa styling
     navbarContainer.innerHTML = `
+        <!-- Mobile menu backdrop overlay -->
+        <div class="mobile-menu-backdrop" id="mobile-menu-backdrop"></div>
         <nav class="navbar fixed-top">
             <div class="container d-flex align-items-center">
                 <button class="navbar-toggler me-2 d-flex align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-label="Menü">
@@ -380,6 +382,12 @@ function addCloseButtonListener() {
             if (navbarNav && navbarNav.classList.contains('show')) {
                 navbarNav.classList.remove('show');
                 document.body.style.overflow = '';
+                document.body.classList.remove('menu-open');
+                // Hide backdrop
+                const backdrop = document.getElementById('mobile-menu-backdrop');
+                if (backdrop) {
+                    backdrop.classList.remove('show');
+                }
             }
         }
     });
@@ -391,10 +399,23 @@ function addCloseButtonListener() {
                 const navbarNav = document.getElementById('navbarNav');
                 if (navbarNav && navbarNav.classList.contains('show')) {
                     document.body.style.overflow = 'hidden';
+                    document.body.classList.add('menu-open');
+                } else {
+                    document.body.style.overflow = '';
+                    document.body.classList.remove('menu-open');
                 }
             }, 100);
         }
     });
+    
+    // Also handle when menu closes
+    const navbarNav = document.getElementById('navbarNav');
+    if (navbarNav) {
+        navbarNav.addEventListener('hidden.bs.collapse', function() {
+            document.body.style.overflow = '';
+            document.body.classList.remove('menu-open');
+        });
+    }
 }
 
 // Add hamburger menu close listener
@@ -424,7 +445,27 @@ function addHamburgerMenuCloseListener() {
             if (collapseInstance) {
                 isOpen ? collapseInstance.hide() : collapseInstance.show();
             }
+            // Toggle backdrop
+            const backdrop = document.getElementById('mobile-menu-backdrop');
+            if (backdrop) {
+                if (!isOpen) {
+                    backdrop.classList.add('show');
+                } else {
+                    backdrop.classList.remove('show');
+                }
+            }
             e.stopPropagation();
+        });
+    }
+    
+    // Close menu when backdrop is clicked
+    const backdrop = document.getElementById('mobile-menu-backdrop');
+    if (backdrop) {
+        backdrop.addEventListener('click', function() {
+            if (collapseInstance) {
+                collapseInstance.hide();
+            }
+            backdrop.classList.remove('show');
         });
     }
 
@@ -575,6 +616,19 @@ function initSideMenu() {
         panel.classList.remove('open');
         panel.setAttribute('aria-hidden', 'true');
         panel.innerHTML = '';
+        // Hide backdrop
+        const backdrop = document.getElementById('mobile-menu-backdrop');
+        if (backdrop) {
+            backdrop.classList.remove('show');
+        }
+    });
+    
+    // Show backdrop when menu opens
+    collapse.addEventListener('shown.bs.collapse', () => {
+        const backdrop = document.getElementById('mobile-menu-backdrop');
+        if (backdrop && window.innerWidth <= 751) {
+            backdrop.classList.add('show');
+        }
     });
 
     // Open Mietwagen by default on first open of the hamburger menu

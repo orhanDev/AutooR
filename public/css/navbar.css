@@ -765,15 +765,49 @@ ease;
             margin-left: 0.5rem !important;
         }
         
-        /* Menu drawer - full width on mobile */
+        /* Menu drawer - full screen on mobile (Porsche style) */
         .navbar .collapse.navbar-collapse {
-            width: 85vw !important;
-            max-width: 400px !important;
+            width: 100vw !important;
+            max-width: 100vw !important;
+            left: 0 !important;
+            right: 0 !important;
         }
         
         .navbar .collapsing {
-            width: 85vw !important;
-            max-width: 400px !important;
+            width: 100vw !important;
+            max-width: 100vw !important;
+            left: 0 !important;
+            right: 0 !important;
+        }
+        
+        /* Ensure menu is on top */
+        .navbar .collapse.navbar-collapse {
+            z-index: 1051 !important;
+        }
+        
+        /* Mobile menu backdrop overlay - only show on mobile */
+        .mobile-menu-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1050;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            display: block;
+        }
+        
+        .mobile-menu-backdrop.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* Body scroll lock when menu is open - handled by JavaScript */
+        body.menu-open {
+            overflow: hidden !important;
         }
         
         /* Left menu section - better mobile layout */
@@ -964,4 +998,10 @@ ease;
      }
 }
 
+/* Hide backdrop on desktop */
+@media (min-width: 752px) {
+    .mobile-menu-backdrop {
+        display: none !important;
+    }
+}
 
