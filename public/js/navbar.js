@@ -648,6 +648,9 @@ function createNavbar() {
     // Initialize account dropdown
     initAccountMenu();
     
+    // Initialize back button functionality
+    initBackButton();
+    
     // Initialize scroll effect after navbar is created
     setTimeout(() => {
         addNavbarScrollEffect();
@@ -1842,4 +1845,26 @@ function initAccountMenu() {
             closeMenu();
         }
     });
+}
+
+// Initialize back button functionality
+function initBackButton() {
+    const backBtn = document.querySelector('.navbar-back-btn');
+    if (!backBtn) return;
+    
+    backBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log('Back button clicked, going back...');
+        
+        // Check if there's history to go back to
+        if (window.history.length > 1) {
+            window.history.back();
+        } else {
+            // If no history, go to home page
+            window.location.href = '/';
+        }
+    });
+    
+    console.log('Back button initialized');
 }
