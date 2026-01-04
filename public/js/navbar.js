@@ -505,26 +505,40 @@ function addCloseButtonListener() {
         }
     });
     
-    // Add body scroll lock when menu opens
-    // Note: Navbar transformation is handled by MutationObserver above
+    // STEP 1 TEST: Direct click handler on toggler - change icon immediately
     document.addEventListener('click', function(e) {
-        if (e.target.closest('.navbar-toggler')) {
-            console.log('Toggler clicked!');
+        const toggler = e.target.closest('.navbar-toggler');
+        if (toggler && window.innerWidth <= 751) {
+            console.log('STEP 1 TEST: Toggler clicked directly!');
+            
+            // Get navbarNav to check state
             const navbarNav = document.getElementById('navbarNav');
             if (navbarNav) {
-                // Check current state after a delay (Bootstrap needs time to update)
+                // Wait a bit for Bootstrap to add/remove 'show' class
                 setTimeout(() => {
                     const isOpen = navbarNav.classList.contains('show');
-                    console.log('Toggler clicked - menu state after delay:', isOpen, 'width:', window.innerWidth);
+                    console.log('STEP 1 TEST: Menu state after click:', isOpen);
                     
                     if (isOpen) {
+                        // Menu is open - change to back arrow
+                        console.log('STEP 1 TEST: Menu OPENED - changing to back arrow');
+                        if (!toggler.dataset.originalContent) {
+                            toggler.dataset.originalContent = toggler.innerHTML;
+                            console.log('STEP 1 TEST: Stored original:', toggler.dataset.originalContent);
+                        }
+                        toggler.innerHTML = '<i class="bi bi-arrow-left" style="font-size: 1.5rem;"></i>';
+                        console.log('STEP 1 TEST: Changed to back arrow');
                         document.body.style.overflow = 'hidden';
-                        document.body.classList.add('menu-open');
                     } else {
+                        // Menu is closed - restore hamburger
+                        console.log('STEP 1 TEST: Menu CLOSED - restoring hamburger');
+                        if (toggler.dataset.originalContent) {
+                            toggler.innerHTML = toggler.dataset.originalContent;
+                            console.log('STEP 1 TEST: Restored hamburger');
+                        }
                         document.body.style.overflow = '';
-                        document.body.classList.remove('menu-open');
                     }
-                }, 300); // Give Bootstrap time to add/remove 'show' class
+                }, 200);
             }
         }
     });
