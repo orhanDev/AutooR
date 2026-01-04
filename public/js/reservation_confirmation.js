@@ -104,7 +104,7 @@ function displayReservationDetails(reservation) {
         <div class="row">
             <div class="col-md-6 mb-3">
                 <h6 class="text-muted">Gesamtpreis</h6>
-                <p class="fw-bold text-primary fs-4">â‚¬${reservation.total_price?.toFixed(2) || '0.00'}</p>
+                <p class="fw-bold text-primary fs-4">€${Math.floor(reservation.total_price || 0)}</p>
             </div>
             <div class="col-md-6 mb-3">
                 <h6 class="text-muted">Erstellt am</h6>

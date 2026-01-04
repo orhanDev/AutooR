@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const end = dropoffDate ? new Date(dropoffDate) : null;
   const days = start && end ? Math.max(1, Math.round((end - start) / msPerDay)) : 1;
   const total = Number(car.daily_rate || 0) * days;
-  document.getElementById('total-price').textContent = `â‚¬${total.toLocaleString('de-DE', { minimumFractionDigits: 2 })}`;
+  document.getElementById('total-price').textContent = `€${Math.floor(total).toLocaleString('de-DE')}`;
 
   // Kart
   const vehicleCard = document.getElementById('vehicle-card');
@@ -122,7 +122,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (window.paypal) {
       paypal.Buttons({
         createOrder: (data, actions) => {
-          return actions.order.create({ purchase_units: [{ amount: { value: total.toFixed(2) } }] });
+          return actions.order.create({ purchase_units: [{ amount: { value: Math.floor(total).toFixed(2) } }] });
         },
         onApprove: async (data, actions) => {
           await actions.order.capture();
@@ -167,7 +167,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const summary = document.getElementById('summary-sections');
     summary.innerHTML = `
       <div class="mb-2"><strong>Preis Informationen</strong></div>
-      <div class="row"><div class="col-6">Gesamt</div><div class="col-6 text-end" id="summary-total">â‚¬${total.toLocaleString('de-DE', { minimumFractionDigits: 2 })}</div></div>
+      <div class="row"><div class="col-6">Gesamt</div><div class="col-6 text-end" id="summary-total">€${Math.floor(total).toLocaleString('de-DE')}</div></div>
       <div class="row small mt-1">
         <div class="col-6">Abholung</div><div class="col-6 text-end">${pickupDate} ${pickupTime}</div>
         <div class="col-6">RÃ¼ckgabe</div><div class="col-6 text-end">${dropoffDate} ${dropoffTime}</div>
@@ -215,9 +215,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
       });
       extrasTotalState = ext;
-      extrasTotalEl.textContent = `â‚¬${ext.toLocaleString('de-DE', { minimumFractionDigits: 2 })}`;
+      extrasTotalEl.textContent = `€${Math.floor(ext).toLocaleString('de-DE')}`;
       const newTotal = ext + Number(total);
-      totalEl.textContent = `â‚¬${newTotal.toLocaleString('de-DE', { minimumFractionDigits: 2 })}`;
+      totalEl.textContent = `€${Math.floor(newTotal).toLocaleString('de-DE')}`;
       summaryTotalEl.textContent = totalEl.textContent;
       localStorage.setItem('extras_selected', JSON.stringify(selected));
       localStorage.setItem('extras_total', String(ext));

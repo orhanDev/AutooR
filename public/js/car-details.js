@@ -73,7 +73,7 @@
         carModel.textContent = car.model;
         carYear.textContent = car.year;
         carLicensePlate.textContent = car.license_plate;
-        carDailyRate.textContent = car.daily_rate.toFixed(2); // Preis mit 2 Dezimalstellen anzeigen
+        carDailyRate.textContent = Math.floor(car.daily_rate); // Preis ohne Dezimalstellen anzeigen
         currentCarDailyRate = car.daily_rate;
         carTransmissionType.textContent = car.transmission_type;
         carFuelType.textContent = car.fuel_type;
@@ -152,7 +152,7 @@
             const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
             if (diffDays >= 0) { // Mindestens 0 Tage, also auch gleiche Tag Abholung mÃ¶glich
-                totalPriceElement.textContent = (currentCarDailyRate * (diffDays + 1)).toFixed(2); // +1 Tag, da auch am gleichen Tag abgeholt wird
+                totalPriceElement.textContent = Math.floor(currentCarDailyRate * (diffDays + 1)); // +1 Tag, da auch am gleichen Tag abgeholt wird
             } else {
                 totalPriceElement.textContent = '0.00';
             }

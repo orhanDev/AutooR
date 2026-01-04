@@ -1062,9 +1062,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (baseLabel) baseLabel.textContent = priceLabel;
         if (baseEl) {
             if (discount > 0) {
-                baseEl.innerHTML = `<span style="text-decoration: line-through; color: #999; margin-right: 0.5rem;">€${basePrice.toFixed(2)}</span><span style="color: #28a745; font-weight: bold;">€${discountedBasePrice.toFixed(2)}</span>`;
+                baseEl.innerHTML = `<span style="text-decoration: line-through; color: #999; margin-right: 0.5rem;">€${Math.floor(basePrice)}</span><span style="color: #28a745; font-weight: bold;">€${Math.floor(discountedBasePrice)}</span>`;
             } else {
-                baseEl.textContent = `€${basePrice.toFixed(2)}`;
+                baseEl.textContent = `€${Math.floor(basePrice)}`;
             }
         }
         
@@ -1073,7 +1073,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const discountEl = document.getElementById('discount-price');
         if (discountRow && discountEl) {
             if (discount > 0) {
-                discountEl.textContent = `-€${discount.toFixed(2)} (${discountLabel})`;
+                discountEl.textContent = `-€${Math.floor(discount)} (${discountLabel})`;
                 discountRow.style.display = 'flex';
                 discountEl.style.color = '#28a745';
                 discountEl.style.fontWeight = 'bold';
@@ -1082,9 +1082,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
         
-        document.getElementById('insurance-price').textContent = `€${insurance.toFixed(2)}`;
-        document.getElementById('additional-services-price').textContent = `€${additionalServices.toFixed(2)}`;
-        document.getElementById('total-price').textContent = `€${totalPrice.toFixed(2)}`;
+        document.getElementById('insurance-price').textContent = `€${Math.floor(insurance)}`;
+        document.getElementById('additional-services-price').textContent = `€${Math.floor(additionalServices)}`;
+        document.getElementById('total-price').textContent = `€${Math.floor(totalPrice)}`;
     }
     
     // Get discount percentage based on offer ID and conditions

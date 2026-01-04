@@ -230,7 +230,7 @@
                         <div class="position-relative">
                             <img src="${carImage}" class="car-image" alt="${car.make} ${car.model}"
                                      onerror="this.onerror=null; this.src='/images/cars/car${(index % 3) + 1}.jpg';">
-                            <div class="car-price">â‚¬${Number(car.daily_rate).toLocaleString('de-DE')}/Tag</div>
+                            <div class="car-price">€${Math.floor(Number(car.daily_rate)).toLocaleString('de-DE')}/Tag</div>
                             </div>
                         <div class="card-body d-flex flex-column">
                             <h5 class="card-title fw-bold mb-2">${car.make} ${car.model}</h5>

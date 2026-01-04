@@ -60,10 +60,10 @@
         <div>${pickupDate} ${pickupTime}</div>
         <div class="mt-2">Rückgabe: <strong>${dropoffName}</strong></div>
         <div>${dropoffDate} ${dropoffTime}</div>`;
-      document.getElementById('price-car').textContent = `€${carTotal.toLocaleString('de-DE', { minimumFractionDigits: 2 })}`;
-      document.getElementById('price-extras').textContent = `€${extrasTotal.toLocaleString('de-DE', { minimumFractionDigits: 2 })}`;
+      document.getElementById('price-car').textContent = `€${Math.floor(carTotal).toLocaleString('de-DE')}`;
+      document.getElementById('price-extras').textContent = `€${Math.floor(extrasTotal).toLocaleString('de-DE')}`;
       const total = carTotal + extrasTotal;
-      document.getElementById('price-total').textContent = `€${total.toLocaleString('de-DE', { minimumFractionDigits: 2 })}`;
+      document.getElementById('price-total').textContent = `€${Math.floor(total).toLocaleString('de-DE')}`;
 
       // Prefill contact
       document.getElementById('r-first').value = localStorage.getItem('contact_first') || '';
