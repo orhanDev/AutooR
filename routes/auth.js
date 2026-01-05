@@ -226,53 +226,6 @@ router.post('/register', async (req, res) => {
             }
         });
 
-        // Şifre hash'leme (artık çalışmayacak)
-        const saltRounds = 10;
-        const passwordHash = await bcrypt.hash(password, saltRounds);
-
-        // Yeni kullanıcı oluşturma (phone_number ve address opsiyonel)
-        console.log('=== INSERT QUERY BAŞLIYOR ===');
-        console.log('Values:', { first_name, last_name, email, phone_number: phone_number || null, address: address || null });
-        
-        let newUser;
-        try {
-            newUser = await query(`
-                INSERT INTO users (first_name, last_name, email, password_hash, phone_number, address)
-                VALUES ($1, $2, $3, $4, $5, $6)
-                RETURNING user_id, first_name, last_name, email, phone_number, address, is_admin, created_at
-            `, [first_name, last_name, email, passwordHash, phone_number || null, address || null]);
-            console.log('=== INSERT QUERY BAŞARILI ===');
-            console.log('newUser.rows:', newUser.rows);
-        } catch (queryError) {
-            console.error('=== INSERT QUERY HATASI ===');
-            console.error('Query error:', queryError);
-            throw queryError;
-        }
-
-        // user_id kullan (veritabanında user_id var)
-        const userId = newUser.rows[0].user_id;
-        const userEmail = newUser.rows[0].email;
-        const isAdmin = newUser.rows[0].is_admin || false;
-
-        // JWT token oluşturma (is_admin dahil)
-        const token = jwt.sign(
-            { userId: userId, email: userEmail, is_admin: isAdmin },
-            process.env.JWT_SECRET,
-            { expiresIn: '24h' }
-        );
-
-        res.status(201).json({
-            message: 'Registrierung erfolgreich',
-            token: token,
-            user: { 
-                id: userId, 
-                user_id: userId,
-                email: userEmail,
-                first_name: newUser.rows[0].first_name,
-                last_name: newUser.rows[0].last_name
-            }
-        });
-
     } catch (error) {
         console.error('=== KAYIT HATASI ===');
         console.error('Error:', error);

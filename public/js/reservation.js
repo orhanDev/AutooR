@@ -1171,11 +1171,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         
         switch (offerId) {
-            case 'offer-1': // Frühbucher-Rabatt - 20%
+            case 'offer-1': // Frühbucher-Rabatt - 10%
                 // Requires booking at least 14 days in advance and minimum 3 days rental
                 if (daysUntilPickup >= 14 && rentalDays >= 3) {
-                    console.log('Frühbucher-Rabatt applied: 20%');
-                    return 20;
+                    console.log('Frühbucher-Rabatt applied: 10%');
+                    return 10;
                 }
                 console.log('Frühbucher-Rabatt not applicable:', { 
                     daysUntilPickup, 
@@ -1187,26 +1187,26 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
                 return 0;
                 
-            case 'offer-2': // Wochenend-Special - 15%
+            case 'offer-2': // Wochenend-Special - 10%
                 // Friday to Sunday
                 const pickupDay = pickup.getDay(); // 0 = Sunday, 5 = Friday
                 const dropoffDay = dropoff.getDay();
                 if ((pickupDay === 5 && dropoffDay === 0) || (pickupDay === 5 && dropoffDay === 6)) {
-                    return 15;
+                    return 10;
                 }
                 return 0;
                 
-            case 'offer-3': // Langzeit-Miete - 30%
+            case 'offer-3': // Langzeit-Miete - 10%
                 // 30 days or more
                 if (rentalDays >= 30) {
-                    return 30;
+                    return 10;
                 }
                 return 0;
                 
-            case 'offer-4': // Studenten-Rabatt - 25%
+            case 'offer-4': // Studenten-Rabatt - 10%
                 // Student offer - always applicable if selected
                 if (offerType === 'student') {
-                    return 25;
+                    return 10;
                 }
                 return 0;
                 
@@ -1217,10 +1217,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 return 0;
                 
-            case 'offer-6': // Familien-Angebot - 18%
+            case 'offer-6': // Familien-Angebot - 10%
                 // Family-friendly vehicles (SUVs, Minivans)
                 if (offerType === 'family' || vehicle.category === 'SUV' || vehicle.category === 'Minivan') {
-                    return 18;
+                    return 10;
                 }
                 return 0;
                 
@@ -1232,12 +1232,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // Get discount label for display
     function getDiscountLabel(offerId) {
         const labels = {
-            'offer-1': 'Frühbucher-Rabatt 20%',
-            'offer-2': 'Wochenend-Special 15%',
-            'offer-3': 'Langzeit-Miete 30%',
-            'offer-4': 'Studenten-Rabatt 25%',
+            'offer-1': 'Frühbucher-Rabatt 10%',
+            'offer-2': 'Wochenend-Special 10%',
+            'offer-3': 'Langzeit-Miete 10%',
+            'offer-4': 'Studenten-Rabatt 10%',
             'offer-5': 'Premium-Paket 10%',
-            'offer-6': 'Familien-Angebot 18%'
+            'offer-6': 'Familien-Angebot 10%'
         };
         return labels[offerId] || 'Rabatt';
     }

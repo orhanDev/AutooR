@@ -287,20 +287,24 @@
         .newsletter-section {
             background-color: #f8f9fa;
             border: 1px solid #e9ecef;
-            border-radius: 6px;
+            border-radius: 8px;
             padding: 1.25rem;
             margin-bottom: 1.5rem;
         }
         
-        .form-check {
-            margin-bottom: 0;
+        .newsletter-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
         }
         
         .form-check-input {
-            margin-top: 0.25rem;
+            margin-top: 0;
             width: 1.25rem;
             height: 1.25rem;
             cursor: pointer;
+            flex-shrink: 0;
         }
         
         .form-check-input:checked {
@@ -308,21 +312,64 @@
             border-color: #ffc107;
         }
         
-        .form-check-label {
-            font-size: 0.9rem;
-            color: #495057;
+        .newsletter-main-label {
+            font-size: 0.9375rem;
+            font-weight: 500;
+            color: #212529;
             line-height: 1.5;
             cursor: pointer;
-            margin-left: 0.5rem;
+            margin: 0;
+            flex: 1;
         }
         
-        .form-check-label a {
-            color: #ffc107;
-            text-decoration: none;
+        .newsletter-toggle-btn {
+            background: none;
+            border: none;
+            padding: 0.5rem 0;
+            color: #0066cc;
+            font-size: 0.875rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.2s ease;
+            width: 100%;
         }
         
-        .form-check-label a:hover {
+        .newsletter-toggle-btn:hover {
+            color: #0052a3;
             text-decoration: underline;
+        }
+        
+        .newsletter-toggle-btn .toggle-icon {
+            transition: transform 0.3s ease;
+            font-size: 0.75rem;
+        }
+        
+        .newsletter-toggle-btn[aria-expanded="true"] .toggle-icon {
+            transform: rotate(180deg);
+        }
+        
+        .newsletter-details {
+            margin-top: 0.75rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid #e9ecef;
+            animation: slideDown 0.3s ease-out;
+        }
+        
+        .newsletter-content {
+            color: #495057;
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
         
         .hcaptcha-note {
@@ -558,55 +605,20 @@
                     <label for="email" class="form-label">
                         E-Mail<span class="required">*</span>
                     </label>
-                    <div style="display: flex; gap: 0.5rem;">
-                        <input 
-                            type="email" 
-                            class="form-control" 
-                            id="email" 
-                            name="email"
-                            required
-                            autocomplete="email"
-                            style="flex: 1;"
-                        >
-                        <button 
-                            type="button" 
-                            id="send-code-btn" 
-                            class="btn btn-warning"
-                            style="white-space: nowrap; padding: 0.75rem 1rem; font-weight: 600;"
-                        >
-                            Code senden
-                        </button>
-                    </div>
-                    <div class="invalid-feedback"></div>
-                    <small id="email-code-status" style="display: none; color: #28a745; margin-top: 0.25rem;">
-                        <i class="bi bi-check-circle"></i> Bestätigungscode wurde gesendet
-                    </small>
-                </div>
-
-                <!-- Verification Code -->
-                <div class="form-group" id="verification-code-group" style="display: none;">
-                    <label for="verification-code" class="form-label">
-                        Bestätigungscode<span class="required">*</span>
-                    </label>
                     <input 
-                        type="text" 
+                        type="email" 
                         class="form-control" 
-                        id="verification-code" 
-                        name="verification_code"
-                        placeholder="6-stelliger Code"
-                        maxlength="6"
-                        pattern="[0-9]{6}"
-                        autocomplete="one-time-code"
+                        id="email" 
+                        name="email"
+                        required
+                        autocomplete="email"
                     >
                     <div class="invalid-feedback"></div>
-                    <small style="color: #666666; margin-top: 0.25rem; display: block;">
-                        Geben Sie den 6-stelligen Code ein, den wir an Ihre E-Mail-Adresse gesendet haben.
-                    </small>
                 </div>
 
                 <!-- Newsletter Checkbox -->
                 <div class="newsletter-section">
-                    <div class="form-check">
+                    <div class="newsletter-header">
                         <input 
                             class="form-check-input" 
                             type="checkbox" 
@@ -614,13 +626,32 @@
                             name="newsletter"
                             required
                         >
-                        <label class="form-check-label" for="newsletter">
-                            Bleiben Sie up-to-date zu Produkten und Services aus dem AutooR Universum!<br>
-                            <small style="color: #6c757d;">
-                                Ich möchte spannende Informationen und Angebote erhalten. Um personalisierte Neuigkeiten zu erfahren, dürfen meine Präferenzen und Verhaltensweisen und meine Nutzung von AutooR Produkten und Dienstleistungen ausgewertet werden. Ausgewählte AutooR Gesellschaften sowie einzelne AutooRisierte Vertriebs- und Service Partner dürfen mich in meinen Apps der AutooR, per E-Mail, durch Kommunikation im Fahrzeug (In-Car), per Post und per Telefon / Messenger Dienste, beispielsweise zu aktuellen Vorteilen, werblich kontaktieren.<br>
-                                Meine Einwilligung kann ich jederzeit widerrufen.
-                            </small>
+                        <label class="newsletter-main-label" for="newsletter">
+                            Ich akzeptiere die Allgemeinen Geschäftsbedingungen
                         </label>
+                    </div>
+                    <button 
+                        type="button" 
+                        class="newsletter-toggle-btn" 
+                        id="newsletter-toggle-btn"
+                        aria-expanded="false"
+                    >
+                        <span class="toggle-text">Allgemeine Geschäftsbedingungen anzeigen</span>
+                        <i class="bi bi-chevron-down toggle-icon"></i>
+                    </button>
+                    <div class="newsletter-details" id="newsletter-details" style="display: none;">
+                        <div class="newsletter-content">
+                            <p style="font-weight: 500; color: #212529; margin-bottom: 0.75rem;">
+                                Bleiben Sie up-to-date zu Produkten und Services aus dem AutooR Universum!
+                            </p>
+                            <p style="color: #6c757d; font-size: 0.8125rem; line-height: 1.6; margin-bottom: 0.75rem;">
+                                Ich möchte spannende Informationen und Angebote erhalten. Um personalisierte Neuigkeiten zu erfahren, dürfen meine Präferenzen und Verhaltensweisen und meine Nutzung von AutooR Produkten und Dienstleistungen ausgewertet werden. Ausgewählte AutooR Gesellschaften sowie einzelne AutooRisierte Vertriebs- und Service Partner dürfen mich in meinen Apps der AutooR, per E-Mail, durch Kommunikation im Fahrzeug (In-Car), per Post und per Telefon / Messenger Dienste, beispielsweise zu aktuellen Vorteilen, werblich kontaktieren.
+                            </p>
+                            <p style="color: #6c757d; font-size: 0.8125rem; line-height: 1.6; font-style: italic; margin-bottom: 0;">
+                                Meine Einwilligung kann ich jederzeit widerrufen.
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
 

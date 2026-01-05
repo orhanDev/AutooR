@@ -24,9 +24,9 @@ function loadOffers() {
         {
             id: 'offer-1',
             title: 'Frühbucher-Rabatt',
-            description: 'Buchen Sie mindestens 14 Tage im Voraus und sparen Sie bis zu 20% auf Ihre PKW-Miete. Perfekt für geplante Reisen und Urlaube.',
+            description: 'Buchen Sie mindestens 14 Tage im Voraus und sparen Sie bis zu 10% auf Ihre PKW-Miete. Perfekt für geplante Reisen und Urlaube.',
             image: '/images/cars/frühbucherrabatt.jpg',
-            badge: 'Bis zu 20%',
+            badge: 'Bis zu 10%',
             features: [
                 'Gültig für alle PKW-Kategorien',
                 'Mindestmietdauer: 3 Tage',
@@ -42,7 +42,7 @@ function loadOffers() {
             title: 'Wochenend-Special',
             description: 'Genießen Sie entspannte Wochenenden mit unserem speziellen PKW-Angebot. Freitag bis Sonntag zum Vorzugspreis.',
             image: '/images/cars/Wochenend-Special.webp',
-            badge: 'Bis zu 15%',
+            badge: 'Bis zu 10%',
             features: [
                 'Freitag bis Sonntag',
                 'Alle Kompakt- und Mittelklasse-Fahrzeuge',
@@ -58,7 +58,7 @@ function loadOffers() {
             title: 'Langzeit-Miete',
             description: 'Für längere Aufenthalte oder Geschäftsreisen: Sparen Sie mit unserer Langzeit-Miete ab 30 Tagen.',
             image: '/images/cars/Langzeit-Miete.png',
-            badge: 'Bis zu 30%',
+            badge: 'Bis zu 10%',
             features: [
                 'Ab 30 Tagen Mietdauer',
                 'Monatliche Wartung inklusive',
@@ -74,7 +74,7 @@ function loadOffers() {
             title: 'Studenten-Rabatt',
             description: 'Spezielle Konditionen für Studenten und Auszubildende. Zeigen Sie Ihren Studentenausweis vor und sparen Sie.',
             image: '/images/cars/studenten-pkw.jpg',
-            badge: 'Bis zu 25%',
+            badge: 'Bis zu 10%',
             features: [
                 'Gültiger Studentenausweis erforderlich',
                 'Altersbeschränkung: 18-26 Jahre',
@@ -106,7 +106,7 @@ function loadOffers() {
             title: 'Familien-Angebot',
             description: 'Perfekt für Familienausflüge: Große, sichere Fahrzeuge mit viel Platz für Gepäck und Kinder.',
             image: '/images/cars/Familien-Angebot.jpg',
-            badge: 'Bis zu 18%',
+            badge: 'Bis zu 10%',
             features: [
                 'Minivans und SUVs verfügbar',
                 'Kindersitze kostenlos',
@@ -142,9 +142,6 @@ function createOfferCard(offer) {
                 <button onclick="${offer.buttonAction}('${offer.id}')" class="btn-offer btn-primary">
                     ${offer.buttonText}
                 </button>
-                <button onclick="viewDetails('${offer.id}')" class="btn-offer btn-outline">
-                    Details
-                </button>
             </div>
         </div>
     `;
@@ -165,45 +162,62 @@ function bookOffer(offerId) {
 
 function bookWeekend(offerId) {
     console.log('Book weekend offer:', offerId);
-    // Set weekend dates and redirect
-    const today = new Date();
-    const friday = new Date(today);
-    friday.setDate(today.getDate() + (5 - today.getDay() + 7) % 7); // Next Friday
-    
-    const sunday = new Date(friday);
-    sunday.setDate(friday.getDate() + 2);
-    
-    const pickupDate = friday.toISOString().split('T')[0];
-    const returnDate = sunday.toISOString().split('T')[0];
-    
-    window.location.href = `/reservation?offer=${offerId}&pickup=${pickupDate}&return=${returnDate}`;
+    // Store offer info for vehicle selection page
+    localStorage.setItem('pendingOffer', JSON.stringify({
+        id: offerId,
+        type: 'weekend'
+    }));
+    // Redirect to vehicle selection page
+    window.location.href = '/fahrzeuge';
 }
 
 function requestLongTerm(offerId) {
     console.log('Request long term offer:', offerId);
-    alert('Für Langzeit-Mieten kontaktieren Sie bitte unseren Kundenservice unter +49 123 456 789 oder per E-Mail an info@AutooR.de');
+    // Store offer info for vehicle selection page
+    localStorage.setItem('pendingOffer', JSON.stringify({
+        id: offerId,
+        type: 'long-term',
+        minDays: 30
+    }));
+    // Redirect to vehicle selection page
+    window.location.href = '/fahrzeuge';
 }
 
 function bookStudent(offerId) {
     console.log('Book student offer:', offerId);
-    // Redirect to reservation page with student offer
-    window.location.href = `/reservation?offer=${offerId}&type=student`;
+    // Store offer info for vehicle selection page
+    localStorage.setItem('pendingOffer', JSON.stringify({
+        id: offerId,
+        type: 'student',
+        category: 'Kompaktwagen', // Student offer applies to compact cars
+        ageRestriction: '18-26',
+        requiresStudentId: true
+    }));
+    // Redirect to vehicle selection page
+    window.location.href = '/fahrzeuge';
 }
 
 function bookPremium(offerId) {
     console.log('Book premium offer:', offerId);
-    // Redirect to reservation page with premium filter
-    window.location.href = `/reservation?offer=${offerId}&category=premium`;
+    // Store offer info for vehicle selection page
+    localStorage.setItem('pendingOffer', JSON.stringify({
+        id: offerId,
+        type: 'premium',
+        category: 'premium'
+    }));
+    // Redirect to vehicle selection page
+    window.location.href = '/fahrzeuge';
 }
 
 function bookFamily(offerId) {
     console.log('Book family offer:', offerId);
-    // Redirect to reservation page with family-friendly vehicles
-    window.location.href = `/reservation?offer=${offerId}&type=family`;
+    // Store offer info for vehicle selection page
+    localStorage.setItem('pendingOffer', JSON.stringify({
+        id: offerId,
+        type: 'family',
+        category: 'SUV' // Family offer applies to SUVs and Minivans
+    }));
+    // Redirect to vehicle selection page
+    window.location.href = '/fahrzeuge';
 }
 
-function viewDetails(offerId) {
-    console.log('View details for offer:', offerId);
-    // Show detailed modal or redirect to details page
-    alert('Detaillierte Informationen zu diesem Angebot werden in Kürze verfügbar sein.');
-}

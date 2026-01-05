@@ -399,6 +399,20 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Also watch for window resize
     window.addEventListener('resize', function() {
+        // Update back button and hamburger menu visibility on resize (all screen sizes)
+        const currentPath = window.location.pathname;
+        const backBtn = document.querySelector('.navbar-back-btn');
+        const menuBtn = document.querySelector('.navbar-toggler');
+        
+        if (currentPath === '/' || currentPath === '/index.html') {
+            // Home page: hide back button, show hamburger menu
+            if (backBtn) backBtn.style.display = 'none';
+            if (menuBtn) menuBtn.style.display = 'flex';
+        } else {
+            // Not home page: show back button, hide hamburger menu
+            if (backBtn) backBtn.style.display = 'flex';
+            if (menuBtn) menuBtn.style.display = 'none';
+        }
         const navbarNav = document.getElementById('navbarNav');
         if (navbarNav && window.innerWidth <= 751) {
             const isOpen = navbarNav.classList.contains('show');
@@ -430,8 +444,32 @@ document.addEventListener('DOMContentLoaded', function() {
     // This will show back button and hide menu button on all pages except home
     if (currentPath !== '/' && currentPath !== '/index.html') {
         document.body.classList.add('not-home-page');
+        document.body.classList.remove('home-page');
     } else {
         document.body.classList.remove('not-home-page');
+        document.body.classList.add('home-page');
+    }
+    
+    // Ensure back button is hidden on home page (extra safety check - all screen sizes)
+    if (currentPath === '/' || currentPath === '/index.html') {
+        const backBtn = document.querySelector('.navbar-back-btn');
+        if (backBtn) {
+            backBtn.style.display = 'none';
+        }
+        const menuBtn = document.querySelector('.navbar-toggler');
+        if (menuBtn) {
+            menuBtn.style.display = 'flex';
+        }
+    } else {
+        // Not home page: show back button, hide hamburger menu (all screen sizes)
+        const backBtn = document.querySelector('.navbar-back-btn');
+        if (backBtn) {
+            backBtn.style.display = 'flex';
+        }
+        const menuBtn = document.querySelector('.navbar-toggler');
+        if (menuBtn) {
+            menuBtn.style.display = 'none';
+        }
     }
     
     // Check if browser was closed and reopened (sessionStorage empty but localStorage has data)
@@ -758,6 +796,33 @@ function updateNavbar() {
             });
             authContainer.innerHTML = '';
         }
+    }
+    
+    // Control back button and hamburger menu visibility based on page (all screen sizes)
+    const currentPath = window.location.pathname;
+    const backBtn = document.querySelector('.navbar-back-btn');
+    const menuBtn = document.querySelector('.navbar-toggler');
+    
+    if (currentPath === '/' || currentPath === '/index.html') {
+        // Home page: hide back button, show hamburger menu
+        if (backBtn) {
+            backBtn.style.display = 'none';
+        }
+        if (menuBtn) {
+            menuBtn.style.display = 'flex';
+        }
+        document.body.classList.add('home-page');
+        document.body.classList.remove('not-home-page');
+    } else {
+        // Not home page: show back button, hide hamburger menu
+        if (backBtn) {
+            backBtn.style.display = 'flex';
+        }
+        if (menuBtn) {
+            menuBtn.style.display = 'none';
+        }
+        document.body.classList.add('not-home-page');
+        document.body.classList.remove('home-page');
     }
     
     console.log('Navbar update completed');

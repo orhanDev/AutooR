@@ -125,9 +125,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Load cars data first, then load vehicles
     loadCarsData().then(() => {
         loadVehicles();
+        // Initialize filters after vehicles are loaded
+        initializeFilters();
     });
-    
-    initializeFilters();
     
     if (shouldClear !== '1') {
         loadSavedSelections();
@@ -636,22 +636,136 @@ document.addEventListener('DOMContentLoaded', () => {
         const fTrans = document.getElementById('filter-transmission');
         const fSeats = document.getElementById('filter-seats');
         const fAge = document.getElementById('filter-age');
-        [fSort, fCat, fTrans, fSeats, fAge].forEach(el => el && el.addEventListener('change', () => {
-            // Simple client-side filtering
-            let filtered = [...allVehicles];
-            if (fCat && fCat.value) filtered = filtered.filter(v => (v.type||`${v.make} ${v.model}`).toLowerCase().includes(fCat.value.toLowerCase()));
-            if (fTrans && fTrans.value) filtered = filtered.filter(v => (v.transmission_type||'').toLowerCase() === fTrans.value.toLowerCase());
-            if (fSeats && fSeats.value) filtered = filtered.filter(v => Number(v.seating_capacity)||0 >= Number(fSeats.value));
-            // Age filter is informational in this static list; skip or future use
-            if (fSort && fSort.value) {
-                if (fSort.value === 'price-asc') filtered.sort((a,b)=> (a.daily_rate||0)-(b.daily_rate||0));
-                if (fSort.value === 'price-desc') filtered.sort((a,b)=> (b.daily_rate||0)-(a.daily_rate||0));
-                if (fSort.value === 'name-asc') filtered.sort((a,b)=>(`${a.make} ${a.model}`).localeCompare(`${b.make} ${b.model}`));
-                if (fSort.value === 'name-desc') filtered.sort((a,b)=>(`${b.make} ${b.model}`).localeCompare(`${a.make} ${a.model}`));
+        
+        if (!fSort && !fCat && !fTrans && !fSeats && !fAge) {
+            console.log('Filter elements not found, skipping filter initialization');
+            return;
+        }
+        
+        const applyFiltering = () => {
+            console.log('=== Applying filters ===', {
+                sort: fSort?.value || '(none)',
+                category: fCat?.value || '(none)',
+                transmission: fTrans?.value || '(none)',
+                seats: fSeats?.value || '(none)',
+                age: fAge?.value || '(none)',
+                totalVehicles: allVehicles.length
+            });
+            
+            if (allVehicles.length === 0) {
+                console.log('No vehicles loaded yet, skipping filter');
+                return;
             }
+            
+            // Start with all vehicles
+            let filtered = [...allVehicles];
+            console.log('Starting with', filtered.length, 'vehicles');
+            
+            // Category filter (Fahrzeugkategorie)
+            if (fCat && fCat.value) {
+                const categoryValue = fCat.value.toLowerCase();
+                filtered = filtered.filter(v => {
+                    const vehicleType = (v.type || '').toLowerCase();
+                    // Map filter values to vehicle type patterns
+                    if (categoryValue === 'suv') {
+                        return vehicleType.includes('suv');
+                    } else if (categoryValue === 'limousine') {
+                        return vehicleType.includes('limousine') || vehicleType.includes('sedan');
+                    } else if (categoryValue === 'kombi') {
+                        return vehicleType.includes('kombi') || vehicleType.includes('variant') || vehicleType.includes('touring');
+                    } else if (categoryValue === 'cabriolet') {
+                        return vehicleType.includes('cabrio') || vehicleType.includes('convertible');
+                    } else if (categoryValue === 'van') {
+                        return vehicleType.includes('van') || vehicleType.includes('minivan');
+                    }
+                    return vehicleType.includes(categoryValue);
+                });
+            }
+            
+            // Transmission filter (Getriebe)
+            if (fTrans && fTrans.value) {
+                const transmissionValue = fTrans.value.toLowerCase();
+                const beforeCount = filtered.length;
+                filtered = filtered.filter(v => {
+                    const transmission = (v.transmission_type || '').toLowerCase();
+                    const matches = transmission === transmissionValue;
+                    return matches;
+                });
+                console.log(`Transmission filter "${fTrans.value}": ${beforeCount} -> ${filtered.length} vehicles`);
+            }
+            
+            // Seats filter (Mindestanzahl an Sitzplätzen)
+            if (fSeats && fSeats.value) {
+                const minSeats = Number(fSeats.value) || 0;
+                filtered = filtered.filter(v => {
+                    const seats = Number(v.seating_capacity) || 0;
+                    return seats >= minSeats;
+                });
+            }
+            
+            // Age filter (Alter des Hauptfahrers)
+            if (fAge && fAge.value) {
+                const minAge = Number(fAge.value) || 0;
+                filtered = filtered.filter(v => {
+                    const vehicleMinAge = Number(v.min_age) || 0;
+                    return vehicleMinAge <= minAge; // Vehicle's min age should be <= selected age
+                });
+            }
+            
+            // Sort filter (Sortieren nach)
+            if (fSort && fSort.value) {
+                if (fSort.value === 'price-asc') {
+                    filtered.sort((a, b) => (a.daily_rate || 0) - (b.daily_rate || 0));
+                } else if (fSort.value === 'price-desc') {
+                    filtered.sort((a, b) => (b.daily_rate || 0) - (a.daily_rate || 0));
+                } else if (fSort.value === 'name-asc') {
+                    filtered.sort((a, b) => (`${a.make} ${a.model}`).localeCompare(`${b.make} ${b.model}`));
+                } else if (fSort.value === 'name-desc') {
+                    filtered.sort((a, b) => (`${b.make} ${b.model}`).localeCompare(`${a.make} ${a.model}`));
+                }
+            }
+            
+            // Update filtered vehicles and display
             filteredVehicles = filtered;
+            console.log('=== Filter result ===', {
+                totalFiltered: filteredVehicles.length,
+                willDisplay: filteredVehicles.length > 0
+            });
+            
+            // Always display, even if no results (to show "no vehicles found" message)
             displayVehicles();
-        }));
+        };
+        
+        // Add event listeners directly
+        if (fSort) {
+            fSort.addEventListener('change', applyFiltering);
+            console.log('Event listener added to filter-sort');
+        }
+        if (fCat) {
+            fCat.addEventListener('change', applyFiltering);
+            console.log('Event listener added to filter-category');
+        }
+        if (fTrans) {
+            fTrans.addEventListener('change', applyFiltering);
+            console.log('Event listener added to filter-transmission');
+        }
+        if (fSeats) {
+            fSeats.addEventListener('change', applyFiltering);
+            console.log('Event listener added to filter-seats');
+        }
+        if (fAge) {
+            fAge.addEventListener('change', applyFiltering);
+            console.log('Event listener added to filter-age');
+        }
+        
+        console.log('Filters initialized', {
+            sort: fSort ? 'found' : 'not found',
+            category: fCat ? 'found' : 'not found',
+            transmission: fTrans ? 'found' : 'not found',
+            seats: fSeats ? 'found' : 'not found',
+            age: fAge ? 'found' : 'not found',
+            vehiclesLoaded: allVehicles.length
+        });
     }
 
     // Apply filters

@@ -11,6 +11,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const passwordToggleIcon = document.getElementById('password-toggle-icon');
     const emailInput = document.getElementById('email');
     const newsletterCheckbox = document.getElementById('newsletter');
+    const passwordRequirements = document.getElementById('password-requirements');
+    
+    // Hide password requirements immediately on page load
+    if (passwordRequirements) {
+        passwordRequirements.style.display = 'none';
+        passwordRequirements.classList.remove('show');
+    }
     
     if (!form || !passwordInput) {
         console.error('Form elements not found');
@@ -40,6 +47,45 @@ document.addEventListener('DOMContentLoaded', () => {
         newsletterCheckbox.addEventListener('change', () => {
             updateSubmitButtonState();
         });
+    }
+    
+    // Newsletter details accordion toggle
+    const newsletterToggleBtn = document.getElementById('newsletter-toggle-btn');
+    const newsletterDetails = document.getElementById('newsletter-details');
+    
+    console.log('Newsletter toggle elements:', { newsletterToggleBtn, newsletterDetails });
+    
+    if (newsletterToggleBtn && newsletterDetails) {
+        // Ensure details are hidden on page load
+        newsletterDetails.style.display = 'none';
+        
+        newsletterToggleBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const isExpanded = newsletterToggleBtn.getAttribute('aria-expanded') === 'true';
+            const toggleText = newsletterToggleBtn.querySelector('.toggle-text');
+            
+            console.log('Toggle clicked, isExpanded:', isExpanded);
+            
+            if (isExpanded) {
+                // Close
+                newsletterDetails.style.display = 'none';
+                newsletterToggleBtn.setAttribute('aria-expanded', 'false');
+                if (toggleText) {
+                    toggleText.textContent = 'Allgemeine Geschäftsbedingungen anzeigen';
+                }
+            } else {
+                // Open
+                newsletterDetails.style.display = 'block';
+                newsletterToggleBtn.setAttribute('aria-expanded', 'true');
+                if (toggleText) {
+                    toggleText.textContent = 'Allgemeine Geschäftsbedingungen ausblenden';
+                }
+            }
+        });
+    } else {
+        console.error('Newsletter toggle elements not found!');
     }
     
     // Password toggle functionality
@@ -210,10 +256,34 @@ document.addEventListener('DOMContentLoaded', () => {
         return Object.values(requirements).every(req => req.check(password));
     }
     
-    // Real-time password validation
+    // Show password requirements when password field is focused or has input
+    function showPasswordRequirements() {
+        if (passwordRequirements) {
+            passwordRequirements.style.display = 'block';
+            passwordRequirements.classList.add('show');
+        }
+    }
+    
+    // Hide password requirements when password field is empty and not focused
+    function hidePasswordRequirementsIfEmpty() {
+        if (passwordRequirements && passwordInput.value.length === 0 && document.activeElement !== passwordInput) {
+            passwordRequirements.style.display = 'none';
+            passwordRequirements.classList.remove('show');
+        }
+    }
+    
+    // Show requirements on focus
+    passwordInput.addEventListener('focus', showPasswordRequirements);
+    
+    // Show requirements on input
     passwordInput.addEventListener('input', (e) => {
         const password = e.target.value;
         updatePasswordRequirements(password);
+        
+        // Show requirements if there's any input
+        if (password.length > 0) {
+            showPasswordRequirements();
+        }
         
         if (password.length > 0) {
             if (validatePassword(password)) {
@@ -226,6 +296,13 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             passwordInput.classList.remove('is-valid', 'is-invalid');
         }
+    });
+    
+    // Hide requirements when clicking outside (if empty)
+    passwordInput.addEventListener('blur', () => {
+        setTimeout(() => {
+            hidePasswordRequirementsIfEmpty();
+        }, 200); // Small delay to allow clicking on requirements
     });
     
     // Show alert function

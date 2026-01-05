@@ -53,20 +53,22 @@
         }
         
         .offer-card {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 0.5rem;
+            background: #ffffff;
+            border: 1px solid #e9ecef;
+            border-radius: 0.75rem;
             padding: 1.5rem;
             transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
             position: relative;
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
         }
         
         .offer-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            border-color: #ffc107;
         }
         
         .offer-badge {
@@ -108,15 +110,21 @@
             list-style: none;
             padding: 0;
             margin-bottom: 1.5rem;
+            flex: 1;
         }
         
         .offer-features li {
             display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-bottom: 0.5rem;
-            color: #333;
+            align-items: flex-start;
+            gap: 0.625rem;
+            margin-bottom: 0.75rem;
+            color: #495057;
             font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        
+        .offer-features li:last-child {
+            margin-bottom: 0;
         }
         
         .feature-icon {
@@ -126,41 +134,41 @@
         
         .offer-actions {
             display: flex;
-            gap: 0.75rem;
-            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            margin-top: auto;
+            padding-top: 1.5rem;
         }
         
         .btn-offer {
-            padding: 0.6rem 1.25rem;
-            border-radius: 0.25rem;
-            font-size: 0.9rem;
-            font-weight: 500;
+            padding: 0.75rem 2rem;
+            border-radius: 0.375rem;
+            font-size: 1rem;
+            font-weight: 600;
             text-decoration: none;
-            transition: all 0.2s ease;
-            border: 1px solid #e0e0e0;
+            transition: all 0.3s ease;
+            border: none;
             cursor: pointer;
-            background: #ffffff;
+            width: 100%;
+            max-width: 300px;
+            text-align: center;
         }
         
         .btn-primary {
             background: #ffc107;
-            color: #333;
+            color: #000000;
             border-color: #ffc107;
         }
         
         .btn-primary:hover {
             background: #e0a800;
             border-color: #e0a800;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 193, 7, 0.3);
         }
         
-        .btn-outline {
-            background: #ffffff;
-            color: #666;
-            border-color: #e0e0e0;
-        }
-        
-        .btn-outline:hover {
-            border-color: #cccccc;
+        .btn-primary:active {
+            transform: translateY(0);
         }
         
         .section-title {
