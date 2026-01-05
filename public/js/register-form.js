@@ -466,6 +466,30 @@ document.addEventListener('DOMContentLoaded', () => {
         return isValid;
     }
     
+    // Add touch event support for mobile devices
+    if (submitBtn) {
+        // Prevent double-tap zoom on mobile
+        submitBtn.addEventListener('touchend', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('Submit button touched (mobile)');
+            // Only submit if button is not disabled
+            if (!submitBtn.disabled && newsletterCheckbox && newsletterCheckbox.checked) {
+                // Trigger form submit
+                form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+            }
+        }, { passive: false });
+        
+        // Also add click handler as backup
+        submitBtn.addEventListener('click', function(e) {
+            // Only prevent default if form is not already submitting
+            if (!submitBtn.disabled) {
+                console.log('Submit button clicked');
+                // Let form submit handler handle it
+            }
+        });
+    }
+    
     // Form submit handler
     form.addEventListener('submit', async (e) => {
         e.preventDefault();

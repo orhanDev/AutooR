@@ -143,6 +143,41 @@ document.addEventListener('DOMContentLoaded', () => {
     
     console.log('Login form found, setting up event listener...');
     
+    // Get submit button
+    const submitBtn = loginForm.querySelector('button[type="submit"]');
+    
+    // Add touch event support for mobile devices
+    if (submitBtn) {
+        // Prevent double-tap zoom on mobile
+        submitBtn.addEventListener('touchend', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('Submit button touched (mobile)');
+            // Trigger form submit
+            loginForm.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+        }, { passive: false });
+        
+        // Also add click handler as backup
+        submitBtn.addEventListener('click', function(e) {
+            // Only prevent default if form is not already submitting
+            if (!submitBtn.disabled) {
+                console.log('Submit button clicked');
+                // Let form submit handler handle it
+            }
+        });
+    }
+    
+    // Also add touch support for register link button
+    const registerLink = document.querySelector('.btn-register');
+    if (registerLink) {
+        registerLink.addEventListener('touchend', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('Register link touched (mobile)');
+            window.location.href = registerLink.href || '/register';
+        }, { passive: false });
+    }
+    
     // Form submit handler
     loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();

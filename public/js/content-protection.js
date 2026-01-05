@@ -77,7 +77,7 @@
         }
     }, false);
     
-    // CSS ile text seçimini engelle
+    // CSS ile text seçimini engelle (butonlar ve form elemanları hariç)
     const style = document.createElement('style');
     style.textContent = `
         * {
@@ -93,6 +93,20 @@
             -moz-user-select: text !important;
             -ms-user-select: text !important;
             user-select: text !important;
+        }
+        
+        /* Butonlar ve tıklanabilir elementler için pointer-events ve user-select'i aktif tut */
+        button, a, [role="button"], .btn, .btn-login, .btn-register, .submit-btn, 
+        input[type="submit"], input[type="button"], .navbar-toggler, .navbar-back-btn,
+        .account-btn, .menu-item, .nav-link {
+            -webkit-user-select: none !important;
+            -moz-user-select: none !important;
+            -ms-user-select: none !important;
+            user-select: none !important;
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1) !important;
+            pointer-events: auto !important;
+            cursor: pointer !important;
+            touch-action: manipulation !important;
         }
     `;
     document.head.appendChild(style);
