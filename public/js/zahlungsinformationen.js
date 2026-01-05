@@ -650,13 +650,13 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Base price (car rental)
             if (reservationData.basePrice !== undefined && reservationData.basePrice !== null) {
-                const hours = reservationData.hours || 1;
+                const days = reservationData.days || 1;
                 const basePrice = Number(reservationData.basePrice);
                 summaryHTML += `
                     <div class="summary-item">
                         <span class="summary-label">
                             <i class="bi bi-car-front me-2"></i>
-                            Fahrzeugmiete (${hours} Stunde${hours > 1 ? 'n' : ''})
+                            Fahrzeugmiete (${days} Tag${days > 1 ? 'e' : ''})
                         </span>
                         <span class="summary-value">€${formatPrice(basePrice)}</span>
                     </div>

@@ -976,35 +976,32 @@ document.addEventListener('DOMContentLoaded', () => {
         const dropoffDayStr = new Date(dropoffYear, dropoffMonth - 1, dropoffDayNum).toDateString();
         const isDifferentDays = pickupDayStr !== dropoffDayStr;
         
-        // Calculate hours for base price (hourly pricing)
-        const hours = diffHours <= 0 ? 1 : Math.ceil(diffHours);
+        // Calculate days for base price (daily pricing - 24 hour periods)
+        // Each 24-hour period = 1 day
+        // 0-24 hours = 1 day, 25-48 hours = 2 days, 49-72 hours = 3 days, etc.
+        const days = diffHours <= 0 ? 1 : Math.ceil(diffHours / 24);
         
-        console.log('Calculated hours:', hours, 'isDifferentDays:', isDifferentDays, 'diffHours:', diffHours);
+        console.log('Calculated days:', days, 'isDifferentDays:', isDifferentDays, 'diffHours:', diffHours);
         
-        // Calculate base price based on hours
-        // Each hour costs the daily rate (84 euro/hour)
+        // Calculate base price based on days
+        // Each day (24-hour period) costs the daily rate (e.g., 84 euro/day)
         const dailyRate = Number(vehicle.daily_rate);
         let basePrice;
         let priceLabel;
         
         if (diffHours <= 0) {
-            // Minimum 1 hour charge
+            // Minimum 1 day charge
             basePrice = Math.round(dailyRate * 1 * 100) / 100;
-            priceLabel = `Grundpreis (1 Stunde)`;
-        } else if (diffHours < 1) {
-            // Less than 1 hour = 1 hour minimum
-            basePrice = Math.round(dailyRate * 1 * 100) / 100;
-            priceLabel = `Grundpreis (1 Stunde)`;
+            priceLabel = `Grundpreis (1 Tag)`;
         } else {
-            // Calculate based on actual hours (round up to nearest hour)
-            // Always round up: 10.1 hours = 11 hours, 10.9 hours = 11 hours
-            const hours = Math.ceil(diffHours);
-            basePrice = Math.round(dailyRate * hours * 100) / 100;
-            priceLabel = `Grundpreis (${hours} Stunde${hours > 1 ? 'n' : ''})`;
+            // Calculate based on 24-hour periods (round up)
+            // 0-24 hours = 1 day, 25-48 hours = 2 days, 49-72 hours = 3 days
+            basePrice = Math.round(dailyRate * days * 100) / 100;
+            priceLabel = `Grundpreis (${days} Tag${days > 1 ? 'e' : ''})`;
             
             console.log('Price calculation:', {
                 diffHours,
-                roundedHours: hours,
+                calculatedDays: days,
                 dailyRate,
                 basePrice
             });
@@ -1053,7 +1050,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
         
-        // Extras - calculate based on hours for daily items
+        // Extras - calculate based on days for daily items
         let additionalServices = 0;
         document.querySelectorAll('.extra-card.selected').forEach(card => {
             const price = Number(card.getAttribute('data-price'));
@@ -1061,9 +1058,9 @@ document.addEventListener('DOMContentLoaded', () => {
             if (unit === 'einmalig') {
                 additionalServices += price;
             } else {
-                // Daily rate items: multiply daily rate by hours
-                const hours = Math.max(1, Math.ceil(diffHours));
-                additionalServices += Math.round(price * hours * 100) / 100;
+                // Daily rate items: multiply daily rate by days (24-hour periods)
+                const daysForExtras = diffHours <= 0 ? 1 : Math.ceil(diffHours / 24);
+                additionalServices += Math.round(price * daysForExtras * 100) / 100;
             }
         });
         
@@ -1158,8 +1155,8 @@ document.addEventListener('DOMContentLoaded', () => {
         pickup.setHours(0, 0, 0, 0);
         const daysUntilPickup = Math.floor((pickup.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
         
-        // Calculate rental duration in hours (minimum 3 days = 72 hours)
-        const rentalHours = diffHours;
+        // Calculate rental duration in days (24-hour periods)
+        const rentalDays = diffHours <= 0 ? 1 : Math.ceil(diffHours / 24);
         
         console.log('Discount calculation:', {
             offerId,
@@ -1168,25 +1165,25 @@ document.addEventListener('DOMContentLoaded', () => {
             today: today.toISOString().split('T')[0],
             pickup: pickup.toISOString().split('T')[0],
             daysUntilPickup,
-            rentalHours,
+            rentalDays,
             diffHours,
-            minimum3Days: rentalHours >= 72
+            minimum3Days: rentalDays >= 3
         });
         
         switch (offerId) {
             case 'offer-1': // Frühbucher-Rabatt - 20%
-                // Requires booking at least 14 days in advance and minimum 3 days rental (72 hours)
-                if (daysUntilPickup >= 14 && rentalHours >= 72) {
+                // Requires booking at least 14 days in advance and minimum 3 days rental
+                if (daysUntilPickup >= 14 && rentalDays >= 3) {
                     console.log('Frühbucher-Rabatt applied: 20%');
                     return 20;
                 }
                 console.log('Frühbucher-Rabatt not applicable:', { 
                     daysUntilPickup, 
                     requiredDays: 14,
-                    rentalHours, 
-                    requiredHours: 72,
+                    rentalDays, 
+                    requiredDays: 3,
                     meetsDays: daysUntilPickup >= 14,
-                    meetsHours: rentalHours >= 72
+                    meetsRentalDays: rentalDays >= 3
                 });
                 return 0;
                 
@@ -1200,8 +1197,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 return 0;
                 
             case 'offer-3': // Langzeit-Miete - 30%
-                // 30 days or more (720 hours)
-                if (rentalHours >= 720) {
+                // 30 days or more
+                if (rentalDays >= 30) {
                     return 30;
                 }
                 return 0;
@@ -1324,8 +1321,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 const dropoffDayStr = new Date(dropoffYear, dropoffMonth - 1, dropoffDayNum).toDateString();
                 const isDifferentDays = pickupDayStr !== dropoffDayStr;
                 
-                // Calculate hours for base price (hourly pricing)
-                const hours = diffHours <= 0 ? 1 : Math.ceil(diffHours);
+                // Calculate days for base price (daily pricing - 24 hour periods)
+                const days = diffHours <= 0 ? 1 : Math.ceil(diffHours / 24);
                 
                 // Calculate insurance days (separate from rental days)
                 // - If less than 24 hours = 1 day (regardless of calendar days)
@@ -1370,13 +1367,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.querySelectorAll('.extra-card.selected').forEach(card => {
                     const price = Number(card.getAttribute('data-price'));
                     const unit = card.getAttribute('data-unit');
-                    // For extras, use hours for daily units, or one-time price
-                    extrasAmount += unit === 'einmalig' ? price : price * hours;
+                    // For extras, use days for daily units, or one-time price
+                    const daysForExtras = diffHours <= 0 ? 1 : Math.ceil(diffHours / 24);
+                    extrasAmount += unit === 'einmalig' ? price : price * daysForExtras;
                 });
                 extrasAmount = Math.round(extrasAmount * 100) / 100;
-                // Calculate base price - hourly pricing
+                // Calculate base price - daily pricing (24-hour periods)
                 const dailyRate = Number(vehicle.daily_rate || 0);
-                const basePrice = Math.round(dailyRate * hours * 100) / 100; // Round to 2 decimals
+                const basePrice = Math.round(dailyRate * days * 100) / 100; // Round to 2 decimals
                 const insuranceAmount = Math.round(insurancePerDay * insuranceDays * 100) / 100;
                 const totalPrice = Math.round((basePrice + insuranceAmount + extrasAmount) * 100) / 100;
 
@@ -1414,7 +1412,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     insuranceType: insuranceType,
                     vehicle: vehicle,
                     // snapshot for payment page
-                    hours: hours,
+                    days: days,
                     insuranceDays: insuranceDays,
                     basePrice: basePrice,
                     insuranceAmount: insuranceAmount,
@@ -1464,8 +1462,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const dropoffDayStr = new Date(dropoffYear, dropoffMonth - 1, dropoffDayNum).toDateString();
             const isDifferentDays = pickupDayStr !== dropoffDayStr;
             
-            // Calculate hours for base price (hourly pricing)
-            const hours = diffHours <= 0 ? 1 : Math.ceil(diffHours);
+            // Calculate days for base price (daily pricing - 24 hour periods)
+            const days = diffHours <= 0 ? 1 : Math.ceil(diffHours / 24);
             
             // Calculate insurance days (separate from rental days)
             // - If less than 24 hours = 1 day (regardless of calendar days)
@@ -1510,13 +1508,14 @@ document.addEventListener('DOMContentLoaded', () => {
             document.querySelectorAll('.extra-card.selected').forEach(card => {
                 const price = Number(card.getAttribute('data-price'));
                 const unit = card.getAttribute('data-unit');
-                // For extras, use hours for daily units, or one-time price
-                extrasAmount += unit === 'einmalig' ? price : price * hours;
+                // For extras, use days for daily units, or one-time price
+                const daysForExtras = diffHours <= 0 ? 1 : Math.ceil(diffHours / 24);
+                extrasAmount += unit === 'einmalig' ? price : price * daysForExtras;
             });
             extrasAmount = Math.round(extrasAmount * 100) / 100;
-            // Calculate base price - hourly pricing
+            // Calculate base price - daily pricing (24-hour periods)
             const dailyRate = Number(vehicle.daily_rate || 0);
-            const basePrice = Math.round(dailyRate * hours * 100) / 100; // Round to 2 decimals
+            const basePrice = Math.round(dailyRate * days * 100) / 100; // Round to 2 decimals
             const insuranceAmount = Math.round(insurancePerDay * insuranceDays * 100) / 100;
             const totalPrice = Math.round((basePrice + insuranceAmount + extrasAmount) * 100) / 100;
 
@@ -1554,7 +1553,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 insuranceType: insuranceType,
                 vehicle: vehicle,
                 // snapshot for payment page
-                hours: hours,
+                days: days,
                 insuranceDays: insuranceDays,
                 basePrice: basePrice,
                 insuranceAmount: insuranceAmount,
