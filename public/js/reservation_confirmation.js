@@ -1,10 +1,10 @@
 ﻿document.addEventListener('DOMContentLoaded', async () => {
-    
+    // Get reservation ID from URL parameters
     const urlParams = new URLSearchParams(window.location.search);
     const reservationId = urlParams.get('reservationId');
 
     if (!reservationId) {
-        
+        // No reservation ID provided, show error message
         document.getElementById('reservation-details').innerHTML = `
             <div class="alert alert-warning">
                 <i class="fas fa-exclamation-triangle"></i>
@@ -14,8 +14,10 @@
         return;
     }
 
+    // Load reservation details
     await loadReservationDetails(reservationId);
 
+    // Setup logout functionality
     setupLogout();
 });
 
@@ -47,7 +49,8 @@ async function loadReservationDetails(reservationId) {
 
 function displayReservationDetails(reservation) {
     const detailsContainer = document.getElementById('reservation-details');
-
+    
+    // Format dates
     const pickupDate = new Date(reservation.pickup_date).toLocaleDateString('de-DE');
     const dropoffDate = new Date(reservation.dropoff_date).toLocaleDateString('de-DE');
     
@@ -132,31 +135,35 @@ function setupLogout() {
     if (logoutBtn) {
         logoutBtn.addEventListener('click', (e) => {
             e.preventDefault();
-
+            
+            // Clear session and local storage
             sessionStorage.removeItem('token');
             sessionStorage.removeItem('user');
             localStorage.removeItem('token');
             localStorage.removeItem('user');
-
+            
+            // Redirect to login page
             window.location.href = '/views/login.html';
         });
     }
 }
 
+// Check authentication status
 function checkAuth() {
     const token = sessionStorage.getItem('token') || localStorage.getItem('token');
     if (!token) {
-        
+        // No token, redirect to login
         window.location.href = '/views/login.html';
         return;
     }
-
+    
+    // Verify token is valid (optional - could make API call to verify)
     try {
         const payload = JSON.parse(atob(token.split('.')[1]));
         const currentTime = Date.now() / 1000;
         
         if (payload.exp < currentTime) {
-            
+            // Token expired
             sessionStorage.removeItem('token');
             sessionStorage.removeItem('user');
             localStorage.removeItem('token');
@@ -164,7 +171,7 @@ function checkAuth() {
             window.location.href = '/views/login.html';
         }
     } catch (error) {
-        
+        // Invalid token
         sessionStorage.removeItem('token');
         sessionStorage.removeItem('user');
         localStorage.removeItem('token');
@@ -173,5 +180,6 @@ function checkAuth() {
     }
 }
 
+// Check auth on page load
 checkAuth();
 

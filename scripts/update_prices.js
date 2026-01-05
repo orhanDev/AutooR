@@ -19,6 +19,7 @@ async function updatePrices() {
     await client.connect();
     console.log('Bağlantı başarılı!');
 
+    // Önce mevcut fiyatları kontrol et
     console.log('\n=== MEVCUT FİYATLAR ===');
     const currentPrices = await client.query(`
       SELECT make, model, year, daily_rate 
@@ -30,6 +31,7 @@ async function updatePrices() {
       console.log(`${row.make} ${row.model} (${row.year}): €${row.daily_rate}`);
     });
 
+    // Fiyat istatistikleri
     const stats = await client.query(`
       SELECT 
         COUNT(*) as toplam_arac,
@@ -47,10 +49,12 @@ async function updatePrices() {
     console.log(`Ortalama fiyat: €${Math.round(stats.rows[0].ortalama_fiyat)}`);
     console.log(`100€ altı araç: ${stats.rows[0].alti_arac}`);
 
+    // Fiyat güncelleme scriptini oku ve çalıştır
     console.log('\n=== FİYAT GÜNCELLENİYOR ===');
     const updateSqlPath = path.join(__dirname, '..', 'db', 'update_prices_realistic.sql');
     const updateSql = fs.readFileSync(updateSqlPath, 'utf8');
-
+    
+    // SQL komutlarını satır satır çalıştır
     const commands = updateSql.split(';').filter(cmd => cmd.trim().length > 0);
     
     for (let i = 0; i < commands.length; i++) {
@@ -65,6 +69,7 @@ async function updatePrices() {
       }
     }
 
+    // Güncel fiyatları kontrol et
     console.log('\n=== GÜNCEL FİYATLAR ===');
     const updatedPrices = await client.query(`
       SELECT make, model, year, daily_rate 
@@ -76,6 +81,7 @@ async function updatePrices() {
       console.log(`${row.make} ${row.model} (${row.year}): €${row.daily_rate}`);
     });
 
+    // Güncel istatistikler
     const updatedStats = await client.query(`
       SELECT 
         COUNT(*) as toplam_arac,

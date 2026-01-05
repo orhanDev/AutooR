@@ -10,6 +10,7 @@
     const pickupLocationName = urlParams.get('pickup_location_name');
     const dropoffLocationName = urlParams.get('dropoff_location_name');
 
+    // Filter and sorting elements
     const brandFilter = document.getElementById('brand-filter');
     const modelFilter = document.getElementById('model-filter');
     const transmissionFilter = document.getElementById('transmission-filter');
@@ -24,6 +25,7 @@
     const summaryDropoffEl = document.getElementById('summary-dropoff');
     const summaryDatesEl = document.getElementById('summary-dates');
 
+    // Fill summary bar
     if (summaryPickupEl) summaryPickupEl.textContent = pickupLocationName || 'â€”';
     if (summaryDropoffEl) summaryDropoffEl.textContent = dropoffLocationName || 'â€”';
     if (summaryDatesEl) {
@@ -36,6 +38,7 @@
 
     let allCars = [];
 
+    // Clear filters
     clearFiltersBtn?.addEventListener('click', function() {
         if (brandFilter) brandFilter.value = '';
         if (modelFilter) modelFilter.value = '';
@@ -46,6 +49,7 @@
         render();
     });
 
+    // Auto-filter on change
     [brandFilter, modelFilter, transmissionFilter, fuelFilter, capacityFilter, pickupLocationSelect, sortBy].forEach(el => {
         if (el) el.addEventListener('change', render);
     });
@@ -103,6 +107,7 @@
             });
         }
 
+        // Populate pickup location filter from local dataset
         if (pickupLocationSelect && pickupLocationSelect.options.length <= 1) {
             const locs = Array.isArray(window.LOCAL_LOCATIONS) ? window.LOCAL_LOCATIONS : [];
             locs.forEach(loc => {
@@ -281,6 +286,7 @@
         }
     }
 
+    // Quick book
     window.quickBook = function(carId) {
         const token = sessionStorage.getItem('token') || localStorage.getItem('token');
         if (!token) {

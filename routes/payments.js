@@ -3,6 +3,7 @@ const { Pool } = require('pg');
 const crypto = require('crypto');
 const router = express.Router();
 
+// PostgreSQL bağlantı havuzu
 const pool = new Pool({
     user: process.env.PGUSER,
     host: process.env.PGHOST,
@@ -11,9 +12,11 @@ const pool = new Pool({
     port: process.env.PGPORT || 5432,
 });
 
+// Şifreleme anahtarı (production'da environment variable olmalı)
 const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY || 'your-32-character-secret-key-here!';
 const ALGORITHM = 'aes-256-cbc';
 
+// Şifreleme fonksiyonu
 function encrypt(text) {
     const iv = crypto.randomBytes(16);
     const cipher = crypto.createCipheriv(ALGORITHM, Buffer.from(ENCRYPTION_KEY.slice(0, 32)), iv);
@@ -22,6 +25,7 @@ function encrypt(text) {
     return iv.toString('hex') + ':' + encrypted;
 }
 
+// Şifre çözme fonksiyonu
 function decrypt(text) {
     const textParts = text.split(':');
     const iv = Buffer.from(textParts.shift(), 'hex');
@@ -32,6 +36,7 @@ function decrypt(text) {
     return decrypted;
 }
 
+// Kart tipini belirleme
 function getCardType(cardNumber) {
     const number = cardNumber.replace(/\D/g, '');
     if (number.startsWith('4')) return 'visa';
@@ -40,6 +45,7 @@ function getCardType(cardNumber) {
     return 'unknown';
 }
 
+// Kredi kartı kaydetme
 router.post('/credit-card', async (req, res) => {
     try {
         const { userEmail, cardHolderName, cardNumber, expiryMonth, expiryYear, cvv } = req.body;
@@ -51,6 +57,7 @@ router.post('/credit-card', async (req, res) => {
             });
         }
 
+        // Kullanıcıyı bul
         const user = await pool.query(
             'SELECT id FROM users WHERE email = $1',
             [userEmail]
@@ -68,9 +75,11 @@ router.post('/credit-card', async (req, res) => {
         const cardNumberLast4 = cardNumberClean.slice(-4);
         const cardType = getCardType(cardNumberClean);
 
+        // Kart numarasını ve CVV'yi şifrele
         const encryptedCardNumber = encrypt(cardNumberClean);
         const encryptedCvv = encrypt(cvv);
 
+        // Mevcut kartları kontrol et (aynı kart var mı?)
         const existingCard = await pool.query(
             'SELECT id FROM credit_cards WHERE user_id = $1 AND card_number_last4 = $2 AND expiry_month = $3 AND expiry_year = $4',
             [userId, cardNumberLast4, expiryMonth, expiryYear]
@@ -83,6 +92,7 @@ router.post('/credit-card', async (req, res) => {
             });
         }
 
+        // Yeni kart kaydet
         const newCard = await pool.query(
             'INSERT INTO credit_cards (user_id, card_holder_name, card_number_encrypted, card_number_last4, expiry_month, expiry_year, cvv_encrypted, card_type, is_default) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id, card_holder_name, card_number_last4, expiry_month, expiry_year, card_type, is_default, created_at',
             [userId, cardHolderName, encryptedCardNumber, cardNumberLast4, expiryMonth, expiryYear, encryptedCvv, cardType, false]
@@ -102,10 +112,12 @@ router.post('/credit-card', async (req, res) => {
     }
 });
 
+// Kullanıcının kredi kartlarını getir
 router.get('/credit-cards/:userEmail', async (req, res) => {
     try {
         const { userEmail } = req.params;
-
+        
+        // Kullanıcıyı bul
         const user = await pool.query(
             'SELECT id FROM users WHERE email = $1',
             [userEmail]
@@ -120,6 +132,7 @@ router.get('/credit-cards/:userEmail', async (req, res) => {
 
         const userId = user.rows[0].id;
 
+        // Kullanıcının kartlarını getir (şifrelenmiş bilgileri gösterme)
         const cards = await pool.query(
             'SELECT id, card_holder_name, card_number_last4, expiry_month, expiry_year, card_type, is_default, created_at FROM credit_cards WHERE user_id = $1 ORDER BY is_default DESC, created_at DESC',
             [userId]
@@ -138,6 +151,7 @@ router.get('/credit-cards/:userEmail', async (req, res) => {
     }
 });
 
+// Kredi kartı silme
 router.delete('/credit-card/:cardId', async (req, res) => {
     try {
         const { cardId } = req.params;
@@ -168,15 +182,18 @@ router.delete('/credit-card/:cardId', async (req, res) => {
     }
 });
 
+// Varsayılan kart belirleme
 router.put('/credit-card/:cardId/default', async (req, res) => {
     try {
         const { cardId } = req.params;
-
+        
+        // Önce tüm kartları varsayılan olmaktan çıkar
         await pool.query(
             'UPDATE credit_cards SET is_default = false WHERE user_id = (SELECT user_id FROM credit_cards WHERE id = $1)',
             [cardId]
         );
 
+        // Seçilen kartı varsayılan yap
         const updatedCard = await pool.query(
             'UPDATE credit_cards SET is_default = true WHERE id = $1 RETURNING id, card_holder_name, card_number_last4, is_default',
             [cardId]
@@ -203,6 +220,7 @@ router.put('/credit-card/:cardId/default', async (req, res) => {
     }
 });
 
+// Ödeme işlemi
 router.post('/process', async (req, res) => {
     try {
         const { userEmail, cardId, amount, currency = 'EUR', paymentMethod, reservationId } = req.body;
@@ -214,6 +232,7 @@ router.post('/process', async (req, res) => {
             });
         }
 
+        // Kullanıcıyı bul
         const user = await pool.query(
             'SELECT id FROM users WHERE email = $1',
             [userEmail]
@@ -228,6 +247,7 @@ router.post('/process', async (req, res) => {
 
         const userId = user.rows[0].id;
 
+        // Kartı bul
         const card = await pool.query(
             'SELECT * FROM credit_cards WHERE id = $1 AND user_id = $2',
             [cardId, userId]
@@ -240,14 +260,17 @@ router.post('/process', async (req, res) => {
             });
         }
 
+        // Simüle edilmiş ödeme işlemi (gerçek uygulamada Stripe, PayPal vb. kullanılır)
         const transactionId = 'TXN_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-        const paymentStatus = Math.random() > 0.1 ? 'success' : 'failed'; 
+        const paymentStatus = Math.random() > 0.1 ? 'success' : 'failed'; // %90 başarı oranı
 
+        // Ödeme kaydını oluştur
         const payment = await pool.query(
             'INSERT INTO payments (reservation_id, user_id, amount, currency, payment_method, transaction_id, status, payment_gateway, gateway_response) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id, transaction_id, status, amount, created_at',
             [reservationId, userId, amount, currency, paymentMethod, transactionId, paymentStatus, 'simulated', JSON.stringify({ simulated: true })]
         );
 
+        // Eğer rezervasyon varsa, ödeme durumunu güncelle
         if (reservationId) {
             await pool.query(
                 'UPDATE reservations SET payment_status = $1, payment_method = $2 WHERE id = $3',
@@ -269,10 +292,12 @@ router.post('/process', async (req, res) => {
     }
 });
 
+// Ödeme geçmişi
 router.get('/history/:userEmail', async (req, res) => {
     try {
         const { userEmail } = req.params;
-
+        
+        // Kullanıcıyı bul
         const user = await pool.query(
             'SELECT id FROM users WHERE email = $1',
             [userEmail]
@@ -287,6 +312,7 @@ router.get('/history/:userEmail', async (req, res) => {
 
         const userId = user.rows[0].id;
 
+        // Ödeme geçmişini getir
         const payments = await pool.query(
             'SELECT p.*, r.booking_id, r.vehicle_name FROM payments p LEFT JOIN reservations r ON p.reservation_id = r.id WHERE p.user_id = $1 ORDER BY p.created_at DESC',
             [userId]
@@ -305,6 +331,7 @@ router.get('/history/:userEmail', async (req, res) => {
     }
 });
 
+// PayPal Order Creation
 router.post('/paypal/create-order', async (req, res) => {
     try {
         const { userEmail, amount, currency, paymentMethod, reservationData } = req.body;
@@ -316,6 +343,7 @@ router.post('/paypal/create-order', async (req, res) => {
             });
         }
 
+        // Kullanıcıyı bul
         const user = await pool.query(
             'SELECT id FROM users WHERE email = $1',
             [userEmail]
@@ -330,13 +358,16 @@ router.post('/paypal/create-order', async (req, res) => {
 
         const userId = user.rows[0].id;
 
+        // PayPal order ID oluştur
         const orderId = 'PAYPAL_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-
+        
+        // PayPal order'ı veritabanına kaydet
         await pool.query(
             'INSERT INTO paypal_orders (order_id, user_id, amount, currency, status, reservation_data) VALUES ($1, $2, $3, $4, $5, $6)',
             [orderId, userId, amount, currency, 'created', JSON.stringify(reservationData)]
         );
 
+        // PayPal approval URL oluştur (demo için - gerçek PayPal ekranını simüle eder)
         const approvalUrl = `/paypal-success?token=${orderId}&PayerID=DEMO_PAYER_${Date.now()}&paymentId=PAY_${Date.now()}`;
         
         res.json({
@@ -354,6 +385,7 @@ router.post('/paypal/create-order', async (req, res) => {
     }
 });
 
+// PayPal Payment Success Callback
 router.post('/paypal/success', async (req, res) => {
     try {
         const { orderId, payerId, paymentId } = req.body;
@@ -365,6 +397,7 @@ router.post('/paypal/success', async (req, res) => {
             });
         }
 
+        // PayPal order'ı bul
         const order = await pool.query(
             'SELECT * FROM paypal_orders WHERE order_id = $1',
             [orderId]
@@ -379,11 +412,13 @@ router.post('/paypal/success', async (req, res) => {
 
         const orderData = order.rows[0];
 
+        // Order durumunu güncelle
         await pool.query(
             'UPDATE paypal_orders SET status = $1, payer_id = $2, payment_id = $3, completed_at = NOW() WHERE order_id = $4',
             ['completed', payerId, paymentId, orderId]
         );
 
+        // Ödeme kaydını oluştur
         const transactionId = 'PAYPAL_TXN_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
         const payment = await pool.query(
             'INSERT INTO payments (user_id, amount, currency, payment_method, transaction_id, status, payment_gateway, gateway_response) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id, transaction_id, status, amount, created_at',
@@ -405,6 +440,7 @@ router.post('/paypal/success', async (req, res) => {
     }
 });
 
+// PayPal Payment Cancel Callback
 router.post('/paypal/cancel', async (req, res) => {
     try {
         const { orderId } = req.body;
@@ -416,6 +452,7 @@ router.post('/paypal/cancel', async (req, res) => {
             });
         }
 
+        // PayPal order durumunu güncelle
         await pool.query(
             'UPDATE paypal_orders SET status = $1, cancelled_at = NOW() WHERE order_id = $2',
             ['cancelled', orderId]

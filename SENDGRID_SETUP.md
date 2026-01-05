@@ -1,6 +1,8 @@
+# SendGrid Email Servisi Kurulum Rehberi
 
+Bu rehber, AutooR projesinde SendGrid email servisini kurmak için adım adım talimatlar içerir.
 
-Bu rehber, AutooR projesinde SendGrid email servisini kurmak için adım adım talimatlar içerir.
+## SendGrid Nedir?
 
 SendGrid, güvenilir ve ölçeklenebilir bir email servisidir. Railway'de Gmail SMTP connection timeout sorunlarını çözmek için kullanılacaktır.
 
@@ -9,7 +11,9 @@ SendGrid, güvenilir ve ölçeklenebilir bir email servisidir. Railway'de Gmail 
 - API tabanlı, SMTP sorunları yok
 - Railway ile tam uyumlu
 
----
+---
+
+## Adım 1: SendGrid Hesabı Oluşturma
 
 1. **SendGrid Web Sitesine Gidin:**
    - https://sendgrid.com adresine gidin
@@ -29,7 +33,9 @@ SendGrid, güvenilir ve ölçeklenebilir bir email servisidir. Railway'de Gmail 
    - SendGrid size birkaç soru soracak (hangi amaçla kullanacağınız, vb.)
    - "Skip" diyerek geçebilirsiniz veya doldurun
 
----
+---
+
+## Adım 2: SendGrid API Key Oluşturma
 
 1. **SendGrid Dashboard'a Gidin:**
    - https://app.sendgrid.com adresine gidin
@@ -50,9 +56,13 @@ SendGrid, güvenilir ve ölçeklenebilir bir email servisidir. Railway'de Gmail 
    - API Key'i kopyalayın (örnek: `SG.xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx`)
    - Güvenli bir yere kaydedin
 
----
+---
 
-SendGrid'den email göndermek için bir "Sender" (gönderen) email adresi doğrulamanız gerekir.
+## Adım 3: SendGrid Sender Verification (Email Doğrulama)
+
+SendGrid'den email göndermek için bir "Sender" (gönderen) email adresi doğrulamanız gerekir.
+
+### Seçenek A: Single Sender Verification (Önerilen - Hızlı)
 
 1. **Settings → Sender Authentication:**
    - Sol menüden "Settings" → "Sender Authentication" seçeneğine tıklayın
@@ -71,11 +81,15 @@ SendGrid'den email göndermek için bir "Sender" (gönderen) email adresi doğru
 3. **Email Doğrulama:**
    - SendGrid size bir doğrulama email'i gönderecek
    - Email'inizi kontrol edin ve doğrulama linkine tıklayın
-   - Doğrulama tamamlandıktan sonra bu email adresinden email gönderebilirsiniz
+   - Doğrulama tamamlandıktan sonra bu email adresinden email gönderebilirsiniz
+
+### Seçenek B: Domain Authentication (İleri Seviye - Daha Güvenilir)
 
 Eğer kendi domain'iniz varsa (örnek: `autoor.com`), domain authentication yapabilirsiniz. Bu daha güvenilir ama daha karmaşık.
 
----
+---
+
+## Adım 4: Railway Environment Variables Ayarlama
 
 1. **Railway Dashboard'a Gidin:**
    - https://railway.app adresine gidin
@@ -129,7 +143,9 @@ Eğer kendi domain'iniz varsa (örnek: `autoor.com`), domain authentication yapa
    - Railway otomatik olarak yeniden deploy edecek
    - Deployment tamamlanmasını bekleyin (yaklaşık 1-2 dakika)
 
----
+---
+
+## Adım 5: Test Etme
 
 1. **Deployment Tamamlandıktan Sonra:**
    - Railway Dashboard'da AutooR servisinin "Online" olduğundan emin olun
@@ -146,7 +162,11 @@ Eğer kendi domain'iniz varsa (örnek: `autoor.com`), domain authentication yapa
    - "Link senden" butonuna tıklayın
    - Email'inizi kontrol edin
 
----
+---
+
+## Sorun Giderme
+
+### Email Gelmiyorsa:
 
 1. **Railway Loglarını Kontrol Edin:**
    - Railway Dashboard → AutooR servisi → "Logs" sekmesi
@@ -169,7 +189,9 @@ Eğer kendi domain'iniz varsa (örnek: `autoor.com`), domain authentication yapa
    - SendGrid Dashboard → "Settings" → "Sender Authentication"
    - Email adresinizin "Verified" olduğundan emin olun
 
----
+---
+
+## SendGrid Ücretsiz Tier Limitleri
 
 - **Günlük Limit:** 100 email/gün
 - **Aylık Limit:** Yok (günlük limit geçerli)
@@ -178,7 +200,9 @@ Eğer kendi domain'iniz varsa (örnek: `autoor.com`), domain authentication yapa
 
 Eğer günlük 100 email yeterli değilse, SendGrid'in ücretli planlarına geçebilirsiniz.
 
----
+---
+
+## Gmail'e Geri Dönmek İsterseniz
 
 Eğer SendGrid yerine tekrar Gmail kullanmak isterseniz:
 
@@ -188,7 +212,9 @@ Eğer SendGrid yerine tekrar Gmail kullanmak isterseniz:
 4. `EMAIL_HOST` değerini `smtp.gmail.com` yapın
 5. `EMAIL_PORT` değerini `465` yapın
 
----
+---
+
+## İletişim ve Destek
 
 Sorun yaşarsanız:
 1. Railway loglarını kontrol edin

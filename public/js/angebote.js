@@ -1,8 +1,9 @@
-
+// Angebote (Offers) Page JavaScript
 
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Angebote page loaded');
-
+    
+    // Wait for navbar script to load, then initialize
     setTimeout(() => {
         if (typeof createNavbar === 'function') {
             createNavbar();
@@ -11,7 +12,8 @@ document.addEventListener('DOMContentLoaded', function() {
             updateNavbar();
         }
     }, 100);
-
+    
+    // Load and display offers
     loadOffers();
 });
 
@@ -145,76 +147,77 @@ function createOfferCard(offer) {
     `;
 }
 
+// Action functions
 function bookOffer(offerId) {
     console.log('Book offer:', offerId);
-    
+    // Store offer info for vehicle selection page
     localStorage.setItem('pendingOffer', JSON.stringify({
         id: offerId,
         type: null,
         category: null
     }));
-    
+    // Redirect to vehicle selection page first
     window.location.href = '/fahrzeuge';
 }
 
 function bookWeekend(offerId) {
     console.log('Book weekend offer:', offerId);
-    
+    // Store offer info for vehicle selection page
     localStorage.setItem('pendingOffer', JSON.stringify({
         id: offerId,
         type: 'weekend'
     }));
-    
+    // Redirect to vehicle selection page
     window.location.href = '/fahrzeuge';
 }
 
 function requestLongTerm(offerId) {
     console.log('Request long term offer:', offerId);
-    
+    // Store offer info for vehicle selection page
     localStorage.setItem('pendingOffer', JSON.stringify({
         id: offerId,
         type: 'long-term',
         minDays: 30
     }));
-    
+    // Redirect to vehicle selection page
     window.location.href = '/fahrzeuge';
 }
 
 function bookStudent(offerId) {
     console.log('Book student offer:', offerId);
-    
+    // Store offer info for vehicle selection page
     localStorage.setItem('pendingOffer', JSON.stringify({
         id: offerId,
         type: 'student',
-        category: 'Kompaktwagen', 
+        category: 'Kompaktwagen', // Student offer applies to compact cars
         ageRestriction: '18-26',
         requiresStudentId: true
     }));
-    
+    // Redirect to vehicle selection page
     window.location.href = '/fahrzeuge';
 }
 
 function bookPremium(offerId) {
     console.log('Book premium offer:', offerId);
-    
+    // Store offer info for vehicle selection page
     localStorage.setItem('pendingOffer', JSON.stringify({
         id: offerId,
         type: 'premium',
         category: 'premium'
     }));
-    
+    // Redirect to vehicle selection page
     window.location.href = '/fahrzeuge';
 }
 
 function bookFamily(offerId) {
     console.log('Book family offer:', offerId);
-    
+    // Store offer info for vehicle selection page
     localStorage.setItem('pendingOffer', JSON.stringify({
         id: offerId,
         type: 'family',
-        category: 'SUV' 
+        category: 'SUV' // Family offer applies to SUVs and Minivans
     }));
-    
+    // Redirect to vehicle selection page
     window.location.href = '/fahrzeuge';
 }
 

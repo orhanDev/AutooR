@@ -11,11 +11,13 @@ function removeConfigComments(filePath) {
         for (let i = 0; i < lines.length; i++) {
             const line = lines[i];
             const trimmed = line.trim();
-
+            
+            // # ile başlayan satırları kontrol et
             if (trimmed.startsWith('#')) {
-
+                // Eğer bu bir kategori başlığı değilse (ör: # Dependencies, # Environment variables)
+                // ve açık bir yorum satırıysa, atla
                 if (trimmed.length > 1 && !trimmed.match(/^#\s*[A-Z][a-z]+/)) {
-                    
+                    // Yorum satırı, atla
                     continue;
                 }
             }

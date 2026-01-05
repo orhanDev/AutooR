@@ -5,23 +5,27 @@ function removeHtmlComments(filePath) {
     try {
         let content = fs.readFileSync(filePath, 'utf8');
         const original = content;
-
+        
+        // HTML yorumlarını temizle (<!-- -->)
         content = content.replace(/<!--[\s\S]*?-->/g, '');
-
+        
+        // <script> tag'leri içindeki yorumları temizle
         content = content.replace(/<script[^>]*>([\s\S]*?)<\/script>/gi, (match, scriptContent) => {
             let cleaned = scriptContent
                 .replace(/\/\/.*$/gm, '')
-                .replace(/\/\*[\s\S]*?\*\
+                .replace(/\/\*[\s\S]*?\*\//g, '');
             cleaned = cleaned.replace(/\n\s*\n\s*\n/g, '\n');
             return match.replace(scriptContent, cleaned);
         });
-
+        
+        // <style> tag'leri içindeki yorumları temizle
         content = content.replace(/<style[^>]*>([\s\S]*?)<\/style>/gi, (match, styleContent) => {
-            let cleaned = styleContent.replace(/\/\*[\s\S]*?\*\
+            let cleaned = styleContent.replace(/\/\*[\s\S]*?\*\//g, '');
             cleaned = cleaned.replace(/\n\s*\n\s*\n/g, '\n');
             return match.replace(styleContent, cleaned);
         });
-
+        
+        // Fazla boş satırları temizle
         content = content.replace(/\n\s*\n\s*\n+/g, '\n\n');
         
         if (content !== original) {

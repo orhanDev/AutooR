@@ -1,8 +1,9 @@
-
+// Login Page JavaScript
 
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Login page loaded');
-
+    
+    // Handle OAuth callback (Google, Facebook, Apple)
     const urlParams = new URLSearchParams(window.location.search);
     const loginSuccess = urlParams.get('login');
     const token = urlParams.get('token');
@@ -13,18 +14,21 @@ document.addEventListener('DOMContentLoaded', () => {
             const userInfo = JSON.parse(decodeURIComponent(userParam));
             const loginMethod = userInfo.loginMethod || 'google';
             console.log(`${loginMethod.charAt(0).toUpperCase() + loginMethod.slice(1)} OAuth login successful:`, userInfo);
-
+            
+            // Store token in both sessionStorage and localStorage
             sessionStorage.setItem('token', token);
             localStorage.setItem('token', token);
-
+            
+            // Store user data in both sessionStorage and localStorage
             const userDataToStore = {
                 firstName: userInfo.firstName,
                 lastName: userInfo.lastName,
                 email: userInfo.email,
                 id: userInfo.id || userInfo.user_id,
-                name: `${userInfo.firstName} ${userInfo.lastName}`.trim() 
+                name: `${userInfo.firstName} ${userInfo.lastName}`.trim() // Add name field for navbar compatibility
             };
-
+            
+            // Store in sessionStorage
             sessionStorage.setItem('userData', JSON.stringify(userDataToStore));
             sessionStorage.setItem('isLoggedIn', 'true');
             sessionStorage.setItem('currentUser', JSON.stringify({
@@ -32,7 +36,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 lastName: userInfo.lastName,
                 email: userInfo.email
             }));
-
+            
+            // Also store in localStorage for persistence across page reloads
             localStorage.setItem('userData', JSON.stringify(userDataToStore));
             localStorage.setItem('isLoggedIn', 'true');
             localStorage.setItem('currentUser', JSON.stringify({
@@ -40,9 +45,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 lastName: userInfo.lastName,
                 email: userInfo.email
             }));
-
+            
+            // Clear URL parameters
             window.history.replaceState({}, document.title, window.location.pathname);
-
+            
+            // Show success message
             const alertContainer = document.getElementById('alert-container');
             if (alertContainer) {
                 const providerName = loginMethod === 'google' ? 'Google' : 
@@ -55,33 +62,36 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                 `;
             }
-
+            
+            // Update navbar to show user name
             if (typeof updateNavbar === 'function') {
                 updateNavbar();
             }
-
+            
+            // Check if there's pending reservation data
             const pendingReservationData = localStorage.getItem('pendingReservationData');
             if (pendingReservationData) {
                 console.log('Pending reservation found, redirecting to payment');
-                
+                // Store user data in localStorage for payment page
                 localStorage.setItem('userData', JSON.stringify(userDataToStore));
-                
+                // Redirect to payment page
                 setTimeout(() => {
                     window.location.href = '/zahlungsinformationen';
                 }, 1500);
             } else {
-                
+                // Redirect to homepage after short delay
                 setTimeout(() => {
                     window.location.href = '/';
                 }, 1500);
             }
             
-            return; 
+            return; // Don't continue with normal login form setup
         } catch (error) {
             console.error('Error parsing Google OAuth callback:', error);
         }
     }
-
+    
+    // Check if any other scripts are interfering
     console.log('Checking for interfering scripts...');
     if (typeof showUnavailableMessage === 'function') {
         console.warn('showUnavailableMessage function found - this might interfere');
@@ -89,7 +99,8 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const loginForm = document.getElementById('login-form');
     const alertContainer = document.getElementById('alert-container');
-
+    
+    // Check for OAuth errors in URL (reuse urlParams from above)
     const error = urlParams.get('error');
     const provider = urlParams.get('provider');
     if (error) {
@@ -117,39 +128,46 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             `;
         }
-
+        
+        // Clear error from URL
         window.history.replaceState({}, document.title, window.location.pathname);
     }
-
+    
+    // OAuth kontrolü devre dışı bırakıldı - sadece email/password login kullanılıyor
+    // checkOAuthStatus() fonksiyonu kaldırıldı
+    
     if (!loginForm) {
         console.error('Login form not found');
         return;
     }
     
     console.log('Login form found, setting up event listener...');
-
+    
+    // Form submit handler
     loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        e.stopPropagation(); 
+        e.stopPropagation(); // Prevent any other handlers
         console.log('Login form submitted');
         
         const email = document.getElementById('email').value.trim();
         const password = document.getElementById('password').value;
-
+        
+        // Validation
         if (!email || !password) {
             showAlert('Bitte füllen Sie alle Felder aus.', 'danger');
             return;
         }
         
         console.log('Email and password provided, proceeding with login...');
-
+        
+        // Disable submit button
         const submitBtn = loginForm.querySelector('button[type="submit"]');
         const originalText = submitBtn.innerHTML;
         submitBtn.disabled = true;
         submitBtn.innerHTML = '<i class="bi bi-hourglass-split me-2"></i>Wird angemeldet...';
         
         try {
-            
+            // Send login request
             const response = await fetch('/api/auth/login', {
                 method: 'POST',
                 headers: {
@@ -162,10 +180,12 @@ document.addEventListener('DOMContentLoaded', () => {
             
             if (response.ok && result.token) {
                 console.log('Login successful:', result);
-
+                
+                // Store token in both sessionStorage and localStorage
                 sessionStorage.setItem('token', result.token);
                 localStorage.setItem('token', result.token);
-
+                
+                // Get user details
                 try {
                     const userResponse = await fetch('/api/auth/user', {
                         headers: {
@@ -178,15 +198,17 @@ document.addEventListener('DOMContentLoaded', () => {
                         const user = userData.user;
                         
                         console.log('User data received:', user);
-
+                        
+                        // Store user data in both sessionStorage and localStorage
                         const userDataToStore = {
                             firstName: user.first_name,
                             lastName: user.last_name,
                             email: user.email,
                             id: user.user_id || user.id,
-                            name: `${user.first_name} ${user.last_name}`.trim() 
+                            name: `${user.first_name} ${user.last_name}`.trim() // Add name field for navbar compatibility
                         };
-
+                        
+                        // Store in sessionStorage
                         sessionStorage.setItem('userData', JSON.stringify(userDataToStore));
                         sessionStorage.setItem('isLoggedIn', 'true');
                         sessionStorage.setItem('currentUser', JSON.stringify({
@@ -194,7 +216,8 @@ document.addEventListener('DOMContentLoaded', () => {
                             lastName: user.last_name,
                             email: user.email
                         }));
-
+                        
+                        // Also store in localStorage for persistence across page reloads
                         localStorage.setItem('userData', JSON.stringify(userDataToStore));
                         localStorage.setItem('isLoggedIn', 'true');
                         localStorage.setItem('currentUser', JSON.stringify({
@@ -204,30 +227,32 @@ document.addEventListener('DOMContentLoaded', () => {
                         }));
                         
                         console.log('User data stored in both sessionStorage and localStorage');
-
+                        
+                        // Check if there's pending reservation data
                         const pendingReservationData = localStorage.getItem('pendingReservationData');
                         if (pendingReservationData) {
                             console.log('Pending reservation found, redirecting to payment');
-                            
+                            // Store user data in localStorage for payment page
                             localStorage.setItem('userData', JSON.stringify(userDataToStore));
-                            
+                            // Show success message
                             showAlert('Erfolgreich angemeldet! Weiterleitung zur Zahlung...', 'success');
-                            
+                            // Redirect to payment page
                             setTimeout(() => {
                                 window.location.href = '/zahlungsinformationen';
                             }, 1000);
                         } else {
-                            
+                            // Show success message
                             showAlert('Erfolgreich angemeldet! Weiterleitung...', 'success');
-
+                            
+                            // Redirect to homepage after short delay
                             setTimeout(() => {
                                 window.location.href = '/';
                             }, 1000);
                         }
                     } else {
-                        
+                        // Token stored but user data fetch failed - still redirect
                         console.warn('User data fetch failed, but token is stored');
-                        
+                        // Check if there's pending reservation data
                         const pendingReservationData = localStorage.getItem('pendingReservationData');
                         if (pendingReservationData) {
                             showAlert('Anmeldung erfolgreich! Weiterleitung zur Zahlung...', 'success');
@@ -243,7 +268,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 } catch (userError) {
                     console.error('Error fetching user data:', userError);
-
+                    // Token is stored, redirect anyway
+                    // Check if there's pending reservation data
                     const pendingReservationData = localStorage.getItem('pendingReservationData');
                     if (pendingReservationData) {
                         showAlert('Anmeldung erfolgreich! Weiterleitung zur Zahlung...', 'success');
@@ -258,25 +284,28 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }
             } else {
-                
+                // Login failed
                 console.error('Login failed:', result);
                 console.error('Response status:', response.status);
                 console.error('Full error object:', JSON.stringify(result, null, 2));
                 const errorMessage = result.error || result.message || 'Anmeldung fehlgeschlagen. Bitte versuchen Sie es erneut.';
                 showAlert(errorMessage, 'danger');
-
+                
+                // Re-enable submit button
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = originalText;
             }
         } catch (error) {
             console.error('Login error:', error);
             showAlert('Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.', 'danger');
-
+            
+            // Re-enable submit button
             submitBtn.disabled = false;
             submitBtn.innerHTML = originalText;
         }
     });
-
+    
+    // Show alert function
     function showAlert(message, type) {
         if (!alertContainer) return;
         
@@ -286,7 +315,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         `;
-
+        
+        // Auto-dismiss after 5 seconds
         setTimeout(() => {
             const alert = alertContainer.querySelector('.alert');
             if (alert) {
@@ -295,12 +325,13 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }, 5000);
     }
-
+    
+    // Check if user is already logged in
     async function checkExistingLogin() {
         const token = sessionStorage.getItem('token') || localStorage.getItem('token');
         if (token) {
             console.log('User already logged in, redirecting...');
-            
+            // Verify token is still valid
             try {
                 const userResponse = await fetch('/api/auth/user', {
                     headers: {
@@ -309,10 +340,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
                 
                 if (userResponse.ok) {
-                    
+                    // User is logged in, redirect to homepage
                     window.location.href = '/';
                 } else {
-                    
+                    // Token invalid, clear it
                     sessionStorage.removeItem('token');
                     sessionStorage.removeItem('userData');
                     localStorage.removeItem('token');
@@ -323,7 +354,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     }
-
+    
+    // Call the async function
     checkExistingLogin();
 });
 

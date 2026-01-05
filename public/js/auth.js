@@ -1,15 +1,20 @@
-﻿
+﻿// public/js/auth.js
 
 document.addEventListener('DOMContentLoaded', () => {
     console.log('=== Auth.js çalışıyor ===');
     const authLinksContainer = document.getElementById('auth-links');
     console.log('auth-links container:', authLinksContainer);
-
+    
+    // sessionStorage'dan token al (tarayıcı kapanınca otomatik silinir)
+    // localStorage'dan da kontrol et (kalıcı oturum için)
     const token = sessionStorage.getItem('token') || localStorage.getItem('token');
     console.log('Token:', token ? 'found' : 'not found');
 
+    // Sayfa kapatıldığında sadece sessionStorage'ı temizle
+    // localStorage kalıcı olmalı (sayfa yenilendiğinde veya başka sayfaya gidildiğinde hatırlansın)
+    // Sadece tarayıcı tamamen kapatıldığında sessionStorage temizlenir (otomatik)
     window.addEventListener('beforeunload', () => {
-        
+        // Sadece sessionStorage'ı temizle, localStorage'ı koru
         sessionStorage.removeItem('token');
         sessionStorage.removeItem('userData');
         sessionStorage.removeItem('isLoggedIn');
@@ -23,7 +28,8 @@ document.addEventListener('DOMContentLoaded', () => {
         
         if (token) {
             console.log('Token mevcut, kullanÄ±cÄ± bilgileri alÄ±nÄ±yor...');
-
+            
+            // Benutzernamen abrufen
             let userName = '';
             try {
                 console.log('/api/auth/user endpoint\'ine istek atÄ±lÄ±yor...');
@@ -40,10 +46,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     console.log('Extracted userName:', userName);
                     
                     if (userName) {
-                        
+                        // sessionStorage kullan (tarayıcı kapanınca otomatik silinir)
                         sessionStorage.setItem('welcome_name', userName);
                         console.log('welcome_name sessionStorage\'a kaydedildi:', userName);
-
+                        
+                        // userData'yı da sessionStorage'a kaydet
                         const userData = {
                             firstName: user.user.first_name,
                             lastName: user.user.last_name,
@@ -55,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 } else {
                     console.error('Response not ok:', res.status, res.statusText);
-                    
+                    // Token geçersiz, temizle
                     sessionStorage.removeItem('token');
                     sessionStorage.removeItem('welcome_name');
                     sessionStorage.removeItem('user');
@@ -70,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
             } catch (e) { 
                 userName = ''; 
                 console.error('Error fetching user data:', e);
-                
+                // Hata durumunda token'ı temizle
                 sessionStorage.removeItem('token');
                 sessionStorage.removeItem('welcome_name');
                 sessionStorage.removeItem('user');
@@ -83,6 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
+            // Sadece token varsa ve kullanÄ±cÄ± adÄ± alÄ±nabildiyse "Willkommen" gÃ¶ster
             if (userName) {
                 console.log('Willkommen gÃ¶steriliyor:', userName);
                 authLinksContainer.innerHTML = `
@@ -125,9 +133,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // Logout function
     function logout() {
         console.log('Logout çalışıyor');
-        
+        // Hem sessionStorage hem localStorage'ı temizle
         sessionStorage.removeItem('token');
         sessionStorage.removeItem('welcome_name');
         sessionStorage.removeItem('user');
@@ -143,6 +152,7 @@ document.addEventListener('DOMContentLoaded', () => {
         window.location.href = '/';
     }
 
+    // Initial load
     updateAuthLinks();
 });
 

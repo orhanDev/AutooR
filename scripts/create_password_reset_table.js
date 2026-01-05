@@ -19,6 +19,7 @@ async function createPasswordResetTable() {
     await client.connect();
     console.log('Connected successfully.');
 
+    // Check if table exists
     const checkTable = await client.query(`
       SELECT EXISTS (
         SELECT FROM information_schema.tables 
@@ -33,10 +34,12 @@ async function createPasswordResetTable() {
     }
 
     console.log('Creating password_reset_tokens table...');
-
+    
+    // Read SQL file
     const sqlPath = path.join(__dirname, '..', 'db', 'create_password_reset_table.sql');
     const sql = fs.readFileSync(sqlPath, 'utf8');
-
+    
+    // Execute SQL
     await client.query(sql);
     console.log('✅ password_reset_tokens table created successfully.');
 

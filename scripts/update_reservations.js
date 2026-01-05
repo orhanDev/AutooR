@@ -17,13 +17,16 @@ async function updateReservations() {
     await client.connect();
     console.log('Bağlantı başarılı!');
 
+    // Extras alanını ekle
     console.log('\n=== RESERVATIONS TABLOSU GÜNCELLENİYOR ===');
     await client.query('ALTER TABLE reservations ADD COLUMN IF NOT EXISTS extras JSONB;');
     console.log('✅ Extras alanı eklendi');
 
+    // Rezervasyon durumlarını güncelle
     await client.query("UPDATE reservations SET status = 'Beklemede' WHERE status IS NULL OR status = '';");
     console.log('✅ Rezervasyon durumları güncellendi');
 
+    // Örnek rezervasyon verileri ekle
     console.log('\n=== ÖRNEK REZERVASYON VERİLERİ EKLENİYOR ===');
     const insertResult = await client.query(`
       INSERT INTO reservations (
@@ -42,6 +45,7 @@ async function updateReservations() {
       console.log('ℹ️ Yeni rezervasyon eklenmedi (zaten mevcut)');
     }
 
+    // Güncel rezervasyonları göster
     console.log('\n=== GÜNCEL REZERVASYONLAR ===');
     const reservations = await client.query(`
       SELECT 

@@ -1,4 +1,4 @@
-﻿
+﻿// Fahrzeuge page JavaScript
 
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Fahrzeuge page loaded');
@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     console.log('DOM elements found:');
 
+    // Filter elements
     const vehicleTypeFilter = document.getElementById('type-filter');
     const vehicleModelFilter = document.getElementById('brand-filter');
     const fuelTypeFilter = document.getElementById('fuel-filter');
@@ -21,10 +22,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const transmissionFilter = document.getElementById('transmission-filter');
     const priceFilter = document.getElementById('price-filter');
 
+    // State variables
     let allVehicles = [];
     let filteredVehicles = [];
     let selectedVehicle = null;
 
+    // Image index used to map make/model to exact filenames in /images/cars
     const IMG_INDEX = [
         'aston-martin-vantage-2d-red-2024.png',
         'audi-a6-avant-stw-black-2025.png',
@@ -87,13 +90,15 @@ document.addEventListener('DOMContentLoaded', () => {
         return best ? `/images/cars/${best}` : '';
     }
     function toImg(vehicle) {
-        
-        try { return resolveVehicleImage(vehicle); } catch (e) {  }
-        
+        // Use shared resolver to normalize to an existing .png path
+        try { return resolveVehicleImage(vehicle); } catch (e) { /* no-op */ }
+        // Fallback simple logic
         const best = findBestImage(vehicle.make, vehicle.model);
         return best || '/images/cars/vw-t-roc-suv-4d-white-2022-JV.png';
     }
 
+
+    // Location names mapping
     const locationNames = {
         'berlin': 'Berlin Zentrum',
         'hamburg': 'Hamburg Zentrum',
@@ -103,6 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
         'stuttgart': 'Stuttgart Zentrum'
     };
 
+    // Check if we should clear selections
     const urlParams = new URLSearchParams(window.location.search);
     const shouldClear = urlParams.get('clear');
     
@@ -113,8 +119,10 @@ document.addEventListener('DOMContentLoaded', () => {
         window.history.replaceState({}, document.title, newUrl);
     }
 
+    // Initialize page
     initializeDateLocationSelector();
-
+    
+    // Load cars data first, then load vehicles
     loadCarsData().then(() => {
         loadVehicles();
     });
@@ -123,16 +131,19 @@ document.addEventListener('DOMContentLoaded', () => {
         loadSavedSelections();
     }
 
+    // Initialize date and location selector
     function initializeDateLocationSelector() {
-        
+        // Check if date elements exist before initializing flatpickr
         const pickupDateInput = document.getElementById('pickup-date-selector');
         const dropoffDateInput = document.getElementById('dropoff-date-selector');
-
+        
+        // If date inputs don't exist, skip flatpickr initialization
         if (!pickupDateInput || !dropoffDateInput) {
             console.log('Date inputs not found, skipping flatpickr initialization');
             return;
         }
-
+        
+        // Date helpers
         function parseGermanDate(str) {
             const m = /^(\d{2})\.(\d{2})\.(\d{4})$/.exec(String(str || '').trim());
             if (!m) return null;
@@ -154,8 +165,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const today = new Date();
         const tomorrow = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
 
+        // Initialize Flatpickr for date selectors
         if (window.flatpickr && pickupDateInput && dropoffDateInput) {
-            
+            // Custom German locale
             const germanLocale = {
                 weekdays: {
                     shorthand: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
@@ -232,6 +244,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
 
+            // Open Flatpickr on calendar icon click
             document.querySelectorAll('.input-group-text').forEach(trigger => {
                 trigger.addEventListener('click', () => {
                     const input = trigger.parentElement.querySelector('input');
@@ -243,6 +256,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
+        // Swap locations functionality
         const swapIcon = document.querySelector('.swap-icon');
         if (swapIcon) {
             swapIcon.addEventListener('click', () => {
@@ -251,7 +265,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 pickupLocationSelector.value = dropoffLocation;
                 dropoffLocationSelector.value = pickupLocation;
-
+                
+                // Add animation effect
                 swapIcon.style.transform = 'rotate(180deg)';
                 setTimeout(() => {
                     swapIcon.style.transform = 'rotate(0deg)';
@@ -259,10 +274,12 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
+        // Form submission - only if form exists
         if (dateLocationForm) {
             dateLocationForm.addEventListener('submit', (e) => {
                 e.preventDefault();
-
+                
+                // Validate form
                 if (!pickupLocationSelector.value || !dropoffLocationSelector.value || 
                     !pickupDateSelector.value || !dropoffDateSelector.value) {
                     showNotification('Bitte fÃ¼llen Sie alle Felder aus.', 'error');
@@ -277,6 +294,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     return;
                 }
 
+                // Store search data
                 const formData = {
                     pickupLocation: pickupLocationSelector.value,
                     dropoffLocation: dropoffLocationSelector.value,
@@ -291,15 +309,20 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // Search function - called when search button is clicked
     window.performSearch = function() {
         console.log('Search button clicked!');
-
+        
+        // Apply filters
         const filteredResults = applyFilters();
-
+        
+        // Update filtered vehicles
         filteredVehicles = filteredResults;
-
+        
+        // Display filtered vehicles
         displayVehicles();
-
+        
+        // Scroll to vehicles section
         const vehiclesSection = document.querySelector('.vehicles-section');
         if (vehiclesSection) {
             vehiclesSection.scrollIntoView({ 
@@ -311,6 +334,7 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('Search completed. Found vehicles:', filteredVehicles.length);
     }
 
+    // Load cars data from cars-data.js
     function loadCarsData() {
         return new Promise((resolve) => {
             if (window.CAR_CATALOG && window.CAR_CATALOG.length > 0) {
@@ -328,12 +352,13 @@ document.addEventListener('DOMContentLoaded', () => {
             };
             script.onerror = () => {
                 console.warn('Failed to load cars-data.js');
-                resolve(); 
+                resolve(); // Continue anyway
             };
             document.head.appendChild(script);
         });
     }
 
+    // Load vehicles from central catalog
     function loadVehicles() {
         console.log('loadVehicles called');
         console.log('window.CAR_CATALOG:', window.CAR_CATALOG);
@@ -353,7 +378,7 @@ document.addEventListener('DOMContentLoaded', () => {
             guaranteed: !!c.guaranteed,
             image_url: c.image
         }));
-        
+        // Deduplicate by stable key (id preferred, else make+model)
         const uniq = new Map();
         catalog.forEach(v => {
             const key = (v.car_id !== undefined && v.car_id !== null) ? `id:${v.car_id}` : `mm:${(v.make||'')}-${(v.model||'')}`;
@@ -365,6 +390,7 @@ document.addEventListener('DOMContentLoaded', () => {
         displayVehicles();
     }
 
+    // Display vehicles
     function displayVehicles() {
         console.log('=== displayVehicles called ===');
         console.log('Filtered vehicles count:', filteredVehicles.length);
@@ -392,7 +418,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const img = toImg(vehicle);
             const makeAttr = (vehicle.make || '').toString().replace(/"/g, '&quot;');
             const modelAttr = stripSimilar((vehicle.model || '').toString().replace(/"/g, '&quot;'));
-            
+            // Fuel type mapping for badge (Porsche style)
             const fuelTypeMap = {
                 'Benzin': 'Benzin',
                 'Diesel': 'Diesel',
@@ -420,31 +446,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
         carsContainer.innerHTML = `<div class="cars-grid">${cards}</div>`;
 
+        // Add click events to vehicle cards (same behavior as menu cards)
         const carCards = document.querySelectorAll('.vehicle-card');
         console.log('Car cards found:', carCards.length);
         
         carCards.forEach(card => {
             card.addEventListener('click', function(e) {
-                
+                // Don't trigger if clicking on the button
                 if (e.target.tagName === 'BUTTON' || e.target.closest('button')) {
                     return;
                 }
-
+                
+                // Select the vehicle
                 const carId = this.dataset.carId;
                 if (carId) {
                     selectVehicle(parseInt(carId));
-                    
+                    // Prepare data similar to navbar cards
                     const v = allVehicles.find(v => v.car_id === parseInt(carId));
                     if (v) {
                         localStorage.setItem('selectedVehicle', JSON.stringify(v));
-
+                        
+                        // Check if there's a pending offer from angebote page
                         const pendingOffer = localStorage.getItem('pendingOffer');
                         if (pendingOffer) {
                             try {
                                 const offer = JSON.parse(pendingOffer);
                                 localStorage.setItem('activeOffer', pendingOffer);
                                 localStorage.removeItem('pendingOffer');
-                                
+                                // Redirect to reservation with offer parameter
                                 window.location.href = `/reservation.html?offer=${offer.id}&type=${offer.type || ''}&category=${offer.category || ''}`;
                             } catch (e) {
                                 console.error('Error parsing pending offer:', e);
@@ -459,15 +488,20 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    window.rentVehicle = function(carId, carName, dailyRate) {
-        
-        const selectedVehicle = allVehicles.find(v => v.car_id === carId);
 
+
+    // Rent vehicle function - Global scope
+    window.rentVehicle = function(carId, carName, dailyRate) {
+        // Find the selected vehicle
+        const selectedVehicle = allVehicles.find(v => v.car_id === carId);
+        
+        // Show booking sidebar with car details
         showBookingSidebar(selectedVehicle);
     };
 
+    // Show booking sidebar
     function showBookingSidebar(vehicle) {
-        
+        // Populate car details in sidebar
         const carDetailsContainer = document.getElementById('sidebar-car-details');
         carDetailsContainer.innerHTML = `
             <div style="margin-bottom: 0.5rem;">
@@ -481,77 +515,96 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
         `;
 
+        // Initialize sidebar form
         initializeSidebarForm(vehicle);
 
+        // Show sidebar
         document.getElementById('booking-sidebar').style.right = '0';
-
+        
+        // Move main content to the left
         document.getElementById('main-content').style.marginRight = '280px';
-
+        
+        // Move navbar to the left
         const navbarContainer = document.getElementById('navbar-container');
         if (navbarContainer) {
             navbarContainer.style.marginRight = '280px';
         }
-
+        
+        // Move filter form to the left using transform and adjust width
         const filterContainer = document.getElementById('filter-form-container');
         if (filterContainer) {
             filterContainer.style.transform = 'translate(-50%, calc(-50% + 2rem)) translateX(-132px)';
             filterContainer.style.width = 'calc(100% - 280px)';
         }
-
+        
+        // Reduce gaps between filter select elements
         const filterRow = filterContainer?.querySelector('.porsche-filter-row');
         if (filterRow) {
             filterRow.style.gap = '0.1rem';
         }
     }
 
+    // Close booking sidebar
     window.closeBookingSidebar = function() {
         document.getElementById('booking-sidebar').style.right = '-280px';
-
+        
+        // Move main content back to original position
         document.getElementById('main-content').style.marginRight = '0';
-
+        
+        // Move navbar back to original position
         const navbarContainer = document.getElementById('navbar-container');
         if (navbarContainer) {
             navbarContainer.style.marginRight = '0';
         }
-
+        
+        // Move filter form back to original position using transform and restore width
         const filterContainer = document.getElementById('filter-form-container');
         if (filterContainer) {
             filterContainer.style.transform = 'translate(-50%, calc(-50% + 2rem))';
             filterContainer.style.width = '100%';
         }
-
+        
+        // Restore original gaps between filter select elements
         const filterRow = filterContainer?.querySelector('.porsche-filter-row');
         if (filterRow) {
             filterRow.style.gap = '1.5rem';
         }
     }
 
+    // Initialize sidebar form
     function initializeSidebarForm(vehicle) {
-        
+        // Set minimum date to today
         const today = new Date();
         const todayISO = today.toISOString().split('T')[0];
         const todayFormatted = today.toLocaleDateString('de-DE');
         
         const pickupDateInput = document.getElementById('sidebar-pickup-date');
         const returnDateInput = document.getElementById('sidebar-return-date');
-
+        
+        // Set default pickup date to today in German format
         pickupDateInput.value = todayFormatted;
-
+        
+        // Set minimum dates
         pickupDateInput.min = todayISO;
         returnDateInput.min = todayISO;
-
+        
+        // Set default pickup date
         pickupDateInput.value = todayISO;
-
+        
+        // Update return date minimum when pickup date changes
         pickupDateInput.addEventListener('change', function() {
             returnDateInput.min = this.value;
         });
 
+        // Store pickup date for return date validation
         let currentPickupDate = todayFormatted;
-
+        
+        // Update return date validation when pickup date changes
         pickupDateInput.addEventListener('input', function() {
             currentPickupDate = this.value;
         });
 
+        // Form submission
         document.getElementById('quick-booking-form').addEventListener('submit', function(e) {
             e.preventDefault();
             
@@ -565,20 +618,26 @@ document.addEventListener('DOMContentLoaded', () => {
                 returnLocation: document.getElementById('sidebar-return-location').value
             };
 
+            // Calculate rental days (date inputs already in YYYY-MM-DD format)
             const pickup = new Date(formData.pickupDate);
             const returnDate = new Date(formData.returnDate);
             const days = Math.ceil((returnDate - pickup) / (1000 * 60 * 60 * 24)) + 1;
 
+            // Save to localStorage
             localStorage.setItem('bookingDetails', JSON.stringify(formData));
 
+            // Redirect to extras page
             window.location.href = `/extras-versicherung.html?carId=${formData.carId}&days=${days}`;
         });
     }
 
+
+    // Apply filters
     function applyFilters() {
         console.log('Applying filters...');
         let filtered = [...allVehicles];
-
+        
+        // Vehicle type filter (Fahrzeugtyp)
         if (vehicleTypeFilter && vehicleTypeFilter.value) {
             console.log('Vehicle type filter:', vehicleTypeFilter.value);
             if (vehicleTypeFilter.value === 'compact') {
@@ -612,22 +671,26 @@ document.addEventListener('DOMContentLoaded', () => {
                 );
             }
         }
-
+        
+        // Vehicle model filter (Marke)
         if (vehicleModelFilter && vehicleModelFilter.value) {
             console.log('Vehicle model filter:', vehicleModelFilter.value);
             filtered = filtered.filter(vehicle => vehicle.make.toLowerCase() === vehicleModelFilter.value.toLowerCase());
         }
-
+        
+        // Fuel type filter (Kraftstoff)
         if (fuelTypeFilter && fuelTypeFilter.value) {
             console.log('Fuel type filter:', fuelTypeFilter.value);
             filtered = filtered.filter(vehicle => vehicle.fuel_type.toLowerCase() === fuelTypeFilter.value.toLowerCase());
         }
-
+        
+        // Transmission filter (Getriebe)
         if (transmissionFilter && transmissionFilter.value) {
             console.log('Transmission filter:', transmissionFilter.value);
             filtered = filtered.filter(vehicle => vehicle.transmission_type.toLowerCase() === transmissionFilter.value.toLowerCase());
         }
-
+        
+        // Sort filter (Sortieren)
         if (sortFilter && sortFilter.value) {
             console.log('Sort filter:', sortFilter.value);
             if (sortFilter.value === 'price-low') {
@@ -637,29 +700,33 @@ document.addEventListener('DOMContentLoaded', () => {
             } else if (sortFilter.value === 'name') {
                 filtered.sort((a, b) => `${a.make} ${a.model}`.localeCompare(`${b.make} ${b.model}`));
             } else if (sortFilter.value === 'popularity') {
-                
+                // Sort by popularity (we can use car_id as a simple popularity indicator)
                 filtered.sort((a, b) => a.car_id - b.car_id);
             }
         }
         
         console.log('Filtered vehicles count:', filtered.length);
         filteredVehicles = filtered;
-
+        
+        // Don't display vehicles immediately, wait for search button click
         return filtered;
     }
 
+    // Clear all selections
     function clearAllSelections() {
         selectedVehicle = null;
         
         localStorage.removeItem('selectedVehicle');
-
+        
+        // Clear UI highlights
         document.querySelectorAll('.car-card').forEach(card => {
             card.classList.remove('selected');
         });
     }
 
+    // Load saved selections
     function loadSavedSelections() {
-        
+        // Load vehicle selection
         const savedVehicle = localStorage.getItem('selectedVehicle');
         if (savedVehicle) {
             try {
@@ -674,6 +741,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // Highlight selected vehicle
     function highlightSelectedVehicle() {
         document.querySelectorAll('.car-card').forEach(card => {
             card.classList.remove('selected');
@@ -687,6 +755,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+
+
+    // Show notification
     function showNotification(message, type = 'info') {
         const notification = document.createElement('div');
         notification.className = `alert alert-${type === 'error' ? 'danger' : type === 'success' ? 'success' : 'info'} alert-dismissible fade show`;
@@ -714,6 +785,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 5000);
     }
 
+    // Global functions
     window.selectVehicle = function(carId) {
         const vehicle = allVehicles.find(car => car.car_id == carId);
         if (vehicle) {
@@ -732,40 +804,47 @@ document.addEventListener('DOMContentLoaded', () => {
         clearAllSelections();
     };
 
+    // Apply filters
     function applyFilters() {
         filteredVehicles = [...allVehicles];
-
+        
+        // Apply type filter
         if (vehicleTypeFilter && vehicleTypeFilter.value) {
             filteredVehicles = filteredVehicles.filter(vehicle => 
                 vehicle.type.toLowerCase().includes(vehicleTypeFilter.value.toLowerCase())
             );
         }
-
+        
+        // Apply brand filter
         if (vehicleModelFilter && vehicleModelFilter.value) {
             filteredVehicles = filteredVehicles.filter(vehicle => 
                 vehicle.make.toLowerCase().includes(vehicleModelFilter.value.toLowerCase())
             );
         }
-
+        
+        // Apply fuel filter
         if (fuelTypeFilter && fuelTypeFilter.value) {
             filteredVehicles = filteredVehicles.filter(vehicle => 
                 vehicle.fuel_type.toLowerCase().includes(fuelTypeFilter.value.toLowerCase())
             );
         }
-
+        
+        // Apply transmission filter
         if (transmissionFilter && transmissionFilter.value) {
             filteredVehicles = filteredVehicles.filter(vehicle => 
                 vehicle.transmission_type.toLowerCase().includes(transmissionFilter.value.toLowerCase())
             );
         }
-
+        
+        // Apply price filter
         if (priceFilter && priceFilter.value) {
             const maxPrice = parseFloat(priceFilter.value);
             filteredVehicles = filteredVehicles.filter(vehicle => 
                 vehicle.daily_rate <= maxPrice
             );
         }
-
+        
+        // Apply sorting
         if (sortFilter && sortFilter.value) {
             switch (sortFilter.value) {
                 case 'price-low':
@@ -783,6 +862,7 @@ document.addEventListener('DOMContentLoaded', () => {
         displayVehicles();
     }
 
+    // Initialize filters
     function initializeFilters() {
         if (vehicleTypeFilter) {
             vehicleTypeFilter.addEventListener('change', applyFilters);
@@ -804,12 +884,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // Initialize the page
     console.log('Initializing page...');
     if (carsContainer) {
         console.log('Clearing loading state...');
-        carsContainer.innerHTML = ''; 
+        carsContainer.innerHTML = ''; // Clear loading state
     }
-
+    
+    // Load cars data first, then load vehicles
     loadCarsData().then(() => {
         loadVehicles();
     });

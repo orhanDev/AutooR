@@ -8,6 +8,7 @@
         return;
     }
 
+    // Elemente holen
     const carTitle = document.getElementById('car-title');
     const carImage = document.getElementById('car-image');
     const carMake = document.getElementById('car-make');
@@ -34,11 +35,13 @@
 
     let currentCarDailyRate = 0;
 
+    // URL parametrelerinden tarih/saat bilgileri (Ã¶zet bar iÃ§in)
     const pickup_date = urlParams.get('pickup_date');
     const dropoff_date = urlParams.get('dropoff_date');
     const pickup_time = urlParams.get('pickup_time');
     const dropoff_time = urlParams.get('dropoff_time');
 
+    // Fahrzeugdetails holen und Seite befÃ¼llen
     try {
         const response = await fetch(`/api/cars/${carId}`);
         if (!response.ok) {
@@ -47,7 +50,7 @@
         const car = await response.json();
 
         carTitle.textContent = `${car.make} ${car.model} Details`;
-        
+        // Kurumsal Ã¼st Ã¶zet bar
         const sDates = [];
         if (pickup_date) sDates.push(pickup_date + (pickup_time ? ' ' + pickup_time : ''));
         if (dropoff_date) sDates.push(dropoff_date + (dropoff_time ? ' ' + dropoff_time : ''));
@@ -56,7 +59,7 @@
         const datesEl = document.getElementById('summary-dates');
         if (titleEl) titleEl.textContent = `${car.make} ${car.model}`;
         if (datesEl) datesEl.textContent = summaryDates;
-        
+        // Araba resmini ayarla
         const carImageSrc = car.image_url || '/images/cars/car1.jpg';
         carImage.src = carImageSrc;
         carImage.style.display = 'block';
@@ -70,7 +73,7 @@
         carModel.textContent = car.model;
         carYear.textContent = car.year;
         carLicensePlate.textContent = car.license_plate;
-        carDailyRate.textContent = Math.floor(car.daily_rate); 
+        carDailyRate.textContent = Math.floor(car.daily_rate); // Preis ohne Dezimalstellen anzeigen
         currentCarDailyRate = car.daily_rate;
         carTransmissionType.textContent = car.transmission_type;
         carFuelType.textContent = car.fuel_type;
@@ -79,6 +82,7 @@
         carLocationName.textContent = car.location_name;
         carDescription.textContent = car.description || 'Keine Beschreibung verfÃ¼gbar.';
 
+        // Features anzeigen
         if (car.features && car.features.length > 0) {
             car.features.forEach(feature => {
                 const span = document.createElement('span');
@@ -95,6 +99,7 @@
         document.querySelector('main .container').innerHTML = '<p class="text-danger text-center">Fahrzeugdetails konnten nicht geladen werden. Bitte versuchen Sie es spÃ¤ter erneut.</p>';
     }
 
+    // Standorte laden (fÃ¼r Abholung und RÃ¼ckgabe)
     async function fetchAndPopulateLocations() {
         try {
             const response = await fetch('/api/locations');
@@ -109,6 +114,7 @@
                 dropoffLocationSelect.innerHTML += option;
             });
 
+            // StandardmÃ¤ÃŸig den aktuellen Standort des Autos auswÃ¤hlen
             if (carLocationName.dataset.locationId) {
                 pickupLocationSelect.value = carLocationName.dataset.locationId;
                 dropoffLocationSelect.value = carLocationName.dataset.locationId;
@@ -120,6 +126,7 @@
     }
     fetchAndPopulateLocations();
 
+    // Logik fÃ¼r Datum- und Zeitfelder
     const today = new Date();
     const tomorrow = new Date(today);
     tomorrow.setDate(today.getDate() + 1);
@@ -144,8 +151,8 @@
             const diffTime = Math.abs(dropOff - pickUp);
             const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-            if (diffDays >= 0) { 
-                totalPriceElement.textContent = Math.floor(currentCarDailyRate * (diffDays + 1)); 
+            if (diffDays >= 0) { // Mindestens 0 Tage, also auch gleiche Tag Abholung mÃ¶glich
+                totalPriceElement.textContent = Math.floor(currentCarDailyRate * (diffDays + 1)); // +1 Tag, da auch am gleichen Tag abgeholt wird
             } else {
                 totalPriceElement.textContent = '0.00';
             }
@@ -157,7 +164,7 @@
     pickupDateInput.addEventListener('change', () => {
         const pickupDate = new Date(pickupDateInput.value);
         const minDropoffDate = new Date(pickupDate);
-        
+        // minDropoffDate.setDate(pickupDate.getDate() + 1); // Jetzt gleiche Tag Abholung erlaubt, daher +1 nicht gesetzt
         dropoffDateInput.min = formatDate(minDropoffDate);
 
         if (new Date(dropoffDateInput.value) < minDropoffDate) {
@@ -168,8 +175,10 @@
 
     dropoffDateInput.addEventListener('change', calculateTotalPrice);
 
+    // Gesamtpreis beim Laden der Seite berechnen
     calculateTotalPrice();
 
+    // Reservierungsformular absenden
     reservationForm.addEventListener('submit', async (event) => {
         event.preventDefault();
 
@@ -189,7 +198,7 @@
         const token = localStorage.getItem('token');
         if (!token) {
             alert('Bitte melden Sie sich an, um eine Reservierung vorzunehmen.');
-            window.location.href = '/views/login.html'; 
+            window.location.href = '/views/login.html'; // Zur Login-Seite weiterleiten
             return;
         }
 
@@ -198,10 +207,10 @@
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'x-auth-token': token 
+                    'x-auth-token': token // JWT im Header mitschicken
                 },
                 body: JSON.stringify({
-                    
+                    // user_id wird jetzt vom Backend Ã¼ber das Token ermittelt
                     car_id: carId,
                     pickup_location_id: pickupLocation,
                     dropoff_location_id: dropoffLocation,

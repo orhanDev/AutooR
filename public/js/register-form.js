@@ -1,4 +1,4 @@
-
+// Register Form JavaScript
 
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Register form page loaded');
@@ -12,7 +12,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const emailInput = document.getElementById('email');
     const newsletterCheckbox = document.getElementById('newsletter');
     const passwordRequirements = document.getElementById('password-requirements');
-
+    
+    // Hide password requirements immediately on page load
     if (passwordRequirements) {
         passwordRequirements.style.display = 'none';
         passwordRequirements.classList.remove('show');
@@ -22,7 +23,8 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error('Form elements not found');
         return;
     }
-
+    
+    // Newsletter checkbox kontrolü - Submit butonunu aktif/pasif yap
     function updateSubmitButtonState() {
         if (newsletterCheckbox && submitBtn) {
             if (!newsletterCheckbox.checked) {
@@ -36,22 +38,25 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     }
-
+    
+    // Sayfa yüklendiğinde kontrol et
     updateSubmitButtonState();
-
+    
+    // Checkbox değiştiğinde kontrol et
     if (newsletterCheckbox) {
         newsletterCheckbox.addEventListener('change', () => {
             updateSubmitButtonState();
         });
     }
-
+    
+    // Newsletter details accordion toggle
     const newsletterToggleBtn = document.getElementById('newsletter-toggle-btn');
     const newsletterDetails = document.getElementById('newsletter-details');
     
     console.log('Newsletter toggle elements:', { newsletterToggleBtn, newsletterDetails });
     
     if (newsletterToggleBtn && newsletterDetails) {
-        
+        // Ensure details are hidden on page load
         newsletterDetails.style.display = 'none';
         
         newsletterToggleBtn.addEventListener('click', (e) => {
@@ -64,14 +69,14 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log('Toggle clicked, isExpanded:', isExpanded);
             
             if (isExpanded) {
-                
+                // Close
                 newsletterDetails.style.display = 'none';
                 newsletterToggleBtn.setAttribute('aria-expanded', 'false');
                 if (toggleText) {
                     toggleText.textContent = 'Allgemeine Geschäftsbedingungen anzeigen';
                 }
             } else {
-                
+                // Open
                 newsletterDetails.style.display = 'block';
                 newsletterToggleBtn.setAttribute('aria-expanded', 'true');
                 if (toggleText) {
@@ -82,12 +87,14 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
         console.error('Newsletter toggle elements not found!');
     }
-
+    
+    // Password toggle functionality
     if (passwordToggleBtn && passwordToggleIcon) {
         passwordToggleBtn.addEventListener('click', () => {
             const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
             passwordInput.setAttribute('type', type);
-
+            
+            // Icon değiştir
             if (type === 'text') {
                 passwordToggleIcon.classList.remove('bi-eye');
                 passwordToggleIcon.classList.add('bi-eye-slash');
@@ -99,7 +106,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-
+    
+    // Password validation requirements
     const requirements = {
         length: { id: 'req-length', check: (pwd) => pwd.length >= 10 && pwd.length <= 40 },
         lowercase: { id: 'req-lowercase', check: (pwd) => /[a-z]/.test(pwd) },
@@ -107,49 +115,56 @@ document.addEventListener('DOMContentLoaded', () => {
         number: { id: 'req-number', check: (pwd) => /[0-9]/.test(pwd) },
         special: { id: 'req-special', check: (pwd) => /[-.\/',;&@#*)(_+:"~]/.test(pwd) }
     };
-
+    
+    // Generate strong password function
     function generateStrongPassword() {
         const lowercase = 'abcdefghijklmnopqrstuvwxyz';
         const uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
         const numbers = '0123456789';
-        
+        // Özel karakterler: - . / ' , ; & @ # * ) ( _ + : " ~
         const special = '-.\'/,;&@#*)(_+:"~';
         
         let password = '';
-
+        
+        // Ensure at least one of each required character type
         password += lowercase[Math.floor(Math.random() * lowercase.length)];
         password += uppercase[Math.floor(Math.random() * uppercase.length)];
         password += numbers[Math.floor(Math.random() * numbers.length)];
         password += special[Math.floor(Math.random() * special.length)];
-
+        
+        // Fill the rest randomly (total length: 16-20 characters)
         const allChars = lowercase + uppercase + numbers + special;
-        const remainingLength = 12 + Math.floor(Math.random() * 5); 
+        const remainingLength = 12 + Math.floor(Math.random() * 5); // 12-16 more chars = total 16-20
         
         for (let i = 0; i < remainingLength; i++) {
             password += allChars[Math.floor(Math.random() * allChars.length)];
         }
-
+        
+        // Shuffle the password to randomize character positions
         password = password.split('').sort(() => Math.random() - 0.5).join('');
-
+        
+        // Verify all requirements are met
         if (!requirements.length.check(password) || 
             !requirements.lowercase.check(password) ||
             !requirements.uppercase.check(password) ||
             !requirements.number.check(password) ||
             !requirements.special.check(password)) {
-            
+            // If requirements not met, regenerate
             return generateStrongPassword();
         }
         
         return password;
     }
-
+    
+    // Generate password button handler
     const generatePasswordBtn = document.getElementById('generate-password-btn');
     if (generatePasswordBtn) {
         generatePasswordBtn.addEventListener('click', () => {
             const strongPassword = generateStrongPassword();
             passwordInput.value = strongPassword;
-            passwordInput.type = 'text'; 
-
+            passwordInput.type = 'text'; // Show password temporarily
+            
+            // Update password toggle icon
             if (passwordToggleIcon) {
                 passwordToggleIcon.classList.remove('bi-eye');
                 passwordToggleIcon.classList.add('bi-eye-slash');
@@ -157,20 +172,24 @@ document.addEventListener('DOMContentLoaded', () => {
                     passwordToggleBtn.setAttribute('title', 'Şifreyi gizle');
                 }
             }
-
+            
+            // Update requirements display
             updatePasswordRequirements(strongPassword);
-
+            
+            // Mark as valid
             passwordInput.classList.remove('is-invalid');
             passwordInput.classList.add('is-valid');
-
+            
+            // Hide invalid feedback if exists
             const feedback = passwordInput.parentElement.parentElement.querySelector('.invalid-feedback');
             if (feedback) {
                 feedback.style.display = 'none';
             }
-
+            
+            // Show password for 3 seconds, then hide it
             setTimeout(() => {
                 passwordInput.type = 'password';
-                
+                // Update password toggle icon back
                 if (passwordToggleIcon) {
                     passwordToggleIcon.classList.remove('bi-eye-slash');
                     passwordToggleIcon.classList.add('bi-eye');
@@ -179,7 +198,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }
             }, 3000);
-
+            
+            // Show success message
             const successMsg = document.createElement('div');
             successMsg.className = 'alert alert-success alert-dismissible fade show';
             successMsg.style.cssText = 'margin-top: 0.5rem; font-size: 0.85rem; padding: 0.5rem;';
@@ -194,7 +214,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 existingAlert.remove();
             }
             formGroup.appendChild(successMsg);
-
+            
+            // Auto-dismiss after 3 seconds
             setTimeout(() => {
                 if (successMsg.parentElement) {
                     const bsAlert = new bootstrap.Alert(successMsg);
@@ -203,7 +224,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 3000);
         });
     }
-
+    
+    // Update password requirements display
     function updatePasswordRequirements(password) {
         Object.keys(requirements).forEach(key => {
             const req = requirements[key];
@@ -228,31 +250,37 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-
+    
+    // Validate password
     function validatePassword(password) {
         return Object.values(requirements).every(req => req.check(password));
     }
-
+    
+    // Show password requirements when password field is focused or has input
     function showPasswordRequirements() {
         if (passwordRequirements) {
             passwordRequirements.style.display = 'block';
             passwordRequirements.classList.add('show');
         }
     }
-
+    
+    // Hide password requirements when password field is empty and not focused
     function hidePasswordRequirementsIfEmpty() {
         if (passwordRequirements && passwordInput.value.length === 0 && document.activeElement !== passwordInput) {
             passwordRequirements.style.display = 'none';
             passwordRequirements.classList.remove('show');
         }
     }
-
+    
+    // Show requirements on focus
     passwordInput.addEventListener('focus', showPasswordRequirements);
-
+    
+    // Show requirements on input
     passwordInput.addEventListener('input', (e) => {
         const password = e.target.value;
         updatePasswordRequirements(password);
-
+        
+        // Show requirements if there's any input
         if (password.length > 0) {
             showPasswordRequirements();
         }
@@ -269,13 +297,15 @@ document.addEventListener('DOMContentLoaded', () => {
             passwordInput.classList.remove('is-valid', 'is-invalid');
         }
     });
-
+    
+    // Hide requirements when clicking outside (if empty)
     passwordInput.addEventListener('blur', () => {
         setTimeout(() => {
             hidePasswordRequirementsIfEmpty();
-        }, 200); 
+        }, 200); // Small delay to allow clicking on requirements
     });
-
+    
+    // Show alert function
     function showAlert(message, type = 'danger') {
         if (!alertContainer) return;
         
@@ -285,7 +315,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         `;
-
+        
+        // Auto-dismiss after 5 seconds
         setTimeout(() => {
             const alert = alertContainer.querySelector('.alert');
             if (alert) {
@@ -294,10 +325,12 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }, 5000);
     }
-
+    
+    // Validate form
     function validateForm() {
         let isValid = true;
-
+        
+        // Reset validation
         form.querySelectorAll('.form-control').forEach(input => {
             input.classList.remove('is-invalid', 'is-valid');
             const formGroup = input.closest('.form-group');
@@ -313,7 +346,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 feedback.style.display = 'none';
             }
         });
-
+        
+        // Validate first name
         const firstName = document.getElementById('first-name').value.trim();
         const firstNameInput = document.getElementById('first-name');
         const firstNameGroup = firstNameInput.closest('.form-group');
@@ -334,7 +368,8 @@ document.addEventListener('DOMContentLoaded', () => {
             firstNameInput.classList.add('is-valid');
             if (firstNameLabel) firstNameLabel.classList.remove('error-label');
         }
-
+        
+        // Validate last name
         const lastName = document.getElementById('last-name').value.trim();
         const lastNameInput = document.getElementById('last-name');
         const lastNameGroup = lastNameInput.closest('.form-group');
@@ -355,7 +390,8 @@ document.addEventListener('DOMContentLoaded', () => {
             lastNameInput.classList.add('is-valid');
             if (lastNameLabel) lastNameLabel.classList.remove('error-label');
         }
-
+        
+        // Validate email
         const email = document.getElementById('email').value.trim();
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         const emailInput = document.getElementById('email');
@@ -387,7 +423,8 @@ document.addEventListener('DOMContentLoaded', () => {
             emailInput.classList.add('is-valid');
             if (emailLabel) emailLabel.classList.remove('error-label');
         }
-
+        
+        // Validate password
         const password = passwordInput.value;
         const passwordGroup = passwordInput.closest('.form-group');
         const passwordLabel = passwordGroup ? passwordGroup.querySelector('.form-label') : null;
@@ -409,7 +446,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (passwordLabel) passwordLabel.classList.add('error-label');
             const feedback = passwordGroup ? passwordGroup.querySelector('.invalid-feedback') : null;
             if (feedback) {
-                
+                // Show which requirements are not met
                 const unmetReqs = [];
                 if (!requirements.length.check(password)) unmetReqs.push('Länge (10-40 Zeichen)');
                 if (!requirements.lowercase.check(password)) unmetReqs.push('Kleinbuchstaben');
@@ -428,13 +465,15 @@ document.addEventListener('DOMContentLoaded', () => {
         
         return isValid;
     }
-
+    
+    // Form submit handler
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
         e.stopPropagation();
         
         console.log('Register form submitted');
-
+        
+        // Newsletter checkbox kontrolü
         if (!newsletterCheckbox || !newsletterCheckbox.checked) {
             showAlert('Bitte akzeptieren Sie die Newsletter-Einwilligung, um fortzufahren.', 'warning');
             if (newsletterCheckbox) {
@@ -443,15 +482,17 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             return;
         }
-
+        
+        // Validate form
         if (!validateForm()) {
-            
+            // Scroll to first invalid field
             const firstInvalid = form.querySelector('.form-control.is-invalid');
             if (firstInvalid) {
                 firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 firstInvalid.focus();
             }
-
+            
+            // Show alert with details
             const invalidFields = form.querySelectorAll('.form-control.is-invalid');
             if (invalidFields.length > 0) {
                 const fieldNames = Array.from(invalidFields).map(field => {
@@ -464,11 +505,13 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             return;
         }
-
+        
+        // Disable submit button
         const originalText = submitBtn.innerHTML;
         submitBtn.disabled = true;
         submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Wird registriert...';
-
+        
+        // Get form data
         const formData = {
             first_name: document.getElementById('first-name').value.trim(),
             last_name: document.getElementById('last-name').value.trim(),
@@ -480,7 +523,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
         
         try {
-            
+            // Send registration request
             const response = await fetch('/api/auth/register', {
                 method: 'POST',
                 headers: {
@@ -506,19 +549,22 @@ document.addEventListener('DOMContentLoaded', () => {
             
             if (response.ok && result.token) {
                 console.log('Registration successful:', result);
-
+                
+                // Store token in both sessionStorage and localStorage
                 sessionStorage.setItem('token', result.token);
                 localStorage.setItem('token', result.token);
-
+                
+                // Store user data in both sessionStorage and localStorage
                 if (result.user) {
                     const userDataToStore = {
                         firstName: result.user.first_name,
                         lastName: result.user.last_name,
                         email: result.user.email,
                         id: result.user.id || result.user.user_id,
-                        name: `${result.user.first_name} ${result.user.last_name}`.trim() 
+                        name: `${result.user.first_name} ${result.user.last_name}`.trim() // Add name field for navbar compatibility
                     };
-
+                    
+                    // Store in sessionStorage
                     sessionStorage.setItem('userData', JSON.stringify(userDataToStore));
                     sessionStorage.setItem('isLoggedIn', 'true');
                     sessionStorage.setItem('currentUser', JSON.stringify({
@@ -526,7 +572,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         lastName: result.user.last_name,
                         email: result.user.email
                     }));
-
+                    
+                    // Also store in localStorage for persistence across page reloads
                     localStorage.setItem('userData', JSON.stringify(userDataToStore));
                     localStorage.setItem('isLoggedIn', 'true');
                     localStorage.setItem('currentUser', JSON.stringify({
@@ -535,27 +582,32 @@ document.addEventListener('DOMContentLoaded', () => {
                         email: result.user.email
                     }));
                 }
-
+                
+                // Show success message
                 showAlert('Registrierung erfolgreich! Sie werden weitergeleitet...', 'success');
-
+                
+                // Redirect to homepage
                 setTimeout(() => {
                     window.location.href = '/';
                 }, 1500);
             } else {
-                
+                // Registration failed
                 console.error('Registration failed:', result);
                 console.error('Full error object:', JSON.stringify(result, null, 2));
                 const errorMessage = result.message || result.error || result.details || 'Registrierung fehlgeschlagen. Bitte versuchen Sie es erneut.';
-
+                
+                // Mark all form fields as potentially invalid
                 const allFields = {
                     'first_name': document.getElementById('first-name'),
                     'last_name': document.getElementById('last-name'),
                     'email': document.getElementById('email'),
                     'password': passwordInput
                 };
-
+                
+                // Check for specific field errors from backend
                 let fieldMarked = false;
-
+                
+                // Backend returns field name in result.field
                 if (result.field) {
                     const fieldMap = {
                         'first_name': allFields['first_name'],
@@ -568,7 +620,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (targetField) {
                         targetField.classList.remove('is-valid');
                         targetField.classList.add('is-invalid');
-
+                        
+                        // Mark label as error
                         const formGroup = targetField.closest('.form-group');
                         const label = formGroup ? formGroup.querySelector('.form-label') : null;
                         if (label) {
@@ -589,7 +642,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         fieldMarked = true;
                     }
                 } else {
-
+                    // Fallback: Try to detect field from error message
+                    // Email already exists error
                     if (errorMessage.includes('bereits registriert') || errorMessage.includes('already registered') || errorMessage.toLowerCase().includes('e-mail')) {
                         const emailInput = allFields['email'];
                         if (emailInput) {
@@ -610,7 +664,8 @@ document.addEventListener('DOMContentLoaded', () => {
                             fieldMarked = true;
                         }
                     }
-
+                    
+                    // Password error
                     if (errorMessage.toLowerCase().includes('passwort') || errorMessage.toLowerCase().includes('password')) {
                         passwordInput.classList.remove('is-valid');
                         passwordInput.classList.add('is-invalid');
@@ -628,7 +683,8 @@ document.addEventListener('DOMContentLoaded', () => {
                             fieldMarked = true;
                         }
                     }
-
+                    
+                    // Name errors
                     if (errorMessage.toLowerCase().includes('vorname') || errorMessage.toLowerCase().includes('first_name') || errorMessage.toLowerCase().includes('first name')) {
                         const firstNameInput = allFields['first_name'];
                         if (firstNameInput) {
@@ -671,7 +727,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                     }
                 }
-
+                
+                // If no specific field was marked and it's a server error, mark all required fields
                 if (!fieldMarked && errorMessage.includes('Serverfehler')) {
                     Object.values(allFields).forEach(field => {
                         if (field && field.hasAttribute('required')) {
@@ -680,37 +737,43 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                     });
                 }
-
+                
+                // Show detailed error message
                 const detailedMessage = result.details ? 
                     `${errorMessage}<br><small style="font-size: 0.85rem;">Details: ${result.details}</small>` : 
                     errorMessage;
                 showAlert(detailedMessage, 'danger');
-
+                
+                // Re-enable submit button
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = originalText;
             }
         } catch (error) {
             console.error('Registration error:', error);
             showAlert('Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.', 'danger');
-
+            
+            // Re-enable submit button
             submitBtn.disabled = false;
             submitBtn.innerHTML = originalText;
         }
     });
-
+    
+    // Real-time validation for other fields
     form.querySelectorAll('.form-control').forEach(input => {
         if (input.id !== 'password') {
-            
+            // Validate on blur
             input.addEventListener('blur', function() {
                 validateField(this);
             });
-
+            
+            // Validate on change (for autofill) - with delay to catch autofill
             input.addEventListener('change', function() {
                 setTimeout(() => {
                     validateField(this);
                 }, 50);
             });
-
+            
+            // Validate on focus (autofill might happen when field gets focus)
             input.addEventListener('focus', function() {
                 setTimeout(() => {
                     if (this.value.trim()) {
@@ -718,7 +781,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }, 100);
             });
-
+            
+            // Clear invalid state on input and validate
             input.addEventListener('input', function() {
                 this.dataset.userInteracted = 'true';
                 if (this.classList.contains('is-invalid')) {
@@ -728,10 +792,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                     this.classList.remove('is-invalid');
                 }
-                
+                // Also validate on input for real-time feedback
                 validateField(this);
             });
-
+            
+            // Also validate on paste (autofill can trigger paste)
             input.addEventListener('paste', function() {
                 setTimeout(() => {
                     validateField(this);
@@ -739,14 +804,17 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
     });
-
+    
+    // Track field values to detect autofill
     const fieldValues = new Map();
-
+    
+    // Simple autofill detection - check multiple times
     function checkAutofilledFields() {
         form.querySelectorAll('.form-control').forEach(input => {
             const currentValue = input.value.trim();
             const lastValue = fieldValues.get(input) || '';
-
+            
+            // If value changed or field has value but isn't validated
             if (currentValue !== lastValue || (currentValue && !input.classList.contains('is-valid'))) {
                 if (input.id !== 'password') {
                     validateField(input);
@@ -761,11 +829,13 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-
+    
+    // Initialize field values
     form.querySelectorAll('.form-control').forEach(input => {
         fieldValues.set(input, input.value.trim());
     });
-
+    
+    // Check multiple times - autofill can happen at different times
     checkAutofilledFields();
     setTimeout(checkAutofilledFields, 200);
     setTimeout(checkAutofilledFields, 500);
@@ -773,7 +843,8 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(checkAutofilledFields, 2000);
     setTimeout(checkAutofilledFields, 3000);
     setTimeout(checkAutofilledFields, 5000);
-
+    
+    // Validate individual field
     function validateField(field) {
         const value = field.value.trim();
         const feedback = field.parentElement.querySelector('.invalid-feedback');

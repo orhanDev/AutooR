@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Standorte - AutooR</title>
-    
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    
+    <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/navbar.css?v=20260104">
     <style>
@@ -15,7 +15,7 @@
             background-color: #ffffff;
             margin: 0;
             padding: 0;
-            padding-top: 80px; 
+            padding-top: 80px; /* Navbar için boşluk */
             color: #333;
         }
 
@@ -445,10 +445,11 @@
         </div>
     </div>
 
+    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/js/navbar.js?v=20260104"></script>
     <script>
-        
+        // Standorte koordinaten
         const standorte = [
             {
                 name: "Berlin Zentrum",
@@ -499,6 +500,8 @@
                 vehicles: "70+ Fahrzeuge verfügbar"
             }
         ];
+
+
         function showFallbackMap() {
             const mapDiv = document.getElementById('map');
             mapDiv.innerHTML = `
@@ -543,7 +546,7 @@
         }
 
         function showLocationOnMap(locationId) {
-            
+            // Location ID'ye göre standort bul
             const locationMap = {
                 'berlin': 0,
                 'hamburg': 1,
@@ -556,10 +559,14 @@
             const index = locationMap[locationId];
             if (index !== undefined && standorte[index]) {
                 const standort = standorte[index];
+                
+                // Harita bölümüne scroll yap
                 document.querySelector('.map-section').scrollIntoView({ 
                     behavior: 'smooth',
                     block: 'center'
                 });
+                
+                // Seçilen lokasyonu highlight et
                 setTimeout(() => {
                     const mapDiv = document.getElementById('map');
                     mapDiv.innerHTML = `
@@ -571,7 +578,7 @@
                                 <p style="margin-bottom: 0.5rem; color: #ffc107; font-weight: 600;">📞 ${standort.phone}</p>
                                 <p style="margin-bottom: 2rem; color: #ffc107; font-weight: 600;">🚗 ${standort.vehicles}</p>
                                 <div style="display: flex; gap: 1rem; justify-content: center;">
-                                    <button onclick="window.open('https:
+                                    <button onclick="window.open('https://www.google.com/maps/search/${encodeURIComponent(standort.address)}', '_blank')" 
                                             style="background: #ffc107; color: #333; border: none; padding: 0.75rem 1.5rem; border-radius: 0.25rem; font-weight: 500; cursor: pointer;">
                                         <i class="bi bi-map"></i> In Google Maps öffnen
                                     </button>
@@ -586,6 +593,8 @@
                 }, 500);
             }
         }
+
+
         function scrollToLocation(locationId) {
             const element = document.getElementById(locationId);
             if (element) {
@@ -593,8 +602,12 @@
                     behavior: 'smooth',
                     block: 'center'
                 });
+                
+                // Highlight effect
                 element.style.border = '2px solid #ffc107';
                 element.style.boxShadow = '0 4px 12px rgba(255, 193, 7, 0.3)';
+                
+                // Remove highlight after 3 seconds
                 setTimeout(() => {
                     element.style.border = '1px solid #e0e0e0';
                     element.style.boxShadow = 'none';
@@ -603,7 +616,7 @@
         }
 
         document.addEventListener('DOMContentLoaded', function() {
-            
+            // Navbar initialization
             setTimeout(() => {
                 if (typeof createNavbar === 'function') {
                     createNavbar();
@@ -612,6 +625,8 @@
                     updateNavbar();
                 }
             }, 100);
+            
+            // Show fallback map on page load
             showFallbackMap();
         });
     </script>

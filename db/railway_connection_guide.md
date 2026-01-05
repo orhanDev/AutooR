@@ -1,10 +1,18 @@
-
+# Railway PostgreSQL Bağlantı Rehberi
+
+## pgAdmin'de Railway PostgreSQL'e Bağlanma
+
+### Adım 1: pgAdmin'de Yeni Server Oluşturun
 
 1. pgAdmin'i açın
 2. Sol panelde **Servers** üzerine sağ tıklayın
-3. **Create** → **Server** seçin
+3. **Create** → **Server** seçin
 
-- **Name:** `Railway Postgres` (veya istediğiniz bir isim)
+### Adım 2: General Sekmesi
+
+- **Name:** `Railway Postgres` (veya istediğiniz bir isim)
+
+### Adım 3: Connection Sekmesi
 
 Aşağıdaki bilgileri girin:
 
@@ -13,11 +21,17 @@ Aşağıdaki bilgileri girin:
 - **Maintenance database:** `railway`
 - **Username:** `postgres`
 - **Password:** `YOUR_RAILWAY_PASSWORD` (Railway Dashboard'dan alın)
-- **Save password:** ✅ (işaretleyin)
+- **Save password:** ✅ (işaretleyin)
 
-- **DB restriction:** `railway` (sadece bu veritabanını göster)
+### Adım 4: Advanced Sekmesi (Opsiyonel)
 
-**Save** butonuna tıklayın ve bağlantıyı test edin.
+- **DB restriction:** `railway` (sadece bu veritabanını göster)
+
+### Adım 5: Save
+
+**Save** butonuna tıklayın ve bağlantıyı test edin.
+
+## Kullanıcı Oluşturma
 
 Bağlantı başarılı olduktan sonra:
 
@@ -54,7 +68,9 @@ INSERT INTO users (
 SELECT user_id, email, first_name, last_name, created_at 
 FROM users 
 WHERE LOWER(email) = LOWER('orhancodes@gmail.com');
-```
+```
+
+## Alternatif: psql Komutu ile Bağlanma
 
 Terminal/Command Prompt'ta:
 

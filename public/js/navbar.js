@@ -1,5 +1,6 @@
-﻿
+﻿// Navbar JavaScript
 
+// Function to get page title based on current route
 function getPageTitle() {
     const path = window.location.pathname;
     const titleMap = {
@@ -20,9 +21,11 @@ function getPageTitle() {
     return titleMap[path] || 'AutooR';
 }
 
+// Create mobile menu navbar (2nd navbar that appears when menu is open)
 function createMobileMenuNavbar() {
     console.log('=== createMobileMenuNavbar CALLED ===');
-
+    
+    // Check if already exists
     const existing = document.getElementById('mobile-menu-navbar');
     if (existing) {
         console.log('Mobile menu navbar already exists, skipping creation');
@@ -48,7 +51,8 @@ function createMobileMenuNavbar() {
             </button>
         </div>
     `;
-
+    
+    // Insert at the very top of body (before everything)
     console.log('Inserting mobile navbar at body start');
     if (document.body.firstChild) {
         document.body.insertBefore(navbar, document.body.firstChild);
@@ -61,7 +65,8 @@ function createMobileMenuNavbar() {
         parent: document.getElementById('mobile-menu-navbar')?.parentNode,
         nextSibling: document.getElementById('mobile-menu-navbar')?.nextSibling
     });
-
+    
+    // Add event listeners
     const backBtn = navbar.querySelector('.btn-back-navbar');
     const closeBtn = navbar.querySelector('.btn-close-navbar');
     
@@ -72,7 +77,7 @@ function createMobileMenuNavbar() {
             e.preventDefault();
             e.stopPropagation();
             console.log('Back button clicked - preventing default menu close');
-            
+            // Close submenu if open, otherwise close menu
             const submenuPanel = document.getElementById('submenu-panel');
             if (submenuPanel && submenuPanel.classList.contains('open')) {
                 console.log('Closing submenu');
@@ -81,7 +86,7 @@ function createMobileMenuNavbar() {
                 submenuPanel.innerHTML = '';
             } else {
                 console.log('Closing menu via back button');
-                
+                // Close menu
                 const navbarNav = document.getElementById('navbarNav');
                 if (navbarNav) {
                     try {
@@ -105,7 +110,7 @@ function createMobileMenuNavbar() {
             e.preventDefault();
             e.stopPropagation();
             console.log('Close button clicked - preventing default menu close');
-            
+            // Close menu
             const navbarNav = document.getElementById('navbarNav');
             if (navbarNav) {
                 try {
@@ -120,13 +125,14 @@ function createMobileMenuNavbar() {
                     navbarNav.classList.remove('show');
                 }
             }
-            
+            // Clear stored state
             localStorage.removeItem('mobileMenuNavbarVisible');
         });
     }
-
+    
+    // Prevent clicks on mobile navbar from closing menu accidentally
     navbar.addEventListener('click', function(e) {
-        
+        // Only stop propagation if clicking on navbar itself, not buttons
         if (e.target === navbar || e.target.closest('.navbar-title')) {
             e.stopPropagation();
         }
@@ -135,6 +141,7 @@ function createMobileMenuNavbar() {
     console.log('=== createMobileMenuNavbar COMPLETED ===');
 }
 
+// Show/hide mobile menu navbar
 function toggleMobileMenuNavbar(show) {
     console.log('=== toggleMobileMenuNavbar CALLED ===', { show, width: window.innerWidth });
     
@@ -145,7 +152,7 @@ function toggleMobileMenuNavbar(show) {
     
     if (window.innerWidth <= 751) {
         if (show) {
-            
+            // Ensure mobile navbar exists first
             if (!mobileNavbar) {
                 console.log('Mobile navbar does not exist, creating it...');
                 createMobileMenuNavbar();
@@ -156,17 +163,20 @@ function toggleMobileMenuNavbar(show) {
                 console.error('ERROR: Mobile navbar still does not exist after creation attempt!');
                 return;
             }
-
+            
+            // Hide navbar-container using class (CSS will handle it)
             if (navbarContainer) {
                 navbarContainer.classList.add('mobile-menu-active');
                 navbarContainer.style.cssText = 'display: none !important; visibility: hidden !important; opacity: 0 !important; height: 0 !important; overflow: hidden !important; position: absolute !important; left: -9999px !important;';
                 console.log('navbar-container hidden, class added');
             }
-
+            
+            // Show mobile menu navbar
             finalMobileNavbar.classList.add('active');
             finalMobileNavbar.style.cssText = 'display: block !important; visibility: visible !important; opacity: 1 !important; z-index: 1052 !important; background: #ffffff !important; position: fixed !important; top: 0 !important; left: 0 !important; right: 0 !important;';
             console.log('Mobile navbar shown with inline styles');
-
+            
+            // Double check it's actually visible
             setTimeout(() => {
                 const computedStyle = window.getComputedStyle(finalMobileNavbar);
                 console.log('Mobile navbar computed style:', {
@@ -177,13 +187,14 @@ function toggleMobileMenuNavbar(show) {
                 });
             }, 100);
         } else {
-            
+            // Show navbar-container
             if (navbarContainer) {
                 navbarContainer.classList.remove('mobile-menu-active');
                 navbarContainer.style.cssText = '';
                 console.log('navbar-container shown, class removed');
             }
-
+            
+            // Hide mobile menu navbar
             if (mobileNavbar) {
                 mobileNavbar.classList.remove('active');
                 mobileNavbar.style.cssText = 'display: none !important;';
@@ -191,7 +202,7 @@ function toggleMobileMenuNavbar(show) {
             }
         }
     } else {
-        
+        // Desktop
         if (navbarContainer) {
             navbarContainer.classList.remove('mobile-menu-active');
             navbarContainer.style.cssText = '';
@@ -203,11 +214,14 @@ function toggleMobileMenuNavbar(show) {
     }
 }
 
+// Watch for menu open/close - set up after navbar is created
 function setupMobileMenuNavbarWatcher() {
     console.log('=== setupMobileMenuNavbarWatcher CALLED ===');
-
+    
+    // Create mobile menu navbar
     createMobileMenuNavbar();
-
+    
+    // Watch for menu state changes
     const navbarNav = document.getElementById('navbarNav');
     console.log('navbarNav found:', !!navbarNav);
     
@@ -216,10 +230,12 @@ function setupMobileMenuNavbarWatcher() {
         setTimeout(setupMobileMenuNavbarWatcher, 500);
         return;
     }
-
+    
+    // Track previous state
     let previousState = navbarNav.classList.contains('show');
     console.log('Initial menu state:', previousState);
-
+    
+    // Function to check and update
     function checkMenuState() {
         const currentState = navbarNav.classList.contains('show');
         const isMobile = window.innerWidth <= 751;
@@ -230,13 +246,14 @@ function setupMobileMenuNavbarWatcher() {
             previousState = currentState;
             if (isMobile) {
                 if (currentState) {
-                    
+                    // Menu opening - wait for animation to complete
                     setTimeout(() => {
                         console.log('Menu fully opened (from checkMenuState), now showing 2nd navbar');
                         toggleMobileMenuNavbar(true);
                     }, 300);
                 } else {
-
+                    // Menu closing - but check localStorage first
+                    // If localStorage says navbar should be visible, keep it visible
                     if (shouldShowNavbar) {
                         console.log('Menu closed but localStorage says navbar should be visible, keeping it visible');
                         toggleMobileMenuNavbar(true);
@@ -246,17 +263,19 @@ function setupMobileMenuNavbarWatcher() {
                 }
             }
         } else if (isMobile && shouldShowNavbar && !currentState) {
-
+            // Menu is closed but localStorage says navbar should be visible
+            // This happens when page loads after navigation from menu link
             console.log('Menu is closed but localStorage says navbar should be visible, showing it');
             toggleMobileMenuNavbar(true);
         }
     }
-
+    
+    // MutationObserver to watch for 'show' class
     const observer = new MutationObserver(function(mutations) {
         mutations.forEach(function(mutation) {
             if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
                 console.log('MutationObserver: class attribute changed');
-                setTimeout(checkMenuState, 100); 
+                setTimeout(checkMenuState, 100); // Delay to ensure DOM updated
             }
         });
     });
@@ -266,43 +285,50 @@ function setupMobileMenuNavbarWatcher() {
         attributeFilter: ['class']
     });
     console.log('MutationObserver attached');
-
+    
+    // Bootstrap events - PRIMARY METHOD
     navbarNav.addEventListener('shown.bs.collapse', function() {
         console.log('Bootstrap shown.bs.collapse event fired');
         previousState = true;
-
+        // Don't show 2nd navbar immediately - wait for user to click a menu link
+        // 2nd navbar will be shown when user clicks on a menu link
     });
     
     navbarNav.addEventListener('hidden.bs.collapse', function() {
         console.log('Bootstrap hidden.bs.collapse event fired');
         previousState = false;
-
+        // Hide 2nd navbar immediately when menu closes
+        // BUT: Don't clear localStorage here - it might be cleared by user clicking X/back button
+        // localStorage will be cleared when user explicitly closes via X or back button
         toggleMobileMenuNavbar(false);
     });
-
+    
+    // Watch for menu link clicks - show 2nd navbar when user clicks a link
     document.addEventListener('click', function(e) {
-        
+        // Check if clicked on a menu link
         const menuLink = e.target.closest('.nav-link');
         if (menuLink && window.innerWidth <= 751) {
             const navbarNav = document.getElementById('navbarNav');
             if (navbarNav && navbarNav.classList.contains('show')) {
                 console.log('Menu link clicked, showing 2nd navbar and storing state');
-                
+                // Store that menu is open and 2nd navbar should be shown
                 localStorage.setItem('mobileMenuNavbarVisible', 'true');
-                
+                // Show 2nd navbar when user clicks a menu link
                 setTimeout(() => {
                     toggleMobileMenuNavbar(true);
                 }, 100);
             }
         }
-
+        
+        // Also watch toggler clicks
         const toggler = e.target.closest('.navbar-toggler');
         if (toggler && window.innerWidth <= 751) {
             console.log('Toggler clicked, menu opening...');
-            
+            // Don't show 2nd navbar on toggler click - wait for link click
         }
     });
-
+    
+    // Periodic check as backup (every 500ms)
     setInterval(() => {
         if (window.innerWidth <= 751) {
             const currentState = navbarNav.classList.contains('show');
@@ -310,7 +336,7 @@ function setupMobileMenuNavbarWatcher() {
             
             if (currentState !== previousState) {
                 previousState = currentState;
-                
+                // If menu closed but localStorage says navbar should be visible, keep it visible
                 if (!currentState && shouldShowNavbar) {
                     console.log('Periodic check: Menu closed but localStorage says navbar should be visible');
                     toggleMobileMenuNavbar(true);
@@ -318,15 +344,16 @@ function setupMobileMenuNavbarWatcher() {
                     toggleMobileMenuNavbar(false);
                 }
             } else if (!currentState && shouldShowNavbar) {
-                
+                // Menu is closed but localStorage says navbar should be visible
                 toggleMobileMenuNavbar(true);
             }
         }
     }, 500);
-
+    
+    // Initial check - also check localStorage
     if (window.innerWidth <= 751) {
         checkMenuState();
-        
+        // Also check localStorage immediately
         const shouldShowNavbar = localStorage.getItem('mobileMenuNavbarVisible') === 'true';
         const isMenuOpen = navbarNav.classList.contains('show');
         if (shouldShowNavbar && !isMenuOpen) {
@@ -340,18 +367,24 @@ function setupMobileMenuNavbarWatcher() {
     console.log('=== setupMobileMenuNavbarWatcher COMPLETED ===');
 }
 
+// Watch for menu open/close
 document.addEventListener('DOMContentLoaded', function() {
     console.log('=== DOMContentLoaded - Mobile Menu Navbar Setup ===');
-
+    
+    // Check localStorage immediately (before waiting for navbar creation)
     const shouldShowNavbar = localStorage.getItem('mobileMenuNavbarVisible') === 'true';
     console.log('DOMContentLoaded: shouldShowNavbar from localStorage:', shouldShowNavbar);
-
+    
+    // Wait for navbar to be created
     setTimeout(() => {
         setupMobileMenuNavbarWatcher();
-
+        
+        // Check if 2nd navbar should be visible (from previous page navigation)
+        // Do this AFTER setupMobileMenuNavbarWatcher to ensure mobile navbar is created
         if (window.innerWidth <= 751 && shouldShowNavbar) {
             console.log('Restoring 2nd navbar state from previous navigation');
-
+            // Show 2nd navbar even if menu is closed (user came from menu link)
+            // Use multiple attempts to ensure it shows
             setTimeout(() => {
                 console.log('Attempt 1: Showing 2nd navbar');
                 toggleMobileMenuNavbar(true);
@@ -363,9 +396,10 @@ document.addEventListener('DOMContentLoaded', function() {
             }, 800);
         }
     }, 1000);
-
+    
+    // Also watch for window resize
     window.addEventListener('resize', function() {
-        
+        // CSS handles all display logic via body classes - just remove inline styles
         const backBtn = document.querySelector('.navbar-back-btn');
         const menuBtn = document.querySelector('.navbar-toggler');
         if (backBtn) {
@@ -385,20 +419,24 @@ document.addEventListener('DOMContentLoaded', function() {
 
 document.addEventListener('DOMContentLoaded', function() {
     console.log('DOM loaded, calling updateNavbar');
-
+    
+    // Add home-page class to body if on home page
     const currentPath = window.location.pathname;
     if (currentPath === '/' || currentPath === '/index.html') {
         document.body.classList.add('home-page');
     } else {
         document.body.classList.remove('home-page');
     }
-
+    
+    // Add fahrzeuge-page class to body if on fahrzeuge page (for backward compatibility)
     if (currentPath === '/fahrzeuge' || currentPath === '/fahrzeuge.html') {
         document.body.classList.add('fahrzeuge-page');
     } else {
         document.body.classList.remove('fahrzeuge-page');
     }
-
+    
+    // Add not-home-page class to body if NOT on home page
+    // This will show back button and hide menu button on all pages except home
     if (currentPath !== '/' && currentPath !== '/index.html') {
         document.body.classList.add('not-home-page');
         document.body.classList.remove('home-page');
@@ -406,7 +444,8 @@ document.addEventListener('DOMContentLoaded', function() {
         document.body.classList.remove('not-home-page');
         document.body.classList.add('home-page');
     }
-
+    
+    // CSS handles all display logic via body classes - just remove inline styles
     const backBtn = document.querySelector('.navbar-back-btn');
     const menuBtn = document.querySelector('.navbar-toggler');
     if (backBtn) {
@@ -415,12 +454,14 @@ document.addEventListener('DOMContentLoaded', function() {
     if (menuBtn) {
         menuBtn.style.display = '';
     }
-
+    
+    // Check if browser was closed and reopened (sessionStorage empty but localStorage has data)
+    // If so, restore session from localStorage
     const hasLocalStorageData = localStorage.getItem('userData') && localStorage.getItem('isLoggedIn') === 'true';
     const hasSessionStorageData = sessionStorage.getItem('userData') && sessionStorage.getItem('isLoggedIn') === 'true';
     
     if (hasLocalStorageData && !hasSessionStorageData) {
-        
+        // Browser was closed and reopened - restore session from localStorage
         console.log('Restoring session from localStorage');
         const userData = JSON.parse(localStorage.getItem('userData') || '{}');
         const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
@@ -437,15 +478,18 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     createNavbar();
-
+    
+    // Update navbar with a slight delay to ensure DOM is ready
     setTimeout(() => {
     updateNavbar();
     }, 100);
-
+    
+    // Also update navbar after a longer delay to catch any late-loading elements
     setTimeout(() => {
         updateNavbar();
     }, 500);
-
+    
+    // Update navbar when page becomes visible (user switches tabs back)
     document.addEventListener('visibilitychange', function() {
         if (!document.hidden) {
             setTimeout(() => {
@@ -453,23 +497,27 @@ document.addEventListener('DOMContentLoaded', function() {
             }, 100);
         }
     });
-
+    
+    // Add scroll effect to navbar - hide content behind navbar when scrolling
+    // Wait for navbar to be created
     setTimeout(() => {
         addNavbarScrollEffect();
     }, 200);
 });
 
+// Add scroll effect to navbar - make background opaque when scrolling
 function addNavbarScrollEffect() {
-    
+    // Try to find navbar - retry if not found
     const navbar = document.querySelector('.navbar.fixed-top');
     if (!navbar) {
-        
+        // Retry after a short delay if navbar not found yet
         setTimeout(() => {
             addNavbarScrollEffect();
         }, 100);
         return;
     }
-
+    
+    // Check if already initialized
     if (navbar.dataset.scrollEffectInitialized === 'true') {
         return;
     }
@@ -481,10 +529,10 @@ function addNavbarScrollEffect() {
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
         
         if (scrollTop > 10) {
-            
+            // Scrolled down - add opaque background
             navbar.classList.add('navbar-scrolled');
         } else {
-            
+            // At top - transparent background
             navbar.classList.remove('navbar-scrolled');
         }
         
@@ -497,14 +545,17 @@ function addNavbarScrollEffect() {
             ticking = true;
         }
     }
-
+    
+    // Add scroll listener
     window.addEventListener('scroll', requestTick, { passive: true });
-
+    
+    // Initial check
     updateNavbarOnScroll();
     
     console.log('Navbar scroll effect initialized');
 }
 
+// Shared vehicle dataset for submenu (images and details)
 const NAV_VEHICLES = [
     { title: 'Porsche 911 GT3 RS', short: '911', image: 'images/cars/porsche-911-gt3.jpg', transmission: 'Automatik', fuel: 'Benzin', seats: 2 },
     { title: 'Porsche 718', short: '718', image: 'images/cars/porsche-911-gt3.jpg', transmission: 'Automatik', fuel: 'Benzin', seats: 2 },
@@ -525,13 +576,15 @@ const NAV_VEHICLES = [
     { title: 'Tesla Model Y', short: 'Model Y', image: 'images/cars/tesla-model-y.jpg', transmission: 'Automatik', fuel: 'Elektrisch', seats: 7 }
 ];
 
+// Create navbar HTML structure
 function createNavbar() {
     const navbarContainer = document.getElementById('navbar-container');
     if (!navbarContainer) {
         console.log('navbar-container not found');
         return;
     }
-
+    
+    // Create navbar HTML with ana sayfa styling
     navbarContainer.innerHTML = `
         <!-- Mobile menu backdrop overlay -->
         <div class="mobile-menu-backdrop" id="mobile-menu-backdrop"></div>
@@ -605,29 +658,42 @@ function createNavbar() {
             </div>
         </nav>
     `;
+    
+    // Use the same navbar on all routes; remove route-specific styling
 
+    // Navbar CSS artık /css/navbar.css dosyasından yükleniyor
+    
+    // Add click outside to close hamburger menu
     addHamburgerMenuCloseListener();
-
+    
+    // Add close button functionality - call after a short delay to ensure DOM is ready
     setTimeout(() => {
     addCloseButtonListener();
     }, 100);
 
+    // Initialize side menu interactions
     initSideMenu();
-    
+    // Initialize account dropdown
     initAccountMenu();
-
+    
+    // Initialize back button functionality
     initBackButton();
-
+    
+    // Initialize scroll effect after navbar is created
     setTimeout(() => {
         addNavbarScrollEffect();
     }, 100);
 }
 
+// Add navbar CSS styles
 function addNavbarCSS() {}
 
+// Update navbar based on login status
 function updateNavbar() {
     console.log('updateNavbar called');
-
+    
+    // localStorage'dan kontrol et (öncelikli) - kalıcı oturum için
+    // sessionStorage sadece tarayıcı kapanınca silinir, localStorage kalıcıdır
     const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true' || sessionStorage.getItem('isLoggedIn') === 'true';
     const currentUser = JSON.parse(localStorage.getItem('currentUser') || sessionStorage.getItem('currentUser') || '{}');
     const userData = JSON.parse(localStorage.getItem('userData') || sessionStorage.getItem('userData') || '{}');
@@ -647,10 +713,13 @@ function updateNavbar() {
     }
     
     console.log('Containers found, updating...');
-
+    
+    // Check if user is logged in (either old format or new format)
+    // Support multiple formats: currentUser.firstName, userData.firstName, userData.name
     const userIsLoggedIn = (isLoggedIn && (currentUser.firstName || userData.firstName || userData.name)) || 
                            (userData && (userData.firstName || userData.email));
-
+    
+    // Get user name from multiple possible sources
     let fullUserName = '';
     if (currentUser && currentUser.firstName) {
         fullUserName = currentUser.firstName;
@@ -667,21 +736,23 @@ function updateNavbar() {
     
     if (userIsLoggedIn && userName) {
         console.log('User is logged in, showing user name in navbar');
-        
+        // User is logged in - show user name in navbar and full menu
         const userNameSpan = userInfoContainer.querySelector('.user-name');
         if (userNameSpan) {
             userNameSpan.textContent = userName;
         }
-
+        
+        // Show full menu with all options
         accountMenu.style.display = 'block';
         } else {
         console.log('User is not logged in, hiding user name');
-        
+        // User is not logged in - hide user name and show auth menu
         const userNameSpan = userInfoContainer.querySelector('.user-name');
         if (userNameSpan) {
             userNameSpan.textContent = '';
         }
 
+        // Show auth menu with both Anmelden and Registrieren
         accountMenu.style.display = 'block';
         accountMenu.innerHTML = `
             <div class="menu-item">
@@ -694,13 +765,14 @@ function updateNavbar() {
             </div>
         `;
     }
-
+    
+    // Mobilde auth butonlarını diğer linklerle yan yana getir
     if (window.innerWidth <= 768) {
         const menuContainer = document.getElementById('navbar-menu-container');
         const authContainer = document.getElementById('auth-buttons-container');
         
         if (menuContainer && authContainer) {
-            
+            // Auth butonlarını menu container'a taşı
             const authLinks = authContainer.querySelectorAll('.nav-item');
             authLinks.forEach(link => {
                 menuContainer.appendChild(link.cloneNode(true));
@@ -708,14 +780,17 @@ function updateNavbar() {
             authContainer.innerHTML = '';
         }
     }
-
+    
+    // Control back button and hamburger menu visibility based on page
+    // CSS handles all display logic via body classes - NO inline styles needed
     const currentPath = window.location.pathname;
     
     if (currentPath === '/' || currentPath === '/index.html') {
-        
+        // Home page: hide back button, show hamburger menu (CSS handles it)
         document.body.classList.add('home-page');
         document.body.classList.remove('not-home-page');
-
+        
+        // Remove any inline styles to let CSS handle it (all screen sizes)
         const backBtn = document.querySelector('.navbar-back-btn');
         const menuBtn = document.querySelector('.navbar-toggler');
         if (backBtn) {
@@ -725,10 +800,11 @@ function updateNavbar() {
             menuBtn.style.display = '';
         }
     } else {
-        
+        // Not home page: show back button, hide hamburger menu (CSS handles it)
         document.body.classList.add('not-home-page');
         document.body.classList.remove('home-page');
-
+        
+        // Remove any inline styles to let CSS handle it (all screen sizes)
         const backBtn = document.querySelector('.navbar-back-btn');
         const menuBtn = document.querySelector('.navbar-toggler');
         if (backBtn) {
@@ -742,8 +818,9 @@ function updateNavbar() {
     console.log('Navbar update completed');
 }
 
+// Logout function
 function logout() {
-    
+    // Remove all user data (both sessionStorage and localStorage)
     sessionStorage.removeItem('isLoggedIn');
     sessionStorage.removeItem('currentUser');
     sessionStorage.removeItem('userData');
@@ -755,15 +832,17 @@ function logout() {
     localStorage.removeItem('token');
     localStorage.removeItem('welcome_name');
     localStorage.removeItem('pendingEmail');
-
+    
+    // Create a more sophisticated logout notification
     showLogoutNotification();
     setTimeout(() => {
         window.location.href = '/';
     }, 2000);
 }
 
+// Show sophisticated logout notification
 function showLogoutNotification() {
-    
+    // Create notification container
     const notification = document.createElement('div');
     notification.style.cssText = `
         position: fixed;
@@ -783,7 +862,8 @@ function showLogoutNotification() {
         min-width: 300px;
         animation: fadeInScale 0.5s ease-out;
     `;
-
+    
+    // Add animation keyframes
     const style = document.createElement('style');
     style.textContent = `
         @keyframes fadeInScale {
@@ -802,7 +882,8 @@ function showLogoutNotification() {
         }
     `;
     document.head.appendChild(style);
-
+    
+    // Add content
     notification.innerHTML = `
         <div style="margin-bottom: 1rem;">
             <i class="bi bi-check-circle-fill" style="font-size: 2rem; color: #000000;"></i>
@@ -815,26 +896,32 @@ function showLogoutNotification() {
             Vielen Dank für Ihren Besuch bei AutooR.
         </div>
     `;
-
+    
+    // Add to page
     document.body.appendChild(notification);
-
+    
+    // Add fade out animation before redirect
     setTimeout(() => {
         notification.style.animation = 'fadeOut 0.5s ease-out';
     }, 1500);
 }
 
+// Check if user is logged in
 function isUserLoggedIn() {
     return sessionStorage.getItem('isLoggedIn') === 'true' || localStorage.getItem('isLoggedIn') === 'true';
 }
 
+// Get current user
 function getCurrentUser() {
     const userData = sessionStorage.getItem('currentUser') || localStorage.getItem('currentUser');
     return userData ? JSON.parse(userData) : null;
 }
 
+// Test function - can be called from browser console
 function testNavbarUpdate() {
     console.log('Testing navbar update...');
-
+    
+    // Set test user data (sessionStorage kullan)
     sessionStorage.setItem('isLoggedIn', 'true');
     sessionStorage.setItem('currentUser', JSON.stringify({
         firstName: 'Test',
@@ -845,15 +932,17 @@ function testNavbarUpdate() {
     updateNavbar();
 }
 
+// Add close button functionality
 function addCloseButtonListener() {
-    
+    // Get close button elements (may be multiple if navbar is recreated)
     const closeButtons = document.querySelectorAll('.btn-close-menu');
     
     closeButtons.forEach(closeBtn => {
-        
+        // Remove any existing listeners to avoid duplicates
         const newCloseBtn = closeBtn.cloneNode(true);
         closeBtn.parentNode.replaceChild(newCloseBtn, closeBtn);
-
+        
+        // Add click listener to new button
         newCloseBtn.addEventListener('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
@@ -865,7 +954,8 @@ function addCloseButtonListener() {
                 console.log('navbarNav not found');
                 return;
             }
-
+            
+            // Use Bootstrap collapse instance if available
             let collapseInstance = null;
             try {
                 if (window.bootstrap && window.bootstrap.Collapse) {
@@ -877,33 +967,37 @@ function addCloseButtonListener() {
             } catch (err) {
                 console.log('Bootstrap Collapse not available, using manual close', err);
             }
-
+            
+            // Close menu
             if (collapseInstance) {
                 console.log('Closing menu with Bootstrap collapse');
                 collapseInstance.hide();
             } else {
                 console.log('Closing menu manually');
                 navbarNav.classList.remove('show');
-                
+                // Trigger hidden event manually
                 const hiddenEvent = new Event('hidden.bs.collapse', { bubbles: true });
                 navbarNav.dispatchEvent(hiddenEvent);
             }
-
+            
+            // Clean up will be handled by hidden.bs.collapse event
         });
     });
-
+    
+    // Also use event delegation as fallback
     document.addEventListener('click', function(e) {
-        
+        // Check if clicked element is close button or its child (the × span)
         if (e.target.closest('.btn-close-menu') || e.target.classList.contains('btn-close-menu')) {
             const closeBtn = e.target.closest('.btn-close-menu') || e.target;
             if (closeBtn) {
                 e.preventDefault();
                 e.stopPropagation();
-                closeBtn.click(); 
+                closeBtn.click(); // Trigger the click handler we added above
             }
         }
     });
-
+    
+    // Body scroll lock when menu opens (icon change is handled globally above)
     document.addEventListener('click', function(e) {
         if (e.target.closest('.navbar-toggler')) {
                 const navbarNav = document.getElementById('navbarNav');
@@ -921,7 +1015,8 @@ function addCloseButtonListener() {
         }
         }
     });
-
+    
+    // Also handle when menu closes
     const navbarNav = document.getElementById('navbarNav');
     if (navbarNav) {
         navbarNav.addEventListener('hidden.bs.collapse', function() {
@@ -931,12 +1026,14 @@ function addCloseButtonListener() {
     }
 }
 
+// Add hamburger menu close listener
 function addHamburgerMenuCloseListener() {
         const navbarNav = document.getElementById('navbarNav');
         const navbarToggler = document.querySelector('.navbar-toggler');
         
     if (!navbarNav) return;
 
+    // Bootstrap Collapse instance (create if not exists)
     let collapseInstance = null;
     try {
         if (window.bootstrap && window.bootstrap.Collapse) {
@@ -944,27 +1041,30 @@ function addHamburgerMenuCloseListener() {
         }
     } catch (e) {}
 
+    // Prevent clicks inside the drawer (including white panels) from closing it
     navbarNav.addEventListener('click', function(e) {
         e.stopPropagation();
     });
-
+    
+    // Prevent clicks on mobile menu navbar from closing the menu
     const mobileMenuNavbar = document.getElementById('mobile-menu-navbar');
     if (mobileMenuNavbar) {
         mobileMenuNavbar.addEventListener('click', function(e) {
-            
+            // Only stop propagation if not clicking on back/close buttons
             if (!e.target.closest('.btn-back-navbar') && !e.target.closest('.btn-close-navbar')) {
                 e.stopPropagation();
             }
         });
     }
 
+    // Explicitly toggle on toggler click to avoid state desync
     if (navbarToggler) {
         navbarToggler.addEventListener('click', function(e) {
             const isOpen = navbarNav.classList.contains('show');
             if (collapseInstance) {
                 isOpen ? collapseInstance.hide() : collapseInstance.show();
             }
-            
+            // Toggle backdrop
             const backdrop = document.getElementById('mobile-menu-backdrop');
             if (backdrop) {
                 if (!isOpen) {
@@ -973,12 +1073,12 @@ function addHamburgerMenuCloseListener() {
                     backdrop.classList.remove('show');
                 }
             }
-            
+            // Toggle menu-open class on navbar
             const navbar = document.querySelector('.navbar');
             if (navbar && window.innerWidth <= 751) {
                 if (!isOpen) {
                     navbar.classList.add('menu-open');
-                    
+                    // Hide navbar elements directly
                     const toggler = navbar.querySelector('.navbar-toggler');
                     const brand = navbar.querySelector('.brand-center');
                     const account = navbar.querySelector('.account');
@@ -996,7 +1096,7 @@ function addHamburgerMenuCloseListener() {
                     }
                 } else {
                     navbar.classList.remove('menu-open');
-                    
+                    // Show navbar elements
                     const toggler = navbar.querySelector('.navbar-toggler');
                     const brand = navbar.querySelector('.brand-center');
                     const account = navbar.querySelector('.account');
@@ -1018,6 +1118,7 @@ function addHamburgerMenuCloseListener() {
         });
     }
 
+    // Close menu when backdrop is clicked
     const backdrop = document.getElementById('mobile-menu-backdrop');
     if (backdrop) {
         backdrop.addEventListener('click', function() {
@@ -1028,13 +1129,15 @@ function addHamburgerMenuCloseListener() {
         });
     }
 
+    // Close only when clicking outside the drawer, the toggler, and the mobile menu navbar
     document.addEventListener('click', function(event) {
         const isOpen = navbarNav.classList.contains('show');
         const clickInsideDrawer = navbarNav.contains(event.target);
         const clickOnToggler = navbarToggler && navbarToggler.contains(event.target);
         const mobileMenuNavbar = document.getElementById('mobile-menu-navbar');
         const clickOnMobileNavbar = mobileMenuNavbar && mobileMenuNavbar.contains(event.target);
-
+        
+        // Don't close if clicking on mobile menu navbar (except back/close buttons)
         const clickOnMobileNavbarButton = clickOnMobileNavbar && (
             event.target.closest('.btn-back-navbar') || 
             event.target.closest('.btn-close-navbar')
@@ -1050,10 +1153,12 @@ function addHamburgerMenuCloseListener() {
     });
 }
 
+// Function to transform navbar when menu is open (like Porsche example)
+// STEP 1: Simple test - just change hamburger to back arrow
 function hideNavbarElements() {
     if (window.innerWidth > 751) {
         console.log('hideNavbarElements: Not mobile, skipping');
-        return; 
+        return; // Only on mobile
     }
     
     console.log('hideNavbarElements: Starting transformation...');
@@ -1068,31 +1173,40 @@ function hideNavbarElements() {
     const toggler = container.querySelector('.navbar-toggler');
     
     console.log('hideNavbarElements: Toggler found:', !!toggler);
-
+    
+    // STEP 1 TEST: Just change hamburger icon to back arrow
     if (toggler) {
         console.log('hideNavbarElements: Current toggler HTML:', toggler.innerHTML);
-
+        
+        // Store original content if not already stored
         if (!toggler.dataset.originalContent) {
             toggler.dataset.originalContent = toggler.innerHTML;
             console.log('hideNavbarElements: Stored original toggler content');
         }
-
+        
+        // Replace with back arrow - SIMPLE TEST
         toggler.innerHTML = '<i class="bi bi-arrow-left" style="font-size: 1.5rem;"></i>';
         console.log('hideNavbarElements: Changed to back arrow');
-
+        
+        // Keep Bootstrap functionality for now - just test the icon change
+        // toggler.removeAttribute('data-bs-toggle');
+        // toggler.removeAttribute('data-bs-target');
     }
     
     navbar.classList.add('menu-open');
     console.log('hideNavbarElements: STEP 1 TEST COMPLETE - hamburger → back arrow');
 }
 
+// Function to restore navbar when menu is closed
+// STEP 1: Simple test - just restore hamburger icon
 function showNavbarElements() {
     const navbar = document.querySelector('.navbar');
     const container = navbar?.querySelector('.container');
     if (!navbar || !container) return;
     
     const toggler = container.querySelector('.navbar-toggler');
-
+    
+    // STEP 1 TEST: Just restore hamburger icon
     if (toggler && toggler.dataset.originalContent) {
         console.log('showNavbarElements: Restoring original toggler content');
         toggler.innerHTML = toggler.dataset.originalContent;
@@ -1103,6 +1217,7 @@ function showNavbarElements() {
     navbar.classList.remove('submenu-open');
 }
 
+// Side menu logic: show right panel submenu when clicking left items
 function initSideMenu() {
     console.log('initSideMenu called');
     const panel = document.getElementById('submenu-panel');
@@ -1112,13 +1227,16 @@ function initSideMenu() {
         console.error('initSideMenu: panel or collapse not found!');
         return;
     }
-
+    
+    // Track previous state to detect changes
     let previousMenuState = collapse.classList.contains('show');
-
+    
+    // PRIMARY METHOD: Use MutationObserver to watch for 'show' class changes
     const observer = new MutationObserver(function(mutations) {
         const currentState = collapse.classList.contains('show');
         const isMobile = window.innerWidth <= 751;
-
+        
+        // Only act if state actually changed
         if (currentState !== previousMenuState) {
             console.log('MutationObserver: Menu state CHANGED!', { 
                 previous: previousMenuState,
@@ -1131,16 +1249,17 @@ function initSideMenu() {
             
             if (currentState && isMobile) {
                 console.log('MutationObserver: Menu OPENED - transforming navbar NOW');
-                
+                // Transform immediately
                 hideNavbarElements();
             } else if (!currentState && isMobile) {
                 console.log('MutationObserver: Menu CLOSED - restoring navbar NOW');
-                
+                // Restore immediately
                 showNavbarElements();
             }
         }
     });
-
+    
+    // Start observing with more aggressive settings
     observer.observe(collapse, {
         attributes: true,
         attributeFilter: ['class'],
@@ -1148,7 +1267,8 @@ function initSideMenu() {
         childList: false,
         subtree: false
     });
-
+    
+    // Also observe the document for any changes to collapse (in case Bootstrap manipulates it differently)
     const documentObserver = new MutationObserver(function(mutations) {
         mutations.forEach(function(mutation) {
             if (mutation.type === 'attributes' && mutation.target === collapse) {
@@ -1174,7 +1294,8 @@ function initSideMenu() {
     });
     
     console.log('MutationObserver started for navbar collapse');
-
+    
+    // Also listen to Bootstrap collapse events as backup
     collapse.addEventListener('shown.bs.collapse', function() {
         console.log('Bootstrap shown.bs.collapse event fired');
         if (window.innerWidth <= 751) {
@@ -1188,7 +1309,8 @@ function initSideMenu() {
             showNavbarElements();
         }
     });
-
+    
+    // Initial check
     if (collapse.classList.contains('show') && window.innerWidth <= 751) {
         console.log('Initial check: Menu is already open - transforming navbar');
         hideNavbarElements();
@@ -1283,22 +1405,24 @@ function initSideMenu() {
         `
     };
 
+    // helper to open a submenu programmatically
     const openSubmenu = (key) => {
         if (!key || !contentByKey[key]) return;
         panel.innerHTML = contentByKey[key];
         panel.setAttribute('aria-hidden', 'false');
         panel.classList.add('open');
-            
+            // Show back button when submenu is open
             const backBtn = document.querySelector('.btn-back-menu');
             if (backBtn) {
                 backBtn.style.display = 'flex';
             }
-
+            // Add submenu-open class to navbar to keep navbar transformed
+            // Also ensure menu-open class is present
             const navbar = document.querySelector('.navbar');
             if (navbar && window.innerWidth <= 751) {
                 navbar.classList.add('submenu-open');
-                navbar.classList.add('menu-open'); 
-                
+                navbar.classList.add('menu-open'); // Keep menu-open when submenu is open
+                // Ensure navbar is transformed (back arrow + X button)
                 hideNavbarElements();
             }
         if (key === 'fahrzeuge') {
@@ -1306,73 +1430,78 @@ function initSideMenu() {
         }
     };
 
+    // Check if mobile (max-width: 751px)
     const isMobile = window.innerWidth <= 751;
 
     collapse.querySelectorAll('.side-item[data-submenu]')
         .forEach(item => {
             item.addEventListener('click', (e) => {
-                
+                // On mobile, allow direct navigation to the link
                 if (isMobile) {
                     const link = item.querySelector('.nav-link');
                     if (link && link.href) {
-                        
-                        return; 
+                        // Let the link work normally on mobile
+                        return; // Don't prevent default, let browser navigate
                     }
                 }
-                
+                // On desktop, show submenu
                 e.preventDefault();
                 const key = item.getAttribute('data-submenu');
                 openSubmenu(key);
             });
         });
 
+    // Close submenu when menu collapses
     collapse.addEventListener('hidden.bs.collapse', () => {
         panel.classList.remove('open');
         panel.setAttribute('aria-hidden', 'true');
         panel.innerHTML = '';
-            
+            // Hide back button
             const backBtn = document.querySelector('.btn-back-menu');
             if (backBtn) {
                 backBtn.style.display = 'none';
             }
-
+                // Remove submenu-open class from navbar
+                // But keep menu-open if menu is still open
                 const navbar = document.querySelector('.navbar');
                 if (navbar) {
                     navbar.classList.remove('submenu-open');
-                    
+                    // Check if menu is still open
                     const navbarNav = document.getElementById('navbarNav');
                     if (navbarNav && !navbarNav.classList.contains('show')) {
                         navbar.classList.remove('menu-open');
                     }
                 }
-                
+                // Hide backdrop
             const backdrop = document.getElementById('mobile-menu-backdrop');
             if (backdrop) {
                 backdrop.classList.remove('show');
             }
         });
-
+        
+        // Add back button click handler - use event delegation for dynamic elements
         document.addEventListener('click', function(e) {
             if (e.target.closest('.btn-back-menu')) {
                 e.preventDefault();
                 e.stopPropagation();
-                
+                // Close submenu
                 panel.classList.remove('open');
                 panel.setAttribute('aria-hidden', 'true');
                 panel.innerHTML = '';
-                
+                // Hide back button
                 const backBtn = document.querySelector('.btn-back-menu');
                 if (backBtn) {
                     backBtn.style.display = 'none';
                 }
-                
+                // Remove submenu-open class from navbar
                 const navbar = document.querySelector('.navbar');
                 if (navbar) {
                     navbar.classList.remove('submenu-open');
                 }
             }
         });
-
+    
+    // Show backdrop when menu opens
     collapse.addEventListener('shown.bs.collapse', () => {
         console.log('Menu opened - shown.bs.collapse event');
         const backdrop = document.getElementById('mobile-menu-backdrop');
@@ -1381,12 +1510,13 @@ function initSideMenu() {
         }
         document.body.style.overflow = 'hidden';
         document.body.classList.add('menu-open');
-        
+        // Hide navbar elements
         if (window.innerWidth <= 751) {
             hideNavbarElements();
         }
     });
-
+    
+    // Hide backdrop when menu closes
     collapse.addEventListener('hidden.bs.collapse', () => {
         console.log('Menu closed - hidden.bs.collapse event');
         const backdrop = document.getElementById('mobile-menu-backdrop');
@@ -1395,10 +1525,11 @@ function initSideMenu() {
         }
         document.body.style.overflow = '';
         document.body.classList.remove('menu-open');
-        
+        // Show navbar elements
         showNavbarElements();
     });
 
+    // Open Mietwagen by default on first open of the hamburger menu
     let openedDefault = false;
     collapse.addEventListener('shown.bs.collapse', () => {
         if (!openedDefault) {
@@ -1413,7 +1544,8 @@ async function renderVehicleCards(container) {
     container.innerHTML = '<div style="padding:0.5rem;color:#6b7280;">Laden...</div>';
 
     let cars = [];
-
+    
+    // First try to use CAR_CATALOG if already loaded
     if (Array.isArray(window.CAR_CATALOG) && window.CAR_CATALOG.length > 0) {
         console.log('Using existing CAR_CATALOG:', window.CAR_CATALOG.length, 'cars');
         cars = window.CAR_CATALOG.map(x => ({
@@ -1430,7 +1562,8 @@ async function renderVehicleCards(container) {
             daily_rate: x.price
         }));
     }
-
+    
+    // If still empty, try API
     if (!cars || cars.length === 0) {
         try {
             const res = await fetch('/api/cars');
@@ -1442,6 +1575,7 @@ async function renderVehicleCards(container) {
         }
     }
 
+    // If still empty, try the search API (returns only available cars)
     if ((!cars || cars.length === 0)) {
         try {
             const r2 = await fetch('/api/cars/search');
@@ -1452,7 +1586,7 @@ async function renderVehicleCards(container) {
     }
 
     if (!Array.isArray(cars) || cars.length === 0) {
-        
+        // try to use existing window.cars from /fahrzeuge page if present
         if (Array.isArray(window.cars) && window.cars.length) {
             cars = window.cars.map(x => ({
                 make: x.brand,
@@ -1467,14 +1601,14 @@ async function renderVehicleCards(container) {
     }
 
     if (!Array.isArray(cars) || cars.length === 0) {
-        
+        // as a final fallback, load static local data file if available
         try {
             console.log('Loading cars-data.js...');
             await new Promise((resolve, reject) => {
                 const s = document.createElement('script');
                 s.src = '/js/cars-data.js';
                 s.onload = resolve;
-                s.onerror = resolve; 
+                s.onerror = resolve; // continue even if fails
                 document.head.appendChild(s);
             });
             console.log('cars-data.js loaded, CAR_CATALOG:', window.CAR_CATALOG);
@@ -1512,14 +1646,14 @@ async function renderVehicleCards(container) {
     }
 
     if (!Array.isArray(cars) || cars.length === 0) {
-        
+        // Try to scrape cars array from /fahrzeuge.html
         try {
             const h = await fetch('/fahrzeuge.html');
             if (h.ok) {
                 const html = await h.text();
                 const m = html.match(/const\s+cars\s*=\s*\[([\s\S]*?)\];/);
                 if (m && m[0]) {
-                    
+                    // Reconstruct array text and eval safely in Function scope
                     const arrText = '[' + m[1] + ']';
                     const parsed = Function('return ' + arrText)();
                     if (Array.isArray(parsed)) {
@@ -1541,7 +1675,7 @@ async function renderVehicleCards(container) {
     }
 
     if (!Array.isArray(cars) || cars.length === 0) {
-        
+        // fallback to static list
         cars = NAV_VEHICLES.map(v => ({
             make: v.title.split(' ')[0],
             model: v.title.replace(/^\S+\s*/, ''),
@@ -1613,7 +1747,7 @@ async function renderVehicleCards(container) {
         return best ? `/images/cars/${best}` : '';
     };
     const toImg = (c) => {
-        
+        // Always prefer best match from known index using make/model
         const best = findBestImage(c.make || '', c.model || '');
         let img = best || c.image || c.image_url || '';
         if (!img) {
@@ -1628,7 +1762,7 @@ async function renderVehicleCards(container) {
             }
         }
         if (/\.jpg$/i.test(img)) img = img.replace(/\.jpg$/i, '.png');
-        
+        // Fallback to an existing PNG in the folder to avoid 404
         return img || '/images/cars/vw-t-roc-suv-4d-white-2022-JV.png';
     };
     const stripSimilar = (s) => String(s || '').replace(/\s*oder\s+ähnlich/gi, '').trim();
@@ -1669,6 +1803,7 @@ async function renderVehicleCards(container) {
     const toBagsSmall = (c) => c.baggage_small || c.handBags || c.handgepaeck || c.hand || '';
     const toDoors = (c) => c.doors || '';
 
+    // Sort by make/model for consistent order
     cars.sort((a, b) => (toTitle(a)).localeCompare(toTitle(b)));
 
     console.log('Rendering', cars.length, 'vehicle cards');
@@ -1701,6 +1836,7 @@ async function renderVehicleCards(container) {
         </div>`;
     }).join('');
 
+    // Click navigates to reservation with selected vehicle
     container.addEventListener('click', (e) => {
         const card = e.target.closest('.vehicle-card');
         if (!card) return;
@@ -1722,6 +1858,7 @@ async function renderVehicleCards(container) {
     });
 }
 
+// Account icon dropdown logic
 function initAccountMenu() {
     const btn = document.getElementById('account-btn');
     const menu = document.getElementById('account-menu');
@@ -1735,9 +1872,9 @@ function initAccountMenu() {
     
     const positionMenu = () => {
         if (window.innerWidth <= 751) {
-            
+            // On mobile, position menu below account button, aligned to right
             const btnRect = btn.getBoundingClientRect();
-            const menuTop = btnRect.bottom + 8; 
+            const menuTop = btnRect.bottom + 8; // 8px gap
             menu.style.top = menuTop + 'px';
             menu.style.left = 'auto';
             menu.style.right = (window.innerWidth - btnRect.right) + 'px';
@@ -1748,7 +1885,7 @@ function initAccountMenu() {
         e.preventDefault();
         const willOpen = !menu.classList.contains('open');
         if (willOpen) {
-            
+            // Position menu before opening
             positionMenu();
             menu.classList.add('open');
             menu.setAttribute('aria-hidden', 'false');
@@ -1757,7 +1894,8 @@ function initAccountMenu() {
             closeMenu();
         }
     });
-
+    
+    // Reposition on resize
     window.addEventListener('resize', () => {
         if (menu.classList.contains('open')) {
             positionMenu();
@@ -1771,6 +1909,7 @@ function initAccountMenu() {
     });
 }
 
+// Initialize back button functionality
 function initBackButton() {
     const backBtn = document.querySelector('.navbar-back-btn');
     if (!backBtn) return;
@@ -1779,11 +1918,12 @@ function initBackButton() {
         e.preventDefault();
         e.stopPropagation();
         console.log('Back button clicked, going back...');
-
+        
+        // Check if there's history to go back to
         if (window.history.length > 1) {
             window.history.back();
         } else {
-            
+            // If no history, go to home page
             window.location.href = '/';
         }
     });

@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const { OAuth2Client } = require('google-auth-library');
 const router = express.Router();
 
+// PostgreSQL bağlantı havuzu
 const pool = new Pool({
     user: process.env.PGUSER,
     host: process.env.PGHOST,
@@ -12,10 +13,11 @@ const pool = new Pool({
     port: process.env.PGPORT || 5432,
 });
 
+// Google OAuth Client oluştur (dinamik port ile)
 function getGoogleClient(redirectUri) {
     const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
     const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
-    const GOOGLE_REDIRECT_URI = redirectUri || process.env.GOOGLE_REDIRECT_URI || 'image.pnghttps:
+    const GOOGLE_REDIRECT_URI = redirectUri || process.env.GOOGLE_REDIRECT_URI || 'image.pnghttps://localhost:3443/auth/google/callback';
     
     if (!GOOGLE_CLIENT_ID || !GOOGLE_CLIENT_SECRET) {
         throw new Error('Google OAuth credentials not configured');
@@ -28,10 +30,11 @@ function getGoogleClient(redirectUri) {
     );
 }
 
+// Google OAuth status endpoint
 router.get('/google/status', (req, res) => {
     const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
     const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
-    const GOOGLE_REDIRECT_URI = process.env.GOOGLE_REDIRECT_URI || 'https:
+    const GOOGLE_REDIRECT_URI = process.env.GOOGLE_REDIRECT_URI || 'https://localhost:3443/auth/google/callback';
     
     const isConfigured = GOOGLE_CLIENT_ID && GOOGLE_CLIENT_SECRET && 
                          GOOGLE_CLIENT_ID !== 'your-google-client-id.apps.googleusercontent.com' &&
@@ -46,6 +49,7 @@ router.get('/google/status', (req, res) => {
     });
 });
 
+// Google OAuth URL oluştur
 router.get('/google', (req, res) => {
     try {
         const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
@@ -59,15 +63,16 @@ router.get('/google', (req, res) => {
         }
         
         const state = req.query.state || 'login';
-
+        
+        // Önce .env'deki GOOGLE_REDIRECT_URI'yi kullan, yoksa dinamik oluştur
         let GOOGLE_REDIRECT_URI = process.env.GOOGLE_REDIRECT_URI;
         
         if (!GOOGLE_REDIRECT_URI || GOOGLE_REDIRECT_URI.includes('your-') || GOOGLE_REDIRECT_URI.includes('localhost:3000')) {
-            
+            // .env'de yoksa veya placeholder ise, request'ten dinamik oluştur
             const actualPort = process.env.ACTUAL_HTTPS_PORT || (req.get('host')?.split(':')[1]) || '3443';
             const protocol = req.protocol === 'https' ? 'https' : 'https';
             const host = `localhost:${actualPort}`;
-            GOOGLE_REDIRECT_URI = `${protocol}:
+            GOOGLE_REDIRECT_URI = `${protocol}://${host}/auth/google/callback`;
         }
         
         const googleClient = getGoogleClient(GOOGLE_REDIRECT_URI);
@@ -75,8 +80,8 @@ router.get('/google', (req, res) => {
         const authURL = googleClient.generateAuthUrl({
             access_type: 'offline',
             scope: [
-                'https:
-                'https:
+                'https://www.googleapis.com/auth/userinfo.email',
+                'https://www.googleapis.com/auth/userinfo.profile'
             ],
             redirect_uri: GOOGLE_REDIRECT_URI,
             prompt: 'select_account',
@@ -97,6 +102,7 @@ router.get('/google', (req, res) => {
     }
 });
 
+// Google OAuth callback - SIFIRDAN BASIT VERSIYON
 router.get('/google/callback', async (req, res) => {
     console.log('\n========== GOOGLE OAUTH CALLBACK BAŞLADI ==========');
     
@@ -104,7 +110,8 @@ router.get('/google/callback', async (req, res) => {
         const { code, error, state } = req.query;
         
         console.log('Query params:', { code: code ? 'VAR' : 'YOK', error, state });
-
+        
+        // Hata kontrolü
         if (error) {
             console.error('Google OAuth error:', error);
             return res.redirect('/login?error=oauth_error');
@@ -114,15 +121,16 @@ router.get('/google/callback', async (req, res) => {
             console.error('Authorization code yok!');
             return res.redirect('/login?error=no_code');
         }
-
+        
+        // Google Client oluştur - Önce .env'deki GOOGLE_REDIRECT_URI'yi kullan
         let GOOGLE_REDIRECT_URI = process.env.GOOGLE_REDIRECT_URI;
         
         if (!GOOGLE_REDIRECT_URI || GOOGLE_REDIRECT_URI.includes('your-') || GOOGLE_REDIRECT_URI.includes('localhost:3000')) {
-            
+            // .env'de yoksa veya placeholder ise, request'ten dinamik oluştur
             const actualPort = process.env.ACTUAL_HTTPS_PORT || (req.get('host')?.split(':')[1]) || '3443';
             const protocol = req.protocol === 'https' ? 'https' : 'https';
             const host = `localhost:${actualPort}`;
-            GOOGLE_REDIRECT_URI = `${protocol}:
+            GOOGLE_REDIRECT_URI = `${protocol}://${host}/auth/google/callback`;
         }
         
         const googleClient = getGoogleClient(GOOGLE_REDIRECT_URI);
@@ -132,14 +140,14 @@ router.get('/google/callback', async (req, res) => {
         console.log('Authorization code received:', code ? 'YES' : 'NO');
         console.log('State:', state);
         console.log('Google token alınıyor...');
-        
+        // Token al
         const { tokens } = await googleClient.getToken(code);
         googleClient.setCredentials(tokens);
         
         console.log('Google user bilgileri alınıyor...');
-        
+        // Kullanıcı bilgilerini al
         const response = await googleClient.request({
-            url: 'https:
+            url: 'https://www.googleapis.com/oauth2/v2/userinfo'
         });
         
         const googleUser = {
@@ -160,7 +168,8 @@ router.get('/google/callback', async (req, res) => {
             console.error('Email yok!');
             return res.redirect('/login?error=email_not_provided');
         }
-
+        
+        // Database işlemleri - ÇOK BASIT
         console.log('Database sorgusu yapılıyor...');
         const userQuery = await pool.query(
             'SELECT user_id, id, email, first_name, last_name, is_admin FROM users WHERE email = $1',
@@ -171,18 +180,19 @@ router.get('/google/callback', async (req, res) => {
         let userId;
         
         if (userQuery.rows.length > 0) {
-            
+            // Kullanıcı mevcut
             console.log('Kullanıcı mevcut, güncelleniyor...');
             userData = userQuery.rows[0];
             userId = userData.user_id || userData.id;
-
+            
+            // Basit güncelleme
             await pool.query(
                 'UPDATE users SET first_name = $1, last_name = $2 WHERE email = $3',
                 [googleUser.firstName, googleUser.lastName, googleUser.email]
             );
             console.log('Kullanıcı güncellendi');
         } else {
-            
+            // Yeni kullanıcı oluştur
             console.log('Yeni kullanıcı oluşturuluyor...');
             const insertResult = await pool.query(
                 'INSERT INTO users (email, first_name, last_name) VALUES ($1, $2, $3) RETURNING user_id, id, email, first_name, last_name, is_admin',
@@ -196,7 +206,8 @@ router.get('/google/callback', async (req, res) => {
         if (!userId) {
             throw new Error('User ID alınamadı!');
         }
-
+        
+        // JWT token oluştur
         console.log('JWT token oluşturuluyor...');
         const token = jwt.sign(
             { userId: userId, email: userData.email, is_admin: userData.is_admin || false },
@@ -204,7 +215,8 @@ router.get('/google/callback', async (req, res) => {
             { expiresIn: '24h' }
         );
         console.log('JWT token oluşturuldu');
-
+        
+        // Kullanıcı bilgilerini hazırla
         const userInfo = {
             email: userData.email,
             firstName: userData.first_name,
@@ -213,7 +225,8 @@ router.get('/google/callback', async (req, res) => {
             id: userId,
             user_id: userId
         };
-
+        
+        // Redirect
         const redirectPath = state === 'login' ? '/' : (state === 'register' ? '/register' : '/');
         const redirectURL = `${redirectPath}?login=success&token=${encodeURIComponent(token)}&user=${encodeURIComponent(JSON.stringify(userInfo))}`;
         
