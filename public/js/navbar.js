@@ -399,32 +399,14 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Also watch for window resize
     window.addEventListener('resize', function() {
-        // Update back button and hamburger menu visibility on resize
-        const currentPath = window.location.pathname;
+        // CSS handles all display logic via body classes - just remove inline styles
         const backBtn = document.querySelector('.navbar-back-btn');
         const menuBtn = document.querySelector('.navbar-toggler');
-        const isMobile = window.innerWidth <= 751;
-        
-        if (currentPath === '/' || currentPath === '/index.html') {
-            // Home page: hide back button, show hamburger menu
-            if (isMobile) {
-                if (backBtn) backBtn.style.display = 'none';
-                if (menuBtn) menuBtn.style.display = 'flex';
-            } else {
-                // Desktop: remove inline styles to let CSS handle it
-                if (backBtn) backBtn.style.display = '';
-                if (menuBtn) menuBtn.style.display = '';
-            }
-        } else {
-            // Not home page: show back button, hide hamburger menu
-            if (isMobile) {
-                if (backBtn) backBtn.style.display = 'flex';
-                if (menuBtn) menuBtn.style.display = 'none';
-            } else {
-                // Desktop: remove inline styles to let CSS handle it
-                if (backBtn) backBtn.style.display = '';
-                if (menuBtn) menuBtn.style.display = '';
-            }
+        if (backBtn) {
+            backBtn.style.display = '';
+        }
+        if (menuBtn) {
+            menuBtn.style.display = '';
         }
         const navbarNav = document.getElementById('navbarNav');
         if (navbarNav && window.innerWidth <= 751) {
@@ -463,47 +445,14 @@ document.addEventListener('DOMContentLoaded', function() {
         document.body.classList.add('home-page');
     }
     
-    // Ensure back button is hidden on home page (only on mobile, desktop uses CSS)
-    const isMobile = window.innerWidth <= 751;
-    if (currentPath === '/' || currentPath === '/index.html') {
-        const backBtn = document.querySelector('.navbar-back-btn');
-        const menuBtn = document.querySelector('.navbar-toggler');
-        if (isMobile) {
-            if (backBtn) {
-                backBtn.style.display = 'none';
-            }
-            if (menuBtn) {
-                menuBtn.style.display = 'flex';
-            }
-        } else {
-            // Desktop: remove inline styles to let CSS handle it
-            if (backBtn) {
-                backBtn.style.display = '';
-            }
-            if (menuBtn) {
-                menuBtn.style.display = '';
-            }
-        }
-    } else {
-        // Not home page: show back button, hide hamburger menu (only on mobile, desktop uses CSS)
-        const backBtn = document.querySelector('.navbar-back-btn');
-        const menuBtn = document.querySelector('.navbar-toggler');
-        if (isMobile) {
-            if (backBtn) {
-                backBtn.style.display = 'flex';
-            }
-            if (menuBtn) {
-                menuBtn.style.display = 'none';
-            }
-        } else {
-            // Desktop: remove inline styles to let CSS handle it
-            if (backBtn) {
-                backBtn.style.display = '';
-            }
-            if (menuBtn) {
-                menuBtn.style.display = '';
-            }
-        }
+    // CSS handles all display logic via body classes - just remove inline styles
+    const backBtn = document.querySelector('.navbar-back-btn');
+    const menuBtn = document.querySelector('.navbar-toggler');
+    if (backBtn) {
+        backBtn.style.display = '';
+    }
+    if (menuBtn) {
+        menuBtn.style.display = '';
     }
     
     // Check if browser was closed and reopened (sessionStorage empty but localStorage has data)
@@ -833,54 +782,36 @@ function updateNavbar() {
     }
     
     // Control back button and hamburger menu visibility based on page
+    // CSS handles all display logic via body classes - NO inline styles needed
     const currentPath = window.location.pathname;
-    const backBtn = document.querySelector('.navbar-back-btn');
-    const menuBtn = document.querySelector('.navbar-toggler');
-    const isMobile = window.innerWidth <= 751;
     
     if (currentPath === '/' || currentPath === '/index.html') {
-        // Home page: hide back button, show hamburger menu
+        // Home page: hide back button, show hamburger menu (CSS handles it)
         document.body.classList.add('home-page');
         document.body.classList.remove('not-home-page');
         
-        // Only set inline styles on mobile (desktop uses CSS)
-        if (isMobile) {
-            if (backBtn) {
-                backBtn.style.display = 'none';
-            }
-            if (menuBtn) {
-                menuBtn.style.display = 'flex';
-            }
-        } else {
-            // Desktop: remove inline styles to let CSS handle it
-            if (backBtn) {
-                backBtn.style.display = '';
-            }
-            if (menuBtn) {
-                menuBtn.style.display = '';
-            }
+        // Remove any inline styles to let CSS handle it (all screen sizes)
+        const backBtn = document.querySelector('.navbar-back-btn');
+        const menuBtn = document.querySelector('.navbar-toggler');
+        if (backBtn) {
+            backBtn.style.display = '';
+        }
+        if (menuBtn) {
+            menuBtn.style.display = '';
         }
     } else {
-        // Not home page: show back button, hide hamburger menu
+        // Not home page: show back button, hide hamburger menu (CSS handles it)
         document.body.classList.add('not-home-page');
         document.body.classList.remove('home-page');
         
-        // Only set inline styles on mobile (desktop uses CSS)
-        if (isMobile) {
-            if (backBtn) {
-                backBtn.style.display = 'flex';
-            }
-            if (menuBtn) {
-                menuBtn.style.display = 'none';
-            }
-        } else {
-            // Desktop: remove inline styles to let CSS handle it
-            if (backBtn) {
-                backBtn.style.display = '';
-            }
-            if (menuBtn) {
-                menuBtn.style.display = '';
-            }
+        // Remove any inline styles to let CSS handle it (all screen sizes)
+        const backBtn = document.querySelector('.navbar-back-btn');
+        const menuBtn = document.querySelector('.navbar-toggler');
+        if (backBtn) {
+            backBtn.style.display = '';
+        }
+        if (menuBtn) {
+            menuBtn.style.display = '';
         }
     }
     

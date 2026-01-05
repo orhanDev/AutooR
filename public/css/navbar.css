@@ -834,6 +834,7 @@ ease;
      }
      
      /* Desktop: Back button and hamburger menu visibility (min-width: 752px) */
+     /* NOT: Genel kurallar zaten tüm ekranlar için geçerli, burada sadece ekstra güvence */
     @media (min-width: 752px) {
         /* Home page: show hamburger menu, hide back button */
         body.home-page .navbar-toggler {
