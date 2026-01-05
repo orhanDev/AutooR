@@ -399,19 +399,32 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Also watch for window resize
     window.addEventListener('resize', function() {
-        // Update back button and hamburger menu visibility on resize (all screen sizes)
+        // Update back button and hamburger menu visibility on resize
         const currentPath = window.location.pathname;
         const backBtn = document.querySelector('.navbar-back-btn');
         const menuBtn = document.querySelector('.navbar-toggler');
+        const isMobile = window.innerWidth <= 751;
         
         if (currentPath === '/' || currentPath === '/index.html') {
             // Home page: hide back button, show hamburger menu
-            if (backBtn) backBtn.style.display = 'none';
-            if (menuBtn) menuBtn.style.display = 'flex';
+            if (isMobile) {
+                if (backBtn) backBtn.style.display = 'none';
+                if (menuBtn) menuBtn.style.display = 'flex';
+            } else {
+                // Desktop: remove inline styles to let CSS handle it
+                if (backBtn) backBtn.style.display = '';
+                if (menuBtn) menuBtn.style.display = '';
+            }
         } else {
             // Not home page: show back button, hide hamburger menu
-            if (backBtn) backBtn.style.display = 'flex';
-            if (menuBtn) menuBtn.style.display = 'none';
+            if (isMobile) {
+                if (backBtn) backBtn.style.display = 'flex';
+                if (menuBtn) menuBtn.style.display = 'none';
+            } else {
+                // Desktop: remove inline styles to let CSS handle it
+                if (backBtn) backBtn.style.display = '';
+                if (menuBtn) menuBtn.style.display = '';
+            }
         }
         const navbarNav = document.getElementById('navbarNav');
         if (navbarNav && window.innerWidth <= 751) {
@@ -450,25 +463,46 @@ document.addEventListener('DOMContentLoaded', function() {
         document.body.classList.add('home-page');
     }
     
-    // Ensure back button is hidden on home page (extra safety check - all screen sizes)
+    // Ensure back button is hidden on home page (only on mobile, desktop uses CSS)
+    const isMobile = window.innerWidth <= 751;
     if (currentPath === '/' || currentPath === '/index.html') {
         const backBtn = document.querySelector('.navbar-back-btn');
-        if (backBtn) {
-            backBtn.style.display = 'none';
-        }
         const menuBtn = document.querySelector('.navbar-toggler');
-        if (menuBtn) {
-            menuBtn.style.display = 'flex';
+        if (isMobile) {
+            if (backBtn) {
+                backBtn.style.display = 'none';
+            }
+            if (menuBtn) {
+                menuBtn.style.display = 'flex';
+            }
+        } else {
+            // Desktop: remove inline styles to let CSS handle it
+            if (backBtn) {
+                backBtn.style.display = '';
+            }
+            if (menuBtn) {
+                menuBtn.style.display = '';
+            }
         }
     } else {
-        // Not home page: show back button, hide hamburger menu (all screen sizes)
+        // Not home page: show back button, hide hamburger menu (only on mobile, desktop uses CSS)
         const backBtn = document.querySelector('.navbar-back-btn');
-        if (backBtn) {
-            backBtn.style.display = 'flex';
-        }
         const menuBtn = document.querySelector('.navbar-toggler');
-        if (menuBtn) {
-            menuBtn.style.display = 'none';
+        if (isMobile) {
+            if (backBtn) {
+                backBtn.style.display = 'flex';
+            }
+            if (menuBtn) {
+                menuBtn.style.display = 'none';
+            }
+        } else {
+            // Desktop: remove inline styles to let CSS handle it
+            if (backBtn) {
+                backBtn.style.display = '';
+            }
+            if (menuBtn) {
+                menuBtn.style.display = '';
+            }
         }
     }
     
@@ -798,31 +832,56 @@ function updateNavbar() {
         }
     }
     
-    // Control back button and hamburger menu visibility based on page (all screen sizes)
+    // Control back button and hamburger menu visibility based on page
     const currentPath = window.location.pathname;
     const backBtn = document.querySelector('.navbar-back-btn');
     const menuBtn = document.querySelector('.navbar-toggler');
+    const isMobile = window.innerWidth <= 751;
     
     if (currentPath === '/' || currentPath === '/index.html') {
         // Home page: hide back button, show hamburger menu
-        if (backBtn) {
-            backBtn.style.display = 'none';
-        }
-        if (menuBtn) {
-            menuBtn.style.display = 'flex';
-        }
         document.body.classList.add('home-page');
         document.body.classList.remove('not-home-page');
+        
+        // Only set inline styles on mobile (desktop uses CSS)
+        if (isMobile) {
+            if (backBtn) {
+                backBtn.style.display = 'none';
+            }
+            if (menuBtn) {
+                menuBtn.style.display = 'flex';
+            }
+        } else {
+            // Desktop: remove inline styles to let CSS handle it
+            if (backBtn) {
+                backBtn.style.display = '';
+            }
+            if (menuBtn) {
+                menuBtn.style.display = '';
+            }
+        }
     } else {
         // Not home page: show back button, hide hamburger menu
-        if (backBtn) {
-            backBtn.style.display = 'flex';
-        }
-        if (menuBtn) {
-            menuBtn.style.display = 'none';
-        }
         document.body.classList.add('not-home-page');
         document.body.classList.remove('home-page');
+        
+        // Only set inline styles on mobile (desktop uses CSS)
+        if (isMobile) {
+            if (backBtn) {
+                backBtn.style.display = 'flex';
+            }
+            if (menuBtn) {
+                menuBtn.style.display = 'none';
+            }
+        } else {
+            // Desktop: remove inline styles to let CSS handle it
+            if (backBtn) {
+                backBtn.style.display = '';
+            }
+            if (menuBtn) {
+                menuBtn.style.display = '';
+            }
+        }
     }
     
     console.log('Navbar update completed');
