@@ -2021,3 +2021,69 @@ body {
 /* Highlight filled credit card inputs */
 #credit-card-details .form-control.filled { border-color: #ffc107 !important; box-shadow: 0 0 0 1px rgba(255,193,7,.25); }
 
+/* Mobile date input placeholder fix */
+@media (max-width: 768px) {
+    /* Abholdatum ve Rückgabedatum input'ları için mobil düzenleme */
+    #pickup-date-selector,
+    #dropoff-date-selector,
+    #qr-pickup-date,
+    #qr-dropoff-date {
+        font-size: 12px !important;
+        padding: 0.375rem 0.5rem !important;
+    }
+    
+    /* Placeholder font boyutunu küçült */
+    #pickup-date-selector::placeholder,
+    #dropoff-date-selector::placeholder,
+    #qr-pickup-date::placeholder,
+    #qr-dropoff-date::placeholder {
+        font-size: 11px !important;
+        letter-spacing: 0.5px;
+    }
+    
+    /* Input group içindeki tarih input'ları için ekstra düzenleme */
+    .input-group #pickup-date-selector,
+    .input-group #dropoff-date-selector {
+        min-width: 0;
+        flex: 1 1 auto;
+    }
+}
+
+@media (max-width: 576px) {
+    /* Daha küçük ekranlar için daha da küçük font */
+    #pickup-date-selector,
+    #dropoff-date-selector,
+    #qr-pickup-date,
+    #qr-dropoff-date {
+        font-size: 11px !important;
+        padding: 0.35rem 0.4rem !important;
+    }
+    
+    #pickup-date-selector::placeholder,
+    #dropoff-date-selector::placeholder,
+    #qr-pickup-date::placeholder,
+    #qr-dropoff-date::placeholder {
+        font-size: 10px !important;
+        letter-spacing: 0.3px;
+    }
+}
+
+@media (max-width: 480px) {
+    /* Çok küçük ekranlar için minimum font */
+    #pickup-date-selector,
+    #dropoff-date-selector,
+    #qr-pickup-date,
+    #qr-dropoff-date {
+        font-size: 10px !important;
+        padding: 0.3rem 0.35rem !important;
+    }
+    
+    #pickup-date-selector::placeholder,
+    #dropoff-date-selector::placeholder,
+    #qr-pickup-date::placeholder,
+    #qr-dropoff-date::placeholder {
+        font-size: 9px !important;
+        letter-spacing: 0.2px;
+    }
+}
+
