@@ -115,40 +115,6 @@
             display: none;
         }
 
-        .filter-title {
-            font-size: 1.26rem;
-            font-weight: 800;
-            color: rgb(0, 0, 0);
-            text-align: center;
-            margin-bottom: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 1.05px;
-            position: relative;
-            width: 100%;
-            margin-left: auto;
-            margin-right: auto;
-            padding-top: 3rem;
-        }
-
-        .filter-title::after {
-            content: '';
-            position: absolute;
-            bottom: -7px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 70px;
-            height: 2px;
-            background: linear-gradient(90deg, #FFC107, #FFC107);
-            border-radius: 1px;
-        }
-
-        .filters-row {
-            display: flex   ;
-    gap: 1rem;
-    padding: 1rem 0 1rem 0;
-    justify-content: center;
-        }
-        .filters-row .filter-item { min-width: 180px; }
 
         .filter-row {
             display: flex;
@@ -161,139 +127,6 @@
             width: 100%;
         }
 
-        .filter-item {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-            min-width: 144px;
-            max-width: 144px;
-            margin: 0;
-            padding: 0.4rem;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            flex-shrink: 0;
-        }
-
-        /* Her filter-item için şeffaf renkler */
-        .filter-item:nth-child(1) {
-            background: transparent;
-            border: none;
-        }
-
-        .filter-item:nth-child(2) {
-            background: transparent;
-            border: none;
-        }
-
-        .filter-item:nth-child(3) {
-            background: transparent;
-            border: none;
-        }
-
-        .filter-item:nth-child(4) {
-            background: transparent;
-            border: none;
-        }
-
-        .filter-item:nth-child(5) {
-            background: transparent;
-            border: none;
-        }
-
-        .filter-item:nth-child(6) {
-            background: transparent;
-            border: none;
-        }
-
-        /* Hover efektleri - şeffaf */
-        .filter-item:nth-child(1):hover {
-            background: transparent;
-            transform: translateY(-2px);
-        }
-
-        .filter-item:nth-child(2):hover {
-            background: transparent;
-            transform: translateY(-2px);
-        }
-
-        .filter-item:nth-child(3):hover {
-            background: transparent;
-            transform: translateY(-2px);
-        }
-
-        .filter-item:nth-child(4):hover {
-            background: transparent;
-            transform: translateY(-2px);
-        }
-
-        .filter-item:nth-child(5):hover {
-            background: transparent;
-            transform: translateY(-2px);
-        }
-
-        .filter-item:nth-child(6):hover {
-            background: transparent;
-            transform: translateY(-2px);
-        }
-        
-        .filter-label {
-            font-size: 0.665rem;
-            font-weight: 800;
-            color: #ffffff;
-            text-transform: uppercase;
-            letter-spacing: 0.7px;
-            margin-bottom: 0.21rem;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
-        }
-        
-        .filter-select {
-            width: 100%;
-            background: #ffffff;
-            border: 1.5px solid #111111;
-            border-radius: 10px;
-            color: #111111;
-            padding: 0.55rem 0.4rem;
-            font-size: 0.7rem;
-            font-weight: 600;
-            transition: all 0.2s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .filter-select::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.1), transparent);
-            transition: left 0.6s ease;
-        }
-
-        .filter-select:hover::before {
-            left: 100%;
-        }
-
-        .filter-select:focus {
-            outline: none;
-            border-color: #ffc107;
-            box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.25);
-            background: #ffffff;
-            color: #111111;
-        }
-
-        .filter-select:hover {
-            border-color: #ffc107;
-        }
-
-        .filter-select option {
-            background: #ffffff;
-            color: #111111;
-            padding: 0.56rem;
-            border: none;
-            font-size: 0.7rem;
-        }
 
         /* Cars Grid */
         .cars-grid {
@@ -557,29 +390,6 @@
                 width: fit-content;
             }
             
-            .filter-title {
-                font-size: 1.05rem;
-                margin-bottom: 1.05rem;
-                        width: 100%; 
-                margin-left: auto;
-                margin-right: auto;
-            }
-            
-            .filter-row {
-                flex-direction: column;
-                gap: 0.7rem;
-                align-items: stretch;
-                padding: 0;
-                margin: 0;
-                        width: 100%; 
-            }
-            
-            .filter-item {
-                min-width: auto;
-                max-width: none;
-                margin: 0;
-                padding: 0.4rem;
-            }
             
             .cars-grid {
                 grid-template-columns: repeat(2, 1fr);
@@ -618,24 +428,6 @@
                 display: none !important;
             }
             
-            .filters-row {
-                display: none !important;
-            }
-            
-            .filter-title {
-                font-size: 1.5rem !important;
-                font-weight: 700 !important;
-                color: #000000 !important;
-                text-align: left !important;
-                padding: 1rem 0 !important;
-                margin-bottom: 1rem !important;
-                text-transform: none !important;
-                letter-spacing: 0 !important;
-            }
-            
-            .filter-title::after {
-                display: none !important;
-            }
             
             /* Cars grid - single column, Porsche style */
             .cars-grid {
@@ -805,45 +597,6 @@
     <!-- Main Content -->
     <div class="main-container">
         <div class="container">
-            <h2 class="filter-title">Entdecken Sie unsere Flotte – starten Sie Ihre Fahrt</h2>
-            <div class="filters-row">
-                <div class="filter-item"><select id="filter-sort" class="filter-select">
-                    <option value="">Sortieren nach</option>
-                    <option value="price-asc">Preis: aufsteigend</option>
-                    <option value="price-desc">Preis: absteigend</option>
-                    <option value="name-asc">Name: A-Z</option>
-                    <option value="name-desc">Name: Z-A</option>
-                </select></div>
-                <div class="filter-item"><select id="filter-category" class="filter-select">
-                    <option value="">Fahrzeugkategorie</option>
-                        <option value="SUV">SUV</option>
-                    <option value="Limousine">Limousine</option>
-                    <option value="Kombi">Kombi</option>
-                    <option value="Cabrio">Cabriolet</option>
-                    <option value="Van">Van</option>
-                </select></div>
-                <div class="filter-item"><select id="filter-transmission" class="filter-select">
-                    <option value="">Getriebe</option>
-                        <option value="Automatik">Automatik</option>
-                    <option value="Manuell">Manuell</option>
-                </select></div>
-                <div class="filter-item"><select id="filter-seats" class="filter-select">
-                    <option value="">Mindestanzahl an Sitzplätzen</option>
-                    <option value="2">2+</option>
-                    <option value="4">4+</option>
-                    <option value="5">5+</option>
-                    <option value="7">7+</option>
-                </select></div>
-                <div class="filter-item"><select id="filter-age" class="filter-select">
-                    <option value="">Alter des Hauptfahrers</option>
-                    <option value="18">ab 18</option>
-                    <option value="21">ab 21</option>
-                    <option value="23">ab 23</option>
-                    <option value="25">ab 25</option>
-                    <option value="30">ab 30</option>
-                </select></div>
-                    </div>
-
             <!-- Cars Grid -->
             <div id="cars-container">
                 <!-- Loading State -->
