@@ -84,6 +84,16 @@ CREATE TABLE IF NOT EXISTS reservations (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Email Verification Codes tablosu
+CREATE TABLE IF NOT EXISTS email_verification_codes (
+    id SERIAL PRIMARY KEY,
+    email VARCHAR(255) NOT NULL,
+    code VARCHAR(6) NOT NULL,
+    expires_at TIMESTAMP NOT NULL,
+    used BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 -- Password Reset Tokens tablosu
 CREATE TABLE IF NOT EXISTS password_reset_tokens (
     id SERIAL PRIMARY KEY,
@@ -95,6 +105,9 @@ CREATE TABLE IF NOT EXISTS password_reset_tokens (
 );
 
 -- Index'ler
+CREATE INDEX IF NOT EXISTS idx_email_verification_email ON email_verification_codes(email);
+CREATE INDEX IF NOT EXISTS idx_email_verification_code ON email_verification_codes(code);
+CREATE INDEX IF NOT EXISTS idx_email_verification_expires ON email_verification_codes(expires_at);
 CREATE INDEX IF NOT EXISTS idx_password_reset_tokens_email ON password_reset_tokens(email);
 CREATE INDEX IF NOT EXISTS idx_password_reset_tokens_token ON password_reset_tokens(token);
 CREATE INDEX IF NOT EXISTS idx_password_reset_tokens_expires_at ON password_reset_tokens(expires_at);
