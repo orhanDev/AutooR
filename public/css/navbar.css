@@ -358,7 +358,16 @@ body { margin-top: 0 !important; }
     cursor: pointer !important;
 }
 
-/* On home page: back button MUST be hidden, hamburger menu shown (all screen sizes) */
+/* ============================================
+   NAVBAR BACK BUTTON & HAMBURGER MENU RULES
+   ============================================
+   These rules apply to ALL screen sizes:
+   - Mobile (max-width: 751px)
+   - Tablet (752px - 1199px)
+   - Desktop (min-width: 1200px)
+   ============================================ */
+
+/* On home page: back button MUST be hidden, hamburger menu shown (ALL screen sizes) */
 body.home-page .navbar-back-btn {
     display: none !important;
     visibility: hidden !important;
@@ -373,7 +382,7 @@ body.home-page .navbar-toggler {
     pointer-events: auto !important;
 }
 
-/* On all pages except home: back button shown, hamburger menu hidden (all screen sizes) */
+/* On all pages except home: back button shown, hamburger menu hidden (ALL screen sizes) */
 body.not-home-page .navbar-back-btn {
     display: flex !important;
     visibility: visible !important;
@@ -845,26 +854,40 @@ ease;
          display: none;
      }
      
-     /* Desktop: Back button and hamburger menu visibility (min-width: 752px) */
-     /* NOT: Genel kurallar zaten tüm ekranlar için geçerli, burada sadece ekstra güvence */
+     /* Desktop & Tablet: Back button and hamburger menu visibility (min-width: 752px) */
+     /* NOTE: General rules above already apply to all screen sizes, this is just extra assurance */
     @media (min-width: 752px) {
         /* Home page: show hamburger menu, hide back button */
         body.home-page .navbar-toggler {
             display: flex !important;
+            visibility: visible !important;
         }
         
         body.home-page .navbar-back-btn {
             display: none !important;
+            visibility: hidden !important;
         }
         
         /* Not home page: show back button, hide hamburger menu */
         body.not-home-page .navbar-back-btn {
             display: flex !important;
+            visibility: visible !important;
         }
         
         body.not-home-page .navbar-toggler {
             display: none !important;
+            visibility: hidden !important;
         }
+    }
+    
+    /* Tablet specific (752px - 1199px) - same as desktop, no special rules needed */
+    @media (min-width: 752px) and (max-width: 1199px) {
+        /* Tablet uses same rules as desktop - no override needed */
+    }
+    
+    /* Large Desktop (min-width: 1200px) - same as desktop, no special rules needed */
+    @media (min-width: 1200px) {
+        /* Large desktop uses same rules as desktop - no override needed */
     }
     
      /* Mobile menu improvements (max-width: 751px) */
@@ -937,13 +960,15 @@ ease;
             cursor: pointer !important;
         }
         
-        /* On home page: back button MUST be hidden, hamburger menu shown */
+        /* On home page: back button MUST be hidden, hamburger menu shown (MOBILE ONLY) */
         body.home-page .navbar-back-btn {
             display: none !important;
+            visibility: hidden !important;
         }
         
         body.home-page .navbar-toggler {
             display: flex !important;
+            visibility: visible !important;
             order: 1 !important;
         }
         
@@ -951,9 +976,10 @@ ease;
             order: 3 !important;
         }
         
-        /* On all pages except home: back button on left, account on right, NO hamburger menu */
+        /* On all pages except home: back button on left, account on right, NO hamburger menu (MOBILE ONLY) */
         body.not-home-page .navbar-back-btn {
             display: flex !important;
+            visibility: visible !important;
             order: 1 !important;
             margin-left: 0 !important;
             margin-right: auto !important;
@@ -967,6 +993,7 @@ ease;
         
         body.not-home-page .navbar-toggler {
             display: none !important;
+            visibility: hidden !important;
         }
         
         /* Backward compatibility: fahrzeuge-page class still works */
