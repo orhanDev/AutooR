@@ -2,7 +2,6 @@ const express = require('express');
 const { query } = require('../db/database');
 const router = express.Router();
 
-// Tüm araçları getir
 router.get('/', async (req, res) => {
     try {
         const result = await query('SELECT * FROM cars');
@@ -13,7 +12,6 @@ router.get('/', async (req, res) => {
     }
 });
 
-// Arama kriterlerine göre araçları getir
 router.get('/search', async (req, res) => {
     try {
         const { 
@@ -45,49 +43,42 @@ router.get('/search', async (req, res) => {
         const queryParams = [];
         let paramCount = 1;
 
-        // Marka filtresi
         if (make) {
             sqlQuery += ` AND LOWER(c.make) LIKE LOWER($${paramCount})`;
             queryParams.push(`%${make}%`);
             paramCount++;
         }
 
-        // Model filtresi
         if (model) {
             sqlQuery += ` AND LOWER(c.model) LIKE LOWER($${paramCount})`;
             queryParams.push(`%${model}%`);
             paramCount++;
         }
 
-        // Yıl filtresi
         if (year) {
             sqlQuery += ` AND c.year = $${paramCount}`;
             queryParams.push(year);
             paramCount++;
         }
 
-        // Vites tipi filtresi
         if (transmission_type) {
             sqlQuery += ` AND c.transmission_type = $${paramCount}`;
             queryParams.push(transmission_type);
             paramCount++;
         }
 
-        // Yakıt tipi filtresi
         if (fuel_type) {
             sqlQuery += ` AND c.fuel_type = $${paramCount}`;
             queryParams.push(fuel_type);
             paramCount++;
         }
 
-        // Koltuk kapasitesi filtresi
         if (seating_capacity) {
             sqlQuery += ` AND c.seating_capacity >= $${paramCount}`;
             queryParams.push(seating_capacity);
             paramCount++;
         }
 
-        // Fiyat aralığı filtresi
         if (min_price) {
             sqlQuery += ` AND c.daily_rate >= $${paramCount}`;
             queryParams.push(min_price);
@@ -100,14 +91,12 @@ router.get('/search', async (req, res) => {
             paramCount++;
         }
 
-        // Lokasyon filtresi
         if (location_id) {
             sqlQuery += ` AND c.location_id = $${paramCount}`;
             queryParams.push(location_id);
             paramCount++;
         }
 
-        // Tarih çakışması kontrolü (eğer tarih belirtilmişse)
         if (pickup_date && dropoff_date) {
             sqlQuery += `
                 AND NOT EXISTS (
@@ -123,7 +112,6 @@ router.get('/search', async (req, res) => {
             paramCount += 2;
         }
 
-        // Sıralama
         switch (sort) {
             case 'price-high':
                 sqlQuery += ' ORDER BY c.daily_rate DESC';
@@ -153,12 +141,10 @@ router.get('/search', async (req, res) => {
     }
 });
 
-// Belirli bir aracın detaylarını ve özelliklerini getir
 router.get('/:id', async (req, res) => {
     try {
         const carId = req.params.id;
 
-        // Araç bilgilerini getir
         const carResult = await query(`
             SELECT c.*, l.name AS location_name
              FROM cars c
@@ -172,7 +158,6 @@ router.get('/:id', async (req, res) => {
 
         const car = carResult.rows[0];
 
-        // Araç özelliklerini getir
         const featuresResult = await query(`
             SELECT cf.feature_name
              FROM car_carfeatures ccf

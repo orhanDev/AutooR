@@ -1,10 +1,6 @@
-# pgAdmin Bağlantı Sorunu - Adım Adım Çözüm
-
-## Adım 1: PostgreSQL Servisi Durumu ✅
+
 - PostgreSQL servisi çalışıyor: `postgresql-x64-18`
-- Port 5432 dinleniyor
-
-## Adım 2: pgAdmin'de Sunucu Özelliklerini Kontrol Edin
+- Port 5432 dinleniyor
 
 1. **pgAdmin'de "localhost" sunucusuna sağ tıklayın**
 2. **"Properties" (Özellikler) seçin**
@@ -14,17 +10,11 @@
    - Port: `5432`
    - Maintenance database: `postgres`
    - Username: `postgres` (veya başka bir admin kullanıcı)
-   - Password: PostgreSQL kurulumunda belirlediğiniz şifre
+   - Password: PostgreSQL kurulumunda belirlediğiniz şifre
 
-## Adım 3: Şifreyi Test Edin
-
-Eğer şifreyi bilmiyorsanız veya unuttuysanız:
-
-### Seçenek A: Varsayılan postgres şifresini deneyin
+Eğer şifreyi bilmiyorsanız veya unuttuysanız:
 - `admin123` (install-postgresql.bat dosyasında görünen şifre)
-- Kurulum sırasında belirlediğiniz şifre
-
-### Seçenek B: Şifreyi sıfırlayın (Windows'ta)
+- Kurulum sırasında belirlediğiniz şifre
 
 1. **Windows Services'i açın** (Win+R → `services.msc`)
 2. **PostgreSQL servisini bulun** (`postgresql-x64-18`)
@@ -32,8 +22,7 @@ Eğer şifreyi bilmiyorsanız veya unuttuysanız:
 4. **PostgreSQL data klasörüne gidin** (genellikle `C:\Program Files\PostgreSQL\18\data`)
 5. **`pg_hba.conf` dosyasını açın**
 6. **İlk satırı şu şekilde değiştirin:**
-   ```
-   # TYPE  DATABASE        USER            ADDRESS                 METHOD
+   ```
    host    all             all             127.0.0.1/32            trust
    ```
 7. **Servisi başlatın**
@@ -42,9 +31,7 @@ Eğer şifreyi bilmiyorsanız veya unuttuysanız:
    ```sql
    ALTER USER postgres WITH PASSWORD 'yeni_sifreniz';
    ```
-10. **`pg_hba.conf` dosyasını geri alın** (md5 veya scram-sha-256)
-
-## Adım 4: AutooR_user Kullanıcısını Oluşturun
+10. **`pg_hba.conf` dosyasını geri alın** (md5 veya scram-sha-256)
 
 PostgreSQL'e bağlandıktan sonra:
 
@@ -61,9 +48,7 @@ CREATE DATABASE AutooR_db OWNER AutooR_user;
 
 -- Yetkileri ver
 GRANT ALL PRIVILEGES ON DATABASE AutooR_db TO AutooR_user;
-```
-
-## Adım 5: Yeni Sunucu Bağlantısı Oluşturun
+```
 
 1. **pgAdmin'de "Servers" üzerine sağ tıklayın**
 2. **"Register" → "Server" seçin**
@@ -76,9 +61,7 @@ GRANT ALL PRIVILEGES ON DATABASE AutooR_db TO AutooR_user;
    - Username: `AutooR_user`
    - Password: `Vekil4023.`
    - "Save password" seçeneğini işaretleyin
-5. **"Save" butonuna tıklayın**
-
-## Adım 6: Veritabanı Tablolarını Oluşturun
+5. **"Save" butonuna tıklayın**
 
 1. **"AutooR Database" sunucusuna bağlanın**
 2. **"AutooR_db" veritabanına sağ tıklayın**

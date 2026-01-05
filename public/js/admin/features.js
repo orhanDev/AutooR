@@ -1,4 +1,4 @@
-﻿// public/js/admin/features.js
+﻿
 
 document.addEventListener('DOMContentLoaded', async () => {
     const token = localStorage.getItem('token');
@@ -16,10 +16,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         return;
     }
 
-    // Ã–zellikleri Ã§ekme ve tabloyu doldurma
     async function fetchFeatures() {
         try {
-            const response = await fetch('/api/admin/features', { // TÃ¼m Ã¶zellikleri getiren API
+            const response = await fetch('/api/admin/features', { 
                 headers: { 'x-auth-token': token }
             });
 
@@ -33,7 +32,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
 
             const features = await response.json();
-            featuresTableBody.innerHTML = ''; // Tabloyu temizle
+            featuresTableBody.innerHTML = ''; 
 
             if (features.length === 0) {
                 featuresTableBody.innerHTML = '<tr><td colspan="2" class="text-center">HenÃ¼z hiÃ§ Ã¶zellik bulunmamaktadÄ±r.</td></tr>';
@@ -61,7 +60,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    // Edit ve Delete butonlarÄ±na event listener'larÄ± atayan fonksiyon
     function attachEventListeners() {
         document.querySelectorAll('.edit-feature-btn').forEach(button => {
             button.removeEventListener('click', handleEditClick); 
@@ -73,7 +71,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
-    // DÃ¼zenle butonuna tÄ±klanÄ±nca
     async function handleEditClick(e) {
         const featureId = e.target.dataset.id;
         featureModalLabel.textContent = 'Ã–zellik DÃ¼zenle';
@@ -96,7 +93,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    // Sil butonuna tÄ±klanÄ±nca
     async function handleDeleteClick(e) {
         const featureId = e.target.dataset.id;
         if (confirm('Bu Ã¶zelliÄŸi silmek istediÄŸinizden emin misiniz? Bu iÅŸlem, bu Ã¶zelliÄŸi kullanan araÃ§larÄ± etkileyebilir.')) {
@@ -109,7 +105,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 alert('Ã–zellik baÅŸarÄ±yla silindi.');
-                fetchFeatures(); // Listeyi yenile
+                fetchFeatures(); 
             } catch (error) {
                 console.error('Ã–zellik silinirken hata:', error);
                 alert(`Ã–zellik silinirken bir hata oluÅŸtu: ${error.message}`);
@@ -117,7 +113,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    // Yeni Ã–zellik Ekle butonuna tÄ±klanÄ±nca
     addFeatureBtn.addEventListener('click', () => {
         featureModalLabel.textContent = 'Yeni Ã–zellik Ekle';
         featureForm.reset();
@@ -125,7 +120,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         featureModal.show();
     });
 
-    // Form gÃ¶nderimi (Ã–zellik ekle/dÃ¼zenle)
     featureForm.addEventListener('submit', async (event) => {
         event.preventDefault();
 
@@ -152,7 +146,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (response.ok) {
                 alert(`Ã–zellik baÅŸarÄ±yla ${id ? 'gÃ¼ncellendi' : 'eklendi'}!`);
                 featureModal.hide();
-                fetchFeatures(); // Listeyi yenile
+                fetchFeatures(); 
             } else {
                 throw new Error(data.message || `Ã–zellik ${id ? 'gÃ¼ncellenirken' : 'eklenirken'} bir hata oluÅŸtu.`);
             }
@@ -162,10 +156,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 
-    // Sayfa yÃ¼klendiÄŸinde Ã¶zellikleri Ã§ek
     fetchFeatures();
 
-    // Ã‡Ä±kÄ±ÅŸ yap linki
     document.getElementById('admin-logout-link').addEventListener('click', (e) => {
         e.preventDefault();
         localStorage.removeItem('token');

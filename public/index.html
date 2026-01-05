@@ -4,23 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AutooR</title>
-    
-    <!-- Security and Auto-fill Configuration -->
+
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests; block-all-mixed-content">
     <meta name="referrer" content="no-referrer-when-downgrade">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <meta name="format-detection" content="telephone=no">
     <meta name="robots" content="noindex, nofollow">
     <meta name="google" content="notranslate">
-    
-    <!-- Favicon -->
+
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-    
-    <!-- Bootstrap CSS -->
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap Icons -->
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
-    <!-- Custom Calendar CSS -->
+    
     <style>
         .custom-calendar {
             position: absolute;
@@ -41,8 +38,6 @@
             min-width: 198px;
             pointer-events: auto !important;
         }
-        
-        /* Mobilde takvim seçiciyi %30 büyüt */
         @media (max-width: 1199px) {
             .custom-calendar {
                 background: #ffffff !important;
@@ -61,14 +56,10 @@
         .custom-calendar.show {
             display: block;
         }
-        
-        /* Takvim açıkken desktop-search-layout'un pointer-events'ini kapat */
         .custom-calendar.show ~ .desktop-search-layout,
         .custom-calendar.show + .desktop-search-layout {
             pointer-events: none !important;
         }
-        
-        /* Takvim açıkken sadece takvim günlerinin tıklanabilir olmasını sağla */
         .custom-calendar.show .calendar-day {
             pointer-events: auto !important;
         }
@@ -87,11 +78,9 @@
             font-weight: 500;
             color: rgba(255, 255, 255, 0.9);
         }
-        
-        /* Mobilde takvim başlığını büyüt */
         @media (max-width: 1199px) {
             .calendar-title {
-                font-size: 14px; /* 11px * 1.3 */
+                font-size: 14px; 
             }
         }
         
@@ -110,11 +99,9 @@
             transition: all 0.3s ease;
             font-size: 7px;
         }
-        
-        /* Mobilde navigasyon butonlarını büyüt */
         @media (max-width: 1199px) {
             .calendar-nav-btn {
-                font-size: 9px; /* 7px * 1.3 */
+                font-size: 9px; 
                 padding: 3px 5px;
             }
         }
@@ -140,11 +127,9 @@
             padding: 4px 1px;
             white-space: nowrap;
         }
-        
-        /* Mobilde hafta günlerini büyüt */
         @media (max-width: 1199px) {
             .calendar-weekday {
-                font-size: 9px; /* 7px * 1.3 */
+                font-size: 9px; 
                 padding: 5px 1px;
             }
         }
@@ -175,13 +160,11 @@
             position: relative;
             z-index: 999 !important;
         }
-        
-        /* Mobilde gün butonlarını büyüt */
         @media (max-width: 1199px) {
             .calendar-day {
-                font-size: 11px; /* 8px * 1.3 */
-                width: 14px; /* 11px * 1.3 */
-                height: 14px; /* 11px * 1.3 */
+                font-size: 11px; 
+                width: 14px; 
+                height: 14px; 
                 padding: 2px;
             }
         }
@@ -212,14 +195,14 @@
             border: 1px solid rgba(255, 255, 255, 0.3);
         }
     </style>
-    <!-- Google Fonts -->
+    
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- Custom CSS -->
+    
     <link rel="stylesheet" href="css/style.css?v=20260105">
     <link rel="stylesheet" href="/css/navbar.css?v=20260104">
     
     <style>
-        /* Porsche-inspired Modern Design */
+        
         :root {
             --porsche-black: #B10000;
             --porsche-white: #ffffff;
@@ -245,12 +228,6 @@
             overflow-x: hidden;
             background-color: #dddddd;
         }
-        
-        /* Overlay for better readability - removed as we now use hero-overlay */
-        
-
-        
-        /* Hero Section */
         .hero-section {
             background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%);
             color: var(--porsche-white);
@@ -259,8 +236,6 @@
             overflow: hidden;
             transform: translateY(-2rem) !important;
         }
-        
-        /* Video Background */
         .hero-video {
             position: absolute;
             top: 0;
@@ -271,10 +246,8 @@
             z-index: 0;
             opacity: 0.3;
         }
-        
-        /* Responsive Styles - Only for Mobile/Tablet */
         @media (max-width: 768px) {
-            /* Hero Section Mobile */
+            
             .hero-section-porsche {
                 height: 100vh !important;
                 padding: 0 !important;
@@ -320,8 +293,6 @@
                 padding: 1rem !important;
                 font-size: 1.1rem !important;
             }
-            
-            /* Features Section Mobile */
             .features-section {
                 padding: 3rem 1rem !important;
             }
@@ -344,8 +315,6 @@
             .feature-description {
                 font-size: 0.9rem !important;
             }
-            
-            /* Popular Cars Section Mobile */
             .popular-cars-section {
                 padding: 3rem 1rem !important;
             }
@@ -433,8 +402,6 @@
             margin-bottom: 2rem;
             opacity: 0.9;
         }
-        
-        /* Perfect Search Form */
         .perfect-search-form {
             position: relative;
             z-index: 3;
@@ -447,8 +414,6 @@
             margin-right: auto;
             transform: translateY(-2rem) !important;
         }
-        
-        /* Porsche Search Form Base Styles */
         .porsche-search-form {
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 249, 250, 0.9) 100%);
             backdrop-filter: blur(30px);
@@ -469,8 +434,6 @@
             gap: 0.5rem !important;
             margin-bottom: 0.5rem !important;
         }
-        
-        /* Desktop Search Form - Modern Horizontal Layout */
         @media (min-width: 1200px) {
             .porsche-search-form {
                 padding: 2rem 3rem !important;
@@ -628,8 +591,6 @@
                 display: block !important;
             }
         }
-        
-        /* Desktop Discover Button Position */
         @media (min-width: 1200px) {
             .discover-button-container {
                 margin-top: 1rem !important;
@@ -640,16 +601,12 @@
                 height: 60px !important;
             }
         }
-        
-        /* Mobile Discover Button Position */
         @media (max-width: 1199px) {
             .discover-button-container {
                 margin-top: 2px !important;
                 transform: translateY(0) !important;
             }
         }
-        
-        /* Mobile Search Form Position */
         @media (max-width: 1199px) {
             .porsche-search-form {
                 transform: translateY(0) !important;
@@ -739,8 +696,6 @@
             .porsche-search-item input:hover {
                 border-color: rgba(177, 0, 0, 0.4) !important;
             }
-            
-            /* Search Button for Desktop */
             .porsche-search-form .btn-search {
                 height: 50px !important;
                 padding: 0 2rem !important;
@@ -794,8 +749,6 @@
                 color: #c9c9c9ed !important;
             }
         }
-        
-        /* Popular Cars Section - Fix positioning */
         #popular-cars-section {
             margin-top: 0 !important;
             padding-top: 0 !important;
@@ -803,33 +756,23 @@
             z-index: 0;
             background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 25%, #dee2e6 50%, #e9ecef 75%, #f8f9fa 100%);
         }
-        
-        /* Features section positioning */
         .features-stats-section {
             margin-top: 0 !important;
             margin-bottom: -5rem !important;
             padding-top: 0 !important;
             background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 25%, #ced4da 50%, #dee2e6 75%, #e9ecef 100%);
         }
-        
-        /* Features section container padding */
         .features-stats-section .container {
             padding-bottom: 1rem !important;
         }
-        
-        /* Stats part padding */
         .features-stats-section .stats-part {
             padding-bottom: 1rem !important;
         }
-        
-        /* About section positioning */
         .about-section {
             margin-top: -5rem !important;
             padding-top: 0 !important;
             background: linear-gradient(135deg, #dee2e6 0%, #ced4da 25%, #adb5bd 50%, #ced4da 75%, #dee2e6 100%);
         }
-        
-        /* Hero content positioning fix */
         .hero-content-porsche {
             max-width: none !important;
             margin: 0 !important;
@@ -843,8 +786,6 @@
             justify-content: flex-end;
             transform: translateY(-2rem) !important;
         }
-        
-        /* Override hero content for search form */
         .hero-content-porsche {
             max-width: none !important;
             margin: 0 !important;
@@ -929,72 +870,50 @@
             color: #ffffff;
             font-weight: bold;
         }
-        
-        /* Abholdatum'u daha daralt */
         .search-item:nth-child(3) {
             flex: 0 0 auto !important;
             width: 80px !important;
             display: inline-block !important;
         }
-        
-        /* Abholdatum yazı boyutunu küçült */
         .search-item:nth-child(3) select,
         .search-item:nth-child(3) input {
             font-size: 0.75rem;
             padding: 0.5rem 0.5rem;
             min-height: 38px;
         }
-        
-        /* Abholdatum label yazısını küçült */
         .search-item:nth-child(3) label {
             font-size: 0.85rem;
         }
-        
-        /* Rückgabedatum'u daha daralt */
         .search-item:nth-child(5) {
             flex: 0 0 auto !important;
             width: 80px !important;
             display: inline-block !important;
         }
-        
-        /* Rückgabedatum yazı boyutunu küçült */
         .search-item:nth-child(5) select,
         .search-item:nth-child(5) input {
             font-size: 0.75rem;
             padding: 0.5rem 0.5rem;
             min-height: 38px;
         }
-        
-        /* Rückgabedatum label yazısını küçült */
         .search-item:nth-child(5) label {
             font-size: 0.85rem;
         }
-        
-        /* Zeit select'lerini daralt */
         .search-item:nth-child(4),
         .search-item:nth-child(6) {
             flex: 0 0 auto !important;
             width: 60px !important;
             display: inline-block !important;
         }
-        
-        /* Zeit select yazılarını küçült */
         .search-item:nth-child(4) select,
         .search-item:nth-child(6) select {
             font-size: 0.75rem;
             padding: 0.5rem 0.5rem;
             min-height: 38px;
         }
-        
-        /* Standort wählen alanlarını daralt */
         .search-item:nth-child(1),
         .search-item:nth-child(2) {
             flex: 0.5;
         }
-        
-
-        
-        /* New Search Form Styling */
         .search-item {
             position: relative;
             margin-bottom: 1.5rem;
@@ -1047,8 +966,6 @@
             -webkit-appearance: none;
             -moz-appearance: none;
         }
-        
-        /* Select dropdown yukarı açılması için */
         .search-item select {
             direction: ltr !important;
             text-align: left !important;
@@ -1074,14 +991,10 @@
             font-weight: 400;
             font-size: 14px;
         }
-        
-        /* Daha güçlü placeholder seçicileri */
         input::placeholder,
         select::placeholder {
             color: #6c757d !important;
         }
-        
-        /* Browser-specific placeholder override */
         ::-webkit-input-placeholder {
             color: #6c757d !important;
         }
@@ -1097,36 +1010,24 @@
         :-moz-placeholder {
             color: #6c757d !important;
         }
-        
-        /* Abholdatum ve Rückgabedatum için özel placeholder */
         #pickup-date-selector::placeholder,
         #dropoff-date-selector::placeholder {
             color: #ffffff !important;
             font-weight: 400;
             font-size: 14px;
         }
-        
-        /* Bootstrap Datepicker input placeholder override */
         .form-control::placeholder {
             color: #ffffff !important;
         }
-        
-        /* En güçlü placeholder override */
         .search-item .date-wrapper .form-control::placeholder {
             color: #ffffff !important;
         }
-        
-        /* Flatpickr input placeholder override */
         .flatpickr-input::placeholder {
             color: #ffffff !important;
         }
-        
-        /* Tüm input placeholder'ları için en güçlü seçici */
         .search-item input[type="text"]::placeholder {
             color: #ffffff !important;
         }
-        
-        /* CSS Custom Property ile placeholder rengi */
         .search-item input[type="text"] {
             --placeholder-color: #ffffff !important;
         }
@@ -1134,32 +1035,22 @@
         .search-item input[type="text"]::placeholder {
             color: var(--placeholder-color) !important;
         }
-        
-        /* Bootstrap Datepicker için özel placeholder override */
         .datepicker-dropdown .datepicker table tr td.active {
             background: #1967D2 !important;
         }
-        
-        /* En güçlü placeholder override - tüm input'lar için */
         input[type="text"]::placeholder {
             color: #ffffff !important;
             opacity: 1 !important;
         }
-        
-        /* Bootstrap form-control için özel override */
         .form-control::placeholder {
             color: #ffffff !important;
             opacity: 1 !important;
         }
-        
-        /* Date input'ları için özel override */
         #pickup-date-selector::placeholder,
         #dropoff-date-selector::placeholder {
             color: #ffffff !important;
             opacity: 1 !important;
         }
-
-        /* Arrow and Calendar Icons */
         .select-arrow,
         .date-icon {
             position: absolute;
@@ -1181,8 +1072,6 @@
         .search-item input:focus + .date-icon {
             color: #B10000;
         }
-
-        /* Select Options Styling - Dark red background */
         .search-item select option {
             background: #B60706 !important;
             color: #ffffff !important;
@@ -1197,9 +1086,6 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
             transition: all 0.3s ease !important;
         }
-
-
-
         .search-item select option:checked {
             background: #8a0012 !important;
             color: #ffffff !important;
@@ -1220,8 +1106,6 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
             transition: all 0.3s ease !important;
         }
-        
-        /* Browser-specific hover override */
         select option:hover {
             background: #4D0602 !important;
             color: #ffffff !important;
@@ -1229,8 +1113,6 @@
             border: 1px solid rgba(255, 255, 255, 0.3) !important;
             backdrop-filter: blur(10px) !important;
         }
-        
-        /* En güçlü hover seçici */
         option:hover {
             background: #4D0602 !important;
             color: #ffffff !important;
@@ -1238,8 +1120,6 @@
             border: 1px solid rgba(255, 255, 255, 0.3) !important;
             backdrop-filter: blur(10px) !important;
         }
-        
-        /* Daha güçlü hover override */
         .search-item select option:hover,
         select option:hover,
         option:hover,
@@ -1250,8 +1130,6 @@
             color: #ffffff !important;
             font-size: 14px !important;
         }
-        
-        /* CSS Custom Property ile hover rengi */
         .search-item select {
             --option-hover-bg: #4D0602 !important;
         }
@@ -1260,8 +1138,6 @@
             background: var(--option-hover-bg) !important;
             background-color: var(--option-hover-bg) !important;
         }
-        
-        /* En güçlü hover override - tüm olası seçiciler */
         .search-item select option:hover,
         .search-item select option:focus,
         .search-item select option:active,
@@ -1282,8 +1158,6 @@
             color: #ffffff !important;
             font-size: 14px !important;
         }
-        
-        /* Modern Luxury Select Styling - Porsche/Ferrari Style */
         .search-item select {
             background: rgba(255, 255, 255, 0.1) !important;
             backdrop-filter: blur(20px) !important;
@@ -1313,8 +1187,6 @@
             outline: none !important;
             box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1) !important;
         }
-        
-        /* Modern Select Options */
         .search-item select option {
             background: rgba(0, 0, 0, 0.9) !important;
             backdrop-filter: blur(20px) !important;
@@ -1335,8 +1207,6 @@
             background: rgba(255, 255, 255, 0.2) !important;
             color: #ffffff !important;
         }
-        
-        /* Select Arrow Styling */
         .select-arrow {
             color: rgba(255, 255, 255, 0.7) !important;
             font-size: 12px !important;
@@ -1347,8 +1217,6 @@
             color: rgba(255, 255, 255, 0.9) !important;
             transform: translateY(-1px) !important;
         }
-        
-        /* Modern Date Input Styling - Porsche/Ferrari Style */
         .search-item input[type="text"] {
             background: rgba(255, 255, 255, 0.1) !important;
             backdrop-filter: blur(20px) !important;
@@ -1375,8 +1243,6 @@
             outline: none !important;
             box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1) !important;
         }
-        
-        /* Date Input Placeholder Styling */
         .search-item input[type="text"]::placeholder {
             color: rgba(255, 255, 255, 0.6) !important;
             font-weight: 400 !important;
@@ -1385,8 +1251,6 @@
         .search-item input[type="text"]:focus::placeholder {
             color: rgba(255, 255, 255, 0.8) !important;
         }
-        
-        /* Date Input Error Styling */
         .search-item input[type="text"].date-error {
             border-color: #ff4757 !important;
             background: rgba(255, 71, 87, 0.1) !important;
@@ -1407,15 +1271,11 @@
         .date-error-icon.show {
             display: block;
         }
-        
-        /* Date Input Success Styling */
         .search-item input[type="text"].date-success {
             border-color: #2ed573 !important;
             background: rgba(46, 213, 115, 0.1) !important;
             box-shadow: 0 0 0 3px rgba(46, 213, 115, 0.2) !important;
         }
-        
-        /* Label Icon Styling */
         .search-item label {
             display: flex;
             align-items: center;
@@ -1443,50 +1303,34 @@
             color: rgba(255, 255, 255, 0.9);
             transform: scale(1.1);
         }
-        
-        /* Inline style override için */
         .search-item select option[style*="background"]:hover {
             background-color: #4D0602 !important;
             background: #4D0602 !important;
         }
-        
-        /* Option metin yönünü düzeltmek için */
         .search-item select option {
             direction: ltr !important;
             text-align: left !important;
         }
-        
-        /* Seçili option için özel stil */
         .search-item select option[value=""] {
             background: #4D0804 !important;
             color: #ffffff !important;
             font-size: 14px !important;
         }
-
-        /* Daha güçlü seçici */
         .search-item select option:first-child {
             background: #4D0804 !important;
             color: #ffffff !important;
             font-size: 14px !important;
         }
-        
-        /* En güçlü seçici - tüm select option'ları için */
         select option:first-child {
             background: #4D0804 !important;
             color: #ffffff !important;
             font-size: 14px !important;
         }
-        
-        /* Browser-specific override */
         select option[value=""] {
             background: #4D0804 !important;
             color: #ffffff !important;
             font-size: 14px !important;
         }
-
-
-
-        /* Bootstrap Datepicker Styling */
         .datepicker {
             background: #B60706 !important;
             border: 1px solid #4a5568 !important;
@@ -1599,10 +1443,6 @@
             background: #4a5568 !important;
             color: #ffffff !important;
         }
-
-
-
-        /* Custom scrollbar for select dropdown */
         .search-item select::-webkit-scrollbar {
             width: 6px;
         }
@@ -1620,9 +1460,6 @@
         .search-item select::-webkit-scrollbar-thumb:hover {
             background: #b30016;
         }
-        
-
-        
         .search-button {
             flex: 1;
             min-width: 100%;
@@ -1689,8 +1526,6 @@
         .search-button i {
             font-size: 1.25rem;
         }
-
-        /* Flatpickr Dark Theme Styling */
         .flatpickr-calendar {
             background: #B60706 !important;
             border: 1px solid #4a5568 !important;
@@ -1721,10 +1556,6 @@
             font-weight: 600 !important;
             font-size: 0.8rem !important;
         }
-        
-
-        
-        /* Luxury Porsche Button */
         .btn-porsche-luxury {
             display: inline-block;
             position: relative;
@@ -1805,8 +1636,6 @@
         .btn-porsche-luxury:hover .btn-glow {
             left: 100%;
         }
-        
-        /* Responsive */
         @media (max-width: 1200px) {
             .hero-content-porsche {
                 padding: 250px 30px 0 30px !important;
@@ -1863,8 +1692,6 @@
                 font-size: 10px;
             }
         }
-
-        /* Search Form */
         .search-form {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(20px);
@@ -1894,8 +1721,6 @@
             transform: none !important;
             transition: border-color 0.3s ease, box-shadow 0.3s ease !important;
         }
-
-        /* Genel select option stilleri */
         select {
             overflow: visible !important;
         }
@@ -1930,35 +1755,23 @@
             transform: translateY(-2px);
             box-shadow: 0 8px 25px rgba(213, 0, 28, 0.3);
         }
-        
-        /* Section Headers */
         .section-header {
             text-align: center;
             margin-bottom: 4rem;
         }
-        
-        /* Features section header özel stil */
         .features-stats-section .section-header {
             margin-top: 1rem !important;
             padding-top: 1rem !important;
         }
-        
-        /* Features section container özel stil */
         .features-stats-section .container {
             padding-top: 1rem !important;
         }
-        
-        /* Features part özel stil */
         .features-stats-section .features-part {
             padding-top: 1rem !important;
         }
-        
-        /* About section container özel stil */
         .about-section .container {
             padding-top: 1rem !important;
         }
-        
-        /* About section content özel stil */
         .about-section .about-content {
             padding-top: 1rem !important;
         }
@@ -1976,8 +1789,6 @@
             max-width: 600px;
             margin: 0 auto;
         }
-        
-        /* Car Cards - Porsche Style */
         .car-card {
             background: linear-gradient(135deg, #1a1a1a, #2a2a2a) !important;
             border-radius: 16px;
@@ -2038,9 +1849,9 @@
     position: absolute !important;
     top: 0.6rem !important;
     right: 0.6rem !important;
-    background: #ffd43b !important; /* sarı arka plan */
-    background-color: #ffd43b !important; /* sarı arka plan */
-    color: #000000 !important; /* siyah yazı */
+    background: #ffd43b !important; 
+    background-color: #ffd43b !important; 
+    color: #000000 !important; 
     padding: 0.25rem 0.5rem !important;
     border-radius: 12px !important;
     font-weight: 700 !important;
@@ -2114,9 +1925,6 @@
             gap: 0.3rem;
             margin-top: auto;
         }
-        
-
-        
         .btn-rent-now {
             background: linear-gradient(#eb3e00ed);
             color: #c9c9c9ed;
@@ -2141,8 +1949,6 @@
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(212, 175, 55, 0.4);
         }
-        
-        /* Features & Stats Section */
         .features-stats-section {
             background: linear-gradient(135deg, #2d2d2d 0%, #404040 50%, #2d2d2d 100%);
             padding: 60px 0;
@@ -2197,8 +2003,6 @@
             color: #495057;
             line-height: 1.6;
         }
-        
-        /* Stats Section */
         .stats-section {
             background: transparent;
             color: var(--porsche-black);
@@ -2227,8 +2031,6 @@
             color: #000000;
             opacity: 0.9;
         }
-        
-        /* About Section */
         .about-section {
             padding: 80px 0;
             background: linear-gradient(135deg, #404040 0%, #555555 50%, #404040 100%);
@@ -2270,8 +2072,6 @@
             color: var(--porsche-red);
             font-size: 1.2rem;
         }
-        
-        /* Footer */
         .footer {
             background: linear-gradient(135deg, #555555, #666666);
             color: #ffffff;
@@ -2303,8 +2103,6 @@
             background: rgba(255, 255, 255, 0.1);
             transform: translateY(-2px);
         }
-        
-        /* Responsive */
         @media (max-width: 768px) {
             .hero-title {
                 font-size: 2.5rem;
@@ -2320,31 +2118,29 @@
          }
     </style>
     <style>
-        /* Show only the standard navbar on the homepage */
+        
         body { background: none !important; }
         body > :not(#navbar-container):not(style):not(script) { display: none !important; }
     </style>
 </head>
 <body style="background-image:url('images/cars/1.jpg') !important; background-size: cover !important; background-position: center !important; background-attachment: fixed !important; background-repeat: no-repeat !important; padding-top: 0 !important;">
-    <!-- Modern Navbar -->
+    
     <div id="navbar-container">
-        <!-- Navbar JavaScript ile yüklenecek -->
+        
     </div>
 
-    <!-- Login Button for Non-Logged Users -->
     <div id="login-button-container" style="position: fixed; top: 20px; right: 20px; z-index: 1000; display: none;">
         <button class="btn btn-warning" onclick="window.location.href='/register'" style="background: #ffc107; border: none; color: black; font-weight: 600; padding: 10px 20px; border-radius: 8px;">
             <i class="bi bi-person-circle me-2"></i>Anmelden
         </button>
     </div>
 
-    <!-- Hero Section - Porsche Style -->
     <section class="hero-section-porsche" style="position: relative; z-index: 1;">
-        <!-- Background Video -->
+        
         <video class="hero-video" autoplay muted loop playsinline>
             <source src="/videos/car-driving.mp4" type="video/mp4">
             <source src="/videos/car-driving.webm" type="video/webm">
-            <!-- Fallback image if video doesn't load -->
+            
             <img src="/images/cars/porsche-taycan-hero.jpg" alt="Premium Car Rental" style="width: 100%; height: 100%; object-fit: cover;">
         </video>
         
@@ -2360,11 +2156,11 @@
             "></div>
         </div>
         <div class="hero-content-porsche" style="padding-top: 0; margin-top: 0; transform: translateY(0); position: relative; z-index: 2; height: 100vh; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 5.5rem;">
-            <!-- Porsche Style Search Form -->
+            
             <form id="date-location-form" novalidate style="background: transparent; border: none; border-radius: 16px; padding: 2rem 4rem; box-shadow: none; position: relative; transform: translateY(2rem);">
-                <!-- Desktop: Yatay Layout -->
+                
                 <div class="desktop-search-layout">
-                    <!-- Pick-up Location -->
+                    
                     <div class="porsche-search-item">
                         <label for="pickup-location-selector">Abholort</label>
                         <select id="pickup-location-selector" required>
@@ -2378,7 +2174,6 @@
                         </select>
                     </div>
 
-                    <!-- Drop-off Location -->
                     <div class="porsche-search-item">
                         <label for="dropoff-location-selector">Rückgabeort</label>
                         <select id="dropoff-location-selector" required>
@@ -2391,8 +2186,7 @@
                             <option value="stuttgart">Stuttgart Zentrum</option>
                         </select>
             </div>
-            
-                    <!-- Pick-up Date -->
+
                     <div class="porsche-search-item">
                         <label for="pickup-date-selector">Abholdatum</label>
                         <select id="pickup-date-selector" required>
@@ -2430,8 +2224,7 @@
                             <option value="2025-01-31">31.01.2025</option>
                         </select>
             </div>
-            
-                    <!-- Pick-up Time -->
+
                     <div class="porsche-search-item">
                         <label for="pickup-time">Zeit</label>
                         <select id="pickup-time" required>
@@ -2449,8 +2242,7 @@
                             <option value="18:00">18:00</option>
                         </select>
             </div>
-            
-                    <!-- Return Date -->
+
                     <div class="porsche-search-item">
                         <label for="dropoff-date-selector">Rückgabedatum</label>
                         <select id="dropoff-date-selector" required>
@@ -2489,7 +2281,6 @@
                         </select>
                     </div>
 
-                    <!-- Return Time -->
                     <div class="porsche-search-item">
                         <label for="dropoff-time">Zeit</label>
                         <select id="dropoff-time" required>
@@ -2508,18 +2299,16 @@
                         </select>
                     </div>
 
-                    <!-- Search Button -->
                     <button type="submit" class="btn-search">
                         <i class="bi bi-search"></i>
                         Fahrzeug finden
                     </button>
                 </div>
 
-                <!-- Mobile: Dikey Layout -->
                 <div class="mobile-search-layout" style="background: pink !important; border-left: 5px solid green !important; border-right: 5px solid blue !important; transform: translateY(0); padding: 2rem !important; margin: -1rem -4rem -1rem -4rem;">
-                    <!-- 1. Satır: Abholort ve Rückgabeort -->
+                    
                     <div class="porsche-search-row" style="gap: 0 !important; margin-bottom: 0 !important;">
-                    <!-- Pick-up Location -->
+                    
                         <div class="porsche-search-item" style="transform: translateX(-0.5rem) !important;">
                             <label for="pickup-location-selector-mobile" style="color: #d4af37; font-weight: 700; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.3rem; white-space: nowrap; font-family: 'Inter', sans-serif;">
                                 Abholort
@@ -2550,7 +2339,6 @@
                             </div>
                     </div>
 
-                    <!-- Drop-off Location -->
                          <div class="porsche-search-item" style="transform: translateX(0.5rem) !important;">
                              <label for="dropoff-location-selector-mobile" style="color: #d4af37; font-weight: 700; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.3rem; white-space: nowrap; font-family: 'Inter', sans-serif;">
                                  Rückgabeort
@@ -2582,9 +2370,8 @@
                         </div>
                     </div>
 
-                    <!-- 2. Satır: Abholdatum ve Abholzeit -->
                     <div class="porsche-search-row" style="gap: 0 !important; margin-bottom: 0 !important;">
-                    <!-- Pick-up Date -->
+                    
                         <div class="porsche-search-item" style="transform: translateX(-0.5rem) !important;">
                             <label for="pickup-date-selector-mobile" style="color: #d4af37; font-weight: 700; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.3rem; white-space: nowrap; font-family: 'Inter', sans-serif;">
                                 Abholdatum
@@ -2625,7 +2412,6 @@
                         </select>
                     </div>
 
-                                         <!-- Pick-up Time -->
                      <div class="porsche-search-item" style="transform: translateX(0.5rem) !important;">
                          <label for="pickup-time-selector-mobile" style="color: #d4af37; font-weight: 700; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.3rem; white-space: nowrap; font-family: 'Inter', sans-serif;">
                              Zeit
@@ -2653,9 +2439,8 @@
                             </div>
                     </div>
 
-                <!-- 3. Satır: Rückgabedatum ve Rückgabezeit -->
                 <div class="porsche-search-row" style="gap: 0 !important; margin-bottom: 0 !important;">
-                    <!-- Drop-off Date -->
+                    
                     <div class="porsche-search-item" style="transform: translateX(-0.5rem) !important;">
                         <label for="dropoff-date-selector-mobile" style="color: #d4af37; font-weight: 700; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.3rem; white-space: nowrap; font-family: 'Inter', sans-serif;">
                                 Rückgabedatum
@@ -2696,7 +2481,6 @@
                         </select>
                     </div>
 
-                    <!-- Drop-off Time -->
                      <div class="porsche-search-item" style="transform: translateX(0.5rem) !important;">
                          <label for="dropoff-time-selector-mobile" style="color: #d4af37; font-weight: 700; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; text-align: left !important; display: block; margin-bottom: 0.3rem; white-space: nowrap; font-family: 'Inter', sans-serif;">
                                 Zeit
@@ -2726,8 +2510,7 @@
 
                         </form>
                     </div>
-                    
-                    <!-- Custom Time Picker Modal -->
+
                     <div id="time-picker-modal" style="
                         position: fixed;
                         top: 0;
@@ -2942,10 +2725,7 @@
                             </div>
                         </div>
                     </div>
-                
 
-                
-                                <!-- Minimal Discover Button -->
                 <div class="porsche-search-row" style="display: flex !important; justify-content: center !important; align-items: center !important; margin-bottom: 0 !important; margin-top: 2rem !important; width: 100% !important; overflow: visible !important;">
                     <div class="porsche-search-button" style="width: calc(50% + 1rem); margin: 0 auto; position: relative; transform: translateY(-3rem);">
                         <button class="discover-button" onclick="scrollToPopularCars()" style="
@@ -2984,8 +2764,7 @@
                         </button>
                     </div>
                     </div>
-                    
-                    <!-- Porsche Style Hover Effects -->
+
                     <style>
                         .porsche-search-form select:hover,
                         .porsche-search-form input:hover {
@@ -3019,8 +2798,6 @@
                         .porsche-search-button button:active {
                             transform: translateY(0);
                         }
-                        
-                        /* Select dropdown option styling */
                         .porsche-search-form select option {
                             background-color: #ffffff !important;
                             color: #000000 !important;
@@ -3029,8 +2806,6 @@
                             padding: 4px 8px !important;
                             text-align: left !important;
                         }
-                        
-                        /* Mobile select dropdown option styling */
                         @media (max-width: 1199px) {
                             .mobile-search-layout select {
                                 text-align: left !important;
@@ -3164,8 +2939,6 @@
                                 flex-shrink: 0 !important;
                                 flex-grow: 0 !important;
                             }
-                            
-                            /* Tarih input'ları için özel stil - genişlememesi için */
                             .mobile-search-layout input[type="button"] {
                                 font-size: 0.75rem !important;
                                 overflow: hidden !important;
@@ -3177,24 +2950,18 @@
                                 min-width: 100% !important;
                                 max-width: 100% !important;
                             }
-                            
-                            /* Daha spesifik selector ile tarih input'larının padding'ini zorla */
                             .mobile-search-layout .porsche-search-item input[type="button"] {
                                 padding: 0 35px 0 6px !important;
                                 width: 100% !important;
                                 min-width: 100% !important;
                                 max-width: 100% !important;
                             }
-                            
-                            /* En spesifik selector */
                             .mobile-search-layout .porsche-search-item input[id*="date-selector"] {
                                 padding: 0 35px 0 6px !important;
                                 width: 100% !important;
                                 min-width: 100% !important;
                                 max-width: 100% !important;
                             }
-                            
-                            /* Tüm form elementleri için en güçlü kural */
                             .mobile-search-layout .porsche-search-item *,
                             .mobile-search-layout .porsche-search-item,
                             .mobile-search-layout .porsche-select-wrapper,
@@ -3204,8 +2971,6 @@
                                 min-width: 100% !important;
                                 max-width: 100% !important;
                             }
-                            
-                            /* Custom time dropdown'ları için yüksek z-index */
                             .mobile-search-layout .custom-time-dropdown {
                                 position: absolute !important;
                                 top: 100% !important;
@@ -3223,8 +2988,6 @@
                                 -webkit-backdrop-filter: blur(10px) !important;
                                 pointer-events: auto !important;
                             }
-                            
-                            /* Dropdown açıldığında diğer elementlerin üzerini tamamen ört */
                             .mobile-search-layout .custom-time-dropdown[style*="display: block"] {
                                 z-index: 999999 !important;
                                 position: fixed !important;
@@ -3233,8 +2996,6 @@
                                 right: auto !important;
                                 transform: none !important;
                             }
-                            
-                            /* Zeit select'leri için normal dropdown davranışı */
                             .mobile-search-layout select[id*="time-selector"] {
                                 height: 35px !important;
                                 max-height: 35px !important;
@@ -3244,13 +3005,9 @@
                                 height: 35px !important;
                                 max-height: 35px !important;
                             }
-                            
-                            /* Zeit select'leri için dropdown pozisyonu */
                             .mobile-search-layout select[id*="time-selector"] {
                                 position: relative !important;
                             }
-                            
-                            /* Tüm time option butonları için küçük boyut */
                             .time-option {
                                 padding: 6px 4px !important;
                                 font-size: 0.7rem !important;
@@ -3262,8 +3019,6 @@
                                 z-index: 999999 !important;
                                 transform: none !important;
                             }
-                            
-                            /* Zeit select'lerin dropdown'larının aşağı açılması için */
                             .mobile-search-layout select[id*="time-selector"]:focus {
                                 position: relative !important;
                                 z-index: 999999 !important;
@@ -3271,14 +3026,10 @@
                                 top: auto !important;
                                 bottom: auto !important;
                             }
-                            
-                            /* Zeit select dropdown'larının aşağı açılması */
                             .mobile-search-layout select[id*="time-selector"] option {
                                 position: relative !important;
                                 z-index: 999999 !important;
                             }
-                            
-                            /* Select wrapper'ın pozisyonu */
                             .mobile-search-layout .porsche-select-wrapper {
                                 position: relative !important;
                                 z-index: 1 !important;
@@ -3287,8 +3038,6 @@
                             .mobile-search-layout .porsche-select-wrapper:has(select:focus) {
                                 z-index: 999999 !important;
                             }
-                            
-                            /* Date input'ları için en spesifik kural */
                             .mobile-search-layout .porsche-search-item input[type="button"][id*="date-selector"] {
                                 width: 1rem !important;
                                 min-width: 1rem !important;
@@ -3316,8 +3065,6 @@
                                 width: 100% !important;
                                 box-sizing: border-box !important;
                             }
-                            
-                            /* Daha spesifik selector */
                             .mobile-search-layout select option,
                             .mobile-search-layout select option:checked,
                             .mobile-search-layout select option:hover {
@@ -3328,14 +3075,10 @@
                             color: #ffffff !important;
                             }
                         }
-                        
-                        /* Date select options - 6 punto */
                         #pickup-date-selector option,
                         #dropoff-date-selector option {
                             font-size: 6pt !important;
                         }
-                        
-                        /* Desktop search layout option styling */
                         .desktop-search-layout select option {
                             background-color: #212529 !important;
     color: #ffffff !important;
@@ -3350,8 +3093,6 @@
                             background-color: #f0f0f0 !important;
                             color: #000000 !important;
                         }
-                        
-                        /* Desktop select dropdown positioning */
                         @media (min-width: 1200px) {
                             .desktop-search-layout {
                                 background: rgba(255, 255, 255, 0.1) !important;
@@ -3371,8 +3112,6 @@
                             .desktop-search-layout select:focus {
                                 z-index: 10 !important;
                             }
-                            
-                            /* Select dropdown'ları input'un üstünde açılsın */
                             .desktop-search-layout .porsche-search-item {
                                 position: relative !important;
                                 z-index: 1 !important;
@@ -3381,13 +3120,9 @@
                             .desktop-search-layout .porsche-search-item:focus-within {
                                 z-index: 10 !important;
                             }
-                            
-                            /* Select dropdown'ları yukarı açılsın */
                             .desktop-search-layout select {
                                 transform-origin: bottom center !important;
                             }
-                            
-                            /* Select dropdown'ları yukarı açmak için */
                             .desktop-search-layout .porsche-search-item {
                                 transform: translateY(0) !important;
                                 transition: transform 0.3s ease !important;
@@ -3403,8 +3138,6 @@
                             background-color: #e0e0e0 !important;
                             color: #000000 !important;
                         }
-                        
-                        /* Firefox için select styling */
                         .porsche-search-form select {
                             color: #000000 !important;
                         }
@@ -3413,15 +3146,11 @@
                             background-color: #ffffff !important;
                             color: #000000 !important;
                         }
-                        
-                        /* Disabled option styling */
                         .porsche-search-form select option:disabled,
                         .porsche-search-form select option.disabled-option {
                             color: #999999 !important;
                             background-color: #f5f5f5 !important;
                         }
-                        
-                        /* Tarih validasyon hata mesajı stilleri */
                         #date-validation-error,
                         #desktop-date-validation-error {
                             color: #dc3545 !important;
@@ -3446,8 +3175,6 @@
                                 transform: translateY(0);
                             }
                         }
-                        
-                        /* Calendar dropdown positioning */
                         .custom-calendar {
                             position: absolute !important;
                             bottom: 100% !important;
@@ -3461,8 +3188,6 @@
                             margin-bottom: 7px !important;
                             top: auto !important;
                         }
-                        
-                                                    /* Desktop calendar positioning */
                             @media (min-width: 1200px) {
                                 .custom-calendar {
                                     z-index: 9999 !important;
@@ -3493,8 +3218,6 @@
                                 left: 50% !important;
                                 transform: translate(-50%, -50%) !important;
                             }
-                            
-                            /* Desktop calendar text sizing */
                             @media (min-width: 1200px) {
                                 .custom-calendar .calendar-title {
                                     font-size: 13px !important;
@@ -3533,8 +3256,6 @@
                                 }
                             }
                         }
-                        
-                        /* Mobile calendar positioning */
                         @media (max-width: 1199px) {
                         .custom-calendar.show {
                             position: fixed !important;
@@ -3547,8 +3268,6 @@
                             padding: 7px 7px !important;
                             z-index: 99999 !important;
                         }
-                            
-                            /* Mobil takvim ok butonlarını küçült */
                             .custom-calendar .calendar-nav-btn {
                                 width: 18px !important;
                                 height: 18px !important;
@@ -3565,16 +3284,12 @@
                                 border-radius: 4px !important;
                                 transform: translateX(0) !important;
                             }
-                            
-                                                    /* Mobil takvim başlığını küçült */
                         .custom-calendar .calendar-title {
                             font-size: 0.7rem !important;
                             font-weight: 600 !important;
                             margin-bottom: 8px !important;
                             color: #8B4513 !important;
                         }
-                            
-                                                    /* Mobil takvim günlerini küçült */
                         .custom-calendar .calendar-weekdays {
                             margin-bottom: 6px !important;
                             gap: 2px !important;
@@ -3609,14 +3324,10 @@
                         .custom-calendar .calendar-day:hover:not(.disabled) {
                             background: #f4f4f4 !important;
                         }
-                            
-                            /* Takvim günleri container'ının yüksekliğini artır */
                             .custom-calendar .calendar-days {
                                 min-height: 180px !important;
                                 padding-bottom: 9px !important;
                             }
-                            
-                            /* Mobil takvim hafta günlerini küçült */
                             .custom-calendar .calendar-weekday {
                                 width: 18px !important;
                                 height: 18px !important;
@@ -3632,8 +3343,6 @@
                         .porsche-search-form {
                             overflow: visible !important;
                         }
-                        
-                        /* Desktop date wrapper positioning */
                         @media (min-width: 1200px) {
                             .porsche-date-wrapper {
                                 overflow: visible !important;
@@ -3653,8 +3362,6 @@
                                 z-index: 99999 !important;
                             }
                         }
-                        
-                        /* Custom time dropdown styling */
                         .time-option {
                             padding: 8px 12px;
                             color: #ffffff;
@@ -3671,11 +3378,9 @@
                             background-color: rgba(177, 0, 0, 0.8);
                         }
                     </style>
-                    
 
-                    
                     <style>
-                        /* Discover Button Modern Styling */
+                        
                         .discover-button {
                             background: #DF3F05;
                             color: #c9c9c9ed;
@@ -3710,8 +3415,6 @@
                             transform: translateY(0);
                             box-shadow: 0 2px 8px rgba(212, 175, 55, 0.3);
                         }
-                        
-                        /* Desktop specific styling */
                         @media (min-width: 1200px) {
                             .discover-button {
                                 height: 50px !important;
@@ -3720,27 +3423,18 @@
                                 padding: 0 3rem !important;
         margin: 2rem 0 0 4rem;
         border-radius: 28px !important;
-
-                                
                             }
                         }
                     </style>
                     
                     <script>
-
-                        
-                        // Custom Time Picker Functionality
                         document.addEventListener('DOMContentLoaded', function() {
                             const timePickerModal = document.getElementById('time-picker-modal');
                             const closeTimePicker = document.getElementById('close-time-picker');
                             const timeOptions = document.querySelectorAll('.time-option');
                             let currentTimeInput = null;
-                            
-                            // Tarih validasyonu için değişkenler
                             let pickupDate = null;
                             let dropoffDate = null;
-                            
-                                                        // Abholdatum seçildiğinde
                             const pickupDateInput = document.getElementById('pickup-date-selector-mobile');
                             if (pickupDateInput) {
                                 pickupDateInput.addEventListener('change', function() {
@@ -3748,8 +3442,6 @@
                                     validateDropoffDate();
                                 });
                             }
-                            
-                            // Rückgabedatum seçildiğinde
                             const dropoffDateInput = document.getElementById('dropoff-date-selector-mobile');
                             if (dropoffDateInput) {
                                 dropoffDateInput.addEventListener('change', function() {
@@ -3757,32 +3449,24 @@
                                     validateDropoffDate();
                                 });
                             }
-                            
-                            // Tarih validasyonu fonksiyonu
                             function validateDropoffDate() {
                                 if (!pickupDate || !dropoffDate) return;
                                 
                                 const pickup = new Date(pickupDate);
                                 const dropoff = new Date(dropoffDate);
-                                
-                                // En az 1 gün fark olmalı
                                 const oneDay = 24 * 60 * 60 * 1000;
                                 const timeDiff = dropoff - pickup;
                                 
                                 if (timeDiff < oneDay) {
-                                    // Hata mesajı göster
-                                    showDateError('Rückgabedatum muss mindestens 1 Tag nach Abholdatum liegen');
                                     
-                                    // Dropoff date'i temizle
+                                    showDateError('Rückgabedatum muss mindestens 1 Tag nach Abholdatum liegen');
                                     dropoffDateInput.value = '';
                                     dropoffDate = null;
                                 } else {
-                                    // Hata mesajını gizle
+                                    
                                     hideDateError();
                                 }
                             }
-                            
-                            // Hata mesajı gösterme
                             function showDateError(message) {
                                 let errorDiv = document.getElementById('date-validation-error');
                                 if (!errorDiv) {
@@ -3800,8 +3484,6 @@
                                         border: 1px solid rgba(220, 53, 69, 0.3);
                                         animation: fadeIn 0.3s ease-in-out;
                                     `;
-                                    
-                                    // Hata mesajını dropoff date'in altına ekle
                                     const dropoffContainer = dropoffDateInput.closest('.porsche-search-item');
                                     if (dropoffContainer) {
                                         dropoffContainer.appendChild(errorDiv);
@@ -3810,16 +3492,12 @@
                                 errorDiv.textContent = message;
                                 errorDiv.style.display = 'block';
                             }
-                            
-                            // Hata mesajını gizleme
                             function hideDateError() {
                                 const errorDiv = document.getElementById('date-validation-error');
                                 if (errorDiv) {
                                     errorDiv.style.display = 'none';
                                 }
                             }
-                            
-                            // Desktop tarih validasyonu
                             const desktopPickupDateInput = document.getElementById('pickup-date-selector');
                             const desktopDropoffDateInput = document.getElementById('dropoff-date-selector');
                             
@@ -3836,32 +3514,24 @@
                                     validateDesktopDropoffDate();
                                 });
                             }
-                            
-                            // Desktop tarih validasyonu fonksiyonu
                             function validateDesktopDropoffDate() {
                                 if (!pickupDate || !dropoffDate) return;
                                 
                                 const pickup = new Date(pickupDate);
                                 const dropoff = new Date(dropoffDate);
-                                
-                                // En az 1 gün fark olmalı
                                 const oneDay = 24 * 60 * 60 * 1000;
                                 const timeDiff = dropoff - pickup;
                                 
                                 if (timeDiff < oneDay) {
-                                    // Hata mesajı göster
-                                    showDesktopDateError('Rückgabedatum muss mindestens 1 Tag nach Abholdatum liegen');
                                     
-                                    // Dropoff date'i temizle
+                                    showDesktopDateError('Rückgabedatum muss mindestens 1 Tag nach Abholdatum liegen');
                                     desktopDropoffDateInput.value = '';
                                     dropoffDate = null;
                                 } else {
-                                    // Hata mesajını gizle
+                                    
                                     hideDesktopDateError();
                                 }
                             }
-                            
-                            // Desktop hata mesajı gösterme
                             function showDesktopDateError(message) {
                                 let errorDiv = document.getElementById('desktop-date-validation-error');
                                 if (!errorDiv) {
@@ -3883,8 +3553,6 @@
                                         right: 0;
                                         z-index: 1001;
                                     `;
-                                    
-                                    // Hata mesajını dropoff date'in altına ekle
                                     const dropoffContainer = desktopDropoffDateInput.closest('.porsche-search-item');
                                     if (dropoffContainer) {
                                         dropoffContainer.style.position = 'relative';
@@ -3894,16 +3562,12 @@
                                 errorDiv.textContent = message;
                                 errorDiv.style.display = 'block';
                             }
-                            
-                            // Desktop hata mesajını gizleme
                             function hideDesktopDateError() {
                                 const errorDiv = document.getElementById('desktop-date-validation-error');
                                 if (errorDiv) {
                                     errorDiv.style.display = 'none';
                                 }
                             }
-                            
-                            // Pickup time selector
                             const pickupTimeSelector = document.getElementById('pickup-time-selector-mobile');
                             if (pickupTimeSelector) {
                                 pickupTimeSelector.addEventListener('click', function() {
@@ -3912,8 +3576,6 @@
                                     timePickerModal.style.display = 'flex';
                                 });
                             }
-                            
-                            // Dropoff time selector
                             const dropoffTimeSelector = document.getElementById('dropoff-time-selector-mobile');
                             if (dropoffTimeSelector) {
                                 dropoffTimeSelector.addEventListener('click', function() {
@@ -3922,24 +3584,18 @@
                                     timePickerModal.style.display = 'flex';
                                 });
                             }
-                            
-                            // Close modal
                             if (closeTimePicker) {
                                 closeTimePicker.addEventListener('click', function() {
                                     timePickerModal.style.display = 'none';
                                     currentTimeInput = null;
                                 });
                             }
-                            
-                            // Close modal when clicking outside
                             timePickerModal.addEventListener('click', function(e) {
                                 if (e.target === timePickerModal) {
                                     timePickerModal.style.display = 'none';
                                     currentTimeInput = null;
                                 }
                             });
-                            
-                            // Time option selection
                             timeOptions.forEach(option => {
                                 option.addEventListener('click', function() {
                                     const selectedTime = this.getAttribute('data-time');
@@ -3950,8 +3606,6 @@
                                     timePickerModal.style.display = 'none';
                                     currentTimeInput = null;
                                 });
-                                
-                                // Hover effects
                                 option.addEventListener('mouseenter', function() {
                                     this.style.background = 'rgba(255, 255, 255, 0.2)';
                                     this.style.borderColor = 'rgba(255, 255, 255, 0.4)';
@@ -3963,8 +3617,6 @@
                                 });
                             });
                         });
-                        
-                        // ESC tuşu ile tarih silme fonksiyonu
                         function clearDateOnEscape(event) {
                             if (event.key === 'Escape' || event.key === 'Backspace' || event.key === 'Delete') {
                                 const activeElement = document.activeElement;
@@ -3974,19 +3626,13 @@
                                 }
                             }
                         }
-                        
-                        // Tarih input'larına event listener ekle
                         document.addEventListener('keydown', clearDateOnEscape);
-                        
-                        // Entdecken butonuna tıklayınca alt sayfaya in
                         function scrollToPopularCars() {
-                            // Mobilde farklı davranış
+                            
                             if (window.innerWidth < 1200) {
-                                // Hero section'ı gizle
+                                
                                 const heroSection = document.querySelector('.hero-section-porsche');
                                 heroSection.style.display = 'none';
-                                
-                                // Popular section'ı normal pozisyonuna getir
                                 const popularSection = document.getElementById('popular-cars-section');
                                 popularSection.style.cssText = `
                                     position: relative !important;
@@ -4002,49 +3648,37 @@
                                     min-height: 100vh !important;
                                     display: block !important;
                                 `;
-                                
-                                // Container'ın padding'ini ayarla
                                 const container = popularSection.querySelector('.container');
                                 if (container) {
                                     container.style.paddingTop = '2rem';
                                 }
-                                
-                                // Navbar'ı gizle
                                 const navbar = document.getElementById('navbar-container');
                                 if (navbar) {
                                     navbar.style.display = 'none';
                                 }
-                                
-                                // Body scroll'u aç ve pozisyonu sıfırla
                                 document.body.style.cssText = `
                                     overflow: auto !important;
                                     margin: 0 !important;
                                     padding: 0 !important;
                                     position: relative !important;
                                 `;
-                                
-                                // Sayfayı en üste getir
                                 window.scrollTo({
                                     top: 0,
                                     behavior: 'smooth'
                                 });
                             } else {
-                                // Desktop'ta normal scroll
+                                
                             document.getElementById('popular-cars-section').scrollIntoView({ 
                                 behavior: 'smooth',
                                 block: 'start'
                             });
                             }
                         }
-                        
-
                     </script>
-            
 
         </div>
     </section>
 
-        <!-- Popular Cars Section -->
                      <section id="popular-cars-section" class="popular-cars-section" style="margin-top: 80px !important; padding-top: 2rem !important; position: relative; z-index: 0; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 25%, #dee2e6 50%, #e9ecef 75%, #f8f9fa 100%);">
                           <div class="container" style="padding-top: 2rem; padding-bottom: 0;">
                   <div class="row mb-0" style="margin-top: 0;">
@@ -4058,15 +3692,14 @@
                     </div>
                 </div>
                 <div id="popular-cars-container" style="margin-top: 2rem;">
-                <!-- Car cards will be loaded here by JavaScript -->
+                
              </div>
          </div>
      </section>
 
-                  <!-- Features & Stats Section -->
              <section class="features-stats-section" style="position: relative; z-index: 0; margin-top: 0 !important; margin-bottom: -5rem !important; background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 25%, #ced4da 50%, #dee2e6 75%, #e9ecef 100%);">
         <div class="container" style="padding-top: 1rem; padding-bottom: 1rem;">
-            <!-- Features -->
+            
             <div class="features-part">
             <div class="section-header" style="margin-top: 1rem;">
                                         <h2 class="section-title" style="color: #000000;">Warum <span style="color: #ffc107;">AutooR</span> wählen?</h2>
@@ -4112,7 +3745,6 @@
             </div>
         </div>
 
-            <!-- Stats -->
             <div class="stats-part" style="padding-bottom: 1rem;">
             <div class="row">
                 <div class="col-lg-3 col-md-6">
@@ -4144,7 +3776,6 @@
         </div>
     </section>
 
-    <!-- About Section -->
             <section class="about-section" style="margin-top: -5rem !important; background: linear-gradient(135deg, #dee2e6 0%, #ced4da 25%, #adb5bd 50%, #ced4da 75%, #dee2e6 100%);">
         <div class="container" style="padding-top: 1rem;">
             <div class="row align-items-center">
@@ -4185,7 +3816,6 @@
         </div>
     </section>
 
-    <!-- Footer -->
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
@@ -4203,7 +3833,6 @@
         </div>
     </footer>
 
-    <!-- Back to Top Button -->
     <button id="back-to-top" class="back-to-top-btn" style="
         position: fixed;
         bottom: 20px;
@@ -4245,8 +3874,6 @@
             opacity: 1 !important;
             visibility: visible !important;
         }
-        
-        /* Mobilde buton daha büyük olsun */
         @media (max-width: 1199px) {
             .back-to-top-btn {
                 width: 60px !important;
@@ -4259,10 +3886,8 @@
     </style>
 
     <script>
-        // Back to Top functionality
-        const backToTopBtn = document.getElementById('back-to-top');
         
-        // Show button when user scrolls down
+        const backToTopBtn = document.getElementById('back-to-top');
         function updateBackToTopButton() {
             if (window.pageYOffset > 20) {
                 backToTopBtn.classList.add('show');
@@ -4270,34 +3895,22 @@
                 backToTopBtn.classList.remove('show');
             }
         }
-        
-        // Initial check
         updateBackToTopButton();
-        
-        // Listen for scroll events
         window.addEventListener('scroll', updateBackToTopButton);
-        
-        // Also listen for touch events on mobile
         document.addEventListener('touchmove', updateBackToTopButton);
         document.addEventListener('scroll', updateBackToTopButton);
-        
-        // Smooth scroll to top when button is clicked
         backToTopBtn.addEventListener('click', function() {
-            // Mobilde hero section gizliyse onu göster ve en üste git
+            
             if (window.innerWidth < 1200) {
                 const heroSection = document.querySelector('.hero-section-porsche');
                 const navbar = document.getElementById('navbar-container');
                 
                 if (heroSection && heroSection.style.display === 'none') {
-                    // Hero section'ı göster
-                    heroSection.style.display = 'block';
                     
-                    // Navbar'ı göster
+                    heroSection.style.display = 'block';
                     if (navbar) {
                         navbar.style.display = 'block';
                     }
-                    
-                    // En üste git
                     window.scrollTo({
                         top: 0,
                         behavior: 'smooth'
@@ -4305,8 +3918,6 @@
                     return;
                 }
             }
-            
-            // Normal davranış - en üste git
             window.scrollTo({
                 top: 0,
                 behavior: 'smooth'
@@ -4314,72 +3925,60 @@
         });
     </script>
 
-    <!-- Content Protection -->
     <script src="/js/content-protection.js"></script>
-    
-    <!-- jQuery (required for Bootstrap Datepicker) -->
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
-    <!-- Disable auto-fill security warnings -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Disable auto-fill warnings for all forms
+            
             const forms = document.querySelectorAll('form');
             forms.forEach(form => {
                 form.setAttribute('autocomplete', 'off');
                 form.setAttribute('data-lpignore', 'true');
                 form.setAttribute('data-form-type', 'other');
             });
-            
-            // Disable auto-fill for input fields
             const inputs = document.querySelectorAll('input');
             inputs.forEach(input => {
                 input.setAttribute('autocomplete', 'off');
                 input.setAttribute('data-lpignore', 'true');
                 input.setAttribute('data-form-type', 'other');
-                // Özellikle ödeme alanları için
+                
                 if (input.type === 'password' || input.name.includes('card') || input.name.includes('payment')) {
                     input.setAttribute('autocomplete', 'new-password');
                 }
             });
-            
-            // Chrome'un güvenlik uyarılarını engelle
             if (window.chrome && window.chrome.runtime) {
-                // Chrome extension uyarılarını engelle
+                
                 window.chrome.runtime.onMessage.addListener = function() {};
             }
-            
-            // Form submit olaylarını yakala ve uyarıları engelle
             document.addEventListener('submit', function(e) {
                 e.preventDefault();
-                // Form verilerini manuel olarak işle
+                
                 const formData = new FormData(e.target);
-                // Normal form işleme devam et
+                
                 setTimeout(() => {
                     e.target.submit();
                 }, 100);
             });
         });
-        
-        // Sayfa yüklendiğinde tüm uyarıları engelle
         window.addEventListener('load', function() {
-            // Console uyarılarını engelle
+            
             const originalWarn = console.warn;
             console.warn = function() {
                 const args = Array.from(arguments);
                 if (args.some(arg => typeof arg === 'string' && arg.includes('güvenli bağlantı'))) {
-                    return; // Bu uyarıyı gösterme
+                    return; 
                 }
                 originalWarn.apply(console, arguments);
             };
         });
     </script>
-    
-    <!-- Fallback Car Data -->
+
     <script>
-        // Fallback car data in case cars.js doesn't load
+        
         if (!window.LOCAL_CARS) {
             console.log('Loading fallback car data...');
             window.LOCAL_CARS = [
@@ -4391,7 +3990,7 @@
                     transmission_type: 'Automatik',
                     fuel_type: 'Benzin',
                     seating_capacity: 2,
-                    image_url: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80'
+                    image_url: 'https:
                 },
                 {
                     car_id: 102,
@@ -4401,7 +4000,7 @@
                     transmission_type: 'Automatik',
                     fuel_type: 'Hybrid',
                     seating_capacity: 2,
-                    image_url: 'https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80'
+                    image_url: 'https:
                 },
                 {
                     car_id: 103,
@@ -4411,7 +4010,7 @@
                     transmission_type: 'Automatik',
                     fuel_type: 'Benzin',
                     seating_capacity: 2,
-                    image_url: 'https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80'
+                    image_url: 'https:
                 },
                 {
                     car_id: 104,
@@ -4421,7 +4020,7 @@
                     transmission_type: 'Automatik',
                     fuel_type: 'Benzin',
                     seating_capacity: 4,
-                    image_url: 'https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80'
+                    image_url: 'https:
                 },
                 {
                     car_id: 105,
@@ -4431,7 +4030,7 @@
                     transmission_type: 'Automatik',
                     fuel_type: 'Benzin',
                     seating_capacity: 4,
-                    image_url: 'https://images.unsplash.com/photo-1555215695-3004980ad54e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80'
+                    image_url: 'https:
                 },
                 {
                     car_id: 106,
@@ -4441,7 +4040,7 @@
                     transmission_type: 'Automatik',
                     fuel_type: 'Benzin',
                     seating_capacity: 2,
-                    image_url: 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80'
+                    image_url: 'https:
                 },
                 {
                     car_id: 107,
@@ -4451,7 +4050,7 @@
                     transmission_type: 'Automatik',
                     fuel_type: 'Benzin',
                     seating_capacity: 4,
-                    image_url: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80'
+                    image_url: 'https:
                 },
                 {
                     car_id: 108,
@@ -4461,35 +4060,31 @@
                     transmission_type: 'Automatik',
                     fuel_type: 'Benzin',
                     seating_capacity: 2,
-                    image_url: 'https://images.unsplash.com/photo-1618843479618-39b0ee30618c?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80'
+                    image_url: 'https:
                 }
             ];
             console.log('Fallback car data loaded:', window.LOCAL_CARS.length, 'cars');
         }
     </script>
-    
-    <!-- Custom JS -->
+
     <script src="js/data/cars.js"></script>
     <script src="js/app.js"></script>
     <script src="js/navbar.js?v=20260104"></script>
-    
-    <!-- Login Button Control -->
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Check if user is logged in and show/hide login button
+            
             setTimeout(() => {
                 const userData = localStorage.getItem('userData');
                 const loginButtonContainer = document.getElementById('login-button-container');
                 
                 if (!userData && loginButtonContainer) {
-                    // User is not logged in, show login button
+                    
                     loginButtonContainer.style.display = 'block';
                 } else if (userData && loginButtonContainer) {
-                    // User is logged in, hide login button
+                    
                     loginButtonContainer.style.display = 'none';
                 }
-                
-                // Ensure navbar is updated after page load
                 if (typeof updateNavbar === 'function') {
                     setTimeout(() => {
                         updateNavbar();
@@ -4498,33 +4093,18 @@
             }, 500);
         });
     </script>
-    
-    <!-- Search Form Functionality -->
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Force placeholder colors
+            
             const pickupDateInput = document.getElementById('pickup-date-selector');
             const dropoffDateInput = document.getElementById('dropoff-date-selector');
-            
-
-            
-
-            
-
-            
-
-            
-
-            
-
-            
-            // Modern Select and Input Enhancement
             function enhanceFormElements() {
                 const selects = document.querySelectorAll('.search-item select');
                 const inputs = document.querySelectorAll('.search-item input[type="text"]');
                 
                 selects.forEach(select => {
-                    // Add smooth transitions
+                    
                     select.addEventListener('focus', function() {
                         this.style.transform = 'translateY(-2px)';
                     });
@@ -4535,7 +4115,7 @@
                 });
                 
                 inputs.forEach(input => {
-                    // Add smooth transitions
+                    
                     input.addEventListener('focus', function() {
                         this.style.transform = 'translateY(-2px)';
                     });
@@ -4545,24 +4125,16 @@
                     });
                 });
             }
-            
-            // Initialize enhanced form elements
             enhanceFormElements();
-            
-            // Date Format Validation and Auto-Conversion
             function validateAndFormatDate(input, errorIcon) {
                 const value = input.value.trim();
-                
-                // Remove all non-numeric characters
                 const numbersOnly = value.replace(/\D/g, '');
                 
                 if (numbersOnly.length === 8) {
-                    // Check if it's a valid date format (DDMMYYYY)
+                    
                     const day = parseInt(numbersOnly.substring(0, 2));
                     const month = parseInt(numbersOnly.substring(2, 4));
                     const year = parseInt(numbersOnly.substring(4, 8));
-                    
-                    // Validate date
                     const date = new Date(year, month - 1, day);
                     const isValidDate = date.getDate() === day && 
                                        date.getMonth() === month - 1 && 
@@ -4570,36 +4142,32 @@
                                        year >= 2024 && year <= 2030;
                     
                     if (isValidDate) {
-                        // Format as DD.MM.YYYY
+                        
                         const formattedDate = `${day.toString().padStart(2, '0')}.${month.toString().padStart(2, '0')}.${year}`;
                         input.value = formattedDate;
                         input.classList.remove('date-error');
                         input.classList.add('date-success');
                         errorIcon.classList.remove('show');
-                        
-                        // Remove success class after 2 seconds
                         setTimeout(() => {
                             input.classList.remove('date-success');
                         }, 2000);
                         } else {
-                        // Invalid date
+                        
                         input.classList.add('date-error');
                         input.classList.remove('date-success');
                         errorIcon.classList.add('show');
                     }
                 } else if (numbersOnly.length > 0 && numbersOnly.length !== 8) {
-                    // Wrong length
+                    
                     input.classList.add('date-error');
                     input.classList.remove('date-success');
                     errorIcon.classList.add('show');
                 } else {
-                    // Empty or valid format
+                    
                     input.classList.remove('date-error', 'date-success');
                     errorIcon.classList.remove('show');
                 }
             }
-            
-            // Custom Calendar System
             class CustomCalendar {
                 constructor(inputId, calendarId, titleId, daysId, prevBtnId, nextBtnId) {
                     console.log('CustomCalendar constructor called with:', { inputId, calendarId, titleId, daysId, prevBtnId, nextBtnId });
@@ -4610,8 +4178,6 @@
                     this.daysContainer = document.getElementById(daysId);
                     this.prevBtn = document.getElementById(prevBtnId);
                     this.nextBtn = document.getElementById(nextBtnId);
-                    
-                    // Create calendar elements if they don't exist
                     if (!this.calendar && this.input) {
                         this.createCalendarElements(calendarId, titleId, daysId, prevBtnId, nextBtnId);
                     }
@@ -4633,22 +4199,16 @@
                 }
                 
                 createCalendarElements(calendarId, titleId, daysId, prevBtnId, nextBtnId) {
-                    // Create calendar container
+                    
                     this.calendar = document.createElement('div');
                     this.calendar.id = calendarId;
                     this.calendar.className = 'custom-calendar';
-                    
-                    // Create title
                     this.title = document.createElement('div');
                     this.title.id = titleId;
                     this.title.className = 'calendar-title';
-                    
-                    // Create days container
                     this.daysContainer = document.createElement('div');
                     this.daysContainer.id = daysId;
                     this.daysContainer.className = 'calendar-days';
-                    
-                    // Create navigation buttons
                     this.prevBtn = document.createElement('button');
                     this.prevBtn.id = prevBtnId;
                     this.prevBtn.className = 'calendar-nav-btn';
@@ -4658,14 +4218,10 @@
                     this.nextBtn.id = nextBtnId;
                     this.nextBtn.className = 'calendar-nav-btn';
                     this.nextBtn.innerHTML = '›';
-                    
-                    // Assemble calendar
                     this.calendar.appendChild(this.title);
                     this.calendar.appendChild(this.prevBtn);
                     this.calendar.appendChild(this.nextBtn);
                     this.calendar.appendChild(this.daysContainer);
-                    
-                    // Insert after input
                     this.input.parentNode.insertBefore(this.calendar, this.input.nextSibling);
                 }
                 
@@ -4675,12 +4231,10 @@
                 }
                 
                 bindEvents() {
-                    // Toggle calendar on input click
+                    
                     this.input.addEventListener('click', () => {
                         this.toggleCalendar();
                     });
-                    
-                    // Close calendar when clicking outside
                     document.addEventListener('click', (e) => {
                         if (!this.calendar.contains(e.target) && !this.input.contains(e.target)) {
                             this.closeCalendar();
@@ -4716,16 +4270,12 @@
                 renderCalendar() {
                     const year = this.currentDate.getFullYear();
                     const month = this.currentDate.getMonth();
-                    
-                    // Update title (German locale)
                     const formatter = new Intl.DateTimeFormat('de-DE', { month: 'long', year: 'numeric' });
                     this.title.textContent = formatter.format(new Date(year, month, 1));
-                    
-                    // Get first day of month and number of days
                     const firstDay = new Date(year, month, 1);
                     const lastDay = new Date(year, month + 1, 0);
                     const startDate = new Date(firstDay);
-                    startDate.setDate(startDate.getDate() - firstDay.getDay() + 1); // Start from Monday
+                    startDate.setDate(startDate.getDate() - firstDay.getDay() + 1); 
                     
                     let html = '';
                     const today = new Date();
@@ -4736,7 +4286,7 @@
                         
                         const isCurrentMonth = currentDate.getMonth() === month;
                         const isToday = currentDate.toDateString() === today.toDateString();
-                        // Fix: Sadece bugünden önceki günleri disabled yap, bugünü değil
+                        
                         const todayStart = new Date(today.getFullYear(), today.getMonth(), today.getDate());
                         const currentDateStart = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
                         const isDisabled = currentDateStart < todayStart;
@@ -4752,8 +4302,6 @@
                     }
                     
                     this.daysContainer.innerHTML = html;
-                    
-                    // Add event listeners to calendar days
                     const clickableDays = this.daysContainer.querySelectorAll('.calendar-day:not(.disabled)');
                     console.log('Clickable days found:', clickableDays.length);
                     clickableDays.forEach(day => {
@@ -4765,8 +4313,6 @@
                             this.selectDate(day);
                         });
                     });
-                    
-                    // Add event listeners to navigation buttons
                     if (this.prevBtn) {
                         this.prevBtn.addEventListener('click', () => {
                             this.currentDate.setMonth(this.currentDate.getMonth() - 1);
@@ -4780,8 +4326,6 @@
                             this.renderCalendar();
                         });
                     }
-
-                    // Mobile footer actions
                     const isMobile = window.matchMedia('(max-width: 1199px)').matches;
                     if (isMobile) {
                         const clearBtn = this.calendar.querySelector('#' + (this.calendar.id.includes('pickup') ? 'pickup-clear' : 'dropoff-clear'));
@@ -4813,8 +4357,6 @@
                     console.log('dateString:', dateString);
                     const selectedDate = new Date(dateString);
                     console.log('selectedDate:', selectedDate);
-                    
-                    // Format date as DD.MM.YYYY
                     const day = selectedDate.getDate().toString().padStart(2, '0');
                     const month = (selectedDate.getMonth() + 1).toString().padStart(2, '0');
                     const year = selectedDate.getFullYear();
@@ -4825,25 +4367,17 @@
                     this.input.value = formattedDate;
                     this.selectedDate = selectedDate;
                     console.log('Input value set to:', this.input.value);
-                    
-                    // Update visual selection
                     document.querySelectorAll('.calendar-day').forEach(day => {
                         day.classList.remove('selected');
                     });
                     element.classList.add('selected');
                     
                     this.closeCalendar();
-                    
-                    // Tarih değiştiğinde saat validasyonunu tetikle
                     if (typeof validateTimeSelection === 'function') {
                         validateTimeSelection();
                     }
                 }
             }
-            
-            // Initialize calendars
-            
-            // Test: Takvim elementlerini kontrol et
             console.log('Calendar elements check:', {
                 pickupCalendar: document.getElementById('pickup-calendar'),
                 dropoffCalendar: document.getElementById('dropoff-calendar'),
@@ -4851,10 +4385,6 @@
                 pickupInputMobile: document.getElementById('pickup-date-selector-mobile'),
                 dropoffInput: document.getElementById('dropoff-date-selector')
             });
-            
-
-            
-            // Tarih input'larına değer girildiğinde temizleme butonunu göster/gizle
             function updateClearButton(inputId) {
                 const input = document.getElementById(inputId);
                 const clearBtn = document.querySelector(`[data-target="${inputId}"]`);
@@ -4866,12 +4396,8 @@
                     }
                 }
             }
-            
-            // Manuel takvim açma testi
             document.addEventListener('click', function(e) {
                 console.log('Click event on:', e.target.id, e.target.className);
-                
-                // Eğer takvim içine tıklandıysa, kapatma
                 if (e.target.closest('.custom-calendar')) {
                     return;
                 }
@@ -4883,15 +4409,11 @@
                     console.log('Input element:', e.target);
                     console.log('Input visible:', e.target.offsetParent !== null);
                     console.log('Window width:', window.innerWidth);
-                    
-                    // Önce tüm takvimleri kapat
                     const allCalendars = document.querySelectorAll('.custom-calendar');
                     allCalendars.forEach(cal => {
                         cal.style.display = 'none';
                         cal.classList.remove('show');
                     });
-                    
-                    // Takvimi manuel olarak aç
                     let calendarId = '';
                     if (e.target.id === 'pickup-date-selector') {
                         calendarId = 'pickup-calendar-desktop';
@@ -4922,7 +4444,7 @@
                         console.log('Calendar not found:', calendarId);
                     }
                 } else {
-                    // Date input dışında bir yere tıklandığında tüm takvimleri kapat
+                    
                     const allCalendars = document.querySelectorAll('.custom-calendar');
                     allCalendars.forEach(cal => {
                         cal.style.display = 'none';
@@ -4930,8 +4452,6 @@
                     });
                 }
             });
-            
-            // Desktop pickup date selector için calendar instance
             console.log('Creating desktop pickup calendar...');
             console.log('Desktop pickup input found:', document.getElementById('pickup-date-selector'));
             console.log('Desktop pickup calendar found:', document.getElementById('pickup-calendar'));
@@ -4944,8 +4464,6 @@
                 'pickup-next-month-desktop'
             );
             console.log('Desktop pickup calendar created:', pickupCalendarDesktop);
-            
-            // Desktop dropoff date selector için calendar instance
             console.log('Creating desktop dropoff calendar...');
             const dropoffCalendarDesktop = new CustomCalendar(
                 'dropoff-date-selector', 
@@ -4956,8 +4474,6 @@
                 'dropoff-next-month-desktop'
             );
             console.log('Desktop dropoff calendar created:', dropoffCalendarDesktop);
-            
-            // Mobil pickup date selector için ayrı calendar instance
             const pickupCalendarMobile = new CustomCalendar(
                 'pickup-date-selector-mobile', 
                 'pickup-calendar', 
@@ -4966,8 +4482,6 @@
                 'pickup-prev-month',
                 'pickup-next-month'
             );
-            
-            // Mobil dropoff date selector için ayrı calendar instance
             const dropoffCalendarMobile = new CustomCalendar(
                 'dropoff-date-selector-mobile', 
                 'dropoff-calendar', 
@@ -4976,14 +4490,6 @@
                 'dropoff-prev-month',
                 'dropoff-next-month'
             );
-            
-
-            
-
-            
-
-            
-            // Saat validasyonu için event listener'lar
             const pickupTimeSelect = document.getElementById('pickup-time');
             const dropoffTimeSelect = document.getElementById('dropoff-time');
             
@@ -5008,16 +4514,12 @@
             function updateDropoffTimeOptions(pickupTime, pickupDate, dropoffDate) {
                 const dropoffTimeSelect = document.getElementById('dropoff-time');
                 const currentValue = dropoffTimeSelect.value;
-                
-                // Mevcut options'ları temizle
                 dropoffTimeSelect.innerHTML = '<option value=""></option>';
                 
                 const timeOptions = [
                     '08:00', '09:00', '10:00', '11:00', '12:00', 
                     '13:00', '14:00', '15:00', '16:00', '17:00', '18:00'
                 ];
-                
-                // Aynı gün ise, pickup time'dan sonraki saatleri göster
                 if (pickupDate === dropoffDate) {
                     const pickupHour = parseInt(pickupTime.split(':')[0]);
                     
@@ -5026,8 +4528,6 @@
                         const option = document.createElement('option');
                         option.value = time;
                         option.textContent = time;
-                        
-                        // Pickup time'dan önceki ve aynı saatleri pasif yap
                         if (hour <= pickupHour) {
                             option.disabled = true;
                             option.classList.add('disabled-option');
@@ -5036,7 +4536,7 @@
                         dropoffTimeSelect.appendChild(option);
                     });
                 } else {
-                    // Farklı gün ise tüm saatler aktif
+                    
                     timeOptions.forEach(time => {
                         const option = document.createElement('option');
                         option.value = time;
@@ -5044,25 +4544,19 @@
                         dropoffTimeSelect.appendChild(option);
                     });
                 }
-                
-                // Önceki değeri koru (eğer hala geçerliyse)
                 if (currentValue && !dropoffTimeSelect.querySelector(`option[value="${currentValue}"]:disabled`)) {
                     dropoffTimeSelect.value = currentValue;
                 } else {
-                    // Geçersizse ilk geçerli seçeneği seç
+                    
                     const firstValidOption = dropoffTimeSelect.querySelector('option:not(:disabled)');
                     if (firstValidOption && firstValidOption.value) {
                         dropoffTimeSelect.value = firstValidOption.value;
                     }
                 }
             }
-            
-
-            
-            // Porsche-style search button animations
             const searchButton = document.querySelector('.search-button button');
             if (searchButton) {
-                // Hover efekti
+                
                 searchButton.addEventListener('mouseenter', function() {
                     this.style.transform = 'scale(1.05) translateY(-2px)';
                     this.style.boxShadow = '0 8px 25px rgba(255, 255, 255, 0.3)';
@@ -5076,10 +4570,8 @@
                     this.style.background = 'rgba(255, 255, 255, 0.15)';
                     this.style.borderColor = 'rgba(255, 255, 255, 0.3)';
                 });
-                
-                // Tıklama efekti
                 searchButton.addEventListener('click', function(e) {
-                    // Tıklama animasyonu
+                    
                     this.style.transform = 'scale(0.95)';
                     this.style.background = 'rgba(255, 255, 255, 0.4)';
                     
@@ -5092,35 +4584,22 @@
                         this.style.transform = 'scale(1) translateY(0)';
                         this.style.background = 'rgba(255, 255, 255, 0.15)';
                     }, 300);
-                    
-                    // Porsche-style arama fonksiyonu
                     performPorscheSearch();
                 });
             }
-            
-            // Porsche-style arama fonksiyonu
             function performPorscheSearch() {
                 const pickupLocation = document.getElementById('pickup-location-selector').value;
                 const dropoffLocation = document.getElementById('dropoff-location-selector').value;
                 const pickupDate = pickupDateInput.value;
                 const dropoffDate = dropoffDateInput.value;
-                
-                // Arama parametrelerini konsola yazdır (geliştirme için)
                 console.log('Porsche Search Parameters:', {
                     pickupLocation,
                     dropoffLocation,
                     pickupDate,
                     dropoffDate
                 });
-                
-                // Burada gerçek arama fonksiyonu eklenebilir
-                // Örneğin: searchVehicles(pickupLocation, dropoffLocation, pickupDate, dropoffDate);
-                
-                // Porsche-style başarı mesajı
                 showPorscheNotification('Arama başlatıldı...', 'success');
             }
-            
-            // Porsche-style bildirim fonksiyonu
             function showPorscheNotification(message, type) {
                 const notification = document.createElement('div');
                 notification.style.cssText = `
@@ -5141,13 +4620,9 @@
                 notification.textContent = message;
                 
                 document.body.appendChild(notification);
-                
-                // Animasyon
                 setTimeout(() => {
                     notification.style.transform = 'translateX(0)';
                 }, 100);
-                
-                // Otomatik kaldırma
                 setTimeout(() => {
                     notification.style.transform = 'translateX(100%)';
                     setTimeout(() => {
@@ -5155,45 +4630,31 @@
                     }, 300);
                 }, 3000);
             }
-            
-            // Form submission - hem desktop hem mobil için
             const form = document.getElementById('date-location-form');
             const mobileForm = document.querySelector('.mobile-search-layout');
-            
-            // Desktop form submission
             form.addEventListener('submit', function(e) {
                 e.preventDefault();
-                
-                // Validate form
                 const pickupLocation = document.getElementById('pickup-location-selector').value;
                 const dropoffLocation = document.getElementById('dropoff-location-selector').value;
                 const pickupDate = pickupDateInput.value;
                 const dropoffDate = dropoffDateInput.value;
                 const pickupTime = document.getElementById('pickup-time').value;
                 const dropoffTime = document.getElementById('dropoff-time').value;
-                
-                // Form validation - tüm alanlar doldurulmalı
                 if (!pickupLocation || !dropoffLocation || !pickupDate || !dropoffDate || !pickupTime || pickupTime === '' || !dropoffTime || dropoffTime === '') {
                     showNotification('Bitte füllen Sie alle Felder aus.', 'error');
                     return;
                 }
-                
-                                    // Tarih ve saat validasyonu
                     const pickupDateTime = new Date(pickupDate + 'T' + pickupTime);
                     const dropoffDateTime = new Date(dropoffDate + 'T' + dropoffTime);
-                
-                // Abholdatum seçildikten sonra, Rückgabedatum için minimum tarih ayarla
                 const dropoffCalendar = document.getElementById('dropoff-calendar');
                 const dropoffCalendarDesktop = document.getElementById('dropoff-calendar-desktop');
                 
                 if (pickupDate) {
                     const minDate = new Date(pickupDate);
-                    minDate.setDate(minDate.getDate() + 1); // En az 1 gün sonra
-                    
-                    // Rückgabedatum select'inde minimum tarih kontrolü
+                    minDate.setDate(minDate.getDate() + 1); 
                     const dropoffSelect = document.getElementById('dropoff-date-selector');
                     if (dropoffSelect) {
-                        // Geçmiş tarihleri devre dışı bırak
+                        
                         Array.from(dropoffSelect.options).forEach(option => {
                             if (option.value) {
                                 const optionDate = new Date(option.value);
@@ -5206,8 +4667,6 @@
                         });
                     }
                 }
-                
-                    // Store search data
                 const formData = {
                     pickupLocation: pickupLocation,
                     dropoffLocation: dropoffLocation,
@@ -5216,25 +4675,17 @@
                 };
                 
                 localStorage.setItem('searchData', JSON.stringify(formData));
-                
-                // Tüm validasyonlar geçildi - fahrzeuge.html'e yönlendir
                 window.location.href = '/fahrzeuge.html';
             });
-            
-            // Mobil search butonuna tıklandığında
             document.addEventListener('click', function(e) {
                 if (e.target.closest('.porsche-search-button button') && e.target.textContent && e.target.textContent.includes('Fahrzeug finden')) {
                     e.preventDefault();
-                    
-                    // Mobil form validation - tüm alanlar doldurulmalı
                     const pickupLocationMobile = document.getElementById('pickup-location-selector-mobile')?.value;
                     const dropoffLocationMobile = document.getElementById('dropoff-location-selector-mobile')?.value;
                     const pickupDateMobile = document.getElementById('pickup-date-selector-mobile')?.value;
                     const dropoffDateMobile = document.getElementById('dropoff-date-selector-mobile')?.value;
                     const pickupTimeMobile = document.getElementById('pickup-time-selector-mobile')?.value;
                     const dropoffTimeMobile = document.getElementById('dropoff-time-selector-mobile')?.value;
-                    
-                    // Debug için console.log ekle
                     console.log('Mobile Form Values:', {
                         pickupLocation: pickupLocationMobile,
                         dropoffLocation: dropoffLocationMobile,
@@ -5243,12 +4694,8 @@
                         pickupTime: pickupTimeMobile,
                         dropoffTime: dropoffTimeMobile
                     });
-                    
-                    // Form validation kontrolü - mobil saat alanları için özel kontrol
                     const pickupTimeElement = document.getElementById('pickup-time-selector-mobile');
                     const dropoffTimeElement = document.getElementById('dropoff-time-selector-mobile');
-                    
-                    // Mobil saat alanları input type="button" olduğu için value kontrolü
                     const isPickupTimeEmpty = !pickupTimeElement || pickupTimeElement.value === '' || pickupTimeElement.value === 'Zeit auswählen';
                     const isDropoffTimeEmpty = !dropoffTimeElement || dropoffTimeElement.value === '' || dropoffTimeElement.value === 'Zeit auswählen';
                     
@@ -5256,26 +4703,18 @@
                         showNotification('Bitte füllen Sie alle Felder aus.', 'error');
                         return;
                     }
-                    
-                    // Tarih ve saat validasyonu
                     const pickupDateTime = new Date(pickupDateMobile + 'T' + pickupTimeMobile);
                     const dropoffDateTime = new Date(dropoffDateMobile + 'T' + dropoffTimeMobile);
-                    
-                    // Tarih validasyonu - Rückgabedatum Abholdatum'dan sonra olmalı
                     if (dropoffDateTime <= pickupDateTime) {
                         showNotification('Rückgabedatum muss nach Abholdatum liegen.', 'error');
                         return;
                     }
-                    
-                    // Abholdatum seçildikten sonra, Rückgabedatum için minimum tarih ayarla
                     if (pickupDateMobile) {
                         const minDate = new Date(pickupDateMobile);
-                        minDate.setDate(minDate.getDate() + 1); // En az 1 gün sonra
-                        
-                        // Rückgabedatum select'inde minimum tarih kontrolü
+                        minDate.setDate(minDate.getDate() + 1); 
                         const dropoffSelectMobile = document.getElementById('dropoff-date-selector-mobile');
                         if (dropoffSelectMobile) {
-                            // Geçmiş tarihleri devre dışı bırak
+                            
                             Array.from(dropoffSelectMobile.options).forEach(option => {
                                 if (option.value) {
                                     const optionDate = new Date(option.value);
@@ -5288,15 +4727,10 @@
                             });
                         }
                     }
-                    
-                    // Tüm validasyonlar geçildi - fahrzeuge.html'e yönlendir
                     window.location.href = '/fahrzeuge.html';
                 }
             });
         });
-        
-        // Sayfa ilk açıldığında: Eğer sessionStorage'da token yoksa, localStorage'daki eski auth verilerini temizle
-        // Bu, yeni bir oturum başlatıldığında önceki kullanıcının verilerinin görünmemesini sağlar
         if (!sessionStorage.getItem('token')) {
             localStorage.removeItem('token');
             localStorage.removeItem('userData');
@@ -5305,8 +4739,6 @@
             localStorage.removeItem('welcome_name');
             console.log('Sayfa ilk açıldı: Eski localStorage auth verileri temizlendi');
         }
-        
-        // Sayfa kapatıldığında sessionStorage'ı temizle
         window.addEventListener('beforeunload', () => {
             sessionStorage.removeItem('token');
             sessionStorage.removeItem('userData');
@@ -5315,8 +4747,6 @@
             sessionStorage.removeItem('welcome_name');
             console.log('Sayfa kapatıldı: Session temizlendi');
         });
-        
-        // Google OAuth login success handler
         const urlParams = new URLSearchParams(window.location.search);
         const login = urlParams.get('login');
         const tokenParam = urlParams.get('token');
@@ -5326,28 +4756,18 @@
             try {
                 const userData = JSON.parse(decodeURIComponent(userParam));
                 console.log('Google OAuth login successful:', userData);
-                
-                // Store user data in sessionStorage (tarayıcı kapanınca otomatik silinir)
                 sessionStorage.setItem('userData', JSON.stringify(userData));
-                
-                // Store JWT token if available
                 if (tokenParam) {
                     const token = decodeURIComponent(tokenParam);
                     sessionStorage.setItem('token', token);
                     console.log('JWT token stored in sessionStorage');
                 }
-                
-                // Update navbar
                 if (typeof updateNavbar === 'function') {
                     updateNavbar();
                 }
-                
-                // Show success message
                 setTimeout(() => {
                     alert('Erfolgreich angemeldet! Willkommen, ' + userData.firstName + '!');
                 }, 500);
-                
-                // Clean URL
                 window.history.replaceState({}, document.title, window.location.pathname);
                 
             } catch (error) {

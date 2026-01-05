@@ -1,12 +1,11 @@
-﻿// Zahlungsinformationen page JavaScript
+﻿
 
-// Format price with thousands separator (German format: 14.563)
 function formatPrice(amount) {
     return Math.floor(amount).toLocaleString('de-DE');
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Elements
+    
     const carImage = document.getElementById('car-image');
     const carTitle = document.getElementById('car-title');
     const carTransmission = document.getElementById('car-transmission');
@@ -21,32 +20,26 @@ document.addEventListener('DOMContentLoaded', () => {
     const orderDetails = document.getElementById('order-details');
     const payButton = document.getElementById('pay-button');
 
-    // Payment method selection
     let selectedPaymentMethod = null;
 
-    // Load data from localStorage with error handling
     let selectedVehicle = {};
     let searchData = {};
     let selectedInsurance = {};
     let selectedProducts = [];
 
-    // Check for pending reservation data (from login redirect)
     const pendingReservationData = localStorage.getItem('pendingReservationData');
     if (pendingReservationData) {
         try {
             const reservationData = JSON.parse(pendingReservationData);
             console.log('Pending reservation data found:', reservationData);
-            
-            // Store as reservationData for payment processing
+
             localStorage.setItem('reservationData', pendingReservationData);
-            
-            // Extract vehicle data
+
             if (reservationData.vehicle) {
                 selectedVehicle = reservationData.vehicle;
                 localStorage.setItem('selectedVehicle', JSON.stringify(reservationData.vehicle));
             }
-            
-            // Extract search data
+
             if (reservationData.pickupDate && reservationData.dropoffDate) {
                 const start = new Date(reservationData.pickupDate);
                 const end = new Date(reservationData.dropoffDate);
@@ -60,8 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 };
                 localStorage.setItem('searchData', JSON.stringify(searchData));
             }
-            
-            // Extract insurance data - use the calculated insuranceAmount to determine type
+
             if (reservationData.insuranceAmount && reservationData.insuranceDays) {
                 const insurancePerDay = reservationData.insuranceAmount / reservationData.insuranceDays;
                 const insuranceTypes = {
@@ -69,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     25: { key: 'standard', name: 'Standard Schutz', daily_rate: 25 },
                     15: { key: 'basic', name: 'Basis Schutz', daily_rate: 15 }
                 };
-                // Find closest match
+                
                 const insuranceType = insuranceTypes[insurancePerDay] || insuranceTypes[25];
                 selectedInsurance = {
                     id: insuranceType.key,
@@ -78,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 };
                 localStorage.setItem('selectedInsurance', JSON.stringify(selectedInsurance));
             } else if (reservationData.insurance) {
-                // Fallback: default to standard if insurance is true but amount not specified
+                
                 selectedInsurance = {
                     id: 'standard',
                     name: 'Standard Schutz',
@@ -86,10 +78,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 };
                 localStorage.setItem('selectedInsurance', JSON.stringify(selectedInsurance));
             }
-            
-            // Extract extras/products data
+
             if (reservationData.extrasAmount && reservationData.extrasAmount > 0) {
-                // Build products array from reservation data
+                
                 selectedProducts = [];
                 if (reservationData.gps) {
                     selectedProducts.push({ name: 'GPS Navigation', daily_rate: 8 });
@@ -102,28 +93,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 localStorage.setItem('selectedProducts', JSON.stringify(selectedProducts));
             }
-            
-            // Clear pending reservation data after processing
+
             localStorage.removeItem('pendingReservationData');
         } catch (error) {
             console.error('Error parsing pending reservation data:', error);
         }
     }
-    
-    // Also check for existing reservationData (from direct navigation)
+
     const existingReservationData = localStorage.getItem('reservationData');
     if (existingReservationData && !pendingReservationData) {
         try {
             const reservationData = JSON.parse(existingReservationData);
             console.log('Existing reservation data found:', reservationData);
-            
-            // Extract vehicle data if not already set
+
             if (reservationData.vehicle && !selectedVehicle.car_id) {
                 selectedVehicle = reservationData.vehicle;
                 localStorage.setItem('selectedVehicle', JSON.stringify(reservationData.vehicle));
             }
-            
-            // Extract search data if not already set
+
             if (reservationData.pickupDate && reservationData.dropoffDate && !searchData.days) {
                 const start = new Date(reservationData.pickupDate);
                 const end = new Date(reservationData.dropoffDate);
@@ -142,13 +129,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Clear any invalid localStorage data first
     const localStorageKeys = ['selectedVehicle', 'searchData', 'selectedInsurance', 'selectedProducts'];
     localStorageKeys.forEach(key => {
         try {
             const data = localStorage.getItem(key);
             if (data) {
-                JSON.parse(data); // Test if it's valid JSON
+                JSON.parse(data); 
             }
         } catch (error) {
             console.log(`Removing invalid localStorage data for key: ${key}`);
@@ -156,7 +142,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Clear conflicting data
     localStorage.removeItem('selectedCarId');
     localStorage.removeItem('currentSearchData');
     localStorage.removeItem('actionType');
@@ -208,7 +193,6 @@ document.addEventListener('DOMContentLoaded', () => {
         selectedProducts
     });
 
-    // Debug: Show all localStorage data
     console.log('All localStorage data:');
     for (let i = 0; i < localStorage.length; i++) {
         const key = localStorage.key(i);
@@ -216,7 +200,6 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log(`${key}:`, value);
     }
 
-    // Initialize page - render the entire page dynamically
     renderPaymentInformationPage();
     
     function renderPaymentInformationPage() {
@@ -225,8 +208,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Container not found');
             return;
         }
-        
-        // Get reservation data
+
         const reservationDataStr = localStorage.getItem('reservationData');
         let reservationData = null;
         if (reservationDataStr) {
@@ -236,8 +218,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.error('Error parsing reservationData:', e);
             }
         }
-        
-        // Get vehicle data
+
         let vehicle = selectedVehicle;
         if (!vehicle || !vehicle.car_id) {
             if (reservationData && reservationData.vehicle) {
@@ -259,16 +240,14 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
             return;
         }
-        
-        // Calculate prices
+
         const days = reservationData?.days || searchData?.days || 1;
         const basePrice = reservationData?.basePrice || 0;
         const insuranceAmount = reservationData?.insuranceAmount || 0;
         const extrasAmount = reservationData?.extrasAmount || 0;
         const totalPrice = reservationData?.totalPrice || (basePrice + insuranceAmount + extrasAmount);
         const insuranceType = reservationData?.insuranceType || 'Versicherung';
-        
-        // Render the page
+
         container.innerHTML = `
             <!-- Breadcrumb -->
             <nav aria-label="breadcrumb" class="mb-4">
@@ -418,8 +397,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     function generateOrderSummary(reservationData, days, basePrice, insuranceAmount, extrasAmount, totalPrice, insuranceType) {
         let html = '';
-        
-        // Base price
+
         if (basePrice > 0) {
             html += `
                 <div class="d-flex justify-content-between mb-3 pb-3 border-bottom">
@@ -431,8 +409,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             `;
         }
-        
-        // Insurance
+
         if (insuranceAmount > 0) {
             html += `
                 <div class="d-flex justify-content-between mb-3 pb-3 border-bottom">
@@ -444,8 +421,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             `;
         }
-        
-        // Extras
+
         if (extrasAmount > 0) {
             html += `
                 <div class="d-flex justify-content-between mb-3 pb-3 border-bottom">
@@ -457,8 +433,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             `;
         }
-        
-        // Total
+
         html += `
             <div class="d-flex justify-content-between mt-4 pt-3 border-top">
                 <span class="fw-bold fs-5">
@@ -473,7 +448,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     function setupPaymentMethodSelection() {
-        // Add click handlers for payment options
+        
         document.querySelectorAll('.payment-option').forEach(option => {
             option.addEventListener('click', function() {
                 const method = this.id.replace('payment-', '');
@@ -481,14 +456,10 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     }
-    
-    // Payment method selection is now handled in renderPaymentInformationPage
 
-    // Load car details
     function loadCarDetails() {
         console.log('Loading car details for:', selectedVehicle);
 
-        // First, try to use selectedVehicle directly if it has all the info
         if (selectedVehicle && selectedVehicle.make && selectedVehicle.model) {
             console.log('Using selectedVehicle directly:', selectedVehicle);
             if (carImage) {
@@ -497,14 +468,12 @@ document.addEventListener('DOMContentLoaded', () => {
             if (carTitle) {
                 carTitle.textContent = `${selectedVehicle.make} ${selectedVehicle.model}`;
             }
-            
-            // Set overlay price
+
             if (carOverlayPrice) {
                 const dailyRate = selectedVehicle.daily_rate || selectedVehicle.dailyRate || 0;
                 carOverlayPrice.textContent = `€${dailyRate}/Tag`;
             }
-            
-            // Set car specifications with fallbacks
+
             if (carTransmission) {
                 carTransmission.textContent = selectedVehicle.transmission_type || selectedVehicle.transmission || 'Automatik';
             }
@@ -532,7 +501,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Fallback: Try to find car in LOCAL_CARS
         if (!window.LOCAL_CARS) {
             console.error('LOCAL_CARS is not available!');
             if (carImage) carImage.src = '/images/cars/default-car.jpg';
@@ -540,7 +508,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Try to get car_id from different possible sources
         let carId = null;
         
         if (selectedVehicle && selectedVehicle.car_id) {
@@ -548,7 +515,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (selectedVehicle && selectedVehicle.id) {
             carId = selectedVehicle.id;
         } else {
-            // Try to get from reservationData
+            
             const reservationDataStr = localStorage.getItem('reservationData');
             if (reservationDataStr) {
                 try {
@@ -562,8 +529,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     console.error('Error parsing reservationData:', e);
                 }
             }
-            
-            // Try to get from URL parameters
+
             if (!carId) {
             const urlParams = new URLSearchParams(window.location.search);
             carId = urlParams.get('car_id');
@@ -583,13 +549,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (carTitle) {
                 carTitle.textContent = `${car.make} ${car.model}`;
                 }
-                
-                // Set overlay price
+
                 if (carOverlayPrice) {
                     carOverlayPrice.textContent = `€${car.daily_rate}/Tag`;
                 }
-                
-                // Set car specifications with fallbacks
+
                 if (carTransmission) {
                 carTransmission.textContent = car.transmission_type || 'Automatik';
                 }
@@ -616,21 +580,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             } else {
                 console.error('Car not found for ID:', carId);
-                // Show default car info
+                
                 if (carImage) carImage.src = '/images/cars/default-car.jpg';
                 if (carTitle) carTitle.textContent = 'Fahrzeug nicht gefunden';
             }
         } else {
             console.error('No car ID found in localStorage or URL');
-            // Show default car info
+            
             if (carImage) carImage.src = '/images/cars/default-car.jpg';
             if (carTitle) carTitle.textContent = 'Fahrzeug wird geladen...';
         }
     }
 
-    // Load order summary
     function loadOrderSummary() {
-        // Check if we have reservationData with pre-calculated prices
+        
         const reservationDataStr = localStorage.getItem('reservationData');
         let reservationData = null;
         if (reservationDataStr) {
@@ -644,11 +607,9 @@ document.addEventListener('DOMContentLoaded', () => {
         let totalPrice = 0;
         let summaryHTML = '';
 
-        // If we have reservationData with pre-calculated prices, use them
         if (reservationData && reservationData.totalPrice) {
             console.log('Using pre-calculated prices from reservationData:', reservationData);
-            
-            // Base price (car rental)
+
             if (reservationData.basePrice !== undefined && reservationData.basePrice !== null) {
                 const days = reservationData.days || 1;
                 const basePrice = Number(reservationData.basePrice);
@@ -664,7 +625,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 totalPrice += basePrice;
             }
 
-            // Insurance
             if (reservationData.insuranceAmount !== undefined && reservationData.insuranceAmount !== null && reservationData.insuranceAmount > 0) {
                 const insuranceName = reservationData.insuranceType || 'Versicherung';
                 const insuranceAmount = Number(reservationData.insuranceAmount);
@@ -680,7 +640,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 totalPrice += insuranceAmount;
             }
 
-            // Extras
             if (reservationData.extrasAmount !== undefined && reservationData.extrasAmount !== null && reservationData.extrasAmount > 0) {
                 const extrasAmount = Number(reservationData.extrasAmount);
                 summaryHTML += `
@@ -695,23 +654,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 totalPrice += extrasAmount;
             }
 
-            // Use the pre-calculated total (ensure it matches the sum)
             const calculatedTotal = totalPrice;
             const storedTotal = Number(reservationData.totalPrice);
             if (Math.abs(calculatedTotal - storedTotal) > 0.01) {
                 console.warn('Price mismatch! Calculated:', calculatedTotal, 'Stored:', storedTotal);
-                totalPrice = storedTotal; // Use stored total for consistency
+                totalPrice = storedTotal; 
             } else {
                 totalPrice = storedTotal;
             }
         } else {
-            // Fallback: Calculate from localStorage data
+            
             if (!window.LOCAL_CARS) {
                 console.error('LOCAL_CARS is not available for order summary!');
                 return;
             }
 
-        // Try to get car_id from different possible sources
         let carId = null;
         
         if (selectedVehicle && selectedVehicle.car_id) {
@@ -719,12 +676,11 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (selectedVehicle && selectedVehicle.id) {
             carId = selectedVehicle.id;
         } else {
-            // Try to get from URL parameters
+            
             const urlParams = new URLSearchParams(window.location.search);
             carId = urlParams.get('car_id');
         }
 
-        // Car rental
         if (carId) {
             const car = window.LOCAL_CARS.find(c => c.car_id == carId);
             if (car) {
@@ -743,7 +699,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        // Insurance
         if (selectedInsurance && selectedInsurance.id && selectedInsurance.name && selectedInsurance.daily_rate) {
             const days = parseInt(searchData.days) || 1;
             const insurancePrice = selectedInsurance.daily_rate * days;
@@ -759,15 +714,13 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
         }
 
-        // Additional products
         if (selectedProducts && Array.isArray(selectedProducts) && selectedProducts.length > 0) {
             selectedProducts.forEach(product => {
                 if (product && product.name && product.daily_rate) {
                     const days = parseInt(searchData.days) || 1;
                     const productPrice = product.daily_rate * days;
                     totalPrice += productPrice;
-                    
-                    // Choose appropriate icon based on product name
+
                     let icon = 'bi-box';
                     if (product.name.toLowerCase().includes('gps') || product.name.toLowerCase().includes('navigation')) {
                         icon = 'bi-geo-alt';
@@ -793,7 +746,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        // Total
         summaryHTML += `
             <div class="summary-item">
                 <span class="summary-label">
@@ -807,8 +759,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (orderDetails) {
         orderDetails.innerHTML = summaryHTML;
         }
-        
-        // Debug: Log the calculation
+
         console.log('Price calculation:', {
             reservationData: reservationData ? 'used' : 'not found',
             selectedVehicle,
@@ -819,14 +770,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Select payment method
-    // Select payment method - updated for new structure
     window.selectPaymentMethod = function(method) {
-        // Prevent any default behavior or event propagation
+        
         event?.preventDefault();
         event?.stopPropagation();
-        
-        // Remove previous selection
+
         document.querySelectorAll('.payment-option').forEach(option => {
             option.classList.remove('selected', 'border-warning');
             option.style.borderColor = '';
@@ -839,7 +787,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // Select new method
         const selectedOption = document.getElementById(`payment-${method}`);
         if (selectedOption) {
             selectedOption.classList.add('selected', 'border-warning');
@@ -858,36 +805,29 @@ document.addEventListener('DOMContentLoaded', () => {
                 payBtn.disabled = false;
             }
         }
-        
-        // Return false to prevent any default behavior
+
         return false;
     };
 
-    // Process payment directly
     window.processPayment = function() {
         if (!selectedPaymentMethod) {
             alert('Bitte wählen Sie eine Zahlungsmethode aus.');
             return;
         }
 
-        // Store selected payment method
         localStorage.setItem('selectedPaymentMethod', selectedPaymentMethod);
-        
-        // Process payment directly based on selected method
+
         processPaymentDirectly(selectedPaymentMethod);
     };
-    
-    // Process payment directly without redirecting to driver information page
+
     function processPaymentDirectly(paymentMethod) {
         console.log('Processing payment with method:', paymentMethod);
-        
-        // All payment methods show the same demo message
+
         showDemoMessage();
     }
-    
-    // Show credit card form - REMOVED: All payment methods now show demo message
+
     function showCreditCardForm() {
-        // Directly show demo message instead of credit card form
+        
         showDemoMessage();
         return;
         const creditCardHTML = `
@@ -930,26 +870,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             </div>
         `;
-        
-        // Remove existing overlay if any
+
         const existingOverlay = document.getElementById('credit-card-overlay');
         if (existingOverlay) {
             existingOverlay.remove();
         }
-        
-        // Add overlay to body
+
         document.body.insertAdjacentHTML('beforeend', creditCardHTML);
-        
-        // Setup form submission
+
         setupCreditCardForm();
     }
-    
-    // Setup credit card form
+
     function setupCreditCardForm() {
         const form = document.getElementById('credit-card-form');
         if (!form) return;
-        
-        // Format card number
+
         const cardNumberInput = document.getElementById('card-number');
         if (cardNumberInput) {
             cardNumberInput.addEventListener('input', (e) => {
@@ -961,8 +896,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 e.target.value = value;
             });
         }
-        
-        // Format expiry date
+
         const expiryInput = document.getElementById('expiry-date');
         if (expiryInput) {
             expiryInput.addEventListener('input', (e) => {
@@ -973,46 +907,40 @@ document.addEventListener('DOMContentLoaded', () => {
                 e.target.value = value;
             });
         }
-        
-        // Format CVV
+
         const cvvInput = document.getElementById('cvv');
         if (cvvInput) {
             cvvInput.addEventListener('input', (e) => {
                 e.target.value = e.target.value.replace(/\D/g, '').slice(0, 4);
             });
         }
-        
-        // Handle form submission
+
         form.addEventListener('submit', (e) => {
             e.preventDefault();
             processCreditCardPayment();
         });
     }
-    
-    // Process credit card payment
+
     function processCreditCardPayment() {
         const submitBtn = document.querySelector('#credit-card-form button[type="submit"]');
         if (submitBtn) {
             submitBtn.disabled = true;
             submitBtn.innerHTML = '<i class="bi bi-hourglass-split me-2"></i>Zahlung wird verarbeitet...';
         }
-        
-        // Show demo message
+
         setTimeout(() => {
             closeCreditCardForm();
             showDemoMessage();
         }, 1000);
     }
-    
-    // Close credit card form
+
     window.closeCreditCardForm = function() {
         const overlay = document.getElementById('credit-card-overlay');
         if (overlay) {
             overlay.remove();
         }
     };
-    
-    // Show demo message for all payment methods
+
     function showDemoMessage() {
         const demoModalHTML = `
             <div class="modal fade" id="demoPaymentModal" tabindex="-1" aria-labelledby="demoPaymentModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
@@ -1050,55 +978,45 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             </div>
         `;
-        
-        // Remove existing modal if any
+
         const existingModal = document.getElementById('demoPaymentModal');
         if (existingModal) {
             existingModal.remove();
         }
-        
-        // Add modal to body
+
         document.body.insertAdjacentHTML('beforeend', demoModalHTML);
-        
-        // Initialize Bootstrap modal
+
         const modalElement = document.getElementById('demoPaymentModal');
         const modal = new bootstrap.Modal(modalElement);
         modal.show();
-        
-        // Clean up modal when hidden
+
         modalElement.addEventListener('hidden.bs.modal', () => {
             modalElement.remove();
         });
     }
-    
-    // Redirect to PayPal
+
     function redirectToPayPal() {
         showDemoMessage();
     }
-    
-    // Redirect to Klarna
+
     function redirectToKlarna() {
         showDemoMessage();
     }
-    
-    // Process Google Pay
+
     function processGooglePay() {
         showDemoMessage();
     }
-    
-    // Process cash payment
+
     function processCashPayment() {
         showDemoMessage();
     }
-    
-    // Redirect to Sofort
+
     function redirectToSofort() {
         showDemoMessage();
     }
-    
-    // Go to homepage and ensure navbar is updated
+
     window.goToHomepage = function() {
-        // Close modal first
+        
         const modalElement = document.getElementById('demoPaymentModal');
         if (modalElement) {
             const modal = bootstrap.Modal.getInstance(modalElement);
@@ -1106,8 +1024,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 modal.hide();
             }
         }
-        
-        // Navigate to homepage
+
         window.location.href = '/';
     };
 

@@ -1,20 +1,12 @@
-# Netlify Deployment Guide - AutooR
 
-## Önemli Not
 
 Netlify **static site hosting** ve **serverless functions** için tasarlanmıştır. Tam bir Express.js backend'i direkt çalıştıramaz.
 
-## Çözüm: Hybrid Yaklaşım
-
-### Frontend → Netlify
 - Static HTML/CSS/JS dosyaları Netlify'da host edilir
 - Ücretsiz ve hızlı CDN
 
-### Backend → Railway/Render (Önerilen)
 - Express.js server Railway veya Render'da çalışır
 - PostgreSQL database için de uygun
-
-## Adım 1: Netlify'da Frontend Deploy
 
 1. **Netlify'a gidin**: https://app.netlify.com
 2. **"Add new site" → "Import an existing project"**
@@ -25,11 +17,8 @@ Netlify **static site hosting** ve **serverless functions** için tasarlanmışt
    - **Base directory**: (boş bırakın)
 5. **"Deploy site"** butonuna tıklayın
 
-## Adım 2: Backend için Railway/Render Kurulumu
-
 Backend için ayrı bir servis gerekiyor. Railway veya Render kullanabilirsiniz.
 
-### Railway (Önerilen)
 1. https://railway.app adresine gidin
 2. GitHub ile giriş yapın
 3. "New Project" → "Deploy from GitHub repo"
@@ -38,15 +27,12 @@ Backend için ayrı bir servis gerekiyor. Railway veya Render kullanabilirsiniz.
 6. PostgreSQL database ekleyin
 7. Deploy edin
 
-### Render
 1. https://render.com adresine gidin
 2. GitHub ile giriş yapın
 3. "New Web Service" → GitHub repo seçin
 4. Environment variables ekleyin
 5. PostgreSQL database ekleyin
 6. Deploy edin
-
-## Adım 3: Netlify Redirects Güncelleme
 
 Backend URL'i aldıktan sonra `netlify.toml` dosyasındaki redirect'leri güncelleyin:
 
@@ -64,18 +50,12 @@ Backend URL'i aldıktan sonra `netlify.toml` dosyasındaki redirect'leri güncel
   force = true
 ```
 
-## Adım 4: Environment Variables
-
-### Netlify'da:
 - Backend URL'i (REACT_APP_API_URL veya benzeri)
 
-### Railway/Render'da:
 - Tüm `.env` dosyasındaki değişkenler
 - PostgreSQL connection string
 - Google OAuth credentials
 - JWT_SECRET
-
-## Domain Ayarları
 
 1. **Domain satın alın**: www.autoor.com
 2. **Netlify'da domain ekleyin**:
@@ -83,8 +63,6 @@ Backend URL'i aldıktan sonra `netlify.toml` dosyasındaki redirect'leri güncel
    - "Add custom domain" → `www.autoor.com`
    - DNS ayarlarını yapın
 3. **SSL**: Netlify otomatik SSL sağlar
-
-## Sonraki Adımlar
 
 1. Backend'i Railway/Render'da deploy edin
 2. Backend URL'ini alın

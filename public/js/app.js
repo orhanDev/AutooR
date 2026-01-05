@@ -1,27 +1,20 @@
-﻿// AutooR - Modern Car Rental JavaScript
+﻿
 
-// Global variables
 let popularCarsContainer;
 
-// Load popular cars on page load
 document.addEventListener('DOMContentLoaded', function() {
-    // Initialize containers
+    
     popularCarsContainer = document.getElementById('popular-cars-container');
-    
-    // Load popular cars
+
     loadPopularCars();
-    
-    // Initialize animations
+
     animateOnScroll();
-    
-    // Initialize date picker functionality
+
     initializeDatePickers();
-    
-    // Initialize form submission
+
     initializeFormSubmission();
 });
 
-// Load popular cars
 function loadPopularCars() {
     console.log('loadPopularCars function called');
     
@@ -31,8 +24,7 @@ function loadPopularCars() {
         }
 
     console.log('popularCarsContainer found:', popularCarsContainer);
-    
-    // Force clear any existing data and use our luxury cars
+
     window.LOCAL_CARS = [
         {
             car_id: 101,
@@ -117,8 +109,7 @@ function loadPopularCars() {
     ];
     
     console.log('Luxury cars data loaded:', window.LOCAL_CARS.length, 'cars');
-    
-    // Get popular cars from cars data (first 8 cars)
+
     const popularCars = window.LOCAL_CARS.slice(0, 8);
     
     console.log('Popular cars selected:', popularCars.length);
@@ -129,7 +120,7 @@ function loadPopularCars() {
             <div class="car-image">
                 <img src="${car.image_url}" 
                      alt="${car.make} ${car.model}" 
-                     onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1503376780353-7e6692767b70?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80'; this.style.opacity='0.9';">
+                     onerror="this.onerror=null; this.src='https:
                 <div class="price-badge">
                     â‚¬${car.daily_rate}/Tag
                 </div>
@@ -165,19 +156,17 @@ function loadPopularCars() {
     popularCarsContainer.innerHTML = carsHTML;
     
     console.log('innerHTML set successfully');
-    
-    // Add click events to car cards
+
     const carCards = document.querySelectorAll('.car-card');
     console.log('Car cards found:', carCards.length);
     
     carCards.forEach(card => {
         card.addEventListener('click', function(e) {
-            // Don't trigger if clicking on the button
+            
             if (e.target.tagName === 'A' || e.target.closest('a')) {
                 return;
             }
-            
-            // Find the car ID from the button link
+
             const link = this.querySelector('a');
             if (link) {
                 window.location.href = link.href;
@@ -186,7 +175,6 @@ function loadPopularCars() {
     });
 }
 
-// Animate elements on scroll
 function animateOnScroll() {
     const observerOptions = {
         threshold: 0.1,
@@ -200,36 +188,32 @@ function animateOnScroll() {
             }
         });
     }, observerOptions);
-    
-    // Observe all elements with fade-in class
+
     document.querySelectorAll('.fade-in').forEach(el => {
         observer.observe(el);
     });
 }
 
-// Initialize date pickers
 function initializeDatePickers() {
     const pickupDate = document.getElementById('pickup-date-selector');
     const dropoffDate = document.getElementById('dropoff-date-selector');
     
     if (pickupDate && dropoffDate) {
-        // Set minimum date to today
+        
         const today = new Date().toISOString().split('T')[0];
         pickupDate.min = today;
         dropoffDate.min = today;
-        
-        // Update dropoff minimum when pickup changes
+
         pickupDate.addEventListener('change', function() {
             if (this.value) {
                 dropoffDate.min = this.value;
-                // If dropoff date is before pickup date, clear it
+                
                 if (dropoffDate.value && dropoffDate.value < this.value) {
                     dropoffDate.value = '';
                 }
             }
         });
-        
-        // Ensure dropoff date is after pickup date
+
         dropoffDate.addEventListener('change', function() {
             if (pickupDate.value && this.value < pickupDate.value) {
                 alert('RÃ¼ckgabedatum muss nach dem Abholdatum liegen.');
@@ -239,43 +223,37 @@ function initializeDatePickers() {
     }
 }
 
-// Rent vehicle from home page - Global scope
 window.rentVehicleFromHome = function(carId, carName, dailyRate) {
-    // Save car selection to localStorage
+    
     const carSelection = {
         carId: carId,
         carName: carName,
         dailyRate: dailyRate,
-        selectedDate: new Date().toISOString().split('T')[0] // Today's date as default
+        selectedDate: new Date().toISOString().split('T')[0] 
     };
     
     localStorage.setItem('selectedCar', JSON.stringify(carSelection));
-    
-    // Redirect to extras & versicherung page
+
     window.location.href = `/extras-versicherung.html?carId=${carId}&days=1`;
 };
 
-// Initialize form submission
 function initializeFormSubmission() {
     const form = document.getElementById('date-location-form');
     
     if (form) {
         form.addEventListener('submit', function(e) {
             e.preventDefault();
-            
-            // Get form data
+
             const pickupLocation = document.getElementById('pickup-location-selector').value;
             const dropoffLocation = document.getElementById('dropoff-location-selector').value;
             const pickupDate = document.getElementById('pickup-date-selector').value;
             const dropoffDate = document.getElementById('dropoff-date-selector').value;
-            
-            // Validate form
+
             if (!pickupLocation || !dropoffLocation || !pickupDate || !dropoffDate) {
                 alert('Bitte fÃ¼llen Sie alle Felder aus.');
                 return;
             }
-            
-            // Store search parameters in localStorage
+
             const searchParams = {
                 pickupLocation,
                 dropoffLocation,
@@ -284,14 +262,12 @@ function initializeFormSubmission() {
             };
             
             localStorage.setItem('searchParams', JSON.stringify(searchParams));
-            
-            // Redirect to vehicles page
+
             window.location.href = '/fahrzeuge';
         });
     }
 }
 
-// Utility function to format price
 function formatPrice(price) {
     return new Intl.NumberFormat('de-DE', {
         style: 'currency',
@@ -299,12 +275,10 @@ function formatPrice(price) {
     }).format(price);
 }
 
-// Utility function to format date
 function formatDate(dateString) {
     return new Date(dateString).toLocaleDateString('de-DE');
 }
 
-// Add smooth scrolling to all internal links
 document.addEventListener('DOMContentLoaded', function() {
     const internalLinks = document.querySelectorAll('a[href^="#"]');
     
@@ -325,7 +299,6 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 });
 
-// Add loading states to buttons
 document.addEventListener('DOMContentLoaded', function() {
     const buttons = document.querySelectorAll('.btn');
     
@@ -334,8 +307,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (!this.classList.contains('disabled')) {
                 this.classList.add('loading');
                 this.disabled = true;
-                
-                // Remove loading state after 2 seconds (for demo purposes)
+
                 setTimeout(() => {
                     this.classList.remove('loading');
                     this.disabled = false;
@@ -345,19 +317,16 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// Add fade-in animation to sections
 document.addEventListener('DOMContentLoaded', function() {
     const sections = document.querySelectorAll('section');
     
     sections.forEach(section => {
         section.classList.add('fade-in');
     });
-    
-    // Trigger animation on scroll
+
     animateOnScroll();
 });
 
-// Add hover effects to car cards
 document.addEventListener('DOMContentLoaded', function() {
     const carCards = document.querySelectorAll('.car-card');
     
@@ -372,7 +341,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// Add parallax effect to hero section
 document.addEventListener('DOMContentLoaded', function() {
     const heroSection = document.querySelector('.hero-section');
     
@@ -386,7 +354,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// Add smooth reveal animation for stats
 document.addEventListener('DOMContentLoaded', function() {
     const statNumbers = document.querySelectorAll('.stat-number');
     
@@ -409,8 +376,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }, 16);
         });
     };
-    
-    // Trigger animation when stats section is visible
+
     const statsSection = document.querySelector('.stats-section');
     if (statsSection) {
     const observer = new IntersectionObserver((entries) => {
@@ -425,6 +391,4 @@ document.addEventListener('DOMContentLoaded', function() {
         observer.observe(statsSection);
     }
 });
-
-
 

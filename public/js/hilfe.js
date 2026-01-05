@@ -1,9 +1,8 @@
-// Hilfe (Help) Page JavaScript
+
 
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Hilfe page loaded');
-    
-    // Wait for navbar script to load, then initialize
+
     setTimeout(() => {
         if (typeof createNavbar === 'function') {
             createNavbar();
@@ -12,11 +11,9 @@ document.addEventListener('DOMContentLoaded', function() {
             updateNavbar();
         }
     }, 100);
-    
-    // Load FAQ data
+
     loadFAQ();
-    
-    // Setup search functionality
+
     setupSearch();
 });
 

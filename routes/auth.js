@@ -8,31 +8,29 @@ const authMiddleware = require('../middleware/authMiddleware');
 
 const router = express.Router();
 
-// Email transporter - Tüm email servislerini destekler (Gmail, SendGrid, Outlook, Yahoo, vb.)
 function createEmailTransporter() {
     const emailUser = process.env.EMAIL_USER;
     const emailPass = process.env.EMAIL_PASS;
     const emailHost = process.env.EMAIL_HOST || 'smtp.gmail.com';
     const emailPort = process.env.EMAIL_PORT || 587;
     const emailSecure = process.env.EMAIL_SECURE === 'true' || false;
-    const emailProvider = process.env.EMAIL_PROVIDER || 'auto'; // 'gmail', 'sendgrid', 'auto'
+    const emailProvider = process.env.EMAIL_PROVIDER || 'auto'; 
     
     if (!emailUser || !emailPass) {
         return null;
     }
-    
-    // SendGrid desteği - EMAIL_PROVIDER=sendgrid veya EMAIL_HOST=smtp.sendgrid.net
+
     if (emailProvider === 'sendgrid' || emailHost === 'smtp.sendgrid.net') {
         console.log('Using SendGrid SMTP');
         return nodemailer.createTransport({
             host: 'smtp.sendgrid.net',
             port: 587,
-            secure: false, // TLS için false
+            secure: false, 
             auth: {
-                user: 'apikey', // SendGrid için her zaman 'apikey'
-                pass: emailPass // SendGrid API Key
+                user: 'apikey', 
+                pass: emailPass 
             },
-            // Timeout ayarları
+            
             connectionTimeout: 10000,
             greetingTimeout: 10000,
             socketTimeout: 10000,
@@ -43,63 +41,57 @@ function createEmailTransporter() {
             logger: process.env.NODE_ENV !== 'production'
         });
     }
-    
-    // Gmail için explicit SMTP ayarları kullan (service yerine)
-    // Railway'de service kullanımı bazen sorun çıkarabiliyor
+
     if (emailProvider === 'gmail' || emailUser.includes('@gmail.com')) {
-        // Port 465 (SSL) ile deneyelim - Railway'de daha güvenilir olabilir
+        
         return nodemailer.createTransport({
             host: 'smtp.gmail.com',
             port: 465,
-            secure: true, // SSL için true
+            secure: true, 
             auth: {
                 user: emailUser,
                 pass: emailPass
             },
-            // Timeout ayarları
-            connectionTimeout: 30000, // 30 saniye
-            greetingTimeout: 30000, // 30 saniye
-            socketTimeout: 30000, // 30 saniye
-            // TLS ayarları
+            
+            connectionTimeout: 30000, 
+            greetingTimeout: 30000, 
+            socketTimeout: 30000, 
+            
             tls: {
-                rejectUnauthorized: false, // Railway için gerekli olabilir
+                rejectUnauthorized: false, 
                 minVersion: 'TLSv1.2'
             },
-            // Debug için
+            
             debug: process.env.NODE_ENV !== 'production',
             logger: process.env.NODE_ENV !== 'production'
         });
     }
-    
-        // Diğer email servisleri için (Outlook, Yahoo, custom SMTP)
+
         return nodemailer.createTransport({
             host: emailHost,
             port: parseInt(emailPort),
-            secure: emailSecure, // true for 465, false for diğer portlar
+            secure: emailSecure, 
             auth: {
                 user: emailUser,
                 pass: emailPass
             },
-        // Timeout ayarları
-        connectionTimeout: 10000, // 10 saniye
-        greetingTimeout: 10000, // 10 saniye
-        socketTimeout: 10000, // 10 saniye
+        
+        connectionTimeout: 10000, 
+        greetingTimeout: 10000, 
+        socketTimeout: 10000, 
             tls: {
-                rejectUnauthorized: false // Development için, production'da true olmalı
+                rejectUnauthorized: false 
         },
-        // Debug için
+        
         debug: process.env.NODE_ENV !== 'production',
         logger: process.env.NODE_ENV !== 'production'
             });
         }
 
-
-// Kayıt endpoint'i
 router.post('/register', async (req, res) => {
     try {
         const { first_name, last_name, email, password, phone_number, address } = req.body;
 
-        // Field validation
         if (!first_name || !first_name.trim()) {
             return res.status(400).json({ 
                 error: 'Vorname ist erforderlich',
@@ -123,8 +115,7 @@ router.post('/register', async (req, res) => {
                 message: 'Bitte geben Sie Ihre E-Mail-Adresse ein.'
             });
         }
-        
-        // Email normalizasyonu (trim + lowercase)
+
         const normalizedEmail = email.trim().toLowerCase();
         
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -143,8 +134,7 @@ router.post('/register', async (req, res) => {
                 message: 'Bitte geben Sie ein Passwort ein.'
             });
         }
-        
-        // Password validation
+
         if (password.length < 10 || password.length > 40) {
             return res.status(400).json({ 
                 error: 'Passwort-Länge ungültig',
@@ -185,7 +175,6 @@ router.post('/register', async (req, res) => {
             });
         }
 
-        // Email kontrolü (case-insensitive) - normalizedEmail zaten yukarıda tanımlanmış
         console.log('=== EMAIL KONTROLÜ ===');
         console.log('Orijinal email:', email);
         console.log('Normalize edilmiş email:', normalizedEmail);
@@ -202,11 +191,9 @@ router.post('/register', async (req, res) => {
         }
         console.log('Email kayıtlı değil, kayıt devam ediyor...');
 
-        // Şifre hash'leme
         const saltRounds = 10;
         const passwordHash = await bcrypt.hash(password, saltRounds);
 
-        // Yeni kullanıcı oluşturma (email'i normalize edilmiş olarak kaydet)
         const newUser = await query(`
             INSERT INTO users (first_name, last_name, email, password_hash, phone_number, address, is_verified)
             VALUES ($1, $2, $3, $4, $5, $6, TRUE)
@@ -217,7 +204,6 @@ router.post('/register', async (req, res) => {
         const userEmail = newUser.rows[0].email;
         const isAdmin = newUser.rows[0].is_admin || false;
 
-        // JWT token oluşturma
         const token = jwt.sign(
             { userId: userId, email: userEmail, is_admin: isAdmin },
             process.env.JWT_SECRET,
@@ -255,32 +241,26 @@ router.post('/register', async (req, res) => {
     }
 });
 
-// Giriş
 router.post('/login', async (req, res) => {
     try {
         const { email, password } = req.body;
 
-        // Email normalizasyonu (trim + lowercase)
         const normalizedEmail = email.trim().toLowerCase();
-        
-        // Kullanıcıyı bul (case-insensitive)
+
         const user = await query('SELECT * FROM users WHERE LOWER(TRIM(email)) = $1', [normalizedEmail]);
         if (user.rows.length === 0) {
             return res.status(401).json({ error: 'Ungültige Anmeldedaten' });
         }
 
-        // Şifre kontrolü
         const isValidPassword = await bcrypt.compare(password, user.rows[0].password_hash);
         if (!isValidPassword) {
             return res.status(401).json({ error: 'Ungültige Anmeldedaten' });
         }
 
-        // user_id kullan (veritabanında user_id var)
         const userId = user.rows[0].user_id;
         const userEmail = user.rows[0].email;
         const isAdmin = user.rows[0].is_admin || false;
 
-        // JWT token oluşturma (is_admin dahil)
         const token = jwt.sign(
             { userId: userId, email: userEmail, is_admin: isAdmin },
             process.env.JWT_SECRET,
@@ -310,7 +290,6 @@ router.post('/login', async (req, res) => {
     }
 });
 
-// Kullanıcı bilgilerini getir (korumalı rota)
 router.get('/profile', authMiddleware, async (req, res) => {
     try {
         const userId = req.user.userId;
@@ -337,7 +316,6 @@ router.get('/profile', authMiddleware, async (req, res) => {
     }
 });
 
-// Kullanıcı bilgilerini getir (token ile)
 router.get('/user', authMiddleware, async (req, res) => {
     try {
         console.log('=== /user endpoint çalışıyor ===');
@@ -374,7 +352,6 @@ router.get('/user', authMiddleware, async (req, res) => {
     }
 });
 
-// Kullanıcı bilgilerini güncelle (korumalı rota)
 router.put('/profile', authMiddleware, async (req, res) => {
     try {
         const userId = req.user.userId;
@@ -404,6 +381,5 @@ router.put('/profile', authMiddleware, async (req, res) => {
         res.status(500).json({ error: 'Serverfehler' });
     }
 });
-
 
 module.exports = router;

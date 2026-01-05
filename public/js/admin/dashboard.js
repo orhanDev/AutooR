@@ -1,9 +1,8 @@
-﻿// public/js/admin/dashboard.js
+﻿
 
 document.addEventListener('DOMContentLoaded', async () => {
     const token = localStorage.getItem('token');
 
-    // YÃ¶netici yetkisini kontrol et
     if (!token) {
         alert('Sie mÃ¼ssen sich anmelden, um diese Seite anzuzeigen.');
         window.location.href = '/views/login.html';
@@ -42,7 +41,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     async function fetchTestDataCounts() {
         try {
-            // KullanÄ±cÄ± sayÄ±sÄ±
+            
             const usersResponse = await fetch('/api/admin/users', {
                 headers: { 'x-auth-token': token }
             });
@@ -51,7 +50,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 document.getElementById('test-users-count').textContent = users.length;
             }
 
-            // AraÃ§ sayÄ±sÄ±
             const carsResponse = await fetch('/api/admin/cars', {
                 headers: { 'x-auth-token': token }
             });
@@ -60,7 +58,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 document.getElementById('test-cars-count').textContent = cars.length;
             }
 
-            // Rezervasyon sayÄ±sÄ±
             const reservationsResponse = await fetch('/api/admin/reservations', {
                 headers: { 'x-auth-token': token }
             });
@@ -74,7 +71,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    // Test rezervasyonlarÄ± ekle
     async function addTestReservations() {
         const userId = document.getElementById('test-user-id').value;
         const resultDiv = document.getElementById('test-reservations-result');
@@ -107,12 +103,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                         <small>Eklenen rezervasyon sayÄ±sÄ±: ${data.reservations.length}</small>
                     </div>
                 `;
-                
-                // Dashboard verilerini yenile
+
                 await fetchAdminDashboardData();
                 await fetchTestDataCounts();
-                
-                // 3 saniye sonra mesajÄ± kaldÄ±r
+
                 setTimeout(() => {
                     resultDiv.innerHTML = '';
                 }, 3000);
@@ -139,14 +133,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    // Event listeners
     document.getElementById('add-test-reservations').addEventListener('click', addTestReservations);
 
-    // Sayfa yÃ¼klendiÄŸinde verileri Ã§ek
     await fetchAdminDashboardData();
     await fetchTestDataCounts();
 
-    // Ã‡Ä±kÄ±ÅŸ linki (eÄŸer varsa)
     const adminLogoutLink = document.getElementById('admin-logout-link');
     if (adminLogoutLink) {
         adminLogoutLink.addEventListener('click', (e) => {

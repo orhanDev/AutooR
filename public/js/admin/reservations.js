@@ -1,4 +1,4 @@
-﻿// public/js/admin/reservations.js
+﻿
 
 document.addEventListener('DOMContentLoaded', async () => {
     const token = localStorage.getItem('token');
@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
 
             const reservations = await response.json();
-            reservationsTableBody.innerHTML = ''; // Tabloyu temizle
+            reservationsTableBody.innerHTML = ''; 
 
             if (reservations.length === 0) {
                 reservationsTableBody.innerHTML = '<tr><td colspan="8" class="text-center">HenÃ¼z hiÃ§ rezervasyon bulunmamaktadÄ±r.</td></tr>';
@@ -61,7 +61,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 reservationsTableBody.innerHTML += row;
             });
 
-            // Durum deÄŸiÅŸtirme butonlarÄ±na event listener ekle
             attachEventListeners();
 
         } catch (error) {
@@ -72,7 +71,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     function attachEventListeners() {
         document.querySelectorAll('.status-change-btn').forEach(button => {
-            button.removeEventListener('click', handleStatusChangeClick); // Tekrar eklemeyi Ã¶nle
+            button.removeEventListener('click', handleStatusChangeClick); 
             button.addEventListener('click', handleStatusChangeClick);
         });
     }
@@ -84,7 +83,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         statusModalLabel.textContent = `Rezervasyon (${reservationId.substring(0, 8)}...) Durum DeÄŸiÅŸtir`;
         reservationIdToUpdateInput.value = reservationId;
         currentStatusInput.value = getDisplayStatus(currentStatus);
-        newStatusSelect.value = currentStatus; // SeÃ§ili durumu ayarla
+        newStatusSelect.value = currentStatus; 
 
         statusModal.show();
     }
@@ -111,7 +110,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
             alert('Rezervasyon durumu baÅŸarÄ±yla gÃ¼ncellendi!');
             statusModal.hide();
-            fetchReservations(); // Listeyi yenile
+            fetchReservations(); 
         } catch (error) {
             console.error('Durum gÃ¼ncelleme hatasÄ±:', error);
             alert(`Durum gÃ¼ncellenirken bir hata oluÅŸtu: ${error.message}`);
@@ -142,7 +141,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     fetchReservations();
 
-    // Ã‡Ä±kÄ±ÅŸ yap linki
     document.getElementById('admin-logout-link').addEventListener('click', (e) => {
         e.preventDefault();
         localStorage.removeItem('token');

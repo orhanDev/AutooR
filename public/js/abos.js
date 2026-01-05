@@ -1,9 +1,8 @@
-// Abos (Subscriptions) Page JavaScript
+
 
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Abos page loaded');
-    
-    // Wait for navbar script to load, then initialize
+
     setTimeout(() => {
         if (typeof createNavbar === 'function') {
             createNavbar();
@@ -12,15 +11,13 @@ document.addEventListener('DOMContentLoaded', function() {
             updateNavbar();
         }
     }, 100);
-    
-    // Load and display all plans
+
     loadAllPlans();
 });
 
 function loadSubscriptions() {
     console.log('Loading subscriptions...');
-    
-    // Get subscriptions from localStorage (in a real app, this would come from an API)
+
     const subscriptions = getSubscriptionsFromStorage();
     
     const container = document.getElementById('subscriptions-container');
@@ -34,16 +31,14 @@ function loadSubscriptions() {
     
     container.style.display = 'block';
     emptyState.style.display = 'none';
-    
-    // Generate subscription cards
+
     container.innerHTML = subscriptions.map(subscription => createSubscriptionCard(subscription)).join('');
 }
 
 function getSubscriptionsFromStorage() {
-    // Check if user has any subscriptions in localStorage
-    let userSubscriptions = JSON.parse(localStorage.getItem('userSubscriptions') || '[]');
     
-    // If no subscriptions exist, create a default Premium Plan subscription
+    let userSubscriptions = JSON.parse(localStorage.getItem('userSubscriptions') || '[]');
+
     if (userSubscriptions.length === 0) {
         const defaultSubscription = {
             id: 'SUB-DEFAULT-001',
@@ -62,8 +57,7 @@ function getSubscriptionsFromStorage() {
                 'Prioritätsreservierung'
             ]
         };
-        
-        // Save default subscription to localStorage
+
         localStorage.setItem('userSubscriptions', JSON.stringify([defaultSubscription]));
         userSubscriptions = [defaultSubscription];
     }
@@ -161,8 +155,7 @@ function loadAllPlans() {
             ]
         }
     ];
-    
-    // Get active subscriptions
+
     const activeSubscriptions = getSubscriptionsFromStorage().filter(sub => sub.status === 'active');
     
     const container = document.getElementById('all-plans-container');
@@ -170,7 +163,7 @@ function loadAllPlans() {
 }
 
 function createAllPlanCard(plan, activeSubscriptions) {
-    // Check if user is already subscribed to this plan
+    
     const isSubscribed = activeSubscriptions.some(sub => 
         sub.name === plan.name || 
         (sub.name === 'Premium Plan' && plan.name === 'Premium Plan') ||
@@ -237,7 +230,6 @@ function createPlanCard(plan) {
     `;
 }
 
-// Action functions
 function manageSubscription(subscriptionId) {
     console.log('Manage subscription:', subscriptionId);
     alert('Abonnement-Verwaltung wird in Kürze verfügbar sein.');
@@ -266,8 +258,7 @@ function renewSubscription(subscriptionId) {
 
 function subscribeToPlan(planId) {
     console.log('Subscribe to plan:', planId);
-    
-    // Get all plans data
+
     const allPlans = [
         {
             id: 'PLAN-BASIC',
@@ -308,12 +299,11 @@ function subscribeToPlan(planId) {
             ]
         }
     ];
-    
-    // Find the selected plan
+
     const selectedPlan = allPlans.find(plan => plan.id === planId);
     
     if (selectedPlan) {
-        // Update localStorage with only the selected plan as active
+        
         const newSubscription = {
             id: `SUB-${Date.now()}`,
             name: selectedPlan.name,
@@ -322,14 +312,12 @@ function subscribeToPlan(planId) {
             period: selectedPlan.period,
             status: 'active',
             startDate: new Date().toISOString().split('T')[0],
-            endDate: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], // 1 year from now
+            endDate: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], 
             features: selectedPlan.features
         };
-        
-        // Save only the selected plan as active
+
         localStorage.setItem('userSubscriptions', JSON.stringify([newSubscription]));
-        
-        // Reload the page to show updated state
+
         loadAllPlans();
         
         alert(`${selectedPlan.name} wurde erfolgreich abonniert!`);

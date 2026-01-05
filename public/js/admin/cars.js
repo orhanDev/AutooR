@@ -1,4 +1,4 @@
-﻿// public/js/admin/cars.js
+﻿
 
 document.addEventListener('DOMContentLoaded', async () => {
     const token = localStorage.getItem('token');
@@ -29,12 +29,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         return;
     }
 
-    // LokasyonlarÄ± ve Ã–zellikleri Ã§ekme ve doldurma fonksiyonlarÄ±
     async function fetchAndPopulateLocationsAndFeatures() {
         try {
-            // LokasyonlarÄ± Ã§ek
+            
             const locationsResponse = await fetch('/api/locations', {
-                headers: { 'x-auth-token': token } // Admin paneli iÃ§in token gerekebilir
+                headers: { 'x-auth-token': token } 
             });
             const locations = await locationsResponse.json();
             locationSelect.innerHTML = '<option value="">Standort auswÃ¤hlen...</option>';
@@ -42,8 +41,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 locationSelect.innerHTML += `<option value="${loc.location_id}">${loc.name}</option>`;
             });
 
-            // Ã–zellikleri Ã§ek
-            const featuresResponse = await fetch('/api/admin/features', { // TÃ¼m Ã¶zellikleri getiren API
+            const featuresResponse = await fetch('/api/admin/features', { 
                 headers: { 'x-auth-token': token }
             });
             const features = await featuresResponse.json();
@@ -66,10 +64,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    // TÃ¼m araÃ§larÄ± Ã§ekme ve tabloyu doldurma
     async function fetchCars() {
         try {
-            const response = await fetch('/api/cars', { // TÃ¼m araÃ§larÄ± getiren API
+            const response = await fetch('/api/cars', { 
                 headers: { 'x-auth-token': token }
             });
 
@@ -83,7 +80,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
 
             const cars = await response.json();
-            carsTableBody.innerHTML = ''; // Tabloyu temizle
+            carsTableBody.innerHTML = ''; 
 
             if (cars.length === 0) {
                 carsTableBody.innerHTML = '<tr><td colspan="8" class="text-center">HenÃ¼z hiÃ§ araÃ§ bulunmamaktadÄ±r.</td></tr>';
@@ -109,7 +106,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 carsTableBody.innerHTML += row;
             });
 
-            // Edit ve Delete butonlarÄ±na event listener'larÄ± ata
             attachEventListeners();
 
         } catch (error) {
@@ -118,23 +114,21 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    // Edit ve Delete butonlarÄ±na event listener'larÄ± atayan fonksiyon
     function attachEventListeners() {
         document.querySelectorAll('.edit-car-btn').forEach(button => {
-            button.removeEventListener('click', handleEditClick); // Tekrar eklemeyi Ã¶nle
+            button.removeEventListener('click', handleEditClick); 
             button.addEventListener('click', handleEditClick);
         });
         document.querySelectorAll('.delete-car-btn').forEach(button => {
-            button.removeEventListener('click', handleDeleteClick); // Tekrar eklemeyi Ã¶nle
+            button.removeEventListener('click', handleDeleteClick); 
             button.addEventListener('click', handleDeleteClick);
         });
     }
 
-    // DÃ¼zenle butonuna tÄ±klanÄ±nca
     async function handleEditClick(e) {
         const carId = e.target.dataset.id;
         carModalLabel.textContent = 'Fahrzeug bearbeiten';
-        carForm.reset(); // Formu sÄ±fÄ±rla
+        carForm.reset(); 
         carIdInput.value = carId;
 
         try {
@@ -146,7 +140,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
             const car = await response.json();
 
-            // Form alanlarÄ±nÄ± doldur
             makeInput.value = car.make;
             modelInput.value = car.model;
             yearInput.value = car.year;
@@ -161,9 +154,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             descriptionInput.value = car.description;
             isAvailableCheckbox.checked = car.is_available;
 
-            // Ã–zellik checkbox'larÄ±nÄ± doldur
             document.querySelectorAll('.feature-checkbox').forEach(checkbox => {
-                checkbox.checked = car.features.includes(checkbox.labels[0].textContent); // feature_name ile eÅŸleÅŸtir
+                checkbox.checked = car.features.includes(checkbox.labels[0].textContent); 
             });
 
             carModal.show();
@@ -173,7 +165,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    // Sil butonuna tÄ±klanÄ±nca
     async function handleDeleteClick(e) {
         const carId = e.target.dataset.id;
         if (confirm('Sind Sie sicher, dass Sie dieses Fahrzeug lÃ¶schen mÃ¶chten?')) {
@@ -186,7 +177,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 alert('Fahrzeug wurde erfolgreich gelÃ¶scht.');
-                fetchCars(); // Listeyi yenile
+                fetchCars(); 
             } catch (error) {
                 console.error('Fehler beim LÃ¶schen des Fahrzeugs:', error);
                 alert(`Fehler beim LÃ¶schen des Fahrzeugs: ${error.message}`);
@@ -194,17 +185,15 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    // Yeni AraÃ§ Ekle butonuna tÄ±klanÄ±nca
     addCarBtn.addEventListener('click', () => {
         carModalLabel.textContent = 'Neues Fahrzeug hinzufÃ¼gen';
-        carForm.reset(); // Formu sÄ±fÄ±rla
-        carIdInput.value = ''; // carId'yi boÅŸalt
-        isAvailableCheckbox.checked = true; // VarsayÄ±lan olarak verfÃ¼gbar
-        document.querySelectorAll('.feature-checkbox').forEach(checkbox => checkbox.checked = false); // TÃ¼m Ã¶zellikleri sÄ±fÄ±rla
+        carForm.reset(); 
+        carIdInput.value = ''; 
+        isAvailableCheckbox.checked = true; 
+        document.querySelectorAll('.feature-checkbox').forEach(checkbox => checkbox.checked = false); 
         carModal.show();
     });
 
-    // Form gÃ¶nderimi (AraÃ§ ekle/dÃ¼zenle)
     carForm.addEventListener('submit', async (event) => {
         event.preventDefault();
 
@@ -247,7 +236,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (response.ok) {
                 alert(`Fahrzeug wurde erfolgreich ${id ? 'aktualisiert' : 'hinzugefÃ¼gt'}!`);
                 carModal.hide();
-                fetchCars(); // Listeyi yenile
+                fetchCars(); 
             } else {
                 throw new Error(data.message || `Fehler beim ${id ? 'Aktualisieren' : 'HinzufÃ¼gen'} des Fahrzeugs.`);
             }
@@ -257,11 +246,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 
-    // Sayfa yÃ¼klendiÄŸinde araÃ§larÄ±, lokasyonlarÄ± ve Ã¶zellikleri Ã§ek
     fetchAndPopulateLocationsAndFeatures();
     fetchCars();
 
-    // Ã‡Ä±kÄ±ÅŸ yap linki
     document.getElementById('admin-logout-link').addEventListener('click', (e) => {
         e.preventDefault();
         localStorage.removeItem('token');

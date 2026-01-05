@@ -1,5 +1,4 @@
-﻿// Local demo dataset for cars and locations (no database needed)
-// Keep fields aligned with UI usage
+﻿
 
 window.LOCAL_LOCATIONS = [
 	{ location_id: 'berlin', name: 'Berlin Zentrum' },
@@ -636,6 +635,4 @@ window.LOCAL_CARS = [
 		description: 'Hibrit SUV, ekonomik, geniÅŸ iÃ§ mekan'
 	}
 ];
-
-
 

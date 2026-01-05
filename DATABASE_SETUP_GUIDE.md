@@ -1,54 +1,33 @@
-# Veritabanı Yapılandırma Rehberi
-
-## 🎯 Olması Gereken Yapı
-
-### ✅ Doğru Yapı:
+
 
 1. **Production (Netlify Demo)** → Railway PostgreSQL veritabanına bağlanmalı
 2. **Localhost (Development)** → İki seçenek:
    - **Seçenek A:** Local PostgreSQL veritabanına bağlan (development için)
-   - **Seçenek B:** Railway PostgreSQL veritabanına bağlan (test için - ÖNERİLEN)
-
-### ❌ Şu Anki Sorun:
+   - **Seçenek B:** Railway PostgreSQL veritabanına bağlan (test için - ÖNERİLEN)
 
 - Localhost'ta kayıt olunca → Local veritabanına kaydediliyor
 - Railway'de kayıt olunca → Railway veritabanına kaydediliyor
 - **Sonuç:** İki farklı veritabanı var, kullanıcılar karışıyor!
 
----
-
-## 🔧 Çözüm: Localhost'u da Railway'e Bağla
-
-### Adım 1: `.env` Dosyasını Güncelle
+---
 
 Proje kök dizininde `.env` dosyasını açın veya oluşturun:
 
-```env
-# Railway PostgreSQL Bağlantı Bilgileri
-# Railway Dashboard → Postgres → Connection URL'den alın
-# ÖNEMLİ: Gerçek şifreleri buraya yazmayın! Sadece .env dosyasında saklayın!
+```env
 PGUSER=postgres
 PGHOST=your-railway-host.rlwy.net
 PGDATABASE=railway
 PGPASSWORD=YOUR_RAILWAY_PASSWORD_HERE
-PGPORT=51096
-
-# JWT Secret
-JWT_SECRET=your_super_secret_jwt_key_here_change_this_in_production
-
-# Email Configuration (SendGrid)
+PGPORT=51096
+JWT_SECRET=your_super_secret_jwt_key_here_change_this_in_production
 EMAIL_PROVIDER=sendgrid
 EMAIL_HOST=smtp.sendgrid.net
 EMAIL_PORT=587
 EMAIL_USER=apikey
-EMAIL_PASS=your-sendgrid-api-key
-
-# Base URL
+EMAIL_PASS=your-sendgrid-api-key
 BASE_URL=https://autoor-demo.netlify.app
 NODE_ENV=production
-```
-
-### Adım 2: Railway Connection URL'yi Kullan
+```
 
 Railway Dashboard'da:
 1. **Postgres** servisine gidin
@@ -56,42 +35,27 @@ Railway Dashboard'da:
 3. **Connection URL** değerini kopyalayın
 4. `.env` dosyasına ekleyin:
 
-```env
-# VEYA direkt Connection URL kullanın:
+```env
 DATABASE_URL=postgresql://postgres:AuXmRQKsueCCkRSnlfYKFifvrfYlUBGT@ballast.proxy.rlwy.net:51096/railway
-```
+```
 
-### Adım 3: Backend'i Yeniden Başlat
-
-```bash
-# Terminal'de backend'i durdurun (Ctrl+C)
-# Sonra tekrar başlatın:
+```bash
 node server.js
 ```
 
----
-
-## 📊 Veritabanı Kontrolü
-
-### Local Veritabanında Kullanıcı Arama:
+---
 
 ```sql
 -- pgAdmin'de LOCAL bağlantıya bağlanın
 SELECT * FROM users WHERE LOWER(TRIM(email)) = LOWER(TRIM('ooorhanyilmaz35@gmail.com'));
-```
-
-### Railway Veritabanında Kullanıcı Arama:
+```
 
 ```sql
 -- pgAdmin'de RAILWAY bağlantısına bağlanın
 SELECT * FROM users WHERE LOWER(TRIM(email)) = LOWER(TRIM('ooorhanyilmaz35@gmail.com'));
 ```
 
----
-
-## 🎯 Önerilen Yapı
-
-### **Seçenek 1: Her Zaman Railway Kullan (ÖNERİLEN)**
+---
 
 **Avantajlar:**
 - ✅ Tek bir veritabanı (karışıklık yok)
@@ -103,9 +67,7 @@ SELECT * FROM users WHERE LOWER(TRIM(email)) = LOWER(TRIM('ooorhanyilmaz35@gmail
 
 **Yapılandırma:**
 - `.env` dosyasında Railway bağlantı bilgilerini kullanın
-- Localhost'ta da Railway'e bağlanın
-
-### **Seçenek 2: Ayrı Veritabanları Kullan**
+- Localhost'ta da Railway'e bağlanın
 
 **Avantajlar:**
 - ✅ Production verileri korunur
@@ -120,30 +82,19 @@ SELECT * FROM users WHERE LOWER(TRIM(email)) = LOWER(TRIM('ooorhanyilmaz35@gmail
 - Development: Local PostgreSQL
 - `.env` dosyasında `NODE_ENV` değerine göre otomatik seçim
 
----
+---
 
-## 🔍 Hangi Veritabanına Bağlı Olduğunuzu Kontrol Etme
-
-### Backend Terminalinde:
-
-```bash
-# Windows PowerShell
-echo $env:PGHOST
-
-# Linux/Mac
+```bash
+echo $env:PGHOST
 echo $PGHOST
-```
-
-### Backend Loglarında:
+```
 
 Backend başlatıldığında şu log'u görmelisiniz:
 ```
 Connected to PostgreSQL database: railway (veya AutooR)
 ```
 
----
-
-## ✅ Sonuç
+---
 
 **Önerilen:** Localhost'ta da Railway veritabanına bağlanın. Böylece:
 - ✅ Tek bir veritabanı kullanırsınız

@@ -1,10 +1,9 @@
 const { OAuth2Client } = require('google-auth-library');
 
-// Google OAuth 2.0 konfigürasyonu - değerleri fonksiyon içinde al
 function getGoogleClient() {
     const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || 'your-google-client-id.apps.googleusercontent.com';
     const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET || 'your-google-client-secret';
-    const GOOGLE_REDIRECT_URI = process.env.GOOGLE_REDIRECT_URI || 'https://localhost:3443/auth/google/callback';
+    const GOOGLE_REDIRECT_URI = process.env.GOOGLE_REDIRECT_URI || 'https:
     
     return new OAuth2Client(
         GOOGLE_CLIENT_ID,
@@ -13,29 +12,27 @@ function getGoogleClient() {
     );
 }
 
-// Google OAuth URL oluşturma
 function getGoogleAuthURL(state = 'home') {
     const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || 'your-google-client-id.apps.googleusercontent.com';
     const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET || 'your-google-client-secret';
-    const GOOGLE_REDIRECT_URI = process.env.GOOGLE_REDIRECT_URI || 'https://localhost:3443/auth/google/callback';
+    const GOOGLE_REDIRECT_URI = process.env.GOOGLE_REDIRECT_URI || 'https:
     
     const googleClient = getGoogleClient();
     
     const scopes = [
-        'https://www.googleapis.com/auth/userinfo.email',
-        'https://www.googleapis.com/auth/userinfo.profile'
+        'https:
+        'https:
     ];
     
     return googleClient.generateAuthUrl({
         access_type: 'offline',
         scope: scopes,
         redirect_uri: GOOGLE_REDIRECT_URI,
-        prompt: 'select_account', // Kullanıcıyı hesap seçmeye zorla
-        state: state // Redirect bilgisi
+        prompt: 'select_account', 
+        state: state 
     });
 }
 
-// Google OAuth token doğrulama
 async function verifyGoogleToken(token) {
     try {
         const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || 'your-google-client-id.apps.googleusercontent.com';
@@ -69,17 +66,15 @@ async function verifyGoogleToken(token) {
     }
 }
 
-// Google OAuth authorization code ile token alma
 async function getGoogleTokens(code) {
     try {
         const googleClient = getGoogleClient();
         const { tokens } = await googleClient.getToken(code);
         
         googleClient.setCredentials(tokens);
-        
-        // Kullanıcı bilgilerini al
+
         const response = await googleClient.request({
-            url: 'https://www.googleapis.com/oauth2/v2/userinfo'
+            url: 'https:
         });
         
         return {

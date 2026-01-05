@@ -1,17 +1,15 @@
-﻿// Payment Page JavaScript
+﻿
 
 document.addEventListener('DOMContentLoaded', () => {
     const container = document.getElementById('payment-container');
-    
-    // Get reservation data
+
     const reservationData = localStorage.getItem('reservationData');
     
     if (!reservationData) {
         showError('Keine Reservierungsdaten gefunden');
         return;
     }
-    
-    // Load payment form
+
     loadPaymentForm();
     
     function loadPaymentForm() {
@@ -26,9 +24,8 @@ document.addEventListener('DOMContentLoaded', () => {
     
     function displayPaymentForm(data) {
         const vehicle = data.vehicle || {};
-        try { vehicle.image_url = resolveVehicleImage(vehicle); } catch (e) { /* ignore */ }
-        
-        // Calculate or reuse snapshot from reservation for perfect parity
+        try { vehicle.image_url = resolveVehicleImage(vehicle); } catch (e) {  }
+
         const days = Number(data.days) || (() => {
             const start = new Date(data.pickupDate);
             const end = new Date(data.dropoffDate);
@@ -259,8 +256,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             </div>
         `;
-        
-        // Add event listeners
+
         setupEventListeners();
     }
     
@@ -273,17 +269,15 @@ document.addEventListener('DOMContentLoaded', () => {
         const billingAddress = document.getElementById('billing-address');
         const termsCheckbox = document.getElementById('paymentTerms');
         const submitBtn = document.getElementById('pay-submit-btn');
-        
-        // Card number formatting
+
         if (cardNumber) {
             cardNumber.addEventListener('input', formatCardNumber);
         }
-        
-        // Expiry date formatting with MM/JJ, month 01-12, year 00-99, allow backspace/space
+
         if (expiryDate) {
             expiryDate.addEventListener('input', (e) => {
                 let raw = e.target.value;
-                // allow backspace deleting '/'
+                
                 let digits = raw.replace(/[^\d]/g, '').slice(0,4);
                 if (digits.length === 0) { 
                     e.target.value = ''; 
@@ -293,7 +287,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     return; 
                 }
                 if (digits.length <= 2) {
-                    // don't auto-clamp while typing first two digits; just constrain to 01-12 once 2 digits entered
+                    
                     let mm = digits;
                     if (digits.length === 2) {
                         const m = parseInt(mm,10);
@@ -308,8 +302,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     else if (m > 12) mm = '12';
                     const jj = digits.slice(2);
                     e.target.value = `${mm}/${jj}`;
-                    
-                    // Check if expiry date is in the past
+
                     const currentDate = new Date();
                     const currentYear = currentDate.getFullYear() % 100;
                     const currentMonth = currentDate.getMonth() + 1;
@@ -325,27 +318,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 markFilled(expiryDate); updateSubmitEnabled();
             });
         }
-        
-        // CVV validation
+
         if (cvv) {
             cvv.addEventListener('input', (e) => {
                 e.target.value = e.target.value.replace(/\D/g, '');
             });
         }
-        
-        // Billing address toggle
+
         if (sameAddress) {
             sameAddress.addEventListener('change', () => {
                 billingAddress.style.display = sameAddress.checked ? 'none' : 'block';
             });
         }
 
-        // Enable/disable submit based on full validation + terms
         if (termsCheckbox) {
             termsCheckbox.addEventListener('change', () => { updateSubmitEnabled(); });
         }
-        
-        // Payment method toggle
+
         const paymentMethods = document.querySelectorAll('input[name="paymentMethod"]');
         const creditCardDetails = document.getElementById('credit-card-details');
         const methodCredit = document.getElementById('method-credit-container');
@@ -364,8 +353,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         paymentMethods.forEach(method => method.addEventListener('change', updateMethodHighlight));
         updateMethodHighlight();
-        
-        // Credit card inputs: mark filled and validate
+
         function markFilled(el) { el.classList.toggle('filled', !!el.value.trim()); }
         ['cardHolder','cardNumber','expiryDate','cvv'].forEach(id => {
             const el = document.getElementById(id);
@@ -375,7 +363,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // Format card number with spaces, restrict to 16 digits
         const cardNumEl = document.getElementById('cardNumber');
         if (cardNumEl) {
             cardNumEl.addEventListener('input', (e) => {
@@ -388,7 +375,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         function isCardValid() {
             const active = document.querySelector('input[name="paymentMethod"]:checked');
-            if (!active || active.value !== 'creditCard') return true; // not required when PayPal
+            if (!active || active.value !== 'creditCard') return true; 
             const holder = (document.getElementById('cardHolder')?.value || '').trim();
             const numRaw = (document.getElementById('cardNumber')?.value || '');
             const num = numRaw.replace(/\s+/g,'');
@@ -398,18 +385,16 @@ document.addEventListener('DOMContentLoaded', () => {
             const numOk = /^(\d{4}\s){3}\d{4}$/.test(numRaw);
             const expOk = /^(0[1-9]|1[0-2])\/\d{2}$/.test(exp);
             const ccvOk = /^\d{3}$/.test(ccv);
-            
-            // Check if expiry date is not in the past
+
             let expNotPast = true;
             if (expOk) {
                 const [month, year] = exp.split('/');
                 const currentDate = new Date();
-                const currentYear = currentDate.getFullYear() % 100; // Get last 2 digits
-                const currentMonth = currentDate.getMonth() + 1; // getMonth() returns 0-11
+                const currentYear = currentDate.getFullYear() % 100; 
+                const currentMonth = currentDate.getMonth() + 1; 
                 const expYear = parseInt(year);
                 const expMonth = parseInt(month);
-                
-                // Check if expiry date is in the past
+
                 if (expYear < currentYear || (expYear === currentYear && expMonth < currentMonth)) {
                     expNotPast = false;
                 }
@@ -424,7 +409,6 @@ document.addEventListener('DOMContentLoaded', () => {
             submitBtn.disabled = !(termsOk && isCardValid());
         }
 
-        // Form submission
         form.addEventListener('submit', (e) => {
             console.log('Form submit event triggered');
             e.preventDefault();
@@ -432,7 +416,6 @@ document.addEventListener('DOMContentLoaded', () => {
             handlePaymentSubmit();
         });
 
-        // Also add click event to submit button
         if (submitBtn) {
             submitBtn.addEventListener('click', (e) => {
                 console.log('Submit button clicked');
@@ -472,18 +455,15 @@ document.addEventListener('DOMContentLoaded', () => {
     async function handlePayPalPayment(userData, paymentData) {
         try {
             console.log('=== PAYPAL PAYMENT STARTED ===');
-            
-            // Get reservation data
+
             const reservationData = JSON.parse(localStorage.getItem('reservationData') || '{}');
             const totalPrice = reservationData.totalPrice || 0;
-            
-            // Update button text
+
             const submitBtn = document.querySelector('button[type="submit"]');
             const originalText = submitBtn.innerHTML;
             submitBtn.innerHTML = '<i class="bi bi-paypal me-2"></i>Weiterleitung zu PayPal...';
             submitBtn.disabled = true;
-            
-            // Create PayPal payment order
+
             const paypalOrder = {
                 userEmail: userData.email,
                 amount: totalPrice,
@@ -493,8 +473,7 @@ document.addEventListener('DOMContentLoaded', () => {
             };
             
             console.log('Creating PayPal order:', paypalOrder);
-            
-            // Call backend to create PayPal order
+
             const response = await fetch('/api/payments/paypal/create-order', {
                 method: 'POST',
                 headers: {
@@ -513,20 +492,17 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!result.success) {
                 throw new Error(result.message || 'PayPal order creation failed');
             }
-            
-            // Store payment data for later use
+
             localStorage.setItem('paymentData', JSON.stringify(paymentData));
             localStorage.setItem('paypalOrderId', result.orderId);
-            
-            // Redirect to PayPal
+
             console.log('Redirecting to PayPal:', result.approvalUrl);
             window.location.href = result.approvalUrl;
             
         } catch (error) {
             console.error('PayPal payment error:', error);
             alert('Fehler bei der PayPal-Zahlung. Bitte versuchen Sie es erneut.');
-            
-            // Reset button
+
             const submitBtn = document.querySelector('button[type="submit"]');
             submitBtn.innerHTML = '<i class="bi bi-lock me-2"></i>Sichere Zahlung';
             submitBtn.disabled = false;
@@ -536,8 +512,7 @@ document.addEventListener('DOMContentLoaded', () => {
     async function handlePaymentSubmit() {
         try {
             console.log('=== PAYMENT SUBMIT STARTED ===');
-            
-            // Check if terms checkbox is checked
+
             const termsCheckbox = document.getElementById('paymentTerms');
             console.log('Terms checkbox found:', termsCheckbox);
             console.log('Terms checkbox checked:', termsCheckbox ? termsCheckbox.checked : 'N/A');
@@ -561,8 +536,7 @@ document.addEventListener('DOMContentLoaded', () => {
             };
             
             console.log('Payment data collected:', paymentData);
-            
-            // Get user data
+
             const userData = JSON.parse(localStorage.getItem('userData') || '{}');
             console.log('User data:', userData);
             if (!userData.email) {
@@ -570,26 +544,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 alert('Bitte melden Sie sich zuerst an.');
                 return;
             }
-            
-            // Check payment method
+
             if (paymentData.paymentMethod === 'paypal') {
                 console.log('PayPal payment selected, redirecting to PayPal...');
                 await handlePayPalPayment(userData, paymentData);
                 return;
             }
-            
-            // Simulate payment processing
+
             const submitBtn = document.querySelector('button[type="submit"]');
             console.log('Submit button found:', submitBtn);
             const originalText = submitBtn.innerHTML;
             submitBtn.innerHTML = '<i class="bi bi-hourglass-split me-2"></i>Zahlung wird verarbeitet...';
             submitBtn.disabled = true;
             console.log('Button updated, starting payment process');
-            
-            // Parse expiry date
+
             const [expiryMonth, expiryYear] = paymentData.expiryDate.split('/');
-            
-            // Save credit card to database
+
             console.log('Saving credit card...');
             let cardResult;
             try {
@@ -619,7 +589,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.log('Credit card saved successfully');
             } catch (cardError) {
                 console.error('Credit card save error:', cardError);
-                // Create a simulated card result for fallback
+                
                 cardResult = {
                     success: true,
                     card: {
@@ -635,8 +605,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 };
                 console.log('Using fallback card result');
             }
-            
-            // Process payment
+
             console.log('Processing payment...');
             const reservationData = JSON.parse(localStorage.getItem('reservationData') || '{}');
             const currentBookingId = localStorage.getItem('currentBookingId');
@@ -669,7 +638,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.log('Payment processed successfully');
             } catch (paymentError) {
                 console.error('Payment process error:', paymentError);
-                // Create a simulated payment result for fallback
+                
                 paymentResult = {
                     success: true,
                     payment: {
@@ -682,12 +651,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 };
                 console.log('Using fallback payment result');
             }
-            
-            // Store payment data
+
             localStorage.setItem('paymentData', JSON.stringify(paymentData));
             localStorage.setItem('lastPayment', JSON.stringify(paymentResult.payment));
-            
-            // Redirect to success page
+
             console.log('Payment data stored, redirecting to success page...');
             const timestamp = new Date().getTime();
             const successUrl = `/payment-success?t=${timestamp}`;
@@ -704,15 +671,13 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (error) {
             console.error('Payment error:', error);
             alert('Fehler bei der Zahlung. Bitte versuchen Sie es erneut.');
-            
-            // Reset button
+
             const submitBtn = document.querySelector('button[type="submit"]');
             submitBtn.innerHTML = '<i class="bi bi-lock me-2"></i>Sichere Zahlung';
             submitBtn.disabled = false;
         }
     }
-    
-    
+
     function showError(message) {
         container.innerHTML = `
             <div class="text-center py-5">

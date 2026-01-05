@@ -1,32 +1,18 @@
-# Google OAuth 2.0 Credentials
-# Google Cloud Console'da oluşturduğunuz OAuth 2.0 Client ID ve Secret
+
 GOOGLE_CLIENT_ID=your-google-client-id.apps.googleusercontent.com
 GOOGLE_CLIENT_SECRET=your-google-client-secret
-GOOGLE_REDIRECT_URI=http://localhost:3000/auth/google/callback
-
-# PostgreSQL Database Configuration
+GOOGLE_REDIRECT_URI=http://localhost:3000/auth/google/callback
 PGUSER=AutooR_user
 PGHOST=localhost
 PGDATABASE=AutooR
 PGPASSWORD=your-database-password-here
 PGPORT=5432
 
-# JWT Secret (Production'da güçlü bir secret kullanın)
-JWT_SECRET=your_super_secret_jwt_key_here_change_this_in_production
-
-# Encryption Key for Credit Cards (32 karakter olmalı)
-ENCRYPTION_KEY=your-32-character-secret-key-here!
-
-# Email Configuration (Gmail, Outlook, Yahoo, Custom SMTP)
+JWT_SECRET=your_super_secret_jwt_key_here_change_this_in_production
+ENCRYPTION_KEY=your-32-character-secret-key-here!
 EMAIL_USER=your-email@gmail.com
 EMAIL_PASS=your-app-password-or-smtp-password
 EMAIL_HOST=smtp.gmail.com
 EMAIL_PORT=587
 EMAIL_SECURE=false
-EMAIL_FROM_NAME=AutooR
-
-# Email Host Ayarları:
-# Gmail: smtp.gmail.com, Port: 587
-# Outlook: smtp-mail.outlook.com, Port: 587
-# Yahoo: smtp.mail.yahoo.com, Port: 587
-# Custom SMTP: smtp.yourdomain.com, Port: 587 veya 465
+EMAIL_FROM_NAME=AutooR

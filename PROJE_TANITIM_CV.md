@@ -1,6 +1,4 @@
-# AutooR - CV İçin Kısa Proje Tanıtımı
-
-## 🇹🇷 TÜRKÇE VERSİYON
+
 
 **AutooR - Araç Kiralama Web Platformu** (2026)
 
@@ -14,9 +12,7 @@ Almanya pazarı için geliştirilmiş full-stack araç kiralama platformu. Tarih
 - Admin paneli ile araç, rezervasyon ve kullanıcı yönetimi
 - Responsive tasarım ve dinamik fiyatlandırma sistemi
 
----
-
-## 🇩🇪 DEUTSCHE VERSION
+---
 
 **AutooR - Fahrzeugvermietungs-Webplattform** (2026)
 

@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', async () => {
     const container = document.getElementById('payment-success-container');
-    
-    // Create reservation after successful payment
+
     await createReservationAfterPayment();
     
     try {
@@ -70,7 +69,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 });
 
-// Create reservation after successful payment
 async function createReservationAfterPayment() {
     try {
         const reservationData = JSON.parse(localStorage.getItem('reservationData') || '{}');
@@ -112,13 +110,11 @@ async function createReservationAfterPayment() {
         
         if (result.success) {
             console.log('Reservation created successfully:', result.reservation);
-            // Store reservation ID for future reference
+            
             localStorage.setItem('lastReservationId', result.reservation.id);
-            
-            // Mark payment as completed
+
             await updatePaymentStatus(result.reservation.booking_id, 'completed');
-            
-            // Also save to userBookings for display in buchungen page
+
             saveToUserBookings(reservationData, result.reservation);
         } else {
             console.error('Failed to create reservation:', result.message);
@@ -129,7 +125,6 @@ async function createReservationAfterPayment() {
     }
 }
 
-// Update payment status in database
 async function updatePaymentStatus(bookingId, paymentStatus) {
     try {
         const response = await fetch(`/api/reservations/${bookingId}/payment-status`, {
@@ -152,13 +147,11 @@ async function updatePaymentStatus(bookingId, paymentStatus) {
     }
 }
 
-// Save reservation to userBookings localStorage for display in buchungen page
 function saveToUserBookings(reservationData, dbReservation) {
     try {
-        // Get existing user bookings
-        const userBookings = JSON.parse(localStorage.getItem('userBookings') || '[]');
         
-        // Create booking object in the format expected by buchungen.js
+        const userBookings = JSON.parse(localStorage.getItem('userBookings') || '[]');
+
         const booking = {
             id: dbReservation.booking_id || `AUT-${Date.now()}`,
             car: `${reservationData.vehicle.make} ${reservationData.vehicle.model}`,
@@ -166,16 +159,14 @@ function saveToUserBookings(reservationData, dbReservation) {
             returnDate: reservationData.dropoffDate,
             pickupLocation: reservationData.pickupLocationName || reservationData.pickupLocation,
             returnLocation: reservationData.dropoffLocationName || reservationData.dropoffLocation,
-            status: 'confirmed', // New bookings are confirmed
-            paymentStatus: 'completed', // Payment is completed after successful payment
+            status: 'confirmed', 
+            paymentStatus: 'completed', 
             totalPrice: reservationData.totalPrice,
             image: reservationData.vehicle.image_url
         };
-        
-        // Add to beginning of array (most recent first)
+
         userBookings.unshift(booking);
-        
-        // Save back to localStorage
+
         localStorage.setItem('userBookings', JSON.stringify(userBookings));
         
         console.log('Booking saved to userBookings:', booking);
@@ -184,5 +175,4 @@ function saveToUserBookings(reservationData, dbReservation) {
         console.error('Error saving to userBookings:', error);
     }
 }
-
 

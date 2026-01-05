@@ -1,4 +1,4 @@
-// app.js
+
 
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Araba Kiralama Sitesi yüklendi!');
@@ -6,9 +6,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const popularCarsSectionTitle = document.querySelector('#popular-cars h2');
     const popularCarsSectionRow = document.querySelector('#popular-cars .row');
 
-    // Araçları HTML'e render eden yardımcı fonksiyon
     function renderCars(cars, targetElement) {
-        targetElement.innerHTML = ''; // Önceki içeriği temizle
+        targetElement.innerHTML = ''; 
 
         if (cars.length === 0) {
             targetElement.innerHTML = '<p class="text-center">Noch keine Fahrzeuge verfügbar.</p>';
@@ -34,7 +33,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Popüler araçları API'den çek ve göster
     async function fetchAndDisplayPopularCars() {
         try {
             const response = await fetch('/api/cars');
@@ -51,10 +49,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Sayfa yüklendiğinde araçları çek
     fetchAndDisplayPopularCars();
 
-    // Lokasyonları API'den çek ve dropdown'ları doldur
     async function fetchAndPopulateLocations() {
         try {
             const response = await fetch('/api/locations');
@@ -72,20 +68,19 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         } catch (error) {
             console.error('Fehler beim Abrufen der Standorte:', error);
-            // Kullanıcıya hata mesajı gösterebilirsiniz
+            
         }
     }
 
     fetchAndPopulateLocations();
 
-    // Tarih alanları için minimum ve maksimum tarih ayarlamaları
     const today = new Date();
     const tomorrow = new Date(today);
     tomorrow.setDate(today.getDate() + 1);
 
     const formatDate = (date) => {
         const yyyy = date.getFullYear();
-        const mm = String(date.getMonth() + 1).padStart(2, '0'); // Months start at 0!
+        const mm = String(date.getMonth() + 1).padStart(2, '0'); 
         const dd = String(date.getDate()).padStart(2, '0');
         return `${yyyy}-${mm}-${dd}`;
     };
@@ -96,23 +91,20 @@ document.addEventListener('DOMContentLoaded', () => {
     pickupDateInput.min = formatDate(today);
     dropoffDateInput.min = formatDate(tomorrow);
 
-    // Drop-off tarihinin pickup tarihinden önce olmamasını sağla
     pickupDateInput.addEventListener('change', () => {
         const pickupDate = new Date(pickupDateInput.value);
         const minDropoffDate = new Date(pickupDate);
         minDropoffDate.setDate(pickupDate.getDate() + 1);
         dropoffDateInput.min = formatDate(minDropoffDate);
 
-        // Eğer seçilen drop-off tarihi yeni min'den küçükse, drop-off tarihini güncelle
         if (new Date(dropoffDateInput.value) < minDropoffDate) {
             dropoffDateInput.value = formatDate(minDropoffDate);
         }
     });
 
-    // Arama formu gönderimini işleme
     const carSearchForm = document.getElementById('car-search-form');
     carSearchForm.addEventListener('submit', async (event) => {
-        event.preventDefault(); // Formun varsayılan gönderimini engelle
+        event.preventDefault(); 
 
         const pickupLocationId = document.getElementById('pickup-location').value;
         const dropoffLocationId = document.getElementById('dropoff-location').value;
@@ -121,13 +113,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const dropoffDate = document.getElementById('dropoff-date').value;
         const dropoffTime = document.getElementById('dropoff-time').value;
 
-        // Basit validasyon
         if (!pickupLocationId || !dropoffLocationId || !pickupDate || !dropoffDate) {
             alert('Bitte füllen Sie alle Suchfelder aus.');
             return;
         }
 
-        // Seçimleri checkout sayfasında kullanmak için sakla
         try {
             const pickupName = document.querySelector(`#pickup-location option[value='${pickupLocationId}']`)?.textContent || '';
             const dropoffName = document.querySelector(`#dropoff-location option[value='${dropoffLocationId}']`)?.textContent || '';
@@ -141,7 +131,6 @@ document.addEventListener('DOMContentLoaded', () => {
             localStorage.setItem('dropoff_time', dropoffTime);
         } catch (_) {}
 
-        // Arama URL'ini oluştur
         const searchUrl = `/api/cars/search?pickup_location_id=${pickupLocationId}&dropoff_location_id=${dropoffLocationId}&pickup_date=${pickupDate}&dropoff_date=${dropoffDate}`;
 
         try {
@@ -152,7 +141,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const searchResults = await response.json();
             console.log('Arama Sonuçları:', searchResults);
 
-            // Arama sonuçlarını görüntüle
             popularCarsSectionTitle.textContent = 'Arama Sonuçları';
             renderCars(searchResults, popularCarsSectionRow);
 

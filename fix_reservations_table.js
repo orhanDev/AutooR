@@ -11,8 +11,7 @@ const pool = new Pool({
 async function fixReservationsTable() {
     try {
         console.log('Reservations tablosunu güncelleniyor...');
-        
-        // Eksik sütunları ekle
+
         const columns = [
             'ALTER TABLE reservations ADD COLUMN IF NOT EXISTS vehicle_image TEXT;',
             'ALTER TABLE reservations ADD COLUMN IF NOT EXISTS pickup_location VARCHAR(255);',

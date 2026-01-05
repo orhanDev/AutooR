@@ -144,7 +144,7 @@
     </div>
 
     <script>
-        // URL parametrelerini kontrol et
+        
         const urlParams = new URLSearchParams(window.location.search);
         const error = urlParams.get('error');
         
@@ -175,8 +175,6 @@
             errorText.textContent = message;
             errorDiv.style.display = 'block';
         }
-        
-        // Google login butonuna tıklandığında loading göster
         document.getElementById('google-login-btn').addEventListener('click', function() {
             document.getElementById('loading').style.display = 'block';
             document.getElementById('error-message').style.display = 'none';

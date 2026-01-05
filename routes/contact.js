@@ -2,7 +2,6 @@ const express = require('express');
 const nodemailer = require('nodemailer');
 const router = express.Router();
 
-// Email transporter - Tüm email servislerini destekler
 function createEmailTransporter() {
     const emailUser = process.env.EMAIL_USER;
     const emailPass = process.env.EMAIL_PASS;
@@ -13,8 +12,7 @@ function createEmailTransporter() {
     if (!emailUser || !emailPass) {
         return null;
     }
-    
-    // Gmail için service kullan, diğerleri için host/port
+
     if (emailUser.includes('@gmail.com')) {
         return nodemailer.createTransport({
             service: 'gmail',
@@ -24,7 +22,7 @@ function createEmailTransporter() {
             }
         });
     } else {
-        // Diğer email servisleri için (Outlook, Yahoo, custom SMTP)
+        
         return nodemailer.createTransport({
             host: emailHost,
             port: parseInt(emailPort),
@@ -42,17 +40,14 @@ function createEmailTransporter() {
 
 const transporter = createEmailTransporter();
 
-// Send contact form email
 router.post('/send', async (req, res) => {
     try {
         const { firstName, lastName, email, phone, subject, message, to } = req.body;
 
-        // Validation
         if (!firstName || !lastName || !email || !subject || !message) {
             return res.status(400).json({ error: 'Alle Pflichtfelder müssen ausgefüllt werden' });
         }
 
-        // Email validation
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(email)) {
             return res.status(400).json({ error: 'Ungültige E-Mail-Adresse' });
@@ -91,7 +86,6 @@ router.post('/send', async (req, res) => {
 
         await transporter.sendMail(mailOptions);
 
-        // Log the contact request
         console.log(`Contact form submitted: ${firstName} ${lastName} (${email}) - ${subject}`);
 
         res.json({ 
@@ -107,7 +101,6 @@ router.post('/send', async (req, res) => {
     }
 });
 
-// Legacy route for backward compatibility
 router.post('/', async (req, res) => {
     try {
         const { name, email, subject, message, phone } = req.body;

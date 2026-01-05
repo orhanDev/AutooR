@@ -10,7 +10,7 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Check login status from sessionStorage or localStorage
+    
     const checkLoginStatus = () => {
       const loggedIn = sessionStorage.getItem('isLoggedIn') === 'true' || 
                       localStorage.getItem('isLoggedIn') === 'true';
@@ -26,8 +26,7 @@ const Navbar = () => {
     };
 
     checkLoginStatus();
-    
-    // Listen for storage changes
+
     window.addEventListener('storage', checkLoginStatus);
     
     return () => {

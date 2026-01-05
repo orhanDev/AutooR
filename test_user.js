@@ -10,14 +10,13 @@ const pool = new Pool({
 
 async function testUser() {
     try {
-        // Kullanıcıyı kontrol et
+        
         const userResult = await pool.query('SELECT * FROM users WHERE email = $1', ['orhancodes@gmail.com']);
         console.log('User found:', userResult.rows.length > 0);
         if (userResult.rows.length > 0) {
             console.log('User data:', userResult.rows[0]);
         }
-        
-        // Rezervasyon tablosunu kontrol et
+
         const tableResult = await pool.query(`
             SELECT column_name, data_type 
             FROM information_schema.columns 

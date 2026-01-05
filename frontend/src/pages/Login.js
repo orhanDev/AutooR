@@ -11,7 +11,7 @@ const Login = () => {
   const [searchParams] = useSearchParams();
 
   useEffect(() => {
-    // Check for OAuth success
+    
     const loginSuccess = searchParams.get('login');
     const token = searchParams.get('token');
     const user = searchParams.get('user');
@@ -28,7 +28,6 @@ const Login = () => {
       navigate('/');
     }
 
-    // Check for errors
     const errorParam = searchParams.get('error');
     if (errorParam) {
       setError('Ein Fehler ist aufgetreten.');

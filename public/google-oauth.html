@@ -4,14 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mit Google anmelden - AutooR</title>
-    
-    <!-- Favicon -->
+
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
-    
-    <!-- Bootstrap Icons -->
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
-    <!-- Google Fonts -->
+    
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
@@ -232,8 +230,6 @@
             color: #e8eaed;
             background: rgba(255, 255, 255, 0.05);
         }
-
-        /* Loading and Success States */
         .loading-content {
             display: flex;
             align-items: center;
@@ -288,8 +284,6 @@
              50% { transform: scale(1.2); }
              100% { transform: scale(1); }
          }
-
-         /* Custom Login Form Styles */
          .custom-login-form {
              margin-top: 20px;
              margin-bottom: 40px;
@@ -423,28 +417,20 @@
     </div>
 
     <script>
-                 // Select Google account
+                 
          function selectGoogleAccount(email, name) {
              console.log('selectGoogleAccount called with:', email, name);
-            
-            // Show loading state with beautiful animation
             const accountOptions = document.querySelector('.account-options');
             const selectedAccount = event ? event.currentTarget : null;
-            
-            // Add loading class to selected account (if available)
             if (selectedAccount) {
                 selectedAccount.classList.add('loading');
                 selectedAccount.style.background = 'linear-gradient(135deg, rgba(66, 133, 244, 0.1) 0%, rgba(52, 168, 83, 0.1) 100%)';
                 selectedAccount.style.borderColor = 'rgba(66, 133, 244, 0.3)';
             }
-            
-            // Disable all accounts
             if (accountOptions) {
                 accountOptions.style.opacity = '0.6';
                 accountOptions.style.pointerEvents = 'none';
             }
-            
-            // Add loading spinner to selected account or show general loading
             let accountInfo = null;
             if (selectedAccount) {
                 accountInfo = selectedAccount.querySelector('.account-info');
@@ -457,7 +443,7 @@
                     </div>
                 `;
             } else {
-                // Show loading in the form area if no account info available
+                
                 const customForm = document.querySelector('.custom-login-form');
                 if (customForm) {
                     customForm.innerHTML = `
@@ -468,10 +454,8 @@
                     `;
                 }
             }
-            
-            // Simulate OAuth process with realistic timing
             setTimeout(() => {
-                // Show success animation
+                
                 if (accountInfo) {
                     accountInfo.innerHTML = `
                         <div class="success-content">
@@ -480,7 +464,7 @@
                         </div>
                     `;
                 } else {
-                    // Show success in form area
+                    
                     const customForm = document.querySelector('.custom-login-form');
                     if (customForm) {
                         customForm.innerHTML = `
@@ -491,8 +475,6 @@
                         `;
                     }
                 }
-                
-                // Send success message to parent window
                 setTimeout(() => {
                     if (window.opener) {
                         window.opener.postMessage({
@@ -505,17 +487,11 @@
                 }, 1000);
             }, 2000);
                  }
-
-         // Show other account option
          function showOtherAccount() {
              console.log('Other account option selected');
-             
-             // Hide account selection and show custom login form
              document.querySelector('.account-options').style.display = 'none';
              document.querySelector('.oauth-title').textContent = 'Google-Konto eingeben';
              document.querySelector('.oauth-subtitle').textContent = 'Geben Sie Ihre Google-E-Mail-Adresse ein';
-             
-             // Create custom login form
              const customForm = document.createElement('div');
              customForm.className = 'custom-login-form';
              customForm.innerHTML = `
@@ -532,15 +508,9 @@
                      <button class="btn btn-primary" id="login-btn">Anmelden</button>
                  </div>
              `;
-             
-             // Insert form after subtitle
              document.querySelector('.oauth-subtitle').insertAdjacentElement('afterend', customForm);
-             
-             // Add event listeners
              document.getElementById('back-btn').addEventListener('click', goBackToAccounts);
              document.getElementById('login-btn').addEventListener('click', loginWithCustomAccount);
-             
-             // Add Enter key support
              document.getElementById('email-input').addEventListener('keypress', function(e) {
                  if (e.key === 'Enter') {
                      document.getElementById('name-input').focus();
@@ -553,16 +523,12 @@
                  }
              });
          }
-         
-         // Go back to account selection
          function goBackToAccounts() {
              document.querySelector('.account-options').style.display = 'block';
              document.querySelector('.oauth-title').textContent = 'Wählen Sie ein Konto';
              document.querySelector('.oauth-subtitle').textContent = 'Um mit AutooR fortzufahren';
              document.querySelector('.custom-login-form').remove();
          }
-         
-         // Login with custom account
          function loginWithCustomAccount() {
              console.log('loginWithCustomAccount called');
              
@@ -583,12 +549,8 @@
              }
              
              console.log('Validation passed, calling selectGoogleAccount');
-             
-             // Simulate login success
              selectGoogleAccount(email, name);
          }
-
-         // Handle window close
         window.addEventListener('beforeunload', function() {
             if (window.opener) {
                 window.opener.postMessage({

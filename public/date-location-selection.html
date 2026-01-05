@@ -162,10 +162,9 @@
     </style>
 </head>
 <body>
-    <!-- Navbar Container -->
+    
     <div id="navbar-container"></div>
 
-    <!-- Hero Section -->
     <section class="hero-section">
         <div class="container">
             <h1 class="hero-title">Datum & Standort</h1>
@@ -173,17 +172,15 @@
         </div>
     </section>
 
-    <!-- Main Content -->
     <div class="container">
-        <!-- Selected Car Info -->
+        
         <div class="selected-car-info">
             <h3 class="car-info-title">AusgewÃ¤hltes Fahrzeug</h3>
             <div class="car-details-grid" id="selected-car-details">
-                <!-- Car details will be populated by JavaScript -->
+                
             </div>
         </div>
 
-        <!-- Date and Location Selection Form -->
         <div class="selection-form">
             <h2 class="form-title">Buchungsdetails</h2>
             <form id="date-location-form">
@@ -275,7 +272,7 @@
     <script src="js/navbar.js"></script>
     <script src="js/data/cars.js"></script>
     <script>
-        // Initialize navbar
+        
         document.addEventListener('DOMContentLoaded', function() {
             updateNavbar();
             loadSelectedCar();
@@ -285,15 +282,13 @@
         let selectedCar = null;
 
         function loadSelectedCar() {
-            // Get car data from URL parameters
+            
             const urlParams = new URLSearchParams(window.location.search);
             const carId = parseInt(urlParams.get('carId'));
-            
-            // Find the car in the LOCAL_CARS array
             selectedCar = window.LOCAL_CARS.find(car => car.car_id === carId);
             
             if (!selectedCar) {
-                // Fallback to demo data if car not found
+                
                 selectedCar = {
                     car_id: carId,
                     make: 'Porsche',
@@ -305,8 +300,6 @@
                     image_url: '/images/cars/porsche-911-gt3.jpg'
                 };
             }
-
-            // Display car details
             const carDetailsContainer = document.getElementById('selected-car-details');
             carDetailsContainer.innerHTML = `
                 <div class="car-detail-item">
@@ -329,27 +322,19 @@
         }
 
         function initializeForm() {
-            // Set minimum date to today
+            
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('pickup-date').min = today;
             document.getElementById('return-date').min = today;
-
-            // Set default pickup date to today
             document.getElementById('pickup-date').value = today;
-
-            // Update return date when pickup date changes
             document.getElementById('pickup-date').addEventListener('change', function() {
                 const pickupDate = this.value;
                 const returnDateInput = document.getElementById('return-date');
                 returnDateInput.min = pickupDate;
-                
-                // If return date is before pickup date, set it to pickup date
                 if (returnDateInput.value && returnDateInput.value < pickupDate) {
                     returnDateInput.value = pickupDate;
                 }
             });
-
-            // Form submission
             document.getElementById('date-location-form').addEventListener('submit', function(e) {
                 e.preventDefault();
                 
@@ -362,16 +347,10 @@
                     returnDate: document.getElementById('return-date').value,
                     returnTime: document.getElementById('return-time').value
                 };
-
-                // Calculate rental days
                 const pickup = new Date(formData.pickupDate);
                 const returnDate = new Date(formData.returnDate);
                 const days = Math.ceil((returnDate - pickup) / (1000 * 60 * 60 * 24)) + 1;
-
-                // Save to localStorage
                 localStorage.setItem('bookingDetails', JSON.stringify(formData));
-
-                // Redirect to extras page
                 window.location.href = `/extras-versicherung.html?carId=${formData.carId}&days=${days}`;
             });
         }

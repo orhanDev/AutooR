@@ -1,9 +1,8 @@
-// Persönliche Daten (Personal Data) Page JavaScript
+
 
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Persönliche Daten page loaded');
-    
-    // Wait for navbar script to load, then initialize
+
     setTimeout(() => {
         if (typeof createNavbar === 'function') {
             createNavbar();
@@ -12,19 +11,16 @@ document.addEventListener('DOMContentLoaded', function() {
             updateNavbar();
         }
     }, 100);
-    
-    // Load user data
+
     loadUserData();
 });
 
 function loadUserData() {
     console.log('Loading user data...');
-    
-    // Get user data from localStorage
+
     const userData = JSON.parse(sessionStorage.getItem('userData') || localStorage.getItem('userData') || '{}');
     const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
-    
-    // Fill form with existing data
+
     if (userData.name) {
         const nameParts = userData.name.split(' ');
         document.getElementById('firstName').value = nameParts[0] || '';
@@ -34,8 +30,7 @@ function loadUserData() {
     if (userData.email) {
         document.getElementById('email').value = userData.email;
     }
-    
-    // Fill with currentUser data if available
+
     if (currentUser.firstName) {
         document.getElementById('firstName').value = currentUser.firstName;
     }
@@ -70,8 +65,7 @@ function loadUserData() {
 
 function saveChanges() {
     console.log('Saving changes...');
-    
-    // Get form data
+
     const formData = {
         firstName: document.getElementById('firstName').value,
         lastName: document.getElementById('lastName').value,
@@ -84,21 +78,18 @@ function saveChanges() {
         city: document.getElementById('city').value,
         country: document.getElementById('country').value
     };
-    
-    // Validate required fields
+
     if (!formData.firstName || !formData.lastName || !formData.email) {
         alert('Bitte füllen Sie alle Pflichtfelder aus.');
         return;
     }
-    
-    // Validate email format
+
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(formData.email)) {
         alert('Bitte geben Sie eine gültige E-Mail-Adresse ein.');
         return;
     }
-    
-    // Save to localStorage
+
     const userData = {
         ...JSON.parse(localStorage.getItem('userData') || '{}'),
         name: `${formData.firstName} ${formData.lastName}`,
@@ -114,18 +105,15 @@ function saveChanges() {
     };
     
     localStorage.setItem('userData', JSON.stringify(userData));
-    
-    // Also update currentUser for backward compatibility
+
     const currentUser = {
         ...JSON.parse(localStorage.getItem('currentUser') || '{}'),
         ...formData
     };
     localStorage.setItem('currentUser', JSON.stringify(currentUser));
-    
-    // Show success message
+
     alert('Ihre persönlichen Daten wurden erfolgreich gespeichert.');
-    
-    // Update navbar to reflect name change
+
     if (typeof updateNavbar === 'function') {
         updateNavbar();
     }
@@ -133,7 +121,7 @@ function saveChanges() {
 
 function cancelChanges() {
     if (confirm('Möchten Sie die Änderungen wirklich verwerfen?')) {
-        // Reload the page to reset form
+        
         window.location.reload();
     }
 }

@@ -1,4 +1,4 @@
-﻿// Kontakt page JavaScript
+﻿
 
 document.addEventListener('DOMContentLoaded', () => {
     const contactForm = document.getElementById('contact-form');
@@ -7,17 +7,16 @@ document.addEventListener('DOMContentLoaded', () => {
     if (contactForm) {
         contactForm.addEventListener('submit', handleContactForm);
     }
-    
-    // Phone number formatting
+
     if (phoneInput) {
         phoneInput.addEventListener('input', formatPhoneNumber);
     }
     
     function formatPhoneNumber(e) {
-        let value = e.target.value.replace(/\D/g, ''); // Remove non-digits
+        let value = e.target.value.replace(/\D/g, ''); 
         
         if (value.length > 0) {
-            // Format as ... ......... (3 digits area code + 9 digits number)
+            
             if (value.length <= 3) {
                 value = value;
             } else if (value.length <= 12) {
@@ -32,8 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     async function handleContactForm(e) {
         e.preventDefault();
-        
-        // Get form data
+
         const formData = new FormData(contactForm);
         const data = {
             firstName: formData.get('firstName'),
@@ -44,14 +42,12 @@ document.addEventListener('DOMContentLoaded', () => {
             message: formData.get('message'),
             privacy: document.getElementById('privacy').checked
         };
-        
-        // Basic validation
+
         if (!data.firstName || !data.lastName || !data.email || !data.subject || !data.message || !data.privacy) {
             showAlert('Bitte fÃ¼llen Sie alle Pflichtfelder aus und akzeptieren Sie die DatenschutzerklÃ¤rung.', 'danger');
             return;
         }
-        
-        // Email validation
+
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(data.email)) {
             showAlert('Bitte geben Sie eine gÃ¼ltige E-Mail-Adresse ein.', 'danger');
@@ -59,13 +55,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         try {
-            // Show loading state
+            
             const submitBtn = contactForm.querySelector('button[type="submit"]');
             const originalText = submitBtn.innerHTML;
             submitBtn.innerHTML = '<i class="bi bi-hourglass-split me-2"></i>Wird gesendet...';
             submitBtn.disabled = true;
-            
-            // Send to server
+
             const response = await fetch('/api/contact/send', {
                 method: 'POST',
                 headers: {
@@ -89,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Contact form error:', error);
             showAlert('Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.', 'danger');
         } finally {
-            // Reset button state
+            
             const submitBtn = contactForm.querySelector('button[type="submit"]');
             submitBtn.innerHTML = '<i class="bi bi-send me-2"></i>Nachricht senden';
             submitBtn.disabled = false;
@@ -97,24 +92,21 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     function showAlert(message, type) {
-        // Remove existing alerts
+        
         const existingAlert = document.querySelector('.alert');
         if (existingAlert) {
             existingAlert.remove();
         }
-        
-        // Create new alert
+
         const alertDiv = document.createElement('div');
         alertDiv.className = `alert alert-${type} alert-dismissible fade show`;
         alertDiv.innerHTML = `
             ${message}
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         `;
-        
-        // Insert alert before form
+
         contactForm.parentNode.insertBefore(alertDiv, contactForm);
-        
-        // Auto-dismiss after 5 seconds
+
         setTimeout(() => {
             if (alertDiv.parentNode) {
                 alertDiv.remove();

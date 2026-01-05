@@ -1,31 +1,26 @@
 @use "sass:color";
 
-/* Genel Stiller */
+$primary: #007bff; 
+$secondary: #6c757d; 
+$success: #28a745; 
+$danger: #dc3545; 
+$warning: #ffc107; 
+$info: #17a2b8; 
+$light: #f8f9fa; 
+$dark: #343a40; 
 
-// Bootstrap renklerini özelleştirme (varsayılan Bootstrap renk paleti)
-$primary: #007bff; // Mavi
-$secondary: #6c757d; // Gri
-$success: #28a745; // Yeşil
-$danger: #dc3545; // Kırmızı
-$warning: #ffc107; // Sarı
-$info: #17a2b8; // Cam Göbeği
-$light: #f8f9fa; // Açık Gri
-$dark: #343a40; // Koyu Gri
-
-// Kendi özel renklerimizi de tanımlayabiliriz
-$rentacar-blue: #2c3e50; // Koyu mavi
-$rentacar-orange: #f39c12; // Turuncu
+$rentacar-blue: #2c3e50; 
+$rentacar-orange: #f39c12; 
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; // Daha modern bir font
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
     line-height: 1.6;
     color: #333;
-    background-color: #f4f7f6; // Daha hafif bir arka plan
+    background-color: #f4f7f6; 
 }
 
-/* Header Stilleri */
 header {
-    background-color: $dark; // Koyu renk header
+    background-color: $dark; 
     padding: 15px 0;
     border-bottom: 1px solid color.adjust($dark, $lightness: 10%);
 }
@@ -33,18 +28,17 @@ header {
 .navbar-brand {
     font-weight: bold;
     font-size: 1.8rem;
-    color: $rentacar-orange !important; // Marka rengi
+    color: $rentacar-orange !important; 
 }
 
 .navbar-nav .nav-link {
-    color: #ffffff !important; // Nav linkleri beyaz
+    color: #ffffff !important; 
     margin-right: 15px;
     &:hover {
         color: $rentacar-orange !important;
     }
 }
 
-/* Main Content Stilleri */
 main {
     padding-top: 40px;
     padding-bottom: 40px;
@@ -52,10 +46,10 @@ main {
 
 #hero {
     background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('/assets/images/banner.jpg') no-repeat center center/cover;
-    color: white; // Beyaz metin
+    color: white; 
     padding: 100px 0;
     margin-bottom: 30px;
-    border-radius: 10px; // Daha yuvarlak köşeler
+    border-radius: 10px; 
     h1 {
         font-size: 3.5rem;
         font-weight: bold;
@@ -66,7 +60,7 @@ main {
     }
 
     #car-search-form {
-        background-color: rgba(255, 255, 255, 0.95) !important; // Hafif şeffaf beyaz
+        background-color: rgba(255, 255, 255, 0.95) !important; 
         padding: 30px !important;
         border-radius: 8px !important;
         max-width: 900px;
@@ -82,10 +76,10 @@ main {
     border: none;
     border-radius: 10px;
     overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); // Hafif gölge
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); 
     transition: transform 0.2s ease-in-out;
     &:hover {
-        transform: translateY(-5px); // Hover efekti
+        transform: translateY(-5px); 
     }
     .card-title {
         color: $rentacar-blue;
@@ -109,13 +103,12 @@ main {
     }
 }
 
-/* Footer Stilleri */
 footer {
     margin-top: 50px;
     border-top: 1px solid $dark;
     background-color: $dark;
     padding: 30px 0;
-    color: #e9ecef; // Açık metin
+    color: #e9ecef; 
     p {
         margin-bottom: 0;
     }

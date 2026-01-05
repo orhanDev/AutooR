@@ -4,24 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PayPal Zahlung abgebrochen - AutooR</title>
-    
-    <!-- Favicon -->
+
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
-    
-    <!-- Bootstrap CSS -->
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap Icons -->
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
-    <!-- Custom CSS -->
+    
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/navbar.css">
 </head>
 <body style="overflow-x: hidden; background:#f7f7f7;">
-    <!-- Navigation -->
+    
     <div id="navbar-container"></div>
 
-    <!-- Cancel Section -->
     <section class="py-5" style="margin-top: 80px;">
         <div class="container">
             <div class="row justify-content-center">
@@ -55,19 +52,18 @@
         </div>
     </section>
 
-    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Custom JS -->
+    
     <script src="/js/navbar.js"></script>
     <script>
-        // PayPal cancel callback işlemi
+        
         document.addEventListener('DOMContentLoaded', async () => {
             const urlParams = new URLSearchParams(window.location.search);
             const orderId = urlParams.get('token');
             
             if (orderId) {
                 try {
-                    // Backend'e cancel callback gönder
+                    
                     const response = await fetch('/api/payments/paypal/cancel', {
                         method: 'POST',
                         headers: {

@@ -1,4 +1,4 @@
-﻿// public/js/admin/users.js
+﻿
 
 document.addEventListener('DOMContentLoaded', async () => {
     const token = localStorage.getItem('token');
@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
 
             const users = await response.json();
-            usersTableBody.innerHTML = ''; // Tabloyu temizle
+            usersTableBody.innerHTML = ''; 
 
             if (users.length === 0) {
                 usersTableBody.innerHTML = '<tr><td colspan="6" class="text-center">HenÃ¼z hiÃ§ kullanÄ±cÄ± bulunmamaktadÄ±r.</td></tr>';
@@ -60,7 +60,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 usersTableBody.innerHTML += row;
             });
 
-            // Event listenerlarÄ± butonlara ata
             attachEventListeners();
 
         } catch (error) {
@@ -69,27 +68,25 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    // Edit ve Delete butonlarÄ±na event listener'larÄ± atayan fonksiyon
     function attachEventListeners() {
         document.querySelectorAll('.edit-user-btn').forEach(button => {
-            button.removeEventListener('click', handleEditClick); // Tekrar eklemeyi Ã¶nle
+            button.removeEventListener('click', handleEditClick); 
             button.addEventListener('click', handleEditClick);
         });
         document.querySelectorAll('.delete-user-btn').forEach(button => {
-            button.removeEventListener('click', handleDeleteClick); // Tekrar eklemeyi Ã¶nle
+            button.removeEventListener('click', handleDeleteClick); 
             button.addEventListener('click', handleDeleteClick);
         });
     }
 
-    // DÃ¼zenle butonuna tÄ±klanÄ±nca
     async function handleEditClick(e) {
         const userId = e.target.dataset.id;
         userModalLabel.textContent = 'KullanÄ±cÄ± DÃ¼zenle';
-        userForm.reset(); // Formu sÄ±fÄ±rla
+        userForm.reset(); 
         userIdInput.value = userId;
 
         try {
-            const response = await fetch(`/api/admin/users/${userId}`, { // Tek kullanÄ±cÄ± getiren API
+            const response = await fetch(`/api/admin/users/${userId}`, { 
                 headers: { 'x-auth-token': token }
             });
             if (!response.ok) {
@@ -97,7 +94,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
             const user = await response.json();
 
-            // Form alanlarÄ±nÄ± doldur
             firstNameInput.value = user.first_name;
             lastNameInput.value = user.last_name;
             emailInput.value = user.email;
@@ -110,7 +106,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    // Sil butonuna tÄ±klanÄ±nca
     async function handleDeleteClick(e) {
         const userId = e.target.dataset.id;
         if (confirm('Bu kullanÄ±cÄ±yÄ± silmek istediÄŸinizden emin misiniz? Bu iÅŸlem, bu kullanÄ±cÄ±nÄ±n tÃ¼m rezervasyonlarÄ±nÄ± da silecektir.')) {
@@ -123,7 +118,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 alert('KullanÄ±cÄ± baÅŸarÄ±yla silindi.');
-                fetchUsers(); // Listeyi yenile
+                fetchUsers(); 
             } catch (error) {
                 console.error('KullanÄ±cÄ± silinirken hata:', error);
                 alert(`KullanÄ±cÄ± silinirken bir hata oluÅŸtu: ${error.message}`);
@@ -131,7 +126,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    // Form gÃ¶nderimi (KullanÄ±cÄ± dÃ¼zenle)
     userForm.addEventListener('submit', async (event) => {
         event.preventDefault();
 
@@ -155,7 +149,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (response.ok) {
                 alert('KullanÄ±cÄ± baÅŸarÄ±yla gÃ¼ncellendi!');
                 userModal.hide();
-                fetchUsers(); // Listeyi yenile
+                fetchUsers(); 
             } else {
                 throw new Error(data.message || 'KullanÄ±cÄ± gÃ¼ncellenirken bir hata oluÅŸtu.');
             }
@@ -165,10 +159,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 
-    // Sayfa yÃ¼klendiÄŸinde kullanÄ±cÄ±larÄ± Ã§ek
     fetchUsers();
 
-    // Ã‡Ä±kÄ±ÅŸ yap linki
     document.getElementById('admin-logout-link').addEventListener('click', (e) => {
         e.preventDefault();
         localStorage.removeItem('token');

@@ -1,10 +1,8 @@
-# Dependencies
 node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# Environment variables - CRITICAL: Never commit these!
 .env
 .env.local
 .env.*.local
@@ -14,48 +12,39 @@ yarn-error.log*
 .env.txt
 *.env.txt
 
-# Sensitive files
 *secret*.txt
 *SECRET*.txt
 GOOGLE_CLIENT_SECRET*.txt
 googleClientScret.txt
 
-# Database
 *.sql.backup
 *.db
 *.sqlite
 
-# Logs
 logs/
 *.log
 
-# OS files
 .DS_Store
 Thumbs.db
 
-# IDE
 .vscode/
 .idea/
 *.swp
 *.swo
 *~
 
-# Build outputs
 dist/
 build/
 *.min.js
 *.min.css
 
-# Temporary files
 tmp/
 temp/
 *.tmp
 
-# SSL certificates (if not needed in repo)
 certs/*.pem
 certs/*.key
 certs/*.crt
 
-# Query files
 query
 

@@ -2,7 +2,6 @@ const express = require('express');
 const { query } = require('../db/database');
 const router = express.Router();
 
-// Tüm lokasyonları getir
 router.get('/', async (req, res) => {
     try {
         const result = await query('SELECT location_id, name FROM locations');

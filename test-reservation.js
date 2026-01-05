@@ -1,4 +1,4 @@
-// Test rezervasyonu oluşturmak için script
+
 const testReservation = {
     userEmail: 'orhancodes@gmail.com',
     vehicleId: 'bmw-x5-2024',
@@ -21,6 +21,5 @@ const testReservation = {
 console.log('Test rezervasyon verisi:');
 console.log(JSON.stringify(testReservation, null, 2));
 
-// Bu veriyi kopyalayıp browser console'da test edebilirsiniz:
 console.log('\nBrowser console\'da test etmek için:');
 console.log('fetch("/api/reservations/create", { method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(' + JSON.stringify(testReservation) + ') }).then(r => r.json()).then(console.log)');

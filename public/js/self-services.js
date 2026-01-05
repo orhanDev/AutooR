@@ -1,14 +1,13 @@
-// Self-Services Page JavaScript
+
 
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Self-Services page loaded');
-    
-    // Setup button event listeners
+
     setupServiceButtons();
 });
 
 function setupServiceButtons() {
-    // Online Check-in
+    
     const checkInBtn = document.querySelector('.service-card:nth-child(1) .service-btn');
     if (checkInBtn) {
         checkInBtn.addEventListener('click', function(e) {
@@ -16,8 +15,7 @@ function setupServiceButtons() {
             handleCheckIn();
         });
     }
-    
-    // Online Check-out
+
     const checkOutBtn = document.querySelector('.service-card:nth-child(2) .service-btn');
     if (checkOutBtn) {
         checkOutBtn.addEventListener('click', function(e) {
@@ -25,8 +23,7 @@ function setupServiceButtons() {
             handleCheckOut();
         });
     }
-    
-    // Digitaler Mietvertrag
+
     const contractBtn = document.querySelector('.service-card:nth-child(3) .service-btn');
     if (contractBtn) {
         contractBtn.addEventListener('click', function(e) {
@@ -34,8 +31,7 @@ function setupServiceButtons() {
             handleShowContract();
         });
     }
-    
-    // Belege & Rechnungen
+
     const receiptsBtn = document.querySelector('.service-card:nth-child(4) .service-btn');
     if (receiptsBtn) {
         receiptsBtn.addEventListener('click', function(e) {
@@ -43,8 +39,7 @@ function setupServiceButtons() {
             handleShowReceipts();
         });
     }
-    
-    // Mobile App (Coming Soon)
+
     const mobileAppBtn = document.querySelector('.service-card:nth-child(5) .service-btn');
     if (mobileAppBtn) {
         mobileAppBtn.addEventListener('click', function(e) {
@@ -52,8 +47,7 @@ function setupServiceButtons() {
             showComingSoonMessage('Mobile App');
         });
     }
-    
-    // 24/7 Support
+
     const supportBtn = document.querySelector('.service-card:nth-child(6) .service-btn');
     if (supportBtn) {
         supportBtn.addEventListener('click', function(e) {
@@ -63,9 +57,8 @@ function setupServiceButtons() {
     }
 }
 
-// Online Check-in
 async function handleCheckIn() {
-    // Check if user is logged in
+    
     const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true' || sessionStorage.getItem('isLoggedIn') === 'true';
     
     if (!isLoggedIn) {
@@ -75,8 +68,7 @@ async function handleCheckIn() {
         }, 2000);
         return;
     }
-    
-    // Get user bookings (async)
+
     const bookings = await getBookings();
     console.log('All bookings:', bookings);
     
@@ -85,13 +77,12 @@ async function handleCheckIn() {
     
     const upcomingBookings = bookings.filter(booking => {
         if (!booking.pickupDate) return false;
-        
-        // Parse date correctly (handle both YYYY-MM-DD and other formats)
+
         let pickupDate;
         if (booking.pickupDate.includes('T')) {
             pickupDate = new Date(booking.pickupDate);
         } else {
-            // Assume YYYY-MM-DD format
+            
             const [year, month, day] = booking.pickupDate.split('-').map(Number);
             pickupDate = new Date(year, month - 1, day);
         }
@@ -121,19 +112,17 @@ async function handleCheckIn() {
         showMessage('Sie haben keine bevorstehenden Reservierungen für den Check-in.', 'info');
         return;
     }
-    
-    // If only one booking, proceed directly
+
     if (upcomingBookings.length === 1) {
         startCheckIn(upcomingBookings[0]);
     } else {
-        // Show booking selection modal
+        
         showBookingSelectionModal(upcomingBookings, 'checkin');
     }
 }
 
-// Online Check-out
 async function handleCheckOut() {
-    // Check if user is logged in
+    
     const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true' || sessionStorage.getItem('isLoggedIn') === 'true';
     
     if (!isLoggedIn) {
@@ -143,8 +132,7 @@ async function handleCheckOut() {
         }, 2000);
         return;
     }
-    
-    // Get active bookings (async)
+
     const bookings = await getBookings();
     console.log('All bookings for check-out:', bookings);
     
@@ -153,8 +141,7 @@ async function handleCheckOut() {
     
     const activeBookings = bookings.filter(booking => {
         if (!booking.pickupDate || !booking.returnDate) return false;
-        
-        // Parse dates correctly
+
         let pickupDate, dropoffDate;
         
         if (booking.pickupDate.includes('T')) {
@@ -199,19 +186,17 @@ async function handleCheckOut() {
         showMessage('Sie haben keine aktiven Reservierungen für den Check-out.', 'info');
         return;
     }
-    
-    // If only one booking, proceed directly
+
     if (activeBookings.length === 1) {
         startCheckOut(activeBookings[0]);
     } else {
-        // Show booking selection modal
+        
         showBookingSelectionModal(activeBookings, 'checkout');
     }
 }
 
-// Show Contract
 async function handleShowContract() {
-    // Check if user is logged in
+    
     const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true' || sessionStorage.getItem('isLoggedIn') === 'true';
     
     if (!isLoggedIn) {
@@ -221,16 +206,14 @@ async function handleShowContract() {
         }, 2000);
         return;
     }
-    
-    // Get user bookings (async)
+
     const bookings = await getBookings();
     
     if (bookings.length === 0) {
         showMessage('Sie haben keine Reservierungen mit Mietverträgen.', 'info');
         return;
     }
-    
-    // Show contract selection or redirect to bookings page
+
     if (bookings.length === 1) {
         showContract(bookings[0]);
     } else {
@@ -238,9 +221,8 @@ async function handleShowContract() {
     }
 }
 
-// Show Receipts
 async function handleShowReceipts() {
-    // Check if user is logged in
+    
     const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true' || sessionStorage.getItem('isLoggedIn') === 'true';
     
     if (!isLoggedIn) {
@@ -250,20 +232,17 @@ async function handleShowReceipts() {
         }, 2000);
         return;
     }
-    
-    // Redirect to bookings page where receipts can be viewed
+
     window.location.href = '/buchungen';
 }
 
-// Contact Support
 function handleContactSupport() {
     showSupportModal();
 }
 
-// Get bookings from localStorage and API
 async function getBookings() {
     try {
-        // First try to get from API
+        
         const userData = JSON.parse(sessionStorage.getItem('userData') || localStorage.getItem('userData') || '{}');
         const token = sessionStorage.getItem('token') || localStorage.getItem('token');
         const userEmail = userData.email;
@@ -276,7 +255,7 @@ async function getBookings() {
                 if (response.ok) {
                     const result = await response.json();
                     if (result.success && result.reservations && result.reservations.length > 0) {
-                        // Convert API format to local format
+                        
                         return result.reservations.map(res => ({
                             id: res.booking_id || res.id,
                             car: `${res.vehicle_make || ''} ${res.vehicle_model || ''}`.trim() || res.vehicle_name || 'Fahrzeug',
@@ -297,12 +276,11 @@ async function getBookings() {
                 console.error('Error fetching bookings from API:', apiError);
             }
         }
-        
-        // Fallback to localStorage
+
         const bookingsData = localStorage.getItem('userBookings');
         if (bookingsData) {
             const bookings = JSON.parse(bookingsData);
-            // Ensure dates are in correct format
+            
             return bookings.map(booking => ({
                 ...booking,
                 pickupDate: booking.pickupDate || booking.pickup_date,
@@ -316,7 +294,6 @@ async function getBookings() {
     return [];
 }
 
-// Start Check-in Process
 function startCheckIn(booking) {
     const modal = createModal(
         'Online Check-in',
@@ -354,19 +331,16 @@ function startCheckIn(booking) {
     showModal(modal);
 }
 
-// Complete Check-in
 function completeCheckIn(booking) {
     const form = document.getElementById('checkin-form');
     if (!form || !form.checkValidity()) {
         form.reportValidity();
         return;
     }
-    
-    // Simulate check-in process
+
     showMessage('Check-in erfolgreich abgeschlossen! Sie erhalten eine Bestätigungs-E-Mail.', 'success');
     closeModal();
-    
-    // Update booking status
+
     const bookings = getBookings();
     const updatedBookings = bookings.map(b => {
         if (b.id === booking.id) {
@@ -377,7 +351,6 @@ function completeCheckIn(booking) {
     localStorage.setItem('userBookings', JSON.stringify(updatedBookings));
 }
 
-// Start Check-out Process
 function startCheckOut(booking) {
     const modal = createModal(
         'Online Check-out',
@@ -426,19 +399,16 @@ function startCheckOut(booking) {
     showModal(modal);
 }
 
-// Complete Check-out
 function completeCheckOut(booking) {
     const form = document.getElementById('checkout-form');
     if (!form || !form.checkValidity()) {
         form.reportValidity();
         return;
     }
-    
-    // Simulate check-out process
+
     showMessage('Check-out erfolgreich abgeschlossen! Ihre Rechnung wird per E-Mail versendet.', 'success');
     closeModal();
-    
-    // Update booking status
+
     const bookings = getBookings();
     const updatedBookings = bookings.map(b => {
         if (b.id === booking.id) {
@@ -449,7 +419,6 @@ function completeCheckOut(booking) {
     localStorage.setItem('userBookings', JSON.stringify(updatedBookings));
 }
 
-// Show Contract
 function showContract(booking) {
     const modal = createModal(
         'Digitaler Mietvertrag',
@@ -492,16 +461,14 @@ function showContract(booking) {
     showModal(modal);
 }
 
-// Download Contract (simulated)
 function downloadContract(bookingId) {
     showMessage('Der Mietvertrag wird heruntergeladen...', 'info');
-    // In a real application, this would trigger a PDF download
+    
     setTimeout(() => {
         showMessage('Download erfolgreich!', 'success');
     }, 1500);
 }
 
-// Show Booking Selection Modal
 function showBookingSelectionModal(bookings, action) {
     const bookingList = bookings.map(booking => `
         <div class="booking-item mb-2 p-3 border rounded" style="cursor: pointer;" onclick="selectBooking('${booking.id}', '${action}')">
@@ -520,7 +487,6 @@ function showBookingSelectionModal(bookings, action) {
     showModal(modal);
 }
 
-// Select Booking
 window.selectBooking = async function(bookingId, action) {
     const bookings = await getBookings();
     const booking = bookings.find(b => b.id === bookingId);
@@ -539,7 +505,6 @@ window.selectBooking = async function(bookingId, action) {
     }
 };
 
-// Show Support Modal
 function showSupportModal() {
     const modal = createModal(
         '24/7 Support',
@@ -572,20 +537,17 @@ function showSupportModal() {
     showModal(modal);
 }
 
-// Show Coming Soon Message
 function showComingSoonMessage(service) {
     showMessage(`${service} wird in Kürze verfügbar sein. Vielen Dank für Ihr Verständnis!`, 'info');
 }
 
-// Modal Helper Functions
 function createModal(title, content, buttons) {
     const modalId = 'service-modal-' + Date.now();
     const buttonHtml = buttons.map((btn, index) => {
         const action = typeof btn.action === 'function' ? `onclick="window.serviceModalAction${modalId}()"` : 'data-bs-dismiss="modal"';
         return `<button type="button" class="btn ${btn.class}" ${action}>${btn.text}</button>`;
     }).join('');
-    
-    // Store action function if needed
+
     if (buttons.some(btn => typeof btn.action === 'function')) {
         const actionBtn = buttons.find(btn => typeof btn.action === 'function');
         window[`serviceModalAction${modalId}`] = actionBtn.action;
@@ -612,23 +574,20 @@ function createModal(title, content, buttons) {
 }
 
 function showModal(modalHtml) {
-    // Remove existing modals
+    
     const existingModals = document.querySelectorAll('.service-modal-container');
     existingModals.forEach(modal => modal.remove());
-    
-    // Create modal container
+
     const container = document.createElement('div');
     container.className = 'service-modal-container';
     container.innerHTML = modalHtml;
     document.body.appendChild(container);
-    
-    // Show modal using Bootstrap
+
     const modalElement = container.querySelector('.modal');
     if (modalElement && window.bootstrap) {
         const modal = new bootstrap.Modal(modalElement);
         modal.show();
-        
-        // Clean up on hide
+
         modalElement.addEventListener('hidden.bs.modal', function() {
             container.remove();
         });
@@ -647,7 +606,6 @@ function closeModal() {
     });
 }
 
-// Message Helper
 function showMessage(message, type = 'info') {
     const alertClass = {
         'success': 'alert-success',
@@ -671,7 +629,6 @@ function showMessage(message, type = 'info') {
     }, 5000);
 }
 
-// Format Date Helper
 function formatDate(dateString) {
     if (!dateString) return 'Nicht angegeben';
     const date = new Date(dateString);

@@ -1,9 +1,8 @@
-// Geschäftskunden (Business Customers) Page JavaScript
+
 
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Geschäftskunden page loaded');
-    
-    // Setup button event listeners with delay to ensure DOM is ready
+
     setTimeout(() => {
         setupBusinessButtons();
     }, 100);
@@ -11,12 +10,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function setupBusinessButtons() {
     console.log('Setting up business buttons...');
-    
-    // Use event delegation on document for more reliability
+
     document.addEventListener('click', function(e) {
         const target = e.target;
-        
-        // Check if clicked element is "Angebot anfordern" button
+
         if (target.classList.contains('btn-primary') && target.textContent.trim().includes('Angebot anfordern')) {
             e.preventDefault();
             e.stopPropagation();
@@ -24,8 +21,7 @@ function setupBusinessButtons() {
             handleRequestOffer();
             return false;
         }
-        
-        // Check if clicked element is "Beratungstermin" button
+
         if (target.classList.contains('btn-outline') && target.textContent.trim().includes('Beratungstermin')) {
             e.preventDefault();
             e.stopPropagation();
@@ -34,8 +30,7 @@ function setupBusinessButtons() {
             return false;
         }
     });
-    
-    // Also try direct setup as fallback
+
     const ctaSection = document.querySelector('.cta-section');
     console.log('CTA section found:', !!ctaSection);
     
@@ -68,11 +63,9 @@ function setupBusinessButtons() {
     }
 }
 
-// Handle Request Offer
 function handleRequestOffer() {
     console.log('handleRequestOffer called');
-    
-    // Get user data if logged in
+
     const userData = JSON.parse(sessionStorage.getItem('userData') || localStorage.getItem('userData') || '{}');
     const currentUser = JSON.parse(sessionStorage.getItem('currentUser') || localStorage.getItem('currentUser') || '{}');
     
@@ -131,8 +124,7 @@ function handleRequestOffer() {
         ]
     );
     showBusinessModal(modal);
-    
-    // Setup real-time validation for offer form
+
     setTimeout(() => {
         setupRealTimeValidation('offer-request-form', [
             'company-name', 'contact-person', 'email', 'phone', 'vehicles-needed', 'offer-terms'
@@ -140,9 +132,8 @@ function handleRequestOffer() {
     }, 100);
 }
 
-// Handle Request Consultation
 function handleRequestConsultation() {
-    // Get user data if logged in
+    
     const userData = JSON.parse(sessionStorage.getItem('userData') || localStorage.getItem('userData') || '{}');
     const currentUser = JSON.parse(sessionStorage.getItem('currentUser') || localStorage.getItem('currentUser') || '{}');
     
@@ -207,8 +198,7 @@ function handleRequestConsultation() {
         ]
     );
     showBusinessModal(modal);
-    
-    // Setup real-time validation for consultation form
+
     setTimeout(() => {
         setupRealTimeValidation('consultation-request-form', [
             'consult-company-name', 'consult-contact-person', 'consult-email', 'consult-phone', 
@@ -217,19 +207,16 @@ function handleRequestConsultation() {
     }, 100);
 }
 
-// Submit Offer Request
 function submitOfferRequest() {
     const form = document.getElementById('offer-request-form');
     if (!form) {
         console.error('Form not found');
         return;
     }
-    
-    // Remove previous error styles
+
     form.querySelectorAll('.is-invalid').forEach(el => el.classList.remove('is-invalid'));
     form.querySelectorAll('.invalid-feedback').forEach(el => el.remove());
-    
-    // Check all required fields
+
     const requiredFields = [
         { id: 'company-name', label: 'Firmenname' },
         { id: 'contact-person', label: 'Ansprechpartner' },
@@ -257,8 +244,7 @@ function submitOfferRequest() {
             hasErrors = true;
             missingFields.push(field.label);
             element.classList.add('is-invalid');
-            
-            // Force red border with inline style
+
             if (field.isCheckbox) {
                 element.style.borderColor = '#dc3545';
                 element.style.borderWidth = '2px';
@@ -267,8 +253,7 @@ function submitOfferRequest() {
                 element.style.borderWidth = '2px';
                 element.style.backgroundColor = '#fff5f5';
             }
-            
-            // Add error message
+
             const errorDiv = document.createElement('div');
             errorDiv.className = 'invalid-feedback';
             errorDiv.style.display = 'block';
@@ -282,11 +267,10 @@ function submitOfferRequest() {
     });
     
     if (hasErrors) {
-        // Show alert with missing fields
+        
         const missingList = missingFields.map(f => `• ${f}`).join('\n');
         alert(`Bitte füllen Sie alle Pflichtfelder aus:\n\n${missingList}`);
-        
-        // Scroll to first error
+
         const firstError = form.querySelector('.is-invalid');
         if (firstError) {
             firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -294,8 +278,7 @@ function submitOfferRequest() {
         }
         return;
     }
-    
-    // Validate email format
+
     const email = document.getElementById('email').value;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
@@ -326,11 +309,9 @@ function submitOfferRequest() {
         vehiclesNeeded: document.getElementById('vehicles-needed').value,
         message: document.getElementById('message').value
     };
-    
-    // Simulate API call
+
     console.log('Offer request submitted:', formData);
-    
-    // Show success message immediately in modal before closing
+
     const modalContainer = document.querySelector('.business-modal-container');
     const modal = modalContainer ? modalContainer.querySelector('.modal') : null;
     
@@ -346,47 +327,36 @@ function submitOfferRequest() {
                     <p class="text-muted mb-0">Vielen Dank für Ihre Anfrage. Unser Business-Team wird sich innerhalb von 24 Stunden bei Ihnen melden.</p>
                 </div>
             `;
-            
-            // Hide form buttons and show close button
+
             const modalFooter = modal.querySelector('.modal-footer');
             if (modalFooter) {
                 modalFooter.innerHTML = '<button type="button" class="btn btn-primary" data-bs-dismiss="modal">Schließen</button>';
             }
-            
-            // Auto close after 3 seconds
+
             setTimeout(() => {
                 closeBusinessModal();
             }, 3000);
         }
     } else {
-        // Fallback if modal not found
+        
         closeBusinessModal();
         setTimeout(() => {
             showBusinessMessage('Ihre Nachricht wurde erfolgreich übermittelt! Vielen Dank für Ihre Anfrage. Unser Business-Team wird sich innerhalb von 24 Stunden bei Ihnen melden.', 'success');
         }, 300);
     }
-    
-    // In a real application, send to API:
-    // fetch('/api/business/request-offer', {
-    //     method: 'POST',
-    //     headers: { 'Content-Type': 'application/json' },
-    //     body: JSON.stringify(formData)
-    // });
+
 }
 
-// Submit Consultation Request
 function submitConsultationRequest() {
     const form = document.getElementById('consultation-request-form');
     if (!form) {
         console.error('Form not found');
         return;
     }
-    
-    // Remove previous error styles
+
     form.querySelectorAll('.is-invalid').forEach(el => el.classList.remove('is-invalid'));
     form.querySelectorAll('.invalid-feedback').forEach(el => el.remove());
-    
-    // Check all required fields
+
     const requiredFields = [
         { id: 'consult-company-name', label: 'Firmenname' },
         { id: 'consult-contact-person', label: 'Ansprechpartner' },
@@ -417,8 +387,7 @@ function submitConsultationRequest() {
             hasErrors = true;
             missingFields.push(field.label);
             element.classList.add('is-invalid');
-            
-            // Force red border with inline style
+
             if (field.isCheckbox) {
                 element.style.borderColor = '#dc3545';
                 element.style.borderWidth = '2px';
@@ -431,8 +400,7 @@ function submitConsultationRequest() {
                 element.style.borderWidth = '2px';
                 element.style.backgroundColor = '#fff5f5';
             }
-            
-            // Add error message
+
             const errorDiv = document.createElement('div');
             errorDiv.className = 'invalid-feedback';
             errorDiv.style.display = 'block';
@@ -446,11 +414,10 @@ function submitConsultationRequest() {
     });
     
     if (hasErrors) {
-        // Show alert with missing fields
+        
         const missingList = missingFields.map(f => `• ${f}`).join('\n');
         alert(`Bitte füllen Sie alle Pflichtfelder aus:\n\n${missingList}`);
-        
-        // Scroll to first error
+
         const firstError = form.querySelector('.is-invalid');
         if (firstError) {
             firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -458,8 +425,7 @@ function submitConsultationRequest() {
         }
         return;
     }
-    
-    // Validate email format
+
     const email = document.getElementById('consult-email').value;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
@@ -481,8 +447,7 @@ function submitConsultationRequest() {
         emailField.focus();
         return;
     }
-    
-    // Validate date is not in the past
+
     const selectedDate = document.getElementById('preferred-date').value;
     const today = new Date().toISOString().split('T')[0];
     if (selectedDate < today) {
@@ -513,11 +478,9 @@ function submitConsultationRequest() {
         preferredDate: document.getElementById('preferred-date').value,
         preferredTime: document.getElementById('preferred-time').value
     };
-    
-    // Simulate API call
+
     console.log('Consultation request submitted:', formData);
-    
-    // Show success message immediately in modal before closing
+
     const modalContainer = document.querySelector('.business-modal-container');
     const modal = modalContainer ? modalContainer.querySelector('.modal') : null;
     
@@ -533,35 +496,26 @@ function submitConsultationRequest() {
                     <p class="text-muted mb-0">Vielen Dank für Ihre Terminanfrage. Wir werden Ihnen eine Bestätigung per E-Mail senden.</p>
                 </div>
             `;
-            
-            // Hide form buttons and show close button
+
             const modalFooter = modal.querySelector('.modal-footer');
             if (modalFooter) {
                 modalFooter.innerHTML = '<button type="button" class="btn btn-primary" data-bs-dismiss="modal">Schließen</button>';
             }
-            
-            // Auto close after 3 seconds
+
             setTimeout(() => {
                 closeBusinessModal();
             }, 3000);
         }
     } else {
-        // Fallback if modal not found
+        
         closeBusinessModal();
         setTimeout(() => {
             showBusinessMessage('Ihre Nachricht wurde erfolgreich übermittelt! Vielen Dank für Ihre Terminanfrage. Wir werden Ihnen eine Bestätigung per E-Mail senden.', 'success');
         }, 300);
     }
-    
-    // In a real application, send to API:
-    // fetch('/api/business/request-consultation', {
-    //     method: 'POST',
-    //     headers: { 'Content-Type': 'application/json' },
-    //     body: JSON.stringify(formData)
-    // });
+
 }
 
-// Modal Helper Functions
 function createBusinessModal(title, content, buttons) {
     const modalId = 'business-modal-' + Date.now();
     const buttonHtml = buttons.map((btn, index) => {
@@ -594,23 +548,20 @@ function createBusinessModal(title, content, buttons) {
 }
 
 function showBusinessModal(modalHtml) {
-    // Remove existing modals
+    
     const existingModals = document.querySelectorAll('.business-modal-container');
     existingModals.forEach(modal => modal.remove());
-    
-    // Create modal container
+
     const container = document.createElement('div');
     container.className = 'business-modal-container';
     container.innerHTML = modalHtml;
     document.body.appendChild(container);
-    
-    // Show modal using Bootstrap
+
     const modalElement = container.querySelector('.modal');
     if (modalElement && window.bootstrap) {
         const modal = new bootstrap.Modal(modalElement);
         modal.show();
-        
-        // Clean up on hide
+
         modalElement.addEventListener('hidden.bs.modal', function() {
             container.remove();
         });
@@ -629,7 +580,6 @@ function closeBusinessModal() {
     });
 }
 
-// Real-time validation helper
 function setupRealTimeValidation(formId, fieldIds) {
     const form = document.getElementById(formId);
     if (!form) return;
@@ -637,8 +587,7 @@ function setupRealTimeValidation(formId, fieldIds) {
     fieldIds.forEach(fieldId => {
         const field = document.getElementById(fieldId);
         if (!field) return;
-        
-        // Remove error on input/change
+
         const clearError = () => {
             if (field.classList.contains('is-invalid')) {
                 field.classList.remove('is-invalid');
@@ -648,8 +597,7 @@ function setupRealTimeValidation(formId, fieldIds) {
                 }
             }
         };
-        
-        // Add error if empty
+
         const checkField = () => {
             let isEmpty = false;
             
@@ -683,7 +631,6 @@ function setupRealTimeValidation(formId, fieldIds) {
     });
 }
 
-// Message Helper
 function showBusinessMessage(message, type = 'info') {
     const alertClass = {
         'success': 'alert-success',

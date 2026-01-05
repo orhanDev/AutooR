@@ -27,7 +27,7 @@ router.get('/seed', async (req, res) => {
       try {
         await client.query('CREATE EXTENSION IF NOT EXISTS pgcrypto;');
       } catch (e) {
-        // ignore extension failure in limited roles
+        
       }
       const initSql = fs.readFileSync(path.join(__dirname, '..', 'db', 'init.sql'), 'utf8');
       const seedSql = fs.readFileSync(path.join(__dirname, '..', 'db', 'seed.sql'), 'utf8');
@@ -44,5 +44,4 @@ router.get('/seed', async (req, res) => {
 });
 
 module.exports = router;
-
 

@@ -1,14 +1,8 @@
-# PostgreSQL Bağlantı Sorunu Çözümü
-
-## Sorun
+
 pgAdmin'de şu hata alınıyor:
 ```
 FATAL: Passwort-Authentifizierung für Benutzer "AutooR_user" fehlgeschlagen
-```
-
-## Çözüm Adımları
-
-### Yöntem 1: pgAdmin'de Kullanıcı Oluşturma (Önerilen)
+```
 
 1. **pgAdmin'i açın**
 2. **PostgreSQL sunucusuna bağlanın** (genellikle "PostgreSQL 15" veya benzeri)
@@ -42,17 +36,13 @@ GRANT ALL PRIVILEGES ON DATABASE AutooR_db TO AutooR_user;
    - Port: `5432`
    - Username: `AutooR_user`
    - Password: `Vekil4023.`
-   - Database: `AutooR_db`
-
-### Yöntem 2: Şifreyi Değiştirme (Kullanıcı zaten varsa)
+   - Database: `AutooR_db`
 
 Eğer `AutooR_user` kullanıcısı zaten varsa, şifresini değiştirin:
 
 ```sql
 ALTER USER AutooR_user WITH PASSWORD 'Vekil4023.';
-```
-
-### Yöntem 3: Docker Kullanarak (Alternatif)
+```
 
 Eğer Docker Desktop yüklüyse ve çalışıyorsa:
 
@@ -60,21 +50,15 @@ Eğer Docker Desktop yüklüyse ve çalışıyorsa:
 docker-compose up -d
 ```
 
-Bu komut `docker-compose.yml` dosyasındaki ayarlarla PostgreSQL'i başlatır.
-
-## Bağlantı Bilgileri
+Bu komut `docker-compose.yml` dosyasındaki ayarlarla PostgreSQL'i başlatır.
 
 - **Host:** `localhost` veya `127.0.0.1`
 - **Port:** `5432`
 - **Username:** `AutooR_user`
 - **Password:** `Vekil4023.`
-- **Database:** `AutooR_db`
+- **Database:** `AutooR_db`
 
-## Test Etme
-
-pgAdmin'de yeni bir sunucu bağlantısı oluşturduktan sonra, bağlantıyı test edin. Başarılı olursa, `AutooR_db` veritabanını görebilmelisiniz.
-
-## Sorun Devam Ederse
+pgAdmin'de yeni bir sunucu bağlantısı oluşturduktan sonra, bağlantıyı test edin. Başarılı olursa, `AutooR_db` veritabanını görebilmelisiniz.
 
 1. PostgreSQL servisinin çalıştığından emin olun:
    ```powershell

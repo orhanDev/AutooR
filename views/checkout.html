@@ -214,11 +214,10 @@
 <body>
     <header>
         <div id="navbar-container">
-            <!-- Navbar JavaScript ile yüklenecek -->
+            
         </div>
     </header>
 
-    <!-- Hero Section -->
     <section class="checkout-hero">
         <div class="container">
             <h1>Checkout</h1>
@@ -226,31 +225,29 @@
         </div>
     </section>
 
-    <!-- Main Content -->
     <main class="checkout-content">
         <div class="container">
-            <!-- Countdown Alert -->
+            
             <div class="countdown-alert">
                 <i class="bi bi-clock me-2"></i>
                 Reservierung abschließen – verbleibende Zeit: <span id="countdown">25:00</span>
             </div>
 
             <div class="row g-4">
-                <!-- Left Column - Main Content -->
+                
                 <div class="col-lg-8">
-                    <!-- Reservation Data -->
+                    
                     <div class="checkout-card">
                         <h5><i class="bi bi-calendar-check"></i> Reservierungsdaten</h5>
                         <div id="reservation-summary" class="row row-cols-2 row-cols-md-4 g-3">
-                            <!-- Dynamically filled -->
+                            
                         </div>
                     </div>
 
-                    <!-- Vehicle Details -->
                     <div class="checkout-card">
                         <h5><i class="bi bi-car-front"></i> Fahrzeugdetails</h5>
                         <div class="vehicle-card d-flex align-items-start" id="vehicle-card">
-                            <!-- Dynamically filled -->
+                            
                         </div>
                         <hr />
                         <div class="row">
@@ -271,7 +268,6 @@
                         </div>
                     </div>
 
-                    <!-- Payment Method -->
                     <div class="checkout-card">
                         <h5><i class="bi bi-credit-card"></i> Zahlungsart</h5>
                         <div class="payment-method">
@@ -294,7 +290,7 @@
                         </div>
 
                         <div id="payment-forms">
-                            <!-- Credit Card Form -->
+                            
                             <div id="form-card">
                                 <div class="row g-3">
                                     <div class="col-12">
@@ -311,14 +307,12 @@
                                     </div>
                                 </div>
                             </div>
-                            
-                            <!-- PayPal Form -->
+
                             <div id="form-paypal" class="d-none">
                                 <p class="mb-3">Mit PayPal fortfahren (Sandbox).</p>
                                 <div id="paypal-button-container"></div>
                             </div>
-                            
-                            <!-- Klarna Form -->
+
                             <div id="form-klarna" class="d-none">
                                 <p class="mb-3">Mit Klarna bezahlen (Playground).</p>
                                 <button class="nav-link-text" id="btn-klarna-pay">
@@ -331,7 +325,6 @@
                         </div>
                     </div>
 
-                    <!-- Contact and Driver Data -->
                     <div class="checkout-card">
                         <h5><i class="bi bi-person"></i> Kontakt- und Fahrerdaten</h5>
                         <div id="customer-forms" class="row g-3">
@@ -366,7 +359,6 @@
                         </div>
                     </div>
 
-                    <!-- Terms and Conditions -->
                     <div class="checkout-card">
                         <h5><i class="bi bi-file-text"></i> Allgemeine Geschäftsbedingungen</h5>
                         <div class="form-check">
@@ -378,7 +370,6 @@
                         </div>
                     </div>
 
-                    <!-- Complete Reservation Button -->
                     <div class="text-center">
                         <button id="complete-reservation" class="nav-link-text btn-lg" disabled>
                             <i class="bi bi-check-circle me-2"></i>
@@ -387,12 +378,11 @@
                     </div>
                 </div>
 
-                <!-- Right Column - Summary -->
                 <div class="col-lg-4">
                     <div class="summary-card">
                         <h4><i class="bi bi-receipt me-2"></i>Zusammenfassung</h4>
                         <div id="summary-items">
-                            <!-- Dynamically filled -->
+                            
                         </div>
                         <div class="total-price">
                             Gesamt: <span id="total-price">€0</span>
@@ -419,7 +409,7 @@
     <script src="../js/navbar.js"></script>
     <script src="../js/auth.js"></script>
     <script>
-        // Payment method switching
+        
         document.getElementById('pay-card').addEventListener('change', function() {
             showPaymentForm('form-card');
         });
@@ -433,24 +423,20 @@
         });
         
         function showPaymentForm(formId) {
-            // Hide all forms
+            
             document.querySelectorAll('#payment-forms > div').forEach(form => {
                 form.classList.add('d-none');
             });
-            
-            // Show selected form
+
             document.getElementById(formId).classList.remove('d-none');
         }
-        
-        // Terms checkbox
+
         document.getElementById('terms-accepted').addEventListener('change', function() {
             document.getElementById('complete-reservation').disabled = !this.checked;
         });
-        
-        // Initialize payment forms
+
         showPaymentForm('form-card');
     </script>
 </body>
 </html>
-
 

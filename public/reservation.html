@@ -4,22 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reservierung - AutooR</title>
-    
-    <!-- Favicon -->
+
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
-    
-    <!-- Bootstrap CSS -->
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap Icons -->
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
-    <!-- Flatpickr (Datepicker) -->
+    
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-    <!-- Site CSS -->
+    
     <link rel="stylesheet" href="/css/style.css?v=20260105">
     <link rel="stylesheet" href="/css/navbar.css?v=20260104">
     <style>
-        /* Footer Styles */
+        
         .footer-section {
             background: #333;
             color: #ffffff;
@@ -66,8 +64,6 @@
              color: #ffffff;
              font-weight: 600;
          }
-
-         /* Responsive Design */
          @media (max-width: 768px) {
              body {
                  margin-top: 60px !important;
@@ -122,108 +118,84 @@
 </head>
 <body style="overflow-x: hidden; background:#f7f7f7;">
     <style>
-        /* Overlay removed since background image is disabled */
-        /* Equal width selects in quick bar */
         .qr-select { flex: 0 0 calc(180px + 6rem); max-width: calc(180px + 6rem); }
         @media (max-width: 576px) { .qr-select { flex: 1 1 auto; max-width: none; } }
-        /* Override Bootstrap grid for our quick date columns on xl */
+        
         @media (min-width: 1200px) { .col-xl-3 { width: 50% !important; } }
-        /* Selectable insurance/extra cards */
+        
         .insurance-card.card, .extra-card.card { transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease, background-color .15s ease; }
         .insurance-card.card:hover, .extra-card.card:hover { transform: translateY(-2px); box-shadow: 0 10px 22px rgba(0,0,0,.08); border-color: #ffc107; }
         .insurance-card.card.selected, .extra-card.card.selected { border-color: #ffc107 !important; box-shadow: 0 0 0 3px rgba(255,193,7,.25); background-color: #fff8e1; }
-        /* Hover/selected states for quick bar fields (dark translucent background) */
+        
         .qr-select { transition: box-shadow .15s ease, border-color .15s ease, background-color .15s ease; color:#000 !important; background:#fff !important; }
         .qr-select:hover, .qr-select:focus { border-color: #ffc107 !important; background-color: #14140b0f !important; }
         .qr-select.selected { border-color: #ffc107 !important; box-shadow: 0 0 0 1px rgba(255,193,7,.35) !important; background-color: #14140b0f !important; }
         .input-group.qr-selected .input-group-text,
         .input-group:hover .input-group-text,
         .input-group:focus-within .input-group-text { border-color: #ffc107 !important; background-color: #14140b0f !important; color:#000 !important; }
-        /* Make icon box border thickness match selects */
+        
         .input-group .input-group-text { border-width: 2px; }
-        /* When a location is chosen, color the icon background */
+        
         .qr-loc.qr-selected .input-group-text { background-color: #14140b0f !important; color: #000 !important; border-color: #ffc107 !important; }
-        /* Submit button styles and hover */
+        
         #submitBtn { border: 2px solid #000 !important; background:#ffffff !important; color:#000 !important; transition: all .15s ease !important; }
-        /* Active hover only when all requirements are met (handled via :not(:disabled)) */
+        
         #submitBtn:hover:not(:disabled), #submitBtn:focus:not(:disabled) { background:#ffc107 !important; border-color:#ffc107 !important; color:#000 !important; }
         #submitBtn:disabled { opacity:.6; cursor:not-allowed; background:#ffffff !important; border-color:#000 !important; color:#000 !important; box-shadow:none !important; }
-        /* Summary card emphasis */
+        
         .summary-card { border: 2px solid #ffc107 !important; box-shadow: 0 8px 28px rgba(0,0,0,.06); }
         .summary-card h5 { border-bottom: 1px solid #eee; padding-bottom: .5rem; }
         .summary-box { border: 1.5px solid #ffc107 !important; }
         .total-row span:last-child { font-size: 1.25rem; color:#000; }
         #total-price { background:#fff8e1; border:2px solid #ffc107; border-radius:10px; padding: .15rem .6rem; font-weight:800; }
-        /* Force yellow badges inside insurance cards */
+        
         .insurance-card .bg-warning { background-color:#ffc107 !important; color:#000 !important; }
-        /* Main reservation card success border */
+        
         #reservation-main-card { border-width:2px !important; }
         #reservation-main-card.ready { border-color:#ffc107 !important; box-shadow: 0 0 0 3px rgba(255,193,7,.15); }
-        
-        /* Mobile Responsive Styles (max-width: 751px) */
         @media (max-width: 751px) {
-            /* Container padding */
+            
             .container {
                 padding-left: 1rem;
                 padding-right: 1rem;
             }
-            
-            /* Main card padding */
             #reservation-main-card {
                 padding: 1.25rem !important;
                 border-radius: 1rem !important;
             }
-            
-            /* Heading */
             #reservation-main-card h2 {
                 font-size: 1.5rem !important;
                 margin-bottom: 1.25rem !important;
             }
-            
-            /* Quick search form */
             .summary-box {
                 padding: 1rem !important;
                 border-radius: 0.75rem !important;
                 margin-bottom: 1.25rem !important;
             }
-            
-            /* Form labels */
             .form-label {
                 font-size: 0.75rem !important;
                 margin-bottom: 0.5rem !important;
             }
-            
-            /* Location selects - full width on mobile */
             .col-lg-6 {
                 margin-bottom: 0.75rem;
             }
-            
-            /* Date/Time inputs - stack vertically */
             .col-md-6.col-xl-3 {
                 width: 100% !important;
                 margin-bottom: 0.75rem;
             }
-            
-            /* Input groups - better spacing */
             .input-group {
                 margin-bottom: 0.5rem;
             }
-            
-            /* Input group text icons - smaller */
             .input-group-text {
                 padding: 0.5rem 0.75rem !important;
                 font-size: 0.875rem;
             }
-            
-            /* Form controls - better touch targets */
             .form-control,
             .form-select {
                 padding: 0.625rem 0.75rem !important;
                 font-size: 0.875rem !important;
-                min-height: 44px; /* Better touch target */
+                min-height: 44px; 
             }
-            
-            /* Date/time input groups - better layout */
             .input-group.flex-nowrap {
                 flex-wrap: wrap !important;
             }
@@ -237,15 +209,11 @@
                 flex: 1 1 40%;
                 min-width: 80px;
             }
-            
-            /* Insurance and extra cards - single column */
             #insurance-packages .col-md-4,
             #additional-services .col-md-4 {
                 width: 100% !important;
                 margin-bottom: 0.75rem;
             }
-            
-            /* Insurance/Extra card padding */
             .insurance-card,
             .extra-card {
                 margin-bottom: 0.75rem;
@@ -255,14 +223,10 @@
             .extra-card .card-body {
                 padding: 1rem !important;
             }
-            
-            /* Section headings */
             h5.fw-bold {
                 font-size: 1.125rem !important;
                 margin-bottom: 1rem !important;
             }
-            
-            /* Summary box - better mobile layout */
             .summary-box {
                 padding: 1rem !important;
             }
@@ -271,34 +235,24 @@
                 font-size: 1rem !important;
                 margin-bottom: 0.75rem !important;
             }
-            
-            /* Price breakdown - better spacing */
             #price-breakdown .d-flex {
                 margin-bottom: 0.75rem !important;
                 font-size: 0.875rem;
             }
-            
-            /* Total price - larger on mobile */
             #total-price {
                 font-size: 1.5rem !important;
                 padding: 0.5rem 0.75rem !important;
             }
-            
-            /* Personal information form */
             .row.g-3 > .col-md-6 {
                 width: 100% !important;
                 margin-bottom: 0.75rem;
             }
-            
-            /* Submit button */
             #submitBtn {
                 width: 100% !important;
                 padding: 0.875rem 1.5rem !important;
                 font-size: 1rem !important;
                 margin-top: 1rem;
             }
-            
-            /* Breadcrumb - smaller */
             .breadcrumb {
                 font-size: 0.75rem;
                 margin-bottom: 0.75rem;
@@ -310,14 +264,10 @@
                 text-overflow: ellipsis;
                 white-space: nowrap;
             }
-            
-            /* Vehicle summary card - better mobile layout */
             .col-lg-4 {
                 width: 100% !important;
                 margin-top: 1.5rem;
             }
-            
-            /* Summary blocks */
             .summary-blocks {
                 padding: 1rem !important;
             }
@@ -325,8 +275,6 @@
             .summary-blocks .row {
                 margin-bottom: 0.75rem;
             }
-            
-            /* Terms checkbox */
             .form-check {
                 margin-top: 1rem;
                 padding-left: 1.75rem;
@@ -335,8 +283,6 @@
             .form-check-label {
                 font-size: 0.875rem;
             }
-            
-            /* Summary blocks - better mobile layout */
             .summary-blocks .small {
                 font-size: 0.8125rem !important;
             }
@@ -344,8 +290,6 @@
             .summary-blocks .mb-2 {
                 margin-bottom: 0.75rem !important;
             }
-            
-            /* Price breakdown - better mobile spacing */
             #price-breakdown .mb-3 {
                 margin-bottom: 1rem !important;
             }
@@ -358,15 +302,11 @@
                 margin-top: 1rem !important;
                 margin-bottom: 1rem !important;
             }
-            
-            /* Vehicle image in summary */
             .summary-blocks img {
                 max-width: 100%;
                 height: auto;
                 border-radius: 0.5rem;
             }
-            
-            /* Input group flex-nowrap - better mobile behavior */
             .input-group.flex-nowrap {
                 display: flex;
                 flex-wrap: wrap;
@@ -391,31 +331,24 @@
                 flex: 1 1 auto;
                 min-width: 0;
             }
-            
-            /* Better spacing for location selects */
             .qr-loc {
                 margin-bottom: 0.75rem;
             }
-            
-            /* Section spacing */
             .mt-4 {
                 margin-top: 1.5rem !important;
             }
-            
-            /* Card body padding */
             .card-body {
                 padding: 1rem !important;
             }
         }
     </style>
-    <!-- Standard Navbar Placeholder -->
+    
     <div id="navbar-container"></div>
 
-    <!-- Reservation Section -->
     <section class="py-5" style="margin-top: 0;">
         <div class="container">
             <div id="reservation-container">
-                <!-- Loading spinner -->
+                
                 <div class="text-center py-5">
                     <div class="spinner-border text-warning" role="status">
                         <span class="visually-hidden">Loading...</span>
@@ -426,7 +359,6 @@
         </div>
     </section>
 
-    <!-- Footer -->
     <footer class="footer-section">
         <div class="container">
             <div class="footer-content">
@@ -442,17 +374,15 @@
         </div>
     </footer>
 
-    <!-- Content Protection -->
     <script src="/js/content-protection.js"></script>
-    
-    <!-- Bootstrap JS -->
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Flatpickr JS + German locale -->
+    
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/de.js"></script>
-    <!-- Navbar JS -->
+    
     <script src="/js/navbar.js?v=20260104"></script>
-    <!-- Page JS -->
+    
     <script src="/js/image-util.js"></script>
     <script src="/js/reservation.js"></script>
 </body>

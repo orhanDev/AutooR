@@ -1,9 +1,8 @@
-// Buchungen (Bookings) Page JavaScript
+
 
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Buchungen page loaded');
-    
-    // Wait for navbar script to load, then initialize
+
     setTimeout(() => {
         if (typeof createNavbar === 'function') {
             createNavbar();
@@ -12,8 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
             updateNavbar();
         }
     }, 100);
-    
-    // Load and display bookings
+
     loadBookings();
 });
 
@@ -22,8 +20,7 @@ async function loadBookings() {
     
     const container = document.getElementById('bookings-container');
     const emptyState = document.getElementById('empty-state');
-    
-    // Check if user is logged in (sessionStorage öncelikli, yoksa localStorage)
+
     const userData = JSON.parse(sessionStorage.getItem('userData') || localStorage.getItem('userData') || '{}');
     const token = sessionStorage.getItem('token') || localStorage.getItem('token');
     
@@ -47,11 +44,11 @@ async function loadBookings() {
     }
     
     try {
-        // Get user email from userData or fetch from API if not available
+        
         let userEmail = userData.email;
         
         if (!userEmail && token) {
-            // Try to get user info from API
+            
             try {
                 const userResponse = await fetch('/api/auth/user', {
                     headers: { 'x-auth-token': token }
@@ -69,23 +66,22 @@ async function loadBookings() {
         if (!userEmail) {
             throw new Error('No user email available');
         }
-        
-        // Get bookings from database
+
         const response = await fetch(`/api/reservations/user/${userEmail}`);
         const result = await response.json();
         
         if (result.success && result.reservations.length > 0) {
             container.style.display = 'block';
             emptyState.style.display = 'none';
-            // Generate booking cards
+            
             container.innerHTML = result.reservations.map(booking => createBookingCard(booking)).join('');
         } else {
-            // Fallback to localStorage if database is not available
+            
             const userBookings = JSON.parse(localStorage.getItem('userBookings') || '[]');
             if (userBookings.length > 0) {
                 container.style.display = 'block';
                 emptyState.style.display = 'none';
-                // Generate booking cards from localStorage
+                
                 container.innerHTML = userBookings.map(booking => createBookingCardFromStorage(booking)).join('');
             } else {
                 container.style.display = 'none';
@@ -104,12 +100,12 @@ async function loadBookings() {
         }
     } catch (error) {
         console.error('Error loading bookings:', error);
-        // Fallback to localStorage if database is not available
+        
         const userBookings = JSON.parse(localStorage.getItem('userBookings') || '[]');
         if (userBookings.length > 0) {
             container.style.display = 'block';
             emptyState.style.display = 'none';
-            // Generate booking cards from localStorage
+            
             container.innerHTML = userBookings.map(booking => createBookingCardFromStorage(booking)).join('');
         } else {
             container.style.display = 'none';
@@ -126,7 +122,7 @@ async function loadBookings() {
 }
 
 function getBookingsFromStorage() {
-    // Sample bookings data (in a real app, this would come from an API)
+    
     const sampleBookings = [
         {
             id: 'AUT-2024-001',
@@ -162,11 +158,9 @@ function getBookingsFromStorage() {
             image: '/images/cars/mb-s-long-sedan-4d-silver-2021-JV.png'
         }
     ];
-    
-    // Check if user has any bookings in localStorage
+
     const userBookings = JSON.parse(localStorage.getItem('userBookings') || '[]');
-    
-    // If no user bookings exist, add a sample booking for testing
+
     if (userBookings.length === 0) {
         const sampleBooking = {
             id: 'AUT-2024-001',
@@ -388,8 +382,7 @@ function getPaymentStatusText(paymentStatus) {
 
 function createActionButtons(booking) {
     let buttons = '';
-    
-    // Payment status'a göre butonları belirle
+
     if (booking.payment_status === 'completed') {
         buttons = `
             <button onclick="rebookCar('${booking.id}', '${booking.vehicle_id}', '${booking.vehicle_name}', '${booking.vehicle_image}')" class="btn-action btn-primary">Erneut mieten</button>
@@ -404,7 +397,7 @@ function createActionButtons(booking) {
             <button onclick="retryPayment('${booking.id}')" class="btn-action btn-primary">Zahlung wiederholen</button>
         `;
     } else {
-        // Fallback to status-based buttons
+        
         switch (booking.status) {
             case 'active':
                 buttons = `
@@ -428,8 +421,7 @@ function createActionButtons(booking) {
 
 function createActionButtonsFromStorage(booking) {
     let buttons = '';
-    
-    // Payment status'a göre butonları belirle
+
     if (booking.paymentStatus === 'completed') {
         buttons = `
             <button onclick="rebookCar('${booking.id}', '${booking.vehicleId || ''}', '${booking.car}', '${booking.image}')" class="btn-action btn-primary">Erneut mieten</button>
@@ -444,7 +436,7 @@ function createActionButtonsFromStorage(booking) {
             <button onclick="retryPayment('${booking.id}')" class="btn-action btn-primary">Zahlung wiederholen</button>
         `;
     } else {
-        // Fallback to status-based buttons
+        
         switch (booking.status) {
             case 'active':
                 buttons = `
@@ -475,48 +467,44 @@ function formatDate(dateString) {
     });
 }
 
-// Action functions
 function modifyBooking(bookingId) {
     console.log('Modify booking:', bookingId);
-    // In a real app, this would open a modification dialog or redirect to a modification page
+    
     alert('Buchungsänderung wird in Kürze verfügbar sein.');
 }
 
 function cancelBooking(bookingId) {
     if (confirm('Sind Sie sicher, dass Sie diese Buchung stornieren möchten?')) {
         console.log('Cancel booking:', bookingId);
-        // In a real app, this would make an API call to cancel the booking
+        
         alert('Buchung wurde storniert.');
-        loadBookings(); // Reload the bookings list
+        loadBookings(); 
     }
 }
 
 function rebookCar(bookingId, vehicleId, vehicleName, vehicleImage) {
     console.log('Rebook car for booking:', bookingId, 'Vehicle:', vehicleId, vehicleName);
-    
-    // Store the vehicle info in localStorage for the reservation page
+
     if (vehicleId && vehicleName) {
         localStorage.setItem('selectedVehicle', JSON.stringify({
             id: vehicleId,
             name: vehicleName,
             image: vehicleImage || '/images/cars/bmw-x5-suv-4d-grey-2023-JV.png'
         }));
-        
-        // Also store the vehicle ID for the reservation page
+
         localStorage.setItem('selectedCarId', vehicleId);
     }
-    
-    // Redirect to reservation page with vehicle ID as parameter
+
     if (vehicleId) {
         window.location.href = `/reservation?id=${vehicleId}`;
     } else {
-        // Fallback to reservation page without ID
+        
         window.location.href = '/reservation';
     }
 }
 
 function retryPayment(bookingId) {
     console.log('Retry payment for booking:', bookingId);
-    // In a real app, this would redirect to the payment page
+    
     alert('Zahlungswiederholung wird in Kürze verfügbar sein.');
 }

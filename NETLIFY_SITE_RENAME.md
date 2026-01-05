@@ -1,6 +1,4 @@
-# Netlify Site Adını Değiştirme
-
-## Adımlar:
+
 
 1. Netlify'da **"Project overview"** sekmesine gidin
 2. Site adının yanındaki **"Options"** butonuna tıklayın (dropdown menü)
@@ -11,9 +9,7 @@
 Site adı değiştikten sonra URL şu olacak:
 - `autoor-demo.netlify.app`
 
-Bu URL portfolio'daki "Demo besuchen" linkiyle eşleşecek.
-
-## Alternatif: Portfolio Linkini Güncelleme
+Bu URL portfolio'daki "Demo besuchen" linkiyle eşleşecek.
 
 Eğer site adını değiştirmek istemiyorsanız, portfolio'daki linki şu şekilde güncelleyin:
 - Eski: `autor-demo.netlify.app`

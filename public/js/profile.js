@@ -1,9 +1,8 @@
-﻿// Profile Page JavaScript
+﻿
 
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Profile page loaded');
-    
-    // Wait for navbar script to load, then initialize
+
     setTimeout(() => {
         if (typeof createNavbar === 'function') {
             createNavbar();
@@ -12,19 +11,16 @@ document.addEventListener('DOMContentLoaded', function() {
             updateNavbar();
         }
     }, 100);
-    
-    // Load profile data
+
     loadProfileData();
 });
 
 function loadProfileData() {
     console.log('Loading profile data...');
-    
-    // Get user data from localStorage
+
     const userData = JSON.parse(sessionStorage.getItem('userData') || localStorage.getItem('userData') || '{}');
     const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
-    
-    // Set profile name and email
+
     const userName = userData.name || currentUser.firstName || 'Benutzer';
     const userEmail = userData.email || currentUser.email || 'benutzer@example.com';
     
@@ -33,22 +29,18 @@ function loadProfileData() {
     document.getElementById('username').textContent = userName;
     document.getElementById('email').textContent = userEmail;
     document.getElementById('phone').textContent = userData.phone || currentUser.phone || 'Nicht angegeben';
-    
-    // Set profile avatar with initials
+
     const initials = getInitials(userName);
     document.getElementById('profile-avatar').textContent = initials;
-    
-    // Set member since date
+
     const memberSince = userData.createdAt || currentUser.createdAt || new Date().toISOString();
     const memberDate = new Date(memberSince);
     document.getElementById('member-since-date').textContent = memberDate.toLocaleDateString('de-DE');
-    
-    // Set last login
+
     const lastLogin = userData.loginTime || new Date().toISOString();
     const loginDate = new Date(lastLogin);
     document.getElementById('last-login').textContent = loginDate.toLocaleString('de-DE');
-    
-    // Load statistics
+
     loadStatistics();
 }
 
@@ -64,23 +56,20 @@ function getInitials(name) {
 }
 
 function loadStatistics() {
-    // Get bookings from localStorage
-    const bookings = JSON.parse(localStorage.getItem('userBookings') || '[]');
     
-    // Calculate statistics
+    const bookings = JSON.parse(localStorage.getItem('userBookings') || '[]');
+
     const totalBookings = bookings.length;
     const totalDistance = bookings.reduce((sum, booking) => sum + (booking.distance || 0), 0);
     const totalSavings = bookings.reduce((sum, booking) => sum + (booking.savings || 0), 0);
-    const loyaltyPoints = totalBookings * 100; // 100 points per booking
-    
-    // Update statistics display
+    const loyaltyPoints = totalBookings * 100; 
+
     document.getElementById('total-bookings').textContent = totalBookings;
     document.getElementById('total-distance').textContent = totalDistance.toLocaleString('de-DE');
     document.getElementById('total-savings').textContent = `€${totalSavings.toLocaleString('de-DE')}`;
     document.getElementById('loyalty-points').textContent = loyaltyPoints.toLocaleString('de-DE');
 }
 
-// Action functions
 function editProfile() {
     console.log('Edit profile clicked');
     window.location.href = '/persoenliche-daten';
@@ -93,21 +82,18 @@ function changePassword() {
 
 function downloadData() {
     console.log('Download data clicked');
-    
-    // Get user data
+
     const userData = JSON.parse(sessionStorage.getItem('userData') || localStorage.getItem('userData') || '{}');
     const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
     const bookings = JSON.parse(localStorage.getItem('userBookings') || '[]');
-    
-    // Create data object
+
     const exportData = {
         userData: userData,
         currentUser: currentUser,
         bookings: bookings,
         exportDate: new Date().toISOString()
     };
-    
-    // Create and download file
+
     const dataStr = JSON.stringify(exportData, null, 2);
     const dataBlob = new Blob([dataStr], {type: 'application/json'});
     const url = URL.createObjectURL(dataBlob);
@@ -128,8 +114,7 @@ function deleteAccount() {
     if (confirm('Sind Sie sicher, dass Sie Ihr Konto löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.')) {
         if (confirm('Letzte Bestätigung: Möchten Sie wirklich alle Ihre Daten unwiderruflich löschen?')) {
             console.log('Delete account confirmed');
-            
-            // Clear all user data
+
             localStorage.removeItem('userData');
             localStorage.removeItem('currentUser');
             localStorage.removeItem('userBookings');
@@ -138,8 +123,7 @@ function deleteAccount() {
             localStorage.removeItem('pendingEmail');
             
             alert('Ihr Konto wurde erfolgreich gelöscht. Sie werden zur Startseite weitergeleitet.');
-            
-            // Redirect to homepage
+
             window.location.href = '/';
         }
     }

@@ -1,7 +1,7 @@
-// Centralized car catalog for Fahrzeuge page and menus
-// Fields: id, brand, model, type, price (per day), image, specs
+
+
 window.CAR_CATALOG = [
-  // Kompaktklasse / Mittelklasse (Beispiele)
+  
   { id: 1, brand: 'Volkswagen', model: 'T-Roc', type: 'Kompaktklasse SUV', price: 59.24, image: 'images/cars/vw-t-roc.png', seats: 5, transmission: 'Manuell', fuel: 'Benzin', bags: 2, handBags: 2, doors: 5, minAge: 18 },
   { id: 2, brand: 'Volkswagen', model: 'Golf Variant', type: 'Kompaktklasse Kombi', price: 59.74, image: 'images/cars/vw-golf-variant.png', seats: 5, transmission: 'Manuell', fuel: 'Benzin', bags: 3, handBags: 1, doors: 5, minAge: 18 },
   { id: 3, brand: 'Volkswagen', model: 'T-Roc Cabriolet', type: 'Kompaktklasse Cabrio', price: 62.24, image: 'images/cars/vw-t-roc-cabrio.png', seats: 4, transmission: 'Manuell', fuel: 'Benzin', bags: 0, handBags: 2, doors: 2, minAge: 18 },
@@ -24,12 +24,10 @@ window.CAR_CATALOG = [
   { id: 20, brand: 'BMW', model: 'X3 20', type: 'Premiumklasse SUV', price: 84.73, image: 'images/cars/bmw-x3.png', seats: 5, transmission: 'Automatik', fuel: 'Benzin', bags: 3, handBags: 2, doors: 5, minAge: 21 },
   { id: 21, brand: 'Audi', model: 'A6 45 Avant', type: 'Luxusklasse Kombi', price: 84.99, image: 'images/cars/audi-a6-avant.png', seats: 5, transmission: 'Automatik', fuel: 'Benzin', bags: 3, handBags: 2, doors: 5, minAge: 21 },
 
-  // Auswahl an höherer Klasse (Beispiele)
   { id: 30, brand: 'Porsche', model: 'Macan 4 Electric', type: 'Premiumklasse Elite SUV', price: 229.99, image: 'images/cars/porsche-macan-4-electric.png', seats: 5, transmission: 'Automatik', fuel: 'Elektro', bags: 2, handBags: 2, doors: 5, minAge: 25, guaranteed: true },
   { id: 31, brand: 'Range Rover', model: 'Sport', type: 'Spezialklasse SUV', price: 252.50, image: 'images/cars/range-rover-sport.png', seats: 5, transmission: 'Automatik', fuel: 'Benzin', bags: 2, handBags: 2, doors: 5, minAge: 25, guaranteed: true },
   { id: 32, brand: 'BMW', model: 'X7', type: 'Spezialklasse SUV', price: 386.75, image: 'images/cars/bmw-x7.png', seats: 7, transmission: 'Automatik', fuel: 'Benzin', bags: 1, handBags: 2, doors: 5, minAge: 25 },
   { id: 33, brand: 'Porsche', model: 'Panamera', type: 'Spezialklasse Coupé', price: 394.98, image: 'images/cars/porsche-panamera.png', seats: 4, transmission: 'Automatik', fuel: 'Benzin', bags: 2, handBags: 2, doors: 5, minAge: 25, guaranteed: true },
   { id: 34, brand: 'Porsche', model: '911 Carrera', type: 'Spezialklasse Coupé', price: 508.74, image: 'images/cars/porsche-911-carrera.png', seats: 4, transmission: 'Automatik', fuel: 'Benzin', bags: 2, handBags: 1, doors: 2, minAge: 30, guaranteed: true }
 ];
-
 

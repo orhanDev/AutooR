@@ -2,7 +2,6 @@ const fs = require('fs');
 const path = require('path');
 require('dotenv').config();
 
-// Database connection
 const { Pool } = require('pg');
 
 const pool = new Pool({
@@ -18,8 +17,7 @@ async function updatePrices() {
     
     try {
         console.log('🚗 Araç fiyatlarını maksimum 400€ ile sınırlama başlıyor...\n');
-        
-        // Önce mevcut fiyatları göster
+
         console.log('📊 MEVCUT FİYATLAR:');
         const currentPrices = await client.query(`
             SELECT make, model, daily_rate 
@@ -31,16 +29,13 @@ async function updatePrices() {
         currentPrices.rows.forEach(car => {
             console.log(`${car.make} ${car.model}: €${car.daily_rate}`);
         });
-        
-        // SQL dosyasını oku
+
         const sqlFilePath = path.join(__dirname, '../db/update_prices_max400.sql');
         const sqlContent = fs.readFileSync(sqlFilePath, 'utf8');
-        
-        // SQL komutlarını çalıştır
+
         console.log('\n🔄 Fiyat güncellemeleri yapılıyor...');
         await client.query(sqlContent);
-        
-        // Güncellenmiş fiyatları göster
+
         console.log('\n✅ GÜNCELLENMİŞ FİYATLAR:');
         const updatedPrices = await client.query(`
             SELECT make, model, daily_rate 
@@ -52,8 +47,7 @@ async function updatePrices() {
         updatedPrices.rows.forEach(car => {
             console.log(`${car.make} ${car.model}: €${car.daily_rate}`);
         });
-        
-        // Fiyat istatistikleri
+
         console.log('\n📈 FİYAT İSTATİSTİKLERİ:');
         const stats = await client.query(`
             SELECT 
@@ -91,5 +85,4 @@ async function updatePrices() {
     }
 }
 
-// Script'i çalıştır
 updatePrices().catch(console.error);

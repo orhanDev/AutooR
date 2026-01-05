@@ -1,9 +1,6 @@
-# CV Proje Şablonu
-## Diğer projeleriniz için kullanabileceğiniz format
+
 
----
-
-## 📋 ŞABLON FORMATI
+---
 
 **Proje Adı** (Yıl)
 
@@ -16,11 +13,7 @@ Kısa açıklama (1-2 cümle). Ne yaptığınızı ve amacını açıklayan öze
 - Özellik 2 (kısa ve öz)
 - Özellik 3 (kısa ve öz)
 
----
-
-## 💡 ÖRNEK KULLANIM
-
-### Örnek 1: E-Ticaret Sitesi
+---
 **Online Mağaza Platformu** (2025)
 
 Müşterilerin ürün arayabileceği, sepete ekleyebileceği ve online ödeme yapabileceği e-ticaret platformu.
@@ -32,9 +25,7 @@ Müşterilerin ürün arayabileceği, sepete ekleyebileceği ve online ödeme ya
 - Sepet yönetimi ve ödeme entegrasyonu
 - Kullanıcı profili ve sipariş takibi
 
----
-
-### Örnek 2: Blog Uygulaması
+---
 **Kişisel Blog Platformu** (2025)
 
 Kullanıcıların makale yazabildiği, yorum yapabildiği ve kategorilere göre içerik filtreleyebildiği blog uygulaması.
@@ -46,9 +37,7 @@ Kullanıcıların makale yazabildiği, yorum yapabildiği ve kategorilere göre 
 - Kullanıcı yorumları ve beğeni sistemi
 - SEO optimizasyonu ve responsive tasarım
 
----
-
-### Örnek 3: Task Management
+---
 **Görev Yönetim Uygulaması** (2024)
 
 Takımların projeler oluşturup görev atayabildiği, ilerlemeyi takip edebildiği yönetim platformu.
@@ -60,9 +49,7 @@ Takımların projeler oluşturup görev atayabildiği, ilerlemeyi takip edebildi
 - Kullanıcı rolleri ve yetkilendirme
 - Gerçek zamanlı bildirimler
 
----
-
-## 📝 İPUÇLARI
+---
 
 1. **Kısa tutun:** Her proje için 5-7 satır yeterli
 2. **Teknolojileri listeleyin:** En önemli 5-7 teknolojiyi yazın
@@ -70,9 +57,7 @@ Takımların projeler oluşturup görev atayabildiği, ilerlemeyi takip edebildi
 4. **Somut olun:** Ne yaptığınızı net ifade edin
 5. **Tekrar etmeyin:** Her projede farklı teknolojiler/özellikler varsa öne çıkarın
 
----
-
-## 🇩🇪 ALMANCA ŞABLON
+---
 
 **Projektname** (Jahr)
 
@@ -84,7 +69,4 @@ Kurze Beschreibung (1-2 Sätze). Zusammenfassung, die erklärt, was Sie gemacht 
 - Funktion 1 (kurz und prägnant)
 - Funktion 2 (kurz und prägnant)
 - Funktion 3 (kurz und prägnant)
-
-
-
 

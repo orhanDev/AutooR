@@ -2,7 +2,6 @@ const express = require('express');
 const { Pool } = require('pg');
 const router = express.Router();
 
-// PostgreSQL bağlantı havuzu
 const pool = new Pool({
     user: process.env.PGUSER,
     host: process.env.PGHOST,
@@ -11,7 +10,6 @@ const pool = new Pool({
     port: process.env.PGPORT || 5432,
 });
 
-// Rezervasyon oluşturma
 router.post('/create', async (req, res) => {
     try {
         const { 
@@ -33,12 +31,11 @@ router.post('/create', async (req, res) => {
             });
         }
 
-        // Kullanıcıyı bul (id ya da user_id desteği)
         let user;
         try {
             user = await pool.query('SELECT id FROM users WHERE email = $1', [userEmail]);
         } catch (e) {
-            if (e && e.code === '42703') { // undefined_column
+            if (e && e.code === '42703') { 
                 user = await pool.query('SELECT user_id AS id FROM users WHERE email = $1', [userEmail]);
             } else {
                 throw e;
@@ -54,12 +51,11 @@ router.post('/create', async (req, res) => {
 
         const userId = user.rows[0].id;
 
-        // Lokasyon tablosu var mı kontrol et
         let hasLocationsTable = true;
         try {
             await pool.query('SELECT 1 FROM locations LIMIT 1');
         } catch (e) {
-            if (e && e.code === '42P01') { // undefined_table
+            if (e && e.code === '42P01') { 
                 hasLocationsTable = false;
             } else {
                 throw e;
@@ -89,13 +85,12 @@ router.post('/create', async (req, res) => {
             dropoffLocationId = dropoffLoc.rows[0].location_id;
         }
 
-        // Tarih ve saatleri veritabanı tipleriyle uyumlu hale getir
         const pickupTimeStr = pickupTime && pickupTime.length === 5 ? pickupTime + ':00' : (pickupTime || '09:00:00');
         const dropoffTimeStr = dropoffTime && dropoffTime.length === 5 ? dropoffTime + ':00' : (dropoffTime || '10:00:00');
 
         let reservation;
         if (hasLocationsTable) {
-            // Şema: location_id kolonları mevcut
+            
             reservation = await pool.query(
                 `INSERT INTO reservations (
                     user_id, car_id, pickup_date, dropoff_date, pickup_time, dropoff_time,
@@ -108,7 +103,7 @@ router.post('/create', async (req, res) => {
                 ]
             );
         } else {
-            // Eski/alternatif şema: metin kolonları (pickup_location, return_location)
+            
             reservation = await pool.query(
                 `INSERT INTO reservations (
                     user_id, car_id, pickup_date, dropoff_date, pickup_time, dropoff_time,
@@ -138,12 +133,10 @@ router.post('/create', async (req, res) => {
     }
 });
 
-// Kullanıcının rezervasyonlarını getir
 router.get('/user/:userEmail', async (req, res) => {
     try {
         const { userEmail } = req.params;
-        
-        // Kullanıcıyı bul
+
         const user = await pool.query(
             'SELECT id FROM users WHERE email = $1',
             [userEmail]
@@ -158,7 +151,6 @@ router.get('/user/:userEmail', async (req, res) => {
 
         const userId = user.rows[0].id;
 
-        // Rezervasyonları getir (tüm rezervasyonlar)
         const reservations = await pool.query(
             `SELECT id, booking_id, vehicle_name, vehicle_image, pickup_location, 
                     return_location, pickup_date, pickup_time, return_date, return_time,
@@ -182,7 +174,6 @@ router.get('/user/:userEmail', async (req, res) => {
     }
 });
 
-// Rezervasyon detaylarını getir
 router.get('/:bookingId', async (req, res) => {
     try {
         const { bookingId } = req.params;
@@ -215,7 +206,6 @@ router.get('/:bookingId', async (req, res) => {
     }
 });
 
-// Rezervasyon güncelleme
 router.put('/:bookingId', async (req, res) => {
     try {
         const { bookingId } = req.params;
@@ -272,7 +262,6 @@ router.put('/:bookingId', async (req, res) => {
     }
 });
 
-// Rezervasyon iptal etme
 router.put('/:bookingId/cancel', async (req, res) => {
     try {
         const { bookingId } = req.params;
@@ -307,7 +296,6 @@ router.put('/:bookingId/cancel', async (req, res) => {
     }
 });
 
-// Payment status update
 router.put('/:bookingId/payment-status', async (req, res) => {
     try {
         const { bookingId } = req.params;
@@ -350,7 +338,6 @@ router.put('/:bookingId/payment-status', async (req, res) => {
     }
 });
 
-// Rezervasyon silme
 router.delete('/:bookingId', async (req, res) => {
     try {
         const { bookingId } = req.params;
