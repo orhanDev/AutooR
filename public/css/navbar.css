@@ -62,7 +62,7 @@ body { margin-top: 0 !important; }
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    color: #000000b0 !important;
+    color: #B10000 !important;
     font-weight: 700;
     font-size: 1.4rem;
     letter-spacing: 0.35rem;
@@ -851,6 +851,12 @@ ease;
             flex-direction: row !important;
             justify-content: space-between !important;
             align-items: center !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            padding-left: 1rem !important;
+            padding-right: 1rem !important;
+            gap: 0.5rem !important;
+            flex-wrap: nowrap !important;
         }
         
         /* Account button on left */
@@ -858,11 +864,18 @@ ease;
             order: 1 !important;
             margin-left: 0 !important;
             margin-right: auto !important;
+            flex-shrink: 0 !important;
+            min-width: auto !important;
         }
         
         /* Brand center in middle (if visible) */
         .navbar .brand-center {
             order: 2 !important;
+            flex: 1 !important;
+            text-align: center !important;
+            margin: 0 auto !important;
+            position: static !important;
+            transform: none !important;
         }
         
         /* Menu button on right */
@@ -870,6 +883,14 @@ ease;
             order: 3 !important;
             margin-left: auto !important;
             margin-right: 0 !important;
+            flex-shrink: 0 !important;
+            min-width: auto !important;
+        }
+        
+        /* Back button positioning */
+        .navbar-back-btn {
+            flex-shrink: 0 !important;
+            min-width: auto !important;
         }
         
         /* Back button - HIDDEN by default, shown only on non-home pages */
