@@ -8,7 +8,7 @@ GOOGLE_REDIRECT_URI=http://localhost:3000/auth/google/callback
 PGUSER=AutooR_user
 PGHOST=localhost
 PGDATABASE=AutooR
-PGPASSWORD=Vekil4023.
+PGPASSWORD=your-database-password-here
 PGPORT=5432
 
 # JWT Secret (Production'da güçlü bir secret kullanın)

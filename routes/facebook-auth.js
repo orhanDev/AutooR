@@ -6,10 +6,10 @@ const router = express.Router();
 
 // PostgreSQL bağlantı havuzu
 const pool = new Pool({
-    user: process.env.PGUSER || 'AutooR_user',
-    host: process.env.PGHOST || 'localhost',
-    database: process.env.PGDATABASE || 'AutooR',
-    password: process.env.PGPASSWORD || 'Vekil4023.',
+    user: process.env.PGUSER,
+    host: process.env.PGHOST,
+    database: process.env.PGDATABASE,
+    password: process.env.PGPASSWORD,
     port: process.env.PGPORT || 5432,
 });
 

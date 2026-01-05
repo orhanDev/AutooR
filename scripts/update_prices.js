@@ -5,10 +5,10 @@ require('dotenv').config();
 
 async function updatePrices() {
   const connectionConfig = {
-    user: process.env.PGUSER || 'cinetime',
-    host: process.env.PGHOST || 'localhost',
-    database: process.env.PGDATABASE || 'rentacar_db',
-    password: process.env.PGPASSWORD || 'Vekil4023.',
+    user: process.env.PGUSER,
+    host: process.env.PGHOST,
+    database: process.env.PGDATABASE,
+    password: process.env.PGPASSWORD,
     port: Number(process.env.PGPORT || 5432),
   };
 

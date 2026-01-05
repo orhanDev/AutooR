@@ -8,7 +8,7 @@ const pool = new Pool({
     user: process.env.PGUSER || 'AutooR_user',
     host: process.env.PGHOST || 'localhost',
     database: process.env.PGDATABASE || 'AutooR',
-    password: process.env.PGPASSWORD || 'Vekil4023.',
+    password: process.env.PGPASSWORD,
     port: process.env.PGPORT || 5432,
 });
 

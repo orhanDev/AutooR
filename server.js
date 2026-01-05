@@ -1,14 +1,20 @@
 require('dotenv').config();
 const express = require('express');
 
-// JWT Secret - Use environment variable in production
-process.env.JWT_SECRET = process.env.JWT_SECRET || 'your_super_secret_jwt_key_here_change_this_in_production';
+// JWT Secret - MUST be set in .env file for production
+if (!process.env.JWT_SECRET) {
+    console.error('ERROR: JWT_SECRET environment variable is not set!');
+    console.error('Please create a .env file with JWT_SECRET=your_secret_key');
+    process.exit(1);
+}
 
-// Database configuration - Update according to your pgAdmin database
-process.env.PGUSER = process.env.PGUSER || 'AutooR_user';
-process.env.PGHOST = process.env.PGHOST || 'localhost';
-process.env.PGDATABASE = process.env.PGDATABASE || 'AutooR';
-process.env.PGPASSWORD = process.env.PGPASSWORD || 'Vekil4023.';
+// Database configuration - MUST be set in .env file
+if (!process.env.PGUSER || !process.env.PGHOST || !process.env.PGDATABASE || !process.env.PGPASSWORD) {
+    console.error('ERROR: Database environment variables are not set!');
+    console.error('Please create a .env file with PGUSER, PGHOST, PGDATABASE, PGPASSWORD');
+    process.exit(1);
+}
+
 process.env.PGPORT = process.env.PGPORT || '5432';
 const path = require('path');
 const fs = require('fs');

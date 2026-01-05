@@ -26,10 +26,11 @@ Proje kök dizininde `.env` dosyasını açın veya oluşturun:
 ```env
 # Railway PostgreSQL Bağlantı Bilgileri
 # Railway Dashboard → Postgres → Connection URL'den alın
+# ÖNEMLİ: Gerçek şifreleri buraya yazmayın! Sadece .env dosyasında saklayın!
 PGUSER=postgres
-PGHOST=ballast.proxy.rlwy.net
+PGHOST=your-railway-host.rlwy.net
 PGDATABASE=railway
-PGPASSWORD=AuXmRQKsueCCkRSnlfYKFifvrfYlUBGT
+PGPASSWORD=YOUR_RAILWAY_PASSWORD_HERE
 PGPORT=51096
 
 # JWT Secret

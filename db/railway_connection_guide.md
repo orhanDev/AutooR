@@ -20,7 +20,7 @@ Aşağıdaki bilgileri girin:
 - **Port:** `51096`
 - **Maintenance database:** `railway`
 - **Username:** `postgres`
-- **Password:** `AuXmRQKsueCCkRSnlfYKFifvrfYlUBGT`
+- **Password:** `YOUR_RAILWAY_PASSWORD` (Railway Dashboard'dan alın)
 - **Save password:** ✅ (işaretleyin)
 
 ### Adım 4: Advanced Sekmesi (Opsiyonel)
@@ -75,7 +75,7 @@ WHERE LOWER(email) = LOWER('orhancodes@gmail.com');
 Terminal/Command Prompt'ta:
 
 ```bash
-PGPASSWORD=AuXmRQKsueCCkRSnlfYKFifvrfYlUBGT psql -h ballast.proxy.rlwy.net -U postgres -p 51096 -d railway
+PGPASSWORD=YOUR_RAILWAY_PASSWORD psql -h your-railway-host.rlwy.net -U postgres -p YOUR_PORT -d railway
 ```
 
 Bağlandıktan sonra yukarıdaki INSERT sorgusunu çalıştırın.

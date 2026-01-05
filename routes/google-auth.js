@@ -6,10 +6,10 @@ const router = express.Router();
 
 // PostgreSQL bağlantı havuzu
 const pool = new Pool({
-    user: process.env.PGUSER || 'AutooR_user',
-    host: process.env.PGHOST || 'localhost',
-    database: process.env.PGDATABASE || 'AutooR',
-    password: process.env.PGPASSWORD || 'Vekil4023.',
+    user: process.env.PGUSER,
+    host: process.env.PGHOST,
+    database: process.env.PGDATABASE,
+    password: process.env.PGPASSWORD,
     port: process.env.PGPORT || 5432,
 });
 
@@ -17,7 +17,7 @@ const pool = new Pool({
 function getGoogleClient(redirectUri) {
     const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
     const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
-    const GOOGLE_REDIRECT_URI = redirectUri || process.env.GOOGLE_REDIRECT_URI || 'https://localhost:3443/auth/google/callback';
+    const GOOGLE_REDIRECT_URI = redirectUri || process.env.GOOGLE_REDIRECT_URI || 'image.pnghttps://localhost:3443/auth/google/callback';
     
     if (!GOOGLE_CLIENT_ID || !GOOGLE_CLIENT_SECRET) {
         throw new Error('Google OAuth credentials not configured');
