@@ -8,21 +8,45 @@ const authMiddleware = require('../middleware/authMiddleware');
 
 const router = express.Router();
 
-// Email transporter - Tüm email servislerini destekler (Gmail, Outlook, Yahoo, vb.)
+// Email transporter - Tüm email servislerini destekler (Gmail, SendGrid, Outlook, Yahoo, vb.)
 function createEmailTransporter() {
     const emailUser = process.env.EMAIL_USER;
     const emailPass = process.env.EMAIL_PASS;
     const emailHost = process.env.EMAIL_HOST || 'smtp.gmail.com';
     const emailPort = process.env.EMAIL_PORT || 587;
     const emailSecure = process.env.EMAIL_SECURE === 'true' || false;
+    const emailProvider = process.env.EMAIL_PROVIDER || 'auto'; // 'gmail', 'sendgrid', 'auto'
     
     if (!emailUser || !emailPass) {
         return null;
     }
     
+    // SendGrid desteği - EMAIL_PROVIDER=sendgrid veya EMAIL_HOST=smtp.sendgrid.net
+    if (emailProvider === 'sendgrid' || emailHost === 'smtp.sendgrid.net') {
+        console.log('Using SendGrid SMTP');
+        return nodemailer.createTransport({
+            host: 'smtp.sendgrid.net',
+            port: 587,
+            secure: false, // TLS için false
+            auth: {
+                user: 'apikey', // SendGrid için her zaman 'apikey'
+                pass: emailPass // SendGrid API Key
+            },
+            // Timeout ayarları
+            connectionTimeout: 10000,
+            greetingTimeout: 10000,
+            socketTimeout: 10000,
+            tls: {
+                rejectUnauthorized: false
+            },
+            debug: process.env.NODE_ENV !== 'production',
+            logger: process.env.NODE_ENV !== 'production'
+        });
+    }
+    
     // Gmail için explicit SMTP ayarları kullan (service yerine)
     // Railway'de service kullanımı bazen sorun çıkarabiliyor
-    if (emailUser.includes('@gmail.com')) {
+    if (emailProvider === 'gmail' || emailUser.includes('@gmail.com')) {
         // Port 465 (SSL) ile deneyelim - Railway'de daha güvenilir olabilir
         return nodemailer.createTransport({
             host: 'smtp.gmail.com',
@@ -45,28 +69,28 @@ function createEmailTransporter() {
             debug: process.env.NODE_ENV !== 'production',
             logger: process.env.NODE_ENV !== 'production'
         });
-    } else {
-        // Diğer email servisleri için (Outlook, Yahoo, custom SMTP)
-        return nodemailer.createTransport({
-            host: emailHost,
-            port: parseInt(emailPort),
-            secure: emailSecure, // true for 465, false for diğer portlar
-            auth: {
-                user: emailUser,
-                pass: emailPass
-            },
-            // Timeout ayarları
-            connectionTimeout: 10000, // 10 saniye
-            greetingTimeout: 10000, // 10 saniye
-            socketTimeout: 10000, // 10 saniye
-            tls: {
-                rejectUnauthorized: false // Development için, production'da true olmalı
-            },
-            // Debug için
-            debug: process.env.NODE_ENV !== 'production',
-            logger: process.env.NODE_ENV !== 'production'
-        });
     }
+    
+    // Diğer email servisleri için (Outlook, Yahoo, custom SMTP)
+    return nodemailer.createTransport({
+        host: emailHost,
+        port: parseInt(emailPort),
+        secure: emailSecure, // true for 465, false for diğer portlar
+        auth: {
+            user: emailUser,
+            pass: emailPass
+        },
+        // Timeout ayarları
+        connectionTimeout: 10000, // 10 saniye
+        greetingTimeout: 10000, // 10 saniye
+        socketTimeout: 10000, // 10 saniye
+        tls: {
+            rejectUnauthorized: false // Development için, production'da true olmalı
+        },
+        // Debug için
+        debug: process.env.NODE_ENV !== 'production',
+        logger: process.env.NODE_ENV !== 'production'
+    });
 }
 
 // 6 haneli doğrulama kodu oluştur
@@ -164,12 +188,16 @@ router.post('/send-verification-code', async (req, res) => {
         const emailTransporter = createEmailTransporter();
         const emailUser = process.env.EMAIL_USER;
         const emailFromName = process.env.EMAIL_FROM_NAME || 'AutooR';
+        // SendGrid için from email'i EMAIL_USER'dan al, yoksa noreply kullan
+        const fromEmail = process.env.EMAIL_PROVIDER === 'sendgrid' 
+            ? (process.env.SENDGRID_FROM_EMAIL || emailUser || 'noreply@autoor.com')
+            : emailUser;
         
-        if (emailTransporter && emailUser && emailUser !== 'your-email@gmail.com' && process.env.EMAIL_PASS !== 'your-app-password') {
+        if (emailTransporter && emailUser && emailUser !== 'your-email@gmail.com' && process.env.EMAIL_PASS && process.env.EMAIL_PASS !== 'your-app-password') {
             try {
                 const mailOptions = {
-                    from: `"${emailFromName}" <${emailUser}>`, // Gönderen adı ve email
-                    replyTo: emailUser, // Reply-To header
+                    from: `"${emailFromName}" <${fromEmail}>`, // Gönderen adı ve email
+                    replyTo: emailUser || fromEmail, // Reply-To header
                     to: email,
                     subject: 'AutooR - E-Mail-Bestätigungscode',
                     // Text versiyonu (spam filtreleri için önemli)
@@ -885,6 +913,10 @@ router.post('/forgot-password', async (req, res) => {
         const emailTransporter = createEmailTransporter();
         const emailUser = process.env.EMAIL_USER;
         const emailFromName = process.env.EMAIL_FROM_NAME || 'AutooR';
+        // SendGrid için from email'i EMAIL_USER'dan al, yoksa noreply kullan
+        const fromEmail = process.env.EMAIL_PROVIDER === 'sendgrid' 
+            ? (process.env.SENDGRID_FROM_EMAIL || emailUser || 'noreply@autoor.com')
+            : emailUser;
         // Production'da Netlify URL'i kullan, development'ta localhost
         const baseUrl = process.env.NODE_ENV === 'production' 
             ? (process.env.BASE_URL || 'https://autoor-demo.netlify.app')
@@ -894,6 +926,8 @@ router.post('/forgot-password', async (req, res) => {
             hasTransporter: !!emailTransporter,
             emailUser: emailUser,
             emailPassSet: !!process.env.EMAIL_PASS,
+            emailProvider: process.env.EMAIL_PROVIDER || 'auto',
+            fromEmail: fromEmail,
             baseUrl: baseUrl,
             nodeEnv: process.env.NODE_ENV
         });
@@ -905,8 +939,8 @@ router.post('/forgot-password', async (req, res) => {
                 console.log('Reset link:', resetLink);
                 
                 const mailOptions = {
-                    from: `"${emailFromName}" <${emailUser}>`,
-                    replyTo: emailUser,
+                    from: `"${emailFromName}" <${fromEmail}>`,
+                    replyTo: emailUser || fromEmail,
                     to: email,
                     subject: 'AutooR - Passwort zurücksetzen',
                     text: `
