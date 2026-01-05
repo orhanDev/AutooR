@@ -23,22 +23,23 @@ function createEmailTransporter() {
     // Gmail için explicit SMTP ayarları kullan (service yerine)
     // Railway'de service kullanımı bazen sorun çıkarabiliyor
     if (emailUser.includes('@gmail.com')) {
+        // Port 465 (SSL) ile deneyelim - Railway'de daha güvenilir olabilir
         return nodemailer.createTransport({
             host: 'smtp.gmail.com',
-            port: 587,
-            secure: false, // TLS için false
+            port: 465,
+            secure: true, // SSL için true
             auth: {
                 user: emailUser,
                 pass: emailPass
             },
             // Timeout ayarları
-            connectionTimeout: 20000, // 20 saniye
-            greetingTimeout: 20000, // 20 saniye
-            socketTimeout: 20000, // 20 saniye
+            connectionTimeout: 30000, // 30 saniye
+            greetingTimeout: 30000, // 30 saniye
+            socketTimeout: 30000, // 30 saniye
             // TLS ayarları
             tls: {
                 rejectUnauthorized: false, // Railway için gerekli olabilir
-                ciphers: 'SSLv3'
+                minVersion: 'TLSv1.2'
             },
             // Debug için
             debug: process.env.NODE_ENV !== 'production',
