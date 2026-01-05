@@ -71,27 +71,27 @@ function createEmailTransporter() {
         });
     }
     
-    // Diğer email servisleri için (Outlook, Yahoo, custom SMTP)
-    return nodemailer.createTransport({
-        host: emailHost,
-        port: parseInt(emailPort),
-        secure: emailSecure, // true for 465, false for diğer portlar
-        auth: {
-            user: emailUser,
-            pass: emailPass
-        },
+        // Diğer email servisleri için (Outlook, Yahoo, custom SMTP)
+        return nodemailer.createTransport({
+            host: emailHost,
+            port: parseInt(emailPort),
+            secure: emailSecure, // true for 465, false for diğer portlar
+            auth: {
+                user: emailUser,
+                pass: emailPass
+            },
         // Timeout ayarları
         connectionTimeout: 10000, // 10 saniye
         greetingTimeout: 10000, // 10 saniye
         socketTimeout: 10000, // 10 saniye
-        tls: {
-            rejectUnauthorized: false // Development için, production'da true olmalı
+            tls: {
+                rejectUnauthorized: false // Development için, production'da true olmalı
         },
         // Debug için
         debug: process.env.NODE_ENV !== 'production',
         logger: process.env.NODE_ENV !== 'production'
-    });
-}
+            });
+        }
 
 
 // Kayıt endpoint'i
@@ -124,8 +124,11 @@ router.post('/register', async (req, res) => {
             });
         }
         
+        // Email normalizasyonu (trim + lowercase)
+        const normalizedEmail = email.trim().toLowerCase();
+        
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
+        if (!emailRegex.test(normalizedEmail)) {
             return res.status(400).json({ 
                 error: 'Ungültige E-Mail-Adresse',
                 field: 'email',
@@ -182,26 +185,33 @@ router.post('/register', async (req, res) => {
             });
         }
 
-        // Email kontrolü
-        const existingUser = await query('SELECT * FROM users WHERE email = $1', [email]);
+        // Email kontrolü (case-insensitive) - normalizedEmail zaten yukarıda tanımlanmış
+        console.log('=== EMAIL KONTROLÜ ===');
+        console.log('Orijinal email:', email);
+        console.log('Normalize edilmiş email:', normalizedEmail);
+        
+        const existingUser = await query('SELECT * FROM users WHERE LOWER(TRIM(email)) = $1', [normalizedEmail]);
+        console.log('Mevcut kullanıcı sayısı:', existingUser.rows.length);
         if (existingUser.rows.length > 0) {
+            console.log('Bulunan kullanıcı:', existingUser.rows[0].email);
             return res.status(400).json({ 
                 error: 'E-Mail bereits registriert',
                 field: 'email',
                 message: 'Diese E-Mail-Adresse ist bereits registriert. Bitte verwenden Sie eine andere E-Mail-Adresse oder melden Sie sich an.'
             });
         }
+        console.log('Email kayıtlı değil, kayıt devam ediyor...');
 
         // Şifre hash'leme
         const saltRounds = 10;
         const passwordHash = await bcrypt.hash(password, saltRounds);
 
-        // Yeni kullanıcı oluşturma
+        // Yeni kullanıcı oluşturma (email'i normalize edilmiş olarak kaydet)
         const newUser = await query(`
             INSERT INTO users (first_name, last_name, email, password_hash, phone_number, address, is_verified)
             VALUES ($1, $2, $3, $4, $5, $6, TRUE)
-            RETURNING user_id, first_name, last_name, email, phone_number, address, is_admin, created_at
-        `, [first_name, last_name, email, passwordHash, phone_number || null, address || null]);
+                RETURNING user_id, first_name, last_name, email, phone_number, address, is_admin, created_at
+            `, [first_name, last_name, normalizedEmail, passwordHash, phone_number || null, address || null]);
 
         const userId = newUser.rows[0].user_id;
         const userEmail = newUser.rows[0].email;
@@ -250,8 +260,11 @@ router.post('/login', async (req, res) => {
     try {
         const { email, password } = req.body;
 
-        // Kullanıcıyı bul
-        const user = await query('SELECT * FROM users WHERE email = $1', [email]);
+        // Email normalizasyonu (trim + lowercase)
+        const normalizedEmail = email.trim().toLowerCase();
+        
+        // Kullanıcıyı bul (case-insensitive)
+        const user = await query('SELECT * FROM users WHERE LOWER(TRIM(email)) = $1', [normalizedEmail]);
         if (user.rows.length === 0) {
             return res.status(401).json({ error: 'Ungültige Anmeldedaten' });
         }
