@@ -399,14 +399,26 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Also watch for window resize
     window.addEventListener('resize', function() {
-        // CSS handles all display logic via body classes - just remove inline styles
+        // Update body classes based on current path
+        const currentPath = window.location.pathname;
+        if (currentPath === '/' || currentPath === '/index.html') {
+            document.body.classList.add('home-page');
+            document.body.classList.remove('not-home-page');
+        } else {
+            document.body.classList.add('not-home-page');
+            document.body.classList.remove('home-page');
+        }
+        
+        // CSS handles all display logic via body classes - force remove ALL inline styles
         const backBtn = document.querySelector('.navbar-back-btn');
         const menuBtn = document.querySelector('.navbar-toggler');
         if (backBtn) {
-            backBtn.style.display = '';
+            backBtn.removeAttribute('style');
+            backBtn.style.cssText = '';
         }
         if (menuBtn) {
-            menuBtn.style.display = '';
+            menuBtn.removeAttribute('style');
+            menuBtn.style.cssText = '';
         }
         const navbarNav = document.getElementById('navbarNav');
         if (navbarNav && window.innerWidth <= 751) {
@@ -445,14 +457,16 @@ document.addEventListener('DOMContentLoaded', function() {
         document.body.classList.add('home-page');
     }
     
-    // CSS handles all display logic via body classes - just remove inline styles
+    // CSS handles all display logic via body classes - force remove ALL inline styles
     const backBtn = document.querySelector('.navbar-back-btn');
     const menuBtn = document.querySelector('.navbar-toggler');
     if (backBtn) {
-        backBtn.style.display = '';
+        backBtn.removeAttribute('style');
+        backBtn.style.cssText = '';
     }
     if (menuBtn) {
-        menuBtn.style.display = '';
+        menuBtn.removeAttribute('style');
+        menuBtn.style.cssText = '';
     }
     
     // Check if browser was closed and reopened (sessionStorage empty but localStorage has data)
@@ -790,28 +804,36 @@ function updateNavbar() {
         document.body.classList.add('home-page');
         document.body.classList.remove('not-home-page');
         
-        // Remove any inline styles to let CSS handle it (all screen sizes)
+        // Force remove ALL inline styles to let CSS handle it (all screen sizes)
         const backBtn = document.querySelector('.navbar-back-btn');
         const menuBtn = document.querySelector('.navbar-toggler');
         if (backBtn) {
-            backBtn.style.display = '';
+            backBtn.removeAttribute('style');
+            // Also remove any style attribute completely
+            backBtn.style.cssText = '';
         }
         if (menuBtn) {
-            menuBtn.style.display = '';
+            menuBtn.removeAttribute('style');
+            // Also remove any style attribute completely
+            menuBtn.style.cssText = '';
         }
     } else {
         // Not home page: show back button, hide hamburger menu (CSS handles it)
         document.body.classList.add('not-home-page');
         document.body.classList.remove('home-page');
         
-        // Remove any inline styles to let CSS handle it (all screen sizes)
+        // Force remove ALL inline styles to let CSS handle it (all screen sizes)
         const backBtn = document.querySelector('.navbar-back-btn');
         const menuBtn = document.querySelector('.navbar-toggler');
         if (backBtn) {
-            backBtn.style.display = '';
+            backBtn.removeAttribute('style');
+            // Also remove any style attribute completely
+            backBtn.style.cssText = '';
         }
         if (menuBtn) {
-            menuBtn.style.display = '';
+            menuBtn.removeAttribute('style');
+            // Also remove any style attribute completely
+            menuBtn.style.cssText = '';
         }
     }
     
@@ -1073,44 +1095,44 @@ function addHamburgerMenuCloseListener() {
                     backdrop.classList.remove('show');
                 }
             }
-            // Toggle menu-open class on navbar
+            // Toggle menu-open class on navbar (CSS handles visibility)
             const navbar = document.querySelector('.navbar');
             if (navbar && window.innerWidth <= 751) {
                 if (!isOpen) {
                     navbar.classList.add('menu-open');
-                    // Hide navbar elements directly
+                    // CSS handles visibility - remove any inline styles
                     const toggler = navbar.querySelector('.navbar-toggler');
                     const brand = navbar.querySelector('.brand-center');
                     const account = navbar.querySelector('.account');
                     if (toggler) {
-                        toggler.style.display = 'none';
-                        toggler.style.visibility = 'hidden';
+                        toggler.removeAttribute('style');
+                        toggler.style.cssText = '';
                     }
                     if (brand) {
-                        brand.style.display = 'none';
-                        brand.style.visibility = 'hidden';
+                        brand.removeAttribute('style');
+                        brand.style.cssText = '';
                     }
                     if (account) {
-                        account.style.display = 'none';
-                        account.style.visibility = 'hidden';
+                        account.removeAttribute('style');
+                        account.style.cssText = '';
                     }
                 } else {
                     navbar.classList.remove('menu-open');
-                    // Show navbar elements
+                    // CSS handles visibility - remove any inline styles
                     const toggler = navbar.querySelector('.navbar-toggler');
                     const brand = navbar.querySelector('.brand-center');
                     const account = navbar.querySelector('.account');
                     if (toggler) {
-                        toggler.style.display = '';
-                        toggler.style.visibility = '';
+                        toggler.removeAttribute('style');
+                        toggler.style.cssText = '';
                     }
                     if (brand) {
-                        brand.style.display = '';
-                        brand.style.visibility = '';
+                        brand.removeAttribute('style');
+                        brand.style.cssText = '';
                     }
                     if (account) {
-                        account.style.display = '';
-                        account.style.visibility = '';
+                        account.removeAttribute('style');
+                        account.style.cssText = '';
                     }
                 }
             }

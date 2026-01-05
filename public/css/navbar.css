@@ -361,19 +361,31 @@ body { margin-top: 0 !important; }
 /* On home page: back button MUST be hidden, hamburger menu shown (all screen sizes) */
 body.home-page .navbar-back-btn {
     display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
 }
 
 body.home-page .navbar-toggler {
     display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
 }
 
 /* On all pages except home: back button shown, hamburger menu hidden (all screen sizes) */
 body.not-home-page .navbar-back-btn {
     display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
 }
 
 body.not-home-page .navbar-toggler {
     display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
 }
 
 /* Backward compatibility: fahrzeuge-page class (all screen sizes) */
