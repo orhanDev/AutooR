@@ -405,6 +405,7 @@ document.addEventListener('DOMContentLoaded', function() {
             document.body.classList.add('home-page');
             document.body.classList.remove('not-home-page');
         } else {
+            // All other pages (login, register, fahrzeuge, etc.): show back button, hide hamburger menu
             document.body.classList.add('not-home-page');
             document.body.classList.remove('home-page');
         }
@@ -436,8 +437,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const currentPath = window.location.pathname;
     if (currentPath === '/' || currentPath === '/index.html') {
         document.body.classList.add('home-page');
+        document.body.classList.remove('not-home-page');
     } else {
+        // All other pages (login, register, fahrzeuge, etc.) should have not-home-page class
         document.body.classList.remove('home-page');
+        document.body.classList.add('not-home-page');
     }
     
     // Add fahrzeuge-page class to body if on fahrzeuge page (for backward compatibility)
@@ -445,16 +449,6 @@ document.addEventListener('DOMContentLoaded', function() {
         document.body.classList.add('fahrzeuge-page');
     } else {
         document.body.classList.remove('fahrzeuge-page');
-    }
-    
-    // Add not-home-page class to body if NOT on home page
-    // This will show back button and hide menu button on all pages except home
-    if (currentPath !== '/' && currentPath !== '/index.html') {
-        document.body.classList.add('not-home-page');
-        document.body.classList.remove('home-page');
-    } else {
-        document.body.classList.remove('not-home-page');
-        document.body.classList.add('home-page');
     }
     
     // CSS handles all display logic via body classes - force remove ALL inline styles
@@ -803,38 +797,22 @@ function updateNavbar() {
         // Home page: hide back button, show hamburger menu (CSS handles it)
         document.body.classList.add('home-page');
         document.body.classList.remove('not-home-page');
-        
-        // Force remove ALL inline styles to let CSS handle it (all screen sizes)
-        const backBtn = document.querySelector('.navbar-back-btn');
-        const menuBtn = document.querySelector('.navbar-toggler');
-        if (backBtn) {
-            backBtn.removeAttribute('style');
-            // Also remove any style attribute completely
-            backBtn.style.cssText = '';
-        }
-        if (menuBtn) {
-            menuBtn.removeAttribute('style');
-            // Also remove any style attribute completely
-            menuBtn.style.cssText = '';
-        }
     } else {
-        // Not home page: show back button, hide hamburger menu (CSS handles it)
+        // All other pages (login, register, fahrzeuge, etc.): show back button, hide hamburger menu
         document.body.classList.add('not-home-page');
         document.body.classList.remove('home-page');
-        
-        // Force remove ALL inline styles to let CSS handle it (all screen sizes)
-        const backBtn = document.querySelector('.navbar-back-btn');
-        const menuBtn = document.querySelector('.navbar-toggler');
-        if (backBtn) {
-            backBtn.removeAttribute('style');
-            // Also remove any style attribute completely
-            backBtn.style.cssText = '';
-        }
-        if (menuBtn) {
-            menuBtn.removeAttribute('style');
-            // Also remove any style attribute completely
-            menuBtn.style.cssText = '';
-        }
+    }
+    
+    // Force remove ALL inline styles to let CSS handle it (all screen sizes)
+    const backBtn = document.querySelector('.navbar-back-btn');
+    const menuBtn = document.querySelector('.navbar-toggler');
+    if (backBtn) {
+        backBtn.removeAttribute('style');
+        backBtn.style.cssText = '';
+    }
+    if (menuBtn) {
+        menuBtn.removeAttribute('style');
+        menuBtn.style.cssText = '';
     }
     
     console.log('Navbar update completed');
