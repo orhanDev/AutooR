@@ -11,6 +11,6 @@
 /forgot-password    /forgot-password.html   200
 /reset-password    /reset-password.html   200
 
-# SPA routing - Diğer tüm istekleri index.html'e yönlendir (EN SONDA - genel redirect)
-/*    /index.html   200
+# NOT: /* redirect'i netlify.toml'da tanımlı, burada tanımlamaya gerek yok
+# Çünkü _redirects dosyası netlify.toml'dan önce işlenir ve çakışma yaratabilir
 
