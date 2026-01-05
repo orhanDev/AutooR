@@ -862,11 +862,24 @@ router.post('/forgot-password', async (req, res) => {
         const emailTransporter = createEmailTransporter();
         const emailUser = process.env.EMAIL_USER;
         const emailFromName = process.env.EMAIL_FROM_NAME || 'AutooR';
-        const baseUrl = process.env.BASE_URL || 'https://localhost:3443';
+        // Production'da Netlify URL'i kullan, development'ta localhost
+        const baseUrl = process.env.NODE_ENV === 'production' 
+            ? (process.env.BASE_URL || 'https://autoor-demo.netlify.app')
+            : (process.env.BASE_URL || 'https://localhost:3443');
         
-        if (emailTransporter && emailUser && emailUser !== 'your-email@gmail.com' && process.env.EMAIL_PASS !== 'your-app-password') {
+        console.log('Email configuration check:', {
+            hasTransporter: !!emailTransporter,
+            emailUser: emailUser,
+            emailPassSet: !!process.env.EMAIL_PASS,
+            baseUrl: baseUrl,
+            nodeEnv: process.env.NODE_ENV
+        });
+        
+        if (emailTransporter && emailUser && emailUser !== 'your-email@gmail.com' && process.env.EMAIL_PASS && process.env.EMAIL_PASS !== 'your-app-password') {
             try {
                 const resetLink = `${baseUrl}/reset-password?token=${token}`;
+                console.log('Sending password reset email to:', email);
+                console.log('Reset link:', resetLink);
                 
                 const mailOptions = {
                     from: `"${emailFromName}" <${emailUser}>`,
@@ -921,14 +934,29 @@ Das AutooR Team
                 };
                 
                 await emailTransporter.sendMail(mailOptions);
-                console.log('Password reset email sent to:', email);
+                console.log('Password reset email sent successfully to:', email);
             } catch (emailError) {
                 console.error('Email gönderme hatası:', emailError);
+                console.error('Email error details:', {
+                    message: emailError.message,
+                    code: emailError.code,
+                    command: emailError.command,
+                    response: emailError.response,
+                    responseCode: emailError.responseCode
+                });
                 // Email gönderilemese bile token oluşturuldu, kullanıcıya başarılı mesaj göster
+                // Ancak log'a yazıyoruz ki Railway'de görebilelim
             }
         } else {
+            // Email yapılandırması eksik
+            console.error('Email configuration missing or invalid:', {
+                hasTransporter: !!emailTransporter,
+                emailUser: emailUser,
+                emailPassSet: !!process.env.EMAIL_PASS,
+                emailPassValue: process.env.EMAIL_PASS ? 'SET' : 'NOT SET'
+            });
             // Development mode - token'ı konsola yazdır
-            console.log('=== DEVELOPMENT MODE ===');
+            console.log('=== DEVELOPMENT MODE / EMAIL NOT CONFIGURED ===');
             console.log('Password reset token:', token);
             console.log('Reset link:', `${baseUrl}/reset-password?token=${token}`);
             console.log('========================');
