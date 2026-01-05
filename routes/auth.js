@@ -28,14 +28,13 @@ function createEmailTransporter() {
                 user: emailUser,
                 pass: emailPass
             },
-            // Timeout ayarları - Railway için
+            // Timeout ayarları
             connectionTimeout: 10000, // 10 saniye
             greetingTimeout: 10000, // 10 saniye
             socketTimeout: 10000, // 10 saniye
-            // Pool bağlantıları için
-            pool: true,
-            maxConnections: 1,
-            maxMessages: 3
+            // Debug için
+            debug: process.env.NODE_ENV !== 'production',
+            logger: process.env.NODE_ENV !== 'production'
         });
     } else {
         // Diğer email servisleri için (Outlook, Yahoo, custom SMTP)
@@ -54,10 +53,9 @@ function createEmailTransporter() {
             tls: {
                 rejectUnauthorized: false // Development için, production'da true olmalı
             },
-            // Pool bağlantıları için
-            pool: true,
-            maxConnections: 1,
-            maxMessages: 3
+            // Debug için
+            debug: process.env.NODE_ENV !== 'production',
+            logger: process.env.NODE_ENV !== 'production'
         });
     }
 }
