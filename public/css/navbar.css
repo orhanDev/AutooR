@@ -833,6 +833,27 @@ ease;
          display: none;
      }
      
+     /* Desktop: Back button and hamburger menu visibility (min-width: 752px) */
+    @media (min-width: 752px) {
+        /* Home page: show hamburger menu, hide back button */
+        body.home-page .navbar-toggler {
+            display: flex !important;
+        }
+        
+        body.home-page .navbar-back-btn {
+            display: none !important;
+        }
+        
+        /* Not home page: show back button, hide hamburger menu */
+        body.not-home-page .navbar-back-btn {
+            display: flex !important;
+        }
+        
+        body.not-home-page .navbar-toggler {
+            display: none !important;
+        }
+    }
+    
      /* Mobile menu improvements (max-width: 751px) */
     @media (max-width: 751px) {
         /* Hide brand-center on mobile except on home page */
