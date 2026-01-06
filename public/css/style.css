@@ -725,7 +725,6 @@ body {
     box-shadow: 0 8px 25px rgba(213, 0, 28, 0.3);
 }
 
-/* Responsive adjustments */
 @media (max-width: 768px) {
     .hero-section {
         padding: 50px 0 30px;
@@ -1148,7 +1147,6 @@ body {
     text-decoration: none;
 }
 
-/* Responsive adjustments */
 @media (max-width: 768px) {
     .popular-cars-section {
         padding: 15px 0;
@@ -1966,7 +1964,6 @@ body {
 .total-row span:last-child { font-size: 1.25rem; color:#000; }
 #total-price { background:#fff8e1; border:2px solid #ffc107; border-radius:10px; padding: .15rem .6rem; font-weight:800; }
 
-/* Payment submit button styling */
 #pay-submit-btn { border: 2px solid #000 !important; background:#ffffff !important; color:#000 !important; transition: all .15s ease !important; }
 #pay-submit-btn:hover:not(:disabled), #pay-submit-btn:focus:not(:disabled) { background:#ffc107 !important; border-color:#ffc107 !important; color:#000 !important; }
 #pay-submit-btn:disabled { opacity:.6; cursor:not-allowed; background:#ffffff !important; border-color:#000 !important; color:#000 !important; box-shadow:none !important; }
