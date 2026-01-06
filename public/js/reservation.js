@@ -114,7 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     if (!selectedCarId && !selectedVehicle) {
-        showError('Kein Fahrzeug ausgew�hlt');
+        showError('Kein Fahrzeug ausgewählt');
         return;
     }
     
@@ -325,8 +325,8 @@ document.addEventListener('DOMContentLoaded', () => {
                                             <option value="">Bitte wählen</option>
                                         <option value="berlin">Berlin Zentrum</option>
                                         <option value="hamburg">Hamburg Zentrum</option>
-                                        <option value="m�nchen">München  Zentrum</option>
-                                        <option value="k�ln">Köln Zentrum</option>
+                                        <option value="münchen">München  Zentrum</option>
+                                        <option value="köln">Köln Zentrum</option>
                                         <option value="frankfurt">Frankfurt am Main Zentrum</option>
                                         <option value="stuttgart">Stuttgart Zentrum</option>
                                     </select>
@@ -339,8 +339,8 @@ document.addEventListener('DOMContentLoaded', () => {
                                             <option value="">Bitte wählen</option>
                                         <option value="berlin">Berlin Zentrum</option>
                                         <option value="hamburg">Hamburg Zentrum</option>
-                                        <option value="m�nchen">München  Zentrum</option>
-                                        <option value="k�ln">Köln Zentrum</option>
+                                        <option value="münchen">München  Zentrum</option>
+                                        <option value="köln">Köln Zentrum</option>
                                         <option value="frankfurt">Frankfurt am Main Zentrum</option>
                                         <option value="stuttgart">Stuttgart Zentrum</option>
                                     </select>
@@ -1056,10 +1056,10 @@ document.addEventListener('DOMContentLoaded', () => {
         switch (offerId) {
             case 'offer-1': 
                 if (daysUntilPickup >= 14 && rentalDays >= 3) {
-                    console.log('Fr�hbucher-Rabatt applied: 10%');
+                    console.log('Frühbucher-Rabatt applied: 10%');
                     return 10;
                 }
-                console.log('Fr�hbucher-Rabatt not applicable:', { 
+                console.log('Frühbucher-Rabatt not applicable:', { 
                     daysUntilPickup, 
                     requiredDays: 14,
                     rentalDays, 
@@ -1108,7 +1108,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     function getDiscountLabel(offerId) {
         const labels = {
-            'offer-1': 'Fr�hbucher-Rabatt 10%',
+            'offer-1': 'Frühbucher-Rabatt 10%',
             'offer-2': 'Wochenend-Special 10%',
             'offer-3': 'Langzeit-Miete 10%',
             'offer-4': 'Studenten-Rabatt 10%',

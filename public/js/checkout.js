@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const end = dropoffDate ? new Date(dropoffDate) : null;
   const days = start && end ? Math.max(1, Math.round((end - start) / msPerDay)) : 1;
   const total = Number(car.daily_rate || 0) * days;
-  document.getElementById('total-price').textContent = `�${Math.floor(total).toLocaleString('de-DE')}`;
+  document.getElementById('total-price').textContent = `€${Math.floor(total).toLocaleString('de-DE')}`;
 
   const vehicleCard = document.getElementById('vehicle-card');
   const image = car.image_url || '/images/cars/car1.jpg';
@@ -150,7 +150,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const summary = document.getElementById('summary-sections');
     summary.innerHTML = `
       <div class="mb-2"><strong>Preis Informationen</strong></div>
-      <div class="row"><div class="col-6">Gesamt</div><div class="col-6 text-end" id="summary-total">�${Math.floor(total).toLocaleString('de-DE')}</div></div>
+      <div class="row"><div class="col-6">Gesamt</div><div class="col-6 text-end" id="summary-total">€${Math.floor(total).toLocaleString('de-DE')}</div></div>
       <div class="row small mt-1">
         <div class="col-6">Abholung</div><div class="col-6 text-end">${pickupDate} ${pickupTime}</div>
         <div class="col-6">Rückgabe</div><div class="col-6 text-end">${dropoffDate} ${dropoffTime}</div>
@@ -198,9 +198,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
       });
       extrasTotalState = ext;
-      extrasTotalEl.textContent = `�${Math.floor(ext).toLocaleString('de-DE')}`;
+      extrasTotalEl.textContent = `€${Math.floor(ext).toLocaleString('de-DE')}`;
       const newTotal = ext + Number(total);
-      totalEl.textContent = `�${Math.floor(newTotal).toLocaleString('de-DE')}`;
+      totalEl.textContent = `€${Math.floor(newTotal).toLocaleString('de-DE')}`;
       summaryTotalEl.textContent = totalEl.textContent;
       localStorage.setItem('extras_selected', JSON.stringify(selected));
       localStorage.setItem('extras_total', String(ext));
