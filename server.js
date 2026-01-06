@@ -33,11 +33,11 @@ const PORT = process.env.PORT || 3000;
 
 app.use((req, res, next) => {
   const allowedOrigins = [
-    'https:
-    'https:
-    'http:
-    'http:
-    'https:
+    'https://autoor-demo.netlify.app',
+    'https://autoor.netlify.app',
+    'http://localhost:3000',
+    'http://localhost:3001',
+    'https://localhost:3000'
   ];
   
   const origin = req.headers.origin;
@@ -75,8 +75,8 @@ app.use((req, res, next) => {
 
   const isDevelopment = process.env.NODE_ENV !== 'production';
   const cspPolicy = isDevelopment 
-    ? "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:
-    : "default-src 'self'; script-src 'self' 'unsafe-inline' https:
+    ? "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://code.jquery.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; font-src 'self' https://cdn.jsdelivr.net https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://*.netlify.app https://autoor-production.up.railway.app https://localhost:* http://localhost:* ws://localhost:* wss://localhost:* https://cdn.jsdelivr.net; upgrade-insecure-requests; block-all-mixed-content"
+    : "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://code.jquery.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; font-src 'self' https://cdn.jsdelivr.net https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://*.netlify.app https://autoor-production.up.railway.app https://localhost:* http://localhost:* ws://localhost:* wss://localhost:* https://cdn.jsdelivr.net; upgrade-insecure-requests; block-all-mixed-content"
   res.setHeader('Content-Security-Policy', cspPolicy);
   next();
 });
@@ -341,7 +341,7 @@ try {
   if (isProduction) {
     
     server = app.listen(PORT, '0.0.0.0', () => {
-      console.log(`HTTP läuft auf http:
+      console.log(`HTTP läuft auf http://localhost:${PORT}`);
     });
   } else if (fs.existsSync(keyPath) && fs.existsSync(certPath)) {
     const httpsOptions = {
@@ -389,7 +389,7 @@ try {
           HTTPS_PORT = altPort;
           console.log(`✅ Port ${HTTPS_PORT} wird verwendet`);
           console.log(`⚠️ ACHTUNG: Fügen Sie folgende Redirect-URI zu Google Cloud Console hinzu:`);
-          console.log(`   https:
+          console.log(`   https://localhost:${HTTPS_PORT}/auth/google/callback`);
         } else {
           console.error(`❌ Port ${HTTPS_PORT} und folgende Ports sind in Verwendung!`);
           process.exit(1);
@@ -408,7 +408,7 @@ try {
           HTTPS_PORT = altPort;
           console.log(`✅ Port ${HTTPS_PORT} wird verwendet`);
           server.listen(HTTPS_PORT, () => {
-            console.log(`🔒 HTTPS läuft auf https:
+            console.log(`🔒 HTTPS läuft auf https://localhost:${HTTPS_PORT}`);
           });
         } else {
           console.error(`❌ Port ${HTTPS_PORT} und nachfolgende Ports sind belegt!`);
@@ -420,7 +420,7 @@ try {
       }
     });
     server.listen(HTTPS_PORT, () => {
-      console.log(`🔒 HTTPS läuft auf https:
+      console.log(`🔒 HTTPS läuft auf https://localhost:${HTTPS_PORT}`);
     });
   } else {
     
@@ -434,7 +434,7 @@ try {
       }
     }
     server = app.listen(httpPort, () => {
-      console.log(`HTTP läuft auf http:
+      console.log(`HTTP läuft auf http://localhost:${httpPort}`);
     });
   }
 } catch (e) {
@@ -457,7 +457,7 @@ try {
           };
           server = https.createServer(httpsOptions, app);
           server.listen(port, () => {
-            console.log(`🔒 HTTPS läuft auf https:
+            console.log(`🔒 HTTPS läuft auf https://localhost:${port}`);
           });
         }
       } catch (retryErr) {
@@ -481,7 +481,7 @@ try {
     }
     try {
       server = app.listen(httpPort, () => {
-        console.log(`HTTP läuft auf http:
+        console.log(`HTTP läuft auf http://localhost:${httpPort}`);
       });
     } catch (httpErr) {
       if (httpErr.code === 'EADDRINUSE') {
@@ -491,7 +491,7 @@ try {
           httpPort = altPort;
           console.log(`✅ Port ${httpPort} wird verwendet`);
           server = app.listen(httpPort, () => {
-            console.log(`HTTP läuft auf http:
+            console.log(`HTTP läuft auf http://localhost:${httpPort}`);
           });
         } else {
           console.error(`❌ Port ${httpPort} und nachfolgende Ports sind belegt!`);

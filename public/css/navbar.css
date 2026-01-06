@@ -124,6 +124,12 @@ body { margin-top: 0 !important; }
         pointer-events: auto !important;
         visibility: visible !important;
     }
+    
+    .account-menu.open .menu-item {
+        pointer-events: auto !important;
+        z-index: 1102 !important;
+        position: relative;
+    }
 }
 
 .account-menu.open {
@@ -192,10 +198,32 @@ body { margin-top: 0 !important; }
     transition: background-color 0.2s ease;
     font-size: 0.9rem;
     font-weight: 500;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    touch-action: manipulation;
+    position: relative;
+    z-index: 1;
 }
 
 .menu-item:hover {
     background-color: #f5f5f5;
+}
+
+.menu-item:active {
+    background-color: #e8e8e8;
+}
+
+@media (max-width: 751px) {
+    .menu-item {
+        padding: 1rem 1.25rem;
+        min-height: 48px;
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+    }
+    
+    .account-menu .menu-item {
+        pointer-events: auto !important;
+        z-index: 1102 !important;
+    }
 }
 
 .menu-item i {

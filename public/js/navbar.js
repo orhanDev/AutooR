@@ -711,15 +711,20 @@ function updateNavbar() {
 
         accountMenu.style.display = 'block';
         accountMenu.innerHTML = `
-            <div class="menu-item">
+            <div class="menu-item" data-action="login" style="cursor: pointer; -webkit-tap-highlight-color: transparent;">
                 <i class="bi bi-box-arrow-in-right me-2"></i>
-                <a href="/login" style="color: inherit; text-decoration: none;">Anmelden</a>
+                <span>Anmelden</span>
             </div>
-            <div class="menu-item">
+            <div class="menu-item" data-action="register" style="cursor: pointer; -webkit-tap-highlight-color: transparent;">
                 <i class="bi bi-person-plus me-2"></i>
-                <a href="/register" style="color: inherit; text-decoration: none;">Registrieren</a>
+                <span>Registrieren</span>
             </div>
         `;
+        
+        // Re-initialize account menu to attach event listeners
+        setTimeout(() => {
+            initAccountMenu();
+        }, 50);
     }
     
     if (window.innerWidth <= 768) {
@@ -1733,15 +1738,64 @@ function initAccountMenu() {
             menu.style.right = (window.innerWidth - btnRect.right) + 'px';
         }
     };
+    
+    const attachMenuItemListeners = () => {
+        const menuItems = menu.querySelectorAll('.menu-item');
+        menuItems.forEach(item => {
+            const action = item.getAttribute('data-action');
+            const text = item.textContent.trim();
+            
+            // Skip if already has listener
+            if (item.dataset.listenerAttached === 'true') {
+                return;
+            }
+            
+            // Handle login
+            if (action === 'login' || text.includes('Anmelden')) {
+                const handleClick = (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    closeMenu();
+                    setTimeout(() => {
+                        window.location.href = '/login';
+                    }, 150);
+                };
+                
+                item.addEventListener('click', handleClick, { passive: false });
+                item.addEventListener('touchend', handleClick, { passive: false });
+                item.dataset.listenerAttached = 'true';
+            }
+            // Handle register
+            else if (action === 'register' || text.includes('Registrieren')) {
+                const handleClick = (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    closeMenu();
+                    setTimeout(() => {
+                        window.location.href = '/register';
+                    }, 150);
+                };
+                
+                item.addEventListener('click', handleClick, { passive: false });
+                item.addEventListener('touchend', handleClick, { passive: false });
+                item.dataset.listenerAttached = 'true';
+            }
+        });
+    };
 
     btn.addEventListener('click', (e) => {
         e.preventDefault();
+        e.stopPropagation();
         const willOpen = !menu.classList.contains('open');
         if (willOpen) {
             positionMenu();
             menu.classList.add('open');
             menu.setAttribute('aria-hidden', 'false');
             btn.setAttribute('aria-expanded', 'true');
+            // Attach listeners after menu opens
+            setTimeout(() => {
+                attachMenuItemListeners();
+            }, 50);
         } else {
             closeMenu();
         }
@@ -1758,6 +1812,11 @@ function initAccountMenu() {
             closeMenu();
         }
     });
+    
+    // Initial attachment
+    setTimeout(() => {
+        attachMenuItemListeners();
+    }, 200);
 }
 
 function initBackButton() {

@@ -14,14 +14,22 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function loadPopularCars() {
-    console.log('loadPopularCars function called');
-    
     if (!popularCarsContainer) {
         console.error('popularCarsContainer not found');
-            return;
-        }
+        return;
+    }
 
-    console.log('popularCarsContainer found:', popularCarsContainer);
+    // Show loading state with skeleton
+    popularCarsContainer.innerHTML = Array(8).fill(0).map(() => `
+        <div class="car-card" style="opacity: 0.7; animation: pulse 1.5s ease-in-out infinite; pointer-events: none;">
+            <div class="car-image" style="background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%); background-size: 200% 100%; min-height: 200px;"></div>
+            <div class="car-details" style="padding: 1rem;">
+                <div style="height: 1.5rem; background: #e0e0e0; border-radius: 4px; margin-bottom: 0.5rem; width: 80%;"></div>
+                <div style="height: 1rem; background: #e0e0e0; border-radius: 4px; width: 60%; margin-bottom: 0.5rem;"></div>
+                <div style="height: 2rem; background: #e0e0e0; border-radius: 4px; width: 100%;"></div>
+            </div>
+        </div>
+    `).join('');
 
     window.LOCAL_CARS = [
         {
@@ -105,22 +113,21 @@ function loadPopularCars() {
             image_url: '/images/cars/aston-martin-vantage-2d-red-2024.png'
         }
     ];
-    
-    console.log('Luxury cars data loaded:', window.LOCAL_CARS.length, 'cars');
 
     const popularCars = window.LOCAL_CARS.slice(0, 8);
     
-    console.log('Popular cars selected:', popularCars.length);
-    console.log('First car:', popularCars[0]);
-    
+    // Render cards immediately with lazy loading for images
     const carsHTML = popularCars.map(car => `
         <div class="car-card">
             <div class="car-image">
                 <img src="${car.image_url}" 
                      alt="${car.make} ${car.model}" 
-                     onerror="this.onerror=null; this.src='https:
+                     loading="lazy"
+                     decoding="async"
+                     style="width: 100%; height: 100%; object-fit: cover; object-position: center;"
+                     onerror="this.onerror=null; this.src='/images/cars/default-car.png';">
                 <div class="price-badge">
-                    â‚¬${car.daily_rate}/Tag
+                    €${car.daily_rate}/Tag
                 </div>
             </div>
             <div class="car-details">
@@ -148,28 +155,25 @@ function loadPopularCars() {
         </div>
     `).join('');
     
-    console.log('Generated HTML length:', carsHTML.length);
-    console.log('Setting innerHTML...');
-    
-    popularCarsContainer.innerHTML = carsHTML;
-    
-    console.log('innerHTML set successfully');
-
-    const carCards = document.querySelectorAll('.car-card');
-    console.log('Car cards found:', carCards.length);
-    
-    carCards.forEach(card => {
-        card.addEventListener('click', function(e) {
-            
-            if (e.target.tagName === 'A' || e.target.closest('a')) {
-                return;
-            }
-
-            const link = this.querySelector('a');
-            if (link) {
-                window.location.href = link.href;
-            }
-        });
+    // Use requestAnimationFrame for smooth rendering
+    requestAnimationFrame(() => {
+        popularCarsContainer.innerHTML = carsHTML;
+        
+        // Add click handlers after a short delay to ensure DOM is ready
+        setTimeout(() => {
+            const carCards = document.querySelectorAll('.car-card');
+            carCards.forEach(card => {
+                card.addEventListener('click', function(e) {
+                    if (e.target.tagName === 'A' || e.target.closest('a') || e.target.tagName === 'BUTTON') {
+                        return;
+                    }
+                    const link = this.querySelector('a');
+                    if (link) {
+                        window.location.href = link.href;
+                    }
+                });
+            });
+        }, 100);
     });
 }
 

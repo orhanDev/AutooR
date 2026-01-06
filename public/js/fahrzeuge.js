@@ -111,6 +111,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     initializeDateLocationSelector();
     
+    // Show loading skeleton immediately
+    if (carsContainer) {
+        showLoadingSkeleton();
+    }
+    
     loadCarsData().then(() => {
         loadVehicles();
     });
@@ -307,15 +312,40 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function loadCarsData() {
         return new Promise((resolve) => {
+            // Check if already loaded
             if (window.CAR_CATALOG && window.CAR_CATALOG.length > 0) {
                 console.log('CAR_CATALOG already loaded:', window.CAR_CATALOG.length, 'cars');
                 resolve();
                 return;
             }
             
-            console.log('Loading cars-data.js...');
+            // Check if script is already in DOM (loaded via HTML)
+            const existingScript = document.querySelector('script[src*="cars-data.js"]');
+            if (existingScript) {
+                // Script is in HTML, wait for it to execute
+                console.log('Waiting for cars-data.js to load from HTML...');
+                let attempts = 0;
+                const maxAttempts = 100; // 10 seconds max wait
+                const checkInterval = setInterval(() => {
+                    attempts++;
+                    if (window.CAR_CATALOG && window.CAR_CATALOG.length > 0) {
+                        console.log('CAR_CATALOG loaded from HTML:', window.CAR_CATALOG.length, 'cars');
+                        clearInterval(checkInterval);
+                        resolve();
+                    } else if (attempts >= maxAttempts) {
+                        console.warn('Timeout waiting for CAR_CATALOG');
+                        clearInterval(checkInterval);
+                        resolve(); // Continue anyway
+                    }
+                }, 100);
+                return;
+            }
+            
+            // Script not found, load it dynamically
+            console.log('Loading cars-data.js dynamically...');
             const script = document.createElement('script');
-            script.src = '/js/cars-data.js';
+            script.src = '/js/cars-data.js?v=' + Date.now();
+            script.async = true;
             script.onload = () => {
                 console.log('cars-data.js loaded, CAR_CATALOG:', window.CAR_CATALOG);
                 resolve();
@@ -326,6 +356,23 @@ document.addEventListener('DOMContentLoaded', () => {
             };
             document.head.appendChild(script);
         });
+    }
+
+    function showLoadingSkeleton() {
+        if (!carsContainer) return;
+        const skeletonCount = 12; // Show 12 skeleton cards
+        const skeletonHTML = Array(skeletonCount).fill(0).map(() => `
+            <div class="vehicle-card" style="opacity: 0.7; animation: pulse 1.5s ease-in-out infinite; pointer-events: none;">
+                <div class="vehicle-title" style="background: linear-gradient(90deg, #e0e0e0 25%, #f0f0f0 50%, #e0e0e0 75%); background-size: 200% 100%; height: 1.5rem; border-radius: 4px; margin-bottom: 0.5rem;"></div>
+                <div class="vehicle-subtitle" style="background: linear-gradient(90deg, #e0e0e0 25%, #f0f0f0 50%, #e0e0e0 75%); background-size: 200% 100%; height: 1rem; border-radius: 4px; width: 60%; margin-bottom: 0.5rem;"></div>
+                <div style="background: linear-gradient(90deg, #e0e0e0 25%, #f0f0f0 50%, #e0e0e0 75%); background-size: 200% 100%; width: 100%; height: 200px; border-radius: 8px; margin-bottom: 0.5rem;"></div>
+                <div class="vehicle-meta" style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                    <div style="background: #e0e0e0; height: 1.5rem; width: 60px; border-radius: 4px;"></div>
+                    <div style="background: #e0e0e0; height: 1.5rem; width: 60px; border-radius: 4px;"></div>
+                </div>
+            </div>
+        `).join('');
+        carsContainer.innerHTML = `<div class="cars-grid">${skeletonHTML}</div>`;
     }
 
     function loadVehicles() {
@@ -789,9 +836,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     console.log('Initializing page...');
+    
+    // Show loading skeleton immediately
     if (carsContainer) {
-        console.log('Clearing loading state...');
-        carsContainer.innerHTML = ''; 
+        showLoadingSkeleton();
     }
     
     loadCarsData().then(() => {
