@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     selectedProducts.push({ name: 'Kindersitz', daily_rate: 12 });
                 }
                 if (reservationData.additionalDriver) {
-                    selectedProducts.push({ name: 'Zusätzlicher Fahrer', daily_rate: 15 });
+                    selectedProducts.push({ name: 'Zusï¿½tzlicher Fahrer', daily_rate: 15 });
                 }
                 localStorage.setItem('selectedProducts', JSON.stringify(selectedProducts));
             }
@@ -226,10 +226,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="text-center py-5">
                     <i class="bi bi-exclamation-triangle text-warning" style="font-size: 3rem;"></i>
                     <h4 class="mt-3 text-muted">Kein Fahrzeug gefunden</h4>
-                    <p class="text-muted">Bitte wählen Sie zuerst ein Fahrzeug aus.</p>
+                    <p class="text-muted">Bitte wï¿½hlen Sie zuerst ein Fahrzeug aus.</p>
                     <a href="/fahrzeuge" class="btn btn-warning mt-3">
                         <i class="bi bi-arrow-left me-2"></i>
-                        Zurück zu den Fahrzeugen
+                        Zurï¿½ck zu den Fahrzeugen
                     </a>
                 </div>
             `;
@@ -244,7 +244,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const insuranceType = reservationData?.insuranceType || 'Versicherung';
         
         container.innerHTML = `
-            <!-- Breadcrumb -->
             <nav aria-label="breadcrumb" class="mb-4">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="/" class="text-decoration-none">Startseite</a></li>
@@ -255,7 +254,6 @@ document.addEventListener('DOMContentLoaded', () => {
             </nav>
             
             <div class="row g-4">
-                <!-- Left Column - Car Card -->
                 <div class="col-lg-4">
                     <div class="bg-white rounded-4 p-4 shadow-sm border h-100">
                         <div class="text-center mb-3">
@@ -265,7 +263,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                  style="height: 200px; object-fit: cover;"
                                  onerror="this.onerror=null; this.src='/images/cars/vw-t-roc-suv-4d-white-2022-JV.png';">
                             <h5 class="fw-bold">${vehicle.make} ${vehicle.model}</h5>
-                            <p class="text-muted mb-0">€${vehicle.daily_rate || 0}/Tag</p>
+                            <p class="text-muted mb-0">ï¿½${vehicle.daily_rate || 0}/Tag</p>
                         </div>
                         
                         <div class="row g-2 mb-3">
@@ -282,14 +280,13 @@ document.addEventListener('DOMContentLoaded', () => {
                                 <strong>${vehicle.seating_capacity || '5'}</strong>
                             </div>
                             <div class="col-6">
-                                <small class="text-muted d-block">Türen</small>
+                                <small class="text-muted d-block">Tï¿½ren</small>
                                 <strong>${vehicle.doors || '5'}</strong>
                             </div>
                         </div>
                     </div>
                 </div>
                 
-                <!-- Center Column - Order Summary -->
                 <div class="col-lg-4">
                     <div class="bg-white rounded-4 p-4 shadow-sm border h-100">
                         <h3 class="fw-bold mb-4">
@@ -302,12 +299,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                 </div>
                 
-                <!-- Right Column - Payment Methods -->
                 <div class="col-lg-4">
                     <div class="bg-white rounded-4 p-4 shadow-sm border h-100 d-flex flex-column">
                         <h3 class="fw-bold mb-4">
                             <i class="bi bi-credit-card text-warning me-2"></i>
-                            Zahlungsmethode wählen
+                            Zahlungsmethode wï¿½hlen
                         </h3>
                         
                         <div class="flex-grow-1">
@@ -367,16 +363,15 @@ document.addEventListener('DOMContentLoaded', () => {
                                     <div class="payment-icon sofort me-3" style="width: 40px; height: 40px; border-radius: 6px; background: linear-gradient(135deg, #ff6600 0%, #ff8533 100%); display: flex; align-items: center; justify-content: center; color: white;">
                                         <i class="bi bi-bank"></i>
                                     </div>
-                                    <div class="payment-name fw-bold">Sofortüberweisung</div>
+                                    <div class="payment-name fw-bold">Sofortï¿½berweisung</div>
                                 </div>
                             </div>
                         </div>
                         
-                        <!-- Action Buttons -->
                         <div class="d-flex gap-3 mt-4">
                             <a href="/reservation" class="btn btn-secondary flex-fill">
                                 <i class="bi bi-arrow-left me-2"></i>
-                                Zurück
+                                Zurï¿½ck
                             </a>
                             <button class="btn btn-warning flex-fill" onclick="processPayment()" disabled id="pay-button">
                                 <i class="bi bi-lock me-2"></i>
@@ -400,7 +395,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <i class="bi bi-car-front text-warning me-2"></i>
                         Fahrzeugmiete (${days} Tag${days > 1 ? 'e' : ''})
                     </span>
-                    <strong>€${formatPrice(basePrice)}</strong>
+                    <strong>ï¿½${formatPrice(basePrice)}</strong>
                 </div>
             `;
         }
@@ -412,7 +407,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <i class="bi bi-shield-check text-warning me-2"></i>
                         ${insuranceType}
                     </span>
-                    <strong>€${formatPrice(insuranceAmount)}</strong>
+                    <strong>ï¿½${formatPrice(insuranceAmount)}</strong>
                 </div>
             `;
         }
@@ -422,9 +417,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="d-flex justify-content-between mb-3 pb-3 border-bottom">
                     <span>
                         <i class="bi bi-star text-warning me-2"></i>
-                        Zusätzliche Leistungen
+                        Zusï¿½tzliche Leistungen
                     </span>
-                    <strong>€${formatPrice(extrasAmount)}</strong>
+                    <strong>ï¿½${formatPrice(extrasAmount)}</strong>
                 </div>
             `;
         }
@@ -435,7 +430,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <i class="bi bi-calculator text-warning me-2"></i>
                     Gesamtbetrag
                 </span>
-                <strong class="fs-5 text-warning">€${formatPrice(totalPrice)}</strong>
+                <strong class="fs-5 text-warning">ï¿½${formatPrice(totalPrice)}</strong>
             </div>
         `;
         
@@ -466,7 +461,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             if (carOverlayPrice) {
                 const dailyRate = selectedVehicle.daily_rate || selectedVehicle.dailyRate || 0;
-                carOverlayPrice.textContent = `€${dailyRate}/Tag`;
+                carOverlayPrice.textContent = `ï¿½${dailyRate}/Tag`;
             }
             
             if (carTransmission) {
@@ -488,7 +483,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 carYear.textContent = selectedVehicle.year || '2023';
             }
             if (carColor) {
-                carColor.textContent = selectedVehicle.color || 'Weiß';
+                carColor.textContent = selectedVehicle.color || 'Weiï¿½';
             }
             if (carClimate) {
                 carClimate.textContent = selectedVehicle.air_conditioning ? 'Ja' : 'Nein';
@@ -545,7 +540,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 
                 if (carOverlayPrice) {
-                    carOverlayPrice.textContent = `€${car.daily_rate}/Tag`;
+                    carOverlayPrice.textContent = `ï¿½${car.daily_rate}/Tag`;
                 }
                 
                 if (carTransmission) {
@@ -567,7 +562,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 carYear.textContent = car.year || '2023';
                 }
                 if (carColor) {
-                    carColor.textContent = car.color || 'Weiß';
+                    carColor.textContent = car.color || 'Weiï¿½';
                 }
                 if (carClimate) {
                 carClimate.textContent = car.air_conditioning ? 'Ja' : 'Nein';
@@ -610,7 +605,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             <i class="bi bi-car-front me-2"></i>
                             Fahrzeugmiete (${days} Tag${days > 1 ? 'e' : ''})
                         </span>
-                        <span class="summary-value">€${formatPrice(basePrice)}</span>
+                        <span class="summary-value">ï¿½${formatPrice(basePrice)}</span>
                     </div>
                 `;
                 totalPrice += basePrice;
@@ -625,7 +620,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             <i class="bi bi-shield-check me-2"></i>
                             ${insuranceName}
                         </span>
-                        <span class="summary-value">€${formatPrice(insuranceAmount)}</span>
+                        <span class="summary-value">ï¿½${formatPrice(insuranceAmount)}</span>
                     </div>
                 `;
                 totalPrice += insuranceAmount;
@@ -637,9 +632,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="summary-item">
                         <span class="summary-label">
                             <i class="bi bi-star me-2"></i>
-                            Zusätzliche Leistungen
+                            Zusï¿½tzliche Leistungen
                         </span>
-                        <span class="summary-value">€${formatPrice(extrasAmount)}</span>
+                        <span class="summary-value">ï¿½${formatPrice(extrasAmount)}</span>
                     </div>
                 `;
                 totalPrice += extrasAmount;
@@ -682,7 +677,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             <i class="bi bi-car-front me-2"></i>
                             Fahrzeugmiete (${days} Tag(e))
                         </span>
-                            <span class="summary-value">€${formatPrice(carPrice)}</span>
+                            <span class="summary-value">ï¿½${formatPrice(carPrice)}</span>
                     </div>
                 `;
             }
@@ -698,7 +693,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <i class="bi bi-shield-check me-2"></i>
                         ${selectedInsurance.name}
                     </span>
-                        <span class="summary-value">€${formatPrice(insurancePrice)}</span>
+                        <span class="summary-value">ï¿½${formatPrice(insurancePrice)}</span>
                 </div>
             `;
         }
@@ -727,7 +722,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 <i class="bi ${icon} me-2"></i>
                                 ${product.name}
                             </span>
-                                <span class="summary-value">€${formatPrice(productPrice)}</span>
+                                <span class="summary-value">ï¿½${formatPrice(productPrice)}</span>
                         </div>
                     `;
                 }
@@ -741,7 +736,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <i class="bi bi-calculator me-2"></i>
                     Gesamtbetrag
                 </span>
-                <span class="summary-value">€${formatPrice(totalPrice)}</span>
+                <span class="summary-value">ï¿½${formatPrice(totalPrice)}</span>
             </div>
         `;
 
@@ -799,7 +794,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.processPayment = function() {
         if (!selectedPaymentMethod) {
-            alert('Bitte wählen Sie eine Zahlungsmethode aus.');
+            alert('Bitte wï¿½hlen Sie eine Zahlungsmethode aus.');
             return;
         }
 
@@ -851,7 +846,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         </div>
                         <div class="payment-actions" style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px;">
                             <button type="button" class="btn btn-secondary" onclick="closeCreditCardForm()">Abbrechen</button>
-                            <button type="submit" class="btn btn-warning">Zahlung bestätigen</button>
+                            <button type="submit" class="btn btn-warning">Zahlung bestï¿½tigen</button>
                         </div>
                     </form>
                 </div>
@@ -946,10 +941,10 @@ document.addEventListener('DOMContentLoaded', () => {
                             <h5 class="mb-3">Dies ist eine Demo-Version</h5>
                             <p class="mb-3">
                                 Dies ist keine echte Autovermietungs-Website. 
-                                Es handelt sich um eine Demo-Version zu Übungszwecken.
+                                Es handelt sich um eine Demo-Version zu ï¿½bungszwecken.
                             </p>
                             <p class="text-muted mb-0">
-                                <strong>Keine Zahlung kann durchgeführt werden.</strong>
+                                <strong>Keine Zahlung kann durchgefï¿½hrt werden.</strong>
                             </p>
                         </div>
                         <div class="modal-footer justify-content-center gap-2">

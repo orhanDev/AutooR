@@ -7,13 +7,13 @@ function getPageTitle() {
         '/angebote': 'Angebote',
         '/self-services': 'Self-Services',
         '/extras-versicherung': 'Extras',
-        '/geschaeftskunden': 'Geschäftskunden',
+        '/geschaeftskunden': 'Geschï¿½ftskunden',
         '/standorte': 'Standorte',
         '/hilfe': 'Hilfe & Kontakt',
         '/reservation': 'Reservierung',
         '/buchungen': 'Buchungen',
         '/abos': 'Abos',
-        '/persoenliche-daten': 'Persönliche Daten',
+        '/persoenliche-daten': 'Persï¿½nliche Daten',
         '/profile': 'Profile'
     };
     return titleMap[path] || 'AutooR';
@@ -512,25 +512,24 @@ function createNavbar() {
     }
     
     navbarContainer.innerHTML = `
-        <!-- Mobile menu backdrop overlay -->
         <div class="mobile-menu-backdrop" id="mobile-menu-backdrop"></div>
         <nav class="navbar fixed-top">
             <div class="container d-flex align-items-center">
-                <button class="navbar-toggler me-2 d-flex align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-label="Menü">
+                <button class="navbar-toggler me-2 d-flex align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-label="Menï¿½">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <button class="navbar-back-btn me-2 d-flex align-items-center" type="button" aria-label="Zurück" style="display: none;">
+                <button class="navbar-back-btn me-2 d-flex align-items-center" type="button" aria-label="Zurï¿½ck" style="display: none;">
                     <i class="bi bi-arrow-left" style="font-size: 1.5rem;"></i>
                 </button>
                 <a class="brand-center" href="/">AutooR</a>
                 <div class="collapse navbar-collapse flex-grow-1" id="navbarNav">
                     <div class="side-left">
                         <div class="menu-header d-flex justify-content-between align-items-center mb-4 d-md-none">
-                            <button class="btn-back-menu" type="button" aria-label="Zurück" style="display: none;">
+                            <button class="btn-back-menu" type="button" aria-label="Zurï¿½ck" style="display: none;">
                                 <i class="bi bi-arrow-left" style="font-size: 1.25rem;"></i>
                             </button>
-                            <h2 class="menu-title mb-0">Menü</h2>
-                            <button class="btn-close-menu" type="button" aria-label="Menüyü Kapat">
+                            <h2 class="menu-title mb-0">Menï¿½</h2>
+                            <button class="btn-close-menu" type="button" aria-label="Menï¿½yï¿½ Kapat">
                                 <span>&times;</span>
                             </button>
                         </div>
@@ -539,7 +538,7 @@ function createNavbar() {
                             <li class="nav-item side-item"><a class="nav-link" href="/angebote">Angebote</a></li>
                             <li class="nav-item side-item"><a class="nav-link" href="/self-services">Self-Services</a></li>
                             <li class="nav-item side-item"><a class="nav-link" href="/extras-versicherung">Extras</a></li>
-                            <li class="nav-item side-item"><a class="nav-link" href="/geschaeftskunden">Geschäftskunden</a></li>
+                            <li class="nav-item side-item"><a class="nav-link" href="/geschaeftskunden">Geschï¿½ftskunden</a></li>
                             <li class="nav-item side-item"><a class="nav-link" href="/standorte">Standorte</a></li>
                             <li class="nav-item side-item"><a class="nav-link" href="/hilfe">Hilfe & Kontakt</a></li>
                     </ul>
@@ -564,7 +563,7 @@ function createNavbar() {
                         </div>
                         <div class="menu-item" onclick="window.location.href='/persoenliche-daten'">
                             <i class="bi bi-person me-2"></i>
-                            <span>Persönliche Daten</span>
+                            <span>Persï¿½nliche Daten</span>
                         </div>
                         <div class="menu-item" onclick="window.location.href='/profile'">
                             <i class="bi bi-person-badge me-2"></i>
@@ -778,7 +777,7 @@ function showLogoutNotification() {
         </div>
         <div style="font-size: 16px; opacity: 0.8;">
             Sie wurden erfolgreich abgemeldet.<br>
-            Vielen Dank für Ihren Besuch bei AutooR.
+            Vielen Dank fï¿½r Ihren Besuch bei AutooR.
         </div>
     `;
     
@@ -1184,21 +1183,21 @@ function initSideMenu() {
                 <div class="submenu-header">Extras</div>
                 <ul class="submenu-list">
                     <li><a href="#">Zusatzfahrer</a></li>
-                    <li><a href="#">Navigationsgeräte</a></li>
+                    <li><a href="#">Navigationsgerï¿½te</a></li>
                     <li><a href="#">Kindersitze</a></li>
-                    <li><a href="#">Winterausrüstung</a></li>
+                    <li><a href="#">Winterausrï¿½stung</a></li>
                     <li><a href="#">Versicherungspakete</a></li>
                 </ul>
             </div>
         `,
         business: `
             <div class="submenu">
-                <div class="submenu-header">Geschäftskunden</div>
+                <div class="submenu-header">Geschï¿½ftskunden</div>
                 <ul class="submenu-list">
                     <li><a href="#">Firmenkundenprogramme</a></li>
-                    <li><a href="#">Kleine & Mittelständische Unternehmen</a></li>
-                    <li><a href="#">Großkundenlösungen</a></li>
-                    <li><a href="#">Reisebüros & Partner</a></li>
+                    <li><a href="#">Kleine & Mittelstï¿½ndische Unternehmen</a></li>
+                    <li><a href="#">Groï¿½kundenlï¿½sungen</a></li>
+                    <li><a href="#">Reisebï¿½ros & Partner</a></li>
                 </ul>
             </div>
         `,
@@ -1206,16 +1205,16 @@ function initSideMenu() {
             <div class="submenu submenu-static">
                 <div class="submenu-header">Standorte (Deutschland)</div>
                 <ul class="submenu-list columns">
-                    <li><a href="#">Köln Zentrum</a></li>
-                    <li><a href="#">München Zentrum</a></li>
+                    <li><a href="#">Kï¿½ln Zentrum</a></li>
+                    <li><a href="#">Mï¿½nchen Zentrum</a></li>
                     <li><a href="#">Hamburg Zentrum</a></li>
-                    <li><a href="#">Köln Zentrum</a></li>
+                    <li><a href="#">Kï¿½ln Zentrum</a></li>
                     <li><a href="#">Frankfurt am Main Zentrum</a></li>
                     <li><a href="#">Stuttgart Zentrum</a></li>
-                    <li><a href="#">Düsseldorf Zentrum</a></li>
+                    <li><a href="#">Dï¿½sseldorf Zentrum</a></li>
                     <li><a href="#">Leipzig Zentrum</a></li>
                     <li><a href="#">Hannover Zentrum</a></li>
-                    <li><a href="#">Nürnberg Zentrum</a></li>
+                    <li><a href="#">Nï¿½rnberg Zentrum</a></li>
                     <li><a href="#">Bremen Zentrum</a></li>
                     <li><a href="#">Dresden Zentrum</a></li>
                     <li><a href="#">Dortmund Zentrum</a></li>
@@ -1445,7 +1444,7 @@ async function renderVehicleCards(container) {
                 }));
             }
         } catch (e) {
-            console.warn('Static cars-data.js yüklenemedi.', e);
+            console.warn('Static cars-data.js yï¿½klenemedi.', e);
         }
     }
 
@@ -1472,7 +1471,7 @@ async function renderVehicleCards(container) {
                 }
             }
         } catch (e) {
-            console.warn('fahrzeuge.html içinden araç listesi çikarilamadi.', e);
+            console.warn('fahrzeuge.html iï¿½inden araï¿½ listesi ï¿½ikarilamadi.', e);
         }
     }
 
@@ -1564,7 +1563,7 @@ async function renderVehicleCards(container) {
         if (/\.jpg$/i.test(img)) img = img.replace(/\.jpg$/i, '.png');
         return img || '/images/cars/vw-t-roc-suv-4d-white-2022-JV.png';
     };
-    const stripSimilar = (s) => String(s || '').replace(/\s*oder\s+ähnlich/gi, '').trim();
+    const stripSimilar = (s) => String(s || '').replace(/\s*oder\s+ï¿½hnlich/gi, '').trim();
     const capitalize = (w) => w.length <= 3 ? w.toUpperCase() : (w.charAt(0).toUpperCase() + w.slice(1).toLowerCase());
     const guessFromImage = (imgPath) => {
         try {
@@ -1622,14 +1621,14 @@ async function renderVehicleCards(container) {
         return `
         <div class="vehicle-card" data-id="${id}" data-make="${makeAttr}" data-model="${modelAttr}" data-img="${img}" data-price="${price}" data-trans="${transmission}" data-fuel="${fuel}" data-seats="${seats}" data-bags="${bags}" data-hand="${hand}" data-doors="${doors}">
             <div class="vehicle-title">${title}</div>
-            <div class="vehicle-subtitle">${(c.type||'').toString().replace(/"/g,'&quot;')} ${transmission ? `<span class=\"nowrap\">• ${transmission}</span>` : ''}</div>
+            <div class="vehicle-subtitle">${(c.type||'').toString().replace(/"/g,'&quot;')} ${transmission ? `<span class=\"nowrap\">ï¿½ ${transmission}</span>` : ''}</div>
             <img src="${img}" alt="${title}" onerror="if(!this.dataset.try){this.dataset.try='png';this.src=this.src.replace(/\\.jpg$/i,'.png');}else if(this.dataset.try==='png'){this.dataset.try='jpg';this.src=this.src.replace(/\\.png$/i,'.jpg');}else{this.onerror=null;this.src='/images/cars/default-car.jpg';}" />
-            ${price ? `<div class=\"price-badge\">€${Math.floor(Number(price)).toLocaleString('de-DE')}/Tag</div>` : ''}
+            ${price ? `<div class=\"price-badge\">ï¿½${Math.floor(Number(price)).toLocaleString('de-DE')}/Tag</div>` : ''}
             <div class="vehicle-meta">
                 ${seats ? `<span class="vehicle-chip">${seats} Sitze</span>` : ''}
                 ${bags ? `<span class="vehicle-chip">${bags} Koffer</span>` : ''}
                 ${hand ? `<span class="vehicle-chip">${hand} Handgep.</span>` : ''}
-                ${doors ? `<span class="vehicle-chip">${doors} Türen</span>` : ''}
+                ${doors ? `<span class="vehicle-chip">${doors} Tï¿½ren</span>` : ''}
             </div>
         </div>`;
     }).join('');

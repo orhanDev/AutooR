@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return best ? `/images/cars/${best}` : '';
     }
     function toImg(vehicle) {
-        try { return resolveVehicleImage(vehicle); } catch (e) { /* no-op */ }
+        try { return resolveVehicleImage(vehicle); } catch (e) {}
         const best = findBestImage(vehicle.make, vehicle.model);
         return best || '/images/cars/vw-t-roc-suv-4d-white-2022-JV.png';
     }
@@ -95,8 +95,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const locationNames = {
         'berlin': 'Berlin Zentrum',
         'hamburg': 'Hamburg Zentrum',
-        'münchen': 'München Zentrum',
-        'köln': 'Köln Zentrum',
+        'mï¿½nchen': 'Mï¿½nchen Zentrum',
+        'kï¿½ln': 'Kï¿½ln Zentrum',
         'frankfurt': 'Frankfurt am Main Zentrum',
         'stuttgart': 'Stuttgart Zentrum'
     };
@@ -381,7 +381,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        const stripSimilar = (s) => String(s || '').replace(/\s*oder\s+ähnlich/gi, '').trim();
+        const stripSimilar = (s) => String(s || '').replace(/\s*oder\s+ï¿½hnlich/gi, '').trim();
         const cards = filteredVehicles.map(vehicle => {
             const title = `${vehicle.make || ''} ${stripSimilar(vehicle.model || '')}`.trim();
             const img = toImg(vehicle);
@@ -399,15 +399,15 @@ document.addEventListener('DOMContentLoaded', () => {
             return `
             <div class="vehicle-card" data-car-id="${vehicle.car_id}" data-make="${makeAttr}" data-model="${modelAttr}" data-img="${img}" data-price="${vehicle.daily_rate || ''}" data-trans="${vehicle.transmission_type || ''}" data-fuel="${vehicle.fuel_type || ''}" data-seats="${vehicle.seating_capacity || ''}" data-bags="${vehicle.baggage_large || ''}" data-hand="${vehicle.baggage_small || ''}" data-doors="${vehicle.doors || ''}">
                 <div class="vehicle-title">${title}</div>
-                <div class="vehicle-subtitle">${(vehicle.type || '').toString().replace(/"/g,'&quot;')} ${vehicle.transmission_type ? `<span class=\"nowrap\">• ${vehicle.transmission_type}</span>` : ''}</div>
+                <div class="vehicle-subtitle">${(vehicle.type || '').toString().replace(/"/g,'&quot;')} ${vehicle.transmission_type ? `<span class=\"nowrap\">ï¿½ ${vehicle.transmission_type}</span>` : ''}</div>
                 <img src="${img}" alt="${title}" onerror="if(!this.dataset.try){this.dataset.try='png';this.src=this.src.replace(/\.jpg$/i,'.png');}else if(this.dataset.try==='png'){this.dataset.try='jpg';this.src=this.src.replace(/\.png$/i,'.jpg');}else{this.onerror=null;this.src='/images/cars/default-car.jpg';}" />
-                ${vehicle.daily_rate ? `<div class=\"price-badge\">€${Math.floor(Number(vehicle.daily_rate)).toLocaleString('de-DE')}/Tag</div>` : ''}
+                ${vehicle.daily_rate ? `<div class=\"price-badge\">ï¿½${Math.floor(Number(vehicle.daily_rate)).toLocaleString('de-DE')}/Tag</div>` : ''}
                 ${vehicle.fuel_type ? `<div class="fuel-badge">${fuelBadge}</div>` : ''}
                 <div class="vehicle-meta">
                     ${vehicle.seating_capacity ? `<span class=\"vehicle-chip\">${vehicle.seating_capacity} Sitze</span>` : ''}
                     ${vehicle.baggage_large ? `<span class=\"vehicle-chip\">${vehicle.baggage_large} Koffer</span>` : ''}
                     ${vehicle.baggage_small ? `<span class=\"vehicle-chip\">${vehicle.baggage_small} Handgep.</span>` : ''}
-                    ${vehicle.doors ? `<span class=\"vehicle-chip\">${vehicle.doors} Türen</span>` : ''}
+                    ${vehicle.doors ? `<span class=\"vehicle-chip\">${vehicle.doors} Tï¿½ren</span>` : ''}
                 </div>
             </div>`;
         }).join('');

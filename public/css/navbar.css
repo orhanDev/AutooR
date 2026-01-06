@@ -342,15 +342,6 @@ body { margin-top: 0 !important; }
     cursor: pointer !important;
 }
 
-/* ============================================
-   NAVBAR BACK BUTTON & HAMBURGER MENU RULES
-   ============================================
-   These rules apply to ALL screen sizes:
-   - Mobile (max-width: 751px)
-   - Tablet (752px - 1199px)
-   - Desktop (min-width: 1200px)
-   ============================================ */
-
 body.home-page .navbar-back-btn {
     display: none !important;
     visibility: hidden !important;

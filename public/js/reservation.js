@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center mb-2">
                         <span class="badge bg-warning text-dark">${badge}</span>
-                        <strong>€${price}/Tag</strong>
+                        <strong>ï¿½${price}/Tag</strong>
                     </div>
                     <h6 class="fw-bold mb-2">${title}</h6>
                     <ul class="small text-muted ps-3 mb-0">
@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="extra-card card h-100 border-2" data-key="${key}" data-price="${price}" data-unit="${unit}" style="cursor:pointer;">
                 <div class="card-body d-flex flex-column">
                     <h6 class="fw-bold mb-1">${title}</h6>
-                    <small class="text-muted">€${price}/${unit}</small>
+                    <small class="text-muted">ï¿½${price}/${unit}</small>
                 </div>
             </div>
         </div>`;
@@ -115,7 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     if (!selectedCarId && !selectedVehicle) {
-        showError('Kein Fahrzeug ausgewählt');
+        showError('Kein Fahrzeug ausgewï¿½hlt');
         return;
     }
     
@@ -176,12 +176,12 @@ document.addEventListener('DOMContentLoaded', () => {
                         vehicle.image_url = normalizedImg;
                         localStorage.setItem('selectedVehicle', JSON.stringify(vehicle));
                     }
-                } catch (e) { /* ignore */ }
+                } catch (e) {}
             } else {
                 vehicle = LOCAL_CARS.find(car => car.car_id.toString() === selectedCarId);
                 try {
                     vehicle.image_url = resolveVehicleImage(vehicle);
-                } catch (e) { /* ignore */ }
+                } catch (e) {}
             }
             
             if (!vehicle) {
@@ -293,7 +293,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function displayReservationForm(vehicle) {
 
         container.innerHTML = `
-            <!-- Breadcrumb -->
             <nav aria-label="breadcrumb" class="mb-4">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="/" class="text-decoration-none">Startseite</a></li>
@@ -304,7 +303,6 @@ document.addEventListener('DOMContentLoaded', () => {
             </nav>
             
             <div class="row">
-                <!-- Reservation Form -->
                 <div class="col-lg-8 mb-4">
                     <div id="reservation-main-card" class="bg-white rounded-4 p-4 shadow-sm border">
                         <h2 class="fw-bold mb-4">
@@ -316,21 +314,20 @@ document.addEventListener('DOMContentLoaded', () => {
                             </span>
                             Reservierung
                         </h2>
-                        <!-- Quick search form (Porsche-like) -->
                         <div class="rounded-4 p-3 mb-4 summary-box" style="background:#f7f7f7;">
                             <div class="row g-3 align-items-end">
                                 <div class="col-12">
-                                    <label class="form-label small text-muted mb-1">Abholung & Rückgabe</label>
+                                    <label class="form-label small text-muted mb-1">Abholung & Rï¿½ckgabe</label>
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="input-group qr-loc">
                                         <span class="input-group-text bg-white"><i class="bi bi-geo-alt"></i></span>
                                         <select id="qr-pickup-location" class="form-select border-2 qr-select">
-                                            <option value="">Bitte wählen</option>
+                                            <option value="">Bitte wï¿½hlen</option>
                                         <option value="berlin">Berlin Zentrum</option>
                                         <option value="hamburg">Hamburg Zentrum</option>
-                                        <option value="münchen">München Zentrum</option>
-                                        <option value="köln">Köln Zentrum</option>
+                                        <option value="mï¿½nchen">Mï¿½nchen Zentrum</option>
+                                        <option value="kï¿½ln">Kï¿½ln Zentrum</option>
                                         <option value="frankfurt">Frankfurt am Main Zentrum</option>
                                         <option value="stuttgart">Stuttgart Zentrum</option>
                                     </select>
@@ -340,11 +337,11 @@ document.addEventListener('DOMContentLoaded', () => {
                                     <div class="input-group qr-loc">
                                         <span class="input-group-text bg-white"><i class="bi bi-geo-alt"></i></span>
                                         <select id="qr-dropoff-location" class="form-select border-2 qr-select">
-                                            <option value="">Bitte wählen</option>
+                                            <option value="">Bitte wï¿½hlen</option>
                                         <option value="berlin">Berlin Zentrum</option>
                                         <option value="hamburg">Hamburg Zentrum</option>
-                                        <option value="münchen">München Zentrum</option>
-                                        <option value="köln">Köln Zentrum</option>
+                                        <option value="mï¿½nchen">Mï¿½nchen Zentrum</option>
+                                        <option value="kï¿½ln">Kï¿½ln Zentrum</option>
                                         <option value="frankfurt">Frankfurt am Main Zentrum</option>
                                         <option value="stuttgart">Stuttgart Zentrum</option>
                                     </select>
@@ -364,7 +361,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 </div>
                                 </div>
                                 <div class="col-md-6 col-xl-3">
-                                    <label class="form-label small text-muted mb-1">Rückgabedatum</label>
+                                    <label class="form-label small text-muted mb-1">Rï¿½ckgabedatum</label>
                                     <div class="input-group flex-nowrap">
                                         <span class="input-group-text bg-white"><i class="bi bi-calendar"></i></span>
                                         <input type="text" id="qr-dropoff-date" class="form-control border-2 qr-select" placeholder="TT.MM.JJJJ">
@@ -381,7 +378,6 @@ document.addEventListener('DOMContentLoaded', () => {
                                 
                         <form id="reservation-form">
                                     <div class="row g-3">
-                                <!-- Hidden fields mirror quick bar selections -->
                                 <input type="hidden" name="pickupLocation" id="pickupLocation">
                                 <input type="hidden" name="dropoffLocation" id="dropoffLocation">
                                 <input type="hidden" name="pickupDate" id="pickupDate">
@@ -389,7 +385,6 @@ document.addEventListener('DOMContentLoaded', () => {
                                 <input type="hidden" name="pickupTime" id="pickupTime">
                                 <input type="hidden" name="dropoffTime" id="dropoffTime">
                                 
-                                <!-- Insurance Packages -->
                                 <div class="col-12 mt-4">
                                     <h5 class="fw-bold text-warning mb-3">Versicherungspakete</h5>
                                     <div class="row g-3" id="insurance-packages">
@@ -399,7 +394,6 @@ document.addEventListener('DOMContentLoaded', () => {
                                             </div>
                                         </div>
                                 
-                                <!-- Extras -->
                                 <div class="col-12 mt-4">
                                     <h5 class="fw-bold text-warning mb-3">Zus\u00e4tzliche Leistungen</h5>
                                     <div class="row g-3" id="extras">
@@ -412,7 +406,6 @@ document.addEventListener('DOMContentLoaded', () => {
                                     </div>
                                 </div>
                                 
-                                <!-- Terms -->
                                 <div class="col-12">
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" id="terms">
@@ -423,7 +416,6 @@ document.addEventListener('DOMContentLoaded', () => {
                                     </div>
                                 </div>
                                 
-                                <!-- Submit Button -->
                                 <div class="col-12">
                                     <button id="submitBtn" type="submit" class="nav-link-text btn-lg w-100 fw-bold">
                                         <i class="bi bi-credit-card me-2"></i>
@@ -435,10 +427,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                 </div>
                 
-                <!-- Vehicle Summary -->
                 <div class="col-lg-4 mb-4">
                     <div class="bg-white rounded-4 p-4 shadow-sm border summary-card">
-                        <h5 class="fw-bold mb-4">Fahrzeugübersicht</h5>
+                        <h5 class="fw-bold mb-4">Fahrzeugï¿½bersicht</h5>
                         
                         <div class="text-center mb-3">
                             <img src="${resolveVehicleImage(vehicle)}" alt="${vehicle.make} ${vehicle.model}" 
@@ -459,7 +450,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         </div>
 
                         <div class="rounded-3 p-3 mb-3 summary-box" style="background:#f7f7f7;">
-                            <h6 class="fw-bold mb-2">Abholung & Rückgabe</h6>
+                            <h6 class="fw-bold mb-2">Abholung & Rï¿½ckgabe</h6>
                             <div class="small">
                                 <div class="mb-2">
                                     <span class="text-muted">Abholung:</span>
@@ -467,7 +458,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                     <div><i class="bi bi-calendar me-1"></i><span id="summary-pickup-date">-</span> <span class="ms-2"><i class="bi bi-clock me-1"></i><span id="summary-pickup-time">-</span></span></div>
                                 </div>
                                 <div>
-                                    <span class="text-muted">Rückgabe:</span>
+                                    <span class="text-muted">Rï¿½ckgabe:</span>
                                     <div><i class="bi bi-geo-alt me-1"></i><span id="summary-dropoff-loc">-</span></div>
                                     <div><i class="bi bi-calendar me-1"></i><span id="summary-dropoff-date">-</span> <span class="ms-2"><i class="bi bi-clock me-1"></i><span id="summary-dropoff-time">-</span></span></div>
                             </div>
@@ -475,14 +466,14 @@ document.addEventListener('DOMContentLoaded', () => {
                         </div>
                         
                         <div class="bg-light rounded-3 p-3 summary-box">
-                            <h6 class="fw-bold mb-3">Preisübersicht</h6>
+                            <h6 class="fw-bold mb-3">Preisï¿½bersicht</h6>
                             <div id="price-breakdown">
                                 <div class="mb-3">
                                     <div class="d-flex justify-content-between align-items-center mb-1">
                                         <span class="text-muted small" id="base-price-label">Grundpreis</span>
                                         <div id="base-price" class="text-end">
                                             <span class="text-muted small text-decoration-line-through me-2" id="original-price" style="display: none;"></span>
-                                            <span class="fw-bold" id="current-price">€${Math.floor(Number(vehicle.daily_rate)).toLocaleString('de-DE')}</span>
+                                            <span class="fw-bold" id="current-price">ï¿½${Math.floor(Number(vehicle.daily_rate)).toLocaleString('de-DE')}</span>
                                         </div>
                                     </div>
                                     <div id="discount-row" style="display: none;" class="mt-1">
@@ -497,16 +488,16 @@ document.addEventListener('DOMContentLoaded', () => {
                                 </div>
                                 <div class="d-flex justify-content-between mb-2">
                                     <span class="text-muted small">Versicherung</span>
-                                    <span id="insurance-price" class="text-muted">€0</span>
+                                    <span id="insurance-price" class="text-muted">ï¿½0</span>
                                 </div>
                                 <div class="d-flex justify-content-between mb-2">
                                     <span class="text-muted small">Zusatzleistungen</span>
-                                    <span id="additional-services-price" class="text-muted">€0</span>
+                                    <span id="additional-services-price" class="text-muted">ï¿½0</span>
                                 </div>
                                 <hr class="my-3">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <span class="fw-bold">Gesamtpreis</span>
-                                    <span id="total-price" class="fw-bold fs-5 text-warning">€${Math.floor(Number(vehicle.daily_rate)).toLocaleString('de-DE')}</span>
+                                    <span id="total-price" class="fw-bold fs-5 text-warning">ï¿½${Math.floor(Number(vehicle.daily_rate)).toLocaleString('de-DE')}</span>
                                 </div>
                             </div>
                         </div>
@@ -537,7 +528,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center mb-2">
                         <span class="badge bg-warning text-dark">${badge}</span>
-                        <strong>€${price}/Tag</strong>
+                        <strong>ï¿½${price}/Tag</strong>
                     </div>
                     <h6 class="fw-bold mb-2">${title}</h6>
                     <ul class="small text-muted ps-3 mb-0">
@@ -716,7 +707,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="extra-card card h-100 border-2" data-key="${key}" data-price="${price}" data-unit="${unit}" style="cursor:pointer;">
                 <div class="card-body d-flex flex-column">
                     <h6 class="fw-bold mb-1">${title}</h6>
-                    <small class="text-muted">€${price}/${unit}</small>
+                    <small class="text-muted">ï¿½${price}/${unit}</small>
                 </div>
             </div>
         </div>`;
@@ -1007,16 +998,16 @@ document.addEventListener('DOMContentLoaded', () => {
         if (currentPriceEl) {
             if (discount > 0) {
                 if (originalPriceEl) {
-                    originalPriceEl.textContent = `€${formatPrice(basePrice)}`;
+                    originalPriceEl.textContent = `ï¿½${formatPrice(basePrice)}`;
                     originalPriceEl.style.display = 'inline';
                 }
-                currentPriceEl.textContent = `€${formatPrice(discountedBasePrice)}`;
+                currentPriceEl.textContent = `ï¿½${formatPrice(discountedBasePrice)}`;
                 currentPriceEl.className = 'fw-bold text-success';
             } else {
                 if (originalPriceEl) {
                     originalPriceEl.style.display = 'none';
                 }
-                currentPriceEl.textContent = `€${formatPrice(basePrice)}`;
+                currentPriceEl.textContent = `ï¿½${formatPrice(basePrice)}`;
                 currentPriceEl.className = 'fw-bold';
             }
         }
@@ -1024,16 +1015,16 @@ document.addEventListener('DOMContentLoaded', () => {
         if (discountRow && discountEl && discountLabelText) {
             if (discount > 0) {
                 discountLabelText.textContent = discountLabel.replace(/\s+\d+%$/, ''); // Remove percentage from label
-                discountEl.textContent = `-€${formatPrice(discount)}`;
+                discountEl.textContent = `-ï¿½${formatPrice(discount)}`;
                 discountRow.style.display = 'block';
             } else {
                 discountRow.style.display = 'none';
             }
         }
         
-        document.getElementById('insurance-price').textContent = `€${formatPrice(insurance)}`;
-        document.getElementById('additional-services-price').textContent = `€${formatPrice(additionalServices)}`;
-        document.getElementById('total-price').textContent = `€${formatPrice(totalPrice)}`;
+        document.getElementById('insurance-price').textContent = `ï¿½${formatPrice(insurance)}`;
+        document.getElementById('additional-services-price').textContent = `ï¿½${formatPrice(additionalServices)}`;
+        document.getElementById('total-price').textContent = `ï¿½${formatPrice(totalPrice)}`;
     }
     
     function getDiscountPercent(offerId, offerType, offerCategory, vehicle, pickupDate, dropoffDate, diffHours) {
@@ -1065,12 +1056,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         
         switch (offerId) {
-            case 'offer-1': // Frühbucher-Rabatt - 10%
+            case 'offer-1': // Frï¿½hbucher-Rabatt - 10%
                 if (daysUntilPickup >= 14 && rentalDays >= 3) {
-                    console.log('Frühbucher-Rabatt applied: 10%');
+                    console.log('Frï¿½hbucher-Rabatt applied: 10%');
                     return 10;
                 }
-                console.log('Frühbucher-Rabatt not applicable:', { 
+                console.log('Frï¿½hbucher-Rabatt not applicable:', { 
                     daysUntilPickup, 
                     requiredDays: 14,
                     rentalDays, 
@@ -1119,7 +1110,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     function getDiscountLabel(offerId) {
         const labels = {
-            'offer-1': 'Frühbucher-Rabatt 10%',
+            'offer-1': 'Frï¿½hbucher-Rabatt 10%',
             'offer-2': 'Wochenend-Special 10%',
             'offer-3': 'Langzeit-Miete 10%',
             'offer-4': 'Studenten-Rabatt 10%',
@@ -1456,7 +1447,7 @@ function showGuestOrLoginModal() {
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body text-center">
-                        <p class="mb-4">Wie möchten Sie fortfahren?</p>
+                        <p class="mb-4">Wie mï¿½chten Sie fortfahren?</p>
                         <div class="d-grid gap-3">
                             <button type="button" class="btn btn-outline-primary btn-lg" id="continueAsGuestBtn">
                                 <i class="bi bi-person me-2"></i>
@@ -1468,8 +1459,8 @@ function showGuestOrLoginModal() {
                             </button>
                         </div>
                         <p class="text-muted mt-3 small">
-                            Als Gast können Sie ohne Anmeldung reservieren. 
-                            Sie können sich später jederzeit anmelden.
+                            Als Gast kï¿½nnen Sie ohne Anmeldung reservieren. 
+                            Sie kï¿½nnen sich spï¿½ter jederzeit anmelden.
                         </p>
                     </div>
                 </div>
