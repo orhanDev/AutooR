@@ -1,4 +1,3 @@
-
 function formatPrice(amount) {
     return Math.floor(amount).toLocaleString('de-DE');
 }
@@ -129,7 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const data = localStorage.getItem(key);
             if (data) {
-                JSON.parse(data); // Test if it's valid JSON
+                JSON.parse(data); 
             }
         } catch (error) {
             console.log(`Removing invalid localStorage data for key: ${key}`);
@@ -445,7 +444,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     }
-    
 
     function loadCarDetails() {
         console.log('Loading car details for:', selectedVehicle);
@@ -644,7 +642,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const storedTotal = Number(reservationData.totalPrice);
             if (Math.abs(calculatedTotal - storedTotal) > 0.01) {
                 console.warn('Price mismatch! Calculated:', calculatedTotal, 'Stored:', storedTotal);
-                totalPrice = storedTotal; // Use stored total for consistency
+                totalPrice = storedTotal; 
             } else {
                 totalPrice = storedTotal;
             }
@@ -1010,4 +1008,3 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
 });
-

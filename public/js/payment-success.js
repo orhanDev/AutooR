@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const amount = isNaN(total) ? '' : `€${Math.floor(total)}`;
         
         container.innerHTML = `
-            <!-- Breadcrumb -->
+            
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="/">Startseite</a></li>
@@ -20,8 +20,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     <li class="breadcrumb-item active" aria-current="page">Erfolg</li>
                 </ol>
             </nav>
-            
-            <!-- Success Card -->
+
             <div class="success-card">
                 <div class="success-icon">
                     <i class="bi bi-check"></i>
@@ -175,4 +174,3 @@ function saveToUserBookings(reservationData, dbReservation) {
         console.error('Error saving to userBookings:', error);
     }
 }
-

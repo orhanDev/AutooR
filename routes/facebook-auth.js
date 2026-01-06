@@ -4,7 +4,6 @@ const jwt = require('jsonwebtoken');
 const axios = require('axios');
 const router = express.Router();
 
-// PostgreSQL Verbindungspool
 const pool = new Pool({
     user: process.env.PGUSER,
     host: process.env.PGHOST,
@@ -13,26 +12,23 @@ const pool = new Pool({
     port: process.env.PGPORT || 5432,
 });
 
-// Facebook OAuth Anmeldeseite
 router.get('/facebook', (req, res) => {
     const FACEBOOK_APP_ID = process.env.FACEBOOK_APP_ID;
     const FACEBOOK_APP_SECRET = process.env.FACEBOOK_APP_SECRET;
-    const FACEBOOK_REDIRECT_URI = process.env.FACEBOOK_REDIRECT_URI || 'https://localhost:3443/auth/facebook/callback';
+    const FACEBOOK_REDIRECT_URI = process.env.FACEBOOK_REDIRECT_URI || 'https:
     const state = req.query.redirect || 'home';
-    
-    // Check if credentials are configured
+
     if (!FACEBOOK_APP_ID || !FACEBOOK_APP_SECRET || 
         FACEBOOK_APP_ID === 'your-facebook-app-id' ||
         FACEBOOK_APP_SECRET === 'your-facebook-app-secret') {
         return res.redirect('/login?error=facebook_not_configured&provider=Facebook');
     }
     
-    const authURL = `https://www.facebook.com/v18.0/dialog/oauth?client_id=${FACEBOOK_APP_ID}&redirect_uri=${encodeURIComponent(FACEBOOK_REDIRECT_URI)}&state=${state}&scope=email,public_profile`;
+    const authURL = `https:
     
     res.redirect(authURL);
 });
 
-// Facebook OAuth callback
 router.get('/facebook/callback', async (req, res) => {
     try {
         const { code, error, state } = req.query;
@@ -50,14 +46,13 @@ router.get('/facebook/callback', async (req, res) => {
         
         const FACEBOOK_APP_ID = process.env.FACEBOOK_APP_ID;
         const FACEBOOK_APP_SECRET = process.env.FACEBOOK_APP_SECRET;
-        const FACEBOOK_REDIRECT_URI = process.env.FACEBOOK_REDIRECT_URI || 'https://localhost:3443/auth/facebook/callback';
+        const FACEBOOK_REDIRECT_URI = process.env.FACEBOOK_REDIRECT_URI || 'https:
         
         if (!FACEBOOK_APP_ID || !FACEBOOK_APP_SECRET || FACEBOOK_APP_ID === 'your-facebook-app-id') {
             return res.redirect('/login?error=facebook_not_configured');
         }
-        
-        // Access token al
-        const tokenResponse = await axios.get('https://graph.facebook.com/v18.0/oauth/access_token', {
+
+        const tokenResponse = await axios.get('https:
             params: {
                 client_id: FACEBOOK_APP_ID,
                 client_secret: FACEBOOK_APP_SECRET,
@@ -67,9 +62,8 @@ router.get('/facebook/callback', async (req, res) => {
         });
         
         const accessToken = tokenResponse.data.access_token;
-        
-        // Benutzerinformationen abrufen
-        const userResponse = await axios.get('https://graph.facebook.com/v18.0/me', {
+
+        const userResponse = await axios.get('https:
             params: {
                 fields: 'id,name,email,first_name,last_name',
                 access_token: accessToken
@@ -81,8 +75,7 @@ router.get('/facebook/callback', async (req, res) => {
         if (!facebookUser.email) {
             return res.redirect('/login?error=email_not_provided');
         }
-        
-        // Benutzer in der Datenbank finden oder erstellen
+
         let user = await pool.query(
             'SELECT * FROM users WHERE email = $1',
             [facebookUser.email]
@@ -91,7 +84,7 @@ router.get('/facebook/callback', async (req, res) => {
         let userData;
         
         if (user.rows.length === 0) {
-            // Neuen Benutzer erstellen
+            
             try {
                 const newUser = await pool.query(
                     `INSERT INTO users (email, first_name, last_name)
@@ -109,21 +102,18 @@ router.get('/facebook/callback', async (req, res) => {
                 return res.redirect('/login?error=server_error');
             }
         } else {
-            // Vorhandenen Benutzer aktualisieren
+            
             userData = user.rows[0];
         }
-        
-        // User ID'yi al
+
         const userId = userData.user_id || userData.id;
-        
-        // JWT Token erstellen
+
         const token = jwt.sign(
             { userId: userId, email: userData.email, is_admin: userData.is_admin || false },
             process.env.JWT_SECRET || 'your_super_secret_jwt_key_here_change_this_in_production',
             { expiresIn: '24h' }
         );
-        
-        // Benutzerinformationen vorbereiten
+
         const userInfo = {
             email: userData.email,
             firstName: userData.first_name,
@@ -134,8 +124,7 @@ router.get('/facebook/callback', async (req, res) => {
             id: userId,
             user_id: userId
         };
-        
-        // Token und Benutzerinformationen mit Query-String senden
+
         const redirectPath = state === 'login' ? '/login' : '/';
         res.redirect(`${redirectPath}?login=success&token=${encodeURIComponent(token)}&user=${encodeURIComponent(JSON.stringify(userInfo))}`);
         
@@ -146,7 +135,6 @@ router.get('/facebook/callback', async (req, res) => {
     }
 });
 
-// Check OAuth status endpoint
 router.get('/facebook/status', (req, res) => {
     const FACEBOOK_APP_ID = process.env.FACEBOOK_APP_ID;
     const FACEBOOK_APP_SECRET = process.env.FACEBOOK_APP_SECRET;

@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Geschäftskunden page loaded');
     
@@ -646,4 +645,3 @@ function showBusinessMessage(message, type = 'info') {
         alert.remove();
     }, 5000);
 }
-

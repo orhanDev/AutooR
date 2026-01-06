@@ -1,21 +1,19 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fahrzeuge2 - AutooR</title>
-    
-    <!-- Favicon -->
+
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
-    
-    <!-- Bootstrap CSS -->
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Flatpickr CSS for date picker -->
+    
     <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
-    <!-- Bootstrap Icons -->
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
-    <!-- Custom CSS -->
+    
     <link rel="stylesheet" href="css/style.css?v=20260105">
     <link rel="stylesheet" href="/css/navbar.css?v=20260104">
     <style>
@@ -41,10 +39,7 @@
             display: flex;
             flex-direction: column;
         }
-        
 
-
-        /* Navbar */
         .navbar {
             background: rgba(255, 255, 255, 0) !important;
             backdrop-filter: blur(15px);
@@ -106,7 +101,6 @@
             color: white;
         }
 
-                    /* Autos button styling to match Registrieren button */
             .navbar .btn-outline-warning[href="/fahrzeuge?clear=1"] {
                 background: #FFA000;
                 border-color: #FFA000;
@@ -123,11 +117,6 @@
                 box-shadow: var(--shadow-lg);
             }
 
-
-
-
-
-        /* Date and Location Selector */
         .date-location-selector {
             background: #F4E4E0;
             padding: 10px 0;
@@ -200,7 +189,6 @@
             height: 30px;
         }
 
-        /* Highlight animation for all selectors */
         .pickup-location-highlight.highlight,
         .dropoff-location-highlight.highlight,
         .pickup-date-highlight.highlight,
@@ -225,13 +213,11 @@
             color: #000 !important;
         }
 
-        /* Main Content - Add more space for elevated cards */
         .main-content {
             margin-top: 0px;
             padding-top: 5px;
         }
 
-        /* Search Summary */
         .search-summary {
             background: white;
             padding: 8px 0;
@@ -301,7 +287,6 @@
             cursor: not-allowed;
         }
 
-        /* Filters */
         .filters-section {
             background: rgba(255, 255, 255, 0.3);
             padding: 10px 0 10px 0;
@@ -386,7 +371,6 @@
             color: #333;
         }
 
-        /* Price Slider */
         .price-slider-container {
             display: flex;
             flex-direction: column;
@@ -449,7 +433,6 @@
             margin-bottom: 0;
         }
 
-        /* Left Sidebar - Insurance and Products */
         .options-sidebar {
             background: white;
             border-radius: 12px;
@@ -480,7 +463,6 @@
             border-bottom: 2px solid var(--primary-red);
         }
 
-        /* Insurance List Items */
         .insurance-item {
             display: flex;
             align-items: center;
@@ -553,7 +535,6 @@
             color: #ff6b35;
         }
 
-        /* Product List Items */
         .product-item {
             display: flex;
             align-items: center;
@@ -625,7 +606,6 @@
             color: #ff6b35;
         }
 
-        /* Vehicles Scroll Container */
         .vehicles-scroll-container {
             height: auto;
             overflow-y: visible;
@@ -633,7 +613,6 @@
             padding-top: 0px;
         }
 
-        /* Vehicle Cards - Smaller Size */
         .vehicle-card {
             background: white;
             border: 1px solid var(--border-gray);
@@ -650,7 +629,6 @@
             transform: translateY(-2px);
         }
 
-        /* Selected vehicle card - stays elevated and highlighted */
         .vehicle-card.selected {
             transform: translateY(-8px) !important;
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
@@ -666,7 +644,6 @@
             border-radius: 0 0 6px 6px;
         }
 
-        /* When hovering over selected card, maintain the selected state */
         .vehicle-card.selected:hover {
             transform: translateY(-8px) !important;
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
@@ -688,7 +665,6 @@
             background-color: #f8f9fa;
         }
 
-        /* Popular Badge */
         .popular-badge {
             position: absolute;
             top: 8px;
@@ -702,19 +678,18 @@
             z-index: 2;
         }
 
-        /* Price Badge */
         .price-badge {
             position: absolute !important;
             bottom: 8px !important;
             right: 8px !important;
-            background: #ffd43b !important; /* sarı arka plan */
-            background-color: #ffd43b !important; /* sarı arka plan */
+            background: #ffd43b !important; 
+            background-color: #ffd43b !important; 
             border: none !important;
             border-radius: 3px !important;
             padding: 4px 8px !important;
             font-weight: bold !important;
             font-size: 12px !important;
-            color: #000000 !important; /* siyah yazı */
+            color: #000000 !important; 
             z-index: 2 !important;
         }
 
@@ -786,9 +761,6 @@
             transform: translateY(-1px);
         }
 
-
-
-        /* Continue Button */
         .btn-continue {
             background: var(--primary-red);
             color: white;
@@ -837,7 +809,6 @@
             font-size: 24px;
         }
 
-        /* Compact Continue Button for Search Summary */
         .btn-continue-compact {
             background: linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%);
             border: none;
@@ -883,9 +854,6 @@
             font-size: 18px;
         }
 
-
-
-        /* Footer Styles */
                  .footer-section {
              background: #333;
              color: #ffffff;
@@ -938,7 +906,6 @@
             font-weight: 600;
         }
 
-        /* Responsive Design */
         @media (max-width: 1200px) {
             .date-location-selector {
                 margin-top: 60px !important;
@@ -1153,7 +1120,6 @@
             }
         }
 
-        /* Responsive */
         @media (max-width: 768px) {
             body {
                 margin-top: 60px;
@@ -1290,11 +1256,11 @@
     </style>
 </head>
 <body>
-    <!-- Navigation -->
+    
     <div id="navbar-container"></div>
 
     <main class="main-content">
-    <!-- Date and Location Selector -->
+    
     <section class="date-location-selector" id="date-location-selector" style="display: none;">
         <div class="container">
             <div class="row justify-content-center">
@@ -1354,7 +1320,6 @@
         </div>
     </section>
 
-    <!-- Filters Section -->
     <section class="filters-section" id="filters-section">
         <div class="container">
             <div class="row g-3">
@@ -1423,12 +1388,11 @@
         </div>
     </section>
 
-    <!-- Search Summary -->
     <section class="search-summary" id="search-summary" style="display: none;">
         <div class="container">
             <div class="search-summary-row">
                 <div class="search-details" id="search-details">
-                    <!-- Search details will be populated here -->
+                    
                 </div>
                 <div class="total-price-display" id="total-price-display">
                     Gesamtbetrag: â‚¬0
@@ -1440,37 +1404,32 @@
         </div>
     </section>
 
-
-
-    <!-- Main Content -->
     <section class="py-4 main-content" style="background-color: #F4E4E0;">
         <div class="container">
             <div class="row">
-                <!-- Left Side - Vehicles -->
+                
                 <div class="col-lg-8">
                     <div class="vehicles-scroll-container">
                         <div class="row g-3" id="vehicles-container">
-                            <!-- Vehicles will be loaded here -->
+                            
                         </div>
                     </div>
                 </div>
 
-                <!-- Right Sidebar - Insurance and Products -->
                 <div class="col-lg-4">
                     <div class="options-sidebar">
-                        <!-- Insurance Section -->
+                        
                         <div class="options-section">
                             <h3 class="options-title">Versicherungspakete</h3>
                             <div id="insurance-options">
-                                <!-- Insurance options will be loaded here -->
+                                
                             </div>
                         </div>
 
-                        <!-- Additional Products Section -->
                         <div class="options-section">
                             <h3 class="options-title">Zusatzprodukte</h3>
                             <div id="product-options">
-                                <!-- Product options will be loaded here -->
+                                
                             </div>
                         </div>
                     </div>
@@ -1480,7 +1439,6 @@
     </section>
     </main>
 
-    <!-- Footer -->
     <footer class="footer-section">
         <div class="container">
             <div class="footer-content">
@@ -1496,14 +1454,12 @@
         </div>
     </footer>
 
-    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Flatpickr JS for date picker -->
+    
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <!-- Custom JS -->
+    
     <script src="js/data/cars.js"></script>
     <script src="js/fahrzeuge.js"></script>
     <script src="js/navbar.js?v=20260104"></script>
 </body>
 </html>
-

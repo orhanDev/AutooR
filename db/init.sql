@@ -1,20 +1,16 @@
--- Veritabanı başlangıç tabloları
--- Bu dosya veritabanı kurulumu için kullanılır
-
--- Users tablosu
 CREATE TABLE IF NOT EXISTS users (
     user_id SERIAL PRIMARY KEY,
     first_name VARCHAR(100) NOT NULL,
     last_name VARCHAR(100) NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
-    password_hash VARCHAR(255), -- NULL olabilir (Google OAuth için)
+    password_hash VARCHAR(255), 
     phone_number VARCHAR(20),
     address TEXT,
     payment_card_json JSONB,
     payment_paypal_json JSONB,
     payment_klarna_json JSONB,
     is_admin BOOLEAN DEFAULT FALSE,
-    login_method VARCHAR(50) DEFAULT 'email', -- 'email', 'google', 'facebook', 'apple'
+    login_method VARCHAR(50) DEFAULT 'email', 
     is_verified BOOLEAN DEFAULT FALSE,
     google_id VARCHAR(255),
     facebook_id VARCHAR(255),
@@ -23,7 +19,6 @@ CREATE TABLE IF NOT EXISTS users (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Locations tablosu
 CREATE TABLE IF NOT EXISTS locations (
     location_id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
@@ -36,7 +31,6 @@ CREATE TABLE IF NOT EXISTS locations (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Cars tablosu
 CREATE TABLE IF NOT EXISTS cars (
     car_id SERIAL PRIMARY KEY,
     make VARCHAR(100) NOT NULL,
@@ -53,7 +47,6 @@ CREATE TABLE IF NOT EXISTS cars (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Car features tablosu
 CREATE TABLE IF NOT EXISTS car_features (
     feature_id SERIAL PRIMARY KEY,
     feature_name VARCHAR(100) NOT NULL UNIQUE,
@@ -61,14 +54,12 @@ CREATE TABLE IF NOT EXISTS car_features (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Car-CarFeatures ilişki tablosu
 CREATE TABLE IF NOT EXISTS car_carfeatures (
     car_id INTEGER REFERENCES cars(car_id) ON DELETE CASCADE,
     feature_id INTEGER REFERENCES car_features(feature_id) ON DELETE CASCADE,
     PRIMARY KEY (car_id, feature_id)
 );
 
--- Reservations tablosu
 CREATE TABLE IF NOT EXISTS reservations (
     reservation_id SERIAL PRIMARY KEY,
     user_id INTEGER REFERENCES users(user_id),
@@ -80,11 +71,10 @@ CREATE TABLE IF NOT EXISTS reservations (
     pickup_location_id INTEGER REFERENCES locations(location_id),
     dropoff_location_id INTEGER REFERENCES locations(location_id),
     total_price DECIMAL(10,2) NOT NULL,
-    status VARCHAR(50) DEFAULT 'Beklemede',
+    status VARCHAR(50) DEFAULT 'Pending',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Email Verification Codes tablosu
 CREATE TABLE IF NOT EXISTS email_verification_codes (
     id SERIAL PRIMARY KEY,
     email VARCHAR(255) NOT NULL,
@@ -94,7 +84,6 @@ CREATE TABLE IF NOT EXISTS email_verification_codes (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Password Reset Tokens tablosu
 CREATE TABLE IF NOT EXISTS password_reset_tokens (
     id SERIAL PRIMARY KEY,
     email VARCHAR(255) NOT NULL,
@@ -104,7 +93,6 @@ CREATE TABLE IF NOT EXISTS password_reset_tokens (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Index'ler
 CREATE INDEX IF NOT EXISTS idx_email_verification_email ON email_verification_codes(email);
 CREATE INDEX IF NOT EXISTS idx_email_verification_code ON email_verification_codes(code);
 CREATE INDEX IF NOT EXISTS idx_email_verification_expires ON email_verification_codes(expires_at);
@@ -112,7 +100,6 @@ CREATE INDEX IF NOT EXISTS idx_password_reset_tokens_email ON password_reset_tok
 CREATE INDEX IF NOT EXISTS idx_password_reset_tokens_token ON password_reset_tokens(token);
 CREATE INDEX IF NOT EXISTS idx_password_reset_tokens_expires_at ON password_reset_tokens(expires_at);
 
--- Örnek veriler ekle
 INSERT INTO locations (name, city) VALUES 
     ('Berlin Zentrum', 'Berlin'),
     ('Hamburg Zentrum', 'Hamburg'),
@@ -133,7 +120,6 @@ INSERT INTO car_features (feature_name) VALUES
     ('Allradantrieb')
 ON CONFLICT DO NOTHING;
 
--- Test kullanıcısı oluştur (şifre: test123)
 INSERT INTO users (first_name, last_name, email, password_hash, is_admin) VALUES 
     ('Test', 'User', 'test@example.com', '$2b$10$rQZ8K9vL8mN7jK6hG5fD3sA2qW1eR4tY6uI8oP9lK2jH3gF4dS5aQ6wE7rT8yU9i', false)
 ON CONFLICT DO NOTHING;

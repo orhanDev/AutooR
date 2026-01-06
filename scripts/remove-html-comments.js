@@ -5,27 +5,23 @@ function removeHtmlComments(filePath) {
     try {
         let content = fs.readFileSync(filePath, 'utf8');
         const original = content;
-        
-        // HTML-Kommentare bereinigen (<!-- -->)
+
         content = content.replace(/<!--[\s\S]*?-->/g, '');
-        
-        // Kommentare in <script>-Tags bereinigen
+
         content = content.replace(/<script[^>]*>([\s\S]*?)<\/script>/gi, (match, scriptContent) => {
             let cleaned = scriptContent
                 .replace(/\/\/.*$/gm, '')
-                .replace(/\/\*[\s\S]*?\*\//g, '');
+                .replace(/\/\*[\s\S]*?\*\
             cleaned = cleaned.replace(/\n\s*\n\s*\n/g, '\n');
             return match.replace(scriptContent, cleaned);
         });
-        
-        // Kommentare in <style>-Tags bereinigen
+
         content = content.replace(/<style[^>]*>([\s\S]*?)<\/style>/gi, (match, styleContent) => {
-            let cleaned = styleContent.replace(/\/\*[\s\S]*?\*\//g, '');
+            let cleaned = styleContent.replace(/\/\*[\s\S]*?\*\
             cleaned = cleaned.replace(/\n\s*\n\s*\n/g, '\n');
             return match.replace(styleContent, cleaned);
         });
-        
-        // Übermäßige Leerzeilen bereinigen
+
         content = content.replace(/\n\s*\n\s*\n+/g, '\n\n');
         
         if (content !== original) {
@@ -68,4 +64,3 @@ for (const file of htmlFiles) {
 }
 
 console.log(`\n✅ Insgesamt ${count} HTML-Dateien bereinigt.`);
-

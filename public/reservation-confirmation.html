@@ -14,7 +14,7 @@
             background-color: #f8f9fa;
             margin: 0;
             padding: 0;
-            padding-top: 80px; /* Navbar için boşluk */
+            padding-top: 80px; 
         }
         
         .main-container {
@@ -173,7 +173,7 @@
             </p>
             
             <div class="reservation-details" id="reservation-details">
-                <!-- Reservation details will be loaded here -->
+                
             </div>
             
             <div class="action-buttons">
@@ -193,7 +193,7 @@
     <script src="/js/navbar.js?v=20260104"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // Load reservation details from localStorage
+            
             const reservationData = JSON.parse(localStorage.getItem('reservationData') || '{}');
             const driverInfo = JSON.parse(localStorage.getItem('driverInformation') || '{}');
             const selectedPaymentMethod = localStorage.getItem('selectedPaymentMethod') || 'Nicht angegeben';
@@ -233,8 +233,7 @@
                     <p class="text-muted text-center">Reservierungsdetails werden geladen...</p>
                 `;
             }
-            
-            // Clear sensitive data after displaying
+
             setTimeout(() => {
                 localStorage.removeItem('driverInformation');
                 localStorage.removeItem('selectedPaymentMethod');
@@ -243,4 +242,3 @@
     </script>
 </body>
 </html>
-

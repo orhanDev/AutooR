@@ -17,16 +17,13 @@ async function updateReservations() {
     await client.connect();
     console.log('Verbindung erfolgreich!');
 
-    // Extras-Feld hinzufügen
     console.log('\n=== RESERVATIONS-TABELLE WIRD AKTUALISIERT ===');
     await client.query('ALTER TABLE reservations ADD COLUMN IF NOT EXISTS extras JSONB;');
     console.log('✅ Extras-Feld hinzugefügt');
 
-    // Reservierungsstatus aktualisieren
     await client.query("UPDATE reservations SET status = 'Beklemede' WHERE status IS NULL OR status = '';");
     console.log('✅ Reservierungsstatus aktualisiert');
 
-    // Beispielreservierungsdaten hinzufügen
     console.log('\n=== BEISPIELRESERVIERUNGSDATEN WERDEN HINZUGEFÜGT ===');
     const insertResult = await client.query(`
       INSERT INTO reservations (
@@ -45,7 +42,6 @@ async function updateReservations() {
       console.log('ℹ️ Keine neuen Reservierungen hinzugefügt (bereits vorhanden)');
     }
 
-    // Aktuelle Reservierungen anzeigen
     console.log('\n=== AKTUELLE RESERVIERUNGEN ===');
     const reservations = await client.query(`
       SELECT 

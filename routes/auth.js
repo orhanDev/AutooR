@@ -8,31 +8,29 @@ const authMiddleware = require('../middleware/authMiddleware');
 
 const router = express.Router();
 
-// E-Mail-Transporter - Unterstützt alle E-Mail-Dienste (Gmail, SendGrid, Outlook, Yahoo usw.)
 function createEmailTransporter() {
     const emailUser = process.env.EMAIL_USER;
     const emailPass = process.env.EMAIL_PASS;
     const emailHost = process.env.EMAIL_HOST || 'smtp.gmail.com';
     const emailPort = process.env.EMAIL_PORT || 587;
     const emailSecure = process.env.EMAIL_SECURE === 'true' || false;
-    const emailProvider = process.env.EMAIL_PROVIDER || 'auto'; // 'gmail', 'sendgrid', 'auto'
+    const emailProvider = process.env.EMAIL_PROVIDER || 'auto'; 
     
     if (!emailUser || !emailPass) {
         return null;
     }
-    
-    // SendGrid-Unterstützung - EMAIL_PROVIDER=sendgrid oder EMAIL_HOST=smtp.sendgrid.net
+
     if (emailProvider === 'sendgrid' || emailHost === 'smtp.sendgrid.net') {
         console.log('Using SendGrid SMTP');
         return nodemailer.createTransport({
             host: 'smtp.sendgrid.net',
             port: 587,
-            secure: false, // false für TLS
+            secure: false, 
             auth: {
-                user: 'apikey', // Für SendGrid immer 'apikey'
-                pass: emailPass // SendGrid API-Schlüssel
+                user: 'apikey', 
+                pass: emailPass 
             },
-            // Timeout-Einstellungen
+            
             connectionTimeout: 10000,
             greetingTimeout: 10000,
             socketTimeout: 10000,
@@ -43,63 +41,57 @@ function createEmailTransporter() {
             logger: process.env.NODE_ENV !== 'production'
         });
     }
-    
-    // Explizite SMTP-Einstellungen für Gmail verwenden (anstatt service)
-    // Die Verwendung von service kann auf Railway manchmal Probleme verursachen
+
     if (emailProvider === 'gmail' || emailUser.includes('@gmail.com')) {
-        // Port 465 (SSL) versuchen - kann auf Railway zuverlässiger sein
+        
         return nodemailer.createTransport({
             host: 'smtp.gmail.com',
             port: 465,
-            secure: true, // true für SSL
+            secure: true, 
             auth: {
                 user: emailUser,
                 pass: emailPass
             },
-            // Timeout-Einstellungen
-            connectionTimeout: 30000, // 30 Sekunden
-            greetingTimeout: 30000, // 30 Sekunden
-            socketTimeout: 30000, // 30 Sekunden
-            // TLS-Einstellungen
+            
+            connectionTimeout: 30000, 
+            greetingTimeout: 30000, 
+            socketTimeout: 30000, 
+            
             tls: {
-                rejectUnauthorized: false, // Kann für Railway erforderlich sein
+                rejectUnauthorized: false, 
                 minVersion: 'TLSv1.2'
             },
-            // Für Debugging
+            
             debug: process.env.NODE_ENV !== 'production',
             logger: process.env.NODE_ENV !== 'production'
         });
     }
-    
-        // Für andere E-Mail-Dienste (Outlook, Yahoo, benutzerdefiniertes SMTP)
+
         return nodemailer.createTransport({
             host: emailHost,
             port: parseInt(emailPort),
-            secure: emailSecure, // true für 465, false für andere Ports
+            secure: emailSecure, 
             auth: {
                 user: emailUser,
                 pass: emailPass
             },
-        // Timeout ayarları
-        connectionTimeout: 10000, // 10 Sekunden
-        greetingTimeout: 10000, // 10 Sekunden
-        socketTimeout: 10000, // 10 Sekunden
+        
+        connectionTimeout: 10000, 
+        greetingTimeout: 10000, 
+        socketTimeout: 10000, 
             tls: {
-                rejectUnauthorized: false // Für Entwicklung, sollte in Produktion true sein
+                rejectUnauthorized: false 
         },
-        // Debug için
+        
         debug: process.env.NODE_ENV !== 'production',
         logger: process.env.NODE_ENV !== 'production'
             });
         }
 
-
-// Registrierungs-Endpunkt
 router.post('/register', async (req, res) => {
     try {
         const { first_name, last_name, email, password, phone_number, address } = req.body;
 
-        // Field validation
         if (!first_name || !first_name.trim()) {
             return res.status(400).json({ 
                 error: 'Vorname ist erforderlich',
@@ -123,8 +115,7 @@ router.post('/register', async (req, res) => {
                 message: 'Bitte geben Sie Ihre E-Mail-Adresse ein.'
             });
         }
-        
-        // E-Mail-Normalisierung (trim + lowercase)
+
         const normalizedEmail = email.trim().toLowerCase();
         
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -143,8 +134,7 @@ router.post('/register', async (req, res) => {
                 message: 'Bitte geben Sie ein Passwort ein.'
             });
         }
-        
-        // Password validation
+
         if (password.length < 10 || password.length > 40) {
             return res.status(400).json({ 
                 error: 'Passwort-Länge ungültig',
@@ -185,7 +175,6 @@ router.post('/register', async (req, res) => {
             });
         }
 
-        // E-Mail-Prüfung (Groß-/Kleinschreibung nicht beachtet) - normalizedEmail bereits oben definiert
         console.log('=== E-MAIL-PRÜFUNG ===');
         console.log('Originale E-Mail:', email);
         console.log('Normalisierte E-Mail:', normalizedEmail);
@@ -202,11 +191,9 @@ router.post('/register', async (req, res) => {
         }
         console.log('E-Mail nicht registriert, Registrierung wird fortgesetzt...');
 
-        // Passwort-Hashing
         const saltRounds = 10;
         const passwordHash = await bcrypt.hash(password, saltRounds);
 
-        // Neuen Benutzer erstellen (E-Mail als normalisiert speichern)
         const newUser = await query(`
             INSERT INTO users (first_name, last_name, email, password_hash, phone_number, address, is_verified)
             VALUES ($1, $2, $3, $4, $5, $6, TRUE)
@@ -217,7 +204,6 @@ router.post('/register', async (req, res) => {
         const userEmail = newUser.rows[0].email;
         const isAdmin = newUser.rows[0].is_admin || false;
 
-        // JWT Token erstellen
         const token = jwt.sign(
             { userId: userId, email: userEmail, is_admin: isAdmin },
             process.env.JWT_SECRET,
@@ -255,32 +241,26 @@ router.post('/register', async (req, res) => {
     }
 });
 
-// Anmeldung
 router.post('/login', async (req, res) => {
     try {
         const { email, password } = req.body;
 
-        // E-Mail-Normalisierung (trim + lowercase)
         const normalizedEmail = email.trim().toLowerCase();
-        
-        // Benutzer finden (Groß-/Kleinschreibung nicht beachtet)
+
         const user = await query('SELECT * FROM users WHERE LOWER(TRIM(email)) = $1', [normalizedEmail]);
         if (user.rows.length === 0) {
             return res.status(401).json({ error: 'Ungültige Anmeldedaten' });
         }
 
-        // Passwort-Prüfung
         const isValidPassword = await bcrypt.compare(password, user.rows[0].password_hash);
         if (!isValidPassword) {
             return res.status(401).json({ error: 'Ungültige Anmeldedaten' });
         }
 
-        // user_id verwenden (user_id existiert in der Datenbank)
         const userId = user.rows[0].user_id;
         const userEmail = user.rows[0].email;
         const isAdmin = user.rows[0].is_admin || false;
 
-        // JWT Token erstellen (is_admin dahil)
         const token = jwt.sign(
             { userId: userId, email: userEmail, is_admin: isAdmin },
             process.env.JWT_SECRET,
@@ -310,7 +290,6 @@ router.post('/login', async (req, res) => {
     }
 });
 
-// Benutzerinformationen abrufen (geschützte Route)
 router.get('/profile', authMiddleware, async (req, res) => {
     try {
         const userId = req.user.userId;
@@ -337,7 +316,6 @@ router.get('/profile', authMiddleware, async (req, res) => {
     }
 });
 
-// Benutzerinformationen abrufen (mit Token)
 router.get('/user', authMiddleware, async (req, res) => {
     try {
         console.log('=== /user Endpunkt wird ausgeführt ===');
@@ -374,7 +352,6 @@ router.get('/user', authMiddleware, async (req, res) => {
     }
 });
 
-// Benutzerinformationen aktualisieren (geschützte Route)
 router.put('/profile', authMiddleware, async (req, res) => {
     try {
         const userId = req.user.userId;
@@ -404,6 +381,5 @@ router.put('/profile', authMiddleware, async (req, res) => {
         res.status(500).json({ error: 'Serverfehler' });
     }
 });
-
 
 module.exports = router;

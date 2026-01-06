@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', () => {
     console.log('=== Auth.js �alisiyor ===');
     const authLinksContainer = document.getElementById('auth-links');
@@ -139,4 +138,3 @@ document.addEventListener('DOMContentLoaded', () => {
 
     updateAuthLinks();
 });
-

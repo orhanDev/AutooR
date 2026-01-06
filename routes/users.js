@@ -3,7 +3,6 @@ const { Pool } = require('pg');
 const jwt = require('jsonwebtoken');
 const router = express.Router();
 
-// PostgreSQL Verbindungspool
 const pool = new Pool({
     user: process.env.PGUSER || 'AutooR_user',
     host: process.env.PGHOST || 'localhost',
@@ -12,7 +11,6 @@ const pool = new Pool({
     port: process.env.PGPORT || 5432,
 });
 
-// Benutzer registrieren (nach Google OAuth)
 router.post('/register', async (req, res) => {
     try {
         const { email, firstName, lastName, loginMethod = 'google' } = req.body;
@@ -24,7 +22,6 @@ router.post('/register', async (req, res) => {
             });
         }
 
-        // Überprüfen, ob Benutzer bereits vorhanden ist
         const existingUser = await pool.query(
             'SELECT id, email, first_name, last_name FROM users WHERE email = $1',
             [email]
@@ -33,22 +30,21 @@ router.post('/register', async (req, res) => {
         let user;
         
         if (existingUser.rows.length > 0) {
-            // Benutzer existiert bereits, aktualisieren
+            
             const updatedUser = await pool.query(
                 'UPDATE users SET first_name = $1, last_name = $2, login_method = $3, updated_at = CURRENT_TIMESTAMP WHERE email = $4 RETURNING id, email, first_name, last_name, is_verified, login_method',
                 [firstName, lastName, loginMethod, email]
             );
             user = updatedUser.rows[0];
         } else {
-            // Neuen Benutzer erstellen
+            
             const newUser = await pool.query(
                 'INSERT INTO users (email, first_name, last_name, login_method, is_verified) VALUES ($1, $2, $3, $4, $5) RETURNING id, email, first_name, last_name, is_verified, login_method',
                 [email, firstName, lastName, loginMethod, true]
             );
             user = newUser.rows[0];
         }
-        
-        // JWT Token erstellen
+
         const token = jwt.sign(
             { userId: user.id, email: user.email, is_admin: false },
             process.env.JWT_SECRET || 'your-secret-key',
@@ -70,7 +66,6 @@ router.post('/register', async (req, res) => {
     }
 });
 
-// Benutzerinformationen abrufen
 router.get('/profile/:email', async (req, res) => {
     try {
         const { email } = req.params;
@@ -100,7 +95,6 @@ router.get('/profile/:email', async (req, res) => {
     }
 });
 
-// Benutzerprofil aktualisieren
 router.put('/profile/:email', async (req, res) => {
     try {
         const { email } = req.params;
@@ -132,12 +126,10 @@ router.put('/profile/:email', async (req, res) => {
     }
 });
 
-// Kullanıcının rezervasyonlarını getir
 router.get('/reservations/:email', async (req, res) => {
     try {
         const { email } = req.params;
-        
-        // Zuerst Benutzer finden
+
         const user = await pool.query(
             'SELECT id FROM users WHERE email = $1',
             [email]
@@ -152,7 +144,6 @@ router.get('/reservations/:email', async (req, res) => {
 
         const userId = user.rows[0].id;
 
-        // Reservierungen des Benutzers abrufen
         const reservations = await pool.query(
             'SELECT * FROM reservations WHERE user_id = $1 ORDER BY created_at DESC',
             [userId]
@@ -171,7 +162,6 @@ router.get('/reservations/:email', async (req, res) => {
     }
 });
 
-// Benutzer löschen
 router.delete('/delete/:email', async (req, res) => {
     try {
         const { email } = req.params;

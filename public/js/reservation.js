@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', () => {
     const container = document.getElementById('reservation-container');
     
@@ -36,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center mb-2">
                         <span class="badge bg-warning text-dark">${badge}</span>
-                        <strong>�${price}/Tag</strong>
+                        <strong>€${price}/Tag</strong>
                     </div>
                     <h6 class="fw-bold mb-2">${title}</h6>
                     <ul class="small text-muted ps-3 mb-0">
@@ -53,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="extra-card card h-100 border-2" data-key="${key}" data-price="${price}" data-unit="${unit}" style="cursor:pointer;">
                 <div class="card-body d-flex flex-column">
                     <h6 class="fw-bold mb-1">${title}</h6>
-                    <small class="text-muted">�${price}/${unit}</small>
+                    <small class="text-muted">€${price}/${unit}</small>
                 </div>
             </div>
         </div>`;
@@ -85,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 model: booking.car.split(' ').slice(1).join(' '),
                 title: booking.car,
                 image_url: booking.image,
-                daily_rate: Math.round(booking.totalPrice / 5), // Approximate daily rate
+                daily_rate: Math.round(booking.totalPrice / 5), 
                 category: 'Luxury',
                 transmission: 'Automatik',
                 fuel_type: 'Benzin',
@@ -307,7 +306,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div id="reservation-main-card" class="bg-white rounded-4 p-4 shadow-sm border">
                         <h2 class="fw-bold mb-4">
                             <span class="heading-badge me-2" aria-hidden="true">
-                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" focusable="false">
+                                <svg viewBox="0 0 24 24" xmlns="http:
                                     <circle cx="12" cy="12" r="8"/>
                                     <path d="M9 12l2 2 4-4"/>
                                 </svg>
@@ -507,7 +506,7 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
         
         const today = new Date();
-        today.setHours(0, 0, 0, 0); // Start of today
+        today.setHours(0, 0, 0, 0); 
         const todayISO = today.toISOString().split('T')[0];
         
         const pickupDateInput = document.getElementById('pickupDate');
@@ -528,7 +527,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center mb-2">
                         <span class="badge bg-warning text-dark">${badge}</span>
-                        <strong>�${price}/Tag</strong>
+                        <strong>€${price}/Tag</strong>
                     </div>
                     <h6 class="fw-bold mb-2">${title}</h6>
                     <ul class="small text-muted ps-3 mb-0">
@@ -566,7 +565,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             const opts = { 
                 dateFormat: 'd.m.Y', 
-                minDate: today, // Today is the earliest possible date
+                minDate: today, 
                 locale: flatpickr.l10ns.de, 
                 disableMobile: true, 
                 allowInput: true 
@@ -678,7 +677,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (el) el.addEventListener('change', () => { sync(); updateSubmitEnabled(); });
         });
 
-
         sync();
         markSelections();
         
@@ -707,7 +705,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="extra-card card h-100 border-2" data-key="${key}" data-price="${price}" data-unit="${unit}" style="cursor:pointer;">
                 <div class="card-body d-flex flex-column">
                     <h6 class="fw-bold mb-1">${title}</h6>
-                    <small class="text-muted">�${price}/${unit}</small>
+                    <small class="text-muted">€${price}/${unit}</small>
                 </div>
             </div>
         </div>`;
@@ -924,7 +922,7 @@ document.addEventListener('DOMContentLoaded', () => {
             let insuranceDays;
             
             if (diffHours <= 0) {
-                insuranceDays = 1; // Minimum 1 day
+                insuranceDays = 1; 
             } else if (diffHours < 24) {
                 insuranceDays = 1;
             } else if (isDifferentDays) {
@@ -932,7 +930,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const endDate = new Date(dropoffYear, dropoffMonth - 1, dropoffDayNum);
                 const timeDiff = endDate - startDate;
                 const daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
-                insuranceDays = Math.max(1, daysDiff + 1); // +1 because we count both start and end day
+                insuranceDays = Math.max(1, daysDiff + 1); 
             } else {
                 insuranceDays = Math.ceil(diffHours / 24);
             }
@@ -1014,7 +1012,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         if (discountRow && discountEl && discountLabelText) {
             if (discount > 0) {
-                discountLabelText.textContent = discountLabel.replace(/\s+\d+%$/, ''); // Remove percentage from label
+                discountLabelText.textContent = discountLabel.replace(/\s+\d+%$/, ''); 
                 discountEl.textContent = `-�${formatPrice(discount)}`;
                 discountRow.style.display = 'block';
             } else {
@@ -1056,7 +1054,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         
         switch (offerId) {
-            case 'offer-1': // Fr�hbucher-Rabatt - 10%
+            case 'offer-1': 
                 if (daysUntilPickup >= 14 && rentalDays >= 3) {
                     console.log('Fr�hbucher-Rabatt applied: 10%');
                     return 10;
@@ -1071,33 +1069,33 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
                 return 0;
                 
-            case 'offer-2': // Wochenend-Special - 10%
-                const pickupDay = pickup.getDay(); // 0 = Sunday, 5 = Friday
+            case 'offer-2': 
+                const pickupDay = pickup.getDay(); 
                 const dropoffDay = dropoff.getDay();
                 if ((pickupDay === 5 && dropoffDay === 0) || (pickupDay === 5 && dropoffDay === 6)) {
                     return 10;
                 }
                 return 0;
                 
-            case 'offer-3': // Langzeit-Miete - 10%
+            case 'offer-3': 
                 if (rentalDays >= 30) {
                     return 10;
                 }
                 return 0;
                 
-            case 'offer-4': // Studenten-Rabatt - 10%
+            case 'offer-4': 
                 if (offerType === 'student') {
                     return 10;
                 }
                 return 0;
                 
-            case 'offer-5': // Premium-Paket - 10%
+            case 'offer-5': 
                 if (offerCategory === 'premium' || vehicle.category === 'Premium' || vehicle.category === 'Oberklasse') {
                     return 10;
                 }
                 return 0;
                 
-            case 'offer-6': // Familien-Angebot - 10%
+            case 'offer-6': 
                 if (offerType === 'family' || vehicle.category === 'SUV' || vehicle.category === 'Minivan') {
                     return 10;
                 }
@@ -1194,7 +1192,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 let insuranceDays;
                 if (diffHours <= 0) {
-                    insuranceDays = 1; // Minimum 1 day
+                    insuranceDays = 1; 
                 } else if (diffHours < 24) {
                     insuranceDays = 1;
                 } else if (isDifferentDays) {
@@ -1202,7 +1200,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const endDate = new Date(dropoffYear, dropoffMonth - 1, dropoffDayNum);
                     const timeDiff = endDate - startDate;
                     const daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
-                    insuranceDays = Math.max(1, daysDiff + 1); // +1 because we count both start and end day
+                    insuranceDays = Math.max(1, daysDiff + 1); 
                 } else {
                     insuranceDays = Math.ceil(diffHours / 24);
                 }
@@ -1234,7 +1232,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
                 extrasAmount = Math.round(extrasAmount * 100) / 100;
                 const dailyRate = Number(vehicle.daily_rate || 0);
-                const basePrice = Math.round(dailyRate * days * 100) / 100; // Round to 2 decimals
+                const basePrice = Math.round(dailyRate * days * 100) / 100; 
                 const insuranceAmount = Math.round(insurancePerDay * insuranceDays * 100) / 100;
                 const totalPrice = Math.round((basePrice + insuranceAmount + extrasAmount) * 100) / 100;
 
@@ -1316,7 +1314,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             let insuranceDays;
             if (diffHours <= 0) {
-                insuranceDays = 1; // Minimum 1 day
+                insuranceDays = 1; 
             } else if (diffHours < 24) {
                 insuranceDays = 1;
             } else if (isDifferentDays) {
@@ -1324,7 +1322,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const endDate = new Date(dropoffYear, dropoffMonth - 1, dropoffDayNum);
                 const timeDiff = endDate - startDate;
                 const daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
-                insuranceDays = Math.max(1, daysDiff + 1); // +1 because we count both start and end day
+                insuranceDays = Math.max(1, daysDiff + 1); 
             } else {
                 insuranceDays = Math.ceil(diffHours / 24);
             }
@@ -1356,7 +1354,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             extrasAmount = Math.round(extrasAmount * 100) / 100;
             const dailyRate = Number(vehicle.daily_rate || 0);
-            const basePrice = Math.round(dailyRate * days * 100) / 100; // Round to 2 decimals
+            const basePrice = Math.round(dailyRate * days * 100) / 100; 
             const insuranceAmount = Math.round(insurancePerDay * insuranceDays * 100) / 100;
             const totalPrice = Math.round((basePrice + insuranceAmount + extrasAmount) * 100) / 100;
 
@@ -1523,13 +1521,12 @@ async function saveReservationToDatabase(reservationData, userEmail) {
         
         const result = await response.json();
         if (result.success) {
-            console.log('Rezervasyon veritabanina kaydedildi:', result.reservation);
+            console.log('Reservierung in der Datenbank gespeichert:', result.reservation);
             localStorage.setItem('currentBookingId', result.reservation.booking_id);
         } else {
-            console.error('Rezervasyon kayit hatasi:', result.message);
+            console.error('Reservierungsregistrierungsfehler:', result.message);
         }
     } catch (error) {
         console.error('Veritabani kayit hatasi:', error);
     }
 }
-

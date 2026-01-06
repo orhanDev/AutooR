@@ -1,14 +1,7 @@
-# Netlify redirects file
-# API routes için backend proxy - EN ÜSTTE OLMALI (spesifik redirect'ler önce)
 /api/*  https://autoor-production.up.railway.app/api/:splat  200
 
-# Auth routes için backend proxy
 /auth/*  https://autoor-production.up.railway.app/auth/:splat  200
 
-# Login ve Register sayfaları için doğrudan HTML dosyalarına yönlendir
 /login    /login.html   200
 /register    /register.html   200
-
-# NOT: /* redirect'i netlify.toml'da tanımlı, burada tanımlamaya gerek yok
-# Çünkü _redirects dosyası netlify.toml'dan önce işlenir ve çakışma yaratabilir
 

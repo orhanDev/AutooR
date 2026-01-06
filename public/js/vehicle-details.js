@@ -1,5 +1,3 @@
-﻿
-
 document.addEventListener('DOMContentLoaded', () => {
     const container = document.getElementById('vehicle-details-container');
 
@@ -73,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return img || '/images/cars/vw-t-roc-suv-4d-white-2022-JV.png';
         }
         container.innerHTML = `
-            <!-- Breadcrumb -->
+            
             <nav aria-label="breadcrumb" class="mb-4">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="/" class="text-decoration-none">Startseite</a></li>
@@ -81,10 +79,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     <li class="breadcrumb-item active" aria-current="page">${vehicle.make} ${vehicle.model}</li>
                 </ol>
             </nav>
-            
-            <!-- Vehicle Details -->
+
             <div class="row">
-                <!-- Vehicle Image -->
+                
                 <div class="col-lg-6 mb-4">
                     <div class="position-relative">
                         <img src="${resolveVehicleImage(vehicle)}" alt="${vehicle.make} ${vehicle.model}" 
@@ -95,13 +92,11 @@ document.addEventListener('DOMContentLoaded', () => {
                         </div>
                     </div>
                 </div>
-                
-                <!-- Vehicle Info -->
+
                 <div class="col-lg-6 mb-4">
                     <div class="bg-white rounded-4 p-4 shadow-sm border h-100">
                         <h1 class="display-6 fw-bold mb-3">${vehicle.make} ${vehicle.model}</h1>
-                        
-                        <!-- Key Specs -->
+
                         <div class="row g-3 mb-4">
                             <div class="col-6">
                                 <div class="d-flex align-items-center">
@@ -140,8 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 </div>
                             </div>
                         </div>
-                        
-                        <!-- Price -->
+
                         <div class="bg-light rounded-3 p-3 mb-4">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div>
@@ -154,8 +148,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 </div>
                             </div>
                         </div>
-                        
-                        <!-- Action Buttons -->
+
                         <div class="d-grid gap-3">
                             <button class="nav-link-text btn-lg fw-bold" onclick="startReservation(${vehicle.car_id})">
                                 <i class="bi bi-calendar-check me-2"></i>
@@ -169,8 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                 </div>
             </div>
-            
-            <!-- Detailed Specifications -->
+
             <div class="row mt-5">
                 <div class="col-12">
                     <div class="bg-white rounded-4 p-4 shadow-sm border">
@@ -240,8 +232,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                 </div>
             </div>
-            
-            <!-- Features Section -->
+
             <div class="row mt-5">
                 <div class="col-12">
                     <div class="bg-white rounded-4 p-4 shadow-sm border">
@@ -301,4 +292,3 @@ document.addEventListener('DOMContentLoaded', () => {
         window.location.href = '/reservation';
     };
 });
-

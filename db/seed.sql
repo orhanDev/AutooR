@@ -1,7 +1,3 @@
--- Örnek araç verileri - Gerçekçi fiyatlarla (€/gün)
--- Bu dosya veritabanına örnek veri eklemek için kullanılır
-
--- Örnek araçlar ekle
 INSERT INTO cars (make, model, year, transmission_type, fuel_type, seating_capacity, daily_rate, location_id, is_available, description) VALUES 
     ('Tesla', 'Model 3', 2023, 'Automatic', 'Electric', 5, 125, 1, true, 'Elektrikli sedan, uzun menzil, hızlı şarj'),
     ('Porsche', '911', 2022, 'Automatic', 'Petrol', 4, 200, 2, true, 'Spor araba, yüksek performans, lüks iç mekan'),
@@ -17,18 +13,17 @@ INSERT INTO cars (make, model, year, transmission_type, fuel_type, seating_capac
     ('Honda', 'Civic', 2021, 'Manual', 'Petrol', 5, 115, 3, true, 'Kompakt sedan, sportif tasarım, ekonomik')
 ON CONFLICT DO NOTHING;
 
--- Araç özelliklerini bağla
 INSERT INTO car_carfeatures (car_id, feature_id) VALUES 
-    (1, 1), (1, 2), (1, 3), (1, 4), (1, 5), (1, 6), -- Tesla Model 3
-    (2, 1), (2, 2), (2, 3), (2, 7), (2, 8), -- Porsche 911
-    (3, 1), (3, 2), (3, 3), (3, 6), (3, 7), -- Mercedes C-Class
-    (4, 1), (4, 2), (4, 3), (4, 4), (4, 5), (4, 6), (4, 7), (4, 8), -- BMW X5
-    (5, 1), (5, 2), (5, 3), (5, 6), (5, 7), -- Audi A4
-    (6, 1), (6, 2), (6, 3), (6, 6), -- VW Golf
-    (7, 1), (7, 2), (7, 3), (7, 6), (7, 7), -- BMW 3 Series
-    (8, 1), (8, 2), (8, 3), (8, 6), (8, 7), -- Mercedes E-Class
-    (9, 1), (9, 2), (9, 3), (9, 6), (9, 7), -- Audi Q5
-    (10, 1), (10, 2), (10, 3), (10, 4), (10, 5), (10, 6), (10, 7), (10, 8), -- Range Rover Sport
-    (11, 1), (11, 2), (11, 3), (11, 6), (11, 7), -- Toyota RAV4
-    (12, 1), (12, 2), (12, 3), (12, 6) -- Honda Civic
+    (1, 1), (1, 2), (1, 3), (1, 4), (1, 5), (1, 6), 
+    (2, 1), (2, 2), (2, 3), (2, 7), (2, 8), 
+    (3, 1), (3, 2), (3, 3), (3, 6), (3, 7), 
+    (4, 1), (4, 2), (4, 3), (4, 4), (4, 5), (4, 6), (4, 7), (4, 8), 
+    (5, 1), (5, 2), (5, 3), (5, 6), (5, 7), 
+    (6, 1), (6, 2), (6, 3), (6, 6), 
+    (7, 1), (7, 2), (7, 3), (7, 6), (7, 7), 
+    (8, 1), (8, 2), (8, 3), (8, 6), (8, 7), 
+    (9, 1), (9, 2), (9, 3), (9, 6), (9, 7), 
+    (10, 1), (10, 2), (10, 3), (10, 4), (10, 5), (10, 6), (10, 7), (10, 8), 
+    (11, 1), (11, 2), (11, 3), (11, 6), (11, 7), 
+    (12, 1), (12, 2), (12, 3), (12, 6) 
 ON CONFLICT DO NOTHING;

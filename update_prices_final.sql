@@ -1,8 +1,5 @@
--- Final fiyat güncellemesi - Gerçekçi Alman araç kiralama fiyatları (€/gün)
--- Tüm araçların fiyatlarını %80 düşür ve minimum €15 yap
 UPDATE cars SET daily_rate = GREATEST(daily_rate * 0.2, 15);
 
--- Özel araçlar için daha gerçekçi fiyatlar
 UPDATE cars SET daily_rate = 25 WHERE make = 'Volkswagen' AND model LIKE '%Golf%';
 UPDATE cars SET daily_rate = 22 WHERE make = 'Opel' AND model LIKE '%Corsa%';
 UPDATE cars SET daily_rate = 24 WHERE make = 'Ford' AND model LIKE '%Fiesta%';
@@ -29,5 +26,4 @@ UPDATE cars SET daily_rate = 180 WHERE make = 'Porsche' AND model LIKE '%911%';
 UPDATE cars SET daily_rate = 280 WHERE make = 'Bentley' AND model LIKE '%Continental%';
 UPDATE cars SET daily_rate = 350 WHERE make = 'Rolls-Royce' AND model LIKE '%Phantom%';
 
--- Güncel fiyatları göster
 SELECT make, model, year, daily_rate FROM cars ORDER BY daily_rate DESC LIMIT 15;

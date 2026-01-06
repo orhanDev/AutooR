@@ -19,7 +19,6 @@ async function updatePrices() {
     await client.connect();
     console.log('Verbindung erfolgreich!');
 
-    // Zuerst aktuelle Preise prüfen
     console.log('\n=== AKTUELLE PREISE ===');
     const currentPrices = await client.query(`
       SELECT make, model, year, daily_rate 
@@ -31,7 +30,6 @@ async function updatePrices() {
       console.log(`${row.make} ${row.model} (${row.year}): €${row.daily_rate}`);
     });
 
-    // Preisstatistiken
     const stats = await client.query(`
       SELECT 
         COUNT(*) as toplam_arac,
@@ -49,12 +47,10 @@ async function updatePrices() {
     console.log(`Durchschnittspreis: €${Math.round(stats.rows[0].ortalama_fiyat)}`);
     console.log(`Fahrzeuge unter 100€: ${stats.rows[0].alti_arac}`);
 
-    // Preisaktualisierungsskript lesen und ausführen
     console.log('\n=== PREISE WERDEN AKTUALISIERT ===');
     const updateSqlPath = path.join(__dirname, '..', 'db', 'update_prices_realistic.sql');
     const updateSql = fs.readFileSync(updateSqlPath, 'utf8');
-    
-    // SQL-Befehle Zeile für Zeile ausführen
+
     const commands = updateSql.split(';').filter(cmd => cmd.trim().length > 0);
     
     for (let i = 0; i < commands.length; i++) {
@@ -69,7 +65,6 @@ async function updatePrices() {
       }
     }
 
-    // Aktuelle Preise überprüfen
     console.log('\n=== AKTUELLE PREISE ===');
     const updatedPrices = await client.query(`
       SELECT make, model, year, daily_rate 
@@ -81,7 +76,6 @@ async function updatePrices() {
       console.log(`${row.make} ${row.model} (${row.year}): €${row.daily_rate}`);
     });
 
-    // Aktuelle Statistiken
     const updatedStats = await client.query(`
       SELECT 
         COUNT(*) as toplam_arac,

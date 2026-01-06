@@ -1,5 +1,3 @@
-
-
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Buchungen page loaded');
 
@@ -195,8 +193,7 @@ function createBookingCard(booking) {
                     <div class="booking-status ${paymentStatusClass}">${paymentStatusText}</div>
                 </div>
             </div>
-            
-            <!-- Fahrzeugübersicht -->
+
             <div class="vehicle-section">
                 <h6 class="section-title">Fahrzeugübersicht</h6>
                 <div class="vehicle-info">
@@ -214,7 +211,6 @@ function createBookingCard(booking) {
                 </div>
             </div>
 
-            <!-- Abholung & Rückgabe -->
             <div class="pickup-section">
                 <h6 class="section-title">Abholung & Rückgabe</h6>
                 <div class="pickup-info">
@@ -231,7 +227,6 @@ function createBookingCard(booking) {
                 </div>
             </div>
 
-            <!-- Preisübersicht -->
             <div class="price-section">
                 <h6 class="section-title">Preisübersicht</h6>
                 <div class="price-breakdown">
@@ -276,8 +271,7 @@ function createBookingCardFromStorage(booking) {
                     <div class="booking-status ${paymentStatusClass}">${paymentStatusText}</div>
                 </div>
             </div>
-            
-            <!-- Fahrzeugübersicht -->
+
             <div class="vehicle-section">
                 <h6 class="section-title">Fahrzeugübersicht</h6>
                 <div class="vehicle-info">
@@ -295,7 +289,6 @@ function createBookingCardFromStorage(booking) {
                 </div>
             </div>
 
-            <!-- Abholung & Rückgabe -->
             <div class="pickup-section">
                 <h6 class="section-title">Abholung & Rückgabe</h6>
                 <div class="pickup-info">
@@ -312,7 +305,6 @@ function createBookingCardFromStorage(booking) {
                 </div>
             </div>
 
-            <!-- Preisübersicht -->
             <div class="price-section">
                 <h6 class="section-title">Preisübersicht</h6>
                 <div class="price-breakdown">

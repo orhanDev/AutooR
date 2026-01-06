@@ -830,4 +830,3 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 });
-

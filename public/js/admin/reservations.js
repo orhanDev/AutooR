@@ -1,5 +1,3 @@
-﻿
-
 document.addEventListener('DOMContentLoaded', async () => {
     const token = localStorage.getItem('token');
     const reservationsTableBody = document.getElementById('reservations-table-body');
@@ -11,7 +9,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const newStatusSelect = document.getElementById('new-status');
 
     if (!token) {
-        alert('Bu sayfayÄ± gÃ¶rÃ¼ntÃ¼lemek iÃ§in giriÅŸ yapmanÄ±z gerekiyor.');
+        alert('Sie müssen sich anmelden, um diese Seite anzuzeigen.');
         window.location.href = '/views/login.html';
         return;
     }
@@ -25,7 +23,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
 
             if (response.status === 403) {
-                alert('YÃ¶netici yetkiniz bulunmamaktadÄ±r.');
+                alert('Sie haben keine Administratorberechtigung.');
                 window.location.href = '/';
                 return;
             }
@@ -37,7 +35,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             reservationsTableBody.innerHTML = ''; 
 
             if (reservations.length === 0) {
-                reservationsTableBody.innerHTML = '<tr><td colspan="8" class="text-center">HenÃ¼z hiÃ§ rezervasyon bulunmamaktadÄ±r.</td></tr>';
+                reservationsTableBody.innerHTML = '<tr><td colspan="8" class="text-center">Es sind noch keine Reservierungen vorhanden.</td></tr>';
                 return;
             }
 
@@ -54,7 +52,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                             <span class="badge bg-${getStatusBadgeClass(reservation.status)}">${getDisplayStatus(reservation.status)}</span>
                         </td>
                         <td>
-                            <button class="nav-link-text btn-sm status-change-btn" data-id="${reservation.reservation_id}" data-current-status="${reservation.status}">Durum DeÄŸiÅŸtir</button>
+                            <button class="nav-link-text btn-sm status-change-btn" data-id="${reservation.reservation_id}" data-current-status="${reservation.status}">Status ändern</button>
                         </td>
                     </tr>
                 `;
@@ -64,8 +62,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             attachEventListeners();
 
         } catch (error) {
-            console.error('Rezervasyonlar Ã§ekilirken hata:', error);
-            reservationsTableBody.innerHTML = '<tr><td colspan="8" class="text-danger text-center">Rezervasyonlar yÃ¼klenemedi.</td></tr>';
+            console.error('Fehler beim Abrufen der Reservierungen:', error);
+            reservationsTableBody.innerHTML = '<tr><td colspan="8" class="text-danger text-center">Reservierungen konnten nicht geladen werden.</td></tr>';
         }
     }
 
@@ -80,7 +78,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const reservationId = e.target.dataset.id;
         const currentStatus = e.target.dataset.currentStatus;
 
-        statusModalLabel.textContent = `Rezervasyon (${reservationId.substring(0, 8)}...) Durum DeÄŸiÅŸtir`;
+        statusModalLabel.textContent = `Reservierung (${reservationId.substring(0, 8)}...) Status ändern`;
         reservationIdToUpdateInput.value = reservationId;
         currentStatusInput.value = getDisplayStatus(currentStatus);
         newStatusSelect.value = currentStatus; 
@@ -108,12 +106,12 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const errorData = await response.json();
                 throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
             }
-            alert('Rezervasyon durumu baÅŸarÄ±yla gÃ¼ncellendi!');
+            alert('Reservierungsstatus wurde erfolgreich aktualisiert!');
             statusModal.hide();
             fetchReservations(); 
         } catch (error) {
-            console.error('Durum gÃ¼ncelleme hatasÄ±:', error);
-            alert(`Durum gÃ¼ncellenirken bir hata oluÅŸtu: ${error.message}`);
+            console.error('Fehler beim Aktualisieren des Status:', error);
+            alert(`Beim Aktualisieren des Status ist ein Fehler aufgetreten: ${error.message}`);
         }
     });
 
@@ -130,11 +128,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     function getDisplayStatus(status) {
         switch (status) {
-            case 'pending': return 'Beklemede';
-            case 'approved': return 'OnaylandÄ±';
-            case 'rejected': return 'Reddedildi';
-            case 'completed': return 'TamamlandÄ±';
-            case 'cancelled': return 'Ä°ptal Edildi';
+            case 'pending': return 'Ausstehend';
+            case 'approved': return 'Bestätigt';
+            case 'rejected': return 'Abgelehnt';
+            case 'completed': return 'Abgeschlossen';
+            case 'cancelled': return 'Storniert';
             default: return status;
         }
     }
@@ -144,7 +142,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('admin-logout-link').addEventListener('click', (e) => {
         e.preventDefault();
         localStorage.removeItem('token');
-        alert('BaÅŸarÄ±yla Ã§Ä±kÄ±ÅŸ yapÄ±ldÄ±.');
+        alert('Erfolgreich abgemeldet.');
         window.location.href = '/';
     });
 });

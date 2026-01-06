@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yönetici Paneli - Kullanıcı Yönetimi</title>
+    <title>Administrator-Panel - Benutzerverwaltung</title>
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     
@@ -20,22 +20,22 @@
     </header>
 
     <main class="container my-5">
-        <h2>Kullanıcı Yönetimi</h2>
+        <h2>Benutzerverwaltung</h2>
         <div class="table-responsive">
             <table class="table table-striped table-hover">
                 <thead>
                     <tr>
-                        <th>Ad Soyad</th>
-                        <th>E-posta</th>
+                        <th>Name</th>
+                        <th>E-Mail</th>
                         <th>Telefon</th>
-                        <th>Yönetici</th>
-                        <th>Kayıt Tarihi</th>
-                        <th>İşlemler</th>
+                        <th>Administrator</th>
+                        <th>Registrierungsdatum</th>
+                        <th>Aktionen</th>
                     </tr>
                 </thead>
                 <tbody id="users-table-body">
                     
-                    <tr><td colspan="6" class="text-center">Kullanıcılar yükleniyor...</td></tr>
+                    <tr><td colspan="6" class="text-center">Benutzer werden geladen...</td></tr>
                 </tbody>
             </table>
         </div>
@@ -44,31 +44,31 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="userModalLabel">Kullanıcı Düzenle</h5>
+                        <h5 class="modal-title" id="userModalLabel">Benutzer bearbeiten</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <form id="user-form">
                             <input type="hidden" id="user-id">
                             <div class="mb-3">
-                                <label for="first-name" class="form-label">Adı</label>
+                                <label for="first-name" class="form-label">Vorname</label>
                                 <input type="text" class="form-control" id="first-name" readonly>
                             </div>
                             <div class="mb-3">
-                                <label for="last-name" class="form-label">Soyadı</label>
+                                <label for="last-name" class="form-label">Nachname</label>
                                 <input type="text" class="form-control" id="last-name" readonly>
                             </div>
                             <div class="mb-3">
-                                <label for="email" class="form-label">E-posta</label>
+                                <label for="email" class="form-label">E-Mail</label>
                                 <input type="email" class="form-control" id="email" readonly>
                             </div>
                             <div class="mb-3 form-check form-switch">
                                 <input class="form-check-input" type="checkbox" id="is-admin">
-                                <label class="form-check-label" for="is-admin">Yönetici Yetkisi Ver</label>
+                                <label class="form-check-label" for="is-admin">Administratorberechtigung erteilen</label>
                             </div>
                             <div class="modal-footer">
-                                                        <button type="button" class="nav-link-text" data-bs-dismiss="modal">Kapat</button>
-                        <button type="submit" class="nav-link-text" id="save-user-btn">Kaydet</button>
+                                                        <button type="button" class="nav-link-text" data-bs-dismiss="modal">Schließen</button>
+                        <button type="submit" class="nav-link-text" id="save-user-btn">Speichern</button>
                             </div>
                         </form>
                     </div>

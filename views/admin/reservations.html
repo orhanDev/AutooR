@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yönetici Paneli - Rezervasyon Yönetimi</title>
+    <title>Administrator-Panel - Reservierungsverwaltung</title>
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     
@@ -20,24 +20,24 @@
     </header>
 
     <main class="container my-5">
-        <h2>Rezervasyon Yönetimi</h2>
+        <h2>Reservierungsverwaltung</h2>
         <div class="table-responsive">
             <table class="table table-striped table-hover">
                 <thead>
                     <tr>
-                        <th>Rezervasyon ID</th>
-                        <th>Kullanıcı</th>
-                        <th>Araç</th>
-                        <th>Teslim Alma</th>
-                        <th>Teslim Etme</th>
-                        <th>Toplam Fiyat</th>
-                        <th>Durum</th>
-                        <th>İşlemler</th>
+                        <th>Reservierungs-ID</th>
+                        <th>Benutzer</th>
+                        <th>Fahrzeug</th>
+                        <th>Abholung</th>
+                        <th>Rückgabe</th>
+                        <th>Gesamtpreis</th>
+                        <th>Status</th>
+                        <th>Aktionen</th>
                     </tr>
                 </thead>
                 <tbody id="reservations-table-body">
                     
-                    <tr><td colspan="8" class="text-center">Rezervasyonlar yükleniyor...</td></tr>
+                    <tr><td colspan="8" class="text-center">Reservierungen werden geladen...</td></tr>
                 </tbody>
             </table>
         </div>
@@ -46,29 +46,29 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="statusModalLabel">Rezervasyon Durumunu Değiştir</h5>
+                        <h5 class="modal-title" id="statusModalLabel">Reservierungsstatus ändern</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <form id="status-form">
                             <input type="hidden" id="reservation-id-to-update">
                             <div class="mb-3">
-                                <label for="current-status" class="form-label">Mevcut Durum</label>
+                                <label for="current-status" class="form-label">Aktueller Status</label>
                                 <input type="text" class="form-control" id="current-status" readonly>
                             </div>
                             <div class="mb-3">
-                                <label for="new-status" class="form-label">Yeni Durum</label>
+                                <label for="new-status" class="form-label">Neuer Status</label>
                                 <select class="form-select" id="new-status" required>
-                                    <option value="pending">Beklemede</option>
-                                    <option value="approved">Onaylandı</option>
-                                    <option value="completed">Tamamlandı</option>
-                                    <option value="cancelled">İptal Edildi</option>
-                                    <option value="rejected">Reddedildi</option>
+                                    <option value="pending">Ausstehend</option>
+                                    <option value="approved">Bestätigt</option>
+                                    <option value="completed">Abgeschlossen</option>
+                                    <option value="cancelled">Storniert</option>
+                                    <option value="rejected">Abgelehnt</option>
                                 </select>
                             </div>
                             <div class="modal-footer">
-                                                        <button type="button" class="nav-link-text" data-bs-dismiss="modal">Kapat</button>
-                        <button type="submit" class="nav-link-text" id="save-status-btn">Kaydet</button>
+                                                        <button type="button" class="nav-link-text" data-bs-dismiss="modal">Schließen</button>
+                        <button type="submit" class="nav-link-text" id="save-status-btn">Speichern</button>
                             </div>
                         </form>
                     </div>

@@ -1,11 +1,11 @@
 <svg width="200" height="60" viewBox="0 0 200 60" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <!-- Car wheel pattern for the O's -->
+    
     <pattern id="wheelPattern" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
       <circle cx="10" cy="10" r="10" fill="black"/>
       <circle cx="10" cy="10" r="6" fill="white"/>
       <circle cx="10" cy="10" r="2" fill="black"/>
-      <!-- Five-spoke rim design -->
+      
       <line x1="10" y1="2" x2="10" y2="6" stroke="black" stroke-width="1"/>
       <line x1="10" y1="14" x2="10" y2="18" stroke="black" stroke-width="1"/>
       <line x1="2" y1="10" x2="6" y2="10" stroke="black" stroke-width="1"/>
@@ -16,22 +16,16 @@
       <line x1="13" y1="7" x2="16" y2="4" stroke="black" stroke-width="1"/>
     </pattern>
   </defs>
-  
-  <!-- A -->
+
   <path d="M10 50 L20 10 L30 50 M15 35 L25 35" stroke="black" stroke-width="3" fill="none"/>
-  
-  <!-- U -->
+
   <path d="M35 10 L35 40 Q35 50 45 50 L55 50 Q65 50 65 40 L65 10" stroke="black" stroke-width="3" fill="none"/>
-  
-  <!-- T -->
+
   <path d="M75 10 L95 10 M85 10 L85 50" stroke="black" stroke-width="3" fill="none"/>
-  
-  <!-- First wheel (replacing first 'O') -->
+
   <circle cx="105" cy="30" r="12" fill="url(#wheelPattern)"/>
-  
-  <!-- Second wheel (replacing second 'O') -->
+
   <circle cx="125" cy="30" r="12" fill="url(#wheelPattern)"/>
-  
-  <!-- R -->
+
   <path d="M145 10 L145 50 L165 10 Q175 10 175 20 Q175 30 165 30 L145 30 L175 50" stroke="black" stroke-width="3" fill="none"/>
 </svg>

@@ -1,8 +1,6 @@
--- Mevcut fiyatları kontrol et
 SELECT 'MEVCUT FİYATLAR:' as durum;
 SELECT make, model, year, daily_rate FROM cars ORDER BY daily_rate ASC;
 
--- Fiyat istatistikleri
 SELECT 
     'FİYAT İSTATİSTİKLERİ:' as durum,
     COUNT(*) as toplam_arac,

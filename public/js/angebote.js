@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Angebote page loaded');
     
@@ -178,7 +177,7 @@ function bookStudent(offerId) {
     localStorage.setItem('pendingOffer', JSON.stringify({
         id: offerId,
         type: 'student',
-        category: 'Kompaktwagen', // Student offer applies to compact cars
+        category: 'Kompaktwagen', 
         ageRestriction: '18-26',
         requiresStudentId: true
     }));
@@ -200,8 +199,7 @@ function bookFamily(offerId) {
     localStorage.setItem('pendingOffer', JSON.stringify({
         id: offerId,
         type: 'family',
-        category: 'SUV' // Family offer applies to SUVs and Minivans
+        category: 'SUV' 
     }));
     window.location.href = '/fahrzeuge';
 }
-

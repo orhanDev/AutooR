@@ -1,5 +1,3 @@
-
-
 window.CAR_CATALOG = [
   
   { id: 1, brand: 'Volkswagen', model: 'T-Roc', type: 'Kompaktklasse SUV', price: 59.24, image: 'images/cars/vw-t-roc.png', seats: 5, transmission: 'Manuell', fuel: 'Benzin', bags: 2, handBags: 2, doors: 5, minAge: 18 },
@@ -30,4 +28,3 @@ window.CAR_CATALOG = [
   { id: 33, brand: 'Porsche', model: 'Panamera', type: 'Spezialklasse Coupé', price: 394.98, image: 'images/cars/porsche-panamera.png', seats: 4, transmission: 'Automatik', fuel: 'Benzin', bags: 2, handBags: 2, doors: 5, minAge: 25, guaranteed: true },
   { id: 34, brand: 'Porsche', model: '911 Carrera', type: 'Spezialklasse Coupé', price: 508.74, image: 'images/cars/porsche-911-carrera.png', seats: 4, transmission: 'Automatik', fuel: 'Benzin', bags: 2, handBags: 1, doors: 2, minAge: 30, guaranteed: true }
 ];
-

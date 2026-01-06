@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         carModel.textContent = car.model;
         carYear.textContent = car.year;
         carLicensePlate.textContent = car.license_plate;
-        carDailyRate.textContent = Math.floor(car.daily_rate); // Preis ohne Dezimalstellen anzeigen
+        carDailyRate.textContent = Math.floor(car.daily_rate); 
         currentCarDailyRate = car.daily_rate;
         carTransmissionType.textContent = car.transmission_type;
         carFuelType.textContent = car.fuel_type;
@@ -142,8 +142,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             const diffTime = Math.abs(dropOff - pickUp);
             const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-            if (diffDays >= 0) { // Mindestens 0 Tage, also auch gleiche Tag Abholung möglich
-                totalPriceElement.textContent = Math.floor(currentCarDailyRate * (diffDays + 1)); // +1 Tag, da auch am gleichen Tag abgeholt wird
+            if (diffDays >= 0) { 
+                totalPriceElement.textContent = Math.floor(currentCarDailyRate * (diffDays + 1)); 
             } else {
                 totalPriceElement.textContent = '0.00';
             }
@@ -186,7 +186,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const token = localStorage.getItem('token');
         if (!token) {
             alert('Bitte melden Sie sich an, um eine Reservierung vorzunehmen.');
-            window.location.href = '/views/login.html'; // Zur Login-Seite weiterleiten
+            window.location.href = '/views/login.html'; 
             return;
         }
 
@@ -195,7 +195,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'x-auth-token': token // JWT im Header mitschicken
+                    'x-auth-token': token 
                 },
                 body: JSON.stringify({
                     car_id: carId,
@@ -225,4 +225,3 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 });
-

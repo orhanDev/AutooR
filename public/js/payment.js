@@ -1,5 +1,3 @@
-﻿
-
 document.addEventListener('DOMContentLoaded', () => {
     const container = document.getElementById('payment-container');
 
@@ -48,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const dropoffLocationName = data.dropoffLocationName || getLocationName(data.dropoffLocation) || pickupLocationName;
         
         container.innerHTML = `
-            <!-- Breadcrumb -->
+            
             <nav aria-label="breadcrumb" class="mb-4">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="/" class="text-decoration-none">Startseite</a></li>
@@ -60,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
             </nav>
             
             <div class="row align-items-stretch">
-                <!-- Payment Form -->
+                
                 <div class="col-lg-8 mb-4">
                     <div class="bg-white rounded-4 p-4 shadow-sm border summary-card h-100">
                         <h2 class="fw-bold mb-4">
@@ -70,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         
                         <form id="payment-form" novalidate autocomplete="off">
                             <div class="row g-3">
-                                <!-- Payment Method -->
+                                
                                 <div class="col-12">
                                     <h5 class="fw-bold text-warning mb-3">Zahlungsmethode</h5>
                                 </div>
@@ -99,8 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                         </div>
                                     </div>
                                 </div>
-                                
-                                <!-- Credit Card Details -->
+
                                 <div id="credit-card-details">
                                     <div class="col-12">
                                         <label class="form-label fw-medium">Karteninhaber *</label>
@@ -122,8 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                         <input type="text" name="cvv" id="cvv" class="form-control border-2" placeholder="123" maxlength="3" required>
                                     </div>
                                 </div>
-                                
-                                <!-- Billing Address -->
+
                                 <div class="col-12">
                                     <h5 class="fw-bold text-warning mb-3 mt-4">Rechnungsadresse</h5>
                                 </div>
@@ -153,8 +149,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                         <input type="text" name="billingCity" class="form-control border-2">
                                     </div>
                                 </div>
-                                
-                                <!-- Terms -->
+
                                 <div class="col-12">
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" id="paymentTerms">
@@ -164,8 +159,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                         </label>
                                     </div>
                                 </div>
-                                
-                                <!-- Submit Button -->
+
                                 <div class="col-12">
                                     <button type="submit" class="nav-link-text btn-lg w-100 fw-bold" id="pay-submit-btn">
                                         <i class="bi bi-lock me-2"></i>
@@ -176,13 +170,11 @@ document.addEventListener('DOMContentLoaded', () => {
                         </form>
                     </div>
                 </div>
-                
-                <!-- Order Summary -->
+
                 <div class="col-lg-4 mb-4">
                     <div class="bg-white rounded-4 p-4 shadow-sm border summary-card h-100">
                         <h5 class="fw-bold mb-4">Bestellübersicht</h5>
-                        
-                        <!-- Vehicle Info (match reservation summary) -->
+
                         <div class="text-center mb-3">
                             <img src="${vehicle.image_url}" alt="${vehicle.make} ${vehicle.model}" 
                                  class="img-fluid rounded-3 mb-2" style="height: 200px; object-fit: cover;"
@@ -199,8 +191,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 <strong>${vehicle.fuel_type || '-'}</strong>
                             </div>
                         </div>
-                        
-                        <!-- Rental Details -->
+
                         <div class="rounded-3 p-3 mb-3 summary-box" style="background:#f7f7f7;">
                             <h6 class="fw-bold mb-2">Abholung & Rückgabe</h6>
                             <div class="small">
@@ -216,10 +207,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 </div>
                             </div>
                         </div>
-                        
-                        <!-- Additional Services (omitted to match reservation card) -->
-                        
-                        <!-- Price Breakdown -->
+
                         <div class="bg-light rounded-3 p-3 summary-box">
                             <h6 class="fw-bold mb-2">Preisübersicht</h6>
                             <div class="d-flex justify-content-between mb-2">
@@ -240,8 +228,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 <span id="total-price">€${Math.floor(Number(totalPrice))}</span>
                             </div>
                         </div>
-                        
-                        <!-- Security Info -->
+
                         <div class="mt-4 text-center">
                             <div class="d-flex justify-content-center align-items-center mb-2">
                                 <i class="bi bi-shield-check text-success me-2"></i>
@@ -692,4 +679,3 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
     }
 });
-

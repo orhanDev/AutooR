@@ -1,5 +1,3 @@
-﻿
-
 let popularCarsContainer;
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -391,4 +389,3 @@ document.addEventListener('DOMContentLoaded', function() {
         observer.observe(statsSection);
     }
 });
-

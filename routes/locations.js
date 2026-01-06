@@ -7,7 +7,7 @@ router.get('/', async (req, res) => {
         const result = await query('SELECT location_id, name FROM locations');
         res.json(result.rows);
     } catch (error) {
-        console.error('Lokasyonlar getirilirken hata:', error);
+        console.error('Fehler beim Abrufen der Standorte:', error);
         res.status(500).json({ error: 'Serverfehler' });
     }
 });

@@ -1,4 +1,3 @@
--- Email Verification Codes tablosu
 CREATE TABLE IF NOT EXISTS email_verification_codes (
     id SERIAL PRIMARY KEY,
     email VARCHAR(255) NOT NULL,
@@ -8,11 +7,6 @@ CREATE TABLE IF NOT EXISTS email_verification_codes (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Index ekle (hızlı arama için)
 CREATE INDEX IF NOT EXISTS idx_email_verification_email ON email_verification_codes(email);
 CREATE INDEX IF NOT EXISTS idx_email_verification_code ON email_verification_codes(code);
 CREATE INDEX IF NOT EXISTS idx_email_verification_expires ON email_verification_codes(expires_at);
-
--- Eski verification kodlarını temizlemek için (24 saatten eski)
--- Bu trigger veya scheduled job ile yapılabilir, şimdilik manuel temizlik yeterli
-

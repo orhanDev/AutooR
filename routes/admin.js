@@ -13,9 +13,9 @@ router.get('/dashboard', authMiddleware, adminMiddleware, async (req, res) => {
 
         const reservationCount = await query('SELECT COUNT(*) FROM reservations');
 
-        const pendingReservations = await query("SELECT COUNT(*) FROM reservations WHERE status = 'Beklemede'");
+        const pendingReservations = await query("SELECT COUNT(*) FROM reservations WHERE status = 'Pending'");
 
-        const totalRevenue = await query("SELECT COALESCE(SUM(total_price), 0) FROM reservations WHERE status = 'Onaylandı'");
+        const totalRevenue = await query("SELECT COALESCE(SUM(total_price), 0) FROM reservations WHERE status = 'Confirmed'");
 
         res.json({
             stats: {
@@ -87,7 +87,7 @@ router.post('/test-reservations', authMiddleware, adminMiddleware, async (req, r
                 pickup_location_id: 1,
                 dropoff_location_id: 1,
                 total_price: 250.00,
-                status: 'Tamamlandı'
+                status: 'Completed'
             },
             {
                 car_id: carsCheck.rows[1] ? carsCheck.rows[1].car_id : carsCheck.rows[0].car_id,
@@ -98,7 +98,7 @@ router.post('/test-reservations', authMiddleware, adminMiddleware, async (req, r
                 pickup_location_id: 2,
                 dropoff_location_id: 2,
                 total_price: 400.00,
-                status: 'Onaylandı'
+                status: 'Confirmed'
             },
             {
                 car_id: carsCheck.rows[2] ? carsCheck.rows[2].car_id : carsCheck.rows[0].car_id,
@@ -109,7 +109,7 @@ router.post('/test-reservations', authMiddleware, adminMiddleware, async (req, r
                 pickup_location_id: 3,
                 dropoff_location_id: 3,
                 total_price: 390.00,
-                status: 'Beklemede'
+                status: 'Pending'
             }
         ];
 
@@ -147,7 +147,7 @@ router.put('/reservations/:id', authMiddleware, adminMiddleware, async (req, res
         const { id } = req.params;
         const { status } = req.body;
 
-        const validStatuses = ['Beklemede', 'Onaylandı', 'Reddedildi', 'Tamamlandı', 'İptal Edildi'];
+        const validStatuses = ['Pending', 'Confirmed', 'Rejected', 'Completed', 'Cancelled'];
         if (!validStatuses.includes(status)) {
             return res.status(400).json({ error: 'Ungültiger Status' });
         }

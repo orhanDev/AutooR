@@ -102,7 +102,7 @@ router.get('/search', async (req, res) => {
                 AND NOT EXISTS (
                     SELECT 1 FROM reservations r
                     WHERE r.car_id = c.car_id
-                    AND r.status IN ('Beklemede', 'Onaylandı')
+                    AND r.status IN ('Pending', 'Confirmed')
                     AND (
                         (r.pickup_date, r.dropoff_date) OVERLAPS (CAST($${paramCount} AS DATE), CAST($${paramCount + 1} AS DATE))
                     )

@@ -1,4 +1,3 @@
-
 function getPageTitle() {
     const path = window.location.pathname;
     const titleMap = {
@@ -7,13 +6,13 @@ function getPageTitle() {
         '/angebote': 'Angebote',
         '/self-services': 'Self-Services',
         '/extras-versicherung': 'Extras',
-        '/geschaeftskunden': 'Gesch�ftskunden',
+        '/geschaeftskunden': 'Geschäftskunden',
         '/standorte': 'Standorte',
         '/hilfe': 'Hilfe & Kontakt',
         '/reservation': 'Reservierung',
         '/buchungen': 'Buchungen',
         '/abos': 'Abos',
-        '/persoenliche-daten': 'Pers�nliche Daten',
+        '/persoenliche-daten': 'Persönliche Daten',
         '/profile': 'Profile'
     };
     return titleMap[path] || 'AutooR';
@@ -31,6 +30,9 @@ function createMobileMenuNavbar() {
     const pageTitle = getPageTitle();
     console.log('Page title:', pageTitle);
     
+    const currentPath = window.location.pathname;
+    const isHomePage = currentPath === '/' || currentPath === '/index.html';
+    
     const navbar = document.createElement('nav');
     navbar.id = 'mobile-menu-navbar';
     navbar.className = 'navbar fixed-top mobile-menu-navbar';
@@ -38,9 +40,15 @@ function createMobileMenuNavbar() {
     
     navbar.innerHTML = `
         <div class="container d-flex align-items-center justify-content-between" style="padding: 0.5rem 1rem;">
+            ${isHomePage ? `
+            <button class="btn btn-hamburger-navbar" type="button" style="border: none; background: transparent; padding: 0.5rem;">
+                <span class="navbar-toggler-icon" style="display: inline-block; width: 1.5em; height: 1.5em; vertical-align: middle; background-image: url(&quot;data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%2833, 37, 41, 0.75%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e&quot;); background-repeat: no-repeat; background-position: center; background-size: 100%;"></span>
+            </button>
+            ` : `
             <button class="btn btn-back-navbar" type="button" style="border: none; background: transparent; padding: 0.5rem;">
                 <i class="bi bi-arrow-left" style="font-size: 1.5rem;"></i>
             </button>
+            `}
             <span class="navbar-title" style="font-weight: 600; font-size: 1.1rem;">${pageTitle}</span>
             <button class="btn btn-close-navbar" type="button" style="border: none; background: transparent; padding: 0.5rem;">
                 <span style="font-size: 1.5rem; font-weight: 300;">&times;</span>
@@ -62,9 +70,32 @@ function createMobileMenuNavbar() {
     });
     
     const backBtn = navbar.querySelector('.btn-back-navbar');
+    const hamburgerBtn = navbar.querySelector('.btn-hamburger-navbar');
     const closeBtn = navbar.querySelector('.btn-close-navbar');
     
-    console.log('Event listeners setup:', { backBtn: !!backBtn, closeBtn: !!closeBtn });
+    console.log('Event listeners setup:', { backBtn: !!backBtn, hamburgerBtn: !!hamburgerBtn, closeBtn: !!closeBtn });
+    
+    if (hamburgerBtn) {
+        hamburgerBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('Hamburger button clicked - opening menu');
+            const navbarNav = document.getElementById('navbarNav');
+            if (navbarNav) {
+                try {
+                    const collapseInstance = window.bootstrap?.Collapse?.getInstance(navbarNav);
+                    if (collapseInstance) {
+                        collapseInstance.show();
+                    } else {
+                        navbarNav.classList.add('show');
+                    }
+                } catch (err) {
+                    console.error('Error opening menu:', err);
+                    navbarNav.classList.add('show');
+                }
+            }
+        });
+    }
     
     if (backBtn) {
         backBtn.addEventListener('click', function(e) {
@@ -244,7 +275,7 @@ function setupMobileMenuNavbarWatcher() {
         mutations.forEach(function(mutation) {
             if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
                 console.log('MutationObserver: class attribute changed');
-                setTimeout(checkMenuState, 100); // Delay to ensure DOM updated
+                setTimeout(checkMenuState, 100); 
             }
         });
     });
@@ -344,7 +375,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     window.addEventListener('resize', function() {
         const currentPath = window.location.pathname;
-        if (currentPath === '/' || currentPath === '/index.html') {
+        const isHomePage = currentPath === '/' || currentPath === '/index.html';
+        
+        if (isHomePage) {
             document.body.classList.add('home-page');
             document.body.classList.remove('not-home-page');
         } else {
@@ -354,13 +387,21 @@ document.addEventListener('DOMContentLoaded', function() {
         
         const backBtn = document.querySelector('.navbar-back-btn');
         const menuBtn = document.querySelector('.navbar-toggler');
-        if (backBtn) {
-            backBtn.removeAttribute('style');
-            backBtn.style.cssText = '';
-        }
-        if (menuBtn) {
-            menuBtn.removeAttribute('style');
-            menuBtn.style.cssText = '';
+        
+        if (isHomePage) {
+            if (backBtn) {
+                backBtn.style.display = 'none';
+            }
+            if (menuBtn) {
+                menuBtn.style.display = 'flex';
+            }
+        } else {
+            if (backBtn) {
+                backBtn.style.display = 'flex';
+            }
+            if (menuBtn) {
+                menuBtn.style.display = 'none';
+            }
         }
         const navbarNav = document.getElementById('navbarNav');
         if (navbarNav && window.innerWidth <= 751) {
@@ -375,7 +416,9 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('DOM loaded, calling updateNavbar');
     
     const currentPath = window.location.pathname;
-    if (currentPath === '/' || currentPath === '/index.html') {
+    const isHomePage = currentPath === '/' || currentPath === '/index.html';
+    
+    if (isHomePage) {
         document.body.classList.add('home-page');
         document.body.classList.remove('not-home-page');
     } else {
@@ -391,13 +434,21 @@ document.addEventListener('DOMContentLoaded', function() {
     
     const backBtn = document.querySelector('.navbar-back-btn');
     const menuBtn = document.querySelector('.navbar-toggler');
-    if (backBtn) {
-        backBtn.removeAttribute('style');
-        backBtn.style.cssText = '';
-    }
-    if (menuBtn) {
-        menuBtn.removeAttribute('style');
-        menuBtn.style.cssText = '';
+    
+    if (isHomePage) {
+        if (backBtn) {
+            backBtn.style.display = 'none';
+        }
+        if (menuBtn) {
+            menuBtn.style.display = 'flex';
+        }
+    } else {
+        if (backBtn) {
+            backBtn.style.display = 'flex';
+        }
+        if (menuBtn) {
+            menuBtn.style.display = 'none';
+        }
     }
     
     const hasLocalStorageData = localStorage.getItem('userData') && localStorage.getItem('isLoggedIn') === 'true';
@@ -511,25 +562,26 @@ function createNavbar() {
         return;
     }
     
+    const currentPath = window.location.pathname;
+    const isHomePage = currentPath === '/' || currentPath === '/index.html';
+    
     navbarContainer.innerHTML = `
         <div class="mobile-menu-backdrop" id="mobile-menu-backdrop"></div>
         <nav class="navbar fixed-top">
             <div class="container d-flex align-items-center">
-                <button class="navbar-toggler me-2 d-flex align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-label="Men�">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <button class="navbar-back-btn me-2 d-flex align-items-center" type="button" aria-label="Zur�ck" style="display: none;">
+                <button class="navbar-toggler me-2 d-flex align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-label="Men" style="${isHomePage ? 'display: flex;' : 'display: none;'}"><span class="navbar-toggler-icon"></span></button>
+                <button class="navbar-back-btn me-2 d-flex align-items-center" type="button" aria-label="Zurück" style="${isHomePage ? 'display: none;' : 'display: flex;'}">
                     <i class="bi bi-arrow-left" style="font-size: 1.5rem;"></i>
                 </button>
                 <a class="brand-center" href="/">AutooR</a>
                 <div class="collapse navbar-collapse flex-grow-1" id="navbarNav">
                     <div class="side-left">
                         <div class="menu-header d-flex justify-content-between align-items-center mb-4 d-md-none">
-                            <button class="btn-back-menu" type="button" aria-label="Zur�ck" style="display: none;">
+                            <button class="btn-back-menu" type="button" aria-label="Zurück" style="${isHomePage ? 'display: none;' : 'display: flex;'}">
                                 <i class="bi bi-arrow-left" style="font-size: 1.25rem;"></i>
                             </button>
-                            <h2 class="menu-title mb-0">Men�</h2>
-                            <button class="btn-close-menu" type="button" aria-label="Men�y� Kapat">
+                            <h2 class="menu-title mb-0">Menü</h2>
+                            <button class="btn-close-menu" type="button" aria-label="Menüyü Kapat">
                                 <span>&times;</span>
                             </button>
                         </div>
@@ -538,7 +590,7 @@ function createNavbar() {
                             <li class="nav-item side-item"><a class="nav-link" href="/angebote">Angebote</a></li>
                             <li class="nav-item side-item"><a class="nav-link" href="/self-services">Self-Services</a></li>
                             <li class="nav-item side-item"><a class="nav-link" href="/extras-versicherung">Extras</a></li>
-                            <li class="nav-item side-item"><a class="nav-link" href="/geschaeftskunden">Gesch�ftskunden</a></li>
+                            <li class="nav-item side-item"><a class="nav-link" href="/geschaeftskunden">Geschäftskunden</a></li>
                             <li class="nav-item side-item"><a class="nav-link" href="/standorte">Standorte</a></li>
                             <li class="nav-item side-item"><a class="nav-link" href="/hilfe">Hilfe & Kontakt</a></li>
                     </ul>
@@ -563,7 +615,7 @@ function createNavbar() {
                         </div>
                         <div class="menu-item" onclick="window.location.href='/persoenliche-daten'">
                             <i class="bi bi-person me-2"></i>
-                            <span>Pers�nliche Daten</span>
+                            <span>Persönliche Daten</span>
                         </div>
                         <div class="menu-item" onclick="window.location.href='/profile'">
                             <i class="bi bi-person-badge me-2"></i>
@@ -583,9 +635,7 @@ function createNavbar() {
             </div>
         </nav>
     `;
-    
 
-    
     addHamburgerMenuCloseListener();
     
     setTimeout(() => {
@@ -686,8 +736,9 @@ function updateNavbar() {
     }
     
     const currentPath = window.location.pathname;
+    const isHomePage = currentPath === '/' || currentPath === '/index.html';
     
-    if (currentPath === '/' || currentPath === '/index.html') {
+    if (isHomePage) {
         document.body.classList.add('home-page');
         document.body.classList.remove('not-home-page');
     } else {
@@ -697,13 +748,21 @@ function updateNavbar() {
     
     const backBtn = document.querySelector('.navbar-back-btn');
     const menuBtn = document.querySelector('.navbar-toggler');
-    if (backBtn) {
-        backBtn.removeAttribute('style');
-        backBtn.style.cssText = '';
-    }
-    if (menuBtn) {
-        menuBtn.removeAttribute('style');
-        menuBtn.style.cssText = '';
+    
+    if (isHomePage) {
+        if (backBtn) {
+            backBtn.style.display = 'none';
+        }
+        if (menuBtn) {
+            menuBtn.style.display = 'flex';
+        }
+    } else {
+        if (backBtn) {
+            backBtn.style.display = 'flex';
+        }
+        if (menuBtn) {
+            menuBtn.style.display = 'none';
+        }
     }
     
     console.log('Navbar update completed');
@@ -777,7 +836,7 @@ function showLogoutNotification() {
         </div>
         <div style="font-size: 16px; opacity: 0.8;">
             Sie wurden erfolgreich abgemeldet.<br>
-            Vielen Dank f�r Ihren Besuch bei AutooR.
+            Vielen Dank für Ihren Besuch bei AutooR.
         </div>
     `;
     
@@ -860,7 +919,7 @@ function addCloseButtonListener() {
             if (closeBtn) {
                 e.preventDefault();
                 e.stopPropagation();
-                closeBtn.click(); // Trigger the click handler we added above
+                closeBtn.click(); 
             }
         }
     });
@@ -1009,7 +1068,7 @@ function addHamburgerMenuCloseListener() {
 function hideNavbarElements() {
     if (window.innerWidth > 751) {
         console.log('hideNavbarElements: Not mobile, skipping');
-        return; // Only on mobile
+        return; 
     }
     
     console.log('hideNavbarElements: Starting transformation...');
@@ -1183,21 +1242,21 @@ function initSideMenu() {
                 <div class="submenu-header">Extras</div>
                 <ul class="submenu-list">
                     <li><a href="#">Zusatzfahrer</a></li>
-                    <li><a href="#">Navigationsger�te</a></li>
+                    <li><a href="#">Navigationsgeräte</a></li>
                     <li><a href="#">Kindersitze</a></li>
-                    <li><a href="#">Winterausr�stung</a></li>
+                    <li><a href="#">Winterausrüstung</a></li>
                     <li><a href="#">Versicherungspakete</a></li>
                 </ul>
             </div>
         `,
         business: `
             <div class="submenu">
-                <div class="submenu-header">Gesch�ftskunden</div>
+                <div class="submenu-header">Geschäftskunden</div>
                 <ul class="submenu-list">
                     <li><a href="#">Firmenkundenprogramme</a></li>
-                    <li><a href="#">Kleine & Mittelst�ndische Unternehmen</a></li>
-                    <li><a href="#">Gro�kundenl�sungen</a></li>
-                    <li><a href="#">Reiseb�ros & Partner</a></li>
+                    <li><a href="#">Kleine & Mittelständische Unternehmen</a></li>
+                    <li><a href="#">Großkundenlösungen</a></li>
+                    <li><a href="#">Reisebüros & Partner</a></li>
                 </ul>
             </div>
         `,
@@ -1205,16 +1264,16 @@ function initSideMenu() {
             <div class="submenu submenu-static">
                 <div class="submenu-header">Standorte (Deutschland)</div>
                 <ul class="submenu-list columns">
-                    <li><a href="#">K�ln Zentrum</a></li>
-                    <li><a href="#">M�nchen Zentrum</a></li>
+                    <li><a href="#">Köln Zentrum</a></li>
+                    <li><a href="#">München Zentrum</a></li>
                     <li><a href="#">Hamburg Zentrum</a></li>
-                    <li><a href="#">K�ln Zentrum</a></li>
+                    <li><a href="#">Köln Zentrum</a></li>
                     <li><a href="#">Frankfurt am Main Zentrum</a></li>
                     <li><a href="#">Stuttgart Zentrum</a></li>
-                    <li><a href="#">D�sseldorf Zentrum</a></li>
+                    <li><a href="#">Düsseldorf Zentrum</a></li>
                     <li><a href="#">Leipzig Zentrum</a></li>
                     <li><a href="#">Hannover Zentrum</a></li>
-                    <li><a href="#">N�rnberg Zentrum</a></li>
+                    <li><a href="#">Nürnberg Zentrum</a></li>
                     <li><a href="#">Bremen Zentrum</a></li>
                     <li><a href="#">Dresden Zentrum</a></li>
                     <li><a href="#">Dortmund Zentrum</a></li>
@@ -1249,7 +1308,7 @@ function initSideMenu() {
             const navbar = document.querySelector('.navbar');
             if (navbar && window.innerWidth <= 751) {
                 navbar.classList.add('submenu-open');
-                navbar.classList.add('menu-open'); // Keep menu-open when submenu is open
+                navbar.classList.add('menu-open'); 
                 hideNavbarElements();
             }
         if (key === 'fahrzeuge') {
@@ -1265,7 +1324,7 @@ function initSideMenu() {
                 if (isMobile) {
                     const link = item.querySelector('.nav-link');
                     if (link && link.href) {
-                        return; // Don't prevent default, let browser navigate
+                        return; 
                     }
                 }
                 e.preventDefault();
@@ -1411,7 +1470,7 @@ async function renderVehicleCards(container) {
                 const s = document.createElement('script');
                 s.src = '/js/cars-data.js';
                 s.onload = resolve;
-                s.onerror = resolve; // continue even if fails
+                s.onerror = resolve; 
                 document.head.appendChild(s);
             });
             console.log('cars-data.js loaded, CAR_CATALOG:', window.CAR_CATALOG);
@@ -1444,7 +1503,7 @@ async function renderVehicleCards(container) {
                 }));
             }
         } catch (e) {
-            console.warn('Static cars-data.js y�klenemedi.', e);
+            console.warn('Static cars-data.js yüklenemedi.', e);
         }
     }
 
@@ -1471,7 +1530,7 @@ async function renderVehicleCards(container) {
                 }
             }
         } catch (e) {
-            console.warn('fahrzeuge.html i�inden ara� listesi �ikarilamadi.', e);
+            console.warn('fahrzeuge.html içinden araç listesi çıkarılamadı.', e);
         }
     }
 
@@ -1563,7 +1622,7 @@ async function renderVehicleCards(container) {
         if (/\.jpg$/i.test(img)) img = img.replace(/\.jpg$/i, '.png');
         return img || '/images/cars/vw-t-roc-suv-4d-white-2022-JV.png';
     };
-    const stripSimilar = (s) => String(s || '').replace(/\s*oder\s+�hnlich/gi, '').trim();
+    const stripSimilar = (s) => String(s || '').replace(/\s*oder\s+ähnlich/gi, '').trim();
     const capitalize = (w) => w.length <= 3 ? w.toUpperCase() : (w.charAt(0).toUpperCase() + w.slice(1).toLowerCase());
     const guessFromImage = (imgPath) => {
         try {
@@ -1621,14 +1680,14 @@ async function renderVehicleCards(container) {
         return `
         <div class="vehicle-card" data-id="${id}" data-make="${makeAttr}" data-model="${modelAttr}" data-img="${img}" data-price="${price}" data-trans="${transmission}" data-fuel="${fuel}" data-seats="${seats}" data-bags="${bags}" data-hand="${hand}" data-doors="${doors}">
             <div class="vehicle-title">${title}</div>
-            <div class="vehicle-subtitle">${(c.type||'').toString().replace(/"/g,'&quot;')} ${transmission ? `<span class=\"nowrap\">� ${transmission}</span>` : ''}</div>
+            <div class="vehicle-subtitle">${(c.type||'').toString().replace(/"/g,'&quot;')} ${transmission ? `<span class=\"nowrap\">${transmission}</span>` : ''}</div>
             <img src="${img}" alt="${title}" onerror="if(!this.dataset.try){this.dataset.try='png';this.src=this.src.replace(/\\.jpg$/i,'.png');}else if(this.dataset.try==='png'){this.dataset.try='jpg';this.src=this.src.replace(/\\.png$/i,'.jpg');}else{this.onerror=null;this.src='/images/cars/default-car.jpg';}" />
-            ${price ? `<div class=\"price-badge\">�${Math.floor(Number(price)).toLocaleString('de-DE')}/Tag</div>` : ''}
+            ${price ? `<div class=\"price-badge\">€${Math.floor(Number(price)).toLocaleString('de-DE')}/Tag</div>` : ''}
             <div class="vehicle-meta">
                 ${seats ? `<span class="vehicle-chip">${seats} Sitze</span>` : ''}
                 ${bags ? `<span class="vehicle-chip">${bags} Koffer</span>` : ''}
                 ${hand ? `<span class="vehicle-chip">${hand} Handgep.</span>` : ''}
-                ${doors ? `<span class="vehicle-chip">${doors} T�ren</span>` : ''}
+                ${doors ? `<span class="vehicle-chip">${doors} Türen</span>` : ''}
             </div>
         </div>`;
     }).join('');
@@ -1668,7 +1727,7 @@ function initAccountMenu() {
     const positionMenu = () => {
         if (window.innerWidth <= 751) {
             const btnRect = btn.getBoundingClientRect();
-            const menuTop = btnRect.bottom + 8; // 8px gap
+            const menuTop = btnRect.bottom + 8; 
             menu.style.top = menuTop + 'px';
             menu.style.left = 'auto';
             menu.style.right = (window.innerWidth - btnRect.right) + 'px';

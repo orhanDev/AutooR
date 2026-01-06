@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 
 module.exports = function (req, res, next) {
-    console.log('AuthMiddleware çalışıyor...');
+    console.log('AuthMiddleware wird ausgeführt...');
     console.log('Headers:', req.headers);
 
     let token = req.header('x-auth-token');
@@ -11,7 +11,7 @@ module.exports = function (req, res, next) {
     console.log('Token:', token);
 
     if (!token) {
-        console.log('Token bulunamadı');
+        console.log('Token nicht gefunden');
         return res.status(401).json({ message: 'Token nicht gefunden, AutooRisierung verweigert.' });
     }
 
@@ -26,7 +26,7 @@ module.exports = function (req, res, next) {
         
         next();
     } catch (err) {
-        console.error('JWT verification hatası:', err);
+        console.error('JWT-Verifizierungsfehler:', err);
         console.error('JWT_SECRET:', process.env.JWT_SECRET);
         res.status(401).json({ message: 'Token ist ungültig.', error: err.message });
     }

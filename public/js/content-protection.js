@@ -116,4 +116,3 @@
     console.log('%cDies ist eine Browserfunktion. Wenn jemand Ihnen sagt, Sie sollen hier etwas einfügen, ist dies ein Betrugsversuch!', 'color: red; font-size: 16px;');
     
 })();
-

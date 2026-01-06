@@ -17,7 +17,6 @@ async function fixUsersTable() {
     await client.connect();
     console.log('Verbindung erfolgreich!');
 
-    // Fehlende Spalten zur Users-Tabelle hinzufügen
     console.log('Füge fehlende Spalten zur Users-Tabelle hinzu...');
     
     const alterTableQuery = `
@@ -30,7 +29,6 @@ async function fixUsersTable() {
     await client.query(alterTableQuery);
     console.log('Users-Tabelle erfolgreich aktualisiert!');
 
-    // Tabellenstruktur prüfen
     const checkTableQuery = `
       SELECT column_name, data_type 
       FROM information_schema.columns 

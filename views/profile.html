@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profilim - Araba Kiralama Sitesi</title>
+    <title>Mein Profil - Autovermietung</title>
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     
@@ -32,28 +32,28 @@
                 </div>
             </div>
         </div>
-        <h2 class="mb-4">Profilim</h2>
+        <h2 class="mb-4">Mein Profil</h2>
 
         <div class="row">
             <div class="col-md-6">
                 <div class="card p-4 shadow-sm mb-4">
-                    <h4 class="card-title">Kullanıcı Bilgileri</h4>
-                    <p><strong>Ad:</strong> <span id="user-first-name"></span></p>
-                    <p><strong>Soyad:</strong> <span id="user-last-name"></span></p>
-                    <p><strong>E-posta:</strong> <span id="user-email"></span></p>
+                    <h4 class="card-title">Benutzerinformationen</h4>
+                    <p><strong>Vorname:</strong> <span id="user-first-name"></span></p>
+                    <p><strong>Nachname:</strong> <span id="user-last-name"></span></p>
+                    <p><strong>E-Mail:</strong> <span id="user-email"></span></p>
                     <p><strong>Telefon:</strong> <span id="user-phone-number"></span></p>
-                    <p><strong>Adres:</strong> <span id="user-address"></span></p>
-                    <p><strong>Kayıt Tarihi:</strong> <span id="user-created-at"></span></p>
-                    <p><strong>Yönetici:</strong> <span id="user-is-admin"></span></p>
-                    <button class="nav-link-text mt-3">Bilgileri Düzenle (Yapım Aşamasında)</button>
+                    <p><strong>Adresse:</strong> <span id="user-address"></span></p>
+                    <p><strong>Registrierungsdatum:</strong> <span id="user-created-at"></span></p>
+                    <p><strong>Administrator:</strong> <span id="user-is-admin"></span></p>
+                    <button class="nav-link-text mt-3">Informationen bearbeiten (In Arbeit)</button>
                 </div>
             </div>
 
             <div class="col-md-6">
                 <div class="card p-4 shadow-sm">
-                    <h4 class="card-title">Geçmiş Rezervasyonlarım</h4>
+                    <h4 class="card-title">Meine vergangenen Reservierungen</h4>
                     <div id="user-reservations">
-                        <p class="text-muted">Rezervasyonlar yükleniyor...</p>
+                        <p class="text-muted">Reservierungen werden geladen...</p>
                     </div>
                 </div>
             </div>
@@ -62,25 +62,25 @@
         <div class="row mt-4">
             <div class="col-md-12">
                 <div class="card p-4 shadow-sm">
-                    <h4 class="card-title">Ödeme Yöntemleri</h4>
+                    <h4 class="card-title">Zahlungsmethoden</h4>
                     <div class="row g-3">
                         <div class="col-md-4">
-                            <h6>Kart</h6>
-                            <input id="pay-card-holder" class="form-control mb-2" placeholder="Kart Sahibi" />
-                            <input id="pay-card-number" class="form-control mb-2" placeholder="Kart Numarası" />
-                            <input id="pay-card-exp" class="form-control mb-2" placeholder="SKT (MM/YY)" />
+                            <h6>Karte</h6>
+                            <input id="pay-card-holder" class="form-control mb-2" placeholder="Karteninhaber" />
+                            <input id="pay-card-number" class="form-control mb-2" placeholder="Kartennummer" />
+                            <input id="pay-card-exp" class="form-control mb-2" placeholder="Ablaufdatum (MM/JJ)" />
                         </div>
                         <div class="col-md-4">
                             <h6>PayPal</h6>
-                            <input id="pay-paypal-email" class="form-control mb-2" placeholder="PayPal E-posta" />
+                            <input id="pay-paypal-email" class="form-control mb-2" placeholder="PayPal E-Mail" />
                         </div>
                         <div class="col-md-4">
                             <h6>Klarna</h6>
-                            <input id="pay-klarna-id" class="form-control mb-2" placeholder="Klarna Müşteri ID" />
+                            <input id="pay-klarna-id" class="form-control mb-2" placeholder="Klarna Kunden-ID" />
                         </div>
                     </div>
                     <div class="text-end mt-3">
-                        <button id="btn-save-payments" class="nav-link-text">Kaydet</button>
+                        <button id="btn-save-payments" class="nav-link-text">Speichern</button>
                     </div>
                     <div id="save-status" class="small text-muted mt-2"></div>
                 </div>

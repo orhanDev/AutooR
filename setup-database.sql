@@ -1,19 +1,11 @@
--- PostgreSQL veritabanı kurulum scripti
--- Bu scripti pgAdmin veya psql ile çalıştırın
-
--- Veritabanı oluştur
 CREATE DATABASE AutooR_db;
 
--- Kullanıcı oluştur
 CREATE USER AutooR_user WITH PASSWORD 'AutooR_password123';
 
--- Yetkileri ver
 GRANT ALL PRIVILEGES ON DATABASE AutooR_db TO AutooR_user;
 
--- Veritabanına bağlan
 \c AutooR_db;
 
--- Kullanıcılar tablosu
 CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY,
     email VARCHAR(255) UNIQUE NOT NULL,
@@ -33,7 +25,6 @@ CREATE TABLE IF NOT EXISTS users (
     login_method VARCHAR(20) DEFAULT 'google'
 );
 
--- Kredi kartları tablosu
 CREATE TABLE IF NOT EXISTS credit_cards (
     id SERIAL PRIMARY KEY,
     user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
@@ -49,7 +40,6 @@ CREATE TABLE IF NOT EXISTS credit_cards (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Rezervasyonlar tablosu
 CREATE TABLE IF NOT EXISTS reservations (
     id SERIAL PRIMARY KEY,
     user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
@@ -74,7 +64,6 @@ CREATE TABLE IF NOT EXISTS reservations (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Ödeme geçmişi tablosu
 CREATE TABLE IF NOT EXISTS payments (
     id SERIAL PRIMARY KEY,
     reservation_id INTEGER REFERENCES reservations(id) ON DELETE CASCADE,
@@ -90,7 +79,6 @@ CREATE TABLE IF NOT EXISTS payments (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Araçlar tablosu
 CREATE TABLE IF NOT EXISTS vehicles (
     id SERIAL PRIMARY KEY,
     car_id VARCHAR(50) UNIQUE NOT NULL,
@@ -109,7 +97,6 @@ CREATE TABLE IF NOT EXISTS vehicles (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Indexler
 CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
 CREATE INDEX IF NOT EXISTS idx_credit_cards_user_id ON credit_cards(user_id);
 CREATE INDEX IF NOT EXISTS idx_reservations_user_id ON reservations(user_id);
@@ -117,7 +104,6 @@ CREATE INDEX IF NOT EXISTS idx_reservations_booking_id ON reservations(booking_i
 CREATE INDEX IF NOT EXISTS idx_payments_reservation_id ON payments(reservation_id);
 CREATE INDEX IF NOT EXISTS idx_vehicles_car_id ON vehicles(car_id);
 
--- Trigger fonksiyonu
 CREATE OR REPLACE FUNCTION update_updated_at_column()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -126,14 +112,12 @@ BEGIN
 END;
 $$ language 'plpgsql';
 
--- Trigger'lar
 CREATE TRIGGER update_users_updated_at BEFORE UPDATE ON users FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 CREATE TRIGGER update_credit_cards_updated_at BEFORE UPDATE ON credit_cards FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 CREATE TRIGGER update_reservations_updated_at BEFORE UPDATE ON reservations FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 CREATE TRIGGER update_payments_updated_at BEFORE UPDATE ON payments FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 CREATE TRIGGER update_vehicles_updated_at BEFORE UPDATE ON vehicles FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
--- Örnek veri
 INSERT INTO users (email, first_name, last_name, phone, is_verified, login_method) VALUES
 ('orhancodes@gmail.com', 'Orhan', 'Yılmaz', '+49 123 456789', true, 'google'),
 ('max.mustermann@gmail.com', 'Max', 'Mustermann', '+49 987 654321', true, 'google')
@@ -145,6 +129,5 @@ INSERT INTO vehicles (car_id, make, model, year, category, transmission, fuel_ty
 ('3', 'Mercedes', 'E-Klasse', 2021, 'Limousine', 'Automatik', 'Benzin', 5, 89.99, '/images/cars/mb-s-long-sedan-4d-silver-2021-JV.png', ARRAY['Klimaanlage', 'Navigation', 'Bluetooth', 'Sitzheizung', 'Lenkradheizung'])
 ON CONFLICT (car_id) DO NOTHING;
 
--- Yetkileri güncelle
 GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO AutooR_user;
 GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO AutooR_user;

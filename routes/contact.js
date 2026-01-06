@@ -124,7 +124,7 @@ router.post('/', async (req, res) => {
         res.json({ message: 'Nachricht erfolgreich gesendet' });
 
     } catch (error) {
-        console.error('Email gönderilirken hata:', error);
+        console.error('Fehler beim Senden der E-Mail:', error);
         res.status(500).json({ error: 'Fehler beim Senden der Nachricht' });
     }
 });

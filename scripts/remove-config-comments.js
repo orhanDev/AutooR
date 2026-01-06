@@ -11,13 +11,11 @@ function removeConfigComments(filePath) {
         for (let i = 0; i < lines.length; i++) {
             const line = lines[i];
             const trimmed = line.trim();
-            
-            // Zeilen prüfen, die mit # beginnen
+
             if (trimmed.startsWith('#')) {
-                // Wenn dies keine Kategorieüberschrift ist (z.B. # Dependencies, # Environment variables)
-                // und eine offensichtliche Kommentarzeile ist, überspringen
+
                 if (trimmed.length > 1 && !trimmed.match(/^#\s*[A-Z][a-z]+/)) {
-                    // Kommentarzeile, überspringen
+                    
                     continue;
                 }
             }
@@ -61,4 +59,3 @@ for (const file of configFiles) {
 }
 
 console.log(`\n✅ Insgesamt ${count} Config-Dateien bereinigt.`);
-

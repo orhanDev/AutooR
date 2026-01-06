@@ -1,4 +1,3 @@
-
 (function(global){
   const IMG_INDEX = [
     'aston-martin-vantage-2d-red-2024.png','audi-a6-avant-stw-black-2025.png','audi-a7-4d-blau-2019.png','bmw-1-hatch-4d-black-2025.png','bmw-2-activ-tourer-grey-2022.png','bmw-2-gran-coupe-4d-grey-2021.png','bmw-3-sedan-4d-white-2023-JV.png','bmw-3-touring-stw-4d-grey-2023-JV.png','bmw-5-touring-stw-black-2024.png','bmw-7-4d-blue-2023.png','bmw-8-gran-coupe-grey-2022.png','bmw-m235i-grancoupe-4d-blue-2023.png','bmw-m3-amg-stw-lila-2023.png','bmw-m8-coupe-2d-black-2023-JV.png','bmw-x1-m35-suv-grey-2025.png','bmw-x3-m50-suv-black-2025.png','bmw-x3-suv-silver-2025.png','bmw-x5-suv-4d-grey-2023-JV.png','bmw-x5m-suv-4d-black-2023-JV.png','bmw-x7-m60i-suv-white-2023.png','bmw-x7-suv-4d-silver-2023-JV.png','cupra-formentor-suv-grey-2025.png','land-rover-range-rover-hse-suv-black-2025.png','land-rover-range-rover-sport-5d-suv-grey-2022.png','maserati-grecale-suv-4d-blue-2023-JV.png','mb-gls63-amg-suv-4d-grey-2025.png','mb-s-long-sedan-4d-silver-2021-JV.png','mb-sl63-amg-convertible-silver-2022.png','mb-v-class-extralong-van-black-2024.png','mb-vito-van-black-2020.png','nissan-primastar-van-white-2022.png','opel-combo-van-black-2024.png','peugeot-408-4d-white-2022.png','porsche-911-carrera-4s-convertible-2d-blue-2024.png','porsche-911-carrera-4s-coupe-2d-silver-2019-JV.png','porsche-macan-suv-white-2025.png','porsche-panamera-sedan-4d-black-2021-JV.png','vw-golf-variant-stw-4d-grey-2022.png','vw-t-roc-convertible-white-open-2023.png','vw-t-roc-suv-4d-white-2022-JV.png','vw-tiguan-suv-black-2024.png','vw-touran-van-grey-2021.png'
@@ -57,4 +56,3 @@
   }
   global.resolveVehicleImage = resolveVehicleImage;
 })(window);
-

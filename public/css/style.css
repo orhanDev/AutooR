@@ -1,4 +1,4 @@
-﻿@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
 * {
     box-sizing: border-box;
@@ -210,6 +210,7 @@ body {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: center;
     transition: transform 0.3s ease;
 }
 
@@ -1038,6 +1039,7 @@ body {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: center;
     transition: transform 0.4s ease;
 }
 
@@ -1242,6 +1244,7 @@ body {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: center;
     transition: transform 0.3s ease;
 }
 
@@ -1502,6 +1505,10 @@ body {
         height: 200px;
     }
     
+    .car-image img {
+        object-position: center !important;
+    }
+    
     .car-details {
         padding: 15px 10px;
         min-height: 120px;
@@ -1590,6 +1597,10 @@ body {
     
     .car-image {
         height: 160px;
+    }
+    
+    .car-image img {
+        object-position: center !important;
     }
     
     .car-details {
@@ -1683,6 +1694,10 @@ body {
     
     .car-image {
         height: 140px;
+    }
+    
+    .car-image img {
+        object-position: center !important;
     }
     
     .car-details {
@@ -2032,4 +2047,3 @@ body {
         letter-spacing: 0.2px;
     }
 }
-

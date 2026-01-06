@@ -1,5 +1,3 @@
-
-
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Persönliche Daten page loaded');
 

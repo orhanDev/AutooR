@@ -1,5 +1,3 @@
-﻿
-
 document.addEventListener('DOMContentLoaded', async () => {
     const token = localStorage.getItem('token');
     const locationsTableBody = document.getElementById('locations-table-body');

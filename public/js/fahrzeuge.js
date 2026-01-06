@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Fahrzeuge page loaded');
     const carsContainer = document.getElementById('cars-container');
@@ -91,12 +90,11 @@ document.addEventListener('DOMContentLoaded', () => {
         return best || '/images/cars/vw-t-roc-suv-4d-white-2022-JV.png';
     }
 
-
     const locationNames = {
         'berlin': 'Berlin Zentrum',
         'hamburg': 'Hamburg Zentrum',
-        'm�nchen': 'M�nchen Zentrum',
-        'k�ln': 'K�ln Zentrum',
+        'münchen': 'München Zentrum',
+        'köln': 'Köln Zentrum',
         'frankfurt': 'Frankfurt am Main Zentrum',
         'stuttgart': 'Stuttgart Zentrum'
     };
@@ -324,7 +322,7 @@ document.addEventListener('DOMContentLoaded', () => {
             };
             script.onerror = () => {
                 console.warn('Failed to load cars-data.js');
-                resolve(); // Continue anyway
+                resolve(); 
             };
             document.head.appendChild(script);
         });
@@ -399,15 +397,15 @@ document.addEventListener('DOMContentLoaded', () => {
             return `
             <div class="vehicle-card" data-car-id="${vehicle.car_id}" data-make="${makeAttr}" data-model="${modelAttr}" data-img="${img}" data-price="${vehicle.daily_rate || ''}" data-trans="${vehicle.transmission_type || ''}" data-fuel="${vehicle.fuel_type || ''}" data-seats="${vehicle.seating_capacity || ''}" data-bags="${vehicle.baggage_large || ''}" data-hand="${vehicle.baggage_small || ''}" data-doors="${vehicle.doors || ''}">
                 <div class="vehicle-title">${title}</div>
-                <div class="vehicle-subtitle">${(vehicle.type || '').toString().replace(/"/g,'&quot;')} ${vehicle.transmission_type ? `<span class=\"nowrap\">� ${vehicle.transmission_type}</span>` : ''}</div>
+                <div class="vehicle-subtitle">${(vehicle.type || '').toString().replace(/"/g,'&quot;')} ${vehicle.transmission_type ? `<span class=\"nowrap\">${vehicle.transmission_type}</span>` : ''}</div>
                 <img src="${img}" alt="${title}" onerror="if(!this.dataset.try){this.dataset.try='png';this.src=this.src.replace(/\.jpg$/i,'.png');}else if(this.dataset.try==='png'){this.dataset.try='jpg';this.src=this.src.replace(/\.png$/i,'.jpg');}else{this.onerror=null;this.src='/images/cars/default-car.jpg';}" />
-                ${vehicle.daily_rate ? `<div class=\"price-badge\">�${Math.floor(Number(vehicle.daily_rate)).toLocaleString('de-DE')}/Tag</div>` : ''}
+                ${vehicle.daily_rate ? `<div class=\"price-badge\">€${Math.floor(Number(vehicle.daily_rate)).toLocaleString('de-DE')}/Tag</div>` : ''}
                 ${vehicle.fuel_type ? `<div class="fuel-badge">${fuelBadge}</div>` : ''}
                 <div class="vehicle-meta">
                     ${vehicle.seating_capacity ? `<span class=\"vehicle-chip\">${vehicle.seating_capacity} Sitze</span>` : ''}
                     ${vehicle.baggage_large ? `<span class=\"vehicle-chip\">${vehicle.baggage_large} Koffer</span>` : ''}
                     ${vehicle.baggage_small ? `<span class=\"vehicle-chip\">${vehicle.baggage_small} Handgep.</span>` : ''}
-                    ${vehicle.doors ? `<span class=\"vehicle-chip\">${vehicle.doors} T�ren</span>` : ''}
+                    ${vehicle.doors ? `<span class=\"vehicle-chip\">${vehicle.doors} Türen</span>` : ''}
                 </div>
             </div>`;
         }).join('');
@@ -449,8 +447,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     }
-
-
 
     window.rentVehicle = function(carId, carName, dailyRate) {
         const selectedVehicle = allVehicles.find(v => v.car_id === carId);
@@ -565,7 +561,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-
     function applyFilters() {
         console.log('Applying filters...');
         let filtered = [...allVehicles];
@@ -675,8 +670,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     }
-
-
 
     function showNotification(message, type = 'info') {
         const notification = document.createElement('div');
@@ -798,7 +791,7 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('Initializing page...');
     if (carsContainer) {
         console.log('Clearing loading state...');
-        carsContainer.innerHTML = ''; // Clear loading state
+        carsContainer.innerHTML = ''; 
     }
     
     loadCarsData().then(() => {
@@ -808,4 +801,3 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeDateLocationSelector();
     initializeFilters();
 });
-

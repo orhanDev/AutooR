@@ -1,4 +1,3 @@
--- Rezervasyonlar tablosu
 CREATE TABLE IF NOT EXISTS reservations (
     id SERIAL PRIMARY KEY,
     user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
@@ -24,7 +23,6 @@ CREATE TABLE IF NOT EXISTS reservations (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Ödemeler tablosu
 CREATE TABLE IF NOT EXISTS payments (
     id SERIAL PRIMARY KEY,
     reservation_id INTEGER REFERENCES reservations(id) ON DELETE SET NULL,
@@ -39,7 +37,6 @@ CREATE TABLE IF NOT EXISTS payments (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Index'ler
 CREATE INDEX IF NOT EXISTS idx_reservations_user_id ON reservations(user_id);
 CREATE INDEX IF NOT EXISTS idx_reservations_booking_id ON reservations(booking_id);
 CREATE INDEX IF NOT EXISTS idx_reservations_status ON reservations(status);
@@ -47,7 +44,6 @@ CREATE INDEX IF NOT EXISTS idx_payments_user_id ON payments(user_id);
 CREATE INDEX IF NOT EXISTS idx_payments_transaction_id ON payments(transaction_id);
 CREATE INDEX IF NOT EXISTS idx_payments_status ON payments(status);
 
--- Trigger'lar - updated_at otomatik güncelleme
 CREATE OR REPLACE FUNCTION update_updated_at_column()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -56,21 +52,18 @@ BEGIN
 END;
 $$ language 'plpgsql';
 
--- Rezervasyonlar için trigger
 DROP TRIGGER IF EXISTS update_reservations_updated_at ON reservations;
 CREATE TRIGGER update_reservations_updated_at
     BEFORE UPDATE ON reservations
     FOR EACH ROW
     EXECUTE FUNCTION update_updated_at_column();
 
--- Kullanıcılar için trigger
 DROP TRIGGER IF EXISTS update_users_updated_at ON users;
 CREATE TRIGGER update_users_updated_at
     BEFORE UPDATE ON users
     FOR EACH ROW
     EXECUTE FUNCTION update_updated_at_column();
 
--- Kredi kartları için trigger
 DROP TRIGGER IF EXISTS update_credit_cards_updated_at ON credit_cards;
 CREATE TRIGGER update_credit_cards_updated_at
     BEFORE UPDATE ON credit_cards

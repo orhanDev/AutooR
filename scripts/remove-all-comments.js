@@ -6,33 +6,49 @@ function removeComments(content, filePath) {
     let result = content;
     
     if (ext === '.js' || ext === '.ts') {
+        
+        result = result.replace(/`([\s\S]*?)`/g, (match, templateContent) => {
+            let cleaned = templateContent.replace(
+            return '`' + cleaned + '`';
+        });
+
+        result = result.replace(/(['"])([\s\S]*?)\1/g, (match, quote, stringContent) => {
+            if (stringContent.includes('<!--')) {
+                let cleaned = stringContent.replace(
+                return quote + cleaned + quote;
+            }
+            return match;
+        });
 
         result = result.replace(/\/\/.*$/gm, '');
-        
+
         result = result.replace(/\/\*[\s\S]*?\*\
     } else if (ext === '.css' || ext === '.scss') {
         
         result = result.replace(/\/\*[\s\S]*?\*\
     } else if (ext === '.html') {
         
+        result = result.replace(
+
         result = result.replace(/<script[^>]*>([\s\S]*?)<\/script>/gi, (match, scriptContent) => {
-            const cleaned = scriptContent
+            let cleaned = scriptContent
                 .replace(/\/\/.*$/gm, '')
                 .replace(/\/\*[\s\S]*?\*\
             return match.replace(scriptContent, cleaned);
         });
+
         result = result.replace(/<style[^>]*>([\s\S]*?)<\/style>/gi, (match, styleContent) => {
-            const cleaned = styleContent.replace(/\/\*[\s\S]*?\*\
+            let cleaned = styleContent.replace(/\/\*[\s\S]*?\*\
             return match.replace(styleContent, cleaned);
         });
+    } else if (ext === '.svg') {
         
-        result = result.replace(/<!--[\s\S]*?-->/g, '');
-    } else if (ext === '.md' || ext === '.txt' || ext === '.toml' || ext === '.yml' || ext === '.yaml') {
-
-        result = result.replace(/^\s*#\s+[A-Z].*$/gm, ''); 
+        result = result.replace(
     }
 
-    result = result.replace(/\n\s*\n\s*\n/g, '\n\n');
+    result = result.replace(/\n\s*\n\s*\n+/g, '\n\n');
+
+    result = result.trim();
     
     return result;
 }
@@ -43,17 +59,21 @@ function processFile(filePath) {
         const cleaned = removeComments(content, filePath);
         if (content !== cleaned) {
             fs.writeFileSync(filePath, cleaned, 'utf8');
-            console.log(`✓ Temizlendi: ${filePath}`);
+            console.log(`✓ ${filePath}`);
             return true;
         }
         return false;
     } catch (error) {
-        console.error(`✗ Hata: ${filePath} - ${error.message}`);
+        console.error(`✗ ${filePath} - ${error.message}`);
         return false;
     }
 }
 
-function processDirectory(dir, excludeDirs = ['node_modules', '.git', 'dist', 'build']) {
+function processDirectory(dir, excludeDirs = ['node_modules', '.git', 'dist', 'build', 'frontend']) {
+    if (!fs.existsSync(dir)) {
+        return 0;
+    }
+    
     const files = fs.readdirSync(dir);
     let count = 0;
     
@@ -67,7 +87,7 @@ function processDirectory(dir, excludeDirs = ['node_modules', '.git', 'dist', 'b
             }
         } else {
             const ext = path.extname(file).toLowerCase();
-            if (['.js', '.ts', '.css', '.scss', '.html'].includes(ext)) {
+            if (['.js', '.ts', '.css', '.scss', '.html', '.svg'].includes(ext)) {
                 if (processFile(filePath)) {
                     count++;
                 }
@@ -79,30 +99,46 @@ function processDirectory(dir, excludeDirs = ['node_modules', '.git', 'dist', 'b
 }
 
 const projectRoot = path.join(__dirname, '..');
-const importantDirs = [
-    'routes',
-    'public/js',
-    'public/css',
-    'middleware',
-    'scripts'
-];
 
-console.log('Yorumlar temizleniyor...\n');
+console.log('Tüm yorum satırları kaldırılıyor...\n');
 
 let totalCleaned = 0;
 
-for (const dir of importantDirs) {
-    const dirPath = path.join(projectRoot, dir);
-    if (fs.existsSync(dirPath)) {
-        console.log(`\n${dir} Verzeichnis wird verarbeitet...`);
-        totalCleaned += processDirectory(dirPath);
-    }
+const routesPath = path.join(projectRoot, 'routes');
+if (fs.existsSync(routesPath)) {
+    console.log('\n=== routes/ ===');
+    totalCleaned += processDirectory(routesPath);
+}
+
+const publicPath = path.join(projectRoot, 'public');
+if (fs.existsSync(publicPath)) {
+    console.log('\n=== public/ ===');
+    totalCleaned += processDirectory(publicPath);
+}
+
+const scriptsPath = path.join(projectRoot, 'scripts');
+if (fs.existsSync(scriptsPath)) {
+    console.log('\n=== scripts/ ===');
+    totalCleaned += processDirectory(scriptsPath);
+}
+
+const middlewarePath = path.join(projectRoot, 'middleware');
+if (fs.existsSync(middlewarePath)) {
+    console.log('\n=== middleware/ ===');
+    totalCleaned += processDirectory(middlewarePath);
+}
+
+const viewsPath = path.join(projectRoot, 'views');
+if (fs.existsSync(viewsPath)) {
+    console.log('\n=== views/ ===');
+    totalCleaned += processDirectory(viewsPath);
 }
 
 const mainFiles = ['server.js'];
 for (const file of mainFiles) {
     const filePath = path.join(projectRoot, file);
     if (fs.existsSync(filePath)) {
+        console.log(`\n=== ${file} ===`);
         if (processFile(filePath)) {
             totalCleaned++;
         }
