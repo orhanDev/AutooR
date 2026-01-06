@@ -725,6 +725,11 @@ function updateNavbar() {
         setTimeout(() => {
             initAccountMenu();
         }, 50);
+    } else {
+        // Re-initialize account menu for logged-in users too
+        setTimeout(() => {
+            initAccountMenu();
+        }, 50);
     }
     
     if (window.innerWidth <= 768) {
@@ -1783,7 +1788,7 @@ function initAccountMenu() {
         });
     };
 
-    btn.addEventListener('click', (e) => {
+    const handleBtnClick = (e) => {
         e.preventDefault();
         e.stopPropagation();
         const willOpen = !menu.classList.contains('open');
@@ -1799,7 +1804,14 @@ function initAccountMenu() {
         } else {
             closeMenu();
         }
-    });
+    };
+    
+    btn.addEventListener('click', handleBtnClick);
+    btn.addEventListener('touchend', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        handleBtnClick(e);
+    }, { passive: false });
     
     window.addEventListener('resize', () => {
         if (menu.classList.contains('open')) {
