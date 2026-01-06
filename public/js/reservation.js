@@ -428,7 +428,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 <div class="col-lg-4 mb-4">
                     <div class="bg-white rounded-4 p-4 shadow-sm border summary-card">
-                        <h5 class="fw-bold mb-4">Fahrzeug�bersicht</h5>
+                        <h5 class="fw-bold mb-4">Fahrzeugübersicht</h5>
                         
                         <div class="text-center mb-3">
                             <img src="${resolveVehicleImage(vehicle)}" alt="${vehicle.make} ${vehicle.model}" 
@@ -465,14 +465,14 @@ document.addEventListener('DOMContentLoaded', () => {
                         </div>
                         
                         <div class="bg-light rounded-3 p-3 summary-box">
-                            <h6 class="fw-bold mb-3">Preis�bersicht</h6>
+                            <h6 class="fw-bold mb-3">Preisübersicht</h6>
                             <div id="price-breakdown">
                                 <div class="mb-3">
                                     <div class="d-flex justify-content-between align-items-center mb-1">
                                         <span class="text-muted small" id="base-price-label">Grundpreis</span>
                                         <div id="base-price" class="text-end">
                                             <span class="text-muted small text-decoration-line-through me-2" id="original-price" style="display: none;"></span>
-                                            <span class="fw-bold" id="current-price">�${Math.floor(Number(vehicle.daily_rate)).toLocaleString('de-DE')}</span>
+                                            <span class="fw-bold" id="current-price">€${Math.floor(Number(vehicle.daily_rate)).toLocaleString('de-DE')}</span>
                                         </div>
                                     </div>
                                     <div id="discount-row" style="display: none;" class="mt-1">
@@ -487,16 +487,16 @@ document.addEventListener('DOMContentLoaded', () => {
                                 </div>
                                 <div class="d-flex justify-content-between mb-2">
                                     <span class="text-muted small">Versicherung</span>
-                                    <span id="insurance-price" class="text-muted">�0</span>
+                                    <span id="insurance-price" class="text-muted">€0</span>
                                 </div>
                                 <div class="d-flex justify-content-between mb-2">
                                     <span class="text-muted small">Zusatzleistungen</span>
-                                    <span id="additional-services-price" class="text-muted">�0</span>
+                                    <span id="additional-services-price" class="text-muted">€0</span>
                                 </div>
                                 <hr class="my-3">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <span class="fw-bold">Gesamtpreis</span>
-                                    <span id="total-price" class="fw-bold fs-5 text-warning">�${Math.floor(Number(vehicle.daily_rate)).toLocaleString('de-DE')}</span>
+                                    <span id="total-price" class="fw-bold fs-5 text-warning">€${Math.floor(Number(vehicle.daily_rate)).toLocaleString('de-DE')}</span>
                                 </div>
                             </div>
                         </div>
@@ -996,16 +996,16 @@ document.addEventListener('DOMContentLoaded', () => {
         if (currentPriceEl) {
             if (discount > 0) {
                 if (originalPriceEl) {
-                    originalPriceEl.textContent = `�${formatPrice(basePrice)}`;
+                    originalPriceEl.textContent = `€${formatPrice(basePrice)}`;
                     originalPriceEl.style.display = 'inline';
                 }
-                currentPriceEl.textContent = `�${formatPrice(discountedBasePrice)}`;
+                currentPriceEl.textContent = `€${formatPrice(discountedBasePrice)}`;
                 currentPriceEl.className = 'fw-bold text-success';
             } else {
                 if (originalPriceEl) {
                     originalPriceEl.style.display = 'none';
                 }
-                currentPriceEl.textContent = `�${formatPrice(basePrice)}`;
+                currentPriceEl.textContent = `€${formatPrice(basePrice)}`;
                 currentPriceEl.className = 'fw-bold';
             }
         }
@@ -1013,16 +1013,16 @@ document.addEventListener('DOMContentLoaded', () => {
         if (discountRow && discountEl && discountLabelText) {
             if (discount > 0) {
                 discountLabelText.textContent = discountLabel.replace(/\s+\d+%$/, ''); 
-                discountEl.textContent = `-�${formatPrice(discount)}`;
+                discountEl.textContent = `-€${formatPrice(discount)}`;
                 discountRow.style.display = 'block';
             } else {
                 discountRow.style.display = 'none';
             }
         }
         
-        document.getElementById('insurance-price').textContent = `�${formatPrice(insurance)}`;
-        document.getElementById('additional-services-price').textContent = `�${formatPrice(additionalServices)}`;
-        document.getElementById('total-price').textContent = `�${formatPrice(totalPrice)}`;
+        document.getElementById('insurance-price').textContent = `€${formatPrice(insurance)}`;
+        document.getElementById('additional-services-price').textContent = `€${formatPrice(additionalServices)}`;
+        document.getElementById('total-price').textContent = `€${formatPrice(totalPrice)}`;
     }
     
     function getDiscountPercent(offerId, offerType, offerCategory, vehicle, pickupDate, dropoffDate, diffHours) {
