@@ -278,7 +278,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 const errorMessage = result.error || result.message || 'Anmeldung fehlgeschlagen. Bitte versuchen Sie es erneut.';
                 showAlert(errorMessage, 'danger');
                 
-                // Re-enable submit button
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = originalText;
             }
