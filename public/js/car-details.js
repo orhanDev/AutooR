@@ -1,14 +1,13 @@
-﻿document.addEventListener('DOMContentLoaded', async () => {
+document.addEventListener('DOMContentLoaded', async () => {
     const urlParams = new URLSearchParams(window.location.search);
     const carId = urlParams.get('id');
 
     if (!carId) {
         console.error('Fahrzeug-ID nicht gefunden.');
-        document.querySelector('main .container').innerHTML = '<p class="text-danger text-center">Auto nicht gefunden. Bitte kehren Sie zur Startseite zurÃ¼ck.</p>';
+        document.querySelector('main .container').innerHTML = '<p class="text-danger text-center">Auto nicht gefunden. Bitte kehren Sie zur Startseite zurück.</p>';
         return;
     }
 
-    // Elemente holen
     const carTitle = document.getElementById('car-title');
     const carImage = document.getElementById('car-image');
     const carMake = document.getElementById('car-make');
@@ -35,13 +34,11 @@
 
     let currentCarDailyRate = 0;
 
-    // URL parametrelerinden tarih/saat bilgileri (Ã¶zet bar iÃ§in)
     const pickup_date = urlParams.get('pickup_date');
     const dropoff_date = urlParams.get('dropoff_date');
     const pickup_time = urlParams.get('pickup_time');
     const dropoff_time = urlParams.get('dropoff_time');
 
-    // Fahrzeugdetails holen und Seite befÃ¼llen
     try {
         const response = await fetch(`/api/cars/${carId}`);
         if (!response.ok) {
@@ -50,16 +47,14 @@
         const car = await response.json();
 
         carTitle.textContent = `${car.make} ${car.model} Details`;
-        // Kurumsal Ã¼st Ã¶zet bar
         const sDates = [];
         if (pickup_date) sDates.push(pickup_date + (pickup_time ? ' ' + pickup_time : ''));
         if (dropoff_date) sDates.push(dropoff_date + (dropoff_time ? ' ' + dropoff_time : ''));
-        const summaryDates = sDates.length ? sDates.join(' â†’ ') : 'â€”';
+        const summaryDates = sDates.length ? sDates.join(' → ') : '—';
         const titleEl = document.getElementById('summary-title');
         const datesEl = document.getElementById('summary-dates');
         if (titleEl) titleEl.textContent = `${car.make} ${car.model}`;
         if (datesEl) datesEl.textContent = summaryDates;
-        // Araba resmini ayarla
         const carImageSrc = car.image_url || '/images/cars/car1.jpg';
         carImage.src = carImageSrc;
         carImage.style.display = 'block';
@@ -80,9 +75,8 @@
         carSeatingCapacity.textContent = car.seating_capacity;
         carColor.textContent = car.color || 'Nicht angegeben';
         carLocationName.textContent = car.location_name;
-        carDescription.textContent = car.description || 'Keine Beschreibung verfÃ¼gbar.';
+        carDescription.textContent = car.description || 'Keine Beschreibung verfügbar.';
 
-        // Features anzeigen
         if (car.features && car.features.length > 0) {
             car.features.forEach(feature => {
                 const span = document.createElement('span');
@@ -91,15 +85,14 @@
                 carFeaturesBadges.appendChild(span);
             });
         } else {
-            carFeaturesBadges.innerHTML = '<p>FÃ¼r dieses Auto sind keine Features verfÃ¼gbar.</p>';
+            carFeaturesBadges.innerHTML = '<p>Für dieses Auto sind keine Features verfügbar.</p>';
         }
 
     } catch (error) {
         console.error('Fehler beim Laden der Fahrzeugdetails:', error);
-        document.querySelector('main .container').innerHTML = '<p class="text-danger text-center">Fahrzeugdetails konnten nicht geladen werden. Bitte versuchen Sie es spÃ¤ter erneut.</p>';
+        document.querySelector('main .container').innerHTML = '<p class="text-danger text-center">Fahrzeugdetails konnten nicht geladen werden. Bitte versuchen Sie es später erneut.</p>';
     }
 
-    // Standorte laden (fÃ¼r Abholung und RÃ¼ckgabe)
     async function fetchAndPopulateLocations() {
         try {
             const response = await fetch('/api/locations');
@@ -114,7 +107,6 @@
                 dropoffLocationSelect.innerHTML += option;
             });
 
-            // StandardmÃ¤ÃŸig den aktuellen Standort des Autos auswÃ¤hlen
             if (carLocationName.dataset.locationId) {
                 pickupLocationSelect.value = carLocationName.dataset.locationId;
                 dropoffLocationSelect.value = carLocationName.dataset.locationId;
@@ -126,7 +118,6 @@
     }
     fetchAndPopulateLocations();
 
-    // Logik fÃ¼r Datum- und Zeitfelder
     const today = new Date();
     const tomorrow = new Date(today);
     tomorrow.setDate(today.getDate() + 1);
@@ -151,7 +142,7 @@
             const diffTime = Math.abs(dropOff - pickUp);
             const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-            if (diffDays >= 0) { // Mindestens 0 Tage, also auch gleiche Tag Abholung mÃ¶glich
+            if (diffDays >= 0) { // Mindestens 0 Tage, also auch gleiche Tag Abholung möglich
                 totalPriceElement.textContent = Math.floor(currentCarDailyRate * (diffDays + 1)); // +1 Tag, da auch am gleichen Tag abgeholt wird
             } else {
                 totalPriceElement.textContent = '0.00';
@@ -164,7 +155,6 @@
     pickupDateInput.addEventListener('change', () => {
         const pickupDate = new Date(pickupDateInput.value);
         const minDropoffDate = new Date(pickupDate);
-        // minDropoffDate.setDate(pickupDate.getDate() + 1); // Jetzt gleiche Tag Abholung erlaubt, daher +1 nicht gesetzt
         dropoffDateInput.min = formatDate(minDropoffDate);
 
         if (new Date(dropoffDateInput.value) < minDropoffDate) {
@@ -175,10 +165,8 @@
 
     dropoffDateInput.addEventListener('change', calculateTotalPrice);
 
-    // Gesamtpreis beim Laden der Seite berechnen
     calculateTotalPrice();
 
-    // Reservierungsformular absenden
     reservationForm.addEventListener('submit', async (event) => {
         event.preventDefault();
 
@@ -191,7 +179,7 @@
         const totalPrice = parseFloat(totalPriceElement.textContent);
 
         if (!pickupLocation || !dropoffLocation || !pickupDate || !dropoffDate || !pickupTime || !dropoffTime || totalPrice === 0) {
-            alert('Bitte fÃ¼llen Sie alle Reservierungsdetails vollstÃ¤ndig aus und wÃ¤hlen Sie einen gÃ¼ltigen Datumsbereich.');
+            alert('Bitte füllen Sie alle Reservierungsdetails vollständig aus und wählen Sie einen gültigen Datumsbereich.');
             return;
         }
 
@@ -210,7 +198,6 @@
                     'x-auth-token': token // JWT im Header mitschicken
                 },
                 body: JSON.stringify({
-                    // user_id wird jetzt vom Backend Ã¼ber das Token ermittelt
                     car_id: carId,
                     pickup_location_id: pickupLocation,
                     dropoff_location_id: dropoffLocation,

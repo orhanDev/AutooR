@@ -1,9 +1,7 @@
-ï»¿// Reservation Page JavaScript
 
 document.addEventListener('DOMContentLoaded', () => {
     const container = document.getElementById('reservation-container');
     
-    // Enable/disable submit button based on required selections
     function updateSubmitEnabled() {
         const submitBtn = document.getElementById('submitBtn');
         if (!submitBtn) return;
@@ -31,7 +29,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (mainCard) mainCard.classList.toggle('ready', ok);
     }
 
-    // Hoisted helpers used inside template strings below
     function renderInsuranceCard(key, badge, title, price, bullets) {
         return `
         <div class="col-md-4">
@@ -39,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center mb-2">
                         <span class="badge bg-warning text-dark">${badge}</span>
-                        <strong>â‚¬${price}/Tag</strong>
+                        <strong>€${price}/Tag</strong>
                     </div>
                     <h6 class="fw-bold mb-2">${title}</h6>
                     <ul class="small text-muted ps-3 mb-0">
@@ -56,20 +53,18 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="extra-card card h-100 border-2" data-key="${key}" data-price="${price}" data-unit="${unit}" style="cursor:pointer;">
                 <div class="card-body d-flex flex-column">
                     <h6 class="fw-bold mb-1">${title}</h6>
-                    <small class="text-muted">â‚¬${price}/${unit}</small>
+                    <small class="text-muted">€${price}/${unit}</small>
                 </div>
             </div>
         </div>`;
     }
     
-    // Get selected vehicle or booking ID from URL
     const urlParams = new URLSearchParams(window.location.search);
     const bookingId = urlParams.get('id');
     const offerId = urlParams.get('offer');
     const offerType = urlParams.get('type');
     const offerCategory = urlParams.get('category');
     
-    // Store offer information for discount calculation
     if (offerId) {
         localStorage.setItem('activeOffer', JSON.stringify({
             id: offerId,
@@ -81,11 +76,9 @@ document.addEventListener('DOMContentLoaded', () => {
     let selectedCarId = localStorage.getItem('selectedCarId');
     let selectedVehicle = localStorage.getItem('selectedVehicle');
     
-    // If we have a booking ID, load the vehicle and booking data
     if (bookingId) {
         const booking = getBookingById(bookingId);
         if (booking) {
-            // Create a vehicle object from booking data
             selectedVehicle = JSON.stringify({
                 car_id: booking.id,
                 make: booking.car.split(' ')[0],
@@ -100,7 +93,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             localStorage.setItem('selectedVehicle', selectedVehicle);
             
-            // Save booking data for form pre-filling
             localStorage.setItem('bookingData', JSON.stringify({
                 pickupDate: booking.pickupDate,
                 returnDate: booking.returnDate,
@@ -112,30 +104,24 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     
-    // If offer is active but no vehicle selected, redirect to vehicle selection
     if (offerId && (!selectedCarId && !selectedVehicle)) {
-        // Store offer info for later use
         localStorage.setItem('pendingOffer', JSON.stringify({
             id: offerId,
             type: offerType,
             category: offerCategory
         }));
-        // Redirect to vehicle selection page
         window.location.href = '/fahrzeuge';
         return;
     }
     
     if (!selectedCarId && !selectedVehicle) {
-        showError('Kein Fahrzeug ausgewÃ¤hlt');
+        showError('Kein Fahrzeug ausgewählt');
         return;
     }
     
-    // Load reservation form
     loadReservationForm();
     
-    // Function to get booking by ID
     function getBookingById(bookingId) {
-        // Sample bookings data (same as in buchungen.js)
         const sampleBookings = [
             {
                 id: 'AUT-2024-001',
@@ -172,7 +158,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         ];
         
-        // Check if user has any bookings in localStorage
         const userBookings = JSON.parse(localStorage.getItem('userBookings') || '[]');
         const allBookings = userBookings.length > 0 ? userBookings : sampleBookings;
         
@@ -186,7 +171,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (selectedVehicle) {
                 vehicle = JSON.parse(selectedVehicle);
                 try {
-                    // Normalize image path and persist back
                     const normalizedImg = resolveVehicleImage(vehicle);
                     if (normalizedImg) {
                         vehicle.image_url = normalizedImg;
@@ -194,7 +178,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 } catch (e) { /* ignore */ }
             } else {
-                // Find vehicle in LOCAL_CARS
                 vehicle = LOCAL_CARS.find(car => car.car_id.toString() === selectedCarId);
                 try {
                     vehicle.image_url = resolveVehicleImage(vehicle);
@@ -207,7 +190,6 @@ document.addEventListener('DOMContentLoaded', () => {
             
             displayReservationForm(vehicle);
             
-            // Pre-fill form with booking data ONLY if we have a booking ID (wait for Flatpickr to initialize)
             if (bookingId) {
                 setTimeout(() => {
                     prefillFormWithBookingData();
@@ -220,11 +202,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     
-    // Function to convert date format for Flatpickr
     function convertDateFormat(dateString) {
         if (!dateString) return '';
         
-        // If already in YYYY-MM-DD format, convert to DD.MM.YYYY
         if (dateString.includes('-') && dateString.length === 10) {
             const parts = dateString.split('-');
             if (parts.length === 3) {
@@ -235,7 +215,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
         
-        // If already in DD.MM.YYYY format, return as is
         if (dateString.includes('.')) {
             return dateString;
         }
@@ -243,7 +222,6 @@ document.addEventListener('DOMContentLoaded', () => {
         return dateString;
     }
     
-    // Function to pre-fill form with booking data
     function prefillFormWithBookingData() {
         const bookingData = localStorage.getItem('bookingData');
         if (!bookingData) {
@@ -255,10 +233,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const booking = JSON.parse(bookingData);
             console.log('Booking data loaded:', booking);
             
-            // Pre-fill pickup location
             const pickupLocation = document.getElementById('qr-pickup-location');
             if (pickupLocation) {
-                // Find and select the matching option
                 for (let option of pickupLocation.options) {
                     if (option.text.includes(booking.pickupLocation) || booking.pickupLocation.includes(option.text)) {
                         pickupLocation.value = option.value;
@@ -267,7 +243,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
             
-            // Pre-fill return location
             const returnLocation = document.getElementById('qr-dropoff-location');
             if (returnLocation) {
                 for (let option of returnLocation.options) {
@@ -278,37 +253,31 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
             
-            // Pre-fill pickup date (use DD.MM.YYYY format)
             const pickupDateInput = document.getElementById('qr-pickup-date');
             if (pickupDateInput) {
                 const formattedPickupDate = convertDateFormat(booking.pickupDate);
                 console.log('Setting pickup date:', booking.pickupDate, '->', formattedPickupDate);
                 pickupDateInput.value = formattedPickupDate;
-                // Trigger change event to update Flatpickr
                 pickupDateInput.dispatchEvent(new Event('change', { bubbles: true }));
             } else {
                 console.log('Pickup date input not found');
             }
 
-            // Pre-fill return date (use DD.MM.YYYY format)
             const returnDateInput = document.getElementById('qr-dropoff-date');
             if (returnDateInput) {
                 const formattedReturnDate = convertDateFormat(booking.returnDate);
                 console.log('Setting return date:', booking.returnDate, '->', formattedReturnDate);
                 returnDateInput.value = formattedReturnDate;
-                // Trigger change event to update Flatpickr
                 returnDateInput.dispatchEvent(new Event('change', { bubbles: true }));
             } else {
                 console.log('Return date input not found');
             }
             
-            // Pre-fill pickup time (default to 08:00)
             const pickupTime = document.getElementById('qr-pickup-time');
             if (pickupTime) {
                 pickupTime.value = '08:00';
             }
             
-            // Pre-fill return time (default to 18:00)
             const returnTime = document.getElementById('qr-dropoff-time');
             if (returnTime) {
                 returnTime.value = '18:00';
@@ -351,17 +320,17 @@ document.addEventListener('DOMContentLoaded', () => {
                         <div class="rounded-4 p-3 mb-4 summary-box" style="background:#f7f7f7;">
                             <div class="row g-3 align-items-end">
                                 <div class="col-12">
-                                    <label class="form-label small text-muted mb-1">Abholung & RÃ¼ckgabe</label>
+                                    <label class="form-label small text-muted mb-1">Abholung & Rückgabe</label>
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="input-group qr-loc">
                                         <span class="input-group-text bg-white"><i class="bi bi-geo-alt"></i></span>
                                         <select id="qr-pickup-location" class="form-select border-2 qr-select">
-                                            <option value="">Bitte wÃ¤hlen</option>
+                                            <option value="">Bitte wählen</option>
                                         <option value="berlin">Berlin Zentrum</option>
                                         <option value="hamburg">Hamburg Zentrum</option>
-                                        <option value="mÃ¼nchen">MÃ¼nchen Zentrum</option>
-                                        <option value="kÃ¶ln">KÃ¶ln Zentrum</option>
+                                        <option value="münchen">München Zentrum</option>
+                                        <option value="köln">Köln Zentrum</option>
                                         <option value="frankfurt">Frankfurt am Main Zentrum</option>
                                         <option value="stuttgart">Stuttgart Zentrum</option>
                                     </select>
@@ -371,11 +340,11 @@ document.addEventListener('DOMContentLoaded', () => {
                                     <div class="input-group qr-loc">
                                         <span class="input-group-text bg-white"><i class="bi bi-geo-alt"></i></span>
                                         <select id="qr-dropoff-location" class="form-select border-2 qr-select">
-                                            <option value="">Bitte wÃ¤hlen</option>
+                                            <option value="">Bitte wählen</option>
                                         <option value="berlin">Berlin Zentrum</option>
                                         <option value="hamburg">Hamburg Zentrum</option>
-                                        <option value="mÃ¼nchen">MÃ¼nchen Zentrum</option>
-                                        <option value="kÃ¶ln">KÃ¶ln Zentrum</option>
+                                        <option value="münchen">München Zentrum</option>
+                                        <option value="köln">Köln Zentrum</option>
                                         <option value="frankfurt">Frankfurt am Main Zentrum</option>
                                         <option value="stuttgart">Stuttgart Zentrum</option>
                                     </select>
@@ -395,7 +364,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 </div>
                                 </div>
                                 <div class="col-md-6 col-xl-3">
-                                    <label class="form-label small text-muted mb-1">RÃ¼ckgabedatum</label>
+                                    <label class="form-label small text-muted mb-1">Rückgabedatum</label>
                                     <div class="input-group flex-nowrap">
                                         <span class="input-group-text bg-white"><i class="bi bi-calendar"></i></span>
                                         <input type="text" id="qr-dropoff-date" class="form-control border-2 qr-select" placeholder="TT.MM.JJJJ">
@@ -425,7 +394,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                     <h5 class="fw-bold text-warning mb-3">Versicherungspakete</h5>
                                     <div class="row g-3" id="insurance-packages">
                                         ${renderInsuranceCard('premium', 'Empfohlen', 'Premium Schutz', 35, ['Vollkasko ohne Selbstbeteiligung','Unfallschutz inklusive','Diebstahlschutz','24/7 Pannenhilfe','Reiseabbruchschutz'])}
-                                        ${renderInsuranceCard('standard', 'Beliebt', 'Standard Schutz', 25, ['Teilkasko (Ã¢â€šÂ¬500 SB)','Unfallschutz','Diebstahlschutz','Pannenhilfe'])}
+                                        ${renderInsuranceCard('standard', 'Beliebt', 'Standard Schutz', 25, ['Teilkasko (â‚¬500 SB)','Unfallschutz','Diebstahlschutz','Pannenhilfe'])}
                                         ${renderInsuranceCard('basic', 'G\u00fcnstig', 'Basis Schutz', 15, ['Haftpflicht inklusive','Teilkasko (\u20ac1000 SB)','Grundschutz'])}
                                             </div>
                                         </div>
@@ -469,7 +438,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <!-- Vehicle Summary -->
                 <div class="col-lg-4 mb-4">
                     <div class="bg-white rounded-4 p-4 shadow-sm border summary-card">
-                        <h5 class="fw-bold mb-4">FahrzeugÃ¼bersicht</h5>
+                        <h5 class="fw-bold mb-4">Fahrzeugübersicht</h5>
                         
                         <div class="text-center mb-3">
                             <img src="${resolveVehicleImage(vehicle)}" alt="${vehicle.make} ${vehicle.model}" 
@@ -490,7 +459,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         </div>
 
                         <div class="rounded-3 p-3 mb-3 summary-box" style="background:#f7f7f7;">
-                            <h6 class="fw-bold mb-2">Abholung & RÃ¼ckgabe</h6>
+                            <h6 class="fw-bold mb-2">Abholung & Rückgabe</h6>
                             <div class="small">
                                 <div class="mb-2">
                                     <span class="text-muted">Abholung:</span>
@@ -498,7 +467,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                     <div><i class="bi bi-calendar me-1"></i><span id="summary-pickup-date">-</span> <span class="ms-2"><i class="bi bi-clock me-1"></i><span id="summary-pickup-time">-</span></span></div>
                                 </div>
                                 <div>
-                                    <span class="text-muted">RÃ¼ckgabe:</span>
+                                    <span class="text-muted">Rückgabe:</span>
                                     <div><i class="bi bi-geo-alt me-1"></i><span id="summary-dropoff-loc">-</span></div>
                                     <div><i class="bi bi-calendar me-1"></i><span id="summary-dropoff-date">-</span> <span class="ms-2"><i class="bi bi-clock me-1"></i><span id="summary-dropoff-time">-</span></span></div>
                             </div>
@@ -506,14 +475,14 @@ document.addEventListener('DOMContentLoaded', () => {
                         </div>
                         
                         <div class="bg-light rounded-3 p-3 summary-box">
-                            <h6 class="fw-bold mb-3">PreisÃ¼bersicht</h6>
+                            <h6 class="fw-bold mb-3">Preisübersicht</h6>
                             <div id="price-breakdown">
                                 <div class="mb-3">
                                     <div class="d-flex justify-content-between align-items-center mb-1">
                                         <span class="text-muted small" id="base-price-label">Grundpreis</span>
                                         <div id="base-price" class="text-end">
                                             <span class="text-muted small text-decoration-line-through me-2" id="original-price" style="display: none;"></span>
-                                            <span class="fw-bold" id="current-price">â‚¬${Math.floor(Number(vehicle.daily_rate)).toLocaleString('de-DE')}</span>
+                                            <span class="fw-bold" id="current-price">€${Math.floor(Number(vehicle.daily_rate)).toLocaleString('de-DE')}</span>
                                         </div>
                                     </div>
                                     <div id="discount-row" style="display: none;" class="mt-1">
@@ -528,16 +497,16 @@ document.addEventListener('DOMContentLoaded', () => {
                                 </div>
                                 <div class="d-flex justify-content-between mb-2">
                                     <span class="text-muted small">Versicherung</span>
-                                    <span id="insurance-price" class="text-muted">â‚¬0</span>
+                                    <span id="insurance-price" class="text-muted">€0</span>
                                 </div>
                                 <div class="d-flex justify-content-between mb-2">
                                     <span class="text-muted small">Zusatzleistungen</span>
-                                    <span id="additional-services-price" class="text-muted">â‚¬0</span>
+                                    <span id="additional-services-price" class="text-muted">€0</span>
                                 </div>
                                 <hr class="my-3">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <span class="fw-bold">Gesamtpreis</span>
-                                    <span id="total-price" class="fw-bold fs-5 text-warning">â‚¬${Math.floor(Number(vehicle.daily_rate)).toLocaleString('de-DE')}</span>
+                                    <span id="total-price" class="fw-bold fs-5 text-warning">€${Math.floor(Number(vehicle.daily_rate)).toLocaleString('de-DE')}</span>
                                 </div>
                             </div>
                         </div>
@@ -546,27 +515,21 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
         `;
         
-        // Set minimum dates - today is the earliest possible date
         const today = new Date();
         today.setHours(0, 0, 0, 0); // Start of today
         const todayISO = today.toISOString().split('T')[0];
         
-        // Set minimum dates for hidden inputs
         const pickupDateInput = document.getElementById('pickupDate');
         const dropoffDateInput = document.getElementById('dropoffDate');
         if (pickupDateInput) pickupDateInput.min = todayISO;
         if (dropoffDateInput) dropoffDateInput.min = todayISO;
         
-        // Add event listeners
         setupEventListeners(vehicle);
         initQuickFormSync(vehicle);
-        // Initial price & validation
         updatePrice(vehicle);
-        // Do not preselect insurance by default; require user selection
         validateInsuranceRequired();
     }
 
-    // UI render helpers for cards
     window.renderInsuranceCard = function(key, badge, title, price, bullets) {
         return `
         <div class="col-md-4">
@@ -574,7 +537,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center mb-2">
                         <span class="badge bg-warning text-dark">${badge}</span>
-                        <strong>â‚¬${price}/Tag</strong>
+                        <strong>€${price}/Tag</strong>
                     </div>
                     <h6 class="fw-bold mb-2">${title}</h6>
                     <ul class="small text-muted ps-3 mb-0">
@@ -588,7 +551,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function initQuickFormSync(vehicle) {
         const pickupLoc = document.getElementById('qr-pickup-location');
         const dropoffLoc = document.getElementById('qr-dropoff-location');
-        // dropoff always visible now
         const pDate = document.getElementById('qr-pickup-date');
         const dDate = document.getElementById('qr-dropoff-date');
         const pTime = document.getElementById('qr-pickup-time');
@@ -606,7 +568,6 @@ document.addEventListener('DOMContentLoaded', () => {
         today.setHours(0, 0, 0, 0);
         let fpPick = null, fpDrop = null;
         
-        // initialize flatpickr in German (ensure labels are de, not tr)
         if (window.flatpickr) {
             flatpickr.localize(flatpickr.l10ns.de);
             if (flatpickr.setDefaults) {
@@ -636,7 +597,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         function formatISO(dotted) {
-            // expects DD.MM.YYYY -> YYYY-MM-DD
             const m = (dotted||'').match(/(\d{2})\.(\d{2})\.(\d{4})/);
             if (!m) return '';
             return `${m[3]}-${m[2]}-${m[1]}`;
@@ -651,11 +611,9 @@ document.addEventListener('DOMContentLoaded', () => {
         function updateDropoffDateMin() {
             const pu = parseDotted(pDate?.value);
             if (!pu) return;
-            // min dropoff date is the same pickup date (or today if later)
             const today = new Date(); today.setHours(0,0,0,0);
             const minDate = pu > today ? pu : today;
             if (fpDrop) fpDrop.set('minDate', minDate);
-            // If current dropoff date is before min, set to min
             const dd = parseDotted(dDate?.value);
             if (dd && dd < minDate) {
                 const day = String(minDate.getDate()).padStart(2,'0');
@@ -679,7 +637,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         function updateTimeConstraints() {
-            // Disable past times for today and future times based on pickup time
             if (!pDate || !dDate || !pTime || !dTime) return;
             
             const now = new Date();
@@ -690,7 +647,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const pickupDate = parseDotted(pDate.value);
             const isToday = pickupDate && pickupDate.toDateString() === now.toDateString();
             
-            // Update pickup time options - disable past times if today is selected
             Array.from(pTime.options).forEach(opt => {
                 if (!opt.value) { opt.disabled = false; return; }
                 const timeInMinutes = toMinutes(opt.value);
@@ -699,7 +655,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 opt.classList.toggle('text-muted', isPastTime);
             });
             
-            // If current pickup time is in the past, clear it
             if (pTime.value && isToday) {
                 const pickupTimeInMinutes = toMinutes(pTime.value);
                 if (pickupTimeInMinutes !== null && pickupTimeInMinutes <= currentTimeInMinutes) {
@@ -707,7 +662,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
             
-            // Disable RÃ¼ckgabezeiten earlier than Abholzeit + 60 minutes when same day
             const sameDay = (pDate.value && dDate.value && pDate.value === dDate.value);
             const minMinutes = sameDay ? (toMinutes(pTime.value||'') ?? null) : null;
             const required = (minMinutes !== null) ? minMinutes + 60 : null;
@@ -721,7 +675,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 opt.classList.toggle('text-muted', dis);
             });
             
-            // If current selection violates constraint, clear it
             if (dTime.value) {
                 const cur = toMinutes(dTime.value);
                 if (required !== null && (cur === null || cur < required)) {
@@ -734,11 +687,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (el) el.addEventListener('change', () => { sync(); updateSubmitEnabled(); });
         });
 
-        // no toggle needed
 
-        // initial sync
         sync();
-        // initial mark
         markSelections();
         
         function markSelections() {
@@ -766,7 +716,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="extra-card card h-100 border-2" data-key="${key}" data-price="${price}" data-unit="${unit}" style="cursor:pointer;">
                 <div class="card-body d-flex flex-column">
                     <h6 class="fw-bold mb-1">${title}</h6>
-                    <small class="text-muted">â‚¬${price}/${unit}</small>
+                    <small class="text-muted">€${price}/${unit}</small>
                 </div>
             </div>
         </div>`;
@@ -777,12 +727,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const phoneInput = document.getElementById('phone');
         const submitBtn = document.getElementById('submitBtn');
         
-        // Phone formatting
         if (phoneInput) {
             phoneInput.addEventListener('input', formatPhoneNumber);
         }
         
-        // Date validation
         const pickupDate = document.getElementById('pickupDate');
         const dropoffDate = document.getElementById('dropoffDate');
         
@@ -798,13 +746,11 @@ document.addEventListener('DOMContentLoaded', () => {
             updatePrice(vehicle);
         });
         
-        // Update price when time changes
         const pickupTimeSelect = document.getElementById('qr-pickup-time');
         const dropoffTimeSelect = document.getElementById('qr-dropoff-time');
         
         if (pickupTimeSelect) {
             pickupTimeSelect.addEventListener('change', () => {
-                // Sync to hidden input
                 const hiddenPickupTime = document.getElementById('pickupTime');
                 if (hiddenPickupTime) {
                     hiddenPickupTime.value = pickupTimeSelect.value;
@@ -815,7 +761,6 @@ document.addEventListener('DOMContentLoaded', () => {
         
         if (dropoffTimeSelect) {
             dropoffTimeSelect.addEventListener('change', () => {
-                // Sync to hidden input
                 const hiddenDropoffTime = document.getElementById('dropoffTime');
                 if (hiddenDropoffTime) {
                     hiddenDropoffTime.value = dropoffTimeSelect.value;
@@ -824,7 +769,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
         
-        // Additional services price update
         const checkboxes = document.querySelectorAll('input[type="checkbox"]');
         checkboxes.forEach(checkbox => {
             checkbox.addEventListener('change', () => {
@@ -832,7 +776,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 validateInsuranceRequired();
             });
         });
-        // insurance cards & extras
         const insContainer = document.getElementById('insurance-packages');
         if (insContainer) {
             insContainer.addEventListener('click', (e) => {
@@ -855,7 +798,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
         
-        // Enable button only when terms are checked
         const termsCheckbox = document.getElementById('terms');
         if (termsCheckbox && submitBtn) {
             submitBtn.disabled = !termsCheckbox.checked;
@@ -863,7 +805,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 updateSubmitEnabled();
             });
         }
-        // Form submission
         form.addEventListener('submit', (e) => {
             e.preventDefault();
             handleReservationSubmit(vehicle);
@@ -873,7 +814,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function formatPhoneNumber(e) {
         let value = e.target.value.replace(/\D/g, '');
         
-        // For Germany, format as: ... ......... (3 digits area code + 9 digits number)
         if (value.length > 0) {
             if (value.length <= 3) {
                 value = value;
@@ -887,7 +827,6 @@ document.addEventListener('DOMContentLoaded', () => {
         e.target.value = value;
     }
     
-    // Format price with thousands separator (German format: 14.563)
     function formatPrice(amount) {
         return Math.floor(amount).toLocaleString('de-DE');
     }
@@ -896,19 +835,15 @@ document.addEventListener('DOMContentLoaded', () => {
         const pickupDate = document.getElementById('pickupDate').value;
         const dropoffDate = document.getElementById('dropoffDate').value;
         
-        // Get time from visible selectors first, then fallback to hidden inputs
         const qrPickupTime = document.getElementById('qr-pickup-time');
         const qrDropoffTime = document.getElementById('qr-dropoff-time');
         const hiddenPickupTime = document.getElementById('pickupTime');
         const hiddenDropoffTime = document.getElementById('dropoffTime');
         
-        // Get actual selected times (don't use default values)
         const pickupTime = (qrPickupTime?.value || hiddenPickupTime?.value || '').trim();
         const dropoffTime = (qrDropoffTime?.value || hiddenDropoffTime?.value || '').trim();
         
-        // If dates or times are not selected, hide price display
         if (!pickupDate || !dropoffDate || !pickupTime || !dropoffTime) {
-            // Hide price display elements
             const baseLabel = document.getElementById('base-price-label');
             const originalPriceEl = document.getElementById('original-price');
             const currentPriceEl = document.getElementById('current-price');
@@ -934,19 +869,15 @@ document.addEventListener('DOMContentLoaded', () => {
             dropoffTime
         });
         
-        // Combine date and time for accurate calculation (avoid timezone issues)
-        // Ensure time format is HH:MM
         const pickupTimeFormatted = pickupTime.includes(':') ? pickupTime : `${pickupTime.substring(0, 2)}:${pickupTime.substring(2)}`;
         const dropoffTimeFormatted = dropoffTime.includes(':') ? dropoffTime : `${dropoffTime.substring(0, 2)}:${dropoffTime.substring(2)}`;
         
-        // Parse date and time components manually to avoid timezone issues
         const [pickupYear, pickupMonth, pickupDayNum] = pickupDate.split('-').map(Number);
         const [pickupHour, pickupMin] = pickupTimeFormatted.split(':').map(Number);
         
         const [dropoffYear, dropoffMonth, dropoffDayNum] = dropoffDate.split('-').map(Number);
         const [dropoffHour, dropoffMin] = dropoffTimeFormatted.split(':').map(Number);
         
-        // Create Date objects using local time (no timezone conversion)
         const start = new Date(pickupYear, pickupMonth - 1, pickupDayNum, pickupHour, pickupMin, 0);
         const end = new Date(dropoffYear, dropoffMonth - 1, dropoffDayNum, dropoffHour, dropoffMin, 0);
         
@@ -957,7 +888,6 @@ document.addEventListener('DOMContentLoaded', () => {
             end: end.toString()
         });
         
-        // Calculate difference in hours (precise calculation)
         const diffMs = end - start;
         const diffHours = diffMs / (1000 * 60 * 60);
         
@@ -969,33 +899,22 @@ document.addEventListener('DOMContentLoaded', () => {
             minutes: diffHours * 60
         });
         
-        // Calculate days based on rental logic:
-        // - If pickup and dropoff are on different calendar days, count each day
-        // Check if pickup and dropoff are on different calendar days
         const pickupDayStr = new Date(pickupYear, pickupMonth - 1, pickupDayNum).toDateString();
         const dropoffDayStr = new Date(dropoffYear, dropoffMonth - 1, dropoffDayNum).toDateString();
         const isDifferentDays = pickupDayStr !== dropoffDayStr;
         
-        // Calculate days for base price (daily pricing - 24 hour periods)
-        // Each 24-hour period = 1 day
-        // 0-24 hours = 1 day, 25-48 hours = 2 days, 49-72 hours = 3 days, etc.
         const days = diffHours <= 0 ? 1 : Math.ceil(diffHours / 24);
         
         console.log('Calculated days:', days, 'isDifferentDays:', isDifferentDays, 'diffHours:', diffHours);
         
-        // Calculate base price based on days
-        // Each day (24-hour period) costs the daily rate (e.g., 84 euro/day)
         const dailyRate = Number(vehicle.daily_rate);
         let basePrice;
         let priceLabel;
         
         if (diffHours <= 0) {
-            // Minimum 1 day charge
             basePrice = Math.round(dailyRate * 1 * 100) / 100;
             priceLabel = `Grundpreis (1 Tag)`;
         } else {
-            // Calculate based on 24-hour periods (round up)
-            // 0-24 hours = 1 day, 25-48 hours = 2 days, 49-72 hours = 3 days
             basePrice = Math.round(dailyRate * days * 100) / 100;
             priceLabel = `Grundpreis (${days} Tag${days > 1 ? 'e' : ''})`;
             
@@ -1007,34 +926,23 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
         
-        // Insurance - calculate based on days (each day costs the daily insurance rate)
-        // For insurance: if less than 24 hours = 1 day, otherwise calculate based on actual calendar days
         let insurance = 0;
         const selIns = document.querySelector('.insurance-card.selected');
         if (selIns) {
             const insuranceDailyRate = Number(selIns.getAttribute('data-price'));
-            // Calculate insurance days:
-            // - If less than 24 hours = 1 day (regardless of calendar days)
-            // - If 24 hours or more and different calendar days = count calendar days
             let insuranceDays;
             
             if (diffHours <= 0) {
                 insuranceDays = 1; // Minimum 1 day
             } else if (diffHours < 24) {
-                // Less than 24 hours = always 1 day, regardless of calendar days
                 insuranceDays = 1;
             } else if (isDifferentDays) {
-                // 24 hours or more and different calendar days: count the number of calendar days
-                // Example: 04.01.2026 08:00 - 05.01.2026 18:00 = 34 hours = 2 days (04.01 and 05.01)
-                // Example: 04.01.2026 08:00 - 06.01.2026 18:00 = 58 hours = 3 days (04.01, 05.01, 06.01)
                 const startDate = new Date(pickupYear, pickupMonth - 1, pickupDayNum);
                 const endDate = new Date(dropoffYear, dropoffMonth - 1, dropoffDayNum);
-                // Calculate difference in calendar days
                 const timeDiff = endDate - startDate;
                 const daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
                 insuranceDays = Math.max(1, daysDiff + 1); // +1 because we count both start and end day
             } else {
-                // Same calendar day but 24 hours or more: calculate days (round up)
                 insuranceDays = Math.ceil(diffHours / 24);
             }
             
@@ -1050,7 +958,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
         
-        // Extras - calculate based on days for daily items
         let additionalServices = 0;
         document.querySelectorAll('.extra-card.selected').forEach(card => {
             const price = Number(card.getAttribute('data-price'));
@@ -1058,13 +965,11 @@ document.addEventListener('DOMContentLoaded', () => {
             if (unit === 'einmalig') {
                 additionalServices += price;
             } else {
-                // Daily rate items: multiply daily rate by days (24-hour periods)
                 const daysForExtras = diffHours <= 0 ? 1 : Math.ceil(diffHours / 24);
                 additionalServices += Math.round(price * daysForExtras * 100) / 100;
             }
         });
         
-        // Calculate discount based on active offer
         let discount = 0;
         let discountPercent = 0;
         let discountLabel = '';
@@ -1076,7 +981,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 discountPercent = getDiscountPercent(offer.id, offer.type, offer.category, vehicle, pickupDate, dropoffDate, diffHours);
                 
                 if (discountPercent > 0) {
-                    // Apply discount only to base price (not insurance or extras)
                     discount = Math.round((basePrice * discountPercent / 100) * 100) / 100;
                     discountLabel = getDiscountLabel(offer.id);
                 }
@@ -1088,7 +992,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const discountedBasePrice = Math.round((basePrice - discount) * 100) / 100;
         const totalPrice = Math.round((discountedBasePrice + insurance + additionalServices) * 100) / 100;
         
-        // Update price display
         const baseLabel = document.getElementById('base-price-label');
         const originalPriceEl = document.getElementById('original-price');
         const currentPriceEl = document.getElementById('current-price');
@@ -1097,65 +1000,56 @@ document.addEventListener('DOMContentLoaded', () => {
         const discountLabelText = document.getElementById('discount-label-text');
         
         if (baseLabel) {
-            // Extract just the label part (e.g., "Grundpreis" from "Grundpreis (122 Stunden)")
             const labelMatch = priceLabel.match(/^([^(]+)/);
             baseLabel.textContent = labelMatch ? labelMatch[1].trim() : 'Grundpreis';
         }
         
         if (currentPriceEl) {
             if (discount > 0) {
-                // Show original price crossed out
                 if (originalPriceEl) {
-                    originalPriceEl.textContent = `â‚¬${formatPrice(basePrice)}`;
+                    originalPriceEl.textContent = `€${formatPrice(basePrice)}`;
                     originalPriceEl.style.display = 'inline';
                 }
-                // Show discounted price
-                currentPriceEl.textContent = `â‚¬${formatPrice(discountedBasePrice)}`;
+                currentPriceEl.textContent = `€${formatPrice(discountedBasePrice)}`;
                 currentPriceEl.className = 'fw-bold text-success';
             } else {
-                // Hide original price if no discount
                 if (originalPriceEl) {
                     originalPriceEl.style.display = 'none';
                 }
-                currentPriceEl.textContent = `â‚¬${formatPrice(basePrice)}`;
+                currentPriceEl.textContent = `€${formatPrice(basePrice)}`;
                 currentPriceEl.className = 'fw-bold';
             }
         }
         
-        // Show discount row if applicable
         if (discountRow && discountEl && discountLabelText) {
             if (discount > 0) {
                 discountLabelText.textContent = discountLabel.replace(/\s+\d+%$/, ''); // Remove percentage from label
-                discountEl.textContent = `-â‚¬${formatPrice(discount)}`;
+                discountEl.textContent = `-€${formatPrice(discount)}`;
                 discountRow.style.display = 'block';
             } else {
                 discountRow.style.display = 'none';
             }
         }
         
-        document.getElementById('insurance-price').textContent = `â‚¬${formatPrice(insurance)}`;
-        document.getElementById('additional-services-price').textContent = `â‚¬${formatPrice(additionalServices)}`;
-        document.getElementById('total-price').textContent = `â‚¬${formatPrice(totalPrice)}`;
+        document.getElementById('insurance-price').textContent = `€${formatPrice(insurance)}`;
+        document.getElementById('additional-services-price').textContent = `€${formatPrice(additionalServices)}`;
+        document.getElementById('total-price').textContent = `€${formatPrice(totalPrice)}`;
     }
     
-    // Get discount percentage based on offer ID and conditions
     function getDiscountPercent(offerId, offerType, offerCategory, vehicle, pickupDate, dropoffDate, diffHours) {
         if (!offerId) return 0;
         
-        // Parse dates correctly (ISO format: YYYY-MM-DD)
         const [pickupYear, pickupMonth, pickupDay] = pickupDate.split('-').map(Number);
         const [dropoffYear, dropoffMonth, dropoffDay] = dropoffDate.split('-').map(Number);
         
         const pickup = new Date(pickupYear, pickupMonth - 1, pickupDay);
         const dropoff = new Date(dropoffYear, dropoffMonth - 1, dropoffDay);
         
-        // Calculate days until pickup (from today)
         const today = new Date();
         today.setHours(0, 0, 0, 0);
         pickup.setHours(0, 0, 0, 0);
         const daysUntilPickup = Math.floor((pickup.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
         
-        // Calculate rental duration in days (24-hour periods)
         const rentalDays = diffHours <= 0 ? 1 : Math.ceil(diffHours / 24);
         
         console.log('Discount calculation:', {
@@ -1171,13 +1065,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         
         switch (offerId) {
-            case 'offer-1': // FrÃ¼hbucher-Rabatt - 10%
-                // Requires booking at least 14 days in advance and minimum 3 days rental
+            case 'offer-1': // Frühbucher-Rabatt - 10%
                 if (daysUntilPickup >= 14 && rentalDays >= 3) {
-                    console.log('FrÃ¼hbucher-Rabatt applied: 10%');
+                    console.log('Frühbucher-Rabatt applied: 10%');
                     return 10;
                 }
-                console.log('FrÃ¼hbucher-Rabatt not applicable:', { 
+                console.log('Frühbucher-Rabatt not applicable:', { 
                     daysUntilPickup, 
                     requiredDays: 14,
                     rentalDays, 
@@ -1188,7 +1081,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 return 0;
                 
             case 'offer-2': // Wochenend-Special - 10%
-                // Friday to Sunday
                 const pickupDay = pickup.getDay(); // 0 = Sunday, 5 = Friday
                 const dropoffDay = dropoff.getDay();
                 if ((pickupDay === 5 && dropoffDay === 0) || (pickupDay === 5 && dropoffDay === 6)) {
@@ -1197,28 +1089,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 return 0;
                 
             case 'offer-3': // Langzeit-Miete - 10%
-                // 30 days or more
                 if (rentalDays >= 30) {
                     return 10;
                 }
                 return 0;
                 
             case 'offer-4': // Studenten-Rabatt - 10%
-                // Student offer - always applicable if selected
                 if (offerType === 'student') {
                     return 10;
                 }
                 return 0;
                 
             case 'offer-5': // Premium-Paket - 10%
-                // Premium category vehicles
                 if (offerCategory === 'premium' || vehicle.category === 'Premium' || vehicle.category === 'Oberklasse') {
                     return 10;
                 }
                 return 0;
                 
             case 'offer-6': // Familien-Angebot - 10%
-                // Family-friendly vehicles (SUVs, Minivans)
                 if (offerType === 'family' || vehicle.category === 'SUV' || vehicle.category === 'Minivan') {
                     return 10;
                 }
@@ -1229,10 +1117,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     
-    // Get discount label for display
     function getDiscountLabel(offerId) {
         const labels = {
-            'offer-1': 'FrÃ¼hbucher-Rabatt 10%',
+            'offer-1': 'Frühbucher-Rabatt 10%',
             'offer-2': 'Wochenend-Special 10%',
             'offer-3': 'Langzeit-Miete 10%',
             'offer-4': 'Studenten-Rabatt 10%',
@@ -1266,19 +1153,16 @@ document.addEventListener('DOMContentLoaded', () => {
     
     async function handleReservationSubmit(vehicle) {
         try {
-            // Check if terms checkbox is checked
             const termsCheckbox = document.getElementById('terms');
             if (!termsCheckbox || !termsCheckbox.checked) {
                 alert('Bitte markieren Sie dieses Feld, um fortzufahren');
                 return;
             }
             
-            // Check if user is logged in - check multiple sources for reliability
             const userData = JSON.parse(sessionStorage.getItem('userData') || localStorage.getItem('userData') || '{}');
             const token = sessionStorage.getItem('token') || localStorage.getItem('token');
             const isLoggedInFlag = sessionStorage.getItem('isLoggedIn') === 'true' || localStorage.getItem('isLoggedIn') === 'true';
             
-            // User is logged in if they have: (userData with email) OR (token) OR (isLoggedIn flag)
             const isLoggedIn = !!(userData && userData.email) || !!token || isLoggedInFlag;
             
             console.log('Login check:', {
@@ -1289,59 +1173,46 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             
             if (!isLoggedIn) {
-                // User is not logged in - save reservation data and show guest/login modal
                 console.log('User not logged in, showing guest/login modal');
                 
                 const formEl = document.getElementById('reservation-form');
                 const formData = new FormData(formEl);
 
-                // Compute pricing snapshot to persist
                 const isoPickup = formData.get('pickupDate');
                 const isoDropoff = formData.get('dropoffDate');
                 const pickupTime = formData.get('pickupTime') || '08:00';
                 const dropoffTime = formData.get('dropoffTime') || '08:00';
                 
-                // Parse date and time components manually to avoid timezone issues
                 const [pickupYear, pickupMonth, pickupDayNum] = isoPickup.split('-').map(Number);
                 const [pickupHour, pickupMin] = pickupTime.split(':').map(Number);
                 
                 const [dropoffYear, dropoffMonth, dropoffDayNum] = isoDropoff.split('-').map(Number);
                 const [dropoffHour, dropoffMin] = dropoffTime.split(':').map(Number);
                 
-                // Create Date objects using local time (no timezone conversion)
                 const start = new Date(pickupYear, pickupMonth - 1, pickupDayNum, pickupHour, pickupMin, 0);
                 const end = new Date(dropoffYear, dropoffMonth - 1, dropoffDayNum, dropoffHour, dropoffMin, 0);
                 
-                // Calculate difference in hours (precise calculation)
                 const diffMs = end - start;
                 const diffHours = diffMs / (1000 * 60 * 60);
                 
-                // Check if pickup and dropoff are on different calendar days
                 const pickupDayStr = new Date(pickupYear, pickupMonth - 1, pickupDayNum).toDateString();
                 const dropoffDayStr = new Date(dropoffYear, dropoffMonth - 1, dropoffDayNum).toDateString();
                 const isDifferentDays = pickupDayStr !== dropoffDayStr;
                 
-                // Calculate days for base price (daily pricing - 24 hour periods)
                 const days = diffHours <= 0 ? 1 : Math.ceil(diffHours / 24);
                 
-                // Calculate insurance days (separate from rental days)
-                // - If less than 24 hours = 1 day (regardless of calendar days)
-                // - If 24 hours or more and different calendar days = count calendar days
                 let insuranceDays;
                 if (diffHours <= 0) {
                     insuranceDays = 1; // Minimum 1 day
                 } else if (diffHours < 24) {
-                    // Less than 24 hours = always 1 day, regardless of calendar days
                     insuranceDays = 1;
                 } else if (isDifferentDays) {
-                    // 24 hours or more and different calendar days: count the number of calendar days
                     const startDate = new Date(pickupYear, pickupMonth - 1, pickupDayNum);
                     const endDate = new Date(dropoffYear, dropoffMonth - 1, dropoffDayNum);
                     const timeDiff = endDate - startDate;
                     const daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
                     insuranceDays = Math.max(1, daysDiff + 1); // +1 because we count both start and end day
                 } else {
-                    // Same calendar day but 24 hours or more: calculate days (round up)
                     insuranceDays = Math.ceil(diffHours / 24);
                 }
                 
@@ -1367,18 +1238,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.querySelectorAll('.extra-card.selected').forEach(card => {
                     const price = Number(card.getAttribute('data-price'));
                     const unit = card.getAttribute('data-unit');
-                    // For extras, use days for daily units, or one-time price
                     const daysForExtras = diffHours <= 0 ? 1 : Math.ceil(diffHours / 24);
                     extrasAmount += unit === 'einmalig' ? price : price * daysForExtras;
                 });
                 extrasAmount = Math.round(extrasAmount * 100) / 100;
-                // Calculate base price - daily pricing (24-hour periods)
                 const dailyRate = Number(vehicle.daily_rate || 0);
                 const basePrice = Math.round(dailyRate * days * 100) / 100; // Round to 2 decimals
                 const insuranceAmount = Math.round(insurancePerDay * insuranceDays * 100) / 100;
                 const totalPrice = Math.round((basePrice + insuranceAmount + extrasAmount) * 100) / 100;
 
-                // Display strings
                 const dotted = (iso) => {
                     if (!iso) return '';
                     const m = (iso||'').match(/(\d{4})-(\d{2})-(\d{2})/);
@@ -1411,7 +1279,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     insurance: insurancePerDay > 0,
                     insuranceType: insuranceType,
                     vehicle: vehicle,
-                    // snapshot for payment page
                     days: days,
                     insuranceDays: insuranceDays,
                     basePrice: basePrice,
@@ -1424,65 +1291,50 @@ document.addEventListener('DOMContentLoaded', () => {
                     dropoffLocationName: dropoffLocationName
                 };
                 
-                // Store reservation data temporarily
                 localStorage.setItem('pendingReservationData', JSON.stringify(reservationData));
                 
-                // Show modal with guest or login options
                 showGuestOrLoginModal();
                 return;
             }
             
-            // User is logged in - proceed with normal flow
             const formEl = document.getElementById('reservation-form');
             const formData = new FormData(formEl);
 
-            // Compute pricing snapshot to persist
             const isoPickup = formData.get('pickupDate');
             const isoDropoff = formData.get('dropoffDate');
             const pickupTime = formData.get('pickupTime') || '08:00';
             const dropoffTime = formData.get('dropoffTime') || '08:00';
             
-            // Parse date and time components manually to avoid timezone issues
             const [pickupYear, pickupMonth, pickupDayNum] = isoPickup.split('-').map(Number);
             const [pickupHour, pickupMin] = pickupTime.split(':').map(Number);
             
             const [dropoffYear, dropoffMonth, dropoffDayNum] = isoDropoff.split('-').map(Number);
             const [dropoffHour, dropoffMin] = dropoffTime.split(':').map(Number);
             
-            // Create Date objects using local time (no timezone conversion)
             const start = new Date(pickupYear, pickupMonth - 1, pickupDayNum, pickupHour, pickupMin, 0);
             const end = new Date(dropoffYear, dropoffMonth - 1, dropoffDayNum, dropoffHour, dropoffMin, 0);
             
-            // Calculate difference in hours (precise calculation)
             const diffMs = end - start;
             const diffHours = diffMs / (1000 * 60 * 60);
             
-            // Check if pickup and dropoff are on different calendar days
             const pickupDayStr = new Date(pickupYear, pickupMonth - 1, pickupDayNum).toDateString();
             const dropoffDayStr = new Date(dropoffYear, dropoffMonth - 1, dropoffDayNum).toDateString();
             const isDifferentDays = pickupDayStr !== dropoffDayStr;
             
-            // Calculate days for base price (daily pricing - 24 hour periods)
             const days = diffHours <= 0 ? 1 : Math.ceil(diffHours / 24);
             
-            // Calculate insurance days (separate from rental days)
-            // - If less than 24 hours = 1 day (regardless of calendar days)
-            // - If 24 hours or more and different calendar days = count calendar days
             let insuranceDays;
             if (diffHours <= 0) {
                 insuranceDays = 1; // Minimum 1 day
             } else if (diffHours < 24) {
-                // Less than 24 hours = always 1 day, regardless of calendar days
                 insuranceDays = 1;
             } else if (isDifferentDays) {
-                // 24 hours or more and different calendar days: count the number of calendar days
                 const startDate = new Date(pickupYear, pickupMonth - 1, pickupDayNum);
                 const endDate = new Date(dropoffYear, dropoffMonth - 1, dropoffDayNum);
                 const timeDiff = endDate - startDate;
                 const daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
                 insuranceDays = Math.max(1, daysDiff + 1); // +1 because we count both start and end day
             } else {
-                // Same calendar day but 24 hours or more: calculate days (round up)
                 insuranceDays = Math.ceil(diffHours / 24);
             }
             
@@ -1508,18 +1360,15 @@ document.addEventListener('DOMContentLoaded', () => {
             document.querySelectorAll('.extra-card.selected').forEach(card => {
                 const price = Number(card.getAttribute('data-price'));
                 const unit = card.getAttribute('data-unit');
-                // For extras, use days for daily units, or one-time price
                 const daysForExtras = diffHours <= 0 ? 1 : Math.ceil(diffHours / 24);
                 extrasAmount += unit === 'einmalig' ? price : price * daysForExtras;
             });
             extrasAmount = Math.round(extrasAmount * 100) / 100;
-            // Calculate base price - daily pricing (24-hour periods)
             const dailyRate = Number(vehicle.daily_rate || 0);
             const basePrice = Math.round(dailyRate * days * 100) / 100; // Round to 2 decimals
             const insuranceAmount = Math.round(insurancePerDay * insuranceDays * 100) / 100;
             const totalPrice = Math.round((basePrice + insuranceAmount + extrasAmount) * 100) / 100;
 
-            // Display strings
             const dotted = (iso) => {
                 if (!iso) return '';
                 const m = (iso||'').match(/(\d{4})-(\d{2})-(\d{2})/);
@@ -1552,7 +1401,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 insurance: insurancePerDay > 0,
                 insuranceType: insuranceType,
                 vehicle: vehicle,
-                // snapshot for payment page
                 days: days,
                 insuranceDays: insuranceDays,
                 basePrice: basePrice,
@@ -1565,16 +1413,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 dropoffLocationName: dropoffLocationName
             };
             
-            // Store reservation data
             localStorage.setItem('reservationData', JSON.stringify(reservationData));
             
-            // Save to database if user is logged in
             const loggedInUserData = JSON.parse(sessionStorage.getItem('userData') || localStorage.getItem('userData') || '{}');
             if (loggedInUserData && loggedInUserData.email) {
                 saveReservationToDatabase(reservationData, loggedInUserData.email);
             }
                 
-            // Redirect to payment information page
             window.location.href = '/zahlungsinformationen';
             
         } catch (error) {
@@ -1591,16 +1436,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 <p class="text-muted">Die Reservierung konnte nicht geladen werden.</p>
                 <a href="/fahrzeuge" class="nav-link-text">
                     <i class="bi bi-arrow-left me-2"></i>
-                    ZurÃƒÂ¼ck zu den Fahrzeugen
+                    ZurÃ¼ck zu den Fahrzeugen
                 </a>
             </div>
         `;
     }
 });
 
-// Show modal with guest or login options
 function showGuestOrLoginModal() {
-    // Create modal HTML
     const modalHTML = `
         <div class="modal fade" id="guestOrLoginModal" tabindex="-1" aria-labelledby="guestOrLoginModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
@@ -1613,7 +1456,7 @@ function showGuestOrLoginModal() {
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body text-center">
-                        <p class="mb-4">Wie mÃ¶chten Sie fortfahren?</p>
+                        <p class="mb-4">Wie möchten Sie fortfahren?</p>
                         <div class="d-grid gap-3">
                             <button type="button" class="btn btn-outline-primary btn-lg" id="continueAsGuestBtn">
                                 <i class="bi bi-person me-2"></i>
@@ -1625,8 +1468,8 @@ function showGuestOrLoginModal() {
                             </button>
                         </div>
                         <p class="text-muted mt-3 small">
-                            Als Gast kÃ¶nnen Sie ohne Anmeldung reservieren. 
-                            Sie kÃ¶nnen sich spÃ¤ter jederzeit anmelden.
+                            Als Gast können Sie ohne Anmeldung reservieren. 
+                            Sie können sich später jederzeit anmelden.
                         </p>
                     </div>
                 </div>
@@ -1634,41 +1477,32 @@ function showGuestOrLoginModal() {
         </div>
     `;
     
-    // Remove existing modal if any
     const existingModal = document.getElementById('guestOrLoginModal');
     if (existingModal) {
         existingModal.remove();
     }
     
-    // Add modal to body
     document.body.insertAdjacentHTML('beforeend', modalHTML);
     
-    // Initialize Bootstrap modal
     const modalElement = document.getElementById('guestOrLoginModal');
     const modal = new bootstrap.Modal(modalElement);
     modal.show();
     
-    // Handle continue as guest
     document.getElementById('continueAsGuestBtn').addEventListener('click', () => {
         modal.hide();
-        // Continue to payment page as guest
         window.location.href = '/zahlungsinformationen';
     });
     
-    // Handle login
     document.getElementById('loginBtn').addEventListener('click', () => {
         modal.hide();
-        // Redirect to login page
         window.location.href = '/login';
     });
     
-    // Clean up modal when hidden
     modalElement.addEventListener('hidden.bs.modal', () => {
         modalElement.remove();
     });
 }
 
-// Save reservation to database
 async function saveReservationToDatabase(reservationData, userEmail) {
     try {
         const response = await fetch('/api/reservations/create', {
@@ -1698,14 +1532,13 @@ async function saveReservationToDatabase(reservationData, userEmail) {
         
         const result = await response.json();
         if (result.success) {
-            console.log('Rezervasyon veritabanÄ±na kaydedildi:', result.reservation);
-            // Store booking ID for later use
+            console.log('Rezervasyon veritabanina kaydedildi:', result.reservation);
             localStorage.setItem('currentBookingId', result.reservation.booking_id);
         } else {
-            console.error('Rezervasyon kayÄ±t hatasÄ±:', result.message);
+            console.error('Rezervasyon kayit hatasi:', result.message);
         }
     } catch (error) {
-        console.error('VeritabanÄ± kayÄ±t hatasÄ±:', error);
+        console.error('Veritabani kayit hatasi:', error);
     }
 }
 

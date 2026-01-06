@@ -1,23 +1,19 @@
-﻿document.addEventListener('DOMContentLoaded', async () => {
-    // Get reservation ID from URL parameters
+document.addEventListener('DOMContentLoaded', async () => {
     const urlParams = new URLSearchParams(window.location.search);
     const reservationId = urlParams.get('reservationId');
 
     if (!reservationId) {
-        // No reservation ID provided, show error message
         document.getElementById('reservation-details').innerHTML = `
             <div class="alert alert-warning">
                 <i class="fas fa-exclamation-triangle"></i>
-                Keine Reservierungs-ID gefunden. Bitte kehren Sie zur Fahrzeugsuche zurÃ¼ck.
+                Keine Reservierungs-ID gefunden. Bitte kehren Sie zur Fahrzeugsuche zurück.
             </div>
         `;
         return;
     }
 
-    // Load reservation details
     await loadReservationDetails(reservationId);
 
-    // Setup logout functionality
     setupLogout();
 });
 
@@ -41,7 +37,7 @@ async function loadReservationDetails(reservationId) {
         document.getElementById('reservation-details').innerHTML = `
             <div class="alert alert-danger">
                 <i class="fas fa-exclamation-circle"></i>
-                Fehler beim Laden der Reservierungsdetails. Bitte versuchen Sie es spÃ¤ter erneut.
+                Fehler beim Laden der Reservierungsdetails. Bitte versuchen Sie es später erneut.
             </div>
         `;
     }
@@ -50,7 +46,6 @@ async function loadReservationDetails(reservationId) {
 function displayReservationDetails(reservation) {
     const detailsContainer = document.getElementById('reservation-details');
     
-    // Format dates
     const pickupDate = new Date(reservation.pickup_date).toLocaleDateString('de-DE');
     const dropoffDate = new Date(reservation.dropoff_date).toLocaleDateString('de-DE');
     
@@ -62,7 +57,7 @@ function displayReservationDetails(reservation) {
             </div>
             <div class="col-md-6 mb-3">
                 <h6 class="text-muted">Status</h6>
-                <span class="badge bg-success">BestÃ¤tigt</span>
+                <span class="badge bg-success">Bestätigt</span>
             </div>
         </div>
         
@@ -91,7 +86,7 @@ function displayReservationDetails(reservation) {
                 <small class="text-muted">${reservation.pickup_location_name || 'Nicht angegeben'}</small>
             </div>
             <div class="col-md-6 mb-3">
-                <h6 class="text-muted">RÃ¼ckgabe</h6>
+                <h6 class="text-muted">Rückgabe</h6>
                 <p class="fw-bold">${dropoffDate}</p>
                 <small class="text-muted">${reservation.dropoff_time || 'Nicht angegeben'}</small>
                 <br>
@@ -104,7 +99,7 @@ function displayReservationDetails(reservation) {
         <div class="row">
             <div class="col-md-6 mb-3">
                 <h6 class="text-muted">Gesamtpreis</h6>
-                <p class="fw-bold text-primary fs-4">€${formatPrice(reservation.total_price || 0)}</p>
+                <p class="fw-bold text-primary fs-4">�${formatPrice(reservation.total_price || 0)}</p>
             </div>
             <div class="col-md-6 mb-3">
                 <h6 class="text-muted">Erstellt am</h6>
@@ -116,7 +111,7 @@ function displayReservationDetails(reservation) {
         <hr>
         <div class="row">
             <div class="col-12">
-                <h6 class="text-muted">ZusÃ¤tzliche Leistungen</h6>
+                <h6 class="text-muted">Zusätzliche Leistungen</h6>
                 <div class="d-flex flex-wrap gap-2">
                     ${Object.entries(reservation.extras).map(([key, value]) => `
                         <span class="badge bg-info text-dark">
@@ -136,34 +131,28 @@ function setupLogout() {
         logoutBtn.addEventListener('click', (e) => {
             e.preventDefault();
             
-            // Clear session and local storage
             sessionStorage.removeItem('token');
             sessionStorage.removeItem('user');
             localStorage.removeItem('token');
             localStorage.removeItem('user');
             
-            // Redirect to login page
             window.location.href = '/views/login.html';
         });
     }
 }
 
-// Check authentication status
 function checkAuth() {
     const token = sessionStorage.getItem('token') || localStorage.getItem('token');
     if (!token) {
-        // No token, redirect to login
         window.location.href = '/views/login.html';
         return;
     }
     
-    // Verify token is valid (optional - could make API call to verify)
     try {
         const payload = JSON.parse(atob(token.split('.')[1]));
         const currentTime = Date.now() / 1000;
         
         if (payload.exp < currentTime) {
-            // Token expired
             sessionStorage.removeItem('token');
             sessionStorage.removeItem('user');
             localStorage.removeItem('token');
@@ -171,7 +160,6 @@ function checkAuth() {
             window.location.href = '/views/login.html';
         }
     } catch (error) {
-        // Invalid token
         sessionStorage.removeItem('token');
         sessionStorage.removeItem('user');
         localStorage.removeItem('token');
@@ -180,6 +168,5 @@ function checkAuth() {
     }
 }
 
-// Check auth on page load
 checkAuth();
 
