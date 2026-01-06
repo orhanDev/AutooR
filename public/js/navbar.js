@@ -725,11 +725,6 @@ function updateNavbar() {
         setTimeout(() => {
             initAccountMenu();
         }, 50);
-    } else {
-        // Re-initialize account menu for logged-in users too
-        setTimeout(() => {
-            initAccountMenu();
-        }, 50);
     }
     
     if (window.innerWidth <= 768) {
@@ -1788,9 +1783,10 @@ function initAccountMenu() {
         });
     };
 
-    const handleBtnClick = (e) => {
+    const handleAccountBtnClick = (e) => {
         e.preventDefault();
         e.stopPropagation();
+        console.log('Account button clicked/touched');
         const willOpen = !menu.classList.contains('open');
         if (willOpen) {
             positionMenu();
@@ -1806,24 +1802,36 @@ function initAccountMenu() {
         }
     };
     
-    btn.addEventListener('click', handleBtnClick);
-    btn.addEventListener('touchend', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        handleBtnClick(e);
-    }, { passive: false });
+    // Check if listeners are already attached
+    if (!btn.dataset.accountBtnListenersAttached) {
+        btn.addEventListener('click', handleAccountBtnClick);
+        btn.addEventListener('touchend', handleAccountBtnClick, { passive: false });
+        btn.dataset.accountBtnListenersAttached = 'true';
+    }
     
-    window.addEventListener('resize', () => {
+    const handleResize = () => {
         if (menu.classList.contains('open')) {
             positionMenu();
         }
-    });
+    };
+    
+    // Only add resize listener once
+    if (!window.accountMenuResizeListenerAdded) {
+        window.addEventListener('resize', handleResize);
+        window.accountMenuResizeListenerAdded = true;
+    }
 
-    document.addEventListener('click', (e) => {
+    const handleDocumentClick = (e) => {
         if (!menu.contains(e.target) && !btn.contains(e.target)) {
             closeMenu();
         }
-    });
+    };
+    
+    // Only add document click listener once
+    if (!window.accountMenuDocumentClickListenerAdded) {
+        document.addEventListener('click', handleDocumentClick);
+        window.accountMenuDocumentClickListenerAdded = true;
+    }
     
     // Initial attachment
     setTimeout(() => {
