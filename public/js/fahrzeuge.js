@@ -185,6 +185,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 clickOpens: true,
                 allowInvalidPreload: false,
                 locale: germanLocale,
+                static: false,
+                appendTo: document.body,
                 disable: [
                     function(date) {
                         return date < today;
@@ -201,6 +203,13 @@ document.addEventListener('DOMContentLoaded', () => {
                             fpDropoffSelector.set('minDate', min);
                         }
                     }
+                },
+                onOpen: function(selectedDates, dateStr, instance) {
+                    // Flatpickr takviminin z-index'ini artır
+                    const calendar = instance.calendarContainer;
+                    if (calendar) {
+                        calendar.style.zIndex = '9999';
+                    }
                 }
             });
 
@@ -214,6 +223,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 clickOpens: true,
                 allowInvalidPreload: false,
                 locale: germanLocale,
+                static: false,
+                appendTo: document.body,
                 disable: [
                     function(date) {
                         const pu = parseGermanDate(pickupDateSelector.value) || today;
@@ -228,8 +239,63 @@ document.addEventListener('DOMContentLoaded', () => {
                         const year = selectedDates[0].getFullYear();
                         dropoffDateSelector.value = `${day}/${month}/${year}`;
                     }
+                },
+                onOpen: function(selectedDates, dateStr, instance) {
+                    // Flatpickr takviminin z-index'ini artır
+                    const calendar = instance.calendarContainer;
+                    if (calendar) {
+                        calendar.style.zIndex = '9999';
+                    }
                 }
             });
+            
+            // Tarih input'larına tıklandığında event propagation'ı durdur
+            if (pickupDateInput) {
+                pickupDateInput.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                });
+                pickupDateInput.addEventListener('touchstart', function(e) {
+                    e.stopPropagation();
+                });
+            }
+            if (dropoffDateInput) {
+                dropoffDateInput.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                });
+                dropoffDateInput.addEventListener('touchstart', function(e) {
+                    e.stopPropagation();
+                });
+            }
+            
+            // Input group'a da event listener ekle
+            const pickupInputGroup = pickupDateInput?.closest('.input-group');
+            const dropoffInputGroup = dropoffDateInput?.closest('.input-group');
+            
+            if (pickupInputGroup) {
+                pickupInputGroup.addEventListener('click', function(e) {
+                    if (e.target === pickupDateInput || e.target.closest('input') === pickupDateInput || e.target.closest('.input-group-text') || e.target.closest('.calendar-trigger-selector')) {
+                        e.stopPropagation();
+                    }
+                });
+                pickupInputGroup.addEventListener('touchstart', function(e) {
+                    if (e.target === pickupDateInput || e.target.closest('input') === pickupDateInput || e.target.closest('.input-group-text') || e.target.closest('.calendar-trigger-selector')) {
+                        e.stopPropagation();
+                    }
+                });
+            }
+            
+            if (dropoffInputGroup) {
+                dropoffInputGroup.addEventListener('click', function(e) {
+                    if (e.target === dropoffDateInput || e.target.closest('input') === dropoffDateInput || e.target.closest('.input-group-text') || e.target.closest('.calendar-trigger-selector')) {
+                        e.stopPropagation();
+                    }
+                });
+                dropoffInputGroup.addEventListener('touchstart', function(e) {
+                    if (e.target === dropoffDateInput || e.target.closest('input') === dropoffDateInput || e.target.closest('.input-group-text') || e.target.closest('.calendar-trigger-selector')) {
+                        e.stopPropagation();
+                    }
+                });
+            }
 
             document.querySelectorAll('.input-group-text').forEach(trigger => {
                 trigger.addEventListener('click', () => {

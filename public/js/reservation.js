@@ -568,10 +568,80 @@ document.addEventListener('DOMContentLoaded', () => {
                 minDate: today, 
                 locale: flatpickr.l10ns.de, 
                 disableMobile: true, 
-                allowInput: true 
+                allowInput: true,
+                static: false,
+                appendTo: document.body
             };
-            fpPick = flatpickr(pDate, { ...opts, onChange: () => { updateDropoffDateMin(); updateTimeConstraints(); updateSubmitEnabled(); } });
-            fpDrop = flatpickr(dDate, { ...opts, onChange: () => { updateTimeConstraints(); updateSubmitEnabled(); } });
+            fpPick = flatpickr(pDate, { 
+                ...opts, 
+                onChange: () => { updateDropoffDateMin(); updateTimeConstraints(); updateSubmitEnabled(); },
+                onOpen: function(selectedDates, dateStr, instance) {
+                    // Flatpickr takviminin z-index'ini artır
+                    const calendar = instance.calendarContainer;
+                    if (calendar) {
+                        calendar.style.zIndex = '9999';
+                    }
+                }
+            });
+            fpDrop = flatpickr(dDate, { 
+                ...opts, 
+                onChange: () => { updateTimeConstraints(); updateSubmitEnabled(); },
+                onOpen: function(selectedDates, dateStr, instance) {
+                    // Flatpickr takviminin z-index'ini artır
+                    const calendar = instance.calendarContainer;
+                    if (calendar) {
+                        calendar.style.zIndex = '9999';
+                    }
+                }
+            });
+            
+            // Tarih input'larına tıklandığında event propagation'ı durdur
+            if (pDate) {
+                pDate.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                });
+                pDate.addEventListener('touchstart', function(e) {
+                    e.stopPropagation();
+                });
+            }
+            if (dDate) {
+                dDate.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                });
+                dDate.addEventListener('touchstart', function(e) {
+                    e.stopPropagation();
+                });
+            }
+            
+            // Input group'a da event listener ekle
+            const pickupInputGroup = pDate?.closest('.input-group');
+            const dropoffInputGroup = dDate?.closest('.input-group');
+            
+            if (pickupInputGroup) {
+                pickupInputGroup.addEventListener('click', function(e) {
+                    if (e.target === pDate || e.target.closest('input') === pDate || e.target.closest('.input-group-text')) {
+                        e.stopPropagation();
+                    }
+                });
+                pickupInputGroup.addEventListener('touchstart', function(e) {
+                    if (e.target === pDate || e.target.closest('input') === pDate || e.target.closest('.input-group-text')) {
+                        e.stopPropagation();
+                    }
+                });
+            }
+            
+            if (dropoffInputGroup) {
+                dropoffInputGroup.addEventListener('click', function(e) {
+                    if (e.target === dDate || e.target.closest('input') === dDate || e.target.closest('.input-group-text')) {
+                        e.stopPropagation();
+                    }
+                });
+                dropoffInputGroup.addEventListener('touchstart', function(e) {
+                    if (e.target === dDate || e.target.closest('input') === dDate || e.target.closest('.input-group-text')) {
+                        e.stopPropagation();
+                    }
+                });
+            }
         }
 
         function sync() {

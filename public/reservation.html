@@ -373,6 +373,39 @@
                 padding: 1rem !important;
             }
         }
+        
+        /* Flatpickr takviminin z-index'ini artır - mobil menü backdrop'unun üzerine çıkması için */
+        .flatpickr-calendar {
+            z-index: 9999 !important;
+        }
+        
+        .flatpickr-calendar.open {
+            z-index: 9999 !important;
+        }
+        
+        /* Tarih input'larına tıklandığında backdrop'un tıklamasını engelle */
+        #qr-pickup-date,
+        #qr-dropoff-date,
+        .input-group:has(#qr-pickup-date),
+        .input-group:has(#qr-dropoff-date) {
+            position: relative;
+            z-index: 1;
+        }
+        
+        @media (max-width: 751px) {
+            .flatpickr-calendar {
+                z-index: 9999 !important;
+            }
+            
+            /* Mobilde tarih input'larına tıklandığında backdrop'un tıklamasını engelle */
+            #qr-pickup-date:focus,
+            #qr-dropoff-date:focus,
+            .input-group:has(#qr-pickup-date:focus),
+            .input-group:has(#qr-dropoff-date:focus) {
+                position: relative;
+                z-index: 10000 !important;
+            }
+        }
     </style>
     
     <div id="navbar-container"></div>

@@ -1040,7 +1040,26 @@ function addHamburgerMenuCloseListener() {
 
     const backdrop = document.getElementById('mobile-menu-backdrop');
     if (backdrop) {
-        backdrop.addEventListener('click', function() {
+        backdrop.addEventListener('click', function(e) {
+            // Tarih seçici alanlarına veya flatpickr takvimine tıklandığında backdrop'u kapatma
+            const isDateInput = e.target.closest('#qr-pickup-date') || 
+                                e.target.closest('#qr-dropoff-date') ||
+                                e.target.closest('#pickup-date-selector') ||
+                                e.target.closest('#dropoff-date-selector') ||
+                                e.target.closest('.flatpickr-calendar') ||
+                                e.target.closest('.flatpickr-input') ||
+                                e.target.closest('.flatpickr-wrapper') ||
+                                e.target.closest('.input-group:has(#qr-pickup-date)') ||
+                                e.target.closest('.input-group:has(#qr-dropoff-date)') ||
+                                e.target.closest('.input-group:has(#pickup-date-selector)') ||
+                                e.target.closest('.input-group:has(#dropoff-date-selector)') ||
+                                e.target.closest('.calendar-trigger-selector');
+            
+            if (isDateInput) {
+                e.stopPropagation();
+                return;
+            }
+            
             if (collapseInstance) {
                 collapseInstance.hide();
             }
@@ -1055,12 +1074,26 @@ function addHamburgerMenuCloseListener() {
         const mobileMenuNavbar = document.getElementById('mobile-menu-navbar');
         const clickOnMobileNavbar = mobileMenuNavbar && mobileMenuNavbar.contains(event.target);
         
+        // Tarih seçici alanlarına veya flatpickr takvimine tıklandığında menüyü kapatma
+        const isDateInput = event.target.closest('#qr-pickup-date') || 
+                            event.target.closest('#qr-dropoff-date') ||
+                            event.target.closest('#pickup-date-selector') ||
+                            event.target.closest('#dropoff-date-selector') ||
+                            event.target.closest('.flatpickr-calendar') ||
+                            event.target.closest('.flatpickr-input') ||
+                            event.target.closest('.flatpickr-wrapper') ||
+                            event.target.closest('.input-group:has(#qr-pickup-date)') ||
+                            event.target.closest('.input-group:has(#qr-dropoff-date)') ||
+                            event.target.closest('.input-group:has(#pickup-date-selector)') ||
+                            event.target.closest('.input-group:has(#dropoff-date-selector)') ||
+                            event.target.closest('.calendar-trigger-selector');
+        
         const clickOnMobileNavbarButton = clickOnMobileNavbar && (
             event.target.closest('.btn-back-navbar') || 
             event.target.closest('.btn-close-navbar')
         );
         
-        if (isOpen && !clickInsideDrawer && !clickOnToggler && !clickOnMobileNavbar) {
+        if (isOpen && !clickInsideDrawer && !clickOnToggler && !clickOnMobileNavbar && !isDateInput) {
             if (collapseInstance) {
                 collapseInstance.hide();
             } else {

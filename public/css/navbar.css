@@ -879,9 +879,71 @@ ease;
     }
     
     @media (min-width: 752px) and (max-width: 1199px) {
+        .navbar {
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+        }
+        
+        #navbar-container {
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            height: auto !important;
+            overflow: visible !important;
+            position: relative !important;
+            left: auto !important;
+            pointer-events: auto !important;
+        }
+        
+        #navbar-container.mobile-menu-active {
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            height: auto !important;
+            overflow: visible !important;
+            position: relative !important;
+            left: auto !important;
+            pointer-events: auto !important;
+        }
+        
+        #mobile-menu-navbar {
+            display: none !important;
+        }
     }
     
     @media (min-width: 1200px) {
+        .navbar {
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+        }
+        
+        #navbar-container {
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            height: auto !important;
+            overflow: visible !important;
+            position: relative !important;
+            left: auto !important;
+            pointer-events: auto !important;
+        }
+        
+        #navbar-container.mobile-menu-active {
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            height: auto !important;
+            overflow: visible !important;
+            position: relative !important;
+            left: auto !important;
+            pointer-events: auto !important;
+        }
+        
+        #mobile-menu-navbar {
+            display: none !important;
+        }
     }
     
     @media (max-width: 751px) {
