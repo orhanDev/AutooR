@@ -225,7 +225,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="text-center py-5">
                     <i class="bi bi-exclamation-triangle text-warning" style="font-size: 3rem;"></i>
                     <h4 class="mt-3 text-muted">Kein Fahrzeug gefunden</h4>
-                    <p class="text-muted">Bitte w�hlen Sie zuerst ein Fahrzeug aus.</p>
+                    <p class="text-muted">Bitte wählen Sie zuerst ein Fahrzeug aus.</p>
                     <a href="/fahrzeuge" class="btn btn-warning mt-3">
                         <i class="bi bi-arrow-left me-2"></i>
                         Zur�ck zu den Fahrzeugen
@@ -792,7 +792,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.processPayment = function() {
         if (!selectedPaymentMethod) {
-            alert('Bitte w�hlen Sie eine Zahlungsmethode aus.');
+            alert('Bitte wählen Sie eine Zahlungsmethode aus.');
             return;
         }
 

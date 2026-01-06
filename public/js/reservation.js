@@ -316,17 +316,17 @@ document.addEventListener('DOMContentLoaded', () => {
                         <div class="rounded-4 p-3 mb-4 summary-box" style="background:#f7f7f7;">
                             <div class="row g-3 align-items-end">
                                 <div class="col-12">
-                                    <label class="form-label small text-muted mb-1">Abholung & R�ckgabe</label>
+                                    <label class="form-label small text-muted mb-1">Abholung & Rückgabe</label>
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="input-group qr-loc">
                                         <span class="input-group-text bg-white"><i class="bi bi-geo-alt"></i></span>
                                         <select id="qr-pickup-location" class="form-select border-2 qr-select">
-                                            <option value="">Bitte w�hlen</option>
+                                            <option value="">Bitte wählen</option>
                                         <option value="berlin">Berlin Zentrum</option>
                                         <option value="hamburg">Hamburg Zentrum</option>
-                                        <option value="m�nchen">M�nchen Zentrum</option>
-                                        <option value="k�ln">K�ln Zentrum</option>
+                                        <option value="m�nchen">München  Zentrum</option>
+                                        <option value="k�ln">Köln Zentrum</option>
                                         <option value="frankfurt">Frankfurt am Main Zentrum</option>
                                         <option value="stuttgart">Stuttgart Zentrum</option>
                                     </select>
@@ -336,11 +336,11 @@ document.addEventListener('DOMContentLoaded', () => {
                                     <div class="input-group qr-loc">
                                         <span class="input-group-text bg-white"><i class="bi bi-geo-alt"></i></span>
                                         <select id="qr-dropoff-location" class="form-select border-2 qr-select">
-                                            <option value="">Bitte w�hlen</option>
+                                            <option value="">Bitte wählen</option>
                                         <option value="berlin">Berlin Zentrum</option>
                                         <option value="hamburg">Hamburg Zentrum</option>
-                                        <option value="m�nchen">M�nchen Zentrum</option>
-                                        <option value="k�ln">K�ln Zentrum</option>
+                                        <option value="m�nchen">München  Zentrum</option>
+                                        <option value="k�ln">Köln Zentrum</option>
                                         <option value="frankfurt">Frankfurt am Main Zentrum</option>
                                         <option value="stuttgart">Stuttgart Zentrum</option>
                                     </select>
@@ -360,7 +360,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 </div>
                                 </div>
                                 <div class="col-md-6 col-xl-3">
-                                    <label class="form-label small text-muted mb-1">R�ckgabedatum</label>
+                                    <label class="form-label small text-muted mb-1">Rückgabedatum</label>
                                     <div class="input-group flex-nowrap">
                                         <span class="input-group-text bg-white"><i class="bi bi-calendar"></i></span>
                                         <input type="text" id="qr-dropoff-date" class="form-control border-2 qr-select" placeholder="TT.MM.JJJJ">
@@ -449,7 +449,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         </div>
 
                         <div class="rounded-3 p-3 mb-3 summary-box" style="background:#f7f7f7;">
-                            <h6 class="fw-bold mb-2">Abholung & R�ckgabe</h6>
+                            <h6 class="fw-bold mb-2">Abholung & Rückgabe</h6>
                             <div class="small">
                                 <div class="mb-2">
                                     <span class="text-muted">Abholung:</span>
@@ -457,7 +457,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                     <div><i class="bi bi-calendar me-1"></i><span id="summary-pickup-date">-</span> <span class="ms-2"><i class="bi bi-clock me-1"></i><span id="summary-pickup-time">-</span></span></div>
                                 </div>
                                 <div>
-                                    <span class="text-muted">R�ckgabe:</span>
+                                    <span class="text-muted">Rückgabe:</span>
                                     <div><i class="bi bi-geo-alt me-1"></i><span id="summary-dropoff-loc">-</span></div>
                                     <div><i class="bi bi-calendar me-1"></i><span id="summary-dropoff-date">-</span> <span class="ms-2"><i class="bi bi-clock me-1"></i><span id="summary-dropoff-time">-</span></span></div>
                             </div>
