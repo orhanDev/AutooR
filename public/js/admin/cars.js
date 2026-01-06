@@ -97,7 +97,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         <td>${car.is_available ? 'Ja' : 'Nein'}</td>
                         <td>
                             <button class="nav-link-text btn-sm edit-car-btn" data-id="${car.car_id}">Bearbeiten</button>
-                            <button class="nav-link-text btn-sm delete-car-btn" data-id="${car.car_id}">LÃ¶schen</button>
+                            <button class="nav-link-text btn-sm delete-car-btn" data-id="${car.car_id}">Löschen</button>
                         </td>
                     </tr>
                 `;
@@ -165,7 +165,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     async function handleDeleteClick(e) {
         const carId = e.target.dataset.id;
-        if (confirm('Sind Sie sicher, dass Sie dieses Fahrzeug lÃ¶schen mÃ¶chten?')) {
+        if (confirm('Sind Sie sicher, dass Sie dieses Fahrzeug löschen möchten?')) {
             try {
                 const response = await fetch(`/api/admin/cars/${carId}`, {
                     method: 'DELETE',
@@ -174,17 +174,17 @@ document.addEventListener('DOMContentLoaded', async () => {
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
-                alert('Fahrzeug wurde erfolgreich gelÃ¶scht.');
+                alert('Fahrzeug wurde erfolgreich gelöscht.');
                 fetchCars(); 
             } catch (error) {
-                console.error('Fehler beim LÃ¶schen des Fahrzeugs:', error);
-                alert(`Fehler beim LÃ¶schen des Fahrzeugs: ${error.message}`);
+                console.error('Fehler beim Löschen des Fahrzeugs:', error);
+                alert(`Fehler beim Löschen des Fahrzeugs: ${error.message}`);
             }
         }
     }
 
     addCarBtn.addEventListener('click', () => {
-        carModalLabel.textContent = 'Neues Fahrzeug hinzufÃ¼gen';
+        carModalLabel.textContent = 'Neues Fahrzeug hinzufügen';
         carForm.reset(); 
         carIdInput.value = ''; 
         isAvailableCheckbox.checked = true; 
@@ -232,15 +232,15 @@ document.addEventListener('DOMContentLoaded', async () => {
             const data = await response.json();
 
             if (response.ok) {
-                alert(`Fahrzeug wurde erfolgreich ${id ? 'aktualisiert' : 'hinzugefÃ¼gt'}!`);
+                alert(`Fahrzeug wurde erfolgreich ${id ? 'aktualisiert' : 'hinzugefügt'}!`);
                 carModal.hide();
                 fetchCars(); 
             } else {
-                throw new Error(data.message || `Fehler beim ${id ? 'Aktualisieren' : 'HinzufÃ¼gen'} des Fahrzeugs.`);
+                throw new Error(data.message || `Fehler beim ${id ? 'Aktualisieren' : 'Hinzufügen'} des Fahrzeugs.`);
             }
         } catch (error) {
-            console.error(`Fehler beim ${id ? 'Aktualisieren' : 'HinzufÃ¼gen'} des Fahrzeugs:`, error);
-            alert(`Fehler beim ${id ? 'Aktualisieren' : 'HinzufÃ¼gen'} des Fahrzeugs: ${error.message}`);
+            console.error(`Fehler beim ${id ? 'Aktualisieren' : 'Hinzufügen'} des Fahrzeugs:`, error);
+            alert(`Fehler beim ${id ? 'Aktualisieren' : 'Hinzufügen'} des Fahrzeugs: ${error.message}`);
         }
     });
 

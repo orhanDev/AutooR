@@ -42,13 +42,13 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         if (!data.firstName || !data.lastName || !data.email || !data.subject || !data.message || !data.privacy) {
-            showAlert('Bitte fÃ¼llen Sie alle Pflichtfelder aus und akzeptieren Sie die DatenschutzerklÃ¤rung.', 'danger');
+            showAlert('Bitte füllen Sie alle Pflichtfelder aus und akzeptieren Sie die Datenschutzerklärung.', 'danger');
             return;
         }
 
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(data.email)) {
-            showAlert('Bitte geben Sie eine gÃ¼ltige E-Mail-Adresse ein.', 'danger');
+            showAlert('Bitte geben Sie eine gültige E-Mail-Adresse ein.', 'danger');
             return;
         }
         
@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const result = await response.json();
             
             if (response.ok) {
-                showAlert('Vielen Dank fÃ¼r Ihre Nachricht! Wir werden uns schnellstmÃ¶glich bei Ihnen melden.', 'success');
+                showAlert('Vielen Dank für Ihre Nachricht! Wir werden uns schnellstmöglich bei Ihnen melden.', 'success');
                 contactForm.reset();
             } else {
                 showAlert(result.error || 'Beim Senden der Nachricht ist ein Fehler aufgetreten.', 'danger');

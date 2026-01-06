@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const token = localStorage.getItem('token');
 
     if (!token) {
-        alert('Sie mÃ¼ssen sich anmelden, um diese Seite anzuzeigen.');
+        alert('Sie müssen sich anmelden, um diese Seite anzuzeigen.');
         window.location.href = '/views/login.html';
         return;
     }
@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         } catch (error) {
             console.error('Fehler beim Abrufen der Admin-Dashboard-Daten:', error);
-            alert('Dashboard-Daten konnten nicht geladen werden. Bitte versuchen Sie es spÃ¤ter erneut.');
+            alert('Dashboard-Daten konnten nicht geladen werden. Bitte versuchen Sie es später erneut.');
         }
     }
 

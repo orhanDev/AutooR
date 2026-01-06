@@ -252,7 +252,7 @@ function initializeFormSubmission() {
             const dropoffDate = document.getElementById('dropoff-date-selector').value;
 
             if (!pickupLocation || !dropoffLocation || !pickupDate || !dropoffDate) {
-                alert('Bitte fÃ¼llen Sie alle Felder aus.');
+                alert('Bitte füllen Sie alle Felder aus.');
                 return;
             }
 

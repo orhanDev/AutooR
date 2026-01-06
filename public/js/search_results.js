@@ -176,9 +176,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="text-center py-5">
                         <i class="bi bi-search text-muted" style="font-size: 3rem;"></i>
                         <h3 class="mt-3 text-muted">Keine Fahrzeuge gefunden</h3>
-                        <p class="text-muted">Versuchen Sie andere Filtereinstellungen oder Ã¤ndern Sie Ihre Suchkriterien.</p>
+                        <p class="text-muted">Versuchen Sie andere Filtereinstellungen oder ändern Sie Ihre Suchkriterien.</p>
                         <button class="nav-link-text" onclick="location.reload()">
-                            <i class="bi bi-arrow-clockwise me-2"></i>Filter zurÃ¼cksetzen
+                            <i class="bi bi-arrow-clockwise me-2"></i>Filter zurücksetzen
                         </button>
                     </div>
                 </div>`;
@@ -274,7 +274,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="col-12">
                         <div class="alert alert-danger text-center">
                             <i class="bi bi-exclamation-triangle me-2"></i>
-                            Fahrzeuge konnten nicht geladen werden. Bitte versuchen Sie es spÃ¤ter erneut.
+                            Fahrzeuge konnten nicht geladen werden. Bitte versuchen Sie es später erneut.
                         </div>
                     </div>`;
             }
