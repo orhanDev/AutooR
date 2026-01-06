@@ -426,7 +426,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        const stripSimilar = (s) => String(s || '').replace(/\s*oder\s+ähnlich/gi, '').trim();
+        const stripSimilar = (s) => String(s || '').replace(/\s*oder\s+�hnlich/gi, '').trim();
         const cards = filteredVehicles.map(vehicle => {
             const title = `${vehicle.make || ''} ${stripSimilar(vehicle.model || '')}`.trim();
             const img = toImg(vehicle);

@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const isAdminCheckbox = document.getElementById('is-admin');
 
     if (!token) {
-        alert('Bu sayfayÄ± gÃ¶rÃ¼ntÃ¼lemek iÃ§in giriÅŸ yapmanÄ±z gerekiyor.');
+        alert('Sie müssen sich anmelden, um diese Seite anzuzeigen.');
         window.location.href = '/views/login.html';
         return;
     }
@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
 
             if (response.status === 403) {
-                alert('YÃ¶netici yetkiniz bulunmamaktadÄ±r.');
+                alert('Sie haben keine Administratorrechte.');
                 window.location.href = '/';
                 return;
             }
@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             usersTableBody.innerHTML = ''; 
 
             if (users.length === 0) {
-                usersTableBody.innerHTML = '<tr><td colspan="6" class="text-center">HenÃ¼z hiÃ§ kullanÄ±cÄ± bulunmamaktadÄ±r.</td></tr>';
+                usersTableBody.innerHTML = '<tr><td colspan="6" class="text-center">Noch keine Benutzer vorhanden.</td></tr>';
                 return;
             }
 
@@ -47,11 +47,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                         <td>${user.first_name} ${user.last_name}</td>
                         <td>${user.email}</td>
                         <td>${user.phone_number || '-'}</td>
-                        <td>${user.is_admin ? 'Evet' : 'HayÄ±r'}</td>
+                        <td>${user.is_admin ? 'Ja' : 'Nein'}</td>
                         <td>${new Date(user.created_at).toLocaleDateString()}</td>
                         <td>
-                            <button class="nav-link-text btn-sm edit-user-btn" data-id="${user.user_id}">DÃ¼zenle</button>
-                            <button class="nav-link-text btn-sm delete-user-btn" data-id="${user.user_id}">Sil</button>
+                            <button class="nav-link-text btn-sm edit-user-btn" data-id="${user.user_id}">Bearbeiten</button>
+                            <button class="nav-link-text btn-sm delete-user-btn" data-id="${user.user_id}">Löschen</button>
                         </td>
                     </tr>
                 `;
@@ -61,8 +61,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             attachEventListeners();
 
         } catch (error) {
-            console.error('KullanÄ±cÄ±lar Ã§ekilirken hata:', error);
-            usersTableBody.innerHTML = '<tr><td colspan="6" class="text-danger text-center">KullanÄ±cÄ±lar yÃ¼klenemedi.</td></tr>';
+            console.error('Fehler beim Laden der Benutzer:', error);
+            usersTableBody.innerHTML = '<tr><td colspan="6" class="text-danger text-center">Benutzer konnten nicht geladen werden.</td></tr>';
         }
     }
 
@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     async function handleEditClick(e) {
         const userId = e.target.dataset.id;
-        userModalLabel.textContent = 'KullanÄ±cÄ± DÃ¼zenle';
+        userModalLabel.textContent = 'Benutzer bearbeiten';
         userForm.reset(); 
         userIdInput.value = userId;
 
@@ -99,14 +99,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             userModal.show();
         } catch (error) {
-            console.error('KullanÄ±cÄ± detaylarÄ± Ã§ekilirken hata:', error);
-            alert('KullanÄ±cÄ± detaylarÄ± yÃ¼klenemedi.');
+            console.error('Fehler beim Laden der Benutzerdetails:', error);
+            alert('Benutzerdetails konnten nicht geladen werden.');
         }
     }
 
     async function handleDeleteClick(e) {
         const userId = e.target.dataset.id;
-        if (confirm('Bu kullanÄ±cÄ±yÄ± silmek istediÄŸinizden emin misiniz? Bu iÅŸlem, bu kullanÄ±cÄ±nÄ±n tÃ¼m rezervasyonlarÄ±nÄ± da silecektir.')) {
+        if (confirm('Sind Sie sicher, dass Sie diesen Benutzer löschen möchten? Diese Aktion löscht auch alle Reservierungen dieses Benutzers.')) {
             try {
                 const response = await fetch(`/api/admin/users/${userId}`, {
                     method: 'DELETE',
@@ -115,11 +115,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
-                alert('KullanÄ±cÄ± baÅŸarÄ±yla silindi.');
+                alert('Benutzer erfolgreich gelöscht.');
                 fetchUsers(); 
             } catch (error) {
-                console.error('KullanÄ±cÄ± silinirken hata:', error);
-                alert(`KullanÄ±cÄ± silinirken bir hata oluÅŸtu: ${error.message}`);
+            console.error('Fehler beim Löschen des Benutzers:', error);
+            alert(`Beim Löschen des Benutzers ist ein Fehler aufgetreten: ${error.message}`);
             }
         }
     }
@@ -145,15 +145,15 @@ document.addEventListener('DOMContentLoaded', async () => {
             const data = await response.json();
 
             if (response.ok) {
-                alert('KullanÄ±cÄ± baÅŸarÄ±yla gÃ¼ncellendi!');
+                alert('Benutzer erfolgreich aktualisiert!');
                 userModal.hide();
                 fetchUsers(); 
             } else {
-                throw new Error(data.message || 'KullanÄ±cÄ± gÃ¼ncellenirken bir hata oluÅŸtu.');
+                throw new Error(data.message || 'Beim Aktualisieren des Benutzers ist ein Fehler aufgetreten.');
             }
         } catch (error) {
-            console.error('KullanÄ±cÄ± gÃ¼ncelleme hatasÄ±:', error);
-            alert(`KullanÄ±cÄ± gÃ¼ncellenirken bir hata oluÅŸtu: ${error.message}`);
+            console.error('Fehler beim Aktualisieren des Benutzers:', error);
+            alert(`Beim Aktualisieren des Benutzers ist ein Fehler aufgetreten: ${error.message}`);
         }
     });
 
@@ -162,7 +162,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('admin-logout-link').addEventListener('click', (e) => {
         e.preventDefault();
         localStorage.removeItem('token');
-        alert('BaÅŸarÄ±yla Ã§Ä±kÄ±ÅŸ yapÄ±ldÄ±.');
+        alert('Erfolgreich abgemeldet.');
         window.location.href = '/';
     });
 });

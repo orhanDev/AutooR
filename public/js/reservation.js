@@ -114,7 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     if (!selectedCarId && !selectedVehicle) {
-        showError('Kein Fahrzeug ausgewählt');
+        showError('Kein Fahrzeug ausgew�hlt');
         return;
     }
     
@@ -316,17 +316,17 @@ document.addEventListener('DOMContentLoaded', () => {
                         <div class="rounded-4 p-3 mb-4 summary-box" style="background:#f7f7f7;">
                             <div class="row g-3 align-items-end">
                                 <div class="col-12">
-                                    <label class="form-label small text-muted mb-1">Abholung & Räckgabe</label>
+                                    <label class="form-label small text-muted mb-1">Abholung & R�ckgabe</label>
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="input-group qr-loc">
                                         <span class="input-group-text bg-white"><i class="bi bi-geo-alt"></i></span>
                                         <select id="qr-pickup-location" class="form-select border-2 qr-select">
-                                            <option value="">Bitte wählen</option>
+                                            <option value="">Bitte w�hlen</option>
                                         <option value="berlin">Berlin Zentrum</option>
                                         <option value="hamburg">Hamburg Zentrum</option>
-                                        <option value="mänchen">Mänchen Zentrum</option>
-                                        <option value="käln">Käln Zentrum</option>
+                                        <option value="m�nchen">M�nchen Zentrum</option>
+                                        <option value="k�ln">K�ln Zentrum</option>
                                         <option value="frankfurt">Frankfurt am Main Zentrum</option>
                                         <option value="stuttgart">Stuttgart Zentrum</option>
                                     </select>
@@ -336,11 +336,11 @@ document.addEventListener('DOMContentLoaded', () => {
                                     <div class="input-group qr-loc">
                                         <span class="input-group-text bg-white"><i class="bi bi-geo-alt"></i></span>
                                         <select id="qr-dropoff-location" class="form-select border-2 qr-select">
-                                            <option value="">Bitte wählen</option>
+                                            <option value="">Bitte w�hlen</option>
                                         <option value="berlin">Berlin Zentrum</option>
                                         <option value="hamburg">Hamburg Zentrum</option>
-                                        <option value="mänchen">Mänchen Zentrum</option>
-                                        <option value="käln">Käln Zentrum</option>
+                                        <option value="m�nchen">M�nchen Zentrum</option>
+                                        <option value="k�ln">K�ln Zentrum</option>
                                         <option value="frankfurt">Frankfurt am Main Zentrum</option>
                                         <option value="stuttgart">Stuttgart Zentrum</option>
                                     </select>
@@ -360,7 +360,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 </div>
                                 </div>
                                 <div class="col-md-6 col-xl-3">
-                                    <label class="form-label small text-muted mb-1">Räckgabedatum</label>
+                                    <label class="form-label small text-muted mb-1">R�ckgabedatum</label>
                                     <div class="input-group flex-nowrap">
                                         <span class="input-group-text bg-white"><i class="bi bi-calendar"></i></span>
                                         <input type="text" id="qr-dropoff-date" class="form-control border-2 qr-select" placeholder="TT.MM.JJJJ">
@@ -428,7 +428,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 <div class="col-lg-4 mb-4">
                     <div class="bg-white rounded-4 p-4 shadow-sm border summary-card">
-                        <h5 class="fw-bold mb-4">Fahrzeugäbersicht</h5>
+                        <h5 class="fw-bold mb-4">Fahrzeug�bersicht</h5>
                         
                         <div class="text-center mb-3">
                             <img src="${resolveVehicleImage(vehicle)}" alt="${vehicle.make} ${vehicle.model}" 
@@ -449,7 +449,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         </div>
 
                         <div class="rounded-3 p-3 mb-3 summary-box" style="background:#f7f7f7;">
-                            <h6 class="fw-bold mb-2">Abholung & Räckgabe</h6>
+                            <h6 class="fw-bold mb-2">Abholung & R�ckgabe</h6>
                             <div class="small">
                                 <div class="mb-2">
                                     <span class="text-muted">Abholung:</span>
@@ -457,7 +457,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                     <div><i class="bi bi-calendar me-1"></i><span id="summary-pickup-date">-</span> <span class="ms-2"><i class="bi bi-clock me-1"></i><span id="summary-pickup-time">-</span></span></div>
                                 </div>
                                 <div>
-                                    <span class="text-muted">Räckgabe:</span>
+                                    <span class="text-muted">R�ckgabe:</span>
                                     <div><i class="bi bi-geo-alt me-1"></i><span id="summary-dropoff-loc">-</span></div>
                                     <div><i class="bi bi-calendar me-1"></i><span id="summary-dropoff-date">-</span> <span class="ms-2"><i class="bi bi-clock me-1"></i><span id="summary-dropoff-time">-</span></span></div>
                             </div>
@@ -465,14 +465,14 @@ document.addEventListener('DOMContentLoaded', () => {
                         </div>
                         
                         <div class="bg-light rounded-3 p-3 summary-box">
-                            <h6 class="fw-bold mb-3">Preisäbersicht</h6>
+                            <h6 class="fw-bold mb-3">Preis�bersicht</h6>
                             <div id="price-breakdown">
                                 <div class="mb-3">
                                     <div class="d-flex justify-content-between align-items-center mb-1">
                                         <span class="text-muted small" id="base-price-label">Grundpreis</span>
                                         <div id="base-price" class="text-end">
                                             <span class="text-muted small text-decoration-line-through me-2" id="original-price" style="display: none;"></span>
-                                            <span class="fw-bold" id="current-price">ä${Math.floor(Number(vehicle.daily_rate)).toLocaleString('de-DE')}</span>
+                                            <span class="fw-bold" id="current-price">�${Math.floor(Number(vehicle.daily_rate)).toLocaleString('de-DE')}</span>
                                         </div>
                                     </div>
                                     <div id="discount-row" style="display: none;" class="mt-1">
@@ -487,16 +487,16 @@ document.addEventListener('DOMContentLoaded', () => {
                                 </div>
                                 <div class="d-flex justify-content-between mb-2">
                                     <span class="text-muted small">Versicherung</span>
-                                    <span id="insurance-price" class="text-muted">ä0</span>
+                                    <span id="insurance-price" class="text-muted">�0</span>
                                 </div>
                                 <div class="d-flex justify-content-between mb-2">
                                     <span class="text-muted small">Zusatzleistungen</span>
-                                    <span id="additional-services-price" class="text-muted">ä0</span>
+                                    <span id="additional-services-price" class="text-muted">�0</span>
                                 </div>
                                 <hr class="my-3">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <span class="fw-bold">Gesamtpreis</span>
-                                    <span id="total-price" class="fw-bold fs-5 text-warning">ä${Math.floor(Number(vehicle.daily_rate)).toLocaleString('de-DE')}</span>
+                                    <span id="total-price" class="fw-bold fs-5 text-warning">�${Math.floor(Number(vehicle.daily_rate)).toLocaleString('de-DE')}</span>
                                 </div>
                             </div>
                         </div>
@@ -996,16 +996,16 @@ document.addEventListener('DOMContentLoaded', () => {
         if (currentPriceEl) {
             if (discount > 0) {
                 if (originalPriceEl) {
-                    originalPriceEl.textContent = `ä${formatPrice(basePrice)}`;
+                    originalPriceEl.textContent = `�${formatPrice(basePrice)}`;
                     originalPriceEl.style.display = 'inline';
                 }
-                currentPriceEl.textContent = `ä${formatPrice(discountedBasePrice)}`;
+                currentPriceEl.textContent = `�${formatPrice(discountedBasePrice)}`;
                 currentPriceEl.className = 'fw-bold text-success';
             } else {
                 if (originalPriceEl) {
                     originalPriceEl.style.display = 'none';
                 }
-                currentPriceEl.textContent = `ä${formatPrice(basePrice)}`;
+                currentPriceEl.textContent = `�${formatPrice(basePrice)}`;
                 currentPriceEl.className = 'fw-bold';
             }
         }
@@ -1013,16 +1013,16 @@ document.addEventListener('DOMContentLoaded', () => {
         if (discountRow && discountEl && discountLabelText) {
             if (discount > 0) {
                 discountLabelText.textContent = discountLabel.replace(/\s+\d+%$/, ''); 
-                discountEl.textContent = `-ä${formatPrice(discount)}`;
+                discountEl.textContent = `-�${formatPrice(discount)}`;
                 discountRow.style.display = 'block';
             } else {
                 discountRow.style.display = 'none';
             }
         }
         
-        document.getElementById('insurance-price').textContent = `ä${formatPrice(insurance)}`;
-        document.getElementById('additional-services-price').textContent = `ä${formatPrice(additionalServices)}`;
-        document.getElementById('total-price').textContent = `ä${formatPrice(totalPrice)}`;
+        document.getElementById('insurance-price').textContent = `�${formatPrice(insurance)}`;
+        document.getElementById('additional-services-price').textContent = `�${formatPrice(additionalServices)}`;
+        document.getElementById('total-price').textContent = `�${formatPrice(totalPrice)}`;
     }
     
     function getDiscountPercent(offerId, offerType, offerCategory, vehicle, pickupDate, dropoffDate, diffHours) {
@@ -1056,10 +1056,10 @@ document.addEventListener('DOMContentLoaded', () => {
         switch (offerId) {
             case 'offer-1': 
                 if (daysUntilPickup >= 14 && rentalDays >= 3) {
-                    console.log('Frähbucher-Rabatt applied: 10%');
+                    console.log('Fr�hbucher-Rabatt applied: 10%');
                     return 10;
                 }
-                console.log('Frähbucher-Rabatt not applicable:', { 
+                console.log('Fr�hbucher-Rabatt not applicable:', { 
                     daysUntilPickup, 
                     requiredDays: 14,
                     rentalDays, 
@@ -1108,7 +1108,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     function getDiscountLabel(offerId) {
         const labels = {
-            'offer-1': 'Frähbucher-Rabatt 10%',
+            'offer-1': 'Fr�hbucher-Rabatt 10%',
             'offer-2': 'Wochenend-Special 10%',
             'offer-3': 'Langzeit-Miete 10%',
             'offer-4': 'Studenten-Rabatt 10%',
@@ -1445,7 +1445,7 @@ function showGuestOrLoginModal() {
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body text-center">
-                        <p class="mb-4">Wie mächten Sie fortfahren?</p>
+                        <p class="mb-4">Wie m�chten Sie fortfahren?</p>
                         <div class="d-grid gap-3">
                             <button type="button" class="btn btn-outline-primary btn-lg" id="continueAsGuestBtn">
                                 <i class="bi bi-person me-2"></i>
@@ -1457,8 +1457,8 @@ function showGuestOrLoginModal() {
                             </button>
                         </div>
                         <p class="text-muted mt-3 small">
-                            Als Gast kännen Sie ohne Anmeldung reservieren. 
-                            Sie kännen sich später jederzeit anmelden.
+                            Als Gast k�nnen Sie ohne Anmeldung reservieren. 
+                            Sie k�nnen sich sp�ter jederzeit anmelden.
                         </p>
                     </div>
                 </div>

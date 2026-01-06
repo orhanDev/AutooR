@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('=== Auth.js äalisiyor ===');
+    console.log('=== Auth.js �alisiyor ===');
     const authLinksContainer = document.getElementById('auth-links');
     console.log('auth-links container:', authLinksContainer);
     
@@ -120,7 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function logout() {
-        console.log('Logout äalisiyor');
+        console.log('Logout �alisiyor');
         sessionStorage.removeItem('token');
         sessionStorage.removeItem('welcome_name');
         sessionStorage.removeItem('user');
