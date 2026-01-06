@@ -15,7 +15,7 @@ const pool = new Pool({
 router.get('/facebook', (req, res) => {
     const FACEBOOK_APP_ID = process.env.FACEBOOK_APP_ID;
     const FACEBOOK_APP_SECRET = process.env.FACEBOOK_APP_SECRET;
-    const FACEBOOK_REDIRECT_URI = process.env.FACEBOOK_REDIRECT_URI || 'https:
+    const FACEBOOK_REDIRECT_URI = process.env.FACEBOOK_REDIRECT_URI || 'http://localhost:3000/auth/facebook/callback';
     const state = req.query.redirect || 'home';
 
     if (!FACEBOOK_APP_ID || !FACEBOOK_APP_SECRET || 
@@ -24,7 +24,7 @@ router.get('/facebook', (req, res) => {
         return res.redirect('/login?error=facebook_not_configured&provider=Facebook');
     }
     
-    const authURL = `https:
+    const authURL = `https://www.facebook.com/v18.0/dialog/oauth?client_id=${FACEBOOK_APP_ID}&redirect_uri=${encodeURIComponent(FACEBOOK_REDIRECT_URI)}&state=${state}&scope=email,public_profile`;
     
     res.redirect(authURL);
 });
@@ -46,13 +46,13 @@ router.get('/facebook/callback', async (req, res) => {
         
         const FACEBOOK_APP_ID = process.env.FACEBOOK_APP_ID;
         const FACEBOOK_APP_SECRET = process.env.FACEBOOK_APP_SECRET;
-        const FACEBOOK_REDIRECT_URI = process.env.FACEBOOK_REDIRECT_URI || 'https:
+        const FACEBOOK_REDIRECT_URI = process.env.FACEBOOK_REDIRECT_URI || 'http://localhost:3000/auth/facebook/callback';
         
         if (!FACEBOOK_APP_ID || !FACEBOOK_APP_SECRET || FACEBOOK_APP_ID === 'your-facebook-app-id') {
             return res.redirect('/login?error=facebook_not_configured');
         }
 
-        const tokenResponse = await axios.get('https:
+        const tokenResponse = await axios.get('https://graph.facebook.com/v18.0/oauth/access_token', {
             params: {
                 client_id: FACEBOOK_APP_ID,
                 client_secret: FACEBOOK_APP_SECRET,
@@ -63,7 +63,7 @@ router.get('/facebook/callback', async (req, res) => {
         
         const accessToken = tokenResponse.data.access_token;
 
-        const userResponse = await axios.get('https:
+        const userResponse = await axios.get('https://graph.facebook.com/v18.0/me', {
             params: {
                 fields: 'id,name,email,first_name,last_name',
                 access_token: accessToken
