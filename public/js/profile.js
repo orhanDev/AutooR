@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     setTimeout(() => {
         if (typeof createNavbar === 'function') {
-            createNavbar();
+            createNavbar(); 
         }
         if (typeof updateNavbar === 'function') {
             updateNavbar();
