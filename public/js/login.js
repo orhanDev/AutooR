@@ -130,21 +130,16 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             e.stopPropagation();
             console.log('Submit button touched (mobile)');
-            // Trigger form submit
             loginForm.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
         }, { passive: false });
         
-        // Also add click handler as backup
         submitBtn.addEventListener('click', function(e) {
-            // Only prevent default if form is not already submitting
             if (!submitBtn.disabled) {
                 console.log('Submit button clicked');
-                // Let form submit handler handle it
             }
         });
     }
     
-    // Also add touch support for register link button
     const registerLink = document.querySelector('.btn-register');
     if (registerLink) {
         registerLink.addEventListener('touchend', function(e) {
@@ -334,10 +329,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
                 
                 if (userResponse.ok) {
-                    // User is logged in, redirect to homepage
                     window.location.href = '/';
                 } else {
-                    // Token invalid, clear it
                     sessionStorage.removeItem('token');
                     sessionStorage.removeItem('userData');
                     localStorage.removeItem('token');
@@ -349,7 +342,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     
-    // Call the async function
     checkExistingLogin();
 });
 
