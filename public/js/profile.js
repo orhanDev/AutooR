@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (typeof updateNavbar === 'function') {
             updateNavbar();
         }
-    }, 100);
+    }, 100); 
 
     loadProfileData();
 });
