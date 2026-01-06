@@ -15,7 +15,7 @@ const pool = new Pool({
 router.get('/apple', (req, res) => {
     const APPLE_CLIENT_ID = process.env.APPLE_CLIENT_ID;
     const APPLE_CLIENT_SECRET = process.env.APPLE_CLIENT_SECRET;
-    const APPLE_REDIRECT_URI = process.env.APPLE_REDIRECT_URI || 'https:
+    const APPLE_REDIRECT_URI = process.env.APPLE_REDIRECT_URI || 'http://localhost:3000/auth/apple/callback';
     const state = req.query.redirect || 'home';
 
     if (!APPLE_CLIENT_ID || !APPLE_CLIENT_SECRET || 
@@ -24,7 +24,7 @@ router.get('/apple', (req, res) => {
         return res.redirect('/login?error=apple_not_configured&provider=Apple');
     }
 
-    const authURL = `https:
+    const authURL = `https://appleid.apple.com/auth/authorize?client_id=${APPLE_CLIENT_ID}&redirect_uri=${encodeURIComponent(APPLE_REDIRECT_URI)}&response_type=code&scope=name email&state=${state}`;
     
     res.redirect(authURL);
 });
@@ -46,7 +46,7 @@ router.post('/apple/callback', async (req, res) => {
         
         const APPLE_CLIENT_ID = process.env.APPLE_CLIENT_ID;
         const APPLE_CLIENT_SECRET = process.env.APPLE_CLIENT_SECRET;
-        const APPLE_REDIRECT_URI = process.env.APPLE_REDIRECT_URI || 'https:
+        const APPLE_REDIRECT_URI = process.env.APPLE_REDIRECT_URI || 'http://localhost:3000/auth/apple/callback';
         
         if (!APPLE_CLIENT_ID || !APPLE_CLIENT_SECRET || APPLE_CLIENT_ID === 'your-apple-client-id') {
             return res.redirect('/login?error=apple_not_configured');

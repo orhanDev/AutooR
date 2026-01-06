@@ -254,12 +254,6 @@
         }
 
         @media (max-width: 768px) {
-            body#main-body {
-                background-size: 150% !important;
-                background-position: center center !important;
-                background-attachment: scroll !important;
-            }
-            
             .hero-section-porsche {
                 height: 100vh !important;
                 min-height: 100vh !important;
@@ -378,12 +372,6 @@
         }
         
         @media (max-width: 480px) {
-            body#main-body {
-                background-size: 160% !important;
-                background-position: center center !important;
-                background-attachment: scroll !important;
-            }
-            
             .hero-title {
                 font-size: 2rem !important;
             }
@@ -2252,7 +2240,7 @@
         body > :not(#navbar-container):not(style):not(script) { display: none !important; }
     </style>
 </head>
-<body id="main-body" style="background-image:url('images/cars/1.jpg') !important; background-size: cover !important; background-position: center !important; background-attachment: fixed !important; background-repeat: no-repeat !important; padding-top: 0 !important;">
+<body style="background-image:url('images/cars/1.jpg') !important; background-size: cover !important; background-position: center !important; background-attachment: fixed !important; background-repeat: no-repeat !important; padding-top: 0 !important;">
     <div id="navbar-container">
     </div>
     <div id="login-button-container" style="position: fixed; top: 20px; right: 20px; z-index: 1000; display: none;">
@@ -5060,35 +5048,6 @@
                 console.error('Error parsing user data:', error);
             }
         }
-        
-        function updateMobileBackground() {
-            const body = document.getElementById('main-body');
-            if (!body) return;
-            
-            if (window.innerWidth <= 480) {
-                body.style.backgroundSize = '160%';
-            } else if (window.innerWidth <= 768) {
-                body.style.backgroundSize = '150%';
-            } else {
-                body.style.backgroundSize = 'cover';
-            }
-            
-            if (window.innerWidth <= 768) {
-                body.style.backgroundAttachment = 'scroll';
-                body.style.backgroundPosition = 'center center';
-            } else {
-                body.style.backgroundAttachment = 'fixed';
-                body.style.backgroundPosition = 'center';
-            }
-        }
-        
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', updateMobileBackground);
-        } else {
-            updateMobileBackground();
-        }
-        
-        window.addEventListener('resize', updateMobileBackground);
     </script>
 </body>
 </html>

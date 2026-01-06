@@ -1,10 +1,6 @@
 (function() {
     'use strict';
     
-    document.addEventListener('contextmenu', function(e) {
-        e.preventDefault();
-        return false;
-    }, false);
     
     document.addEventListener('selectstart', function(e) {
         e.preventDefault();
