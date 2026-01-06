@@ -184,7 +184,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (response.ok && result.token) {
                 console.log('Login successful:', result);
                 
-                // Store token in both sessionStorage and localStorage
                 sessionStorage.setItem('token', result.token);
                 localStorage.setItem('token', result.token);
                 
