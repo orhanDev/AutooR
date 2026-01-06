@@ -218,7 +218,7 @@ function initializeDatePickers() {
 
         dropoffDate.addEventListener('change', function() {
             if (pickupDate.value && this.value < pickupDate.value) {
-                alert('RÃ¼ckgabedatum muss nach dem Abholdatum liegen.');
+                alert('Rückgabedatum muss nach dem Abholdatum liegen.');
                 this.value = '';
             }
         });

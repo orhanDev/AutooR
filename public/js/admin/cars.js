@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 headers: { 'x-auth-token': token } 
             });
             const locations = await locationsResponse.json();
-            locationSelect.innerHTML = '<option value="">Standort auswÃ¤hlen...</option>';
+            locationSelect.innerHTML = '<option value="">Standort auswählen...</option>';
             locations.forEach(loc => {
                 locationSelect.innerHTML += `<option value="${loc.location_id}">${loc.name}</option>`;
             });
