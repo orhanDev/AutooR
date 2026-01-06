@@ -529,7 +529,6 @@ body {
 .heading-badge svg circle { fill: none; stroke: #000; stroke-width: 2; }
 .heading-badge svg path { fill: none; stroke: #000; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
-/* Animation Classes */
 .fade-in {
     opacity: 0;
     transform: translateY(30px);
@@ -565,9 +564,6 @@ body {
     100% { transform: rotate(360deg); }
 }
 
-/* Page-specific backgrounds handled per page; no global body background here */
-
-/* Image fallback styles */
 .car-image img[src*="default-car.jpg"] {
     opacity: 0.7;
 }
@@ -773,7 +769,6 @@ body {
     }
 }
 
-/* Hero Section - Porsche Style */
 .hero-section-porsche {
     position: relative;
     height: 100vh;
@@ -900,7 +895,6 @@ body {
     }
 }
 
-/* Responsive adjustments for Porsche style */
 @media (max-width: 768px) {
     .hero-title-porsche {
         font-size: 2.5rem;
@@ -940,7 +934,6 @@ body {
     }
 }
 
-/* Popular Cars Section - Modern & Luxury */
 .popular-cars-section {
     background: linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%);
     padding: 20px 0 80px 0;
@@ -998,7 +991,6 @@ body {
     margin: 0 auto;
 }
 
-/* Modern Car Cards */
 .car-card {
     background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
     backdrop-filter: blur(20px);
@@ -1193,7 +1185,6 @@ body {
     }
 }
 
-/* Popular Cars Section - Porsche Style */
 .popular-cars-section {
     background: #ffffff;
     padding: 100px 0;
@@ -1223,7 +1214,6 @@ body {
     margin: 0 auto;
 }
 
-/* Porsche Style Car Cards */
 .car-card {
     background: white;
     border: none;
@@ -1342,7 +1332,6 @@ body {
     text-decoration: none;
 }
 
-/* Responsive adjustments */
 @media (max-width: 1200px) {
     .hero-section-porsche {
         height: 100vh;
@@ -1386,7 +1375,6 @@ body {
         max-width: 100% !important;
     }
     
-    /* Car cards responsive for large tablets */
     .car-card {
         width: 100% !important;
         height: 380px !important;
@@ -1440,7 +1428,6 @@ body {
         font-size: 0.9rem;
     }
     
-    /* Car cards responsive for tablets */
     .car-card {
         width: 100% !important;
         height: 360px !important;
@@ -1504,7 +1491,6 @@ body {
         font-size: 0.85rem;
     }
     
-    /* Car cards responsive for mobile landscape */
     .car-card {
         width: 100% !important;
         height: 320px !important;
@@ -1579,9 +1565,9 @@ body {
         right: 15px !important;
         padding: 4px 8px !important;
         font-size: 0.7rem !important;
-        background: #ffd43b !important; /* sarı arka plan */
+        background: #ffd43b !important;
         background-color: #ffd43b !important;
-        color: #000000 !important; /* siyah yazı */
+        color: #000000 !important;
     }
 }
 
@@ -1595,7 +1581,6 @@ body {
         font-size: 0.8rem;
     }
     
-    /* Car cards responsive for mobile portrait */
     .car-card {
         width: 100% !important;
         height: 280px !important;
@@ -1670,9 +1655,9 @@ body {
         right: 10px !important;
         padding: 3px 6px !important;
         font-size: 0.6rem !important;
-        background: #ffd43b !important; /* sarı arka plan */
+        background: #ffd43b !important;
         background-color: #ffd43b !important;
-        color: #000000 !important; /* siyah yazı */
+        color: #000000 !important;
     }
 }
 
@@ -1689,7 +1674,6 @@ body {
         font-size: 0.75rem;
     }
     
-    /* Car cards responsive for small mobile */
     .car-card {
         width: 100% !important;
         height: 260px !important;
@@ -1764,9 +1748,9 @@ body {
         right: 8px !important;
         padding: 2px 5px !important;
         font-size: 0.55rem !important;
-        background: #ffd43b !important; /* sarı arka plan */
+        background: #ffd43b !important;
         background-color: #ffd43b !important;
-        color: #000000 !important; /* siyah yazı */
+        color: #000000 !important;
     }
 }
 
@@ -1779,7 +1763,6 @@ body {
         font-size: 0.7rem;
     }
     
-    /* Car cards responsive for very small mobile */
     .car-card {
         width: 100% !important;
         height: 240px !important;
@@ -1854,9 +1837,9 @@ body {
         right: 6px !important;
         padding: 2px 4px !important;
         font-size: 0.5rem !important;
-        background: #ffd43b !important; /* sarı arka plan */
+        background: #ffd43b !important;
         background-color: #ffd43b !important;
-        color: #000000 !important; /* siyah yazı */
+        color: #000000 !important;
     }
 }
 
@@ -1874,7 +1857,6 @@ body {
     flex: unset !important;
 }
 
-/* Hero Section Responsive Height */
 @media (max-width: 768px) {
     .hero-section-porsche {
         height: 100vh !important;
@@ -1978,7 +1960,6 @@ body {
     }
 }
 
-/* Shared summary styles (used in reservation and payment) */
 .summary-card { border: 2px solid #ffc107 !important; box-shadow: 0 8px 28px rgba(0,0,0,.06); }
 .summary-card h5 { border-bottom: 1px solid #eee; padding-bottom: .5rem; }
 .summary-box { border: 1.5px solid #ffc107 !important; }
@@ -2038,7 +2019,6 @@ body {
 }
 
 @media (max-width: 480px) {
-    /* Çok küçük ekranlar için minimum font */
     #pickup-date-selector,
     #dropoff-date-selector,
     #qr-pickup-date,
