@@ -15,7 +15,7 @@ const pool = new Pool({
 function getGoogleClient(redirectUri) {
     const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
     const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
-    const GOOGLE_REDIRECT_URI = redirectUri || process.env.GOOGLE_REDIRECT_URI || 'image.pnghttps:
+    const GOOGLE_REDIRECT_URI = redirectUri || process.env.GOOGLE_REDIRECT_URI || 'http://localhost:3000/auth/google/callback';
     
     if (!GOOGLE_CLIENT_ID || !GOOGLE_CLIENT_SECRET) {
         throw new Error('Google OAuth credentials not configured');
@@ -31,7 +31,7 @@ function getGoogleClient(redirectUri) {
 router.get('/google/status', (req, res) => {
     const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
     const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
-    const GOOGLE_REDIRECT_URI = process.env.GOOGLE_REDIRECT_URI || 'https:
+    const GOOGLE_REDIRECT_URI = process.env.GOOGLE_REDIRECT_URI || 'http://localhost:3000/auth/google/callback';
     
     const isConfigured = GOOGLE_CLIENT_ID && GOOGLE_CLIENT_SECRET && 
                          GOOGLE_CLIENT_ID !== 'your-google-client-id.apps.googleusercontent.com' &&
@@ -67,7 +67,7 @@ router.get('/google', (req, res) => {
             const actualPort = process.env.ACTUAL_HTTPS_PORT || (req.get('host')?.split(':')[1]) || '3443';
             const protocol = req.protocol === 'https' ? 'https' : 'https';
             const host = `localhost:${actualPort}`;
-            GOOGLE_REDIRECT_URI = `${protocol}:
+            GOOGLE_REDIRECT_URI = `${protocol}://${host}/auth/google/callback`;
         }
         
         const googleClient = getGoogleClient(GOOGLE_REDIRECT_URI);
@@ -75,8 +75,8 @@ router.get('/google', (req, res) => {
         const authURL = googleClient.generateAuthUrl({
             access_type: 'offline',
             scope: [
-                'https:
-                'https:
+                'https://www.googleapis.com/auth/userinfo.email',
+                'https://www.googleapis.com/auth/userinfo.profile'
             ],
             redirect_uri: GOOGLE_REDIRECT_URI,
             prompt: 'select_account',
@@ -122,7 +122,7 @@ router.get('/google/callback', async (req, res) => {
             const actualPort = process.env.ACTUAL_HTTPS_PORT || (req.get('host')?.split(':')[1]) || '3443';
             const protocol = req.protocol === 'https' ? 'https' : 'https';
             const host = `localhost:${actualPort}`;
-            GOOGLE_REDIRECT_URI = `${protocol}:
+            GOOGLE_REDIRECT_URI = `${protocol}://${host}/auth/google/callback`;
         }
         
         const googleClient = getGoogleClient(GOOGLE_REDIRECT_URI);
@@ -139,7 +139,7 @@ router.get('/google/callback', async (req, res) => {
         console.log('Google Benutzerinformationen werden abgerufen...');
         
         const response = await googleClient.request({
-            url: 'https:
+            url: 'https://www.googleapis.com/oauth2/v2/userinfo'
         });
         
         const googleUser = {
