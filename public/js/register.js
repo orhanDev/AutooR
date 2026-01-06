@@ -187,16 +187,16 @@ async function saveUserToDatabase(userData) {
         const result = await response.json();
         
         if (result.success) {
-            console.log('Kullanıcı veritabanına kaydedildi:', result.user);
+            console.log('Benutzer wurde in die Datenbank gespeichert:', result.user);
             
             if (result.token) {
                 sessionStorage.setItem('token', result.token);
-                console.log('Token sessionStorage\'a kaydedildi:', result.token);
+                console.log('Token wurde in sessionStorage gespeichert:', result.token);
             }
         } else {
-            console.error('Kullanıcı kayıt hatası:', result.message);
+            console.error('Fehler bei der Benutzerregistrierung:', result.message);
         }
     } catch (error) {
-        console.error('Veritabanı kayıt hatası:', error);
+        console.error('Fehler bei der Datenbankregistrierung:', error);
     }
 }

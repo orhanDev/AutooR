@@ -15,12 +15,12 @@ async function updatePrices() {
   const client = new Client(connectionConfig);
 
   try {
-    console.log('PostgreSQL\'e bağlanılıyor...', connectionConfig);
+    console.log('Verbindung zu PostgreSQL wird hergestellt...', connectionConfig);
     await client.connect();
-    console.log('Bağlantı başarılı!');
+    console.log('Verbindung erfolgreich!');
 
-    // Önce mevcut fiyatları kontrol et
-    console.log('\n=== MEVCUT FİYATLAR ===');
+    // Zuerst aktuelle Preise prüfen
+    console.log('\n=== AKTUELLE PREISE ===');
     const currentPrices = await client.query(`
       SELECT make, model, year, daily_rate 
       FROM cars 
@@ -31,7 +31,7 @@ async function updatePrices() {
       console.log(`${row.make} ${row.model} (${row.year}): €${row.daily_rate}`);
     });
 
-    // Fiyat istatistikleri
+    // Preisstatistiken
     const stats = await client.query(`
       SELECT 
         COUNT(*) as toplam_arac,
@@ -42,15 +42,15 @@ async function updatePrices() {
       FROM cars
     `);
     
-    console.log('\n=== FİYAT İSTATİSTİKLERİ ===');
-    console.log(`Toplam araç: ${stats.rows[0].toplam_arac}`);
-    console.log(`En düşük fiyat: €${stats.rows[0].en_dusuk_fiyat}`);
-    console.log(`En yüksek fiyat: €${stats.rows[0].en_yuksek_fiyat}`);
-    console.log(`Ortalama fiyat: €${Math.round(stats.rows[0].ortalama_fiyat)}`);
-    console.log(`100€ altı araç: ${stats.rows[0].alti_arac}`);
+    console.log('\n=== PREISSTATISTIKEN ===');
+    console.log(`Gesamt Fahrzeuge: ${stats.rows[0].toplam_arac}`);
+    console.log(`Niedrigster Preis: €${stats.rows[0].en_dusuk_fiyat}`);
+    console.log(`Höchster Preis: €${stats.rows[0].en_yuksek_fiyat}`);
+    console.log(`Durchschnittspreis: €${Math.round(stats.rows[0].ortalama_fiyat)}`);
+    console.log(`Fahrzeuge unter 100€: ${stats.rows[0].alti_arac}`);
 
-    // Fiyat güncelleme scriptini oku ve çalıştır
-    console.log('\n=== FİYAT GÜNCELLENİYOR ===');
+    // Preisaktualisierungsskript lesen und ausführen
+    console.log('\n=== PREISE WERDEN AKTUALISIERT ===');
     const updateSqlPath = path.join(__dirname, '..', 'db', 'update_prices_realistic.sql');
     const updateSql = fs.readFileSync(updateSqlPath, 'utf8');
     

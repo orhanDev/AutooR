@@ -86,11 +86,11 @@ document.addEventListener('DOMContentLoaded', () => {
             if (type === 'text') {
                 passwordToggleIcon.classList.remove('bi-eye');
                 passwordToggleIcon.classList.add('bi-eye-slash');
-                passwordToggleBtn.setAttribute('title', 'Şifreyi gizle');
+                passwordToggleBtn.setAttribute('title', 'Passwort ausblenden');
             } else {
                 passwordToggleIcon.classList.remove('bi-eye-slash');
                 passwordToggleIcon.classList.add('bi-eye');
-                passwordToggleBtn.setAttribute('title', 'Şifreyi göster');
+                passwordToggleBtn.setAttribute('title', 'Passwort anzeigen');
             }
         });
     }
@@ -147,7 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 passwordToggleIcon.classList.remove('bi-eye');
                 passwordToggleIcon.classList.add('bi-eye-slash');
                 if (passwordToggleBtn) {
-                    passwordToggleBtn.setAttribute('title', 'Şifreyi gizle');
+                    passwordToggleBtn.setAttribute('title', 'Passwort ausblenden');
                 }
             }
             
@@ -167,7 +167,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     passwordToggleIcon.classList.remove('bi-eye-slash');
                     passwordToggleIcon.classList.add('bi-eye');
                     if (passwordToggleBtn) {
-                        passwordToggleBtn.setAttribute('title', 'Şifreyi göster');
+                        passwordToggleBtn.setAttribute('title', 'Passwort anzeigen');
                     }
                 }
             }, 3000);

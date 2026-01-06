@@ -917,14 +917,14 @@
             font-weight: bold;
         }
         
-        /* Abholdatum'u daha daralt */
+        /* Abholdatum weiter verengen */
         .search-item:nth-child(3) {
             flex: 0 0 auto !important;
             width: 80px !important;
             display: inline-block !important;
         }
         
-        /* Abholdatum yazı boyutunu küçült */
+        /* Schriftgröße für Abholdatum verkleinern */
         .search-item:nth-child(3) select,
         .search-item:nth-child(3) input {
             font-size: 0.75rem;
@@ -932,19 +932,19 @@
             min-height: 38px;
         }
         
-        /* Abholdatum label yazısını küçült */
+        /* Label-Schriftgröße für Abholdatum verkleinern */
         .search-item:nth-child(3) label {
             font-size: 0.85rem;
         }
         
-        /* Rückgabedatum'u daha daralt */
+        /* Rückgabedatum weiter verengen */
         .search-item:nth-child(5) {
             flex: 0 0 auto !important;
             width: 80px !important;
             display: inline-block !important;
         }
         
-        /* Rückgabedatum yazı boyutunu küçült */
+        /* Schriftgröße für Rückgabedatum verkleinern */
         .search-item:nth-child(5) select,
         .search-item:nth-child(5) input {
             font-size: 0.75rem;
@@ -952,12 +952,12 @@
             min-height: 38px;
         }
         
-        /* Rückgabedatum label yazısını küçült */
+        /* Label-Schriftgröße für Rückgabedatum verkleinern */
         .search-item:nth-child(5) label {
             font-size: 0.85rem;
         }
         
-        /* Zeit select'lerini daralt */
+        /* Zeit-Auswahlfelder verengen */
         .search-item:nth-child(4),
         .search-item:nth-child(6) {
             flex: 0 0 auto !important;
@@ -965,7 +965,7 @@
             display: inline-block !important;
         }
         
-        /* Zeit select yazılarını küçült */
+        /* Schriftgröße für Zeit-Auswahl verkleinern */
         .search-item:nth-child(4) select,
         .search-item:nth-child(6) select {
             font-size: 0.75rem;
@@ -973,7 +973,7 @@
             min-height: 38px;
         }
         
-        /* Standort wählen alanlarını daralt */
+        /* Standort-Auswahlfelder verengen */
         .search-item:nth-child(1),
         .search-item:nth-child(2) {
             flex: 0.5;
@@ -1062,7 +1062,7 @@
             font-size: 14px;
         }
         
-        /* Daha güçlü placeholder seçicileri */
+        /* Stärkere Placeholder-Selektoren */
         input::placeholder,
         select::placeholder {
             color: #6c757d !important;
@@ -1085,7 +1085,7 @@
             color: #6c757d !important;
         }
         
-        /* Abholdatum ve Rückgabedatum için özel placeholder */
+        /* Spezieller Placeholder für Abholdatum und Rückgabedatum */
         #pickup-date-selector::placeholder,
         #dropoff-date-selector::placeholder {
             color: #ffffff !important;
@@ -1098,7 +1098,7 @@
             color: #ffffff !important;
         }
         
-        /* En güçlü placeholder override */
+        /* Stärkster Placeholder-Override */
         .search-item .date-wrapper .form-control::placeholder {
             color: #ffffff !important;
         }
@@ -1108,7 +1108,7 @@
             color: #ffffff !important;
         }
         
-        /* Tüm input placeholder'ları için en güçlü seçici */
+        /* Stärkster Selektor für alle Input-Placeholder */
         .search-item input[type="text"]::placeholder {
             color: #ffffff !important;
         }
@@ -1217,7 +1217,7 @@
             backdrop-filter: blur(10px) !important;
         }
         
-        /* En güçlü hover seçici */
+        /* Stärkster Hover-Selektor */
         option:hover {
             background: #4D0602 !important;
             color: #ffffff !important;
@@ -1226,7 +1226,7 @@
             backdrop-filter: blur(10px) !important;
         }
         
-        /* Daha güçlü hover override */
+        /* Stärkerer Hover-Override */
         .search-item select option:hover,
         select option:hover,
         option:hover,
@@ -1248,7 +1248,7 @@
             background-color: var(--option-hover-bg) !important;
         }
         
-        /* En güçlü hover override - tüm olası seçiciler */
+        /* Stärkster Hover-Override - alle möglichen Selektoren */
         .search-item select option:hover,
         .search-item select option:focus,
         .search-item select option:active,
@@ -1431,33 +1431,33 @@
             transform: scale(1.1);
         }
         
-        /* Inline style override için */
+        /* Für Inline-Style-Override */
         .search-item select option[style*="background"]:hover {
             background-color: #4D0602 !important;
             background: #4D0602 !important;
         }
         
-        /* Option metin yönünü düzeltmek için */
+        /* Um Textrichtung der Optionen zu korrigieren */
         .search-item select option {
             direction: ltr !important;
             text-align: left !important;
         }
         
-        /* Seçili option için özel stil */
+        /* Spezieller Stil für ausgewählte Option */
         .search-item select option[value=""] {
             background: #4D0804 !important;
             color: #ffffff !important;
             font-size: 14px !important;
         }
 
-        /* Daha güçlü seçici */
+        /* Stärkerer Selektor */
         .search-item select option:first-child {
             background: #4D0804 !important;
             color: #ffffff !important;
             font-size: 14px !important;
         }
         
-        /* En güçlü seçici - tüm select option'ları için */
+        /* Stärkster Selektor - für alle Select-Optionen */
         select option:first-child {
             background: #4D0804 !important;
             color: #ffffff !important;
@@ -2025,9 +2025,9 @@
     position: absolute !important;
     top: 0.6rem !important;
     right: 0.6rem !important;
-    background: #ffd43b !important; /* sarı arka plan */
-    background-color: #ffd43b !important; /* sarı arka plan */
-    color: #000000 !important; /* siyah yazı */
+    background: #ffd43b !important;
+    background-color: #ffd43b !important;
+    color: #000000 !important;
     padding: 0.25rem 0.5rem !important;
     border-radius: 12px !important;
     font-weight: 700 !important;
@@ -3514,7 +3514,7 @@
                             z-index: 99999 !important;
                         }
                             
-                            /* Mobil takvim ok butonlarını küçült */
+                            /* Kalenderpfeiltasten auf Mobilgeräten verkleinern */
                             .custom-calendar .calendar-nav-btn {
                                 width: 18px !important;
                                 height: 18px !important;
@@ -3532,7 +3532,7 @@
                                 transform: translateX(0) !important;
                             }
                             
-                                                    /* Mobil takvim başlığını küçült */
+                                                    /* Kalenderüberschrift auf Mobilgeräten verkleinern */
                         .custom-calendar .calendar-title {
                             font-size: 0.7rem !important;
                             font-weight: 600 !important;
@@ -3540,7 +3540,7 @@
                             color: #8B4513 !important;
                         }
                             
-                                                    /* Mobil takvim günlerini küçült */
+                                                    /* Kalendertage auf Mobilgeräten verkleinern */
                         .custom-calendar .calendar-weekdays {
                             margin-bottom: 6px !important;
                             gap: 2px !important;
@@ -3582,7 +3582,7 @@
                                 padding-bottom: 9px !important;
                             }
                             
-                            /* Mobil takvim hafta günlerini küçült */
+                            /* Wochentage im Kalender auf Mobilgeräten verkleinern */
                             .custom-calendar .calendar-weekday {
                                 width: 18px !important;
                                 height: 18px !important;

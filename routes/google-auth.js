@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const { OAuth2Client } = require('google-auth-library');
 const router = express.Router();
 
-// PostgreSQL bağlantı havuzu
+// PostgreSQL Verbindungspool
 const pool = new Pool({
     user: process.env.PGUSER,
     host: process.env.PGHOST,
@@ -13,7 +13,7 @@ const pool = new Pool({
     port: process.env.PGPORT || 5432,
 });
 
-// Google OAuth Client oluştur (dinamik port ile)
+// Google OAuth Client erstellen (mit dynamischem Port)
 function getGoogleClient(redirectUri) {
     const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
     const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
@@ -49,7 +49,7 @@ router.get('/google/status', (req, res) => {
     });
 });
 
-// Google OAuth URL oluştur
+// Google OAuth URL erstellen
 router.get('/google', (req, res) => {
     try {
         const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
@@ -64,11 +64,11 @@ router.get('/google', (req, res) => {
         
         const state = req.query.state || 'login';
         
-        // Önce .env'deki GOOGLE_REDIRECT_URI'yi kullan, yoksa dinamik oluştur
+        // Zuerst GOOGLE_REDIRECT_URI aus .env verwenden, sonst dynamisch erstellen
         let GOOGLE_REDIRECT_URI = process.env.GOOGLE_REDIRECT_URI;
         
         if (!GOOGLE_REDIRECT_URI || GOOGLE_REDIRECT_URI.includes('your-') || GOOGLE_REDIRECT_URI.includes('localhost:3000')) {
-            // .env'de yoksa veya placeholder ise, request'ten dinamik oluştur
+            // Wenn nicht in .env oder Platzhalter, dann dynamisch aus Request erstellen
             const actualPort = process.env.ACTUAL_HTTPS_PORT || (req.get('host')?.split(':')[1]) || '3443';
             const protocol = req.protocol === 'https' ? 'https' : 'https';
             const host = `localhost:${actualPort}`;
@@ -102,16 +102,16 @@ router.get('/google', (req, res) => {
     }
 });
 
-// Google OAuth callback - SIFIRDAN BASIT VERSIYON
+// Google OAuth callback - EINFACHE VERSION
 router.get('/google/callback', async (req, res) => {
-    console.log('\n========== GOOGLE OAUTH CALLBACK BAŞLADI ==========');
+    console.log('\n========== GOOGLE OAUTH CALLBACK GESTARTET ==========');
     
     try {
         const { code, error, state } = req.query;
         
         console.log('Query params:', { code: code ? 'VAR' : 'YOK', error, state });
         
-        // Hata kontrolü
+        // Fehlerprüfung
         if (error) {
             console.error('Google OAuth error:', error);
             return res.redirect('/login?error=oauth_error');
@@ -122,11 +122,11 @@ router.get('/google/callback', async (req, res) => {
             return res.redirect('/login?error=no_code');
         }
         
-        // Google Client oluştur - Önce .env'deki GOOGLE_REDIRECT_URI'yi kullan
+        // Google Client erstellen - Zuerst GOOGLE_REDIRECT_URI aus .env verwenden
         let GOOGLE_REDIRECT_URI = process.env.GOOGLE_REDIRECT_URI;
         
         if (!GOOGLE_REDIRECT_URI || GOOGLE_REDIRECT_URI.includes('your-') || GOOGLE_REDIRECT_URI.includes('localhost:3000')) {
-            // .env'de yoksa veya placeholder ise, request'ten dinamik oluştur
+            // Wenn nicht in .env oder Platzhalter, dann dynamisch aus Request erstellen
             const actualPort = process.env.ACTUAL_HTTPS_PORT || (req.get('host')?.split(':')[1]) || '3443';
             const protocol = req.protocol === 'https' ? 'https' : 'https';
             const host = `localhost:${actualPort}`;
@@ -139,13 +139,13 @@ router.get('/google/callback', async (req, res) => {
         console.log('Using redirect URI:', GOOGLE_REDIRECT_URI);
         console.log('Authorization code received:', code ? 'YES' : 'NO');
         console.log('State:', state);
-        console.log('Google token alınıyor...');
-        // Token al
+        console.log('Google Token wird abgerufen...');
+        // Token abrufen
         const { tokens } = await googleClient.getToken(code);
         googleClient.setCredentials(tokens);
         
-        console.log('Google user bilgileri alınıyor...');
-        // Kullanıcı bilgilerini al
+        console.log('Google Benutzerinformationen werden abgerufen...');
+        // Benutzerinformationen abrufen
         const response = await googleClient.request({
             url: 'https://www.googleapis.com/oauth2/v2/userinfo'
         });
@@ -165,12 +165,12 @@ router.get('/google/callback', async (req, res) => {
         });
         
         if (!googleUser.email) {
-            console.error('Email yok!');
+            console.error('Keine E-Mail vorhanden!');
             return res.redirect('/login?error=email_not_provided');
         }
         
-        // Database işlemleri - ÇOK BASIT
-        console.log('Database sorgusu yapılıyor...');
+        // Datenbankoperationen - SEHR EINFACH
+        console.log('Datenbankabfrage wird durchgeführt...');
         const userQuery = await pool.query(
             'SELECT user_id, id, email, first_name, last_name, is_admin FROM users WHERE email = $1',
             [googleUser.email]
@@ -180,43 +180,43 @@ router.get('/google/callback', async (req, res) => {
         let userId;
         
         if (userQuery.rows.length > 0) {
-            // Kullanıcı mevcut
-            console.log('Kullanıcı mevcut, güncelleniyor...');
+            // Benutzer vorhanden
+            console.log('Benutzer vorhanden, wird aktualisiert...');
             userData = userQuery.rows[0];
             userId = userData.user_id || userData.id;
             
-            // Basit güncelleme
+            // Einfache Aktualisierung
             await pool.query(
                 'UPDATE users SET first_name = $1, last_name = $2 WHERE email = $3',
                 [googleUser.firstName, googleUser.lastName, googleUser.email]
             );
-            console.log('Kullanıcı güncellendi');
+            console.log('Benutzer aktualisiert');
         } else {
-            // Yeni kullanıcı oluştur
-            console.log('Yeni kullanıcı oluşturuluyor...');
+            // Neuen Benutzer erstellen
+            console.log('Neuer Benutzer wird erstellt...');
             const insertResult = await pool.query(
                 'INSERT INTO users (email, first_name, last_name) VALUES ($1, $2, $3) RETURNING user_id, id, email, first_name, last_name, is_admin',
                 [googleUser.email, googleUser.firstName, googleUser.lastName]
             );
             userData = insertResult.rows[0];
             userId = userData.user_id || userData.id;
-            console.log('Yeni kullanıcı oluşturuldu:', userId);
+            console.log('Neuer Benutzer erstellt:', userId);
         }
         
         if (!userId) {
-            throw new Error('User ID alınamadı!');
+            throw new Error('Benutzer-ID konnte nicht abgerufen werden!');
         }
         
-        // JWT token oluştur
-        console.log('JWT token oluşturuluyor...');
+        // JWT Token erstellen
+        console.log('JWT Token wird erstellt...');
         const token = jwt.sign(
             { userId: userId, email: userData.email, is_admin: userData.is_admin || false },
             process.env.JWT_SECRET || 'your_super_secret_jwt_key_here_change_this_in_production',
             { expiresIn: '24h' }
         );
-        console.log('JWT token oluşturuldu');
+        console.log('JWT Token erstellt');
         
-        // Kullanıcı bilgilerini hazırla
+        // Benutzerinformationen vorbereiten
         const userInfo = {
             email: userData.email,
             firstName: userData.first_name,
@@ -230,7 +230,7 @@ router.get('/google/callback', async (req, res) => {
         const redirectPath = state === 'login' ? '/' : (state === 'register' ? '/register' : '/');
         const redirectURL = `${redirectPath}?login=success&token=${encodeURIComponent(token)}&user=${encodeURIComponent(JSON.stringify(userInfo))}`;
         
-        console.log('Başarılı! Redirect ediliyor:', redirectPath);
+        console.log('Erfolgreich! Weiterleitung zu:', redirectPath);
         console.log('==================================================\n');
         
         res.redirect(redirectURL);

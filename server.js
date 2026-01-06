@@ -99,7 +99,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Serve images folder separately
 app.use('/images', express.static(path.join(__dirname, 'public', 'images')));
 
-// Favicon routes (public altından zaten servis ediliyor; yedek olarak bırakıldı)
+// Favicon-Routen (werden bereits aus public serviert; als Backup belassen)
 app.get('/favicon.svg', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'favicon.svg'));
 });
@@ -351,9 +351,9 @@ app.get('/hilfe', (req, res) => {
 
 // React Router catch-all removed - using old HTML pages
 
-// Test navbar page kaldırıldı
+// Test-Navbar-Seite entfernt
 
-// Port'un kullanılabilir olup olmadığını kontrol et
+// Prüfen, ob Port verfügbar ist
 function isPortAvailable(port) {
   try {
     const { execSync } = require('child_process');
@@ -365,12 +365,12 @@ function isPortAvailable(port) {
       return result.trim().length === 0;
     }
   } catch (e) {
-    // Komut başarısız olduysa port muhtemelen boş
+    // Wenn Befehl fehlgeschlagen ist, ist Port wahrscheinlich frei
     return true;
   }
 }
 
-// Kullanılabilir bir port bul
+// Verfügbaren Port finden
 function findAvailablePort(startPort, maxAttempts = 10) {
   for (let i = 0; i < maxAttempts; i++) {
     const port = startPort + i;
@@ -405,10 +405,10 @@ try {
     };
     let HTTPS_PORT = parseInt(process.env.HTTPS_PORT) || 3443;
     
-    // Port kullanımdaysa alternatif port bul
-    // NOT: Google OAuth için port değişmemeli, bu yüzden önce process'i öldürmeyi dene
+    // Wenn Port in Verwendung ist, alternativen Port finden
+    // HINWEIS: Port sollte sich für Google OAuth nicht ändern, daher zuerst versuchen, Prozess zu beenden
     if (!isPortAvailable(HTTPS_PORT)) {
-      console.log(`⚠️ Port ${HTTPS_PORT} kullanımda...`);
+      console.log(`⚠️ Port ${HTTPS_PORT} ist in Verwendung...`);
       
       // Windows'ta port'u kullanan Node.js process'ini öldürmeyi dene
       if (process.platform === 'win32') {
@@ -424,49 +424,49 @@ try {
               try {
                 const processInfo = execSync(`tasklist /FI "PID eq ${pid}" /FO CSV`, { encoding: 'utf8', stdio: 'pipe' });
                 if (processInfo.includes('node.exe')) {
-                  console.log(`🔄 Port ${HTTPS_PORT} kullanan Node.js process'i (PID: ${pid}) sonlandırılıyor...`);
+                  console.log(`🔄 Node.js-Prozess (PID: ${pid}), der Port ${HTTPS_PORT} verwendet, wird beendet...`);
                   execSync(`taskkill /PID ${pid} /F`, { stdio: 'ignore' });
                   require('child_process').execSync('timeout /t 1 /nobreak >nul 2>&1', { stdio: 'ignore' });
-                  console.log(`✅ Port ${HTTPS_PORT} temizlendi`);
+                  console.log(`✅ Port ${HTTPS_PORT} wurde freigegeben`);
                   break;
                 }
               } catch (e) {
-                // Process zaten yok
+                // Prozess existiert bereits nicht mehr
               }
             }
           }
         } catch (e) {
-          // Port boş veya hata
+          // Port frei oder Fehler
         }
       }
       
-      // Hala kullanımdaysa alternatif port bul
+      // Wenn immer noch in Verwendung, alternativen Port finden
       if (!isPortAvailable(HTTPS_PORT)) {
-        console.log(`⚠️ Port ${HTTPS_PORT} hala kullanımda, alternatif port aranıyor...`);
+        console.log(`⚠️ Port ${HTTPS_PORT} ist immer noch in Verwendung, alternativer Port wird gesucht...`);
         const altPort = findAvailablePort(HTTPS_PORT);
         if (altPort) {
           HTTPS_PORT = altPort;
-          console.log(`✅ Port ${HTTPS_PORT} kullanılacak`);
-          console.log(`⚠️ DİKKAT: Google Cloud Console'a şu redirect URI'yi ekleyin:`);
+          console.log(`✅ Port ${HTTPS_PORT} wird verwendet`);
+          console.log(`⚠️ ACHTUNG: Fügen Sie folgende Redirect-URI zu Google Cloud Console hinzu:`);
           console.log(`   https://localhost:${HTTPS_PORT}/auth/google/callback`);
         } else {
-          console.error(`❌ ${HTTPS_PORT} ve sonraki portlar kullanımda!`);
+          console.error(`❌ Port ${HTTPS_PORT} und folgende Ports sind in Verwendung!`);
           process.exit(1);
         }
       }
     }
     
-    // Kullanılan portu environment variable'a kaydet (Google OAuth için)
+    // Verwendeten Port in Umgebungsvariable speichern (für Google OAuth)
     process.env.ACTUAL_HTTPS_PORT = HTTPS_PORT.toString();
     
     server = https.createServer(httpsOptions, app);
     server.on('error', (err) => {
       if (err.code === 'EADDRINUSE') {
-        console.log(`\n⚠️ Port ${HTTPS_PORT} kullanımda, alternatif port aranıyor...`);
+        console.log(`\n⚠️ Port ${HTTPS_PORT} ist in Verwendung, alternativer Port wird gesucht...`);
         const altPort = findAvailablePort(HTTPS_PORT);
         if (altPort) {
           HTTPS_PORT = altPort;
-          console.log(`✅ Port ${HTTPS_PORT} kullanılacak`);
+          console.log(`✅ Port ${HTTPS_PORT} wird verwendet`);
           server.listen(HTTPS_PORT, () => {
             console.log(`🔒 HTTPS läuft auf https://localhost:${HTTPS_PORT}`);
           });
@@ -483,14 +483,14 @@ try {
       console.log(`🔒 HTTPS läuft auf https://localhost:${HTTPS_PORT}`);
     });
   } else {
-    // HTTP için port kontrolü
+    // Portprüfung für HTTP
     let httpPort = PORT;
     if (!isPortAvailable(httpPort)) {
-      console.log(`⚠️ Port ${httpPort} kullanımda, alternatif port aranıyor...`);
-      const altPort = findAvailablePort(httpPort);
-      if (altPort) {
-        httpPort = altPort;
-        console.log(`✅ Port ${httpPort} kullanılacak`);
+      console.log(`⚠️ Port ${httpPort} ist in Verwendung, alternativer Port wird gesucht...`);
+        const altPort = findAvailablePort(httpPort);
+        if (altPort) {
+          httpPort = altPort;
+          console.log(`✅ Port ${httpPort} wird verwendet`);
       }
     }
     server = app.listen(httpPort, () => {
@@ -500,11 +500,11 @@ try {
 } catch (e) {
   if (e.code === 'EADDRINUSE') {
     let port = parseInt(process.env.HTTPS_PORT) || 3443;
-    console.log(`\n⚠️ Port ${port} kullanımda, alternatif port aranıyor...`);
-    const altPort = findAvailablePort(port);
-    if (altPort) {
-      port = altPort;
-      console.log(`✅ Port ${port} kullanılacak`);
+    console.log(`\n⚠️ Port ${port} ist in Verwendung, alternativer Port wird gesucht...`);
+        const altPort = findAvailablePort(port);
+        if (altPort) {
+          port = altPort;
+          console.log(`✅ Port ${port} wird verwendet`);
       try {
         const https = require('https');
         const certDir = path.join(__dirname, 'certs');
@@ -532,11 +532,11 @@ try {
     console.warn('HTTPS initialisierung fehlgeschlagen, falle auf HTTP zurück:', e.message);
     let httpPort = PORT;
     if (!isPortAvailable(httpPort)) {
-      console.log(`⚠️ Port ${httpPort} kullanımda, alternatif port aranıyor...`);
-      const altPort = findAvailablePort(httpPort);
-      if (altPort) {
-        httpPort = altPort;
-        console.log(`✅ Port ${httpPort} kullanılacak`);
+      console.log(`⚠️ Port ${httpPort} ist in Verwendung, alternativer Port wird gesucht...`);
+        const altPort = findAvailablePort(httpPort);
+        if (altPort) {
+          httpPort = altPort;
+          console.log(`✅ Port ${httpPort} wird verwendet`);
       }
     }
     try {

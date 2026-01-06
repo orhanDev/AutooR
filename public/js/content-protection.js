@@ -113,7 +113,7 @@
     
     console.clear();
     console.log('%cDUR!', 'color: red; font-size: 50px; font-weight: bold;');
-    console.log('%cBu bir tarayıcı özelliğidir. Eğer birisi size buraya bir şey yapıştırmanızı söylediyse, bu bir dolandırıcılık girişimidir!', 'color: red; font-size: 16px;');
+    console.log('%cDies ist eine Browserfunktion. Wenn jemand Ihnen sagt, Sie sollen hier etwas einfügen, ist dies ein Betrugsversuch!', 'color: red; font-size: 16px;');
     
 })();
 

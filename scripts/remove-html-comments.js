@@ -6,10 +6,10 @@ function removeHtmlComments(filePath) {
         let content = fs.readFileSync(filePath, 'utf8');
         const original = content;
         
-        // HTML yorumlarını temizle (<!-- -->)
+        // HTML-Kommentare bereinigen (<!-- -->)
         content = content.replace(/<!--[\s\S]*?-->/g, '');
         
-        // <script> tag'leri içindeki yorumları temizle
+        // Kommentare in <script>-Tags bereinigen
         content = content.replace(/<script[^>]*>([\s\S]*?)<\/script>/gi, (match, scriptContent) => {
             let cleaned = scriptContent
                 .replace(/\/\/.*$/gm, '')
@@ -18,24 +18,24 @@ function removeHtmlComments(filePath) {
             return match.replace(scriptContent, cleaned);
         });
         
-        // <style> tag'leri içindeki yorumları temizle
+        // Kommentare in <style>-Tags bereinigen
         content = content.replace(/<style[^>]*>([\s\S]*?)<\/style>/gi, (match, styleContent) => {
             let cleaned = styleContent.replace(/\/\*[\s\S]*?\*\//g, '');
             cleaned = cleaned.replace(/\n\s*\n\s*\n/g, '\n');
             return match.replace(styleContent, cleaned);
         });
         
-        // Fazla boş satırları temizle
+        // Übermäßige Leerzeilen bereinigen
         content = content.replace(/\n\s*\n\s*\n+/g, '\n\n');
         
         if (content !== original) {
             fs.writeFileSync(filePath, content, 'utf8');
-            console.log(`✓ Temizlendi: ${filePath}`);
+            console.log(`✓ Bereinigt: ${filePath}`);
             return true;
         }
         return false;
     } catch (error) {
-        console.error(`✗ Hata: ${filePath} - ${error.message}`);
+        console.error(`✗ Fehler: ${filePath} - ${error.message}`);
         return false;
     }
 }
@@ -58,7 +58,7 @@ function findHtmlFiles(dir) {
 
 findHtmlFiles(publicDir);
 
-console.log('HTML dosyalarındaki yorumlar temizleniyor...\n');
+console.log('Kommentare in HTML-Dateien werden bereinigt...\n');
 
 let count = 0;
 for (const file of htmlFiles) {
@@ -67,5 +67,5 @@ for (const file of htmlFiles) {
     }
 }
 
-console.log(`\n✅ Toplam ${count} HTML dosyası temizlendi.`);
+console.log(`\n✅ Insgesamt ${count} HTML-Dateien bereinigt.`);
 

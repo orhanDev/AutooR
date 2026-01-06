@@ -12,12 +12,12 @@ function removeConfigComments(filePath) {
             const line = lines[i];
             const trimmed = line.trim();
             
-            // # ile başlayan satırları kontrol et
+            // Zeilen prüfen, die mit # beginnen
             if (trimmed.startsWith('#')) {
-                // Eğer bu bir kategori başlığı değilse (ör: # Dependencies, # Environment variables)
-                // ve açık bir yorum satırıysa, atla
+                // Wenn dies keine Kategorieüberschrift ist (z.B. # Dependencies, # Environment variables)
+                // und eine offensichtliche Kommentarzeile ist, überspringen
                 if (trimmed.length > 1 && !trimmed.match(/^#\s*[A-Z][a-z]+/)) {
-                    // Yorum satırı, atla
+                    // Kommentarzeile, überspringen
                     continue;
                 }
             }
@@ -30,12 +30,12 @@ function removeConfigComments(filePath) {
         
         if (cleaned !== original) {
             fs.writeFileSync(filePath, cleaned, 'utf8');
-            console.log(`✓ Temizlendi: ${filePath}`);
+            console.log(`✓ Bereinigt: ${filePath}`);
             return true;
         }
         return false;
     } catch (error) {
-        console.error(`✗ Hata: ${filePath} - ${error.message}`);
+        console.error(`✗ Fehler: ${filePath} - ${error.message}`);
         return false;
     }
 }
@@ -46,7 +46,7 @@ const configFiles = [
     '.gitignore'
 ];
 
-console.log('Config dosyalarındaki yorumlar temizleniyor...\n');
+console.log('Kommentare in Config-Dateien werden bereinigt...\n');
 
 const projectRoot = path.join(__dirname, '..');
 let count = 0;
@@ -60,5 +60,5 @@ for (const file of configFiles) {
     }
 }
 
-console.log(`\n✅ Toplam ${count} config dosyası temizlendi.`);
+console.log(`\n✅ Insgesamt ${count} Config-Dateien bereinigt.`);
 

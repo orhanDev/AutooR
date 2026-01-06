@@ -1,6 +1,6 @@
 
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('=== Auth.js �alisiyor ===');
+    console.log('=== Auth.js �alisiyor ===');
     const authLinksContainer = document.getElementById('auth-links');
     console.log('auth-links container:', authLinksContainer);
     
@@ -17,14 +17,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     async function updateAuthLinks() {
-        console.log('=== updateAuthLinks çalışıyor ===');
+        console.log('=== updateAuthLinks wird ausgeführt ===');
         
         if (token) {
-            console.log('Token mevcut, kullanıcı bilgileri alınıyor...');
+            console.log('Token vorhanden, Benutzerinformationen werden abgerufen...');
             
             let userName = '';
             try {
-                console.log('/api/auth/user endpoint\'ine istek atılıyor...');
+                console.log('Anfrage an /api/auth/user Endpoint wird gesendet...');
                 const res = await fetch('/api/auth/user', {
                     headers: { 'x-auth-token': token }
                 });
@@ -97,17 +97,17 @@ document.addEventListener('DOMContentLoaded', () => {
                     logout();
                 });
             } else {
-                console.log('Kullanıcı adı alınamadı, giriş linkleri gösteriliyor');
+                console.log('Benutzername konnte nicht abgerufen werden, Anmeldelinks werden angezeigt');
                 showLoginLinks();
             }
         } else {
-            console.log('Token yok, giriş linkleri gösteriliyor');
+            console.log('Kein Token vorhanden, Anmeldelinks werden angezeigt');
             showLoginLinks();
         }
     }
 
     function showLoginLinks() {
-        console.log('showLoginLinks çalışıyor');
+        console.log('showLoginLinks wird ausgeführt');
         if (authLinksContainer) {
             authLinksContainer.innerHTML = `
                 <li class="nav-item">
@@ -121,7 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function logout() {
-        console.log('Logout �alisiyor');
+        console.log('Logout �alisiyor');
         sessionStorage.removeItem('token');
         sessionStorage.removeItem('welcome_name');
         sessionStorage.removeItem('user');

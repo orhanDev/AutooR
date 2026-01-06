@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const axios = require('axios');
 const router = express.Router();
 
-// PostgreSQL bağlantı havuzu
+// PostgreSQL Verbindungspool
 const pool = new Pool({
     user: process.env.PGUSER,
     host: process.env.PGHOST,
@@ -13,7 +13,7 @@ const pool = new Pool({
     port: process.env.PGPORT || 5432,
 });
 
-// Apple OAuth giriş sayfası
+// Apple OAuth Anmeldeseite
 router.get('/apple', (req, res) => {
     const APPLE_CLIENT_ID = process.env.APPLE_CLIENT_ID;
     const APPLE_CLIENT_SECRET = process.env.APPLE_CLIENT_SECRET;
