@@ -262,7 +262,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                  style="height: 200px; object-fit: cover;"
                                  onerror="this.onerror=null; this.src='/images/cars/vw-t-roc-suv-4d-white-2022-JV.png';">
                             <h5 class="fw-bold">${vehicle.make} ${vehicle.model}</h5>
-                            <p class="text-muted mb-0">E{vehicle.daily_rate || 0}/Tag</p>
+                            <p class="text-muted mb-0">€${vehicle.daily_rate || 0}/Tag</p>
                         </div>
                         
                         <div class="row g-2 mb-3">
