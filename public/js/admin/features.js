@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const addFeatureBtn = document.getElementById('add-feature-btn');
 
     if (!token) {
-        alert('Bu sayfayÄ± gÃ¶rÃ¼ntÃ¼lemek iÃ§in giriÅŸ yapmanÄ±z gerekiyor.');
+        alert('Sie müssen sich anmelden, um diese Seite anzuzeigen.');
         window.location.href = '/views/login.html';
         return;
     }
@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
 
             if (response.status === 403) {
-                alert('YÃ¶netici yetkiniz bulunmamaktadÄ±r.');
+                alert('Sie haben keine Administratorberechtigung.');
                 window.location.href = '/';
                 return;
             }
@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             featuresTableBody.innerHTML = ''; 
 
             if (features.length === 0) {
-                featuresTableBody.innerHTML = '<tr><td colspan="2" class="text-center">HenÃ¼z hiÃ§ Ã¶zellik bulunmamaktadÄ±r.</td></tr>';
+                featuresTableBody.innerHTML = '<tr><td colspan="2" class="text-center">Noch keine Funktionen vorhanden.</td></tr>';
                 return;
             }
 
@@ -44,8 +44,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                     <tr>
                         <td>${feature.feature_name}</td>
                         <td>
-                            <button class="nav-link-text btn-sm edit-feature-btn" data-id="${feature.feature_id}">DÃ¼zenle</button>
-                            <button class="nav-link-text btn-sm delete-feature-btn" data-id="${feature.feature_id}">Sil</button>
+                            <button class="nav-link-text btn-sm edit-feature-btn" data-id="${feature.feature_id}">Bearbeiten</button>
+                            <button class="nav-link-text btn-sm delete-feature-btn" data-id="${feature.feature_id}">Löschen</button>
                         </td>
                     </tr>
                 `;
@@ -55,8 +55,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             attachEventListeners();
 
         } catch (error) {
-            console.error('Ã–zellikler Ã§ekilirken hata:', error);
-            featuresTableBody.innerHTML = '<tr><td colspan="2" class="text-danger text-center">Ã–zellikler yÃ¼klenemedi.</td></tr>';
+            console.error('Fehler beim Laden der Funktionen:', error);
+            featuresTableBody.innerHTML = '<tr><td colspan="2" class="text-danger text-center">Funktionen konnten nicht geladen werden.</td></tr>';
         }
     }
 
@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     async function handleEditClick(e) {
         const featureId = e.target.dataset.id;
-        featureModalLabel.textContent = 'Ã–zellik DÃ¼zenle';
+        featureModalLabel.textContent = 'Funktion bearbeiten';
         featureForm.reset();
         featureIdInput.value = featureId;
 
@@ -88,14 +88,14 @@ document.addEventListener('DOMContentLoaded', async () => {
             featureNameInput.value = feature.feature_name;
             featureModal.show();
         } catch (error) {
-            console.error('Ã–zellik detaylarÄ± Ã§ekilirken hata:', error);
-            alert('Ã–zellik detaylarÄ± yÃ¼klenemedi.');
+            console.error('Fehler beim Laden der Funktionsdetails:', error);
+            alert('Funktionsdetails konnten nicht geladen werden.');
         }
     }
 
     async function handleDeleteClick(e) {
         const featureId = e.target.dataset.id;
-        if (confirm('Bu Ã¶zelliÄŸi silmek istediÄŸinizden emin misiniz? Bu iÅŸlem, bu Ã¶zelliÄŸi kullanan araÃ§larÄ± etkileyebilir.')) {
+        if (confirm('Sind Sie sicher, dass Sie diese Funktion löschen möchten? Diese Aktion kann Fahrzeuge beeinflussen, die diese Funktion verwenden.')) {
             try {
                 const response = await fetch(`/api/admin/features/${featureId}`, {
                     method: 'DELETE',
@@ -104,17 +104,17 @@ document.addEventListener('DOMContentLoaded', async () => {
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
-                alert('Ã–zellik baÅŸarÄ±yla silindi.');
+                alert('Funktion wurde erfolgreich gelöscht.');
                 fetchFeatures(); 
             } catch (error) {
-                console.error('Ã–zellik silinirken hata:', error);
-                alert(`Ã–zellik silinirken bir hata oluÅŸtu: ${error.message}`);
+                console.error('Fehler beim Löschen der Funktion:', error);
+                alert(`Beim Löschen der Funktion ist ein Fehler aufgetreten: ${error.message}`);
             }
         }
     }
 
     addFeatureBtn.addEventListener('click', () => {
-        featureModalLabel.textContent = 'Yeni Ã–zellik Ekle';
+        featureModalLabel.textContent = 'Neue Funktion hinzufügen';
         featureForm.reset();
         featureIdInput.value = '';
         featureModal.show();
@@ -144,15 +144,15 @@ document.addEventListener('DOMContentLoaded', async () => {
             const data = await response.json();
 
             if (response.ok) {
-                alert(`Ã–zellik baÅŸarÄ±yla ${id ? 'gÃ¼ncellendi' : 'eklendi'}!`);
+                alert(`Funktion wurde erfolgreich ${id ? 'aktualisiert' : 'hinzugefügt'}!`);
                 featureModal.hide();
                 fetchFeatures(); 
             } else {
-                throw new Error(data.message || `Ã–zellik ${id ? 'gÃ¼ncellenirken' : 'eklenirken'} bir hata oluÅŸtu.`);
+                throw new Error(data.message || `Beim ${id ? 'Aktualisieren' : 'Hinzufügen'} der Funktion ist ein Fehler aufgetreten.`);
             }
         } catch (error) {
-            console.error(`Ã–zellik ${id ? 'gÃ¼ncelleme' : 'ekleme'} hatasÄ±:`, error);
-            alert(`Ã–zellik ${id ? 'gÃ¼ncellenirken' : 'eklenirken'} bir hata oluÅŸtu: ${error.message}`);
+            console.error(`Fehler beim ${id ? 'Aktualisieren' : 'Hinzufügen'} der Funktion:`, error);
+            alert(`Beim ${id ? 'Aktualisieren' : 'Hinzufügen'} der Funktion ist ein Fehler aufgetreten: ${error.message}`);
         }
     });
 
@@ -161,7 +161,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('admin-logout-link').addEventListener('click', (e) => {
         e.preventDefault();
         localStorage.removeItem('token');
-        alert('BaÅŸarÄ±yla Ã§Ä±kÄ±ÅŸ yapÄ±ldÄ±.');
+        alert('Erfolgreich abgemeldet.');
         window.location.href = '/';
     });
 });

@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
 
         } catch (error) {
-            console.error('Test veri sayÄ±larÄ± alÄ±nÄ±rken hata:', error);
+            console.error('Fehler beim Abrufen der Testdatenanzahl:', error);
         }
     }
 
@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         try {
             button.disabled = true;
-            button.innerHTML = '<i class="bi bi-hourglass-split me-2"></i>Ekleniyor...';
+            button.innerHTML = '<i class="bi bi-hourglass-split me-2"></i>Wird hinzugefügt...';
 
             const response = await fetch('/api/admin/test-reservations', {
                 method: 'POST',
@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     <div class="alert alert-success">
                         <i class="bi bi-check-circle me-2"></i>
                         ${data.message}<br>
-                        <small>Eklenen rezervasyon sayÄ±sÄ±: ${data.reservations.length}</small>
+                        <small>Anzahl der hinzugefügten Reservierungen: ${data.reservations.length}</small>
                     </div>
                 `;
 
@@ -115,21 +115,21 @@ document.addEventListener('DOMContentLoaded', async () => {
                 resultDiv.innerHTML = `
                     <div class="alert alert-danger">
                         <i class="bi bi-exclamation-triangle me-2"></i>
-                        Hata: ${errorData.error}
+                        Fehler: ${errorData.error}
                     </div>
                 `;
             }
         } catch (error) {
-            console.error('Test rezervasyonlarÄ± eklenirken hata:', error);
+            console.error('Fehler beim Hinzufügen der Testreservierungen:', error);
             resultDiv.innerHTML = `
                 <div class="alert alert-danger">
                     <i class="bi bi-exclamation-triangle me-2"></i>
-                    Hata: ${error.message}
+                    Fehler: ${error.message}
                 </div>
             `;
         } finally {
             button.disabled = false;
-            button.innerHTML = '<i class="bi bi-plus-circle me-2"></i>Test RezervasyonlarÄ± Ekle';
+            button.innerHTML = '<i class="bi bi-plus-circle me-2"></i>Test-Reservierungen hinzufügen';
         }
     }
 

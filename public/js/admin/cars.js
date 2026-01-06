@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const addCarBtn = document.getElementById('add-car-btn');
 
     if (!token) {
-        alert('Bu sayfayÄ± gÃ¶rÃ¼ntÃ¼lemek iÃ§in giriÅŸ yapmanÄ±z gerekiyor.');
+        alert('Sie müssen sich anmelden, um diese Seite anzuzeigen.');
         window.location.href = '/views/login.html';
         return;
     }
@@ -59,8 +59,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
 
         } catch (error) {
-            console.error('Lokasyonlar veya Ã¶zellikler Ã§ekilirken hata:', error);
-            alert('Lokasyonlar veya Ã¶zellikler yÃ¼klenemedi.');
+            console.error('Fehler beim Laden der Standorte oder Funktionen:', error);
+            alert('Standorte oder Funktionen konnten nicht geladen werden.');
         }
     }
 
@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
 
             if (response.status === 403) {
-                alert('YÃ¶netici yetkiniz bulunmamaktadÄ±r.');
+                alert('Sie haben keine Administratorberechtigung.');
                 window.location.href = '/';
                 return;
             }
@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             carsTableBody.innerHTML = ''; 
 
             if (cars.length === 0) {
-                carsTableBody.innerHTML = '<tr><td colspan="8" class="text-center">HenÃ¼z hiÃ§ araÃ§ bulunmamaktadÄ±r.</td></tr>';
+                carsTableBody.innerHTML = '<tr><td colspan="8" class="text-center">Noch keine Fahrzeuge vorhanden.</td></tr>';
                 return;
             }
 
@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         <td>${car.model}</td>
                         <td>${car.year}</td>
                         <td>${car.daily_rate} â‚¬</td>
-                        <td>${car.location_name || car.location_id}</td> <!-- Standort adÄ±nÄ± gÃ¶ster -->
+                        <td>${car.location_name || car.location_id}</td>
                         <td>${car.is_available ? 'Ja' : 'Nein'}</td>
                         <td>
                             <button class="nav-link-text btn-sm edit-car-btn" data-id="${car.car_id}">Bearbeiten</button>
