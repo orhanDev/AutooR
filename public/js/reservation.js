@@ -1445,7 +1445,7 @@ function showGuestOrLoginModal() {
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body text-center">
-                        <p class="mb-4">Wie m�chten Sie fortfahren?</p>
+                        <p class="mb-4">Wie möchten Sie fortfahren?</p>
                         <div class="d-grid gap-3">
                             <button type="button" class="btn btn-outline-primary btn-lg" id="continueAsGuestBtn">
                                 <i class="bi bi-person me-2"></i>
