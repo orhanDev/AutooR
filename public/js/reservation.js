@@ -1457,8 +1457,8 @@ function showGuestOrLoginModal() {
                             </button>
                         </div>
                         <p class="text-muted mt-3 small">
-                            Als Gast k�nnen Sie ohne Anmeldung reservieren. 
-                            Sie k�nnen sich sp�ter jederzeit anmelden.
+                            Als Gast können  Sie ohne Anmeldung reservieren. 
+                            Sie können  sich später  jederzeit anmelden.
                         </p>
                     </div>
                 </div>
