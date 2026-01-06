@@ -94,7 +94,7 @@ let totalCleaned = 0;
 for (const dir of importantDirs) {
     const dirPath = path.join(projectRoot, dir);
     if (fs.existsSync(dirPath)) {
-        console.log(`\n${dir} dizini işleniyor...`);
+        console.log(`\n${dir} Verzeichnis wird verarbeitet...`);
         totalCleaned += processDirectory(dirPath);
     }
 }

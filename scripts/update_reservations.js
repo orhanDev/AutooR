@@ -13,21 +13,21 @@ async function updateReservations() {
   const client = new Client(connectionConfig);
 
   try {
-    console.log('PostgreSQL\'e bağlanılıyor...', connectionConfig);
+    console.log('Verbindung zu PostgreSQL wird hergestellt...', connectionConfig);
     await client.connect();
-    console.log('Bağlantı başarılı!');
+    console.log('Verbindung erfolgreich!');
 
-    // Extras alanını ekle
-    console.log('\n=== RESERVATIONS TABLOSU GÜNCELLENİYOR ===');
+    // Extras-Feld hinzufügen
+    console.log('\n=== RESERVATIONS-TABELLE WIRD AKTUALISIERT ===');
     await client.query('ALTER TABLE reservations ADD COLUMN IF NOT EXISTS extras JSONB;');
-    console.log('✅ Extras alanı eklendi');
+    console.log('✅ Extras-Feld hinzugefügt');
 
-    // Rezervasyon durumlarını güncelle
+    // Reservierungsstatus aktualisieren
     await client.query("UPDATE reservations SET status = 'Beklemede' WHERE status IS NULL OR status = '';");
-    console.log('✅ Rezervasyon durumları güncellendi');
+    console.log('✅ Reservierungsstatus aktualisiert');
 
-    // Örnek rezervasyon verileri ekle
-    console.log('\n=== ÖRNEK REZERVASYON VERİLERİ EKLENİYOR ===');
+    // Beispielreservierungsdaten hinzufügen
+    console.log('\n=== BEISPIELRESERVIERUNGSDATEN WERDEN HINZUGEFÜGT ===');
     const insertResult = await client.query(`
       INSERT INTO reservations (
         user_id, car_id, pickup_date, dropoff_date, pickup_time, dropoff_time, 
@@ -40,13 +40,13 @@ async function updateReservations() {
     `);
     
     if (insertResult.rows.length > 0) {
-      console.log(`✅ ${insertResult.rows.length} yeni rezervasyon eklendi`);
+      console.log(`✅ ${insertResult.rows.length} neue Reservierungen hinzugefügt`);
     } else {
-      console.log('ℹ️ Yeni rezervasyon eklenmedi (zaten mevcut)');
+      console.log('ℹ️ Keine neuen Reservierungen hinzugefügt (bereits vorhanden)');
     }
 
-    // Güncel rezervasyonları göster
-    console.log('\n=== GÜNCEL REZERVASYONLAR ===');
+    // Aktuelle Reservierungen anzeigen
+    console.log('\n=== AKTUELLE RESERVIERUNGEN ===');
     const reservations = await client.query(`
       SELECT 
         r.reservation_id,
@@ -67,19 +67,19 @@ async function updateReservations() {
     if (reservations.rows.length > 0) {
       reservations.rows.forEach((res, index) => {
         console.log(`${index + 1}. ${res.car_make} ${res.car_model} (${res.car_year})`);
-        console.log(`   Tarih: ${res.pickup_date} - ${res.dropoff_date}`);
-        console.log(`   Lokasyon: ${res.pickup_location}`);
-        console.log(`   Durum: ${res.status} | Fiyat: €${res.total_price}`);
+        console.log(`   Datum: ${res.pickup_date} - ${res.dropoff_date}`);
+        console.log(`   Standort: ${res.pickup_location}`);
+        console.log(`   Status: ${res.status} | Preis: €${res.total_price}`);
         console.log('');
       });
     } else {
-      console.log('Henüz rezervasyon bulunmuyor');
+      console.log('Noch keine Reservierungen vorhanden');
     }
 
-    console.log('\n✅ Reservations tablosu güncelleme tamamlandı!');
+    console.log('\n✅ Aktualisierung der Reservations-Tabelle abgeschlossen!');
 
   } catch (err) {
-    console.error('Hata:', err.message, err.stack);
+    console.error('Fehler:', err.message, err.stack);
     process.exitCode = 1;
   } finally {
     try {

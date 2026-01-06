@@ -16,9 +16,9 @@ async function updatePrices() {
     const client = await pool.connect();
     
     try {
-        console.log('🚗 Araç fiyatlarını maksimum 400€ ile sınırlama başlıyor...\n');
+        console.log('🚗 Begrenzung der Fahrzeugpreise auf maximal 400€ beginnt...\n');
 
-        console.log('📊 MEVCUT FİYATLAR:');
+        console.log('📊 AKTUELLE PREISE:');
         const currentPrices = await client.query(`
             SELECT make, model, daily_rate 
             FROM cars 
@@ -33,10 +33,10 @@ async function updatePrices() {
         const sqlFilePath = path.join(__dirname, '../db/update_prices_max400.sql');
         const sqlContent = fs.readFileSync(sqlFilePath, 'utf8');
 
-        console.log('\n🔄 Fiyat güncellemeleri yapılıyor...');
+        console.log('\n🔄 Preisaktualisierungen werden durchgeführt...');
         await client.query(sqlContent);
 
-        console.log('\n✅ GÜNCELLENMİŞ FİYATLAR:');
+        console.log('\n✅ AKTUALISIERTE PREISE:');
         const updatedPrices = await client.query(`
             SELECT make, model, daily_rate 
             FROM cars 
@@ -48,7 +48,7 @@ async function updatePrices() {
             console.log(`${car.make} ${car.model}: €${car.daily_rate}`);
         });
 
-        console.log('\n📈 FİYAT İSTATİSTİKLERİ:');
+        console.log('\n📈 PREISSTATISTIKEN:');
         const stats = await client.query(`
             SELECT 
                 COUNT(*) as toplam_arac,
@@ -64,21 +64,21 @@ async function updatePrices() {
         `);
         
         const data = stats.rows[0];
-        console.log(`Toplam araç: ${data.toplam_arac}`);
-        console.log(`100€ altı: ${data["100€ altı"]}`);
+        console.log(`Gesamtzahl der Fahrzeuge: ${data.toplam_arac}`);
+        console.log(`Unter 100€: ${data["100€ altı"]}`);
         console.log(`100-200€: ${data["100-200€"]}`);
         console.log(`200-300€: ${data["200-300€"]}`);
         console.log(`300-400€: ${data["300-400€"]}`);
-        console.log(`400€ üstü: ${data["400€ üstü"]}`);
-        console.log(`Ortalama fiyat: €${data.ortalama_fiyat}`);
-        console.log(`Minimum fiyat: €${data.minimum_fiyat}`);
-        console.log(`Maksimum fiyat: €${data.maksimum_fiyat}`);
+        console.log(`Über 400€: ${data["400€ üstü"]}`);
+        console.log(`Durchschnittspreis: €${data.ortalama_fiyat}`);
+        console.log(`Mindestpreis: €${data.minimum_fiyat}`);
+        console.log(`Höchstpreis: €${data.maksimum_fiyat}`);
         
-        console.log('\n🎉 Tüm araç fiyatları başarıyla güncellendi!');
-        console.log('💡 Maksimum günlük kiralama fiyatı: €400');
+        console.log('\n🎉 Alle Fahrzeugpreise erfolgreich aktualisiert!');
+        console.log('💡 Maximaler Tagesmietpreis: €400');
         
     } catch (error) {
-        console.error('❌ Hata oluştu:', error);
+        console.error('❌ Fehler aufgetreten:', error);
     } finally {
         client.release();
         await pool.end();

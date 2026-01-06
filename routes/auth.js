@@ -8,7 +8,7 @@ const authMiddleware = require('../middleware/authMiddleware');
 
 const router = express.Router();
 
-// Email transporter - Tüm email servislerini destekler (Gmail, SendGrid, Outlook, Yahoo, vb.)
+// E-Mail-Transporter - Unterstützt alle E-Mail-Dienste (Gmail, SendGrid, Outlook, Yahoo usw.)
 function createEmailTransporter() {
     const emailUser = process.env.EMAIL_USER;
     const emailPass = process.env.EMAIL_PASS;
@@ -21,18 +21,18 @@ function createEmailTransporter() {
         return null;
     }
     
-    // SendGrid desteği - EMAIL_PROVIDER=sendgrid veya EMAIL_HOST=smtp.sendgrid.net
+    // SendGrid-Unterstützung - EMAIL_PROVIDER=sendgrid oder EMAIL_HOST=smtp.sendgrid.net
     if (emailProvider === 'sendgrid' || emailHost === 'smtp.sendgrid.net') {
         console.log('Using SendGrid SMTP');
         return nodemailer.createTransport({
             host: 'smtp.sendgrid.net',
             port: 587,
-            secure: false, // TLS için false
+            secure: false, // false für TLS
             auth: {
-                user: 'apikey', // SendGrid için her zaman 'apikey'
-                pass: emailPass // SendGrid API Key
+                user: 'apikey', // Für SendGrid immer 'apikey'
+                pass: emailPass // SendGrid API-Schlüssel
             },
-            // Timeout ayarları
+            // Timeout-Einstellungen
             connectionTimeout: 10000,
             greetingTimeout: 10000,
             socketTimeout: 10000,
@@ -44,48 +44,48 @@ function createEmailTransporter() {
         });
     }
     
-    // Gmail için explicit SMTP ayarları kullan (service yerine)
-    // Railway'de service kullanımı bazen sorun çıkarabiliyor
+    // Explizite SMTP-Einstellungen für Gmail verwenden (anstatt service)
+    // Die Verwendung von service kann auf Railway manchmal Probleme verursachen
     if (emailProvider === 'gmail' || emailUser.includes('@gmail.com')) {
-        // Port 465 (SSL) ile deneyelim - Railway'de daha güvenilir olabilir
+        // Port 465 (SSL) versuchen - kann auf Railway zuverlässiger sein
         return nodemailer.createTransport({
             host: 'smtp.gmail.com',
             port: 465,
-            secure: true, // SSL için true
+            secure: true, // true für SSL
             auth: {
                 user: emailUser,
                 pass: emailPass
             },
-            // Timeout ayarları
-            connectionTimeout: 30000, // 30 saniye
-            greetingTimeout: 30000, // 30 saniye
-            socketTimeout: 30000, // 30 saniye
-            // TLS ayarları
+            // Timeout-Einstellungen
+            connectionTimeout: 30000, // 30 Sekunden
+            greetingTimeout: 30000, // 30 Sekunden
+            socketTimeout: 30000, // 30 Sekunden
+            // TLS-Einstellungen
             tls: {
-                rejectUnauthorized: false, // Railway için gerekli olabilir
+                rejectUnauthorized: false, // Kann für Railway erforderlich sein
                 minVersion: 'TLSv1.2'
             },
-            // Debug için
+            // Für Debugging
             debug: process.env.NODE_ENV !== 'production',
             logger: process.env.NODE_ENV !== 'production'
         });
     }
     
-        // Diğer email servisleri için (Outlook, Yahoo, custom SMTP)
+        // Für andere E-Mail-Dienste (Outlook, Yahoo, benutzerdefiniertes SMTP)
         return nodemailer.createTransport({
             host: emailHost,
             port: parseInt(emailPort),
-            secure: emailSecure, // true for 465, false for diğer portlar
+            secure: emailSecure, // true für 465, false für andere Ports
             auth: {
                 user: emailUser,
                 pass: emailPass
             },
         // Timeout ayarları
-        connectionTimeout: 10000, // 10 saniye
-        greetingTimeout: 10000, // 10 saniye
-        socketTimeout: 10000, // 10 saniye
+        connectionTimeout: 10000, // 10 Sekunden
+        greetingTimeout: 10000, // 10 Sekunden
+        socketTimeout: 10000, // 10 Sekunden
             tls: {
-                rejectUnauthorized: false // Development için, production'da true olmalı
+                rejectUnauthorized: false // Für Entwicklung, sollte in Produktion true sein
         },
         // Debug için
         debug: process.env.NODE_ENV !== 'production',
@@ -94,7 +94,7 @@ function createEmailTransporter() {
         }
 
 
-// Kayıt endpoint'i
+// Registrierungs-Endpunkt
 router.post('/register', async (req, res) => {
     try {
         const { first_name, last_name, email, password, phone_number, address } = req.body;
@@ -124,7 +124,7 @@ router.post('/register', async (req, res) => {
             });
         }
         
-        // Email normalizasyonu (trim + lowercase)
+        // E-Mail-Normalisierung (trim + lowercase)
         const normalizedEmail = email.trim().toLowerCase();
         
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -185,28 +185,28 @@ router.post('/register', async (req, res) => {
             });
         }
 
-        // Email kontrolü (case-insensitive) - normalizedEmail zaten yukarıda tanımlanmış
-        console.log('=== EMAIL KONTROLÜ ===');
-        console.log('Orijinal email:', email);
-        console.log('Normalize edilmiş email:', normalizedEmail);
+        // E-Mail-Prüfung (Groß-/Kleinschreibung nicht beachtet) - normalizedEmail bereits oben definiert
+        console.log('=== E-MAIL-PRÜFUNG ===');
+        console.log('Originale E-Mail:', email);
+        console.log('Normalisierte E-Mail:', normalizedEmail);
         
         const existingUser = await query('SELECT * FROM users WHERE LOWER(TRIM(email)) = $1', [normalizedEmail]);
-        console.log('Mevcut kullanıcı sayısı:', existingUser.rows.length);
+        console.log('Anzahl vorhandener Benutzer:', existingUser.rows.length);
         if (existingUser.rows.length > 0) {
-            console.log('Bulunan kullanıcı:', existingUser.rows[0].email);
+            console.log('Gefundener Benutzer:', existingUser.rows[0].email);
             return res.status(400).json({ 
                 error: 'E-Mail bereits registriert',
                 field: 'email',
                 message: 'Diese E-Mail-Adresse ist bereits registriert. Bitte verwenden Sie eine andere E-Mail-Adresse oder melden Sie sich an.'
             });
         }
-        console.log('Email kayıtlı değil, kayıt devam ediyor...');
+        console.log('E-Mail nicht registriert, Registrierung wird fortgesetzt...');
 
-        // Şifre hash'leme
+        // Passwort-Hashing
         const saltRounds = 10;
         const passwordHash = await bcrypt.hash(password, saltRounds);
 
-        // Yeni kullanıcı oluşturma (email'i normalize edilmiş olarak kaydet)
+        // Neuen Benutzer erstellen (E-Mail als normalisiert speichern)
         const newUser = await query(`
             INSERT INTO users (first_name, last_name, email, password_hash, phone_number, address, is_verified)
             VALUES ($1, $2, $3, $4, $5, $6, TRUE)
@@ -217,7 +217,7 @@ router.post('/register', async (req, res) => {
         const userEmail = newUser.rows[0].email;
         const isAdmin = newUser.rows[0].is_admin || false;
 
-        // JWT token oluşturma
+        // JWT Token erstellen
         const token = jwt.sign(
             { userId: userId, email: userEmail, is_admin: isAdmin },
             process.env.JWT_SECRET,
@@ -237,7 +237,7 @@ router.post('/register', async (req, res) => {
         });
 
     } catch (error) {
-        console.error('=== KAYIT HATASI ===');
+        console.error('=== REGISTRIERUNGSFEHLER ===');
         console.error('Error:', error);
         console.error('Error message:', error.message);
         console.error('Error code:', error.code);
@@ -255,32 +255,32 @@ router.post('/register', async (req, res) => {
     }
 });
 
-// Giriş
+// Anmeldung
 router.post('/login', async (req, res) => {
     try {
         const { email, password } = req.body;
 
-        // Email normalizasyonu (trim + lowercase)
+        // E-Mail-Normalisierung (trim + lowercase)
         const normalizedEmail = email.trim().toLowerCase();
         
-        // Kullanıcıyı bul (case-insensitive)
+        // Benutzer finden (Groß-/Kleinschreibung nicht beachtet)
         const user = await query('SELECT * FROM users WHERE LOWER(TRIM(email)) = $1', [normalizedEmail]);
         if (user.rows.length === 0) {
             return res.status(401).json({ error: 'Ungültige Anmeldedaten' });
         }
 
-        // Şifre kontrolü
+        // Passwort-Prüfung
         const isValidPassword = await bcrypt.compare(password, user.rows[0].password_hash);
         if (!isValidPassword) {
             return res.status(401).json({ error: 'Ungültige Anmeldedaten' });
         }
 
-        // user_id kullan (veritabanında user_id var)
+        // user_id verwenden (user_id existiert in der Datenbank)
         const userId = user.rows[0].user_id;
         const userEmail = user.rows[0].email;
         const isAdmin = user.rows[0].is_admin || false;
 
-        // JWT token oluşturma (is_admin dahil)
+        // JWT Token erstellen (is_admin dahil)
         const token = jwt.sign(
             { userId: userId, email: userEmail, is_admin: isAdmin },
             process.env.JWT_SECRET,
@@ -298,7 +298,7 @@ router.post('/login', async (req, res) => {
         });
 
     } catch (error) {
-        console.error('=== GİRİŞ HATASI ===');
+        console.error('=== ANMELDEFEHLER ===');
         console.error('Error:', error);
         console.error('Error message:', error.message);
         console.error('Error stack:', error.stack);
@@ -310,7 +310,7 @@ router.post('/login', async (req, res) => {
     }
 });
 
-// Kullanıcı bilgilerini getir (korumalı rota)
+// Benutzerinformationen abrufen (geschützte Route)
 router.get('/profile', authMiddleware, async (req, res) => {
     try {
         const userId = req.user.userId;
@@ -323,7 +323,7 @@ router.get('/profile', authMiddleware, async (req, res) => {
         `, [userId]);
 
         if (user.rows.length === 0) {
-            return res.status(404).json({ error: 'Kullanıcı bulunamadı' });
+            return res.status(404).json({ error: 'Benutzer nicht gefunden' });
         }
 
         res.json({
@@ -332,15 +332,15 @@ router.get('/profile', authMiddleware, async (req, res) => {
         });
 
     } catch (error) {
-        console.error('Kullanıcı bilgileri çekilirken hata:', error);
+        console.error('Fehler beim Abrufen der Benutzerinformationen:', error);
         res.status(500).json({ error: 'Serverfehler' });
     }
 });
 
-// Kullanıcı bilgilerini getir (token ile)
+// Benutzerinformationen abrufen (mit Token)
 router.get('/user', authMiddleware, async (req, res) => {
     try {
-        console.log('=== /user endpoint çalışıyor ===');
+        console.log('=== /user Endpunkt wird ausgeführt ===');
         console.log('req.user:', req.user);
         
         const userId = req.user.userId;
@@ -352,29 +352,29 @@ router.get('/user', authMiddleware, async (req, res) => {
             FROM users WHERE user_id = $1
         `, [userId]);
         
-        console.log('Database query sonucu:', user.rows);
+        console.log('Datenbankabfrage-Ergebnis:', user.rows);
 
         if (user.rows.length === 0) {
-            console.log('Kullanıcı bulunamadı');
-            return res.status(404).json({ error: 'Kullanıcı bulunamadı' });
+            console.log('Benutzer nicht gefunden');
+            return res.status(404).json({ error: 'Benutzer nicht gefunden' });
         }
 
-        console.log('Kullanıcı bulundu:', user.rows[0]);
+        console.log('Benutzer gefunden:', user.rows[0]);
         
         res.json({
-            message: 'Kullanıcı bilgileri başarıyla getirildi',
+            message: 'Benutzerinformationen erfolgreich abgerufen',
             user: user.rows[0]
         });
 
     } catch (error) {
-        console.error('=== /user endpoint hatası ===');
-        console.error('Hata detayı:', error);
+        console.error('=== /user Endpunkt-Fehler ===');
+        console.error('Fehlerdetails:', error);
         console.error('Stack trace:', error.stack);
         res.status(500).json({ error: 'Serverfehler', details: error.message });
     }
 });
 
-// Kullanıcı bilgilerini güncelle (korumalı rota)
+// Benutzerinformationen aktualisieren (geschützte Route)
 router.put('/profile', authMiddleware, async (req, res) => {
     try {
         const userId = req.user.userId;
@@ -391,16 +391,16 @@ router.put('/profile', authMiddleware, async (req, res) => {
         `, [first_name, last_name, phone_number, address, payment_card_json, payment_paypal_json, payment_klarna_json, userId]);
 
         if (updatedUser.rows.length === 0) {
-            return res.status(404).json({ error: 'Kullanıcı bulunamadı' });
+            return res.status(404).json({ error: 'Benutzer nicht gefunden' });
         }
 
         res.json({
-            message: 'Profil başarıyla güncellendi',
+            message: 'Profil erfolgreich aktualisiert',
             user: updatedUser.rows[0]
         });
 
     } catch (error) {
-        console.error('Profil güncelleme hatası:', error);
+        console.error('Fehler beim Aktualisieren des Profils:', error);
         res.status(500).json({ error: 'Serverfehler' });
     }
 });

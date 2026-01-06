@@ -28,7 +28,7 @@ router.get('/dashboard', authMiddleware, adminMiddleware, async (req, res) => {
         });
 
     } catch (error) {
-        console.error('Dashboard verileri getirilirken hata:', error);
+        console.error('Fehler beim Abrufen der Dashboard-Daten:', error);
         res.status(500).json({ error: 'Serverfehler' });
     }
 });
@@ -42,7 +42,7 @@ router.get('/users', authMiddleware, adminMiddleware, async (req, res) => {
         `);
         res.json(result.rows);
     } catch (error) {
-        console.error('Kullanıcılar getirilirken hata:', error);
+        console.error('Fehler beim Abrufen der Benutzer:', error);
         res.status(500).json({ error: 'Serverfehler' });
     }
 });
@@ -58,7 +58,7 @@ router.get('/reservations', authMiddleware, adminMiddleware, async (req, res) =>
         `);
         res.json(result.rows);
     } catch (error) {
-        console.error('Rezervasyonlar getirilirken hata:', error);
+        console.error('Fehler beim Abrufen der Reservierungen:', error);
         res.status(500).json({ error: 'Serverfehler' });
     }
 });
@@ -69,12 +69,12 @@ router.post('/test-reservations', authMiddleware, adminMiddleware, async (req, r
 
         const userCheck = await query('SELECT user_id FROM users WHERE user_id = $1', [user_id]);
         if (userCheck.rows.length === 0) {
-            return res.status(404).json({ error: 'Kullanıcı bulunamadı' });
+            return res.status(404).json({ error: 'Benutzer nicht gefunden' });
         }
 
         const carsCheck = await query('SELECT car_id FROM cars LIMIT 3');
         if (carsCheck.rows.length === 0) {
-            return res.status(400).json({ error: 'Hiç araç bulunamadı' });
+            return res.status(400).json({ error: 'Keine Fahrzeuge gefunden' });
         }
 
         const testReservations = [
@@ -132,12 +132,12 @@ router.post('/test-reservations', authMiddleware, adminMiddleware, async (req, r
         }
 
         res.status(201).json({
-            message: 'Test rezervasyonları başarıyla eklendi',
+            message: 'Testreservierungen erfolgreich hinzugefügt',
             reservations: insertedReservations
         });
 
     } catch (error) {
-        console.error('Test rezervasyonları eklenirken hata:', error);
+        console.error('Fehler beim Hinzufügen der Testreservierungen:', error);
         res.status(500).json({ error: 'Serverfehler' });
     }
 });
@@ -149,7 +149,7 @@ router.put('/reservations/:id', authMiddleware, adminMiddleware, async (req, res
 
         const validStatuses = ['Beklemede', 'Onaylandı', 'Reddedildi', 'Tamamlandı', 'İptal Edildi'];
         if (!validStatuses.includes(status)) {
-            return res.status(400).json({ error: 'Geçersiz durum' });
+            return res.status(400).json({ error: 'Ungültiger Status' });
         }
 
         const result = await query(`
@@ -169,7 +169,7 @@ router.put('/reservations/:id', authMiddleware, adminMiddleware, async (req, res
         });
 
     } catch (error) {
-        console.error('Rezervasyon durumu güncellenirken hata:', error);
+        console.error('Fehler beim Aktualisieren des Reservierungsstatus:', error);
         res.status(500).json({ error: 'Serverfehler' });
     }
 });
@@ -199,7 +199,7 @@ router.post('/cars', authMiddleware, adminMiddleware, async (req, res) => {
         });
 
     } catch (error) {
-        console.error('Araç eklenirken hata:', error);
+        console.error('Fehler beim Hinzufügen des Fahrzeugs:', error);
         res.status(500).json({ error: 'Serverfehler' });
     }
 });
@@ -234,7 +234,7 @@ router.put('/cars/:id', authMiddleware, adminMiddleware, async (req, res) => {
         });
 
     } catch (error) {
-        console.error('Araç güncellenirken hata:', error);
+        console.error('Fehler beim Aktualisieren des Fahrzeugs:', error);
         res.status(500).json({ error: 'Serverfehler' });
     }
 });
@@ -259,7 +259,7 @@ router.delete('/cars/:id', authMiddleware, adminMiddleware, async (req, res) => 
         });
 
     } catch (error) {
-        console.error('Araç silinirken hata:', error);
+        console.error('Fehler beim Löschen des Fahrzeugs:', error);
         res.status(500).json({ error: 'Serverfehler' });
     }
 });
@@ -274,7 +274,7 @@ router.get('/cars', authMiddleware, adminMiddleware, async (req, res) => {
         `);
         res.json(result.rows);
     } catch (error) {
-        console.error('Araçlar getirilirken hata:', error);
+        console.error('Fehler beim Abrufen der Fahrzeuge:', error);
         res.status(500).json({ error: 'Serverfehler' });
     }
 });
@@ -290,12 +290,12 @@ router.post('/locations', authMiddleware, adminMiddleware, async (req, res) => {
         `, [name, address, city, state_province, zip_code, country]);
 
         res.status(201).json({
-            message: 'Lokasyon başarıyla eklendi',
+            message: 'Standort erfolgreich hinzugefügt',
             location: result.rows[0]
         });
 
     } catch (error) {
-        console.error('Lokasyon eklenirken hata:', error);
+        console.error('Fehler beim Hinzufügen des Standorts:', error);
         res.status(500).json({ error: 'Serverfehler' });
     }
 });
@@ -313,16 +313,16 @@ router.put('/locations/:id', authMiddleware, adminMiddleware, async (req, res) =
         `, [name, address, city, state_province, zip_code, country, id]);
 
         if (result.rows.length === 0) {
-            return res.status(404).json({ error: 'Lokasyon bulunamadı' });
+            return res.status(404).json({ error: 'Standort nicht gefunden' });
         }
 
         res.json({
-            message: 'Lokasyon başarıyla güncellendi',
+            message: 'Standort erfolgreich aktualisiert',
             location: result.rows[0]
         });
 
     } catch (error) {
-        console.error('Lokasyon güncellenirken hata:', error);
+        console.error('Fehler beim Aktualisieren des Standorts:', error);
         res.status(500).json({ error: 'Serverfehler' });
     }
 });
@@ -335,7 +335,7 @@ router.get('/locations', authMiddleware, adminMiddleware, async (req, res) => {
         `);
         res.json(result.rows);
     } catch (error) {
-        console.error('Lokasyonlar getirilirken hata:', error);
+        console.error('Fehler beim Abrufen der Standorte:', error);
         res.status(500).json({ error: 'Serverfehler' });
     }
 });
@@ -351,12 +351,12 @@ router.post('/features', authMiddleware, adminMiddleware, async (req, res) => {
         `, [feature_name]);
 
         res.status(201).json({
-            message: 'Özellik başarıyla eklendi',
+            message: 'Funktion erfolgreich hinzugefügt',
             feature: result.rows[0]
         });
 
     } catch (error) {
-        console.error('Özellik eklenirken hata:', error);
+        console.error('Fehler beim Hinzufügen der Funktion:', error);
         res.status(500).json({ error: 'Serverfehler' });
     }
 });
@@ -373,16 +373,16 @@ router.put('/features/:id', authMiddleware, adminMiddleware, async (req, res) =>
         `, [feature_name, id]);
 
         if (result.rows.length === 0) {
-            return res.status(404).json({ error: 'Özellik bulunamadı' });
+            return res.status(404).json({ error: 'Funktion nicht gefunden' });
         }
 
         res.json({
-            message: 'Özellik başarıyla güncellendi',
+            message: 'Funktion erfolgreich aktualisiert',
             feature: result.rows[0]
         });
 
     } catch (error) {
-        console.error('Özellik güncellenirken hata:', error);
+        console.error('Fehler beim Aktualisieren der Funktion:', error);
         res.status(500).json({ error: 'Serverfehler' });
     }
 });
@@ -396,16 +396,16 @@ router.delete('/features/:id', authMiddleware, adminMiddleware, async (req, res)
         `, [id]);
 
         if (result.rows.length === 0) {
-            return res.status(404).json({ error: 'Özellik bulunamadı' });
+            return res.status(404).json({ error: 'Funktion nicht gefunden' });
         }
 
         res.json({
-            message: 'Özellik başarıyla silindi',
+            message: 'Funktion erfolgreich gelöscht',
             feature: result.rows[0]
         });
 
     } catch (error) {
-        console.error('Özellik silinirken hata:', error);
+        console.error('Fehler beim Löschen der Funktion:', error);
         res.status(500).json({ error: 'Serverfehler' });
     }
 });

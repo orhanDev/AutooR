@@ -7,8 +7,8 @@ router.get('/', async (req, res) => {
         const result = await query('SELECT * FROM cars');
         res.json(result.rows);
     } catch (error) {
-        console.error('Araçlar getirilirken hata:', error);
-        res.status(500).json({ error: 'Sunucu hatası' });
+        console.error('Fehler beim Abrufen der Fahrzeuge:', error);
+        res.status(500).json({ error: 'Serverfehler' });
     }
 });
 
@@ -132,12 +132,12 @@ router.get('/search', async (req, res) => {
         sqlQuery += ' LIMIT 100;';
 
         const result = await query(sqlQuery, queryParams);
-        console.log('API sorgusundan', result.rows.length, 'araç döndü.');
+        console.log('API-Abfrage ergab', result.rows.length, 'Fahrzeuge.');
         res.json(result.rows);
 
     } catch (error) {
-        console.error('Araç arama hatası:', error);
-        res.status(500).json({ error: 'Sunucu hatası' });
+        console.error('Fehler bei der Fahrzeugsuche:', error);
+        res.status(500).json({ error: 'Serverfehler' });
     }
 });
 
@@ -153,7 +153,7 @@ router.get('/:id', async (req, res) => {
         `, [carId]);
 
         if (carResult.rows.length === 0) {
-            return res.status(404).json({ error: 'Araç bulunamadı' });
+            return res.status(404).json({ error: 'Fahrzeug nicht gefunden' });
         }
 
         const car = carResult.rows[0];
@@ -170,8 +170,8 @@ router.get('/:id', async (req, res) => {
         res.json(car);
 
     } catch (error) {
-        console.error('Araç detayları getirilirken hata:', error);
-        res.status(500).json({ error: 'Sunucu hatası' });
+        console.error('Fehler beim Abrufen der Fahrzeugdetails:', error);
+        res.status(500).json({ error: 'Serverfehler' });
     }
 });
 

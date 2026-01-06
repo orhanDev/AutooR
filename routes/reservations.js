@@ -2,7 +2,7 @@ const express = require('express');
 const { Pool } = require('pg');
 const router = express.Router();
 
-// PostgreSQL bağlantı havuzu
+// PostgreSQL Verbindungspool
 const pool = new Pool({
     user: process.env.PGUSER,
     host: process.env.PGHOST,
@@ -11,7 +11,7 @@ const pool = new Pool({
     port: process.env.PGPORT || 5432,
 });
 
-// Rezervasyon oluşturma
+// Reservierung erstellen
 router.post('/create', async (req, res) => {
     try {
         const { 
@@ -29,11 +29,11 @@ router.post('/create', async (req, res) => {
         if (!userEmail || !vehicleId || !pickupLocation || !dropoffLocation || !pickupDate || !dropoffDate || !totalPrice) {
             return res.status(400).json({ 
                 success: false, 
-                message: 'Gerekli alanlar eksik' 
+                message: 'Erforderliche Felder fehlen' 
             });
         }
 
-        // Kullanıcıyı bul (id ya da user_id desteği)
+        // Benutzer finden (Unterstützung für id oder user_id)
         let user;
         try {
             user = await pool.query('SELECT id FROM users WHERE email = $1', [userEmail]);
@@ -48,13 +48,13 @@ router.post('/create', async (req, res) => {
         if (!user || user.rows.length === 0) {
             return res.status(404).json({ 
                 success: false, 
-                message: 'Kullanıcı bulunamadı' 
+                message: 'Benutzer nicht gefunden' 
             });
         }
 
         const userId = user.rows[0].id;
 
-        // Lokasyon tablosu var mı kontrol et
+        // Überprüfen, ob Standorttabelle vorhanden ist
         let hasLocationsTable = true;
         try {
             await pool.query('SELECT 1 FROM locations LIMIT 1');
@@ -81,7 +81,7 @@ router.post('/create', async (req, res) => {
             if (pickupLoc.rows.length === 0 || dropoffLoc.rows.length === 0) {
                 return res.status(400).json({
                     success: false,
-                    message: 'Lokasyon bulunamadı'
+                    message: 'Standort nicht gefunden'
                 });
             }
 
@@ -89,13 +89,13 @@ router.post('/create', async (req, res) => {
             dropoffLocationId = dropoffLoc.rows[0].location_id;
         }
 
-        // Tarih ve saatleri veritabanı tipleriyle uyumlu hale getir
+        // Daten und Zeiten mit Datenbanktypen kompatibel machen
         const pickupTimeStr = pickupTime && pickupTime.length === 5 ? pickupTime + ':00' : (pickupTime || '09:00:00');
         const dropoffTimeStr = dropoffTime && dropoffTime.length === 5 ? dropoffTime + ':00' : (dropoffTime || '10:00:00');
 
         let reservation;
         if (hasLocationsTable) {
-            // Şema: location_id kolonları mevcut
+            // Schema: location_id-Spalten vorhanden
             reservation = await pool.query(
                 `INSERT INTO reservations (
                     user_id, car_id, pickup_date, dropoff_date, pickup_time, dropoff_time,
@@ -108,7 +108,7 @@ router.post('/create', async (req, res) => {
                 ]
             );
         } else {
-            // Eski/alternatif şema: metin kolonları (pickup_location, return_location)
+            // Altes/alternatives Schema: Textspalten (pickup_location, return_location)
             reservation = await pool.query(
                 `INSERT INTO reservations (
                     user_id, car_id, pickup_date, dropoff_date, pickup_time, dropoff_time,
@@ -124,26 +124,26 @@ router.post('/create', async (req, res) => {
 
         res.json({
             success: true,
-            message: 'Rezervasyon başarıyla oluşturuldu',
+            message: 'Reservierung erfolgreich erstellt',
             reservation: reservation.rows[0]
         });
     } catch (error) {
-        console.error('Rezervasyon oluşturma hatası:', error);
+        console.error('Fehler beim Erstellen der Reservierung:', error);
         res.status(500).json({ 
             success: false, 
-            message: 'Sunucu hatası',
+            message: 'Serverfehler',
             code: error && error.code,
             detail: error && (error.detail || error.message)
         });
     }
 });
 
-// Kullanıcının rezervasyonlarını getir
+// Reservierungen des Benutzers abrufen
 router.get('/user/:userEmail', async (req, res) => {
     try {
         const { userEmail } = req.params;
         
-        // Kullanıcıyı bul
+        // Benutzer finden
         const user = await pool.query(
             'SELECT id FROM users WHERE email = $1',
             [userEmail]
@@ -152,13 +152,13 @@ router.get('/user/:userEmail', async (req, res) => {
         if (user.rows.length === 0) {
             return res.status(404).json({ 
                 success: false, 
-                message: 'Kullanıcı bulunamadı' 
+                message: 'Benutzer nicht gefunden' 
             });
         }
 
         const userId = user.rows[0].id;
 
-        // Rezervasyonları getir (tüm rezervasyonlar)
+        // Reservierungen abrufen (alle Reservierungen)
         const reservations = await pool.query(
             `SELECT id, booking_id, vehicle_name, vehicle_image, pickup_location, 
                     return_location, pickup_date, pickup_time, return_date, return_time,
@@ -174,15 +174,15 @@ router.get('/user/:userEmail', async (req, res) => {
             reservations: reservations.rows
         });
     } catch (error) {
-        console.error('Rezervasyon listesi hatası:', error);
+        console.error('Fehler beim Abrufen der Reservierungsliste:', error);
         res.status(500).json({ 
             success: false, 
-            message: 'Sunucu hatası' 
+            message: 'Serverfehler' 
         });
     }
 });
 
-// Rezervasyon detaylarını getir
+// Reservierungsdetails abrufen
 router.get('/:bookingId', async (req, res) => {
     try {
         const { bookingId } = req.params;
@@ -198,7 +198,7 @@ router.get('/:bookingId', async (req, res) => {
         if (reservation.rows.length === 0) {
             return res.status(404).json({ 
                 success: false, 
-                message: 'Rezervasyon bulunamadı' 
+                message: 'Reservierung nicht gefunden' 
             });
         }
 
@@ -207,15 +207,15 @@ router.get('/:bookingId', async (req, res) => {
             reservation: reservation.rows[0]
         });
     } catch (error) {
-        console.error('Rezervasyon detay hatası:', error);
+        console.error('Fehler beim Abrufen der Reservierungsdetails:', error);
         res.status(500).json({ 
             success: false, 
-            message: 'Sunucu hatası' 
+            message: 'Serverfehler' 
         });
     }
 });
 
-// Rezervasyon güncelleme
+// Reservierung aktualisieren
 router.put('/:bookingId', async (req, res) => {
     try {
         const { bookingId } = req.params;
@@ -254,25 +254,25 @@ router.put('/:bookingId', async (req, res) => {
         if (reservation.rows.length === 0) {
             return res.status(404).json({ 
                 success: false, 
-                message: 'Rezervasyon bulunamadı' 
+                message: 'Reservierung nicht gefunden' 
             });
         }
 
         res.json({
             success: true,
-            message: 'Rezervasyon başarıyla güncellendi',
+            message: 'Reservierung erfolgreich aktualisiert',
             reservation: reservation.rows[0]
         });
     } catch (error) {
-        console.error('Rezervasyon güncelleme hatası:', error);
+        console.error('Fehler beim Aktualisieren der Reservierung:', error);
         res.status(500).json({ 
             success: false, 
-            message: 'Sunucu hatası' 
+            message: 'Serverfehler' 
         });
     }
 });
 
-// Rezervasyon iptal etme
+// Reservierung stornieren
 router.put('/:bookingId/cancel', async (req, res) => {
     try {
         const { bookingId } = req.params;
@@ -289,20 +289,20 @@ router.put('/:bookingId/cancel', async (req, res) => {
         if (reservation.rows.length === 0) {
             return res.status(404).json({ 
                 success: false, 
-                message: 'Rezervasyon bulunamadı' 
+                message: 'Reservierung nicht gefunden' 
             });
         }
 
         res.json({
             success: true,
-            message: 'Rezervasyon başarıyla iptal edildi',
+            message: 'Reservierung erfolgreich storniert',
             reservation: reservation.rows[0]
         });
     } catch (error) {
-        console.error('Rezervasyon iptal hatası:', error);
+        console.error('Fehler beim Stornieren der Reservierung:', error);
         res.status(500).json({ 
             success: false, 
-            message: 'Sunucu hatası' 
+            message: 'Serverfehler' 
         });
     }
 });
@@ -316,7 +316,7 @@ router.put('/:bookingId/payment-status', async (req, res) => {
         if (!paymentStatus || !['pending', 'completed', 'failed'].includes(paymentStatus)) {
             return res.status(400).json({ 
                 success: false, 
-                message: 'Geçersiz ödeme durumu' 
+                message: 'Ungültiger Zahlungsstatus' 
             });
         }
         
@@ -332,25 +332,25 @@ router.put('/:bookingId/payment-status', async (req, res) => {
         if (reservation.rows.length === 0) {
             return res.status(404).json({ 
                 success: false, 
-                message: 'Rezervasyon bulunamadı' 
+                message: 'Reservierung nicht gefunden' 
             });
         }
 
         res.json({
             success: true,
-            message: 'Ödeme durumu başarıyla güncellendi',
+            message: 'Zahlungsstatus erfolgreich aktualisiert',
             reservation: reservation.rows[0]
         });
     } catch (error) {
-        console.error('Ödeme durumu güncelleme hatası:', error);
+        console.error('Fehler beim Aktualisieren des Zahlungsstatus:', error);
         res.status(500).json({ 
             success: false, 
-            message: 'Sunucu hatası' 
+            message: 'Serverfehler' 
         });
     }
 });
 
-// Rezervasyon silme
+// Reservierung löschen
 router.delete('/:bookingId', async (req, res) => {
     try {
         const { bookingId } = req.params;
@@ -363,20 +363,20 @@ router.delete('/:bookingId', async (req, res) => {
         if (deletedReservation.rows.length === 0) {
             return res.status(404).json({ 
                 success: false, 
-                message: 'Rezervasyon bulunamadı' 
+                message: 'Reservierung nicht gefunden' 
             });
         }
 
         res.json({
             success: true,
-            message: 'Rezervasyon başarıyla silindi',
+            message: 'Reservierung erfolgreich gelöscht',
             reservation: deletedReservation.rows[0]
         });
     } catch (error) {
-        console.error('Rezervasyon silme hatası:', error);
+        console.error('Fehler beim Löschen der Reservierung:', error);
         res.status(500).json({ 
             success: false, 
-            message: 'Sunucu hatası' 
+            message: 'Serverfehler' 
         });
     }
 });

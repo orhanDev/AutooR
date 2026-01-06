@@ -54,7 +54,7 @@ async function updatePrices() {
     const updateSqlPath = path.join(__dirname, '..', 'db', 'update_prices_realistic.sql');
     const updateSql = fs.readFileSync(updateSqlPath, 'utf8');
     
-    // SQL komutlarını satır satır çalıştır
+    // SQL-Befehle Zeile für Zeile ausführen
     const commands = updateSql.split(';').filter(cmd => cmd.trim().length > 0);
     
     for (let i = 0; i < commands.length; i++) {
@@ -62,15 +62,15 @@ async function updatePrices() {
       if (command && !command.startsWith('--')) {
         try {
           await client.query(command);
-          console.log(`Komut ${i + 1} başarılı`);
+          console.log(`Befehl ${i + 1} erfolgreich`);
         } catch (err) {
-          console.log(`Komut ${i + 1} hatası:`, err.message);
+          console.log(`Befehl ${i + 1} Fehler:`, err.message);
         }
       }
     }
 
-    // Güncel fiyatları kontrol et
-    console.log('\n=== GÜNCEL FİYATLAR ===');
+    // Aktuelle Preise überprüfen
+    console.log('\n=== AKTUELLE PREISE ===');
     const updatedPrices = await client.query(`
       SELECT make, model, year, daily_rate 
       FROM cars 
@@ -81,7 +81,7 @@ async function updatePrices() {
       console.log(`${row.make} ${row.model} (${row.year}): €${row.daily_rate}`);
     });
 
-    // Güncel istatistikler
+    // Aktuelle Statistiken
     const updatedStats = await client.query(`
       SELECT 
         COUNT(*) as toplam_arac,
@@ -92,17 +92,17 @@ async function updatePrices() {
       FROM cars
     `);
     
-    console.log('\n=== GÜNCEL FİYAT İSTATİSTİKLERİ ===');
-    console.log(`Toplam araç: ${updatedStats.rows[0].toplam_arac}`);
-    console.log(`En düşük fiyat: €${updatedStats.rows[0].en_dusuk_fiyat}`);
-    console.log(`En yüksek fiyat: €${updatedStats.rows[0].en_yuksek_fiyat}`);
-    console.log(`Ortalama fiyat: €${Math.round(updatedStats.rows[0].ortalama_fiyat)}`);
-    console.log(`100€ altı araç: ${updatedStats.rows[0].alti_arac}`);
+    console.log('\n=== AKTUELLE PREISSTATISTIKEN ===');
+    console.log(`Gesamtzahl der Fahrzeuge: ${updatedStats.rows[0].toplam_arac}`);
+    console.log(`Niedrigster Preis: €${updatedStats.rows[0].en_dusuk_fiyat}`);
+    console.log(`Höchster Preis: €${updatedStats.rows[0].en_yuksek_fiyat}`);
+    console.log(`Durchschnittspreis: €${Math.round(updatedStats.rows[0].ortalama_fiyat)}`);
+    console.log(`Fahrzeuge unter 100€: ${updatedStats.rows[0].alti_arac}`);
 
-    console.log('\n✅ Fiyat güncelleme tamamlandı!');
+    console.log('\n✅ Preisaktualisierung abgeschlossen!');
 
   } catch (err) {
-    console.error('Hata:', err.message, err.stack);
+    console.error('Fehler:', err.message, err.stack);
     process.exitCode = 1;
   } finally {
     try {

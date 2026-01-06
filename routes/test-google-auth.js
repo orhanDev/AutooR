@@ -2,7 +2,7 @@ const express = require('express');
 const { Pool } = require('pg');
 const router = express.Router();
 
-// PostgreSQL bağlantı havuzu
+// PostgreSQL Verbindungspool
 const pool = new Pool({
     user: process.env.PGUSER,
     host: process.env.PGHOST,
@@ -11,7 +11,7 @@ const pool = new Pool({
     port: process.env.PGPORT || 5432,
 });
 
-// Test Google OAuth giriş sayfası
+// Test Google OAuth Anmeldeseite
 router.get('/test-google', (req, res) => {
     res.send(`
         <!DOCTYPE html>
@@ -185,11 +185,11 @@ router.get('/test-google', (req, res) => {
             
             <script>
                 function testLogin(email, name) {
-                    // Loading göster
+                    // Laden anzeigen
                     document.getElementById('loading').style.display = 'block';
                     document.getElementById('error-message').style.display = 'none';
                     
-                    // Test kullanıcısı ile giriş yap
+                    // Mit Testbenutzer anmelden
                     const userData = {
                         email: email,
                         firstName: name.split(' ')[0],
@@ -199,7 +199,7 @@ router.get('/test-google', (req, res) => {
                         loginMethod: 'google'
                     };
                     
-                    // Parent window'a mesaj gönder
+                    // Nachricht an Parent-Fenster senden
                     if (window.opener) {
                         window.opener.postMessage({
                             type: 'GOOGLE_OAUTH_SUCCESS',
@@ -208,7 +208,7 @@ router.get('/test-google', (req, res) => {
                         }, '*');
                         window.close();
                     } else {
-                        // Ana sayfaya yönlendir
+                        // Zur Startseite weiterleiten
                         setTimeout(() => {
                             window.location.href = \`/?login=success&user=\${encodeURIComponent(JSON.stringify(userData))}\`;
                         }, 1000);
@@ -226,17 +226,17 @@ router.post('/test-google/callback', async (req, res) => {
         const { email, name } = req.body;
         
         if (!email || !name) {
-            return res.json({ success: false, message: 'E-posta ve isim gereklidir' });
+            return res.json({ success: false, message: 'E-Mail und Name sind erforderlich' });
         }
         
-        // Kullanıcıyı veritabanında bul veya oluştur
+        // Benutzer in der Datenbank finden oder erstellen
         let user = await pool.query(
             'SELECT * FROM users WHERE email = $1',
             [email]
         );
         
         if (user.rows.length === 0) {
-            // Yeni kullanıcı oluştur
+            // Neuen Benutzer erstellen
             const newUser = await pool.query(
                 `INSERT INTO users (email, first_name, last_name, login_method, is_verified, google_id)
                  VALUES ($1, $2, $3, $4, $5, $6)
@@ -252,7 +252,7 @@ router.post('/test-google/callback', async (req, res) => {
             );
             user = newUser;
         } else {
-            // Mevcut kullanıcıyı güncelle
+            // Vorhandenen Benutzer aktualisieren
             const updatedUser = await pool.query(
                 `UPDATE users SET 
                     first_name = $1,
@@ -275,7 +275,7 @@ router.post('/test-google/callback', async (req, res) => {
         
         res.json({
             success: true,
-            message: 'Test giriş başarılı',
+            message: 'Test-Anmeldung erfolgreich',
             user: {
                 email: userData.email,
                 firstName: userData.first_name,
@@ -288,7 +288,7 @@ router.post('/test-google/callback', async (req, res) => {
         
     } catch (error) {
         console.error('Test Google OAuth callback error:', error);
-        res.json({ success: false, message: 'Sunucu hatası' });
+        res.json({ success: false, message: 'Serverfehler' });
     }
 });
 

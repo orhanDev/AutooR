@@ -33,7 +33,7 @@ const testGoogleAuthRouter = require('./routes/test-google-auth');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// CORS Middleware - Railway/Netlify için
+// CORS Middleware - für Railway/Netlify
 app.use((req, res, next) => {
   const allowedOrigins = [
     'https://autoor-demo.netlify.app',
@@ -471,7 +471,7 @@ try {
             console.log(`🔒 HTTPS läuft auf https://localhost:${HTTPS_PORT}`);
           });
         } else {
-          console.error(`❌ Port ${HTTPS_PORT} ve sonraki portlar kullanımda!`);
+          console.error(`❌ Port ${HTTPS_PORT} und nachfolgende Ports sind belegt!`);
           process.exit(1);
         }
       } else {
@@ -521,11 +521,11 @@ try {
           });
         }
       } catch (retryErr) {
-        console.error(`❌ Port ${port} başlatılamadı!`);
+        console.error(`❌ Port ${port} konnte nicht gestartet werden!`);
         process.exit(1);
       }
     } else {
-      console.error(`❌ Port ${port} ve sonraki portlar kullanımda!`);
+      console.error(`❌ Port ${port} und nachfolgende Ports sind belegt!`);
       process.exit(1);
     }
   } else {
@@ -545,16 +545,16 @@ try {
       });
     } catch (httpErr) {
       if (httpErr.code === 'EADDRINUSE') {
-        console.log(`\n⚠️ Port ${httpPort} kullanımda, alternatif port aranıyor...`);
+        console.log(`\n⚠️ Port ${httpPort} wird verwendet, suche nach alternativem Port...`);
         const altPort = findAvailablePort(httpPort);
         if (altPort) {
           httpPort = altPort;
-          console.log(`✅ Port ${httpPort} kullanılacak`);
+          console.log(`✅ Port ${httpPort} wird verwendet`);
           server = app.listen(httpPort, () => {
             console.log(`HTTP läuft auf http://localhost:${httpPort}`);
           });
         } else {
-          console.error(`❌ Port ${httpPort} ve sonraki portlar kullanımda!`);
+          console.error(`❌ Port ${httpPort} und nachfolgende Ports sind belegt!`);
           process.exit(1);
         }
       } else {

@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const axios = require('axios');
 const router = express.Router();
 
-// PostgreSQL bağlantı havuzu
+// PostgreSQL Verbindungspool
 const pool = new Pool({
     user: process.env.PGUSER,
     host: process.env.PGHOST,
@@ -13,7 +13,7 @@ const pool = new Pool({
     port: process.env.PGPORT || 5432,
 });
 
-// Facebook OAuth giriş sayfası
+// Facebook OAuth Anmeldeseite
 router.get('/facebook', (req, res) => {
     const FACEBOOK_APP_ID = process.env.FACEBOOK_APP_ID;
     const FACEBOOK_APP_SECRET = process.env.FACEBOOK_APP_SECRET;
@@ -68,7 +68,7 @@ router.get('/facebook/callback', async (req, res) => {
         
         const accessToken = tokenResponse.data.access_token;
         
-        // Kullanıcı bilgilerini al
+        // Benutzerinformationen abrufen
         const userResponse = await axios.get('https://graph.facebook.com/v18.0/me', {
             params: {
                 fields: 'id,name,email,first_name,last_name',
@@ -82,7 +82,7 @@ router.get('/facebook/callback', async (req, res) => {
             return res.redirect('/login?error=email_not_provided');
         }
         
-        // Kullanıcıyı veritabanında bul veya oluştur
+        // Benutzer in der Datenbank finden oder erstellen
         let user = await pool.query(
             'SELECT * FROM users WHERE email = $1',
             [facebookUser.email]
@@ -91,7 +91,7 @@ router.get('/facebook/callback', async (req, res) => {
         let userData;
         
         if (user.rows.length === 0) {
-            // Yeni kullanıcı oluştur
+            // Neuen Benutzer erstellen
             try {
                 const newUser = await pool.query(
                     `INSERT INTO users (email, first_name, last_name)
@@ -109,21 +109,21 @@ router.get('/facebook/callback', async (req, res) => {
                 return res.redirect('/login?error=server_error');
             }
         } else {
-            // Mevcut kullanıcıyı güncelle
+            // Vorhandenen Benutzer aktualisieren
             userData = user.rows[0];
         }
         
         // User ID'yi al
         const userId = userData.user_id || userData.id;
         
-        // JWT token oluştur
+        // JWT Token erstellen
         const token = jwt.sign(
             { userId: userId, email: userData.email, is_admin: userData.is_admin || false },
             process.env.JWT_SECRET || 'your_super_secret_jwt_key_here_change_this_in_production',
             { expiresIn: '24h' }
         );
         
-        // Kullanıcı bilgilerini hazırla
+        // Benutzerinformationen vorbereiten
         const userInfo = {
             email: userData.email,
             firstName: userData.first_name,
@@ -135,7 +135,7 @@ router.get('/facebook/callback', async (req, res) => {
             user_id: userId
         };
         
-        // Token ve kullanıcı bilgilerini query string ile gönder
+        // Token und Benutzerinformationen mit Query-String senden
         const redirectPath = state === 'login' ? '/login' : '/';
         res.redirect(`${redirectPath}?login=success&token=${encodeURIComponent(token)}&user=${encodeURIComponent(JSON.stringify(userInfo))}`);
         
