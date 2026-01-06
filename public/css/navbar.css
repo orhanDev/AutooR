@@ -1060,7 +1060,6 @@ ease;
             pointer-events: none !important;
         }
         
-        /* Show mobile menu navbar when active */
         #mobile-menu-navbar.active {
             display: block !important;
             visibility: visible !important;
@@ -1124,7 +1123,7 @@ ease;
             color: #000000 !important;
             padding: 0.5rem !important;
             cursor: pointer;
-            display: none !important; /* Hidden by default */
+            display: none !important;
             align-items: center;
             justify-content: center;
             z-index: 10;
@@ -1154,7 +1153,6 @@ ease;
             margin-left: 2.5rem !important;
         }
         
-        /* Menu list container */
         .navbar-nav {
             padding: 0.5rem 0 !important;
             margin: 0 !important;
@@ -1209,7 +1207,6 @@ ease;
             margin-top: 0;
         }
         
-        /* Show chevron on mobile - like Porsche */
         .side-left .nav-link::after {
             content: '›' !important;
             font-size: 1.25rem !important;
@@ -1244,7 +1241,6 @@ ease;
             font-size: 1.25rem !important;
         }
         
-        /* Brand center - adjust for mobile */
         .brand-center {
             font-size: 1.2rem !important;
             letter-spacing: 0.2rem !important;
