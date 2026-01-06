@@ -201,7 +201,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         
                         console.log('User data received:', user);
                         
-                        // Store user data in both sessionStorage and localStorage
                         const userDataToStore = {
                             firstName: user.first_name,
                             lastName: user.last_name,
@@ -288,13 +287,11 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Login error:', error);
             showAlert('Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.', 'danger');
             
-            // Re-enable submit button
             submitBtn.disabled = false;
             submitBtn.innerHTML = originalText;
         }
     });
     
-    // Show alert function
     function showAlert(message, type) {
         if (!alertContainer) return;
         
@@ -305,7 +302,6 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
         `;
         
-        // Auto-dismiss after 5 seconds
         setTimeout(() => {
             const alert = alertContainer.querySelector('.alert');
             if (alert) {
@@ -315,12 +311,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 5000);
     }
     
-    // Check if user is already logged in
     async function checkExistingLogin() {
         const token = sessionStorage.getItem('token') || localStorage.getItem('token');
         if (token) {
             console.log('User already logged in, redirecting...');
-            // Verify token is still valid
             try {
                 const userResponse = await fetch('/api/auth/user', {
                     headers: {
