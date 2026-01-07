@@ -4126,7 +4126,6 @@
                     heroVideoFallback.style.display = 'none';
                 });
                 
-                // Fallback: If video doesn't start loading within 2 seconds, show fallback
                 setTimeout(function() {
                     if (heroVideo.readyState === 0 || heroVideo.networkState === 3) {
                         heroVideo.style.display = 'none';
@@ -4865,7 +4864,6 @@
             localStorage.removeItem('isLoggedIn');
             localStorage.removeItem('currentUser');
             localStorage.removeItem('welcome_name');
-            console.log('Sayfa ilk açıldı: Eski localStorage auth verileri temizlendi');
         }
 
         window.addEventListener('beforeunload', () => {
@@ -4874,7 +4872,6 @@
             sessionStorage.removeItem('isLoggedIn');
             sessionStorage.removeItem('currentUser');
             sessionStorage.removeItem('welcome_name');
-            console.log('Sayfa kapatıldı: Session temizlendi');
         });
 
         const urlParams = new URLSearchParams(window.location.search);

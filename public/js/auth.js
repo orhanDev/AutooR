@@ -12,7 +12,6 @@ document.addEventListener('DOMContentLoaded', () => {
         sessionStorage.removeItem('isLoggedIn');
         sessionStorage.removeItem('currentUser');
         sessionStorage.removeItem('welcome_name');
-        console.log('SessionStorage temizlendi (sayfa kapatildi), localStorage korundu');
     });
 
     async function updateAuthLinks() {
@@ -38,7 +37,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                     if (userName) {
                         sessionStorage.setItem('welcome_name', userName);
-                        console.log('welcome_name sessionStorage\'a kaydedildi:', userName);
                         
                         const userData = {
                             firstName: user.user.first_name,
@@ -47,7 +45,6 @@ document.addEventListener('DOMContentLoaded', () => {
                             id: user.user.id
                         };
                         sessionStorage.setItem('userData', JSON.stringify(userData));
-                        console.log('userData sessionStorage\'a kaydedildi:', userData);
                     }
                 } else {
                     console.error('Response not ok:', res.status, res.statusText);
@@ -78,7 +75,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             if (userName) {
-                console.log('Willkommen gösteriliyor:', userName);
                 authLinksContainer.innerHTML = `
                     <li class="nav-item">
                         <a class="nav-link" href="/views/profile.html">Mein Profil</a>

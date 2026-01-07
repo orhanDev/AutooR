@@ -104,7 +104,6 @@ function saveChanges() {
         lastUpdated: new Date().toISOString()
     };
     
-    // Hem localStorage hem sessionStorage'a kaydet
     localStorage.setItem('userData', JSON.stringify(userData));
     sessionStorage.setItem('userData', JSON.stringify(userData));
 
@@ -115,7 +114,6 @@ function saveChanges() {
         ...formData
     };
     
-    // Hem localStorage hem sessionStorage'a kaydet
     localStorage.setItem('currentUser', JSON.stringify(currentUser));
     sessionStorage.setItem('currentUser', JSON.stringify(currentUser));
 

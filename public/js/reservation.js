@@ -576,7 +576,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 ...opts, 
                 onChange: () => { updateDropoffDateMin(); updateTimeConstraints(); updateSubmitEnabled(); },
                 onOpen: function(selectedDates, dateStr, instance) {
-                    // Flatpickr takviminin z-index'ini artır
                     const calendar = instance.calendarContainer;
                     if (calendar) {
                         calendar.style.zIndex = '9999';
@@ -587,7 +586,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 ...opts, 
                 onChange: () => { updateTimeConstraints(); updateSubmitEnabled(); },
                 onOpen: function(selectedDates, dateStr, instance) {
-                    // Flatpickr takviminin z-index'ini artır
                     const calendar = instance.calendarContainer;
                     if (calendar) {
                         calendar.style.zIndex = '9999';
@@ -595,7 +593,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
             
-            // Tarih input'larına tıklandığında event propagation'ı durdur
             if (pDate) {
                 pDate.addEventListener('click', function(e) {
                     e.stopPropagation();
@@ -613,7 +610,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             }
             
-            // Input group'a da event listener ekle
             const pickupInputGroup = pDate?.closest('.input-group');
             const dropoffInputGroup = dDate?.closest('.input-group');
             

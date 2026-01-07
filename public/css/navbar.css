@@ -1427,7 +1427,6 @@ ease;
      }
 }
 
-/* Desktop'ta mobile navbar'ı tamamen gizle */
 @media (min-width: 752px) {
     .mobile-menu-backdrop {
         display: none !important;

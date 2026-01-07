@@ -168,7 +168,6 @@ function toggleMobileMenuNavbar(show) {
     
     console.log('Elements:', { mobileNavbar: !!mobileNavbar, navbarContainer: !!navbarContainer });
     
-    // Desktop'ta mobile navbar'ı her zaman gizle
     if (window.innerWidth > 751) {
         if (mobileNavbar) {
             mobileNavbar.style.display = 'none';
@@ -241,7 +240,6 @@ function toggleMobileMenuNavbar(show) {
 function setupMobileMenuNavbarWatcher() {
     console.log('=== setupMobileMenuNavbarWatcher CALLED ===');
     
-    // Desktop'ta mobile navbar oluşturma ve göster
     if (window.innerWidth > 751) {
         const mobileNavbar = document.getElementById('mobile-menu-navbar');
         if (mobileNavbar) {
@@ -376,7 +374,6 @@ function setupMobileMenuNavbarWatcher() {
 document.addEventListener('DOMContentLoaded', function() {
     console.log('=== DOMContentLoaded - Mobile Menu Navbar Setup ===');
     
-    // Desktop'ta mobile navbar'ı gizle
     if (window.innerWidth > 751) {
         const mobileNavbar = document.getElementById('mobile-menu-navbar');
         if (mobileNavbar) {
@@ -389,7 +386,6 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('DOMContentLoaded: shouldShowNavbar from localStorage:', shouldShowNavbar);
     
     setTimeout(() => {
-        // Sadece mobile'da setup yap
         if (window.innerWidth <= 751) {
             setupMobileMenuNavbarWatcher();
             
@@ -439,7 +435,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
         
-        // Desktop'ta mobile navbar'ı gizle
         const mobileNavbar = document.getElementById('mobile-menu-navbar');
         if (window.innerWidth > 751) {
             if (mobileNavbar) {
@@ -452,7 +447,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 navbarContainer.style.cssText = '';
             }
         } else {
-            // Mobile'da kontrol et
             const navbarNav = document.getElementById('navbarNav');
             if (navbarNav) {
                 const isOpen = navbarNav.classList.contains('show');
@@ -778,7 +772,6 @@ function createNavbar() {
         addNavbarScrollEffect();
     }, 100);
     
-    // Desktop'ta mobile navbar'ı gizle
     setTimeout(() => {
         if (window.innerWidth > 751) {
             const mobileNavbar = document.getElementById('mobile-menu-navbar');
@@ -942,7 +935,6 @@ function updateNavbar() {
 }
 
 function logout() {
-    // Sadece authentication verilerini sil, kullanıcı verilerini koru
     sessionStorage.removeItem('isLoggedIn');
     sessionStorage.removeItem('token');
     sessionStorage.removeItem('welcome_name');
@@ -950,9 +942,6 @@ function logout() {
     localStorage.removeItem('token');
     localStorage.removeItem('welcome_name');
     localStorage.removeItem('pendingEmail');
-    
-    // NOT: userData ve currentUser'ı silmiyoruz, böylece kullanıcı tekrar login olduğunda
-    // kişisel bilgileri korunmuş olur
     
     showLogoutNotification();
     setTimeout(() => {
@@ -1209,7 +1198,6 @@ function addHamburgerMenuCloseListener() {
     const backdrop = document.getElementById('mobile-menu-backdrop');
     if (backdrop) {
         backdrop.addEventListener('click', function(e) {
-            // Tarih seçici alanlarına veya flatpickr takvimine tıklandığında backdrop'u kapatma
             const isDateInput = e.target.closest('#qr-pickup-date') || 
                                 e.target.closest('#qr-dropoff-date') ||
                                 e.target.closest('#pickup-date-selector') ||
@@ -1242,7 +1230,6 @@ function addHamburgerMenuCloseListener() {
         const mobileMenuNavbar = document.getElementById('mobile-menu-navbar');
         const clickOnMobileNavbar = mobileMenuNavbar && mobileMenuNavbar.contains(event.target);
         
-        // Tarih seçici alanlarına veya flatpickr takvimine tıklandığında menüyü kapatma
         const isDateInput = event.target.closest('#qr-pickup-date') || 
                             event.target.closest('#qr-dropoff-date') ||
                             event.target.closest('#pickup-date-selector') ||
@@ -1651,7 +1638,7 @@ async function renderVehicleCards(container) {
             const r2 = await fetch('/api/cars/search');
             if (r2.ok) cars = await r2.json();
         } catch (e) {
-            console.warn('Search-API ebenfalls leer/hatali.', e);
+            console.warn('Search-API ebenfalls leer.', e);
         }
     }
 
@@ -1709,7 +1696,6 @@ async function renderVehicleCards(container) {
                 }));
             }
         } catch (e) {
-            console.warn('Static cars-data.js yüklenemedi.', e);
         }
     }
 
@@ -1736,7 +1722,6 @@ async function renderVehicleCards(container) {
                 }
             }
         } catch (e) {
-            console.warn('fahrzeuge.html içinden araç listesi çıkarılamadı.', e);
         }
     }
 

@@ -15,12 +15,11 @@ document.addEventListener('DOMContentLoaded', () => {
             sessionStorage.setItem('token', token);
             localStorage.setItem('token', token);
             
-            // Mevcut userData'yı koru (eğer varsa), sadece yeni bilgilerle güncelle
             const existingUserData = JSON.parse(localStorage.getItem('userData') || sessionStorage.getItem('userData') || '{}');
             const existingCurrentUser = JSON.parse(localStorage.getItem('currentUser') || sessionStorage.getItem('currentUser') || '{}');
             
             const userDataToStore = {
-                ...existingUserData, // Mevcut verileri koru (telefon, doğum tarihi, adres, vb.)
+                ...existingUserData,
                 firstName: userInfo.firstName,
                 lastName: userInfo.lastName,
                 email: userInfo.email,
@@ -29,13 +28,12 @@ document.addEventListener('DOMContentLoaded', () => {
             };
             
             const currentUserToStore = {
-                ...existingCurrentUser, // Mevcut verileri koru
+                ...existingCurrentUser,
                 firstName: userInfo.firstName,
                 lastName: userInfo.lastName,
                 email: userInfo.email
             };
             
-            // Hem sessionStorage hem localStorage'a kaydet
             sessionStorage.setItem('userData', JSON.stringify(userDataToStore));
             sessionStorage.setItem('isLoggedIn', 'true');
             sessionStorage.setItem('currentUser', JSON.stringify(currentUserToStore));
@@ -205,12 +203,11 @@ document.addEventListener('DOMContentLoaded', () => {
                         
                         console.log('User data received:', user);
                         
-                        // Mevcut userData'yı koru (eğer varsa), sadece yeni bilgilerle güncelle
                         const existingUserData = JSON.parse(localStorage.getItem('userData') || sessionStorage.getItem('userData') || '{}');
                         const existingCurrentUser = JSON.parse(localStorage.getItem('currentUser') || sessionStorage.getItem('currentUser') || '{}');
                         
                         const userDataToStore = {
-                            ...existingUserData, // Mevcut verileri koru (telefon, doğum tarihi, adres, vb.)
+                            ...existingUserData,
                             firstName: user.first_name,
                             lastName: user.last_name,
                             email: user.email,
@@ -219,13 +216,12 @@ document.addEventListener('DOMContentLoaded', () => {
                         };
                         
                         const currentUserToStore = {
-                            ...existingCurrentUser, // Mevcut verileri koru
+                            ...existingCurrentUser,
                             firstName: user.first_name,
                             lastName: user.last_name,
                             email: user.email
                         };
                         
-                        // Hem sessionStorage hem localStorage'a kaydet
                         sessionStorage.setItem('userData', JSON.stringify(userDataToStore));
                         sessionStorage.setItem('isLoggedIn', 'true');
                         sessionStorage.setItem('currentUser', JSON.stringify(currentUserToStore));
