@@ -496,7 +496,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Ensure navbar-container exists before creating navbar
     function initializeNavbar() {
         let navbarContainer = document.getElementById('navbar-container');
         if (!navbarContainer) {
@@ -524,10 +523,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 500);
     }
     
-    // Try immediately
     initializeNavbar();
     
-    // Also try after a short delay in case DOM isn't fully ready
     setTimeout(() => {
         const navbar = document.querySelector('.navbar.fixed-top');
         if (!navbar || !document.getElementById('navbar-container')) {
@@ -555,7 +552,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 300);
 });
 
-// Also ensure navbar is visible when window loads
 window.addEventListener('load', function() {
     setTimeout(() => {
         const navbar = document.querySelector('.navbar.fixed-top');
@@ -587,7 +583,6 @@ window.addEventListener('load', function() {
             return;
         }
         
-        // Force navbar visibility
         navbar.style.display = 'block';
         navbar.style.visibility = 'visible';
         navbar.style.opacity = '1';
@@ -663,7 +658,6 @@ const NAV_VEHICLES = [
 function createNavbar() {
     let navbarContainer = document.getElementById('navbar-container');
     
-    // If navbar-container doesn't exist, create it
     if (!navbarContainer) {
         console.log('navbar-container not found, creating it...');
         navbarContainer = document.createElement('div');
@@ -749,7 +743,6 @@ function createNavbar() {
         </nav>
     `;
 
-    // Ensure navbar is visible
     const navbar = navbarContainer.querySelector('.navbar.fixed-top');
     if (navbar) {
         navbar.style.display = 'block';
@@ -790,7 +783,6 @@ function addNavbarCSS() {}
 function updateNavbar() {
     console.log('updateNavbar called');
     
-    // Ensure navbar exists
     const navbarContainer = document.getElementById('navbar-container');
     const navbar = document.querySelector('.navbar.fixed-top');
     
@@ -799,14 +791,12 @@ function updateNavbar() {
         if (typeof createNavbar === 'function') {
             createNavbar();
         }
-        // Wait a bit and try again
         setTimeout(() => {
             updateNavbar();
         }, 100);
         return;
     }
     
-    // Ensure navbar is visible
     navbar.style.display = 'block';
     navbar.style.visibility = 'visible';
     navbar.style.opacity = '1';
@@ -826,7 +816,6 @@ function updateNavbar() {
     
     if (!userInfoContainer || !accountMenu) {
         console.log('Required containers not found, navbar may not be fully initialized');
-        // Try to reinitialize
         if (typeof createNavbar === 'function') {
             setTimeout(() => {
                 createNavbar();
@@ -882,7 +871,6 @@ function updateNavbar() {
             </div>
         `;
         
-        // Re-initialize account menu to attach event listeners
         setTimeout(() => {
             initAccountMenu();
         }, 50);
@@ -1032,6 +1020,11 @@ function testNavbarUpdate() {
 }
 
 function addCloseButtonListener() {
+    if (window.closeButtonListenerInitialized) {
+        return;
+    }
+    window.closeButtonListenerInitialized = true;
+    
     const closeButtons = document.querySelectorAll('.btn-close-menu');
     
     closeButtons.forEach(closeBtn => {
@@ -1086,37 +1079,42 @@ function addCloseButtonListener() {
         }
     });
     
+    const navbarNav = document.getElementById('navbarNav');
+    
     document.addEventListener('click', function(e) {
         if (e.target.closest('.navbar-toggler')) {
-                const navbarNav = document.getElementById('navbarNav');
             if (navbarNav) {
                 setTimeout(() => {
                     const isOpen = navbarNav.classList.contains('show');
                     if (isOpen) {
-                    document.body.style.overflow = 'hidden';
+                        document.body.style.overflow = 'hidden';
                         document.body.classList.add('menu-open');
                     } else {
                         document.body.style.overflow = '';
                         document.body.classList.remove('menu-open');
-                }
+                    }
                 }, 200);
-        }
+            }
         }
     });
     
-    const navbarNav = document.getElementById('navbarNav');
     if (navbarNav) {
         navbarNav.addEventListener('hidden.bs.collapse', function() {
             document.body.style.overflow = '';
             document.body.classList.remove('menu-open');
-    });
+        });
     }
 }
 
 function addHamburgerMenuCloseListener() {
-        const navbarNav = document.getElementById('navbarNav');
-        const navbarToggler = document.querySelector('.navbar-toggler');
-        
+    if (window.hamburgerMenuListenerInitialized) {
+        return;
+    }
+    window.hamburgerMenuListenerInitialized = true;
+    
+    const navbarNav = document.getElementById('navbarNav');
+    const navbarToggler = document.querySelector('.navbar-toggler');
+    
     if (!navbarNav) return;
 
     let collapseInstance = null;
@@ -1909,10 +1907,22 @@ function initAccountMenu() {
     const menu = document.getElementById('account-menu');
     if (!btn || !menu) return;
 
+    const removeMenuItemListeners = () => {
+        const menuItems = menu.querySelectorAll('.menu-item');
+        menuItems.forEach(item => {
+            if (item.dataset.listenerAttached === 'true') {
+                const newItem = item.cloneNode(true);
+                item.parentNode.replaceChild(newItem, item);
+                newItem.dataset.listenerAttached = 'false';
+            }
+        });
+    };
+
     const closeMenu = () => {
         menu.classList.remove('open');
         menu.setAttribute('aria-hidden', 'true');
         btn.setAttribute('aria-expanded', 'false');
+        removeMenuItemListeners();
     };
     
     const positionMenu = () => {
@@ -1926,6 +1936,10 @@ function initAccountMenu() {
     };
     
     const attachMenuItemListeners = () => {
+        if (!menu.classList.contains('open')) {
+            return;
+        }
+        
         const menuItems = menu.querySelectorAll('.menu-item');
         menuItems.forEach(item => {
             const action = item.getAttribute('data-action');
@@ -1933,16 +1947,23 @@ function initAccountMenu() {
             const menuAction = item.getAttribute('data-menu-action');
             const text = item.textContent.trim();
             
-            // Skip if already has listener
             if (item.dataset.listenerAttached === 'true') {
                 return;
             }
             
             const handleItemClick = (e) => {
-                // Only allow clicks when menu is open
                 if (!menu.classList.contains('open')) {
                     e.preventDefault();
                     e.stopPropagation();
+                    e.stopImmediatePropagation();
+                    return false;
+                }
+                
+                const menuStyle = window.getComputedStyle(menu);
+                if (menuStyle.pointerEvents === 'none' || menuStyle.opacity === '0') {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    e.stopImmediatePropagation();
                     return false;
                 }
                 
@@ -1963,14 +1984,23 @@ function initAccountMenu() {
                 }
             };
             
-            // Handle login
             if (action === 'login' || text.includes('Anmelden')) {
                 const handleClick = (e) => {
                     if (!menu.classList.contains('open')) {
                         e.preventDefault();
                         e.stopPropagation();
+                        e.stopImmediatePropagation();
                         return false;
                     }
+                    
+                    const menuStyle = window.getComputedStyle(menu);
+                    if (menuStyle.pointerEvents === 'none' || menuStyle.opacity === '0') {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        e.stopImmediatePropagation();
+                        return false;
+                    }
+                    
                     e.preventDefault();
                     e.stopPropagation();
                     closeMenu();
@@ -1983,14 +2013,23 @@ function initAccountMenu() {
                 item.addEventListener('touchend', handleClick, { passive: false });
                 item.dataset.listenerAttached = 'true';
             }
-            // Handle register
             else if (action === 'register' || text.includes('Registrieren')) {
                 const handleClick = (e) => {
                     if (!menu.classList.contains('open')) {
                         e.preventDefault();
                         e.stopPropagation();
+                        e.stopImmediatePropagation();
                         return false;
                     }
+                    
+                    const menuStyle = window.getComputedStyle(menu);
+                    if (menuStyle.pointerEvents === 'none' || menuStyle.opacity === '0') {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        e.stopImmediatePropagation();
+                        return false;
+                    }
+                    
                     e.preventDefault();
                     e.stopPropagation();
                     closeMenu();
@@ -2003,7 +2042,6 @@ function initAccountMenu() {
                 item.addEventListener('touchend', handleClick, { passive: false });
                 item.dataset.listenerAttached = 'true';
             }
-            // Handle menu links and actions
             else if (link || menuAction) {
                 item.addEventListener('click', handleItemClick, { passive: false });
                 item.addEventListener('touchend', handleItemClick, { passive: false });
@@ -2022,7 +2060,6 @@ function initAccountMenu() {
             menu.classList.add('open');
             menu.setAttribute('aria-hidden', 'false');
             btn.setAttribute('aria-expanded', 'true');
-            // Attach listeners after menu opens
             setTimeout(() => {
                 attachMenuItemListeners();
             }, 50);
@@ -2031,7 +2068,6 @@ function initAccountMenu() {
         }
     };
     
-    // Check if listeners are already attached
     if (!btn.dataset.accountBtnListenersAttached) {
         btn.addEventListener('click', handleAccountBtnClick);
         btn.addEventListener('touchend', handleAccountBtnClick, { passive: false });
@@ -2044,28 +2080,31 @@ function initAccountMenu() {
         }
     };
     
-    // Only add resize listener once
     if (!window.accountMenuResizeListenerAdded) {
         window.addEventListener('resize', handleResize);
         window.accountMenuResizeListenerAdded = true;
     }
 
     const handleDocumentClick = (e) => {
+        if (!menu.classList.contains('open')) {
+            if (menu.contains(e.target)) {
+                e.preventDefault();
+                e.stopPropagation();
+                e.stopImmediatePropagation();
+                return;
+            }
+        }
+        
         if (!menu.contains(e.target) && !btn.contains(e.target)) {
             closeMenu();
         }
     };
     
-    // Only add document click listener once
     if (!window.accountMenuDocumentClickListenerAdded) {
         document.addEventListener('click', handleDocumentClick);
         window.accountMenuDocumentClickListenerAdded = true;
     }
     
-    // Initial attachment
-    setTimeout(() => {
-        attachMenuItemListeners();
-    }, 200);
 }
 
 function initBackButton() {
