@@ -432,25 +432,6 @@ document.addEventListener('DOMContentLoaded', function() {
         document.body.classList.remove('fahrzeuge-page');
     }
     
-    const backBtn = document.querySelector('.navbar-back-btn');
-    const menuBtn = document.querySelector('.navbar-toggler');
-    
-    if (isHomePage) {
-        if (backBtn) {
-            backBtn.style.display = 'none';
-        }
-        if (menuBtn) {
-            menuBtn.style.display = 'flex';
-        }
-    } else {
-        if (backBtn) {
-            backBtn.style.display = 'flex';
-        }
-        if (menuBtn) {
-            menuBtn.style.display = 'none';
-        }
-    }
-    
     const hasLocalStorageData = localStorage.getItem('userData') && localStorage.getItem('isLoggedIn') === 'true';
     const hasSessionStorageData = sessionStorage.getItem('userData') && sessionStorage.getItem('isLoggedIn') === 'true';
     
@@ -470,27 +451,106 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    createNavbar();
+    // Ensure navbar-container exists before creating navbar
+    function initializeNavbar() {
+        let navbarContainer = document.getElementById('navbar-container');
+        if (!navbarContainer) {
+            navbarContainer = document.createElement('div');
+            navbarContainer.id = 'navbar-container';
+            if (document.body.firstChild) {
+                document.body.insertBefore(navbarContainer, document.body.firstChild);
+            } else {
+                document.body.appendChild(navbarContainer);
+            }
+        }
+        
+        createNavbar();
+        
+        setTimeout(() => {
+            updateNavbar();
+        }, 50);
+        
+        setTimeout(() => {
+            updateNavbar();
+        }, 200);
+        
+        setTimeout(() => {
+            updateNavbar();
+        }, 500);
+    }
     
+    // Try immediately
+    initializeNavbar();
+    
+    // Also try after a short delay in case DOM isn't fully ready
     setTimeout(() => {
-    updateNavbar();
+        const navbar = document.querySelector('.navbar.fixed-top');
+        if (!navbar || !document.getElementById('navbar-container')) {
+            console.log('Navbar not found, retrying initialization...');
+            initializeNavbar();
+        }
     }, 100);
-    
-    setTimeout(() => {
-        updateNavbar();
-    }, 500);
     
     document.addEventListener('visibilitychange', function() {
         if (!document.hidden) {
             setTimeout(() => {
-                updateNavbar();
+                const navbar = document.querySelector('.navbar.fixed-top');
+                if (!navbar) {
+                    console.log('Navbar disappeared, recreating...');
+                    initializeNavbar();
+                } else {
+                    updateNavbar();
+                }
             }, 100);
         }
     });
     
     setTimeout(() => {
         addNavbarScrollEffect();
-    }, 200);
+    }, 300);
+});
+
+// Also ensure navbar is visible when window loads
+window.addEventListener('load', function() {
+    setTimeout(() => {
+        const navbar = document.querySelector('.navbar.fixed-top');
+        const navbarContainer = document.getElementById('navbar-container');
+        
+        if (!navbarContainer) {
+            console.log('Navbar container missing on load, creating...');
+            if (typeof createNavbar === 'function') {
+                createNavbar();
+                setTimeout(() => {
+                    if (typeof updateNavbar === 'function') {
+                        updateNavbar();
+                    }
+                }, 100);
+            }
+            return;
+        }
+        
+        if (!navbar) {
+            console.log('Navbar missing on load, recreating...');
+            if (typeof createNavbar === 'function') {
+                createNavbar();
+                setTimeout(() => {
+                    if (typeof updateNavbar === 'function') {
+                        updateNavbar();
+                    }
+                }, 100);
+            }
+            return;
+        }
+        
+        // Force navbar visibility
+        navbar.style.display = 'block';
+        navbar.style.visibility = 'visible';
+        navbar.style.opacity = '1';
+        navbarContainer.style.display = 'block';
+        navbarContainer.style.visibility = 'visible';
+        
+        console.log('Navbar visibility ensured on window load');
+    }, 100);
 });
 
 function addNavbarScrollEffect() {
@@ -556,10 +616,18 @@ const NAV_VEHICLES = [
 ];
 
 function createNavbar() {
-    const navbarContainer = document.getElementById('navbar-container');
+    let navbarContainer = document.getElementById('navbar-container');
+    
+    // If navbar-container doesn't exist, create it
     if (!navbarContainer) {
-        console.log('navbar-container not found');
-        return;
+        console.log('navbar-container not found, creating it...');
+        navbarContainer = document.createElement('div');
+        navbarContainer.id = 'navbar-container';
+        if (document.body.firstChild) {
+            document.body.insertBefore(navbarContainer, document.body.firstChild);
+        } else {
+            document.body.appendChild(navbarContainer);
+        }
     }
     
     const currentPath = window.location.pathname;
@@ -605,28 +673,28 @@ function createNavbar() {
                         </button>
                     </div>
                     <div class="account-menu" id="account-menu" aria-hidden="true">
-                        <div class="menu-item" onclick="window.location.href='/buchungen'">
+                        <div class="menu-item" data-menu-link="/buchungen">
                             <i class="bi bi-car-front me-2"></i>
                             <span>Buchungen</span>
                         </div>
-                        <div class="menu-item" onclick="window.location.href='/abos'">
+                        <div class="menu-item" data-menu-link="/abos">
                             <i class="bi bi-clock-history me-2"></i>
                             <span>Abos</span>
                         </div>
-                        <div class="menu-item" onclick="window.location.href='/persoenliche-daten'">
+                        <div class="menu-item" data-menu-link="/persoenliche-daten">
                             <i class="bi bi-person me-2"></i>
                             <span>Persönliche Daten</span>
                         </div>
-                        <div class="menu-item" onclick="window.location.href='/profile'">
+                        <div class="menu-item" data-menu-link="/profile">
                             <i class="bi bi-person-badge me-2"></i>
                             <span>Profile</span>
                         </div>
                         <div class="menu-separator"></div>
-                        <div class="menu-item" onclick="window.location.href='/hilfe'">
+                        <div class="menu-item" data-menu-link="/hilfe">
                             <i class="bi bi-question-circle me-2"></i>
                             <span>Hilfe</span>
                         </div>
-                        <div class="menu-item logout-item" onclick="logout()">
+                        <div class="menu-item logout-item" data-menu-action="logout">
                             <i class="bi bi-box-arrow-right me-2"></i>
                             <span>Abmelden</span>
                         </div>
@@ -636,6 +704,14 @@ function createNavbar() {
         </nav>
     `;
 
+    // Ensure navbar is visible
+    const navbar = navbarContainer.querySelector('.navbar.fixed-top');
+    if (navbar) {
+        navbar.style.display = 'block';
+        navbar.style.visibility = 'visible';
+        navbar.style.opacity = '1';
+    }
+    
     addHamburgerMenuCloseListener();
     
     setTimeout(() => {
@@ -650,12 +726,35 @@ function createNavbar() {
     setTimeout(() => {
         addNavbarScrollEffect();
     }, 100);
+    
+    console.log('Navbar created and visible');
 }
 
 function addNavbarCSS() {}
 
 function updateNavbar() {
     console.log('updateNavbar called');
+    
+    // Ensure navbar exists
+    const navbarContainer = document.getElementById('navbar-container');
+    const navbar = document.querySelector('.navbar.fixed-top');
+    
+    if (!navbarContainer || !navbar) {
+        console.log('Navbar container or navbar not found, recreating...');
+        if (typeof createNavbar === 'function') {
+            createNavbar();
+        }
+        // Wait a bit and try again
+        setTimeout(() => {
+            updateNavbar();
+        }, 100);
+        return;
+    }
+    
+    // Ensure navbar is visible
+    navbar.style.display = 'block';
+    navbar.style.visibility = 'visible';
+    navbar.style.opacity = '1';
     
     const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true' || sessionStorage.getItem('isLoggedIn') === 'true';
     const currentUser = JSON.parse(localStorage.getItem('currentUser') || sessionStorage.getItem('currentUser') || '{}');
@@ -671,7 +770,14 @@ function updateNavbar() {
     const accountMenu = document.getElementById('account-menu');
     
     if (!userInfoContainer || !accountMenu) {
-        console.log('Required containers not found');
+        console.log('Required containers not found, navbar may not be fully initialized');
+        // Try to reinitialize
+        if (typeof createNavbar === 'function') {
+            setTimeout(() => {
+                createNavbar();
+                setTimeout(() => updateNavbar(), 100);
+            }, 50);
+        }
         return;
     }
     
@@ -1776,6 +1882,8 @@ function initAccountMenu() {
         const menuItems = menu.querySelectorAll('.menu-item');
         menuItems.forEach(item => {
             const action = item.getAttribute('data-action');
+            const link = item.getAttribute('data-menu-link');
+            const menuAction = item.getAttribute('data-menu-action');
             const text = item.textContent.trim();
             
             // Skip if already has listener
@@ -1783,9 +1891,39 @@ function initAccountMenu() {
                 return;
             }
             
+            const handleItemClick = (e) => {
+                // Only allow clicks when menu is open
+                if (!menu.classList.contains('open')) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    return false;
+                }
+                
+                e.preventDefault();
+                e.stopPropagation();
+                closeMenu();
+                
+                if (link) {
+                    setTimeout(() => {
+                        window.location.href = link;
+                    }, 150);
+                } else if (menuAction === 'logout') {
+                    setTimeout(() => {
+                        if (typeof logout === 'function') {
+                            logout();
+                        }
+                    }, 150);
+                }
+            };
+            
             // Handle login
             if (action === 'login' || text.includes('Anmelden')) {
                 const handleClick = (e) => {
+                    if (!menu.classList.contains('open')) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        return false;
+                    }
                     e.preventDefault();
                     e.stopPropagation();
                     closeMenu();
@@ -1801,6 +1939,11 @@ function initAccountMenu() {
             // Handle register
             else if (action === 'register' || text.includes('Registrieren')) {
                 const handleClick = (e) => {
+                    if (!menu.classList.contains('open')) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        return false;
+                    }
                     e.preventDefault();
                     e.stopPropagation();
                     closeMenu();
@@ -1811,6 +1954,12 @@ function initAccountMenu() {
                 
                 item.addEventListener('click', handleClick, { passive: false });
                 item.addEventListener('touchend', handleClick, { passive: false });
+                item.dataset.listenerAttached = 'true';
+            }
+            // Handle menu links and actions
+            else if (link || menuAction) {
+                item.addEventListener('click', handleItemClick, { passive: false });
+                item.addEventListener('touchend', handleItemClick, { passive: false });
                 item.dataset.listenerAttached = 'true';
             }
         });
