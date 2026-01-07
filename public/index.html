@@ -2250,11 +2250,13 @@
     </div>
 
     <section class="hero-section-porsche" style="position: relative; z-index: 1;">
-        <video class="hero-video" autoplay muted loop playsinline>
-            <source src="/videos/car-driving.mp4" type="video/mp4">
-            <source src="/videos/car-driving.webm" type="video/webm">
-            <img src="/images/cars/porsche-taycan-hero.jpg" alt="Premium Car Rental" style="width: 100%; height: 100%; object-fit: cover;">
+        <video class="hero-video" autoplay muted loop playsinline onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <source src="/videos/car-driving.mp4" type="video/mp4" onerror="this.onerror=null;">
+            <source src="/videos/car-driving.webm" type="video/webm" onerror="this.onerror=null;">
         </video>
+        <div class="hero-video-fallback" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%); z-index: 0; display: none;">
+            <img src="/images/cars/porsche-taycan-hero.jpg" alt="Premium Car Rental" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.3;" onerror="this.style.display='none';">
+        </div>
         
         <div class="hero-background">
             <div class="hero-overlay" style="
@@ -4020,7 +4022,7 @@
                     transmission_type: 'Automatik',
                     fuel_type: 'Benzin',
                     seating_capacity: 2,
-                    image_url: 'https:
+                    image_url: 'images/cars/porsche-911-gt3.jpg'
                 },
                 {
                     car_id: 102,
@@ -4030,7 +4032,7 @@
                     transmission_type: 'Automatik',
                     fuel_type: 'Hybrid',
                     seating_capacity: 2,
-                    image_url: 'https:
+                    image_url: 'images/cars/ferrari-sf90.jpg'
                 },
                 {
                     car_id: 103,
@@ -4040,7 +4042,7 @@
                     transmission_type: 'Automatik',
                     fuel_type: 'Benzin',
                     seating_capacity: 2,
-                    image_url: 'https:
+                    image_url: 'images/cars/lamborghini-aventador.jpg'
                 },
                 {
                     car_id: 104,
@@ -4050,7 +4052,7 @@
                     transmission_type: 'Automatik',
                     fuel_type: 'Benzin',
                     seating_capacity: 4,
-                    image_url: 'https:
+                    image_url: 'images/cars/rolls-royce-phantom.jpg'
                 },
                 {
                     car_id: 105,
@@ -4060,7 +4062,7 @@
                     transmission_type: 'Automatik',
                     fuel_type: 'Benzin',
                     seating_capacity: 4,
-                    image_url: 'https:
+                    image_url: 'images/cars/bentley-continental.jpg'
                 },
                 {
                     car_id: 106,
@@ -4070,7 +4072,7 @@
                     transmission_type: 'Automatik',
                     fuel_type: 'Benzin',
                     seating_capacity: 2,
-                    image_url: 'https:
+                    image_url: 'images/cars/mclaren-720s.jpg'
                 },
                 {
                     car_id: 107,
@@ -4080,7 +4082,7 @@
                     transmission_type: 'Automatik',
                     fuel_type: 'Benzin',
                     seating_capacity: 4,
-                    image_url: 'https:
+                    image_url: 'images/cars/aston-martin-dbs.jpg'
                 },
                 {
                     car_id: 108,
@@ -4090,7 +4092,7 @@
                     transmission_type: 'Automatik',
                     fuel_type: 'Benzin',
                     seating_capacity: 2,
-                    image_url: 'https:
+                    image_url: 'images/cars/bugatti-chiron.jpg'
                 }
             ];
             console.log('Fallback car data loaded:', window.LOCAL_CARS.length, 'cars');
@@ -4104,6 +4106,34 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Handle video loading errors
+            const heroVideo = document.querySelector('.hero-video');
+            const heroVideoFallback = document.querySelector('.hero-video-fallback');
+            
+            if (heroVideo && heroVideoFallback) {
+                heroVideo.addEventListener('error', function() {
+                    this.style.display = 'none';
+                    heroVideoFallback.style.display = 'block';
+                }, true);
+                
+                // Check if video can actually load
+                heroVideo.addEventListener('loadeddata', function() {
+                    // Video loaded successfully, keep it visible
+                });
+                
+                heroVideo.addEventListener('canplay', function() {
+                    // Video can play, hide fallback if it was shown
+                    heroVideoFallback.style.display = 'none';
+                });
+                
+                // Fallback: If video doesn't start loading within 2 seconds, show fallback
+                setTimeout(function() {
+                    if (heroVideo.readyState === 0 || heroVideo.networkState === 3) {
+                        heroVideo.style.display = 'none';
+                        heroVideoFallback.style.display = 'block';
+                    }
+                }, 2000);
+            }
             
             setTimeout(() => {
                 const userData = localStorage.getItem('userData');

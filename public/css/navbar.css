@@ -1427,8 +1427,21 @@ ease;
      }
 }
 
+/* Desktop'ta mobile navbar'ı tamamen gizle */
 @media (min-width: 752px) {
     .mobile-menu-backdrop {
         display: none !important;
+    }
+    
+    #mobile-menu-navbar,
+    .mobile-menu-navbar {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        height: 0 !important;
+        overflow: hidden !important;
+        position: absolute !important;
+        left: -9999px !important;
+        pointer-events: none !important;
     }
 }

@@ -168,6 +168,19 @@ function toggleMobileMenuNavbar(show) {
     
     console.log('Elements:', { mobileNavbar: !!mobileNavbar, navbarContainer: !!navbarContainer });
     
+    // Desktop'ta mobile navbar'ı her zaman gizle
+    if (window.innerWidth > 751) {
+        if (mobileNavbar) {
+            mobileNavbar.style.display = 'none';
+            mobileNavbar.style.visibility = 'hidden';
+        }
+        if (navbarContainer) {
+            navbarContainer.classList.remove('mobile-menu-active');
+            navbarContainer.style.cssText = '';
+        }
+        return;
+    }
+    
     if (window.innerWidth <= 751) {
         if (show) {
             if (!mobileNavbar) {
@@ -227,6 +240,16 @@ function toggleMobileMenuNavbar(show) {
 
 function setupMobileMenuNavbarWatcher() {
     console.log('=== setupMobileMenuNavbarWatcher CALLED ===');
+    
+    // Desktop'ta mobile navbar oluşturma ve göster
+    if (window.innerWidth > 751) {
+        const mobileNavbar = document.getElementById('mobile-menu-navbar');
+        if (mobileNavbar) {
+            mobileNavbar.style.display = 'none';
+            mobileNavbar.style.visibility = 'hidden';
+        }
+        return;
+    }
     
     createMobileMenuNavbar();
     
@@ -353,23 +376,35 @@ function setupMobileMenuNavbarWatcher() {
 document.addEventListener('DOMContentLoaded', function() {
     console.log('=== DOMContentLoaded - Mobile Menu Navbar Setup ===');
     
+    // Desktop'ta mobile navbar'ı gizle
+    if (window.innerWidth > 751) {
+        const mobileNavbar = document.getElementById('mobile-menu-navbar');
+        if (mobileNavbar) {
+            mobileNavbar.style.display = 'none';
+            mobileNavbar.style.visibility = 'hidden';
+        }
+    }
+    
     const shouldShowNavbar = localStorage.getItem('mobileMenuNavbarVisible') === 'true';
     console.log('DOMContentLoaded: shouldShowNavbar from localStorage:', shouldShowNavbar);
     
     setTimeout(() => {
-        setupMobileMenuNavbarWatcher();
-        
-        if (window.innerWidth <= 751 && shouldShowNavbar) {
-            console.log('Restoring 2nd navbar state from previous navigation');
-            setTimeout(() => {
-                console.log('Attempt 1: Showing 2nd navbar');
-                toggleMobileMenuNavbar(true);
-            }, 200);
+        // Sadece mobile'da setup yap
+        if (window.innerWidth <= 751) {
+            setupMobileMenuNavbarWatcher();
             
-            setTimeout(() => {
-                console.log('Attempt 2: Showing 2nd navbar (backup)');
-                toggleMobileMenuNavbar(true);
-            }, 800);
+            if (shouldShowNavbar) {
+                console.log('Restoring 2nd navbar state from previous navigation');
+                setTimeout(() => {
+                    console.log('Attempt 1: Showing 2nd navbar');
+                    toggleMobileMenuNavbar(true);
+                }, 200);
+                
+                setTimeout(() => {
+                    console.log('Attempt 2: Showing 2nd navbar (backup)');
+                    toggleMobileMenuNavbar(true);
+                }, 800);
+            }
         }
     }, 1000);
     
@@ -403,11 +438,27 @@ document.addEventListener('DOMContentLoaded', function() {
                 menuBtn.style.display = 'none';
             }
         }
-        const navbarNav = document.getElementById('navbarNav');
-        if (navbarNav && window.innerWidth <= 751) {
-            const isOpen = navbarNav.classList.contains('show');
-            const shouldShowNavbar = localStorage.getItem('mobileMenuNavbarVisible') === 'true';
-            toggleMobileMenuNavbar(isOpen || shouldShowNavbar);
+        
+        // Desktop'ta mobile navbar'ı gizle
+        const mobileNavbar = document.getElementById('mobile-menu-navbar');
+        if (window.innerWidth > 751) {
+            if (mobileNavbar) {
+                mobileNavbar.style.display = 'none';
+                mobileNavbar.style.visibility = 'hidden';
+            }
+            const navbarContainer = document.getElementById('navbar-container');
+            if (navbarContainer) {
+                navbarContainer.classList.remove('mobile-menu-active');
+                navbarContainer.style.cssText = '';
+            }
+        } else {
+            // Mobile'da kontrol et
+            const navbarNav = document.getElementById('navbarNav');
+            if (navbarNav) {
+                const isOpen = navbarNav.classList.contains('show');
+                const shouldShowNavbar = localStorage.getItem('mobileMenuNavbarVisible') === 'true';
+                toggleMobileMenuNavbar(isOpen || shouldShowNavbar);
+            }
         }
     });
 });
@@ -726,6 +777,17 @@ function createNavbar() {
     setTimeout(() => {
         addNavbarScrollEffect();
     }, 100);
+    
+    // Desktop'ta mobile navbar'ı gizle
+    setTimeout(() => {
+        if (window.innerWidth > 751) {
+            const mobileNavbar = document.getElementById('mobile-menu-navbar');
+            if (mobileNavbar) {
+                mobileNavbar.style.display = 'none';
+                mobileNavbar.style.visibility = 'hidden';
+            }
+        }
+    }, 150);
     
     console.log('Navbar created and visible');
 }
