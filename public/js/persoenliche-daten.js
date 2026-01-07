@@ -88,8 +88,10 @@ function saveChanges() {
         return;
     }
 
+    const existingUserData = JSON.parse(localStorage.getItem('userData') || sessionStorage.getItem('userData') || '{}');
+    
     const userData = {
-        ...JSON.parse(localStorage.getItem('userData') || '{}'),
+        ...existingUserData,
         name: `${formData.firstName} ${formData.lastName}`,
         email: formData.email,
         phone: formData.phone,
@@ -102,13 +104,20 @@ function saveChanges() {
         lastUpdated: new Date().toISOString()
     };
     
+    // Hem localStorage hem sessionStorage'a kaydet
     localStorage.setItem('userData', JSON.stringify(userData));
+    sessionStorage.setItem('userData', JSON.stringify(userData));
 
+    const existingCurrentUser = JSON.parse(localStorage.getItem('currentUser') || sessionStorage.getItem('currentUser') || '{}');
+    
     const currentUser = {
-        ...JSON.parse(localStorage.getItem('currentUser') || '{}'),
+        ...existingCurrentUser,
         ...formData
     };
+    
+    // Hem localStorage hem sessionStorage'a kaydet
     localStorage.setItem('currentUser', JSON.stringify(currentUser));
+    sessionStorage.setItem('currentUser', JSON.stringify(currentUser));
 
     alert('Ihre persönlichen Daten wurden erfolgreich gespeichert.');
 

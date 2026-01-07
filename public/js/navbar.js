@@ -942,17 +942,17 @@ function updateNavbar() {
 }
 
 function logout() {
+    // Sadece authentication verilerini sil, kullanıcı verilerini koru
     sessionStorage.removeItem('isLoggedIn');
-    sessionStorage.removeItem('currentUser');
-    sessionStorage.removeItem('userData');
     sessionStorage.removeItem('token');
     sessionStorage.removeItem('welcome_name');
     localStorage.removeItem('isLoggedIn');
-    localStorage.removeItem('currentUser');
-    localStorage.removeItem('userData');
     localStorage.removeItem('token');
     localStorage.removeItem('welcome_name');
     localStorage.removeItem('pendingEmail');
+    
+    // NOT: userData ve currentUser'ı silmiyoruz, böylece kullanıcı tekrar login olduğunda
+    // kişisel bilgileri korunmuş olur
     
     showLogoutNotification();
     setTimeout(() => {

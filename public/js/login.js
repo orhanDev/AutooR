@@ -15,29 +15,34 @@ document.addEventListener('DOMContentLoaded', () => {
             sessionStorage.setItem('token', token);
             localStorage.setItem('token', token);
             
+            // Mevcut userData'yı koru (eğer varsa), sadece yeni bilgilerle güncelle
+            const existingUserData = JSON.parse(localStorage.getItem('userData') || sessionStorage.getItem('userData') || '{}');
+            const existingCurrentUser = JSON.parse(localStorage.getItem('currentUser') || sessionStorage.getItem('currentUser') || '{}');
+            
             const userDataToStore = {
+                ...existingUserData, // Mevcut verileri koru (telefon, doğum tarihi, adres, vb.)
                 firstName: userInfo.firstName,
                 lastName: userInfo.lastName,
                 email: userInfo.email,
-                id: userInfo.id || userInfo.user_id,
+                id: userInfo.id || userInfo.user_id || existingUserData.id,
                 name: `${userInfo.firstName} ${userInfo.lastName}`.trim()
             };
             
-            sessionStorage.setItem('userData', JSON.stringify(userDataToStore));
-            sessionStorage.setItem('isLoggedIn', 'true');
-            sessionStorage.setItem('currentUser', JSON.stringify({
+            const currentUserToStore = {
+                ...existingCurrentUser, // Mevcut verileri koru
                 firstName: userInfo.firstName,
                 lastName: userInfo.lastName,
                 email: userInfo.email
-            }));
+            };
+            
+            // Hem sessionStorage hem localStorage'a kaydet
+            sessionStorage.setItem('userData', JSON.stringify(userDataToStore));
+            sessionStorage.setItem('isLoggedIn', 'true');
+            sessionStorage.setItem('currentUser', JSON.stringify(currentUserToStore));
             
             localStorage.setItem('userData', JSON.stringify(userDataToStore));
             localStorage.setItem('isLoggedIn', 'true');
-            localStorage.setItem('currentUser', JSON.stringify({
-                firstName: userInfo.firstName,
-                lastName: userInfo.lastName,
-                email: userInfo.email
-            }));
+            localStorage.setItem('currentUser', JSON.stringify(currentUserToStore));
             
             window.history.replaceState({}, document.title, window.location.pathname);
             
@@ -200,29 +205,34 @@ document.addEventListener('DOMContentLoaded', () => {
                         
                         console.log('User data received:', user);
                         
+                        // Mevcut userData'yı koru (eğer varsa), sadece yeni bilgilerle güncelle
+                        const existingUserData = JSON.parse(localStorage.getItem('userData') || sessionStorage.getItem('userData') || '{}');
+                        const existingCurrentUser = JSON.parse(localStorage.getItem('currentUser') || sessionStorage.getItem('currentUser') || '{}');
+                        
                         const userDataToStore = {
+                            ...existingUserData, // Mevcut verileri koru (telefon, doğum tarihi, adres, vb.)
                             firstName: user.first_name,
                             lastName: user.last_name,
                             email: user.email,
-                            id: user.user_id || user.id,
+                            id: user.user_id || user.id || existingUserData.id,
                             name: `${user.first_name} ${user.last_name}`.trim()
                         };
                         
-                        sessionStorage.setItem('userData', JSON.stringify(userDataToStore));
-                        sessionStorage.setItem('isLoggedIn', 'true');
-                        sessionStorage.setItem('currentUser', JSON.stringify({
+                        const currentUserToStore = {
+                            ...existingCurrentUser, // Mevcut verileri koru
                             firstName: user.first_name,
                             lastName: user.last_name,
                             email: user.email
-                        }));
+                        };
+                        
+                        // Hem sessionStorage hem localStorage'a kaydet
+                        sessionStorage.setItem('userData', JSON.stringify(userDataToStore));
+                        sessionStorage.setItem('isLoggedIn', 'true');
+                        sessionStorage.setItem('currentUser', JSON.stringify(currentUserToStore));
                         
                         localStorage.setItem('userData', JSON.stringify(userDataToStore));
                         localStorage.setItem('isLoggedIn', 'true');
-                        localStorage.setItem('currentUser', JSON.stringify({
-                            firstName: user.first_name,
-                            lastName: user.last_name,
-                            email: user.email
-                        }));
+                        localStorage.setItem('currentUser', JSON.stringify(currentUserToStore));
                         
                         console.log('User data stored in both sessionStorage and localStorage');
                         
