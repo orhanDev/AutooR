@@ -1106,9 +1106,11 @@ body {
     .homepage-form-container #qr-pickup-date,
     .homepage-form-container #qr-dropoff-date {
         flex: 1 1 auto !important;
-        min-width: 175px !important;
-        width: auto !important;
-        font-size: 0.85rem !important;
+        min-width: 0 !important;
+        width: 100% !important;
+        font-size: 0.8rem !important;
+        padding-left: 0.35rem !important;
+        padding-right: 0.35rem !important;
         font-variant-numeric: tabular-nums;
     }
 
