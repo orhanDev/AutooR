@@ -842,14 +842,14 @@ body {
 
     .homepage-form-container .input-group.flex-nowrap .form-control {
         flex: 1 1 auto !important;
-        min-width: 110px !important;
+        min-width: 125px !important;
         max-width: 100% !important;
     }
 
     .homepage-form-container .input-group.flex-nowrap .form-select {
         flex: 0 0 auto !important;
-        min-width: 70px !important;
-        max-width: 90px !important;
+        min-width: 65px !important;
+        max-width: 85px !important;
     }
 
     .homepage-form-container #homepage-search-btn {

@@ -660,14 +660,14 @@
             
             .homepage-form-container .input-group.flex-nowrap .form-control {
                 flex: 1 1 auto !important;
-                min-width: 0 !important;
+                min-width: 125px !important;
                 max-width: 100% !important;
             }
             
             .homepage-form-container .input-group.flex-nowrap .form-select {
                 flex: 0 0 auto !important;
-                min-width: 80px !important;
-                max-width: 120px !important;
+                min-width: 65px !important;
+                max-width: 85px !important;
             }
             
             .homepage-form-container #homepage-search-btn {
@@ -6776,6 +6776,30 @@
 
             if (formContainer && isMobile) {
                 setPeek(true);
+                let isFormInteracting = false;
+                let interactionTimer;
+
+                const markInteracting = () => {
+                    isFormInteracting = true;
+                    if (interactionTimer) {
+                        clearTimeout(interactionTimer);
+                    }
+                    interactionTimer = setTimeout(() => {
+                        isFormInteracting = false;
+                    }, 500);
+                };
+
+                formContainer.addEventListener('focusin', function(e) {
+                    if (e.target.closest('select, input, textarea, button, .input-group, .form-control, .form-select, .custom-calendar, .flatpickr-calendar, .time-picker-container, .time-option, .qr-select')) {
+                        markInteracting();
+                    }
+                });
+
+                formContainer.addEventListener('touchstart', function(e) {
+                    if (e.target.closest('select, input, textarea, button, .input-group, .form-control, .form-select, .custom-calendar, .flatpickr-calendar, .time-picker-container, .time-option, .qr-select')) {
+                        markInteracting();
+                    }
+                }, { passive: true });
 
                 formContainer.addEventListener('click', function(e) {
                     if (topSearchBtn && topSearchBtn.contains(e.target)) return;
@@ -6810,6 +6834,9 @@
                 }
 
                 document.addEventListener('click', function(e) {
+                    if (isFormInteracting) {
+                        return;
+                    }
                     if (!formContainer.contains(e.target) && !(peekToggle && peekToggle.contains(e.target))) {
                         setPeek(true);
                     }
