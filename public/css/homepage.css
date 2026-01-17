@@ -302,8 +302,9 @@ body {
         width: 100% !important;
         height: 100% !important;
         min-height: 100vh !important;
-        background-size: cover !important;
-        background-position: center center !important;
+        background-image: url('/images/cars/weter.png'), url('/images/cars/1m.png') !important;
+        background-size: 100% auto, cover !important;
+        background-position: top center, center center !important;
         background-repeat: no-repeat !important;
     }
 
@@ -386,13 +387,6 @@ body {
 
     .homepage-form-container.form-open {
         padding-bottom: 1rem !important;
-    }
-
-    .homepage-form-container.peek-collapsed {
-        width: calc(100% - 3rem) !important;
-        max-width: calc(100% - 3rem) !important;
-        margin-left: 1.5rem !important;
-        margin-right: 1.5rem !important;
     }
 
 
@@ -847,22 +841,6 @@ body {
         min-height: 38px !important;
     }
 
-    .homepage-form-container #qr-pickup-date,
-    .homepage-form-container #qr-dropoff-date {
-        font-size: clamp(0.75rem, 2.6vw, 0.95rem) !important;
-        padding: 0.3rem 0.45rem !important;
-        font-variant-numeric: tabular-nums;
-        letter-spacing: 0.2px;
-        flex: 1 1 135px !important;
-        min-width: 135px !important;
-    }
-
-    .homepage-form-container #qr-pickup-date::placeholder,
-    .homepage-form-container #qr-dropoff-date::placeholder {
-        font-size: clamp(0.7rem, 2.2vw, 0.85rem) !important;
-        letter-spacing: 0.2px;
-    }
-
     .homepage-form-container .input-group.flex-nowrap .form-control {
         flex: 1 1 auto !important;
         min-width: 125px !important;
@@ -871,8 +849,8 @@ body {
 
     .homepage-form-container .input-group.flex-nowrap .form-select {
         flex: 0 0 auto !important;
-        min-width: 60px !important;
-        max-width: 80px !important;
+        min-width: 65px !important;
+        max-width: 85px !important;
     }
 
     .homepage-form-container #homepage-search-btn {

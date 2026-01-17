@@ -717,7 +717,8 @@ ease;
 
 @media (max-width: 747px) {
     .navbar {
-        padding: 0.5rem 0;
+        padding: calc(0.5rem + env(safe-area-inset-top)) 0 0.5rem;
+        min-height: calc(64px + env(safe-area-inset-top));
     }
     .navbar-brand {
         font-size: 1.2rem !important;

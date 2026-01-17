@@ -657,22 +657,6 @@
                 height: 38px !important;
                 min-height: 38px !important;
             }
-
-            .homepage-form-container #qr-pickup-date,
-            .homepage-form-container #qr-dropoff-date {
-                font-size: clamp(0.75rem, 2.6vw, 0.95rem) !important;
-                padding: 0.3rem 0.45rem !important;
-                font-variant-numeric: tabular-nums;
-                letter-spacing: 0.2px;
-                flex: 1 1 135px !important;
-                min-width: 135px !important;
-            }
-
-            .homepage-form-container #qr-pickup-date::placeholder,
-            .homepage-form-container #qr-dropoff-date::placeholder {
-                font-size: clamp(0.7rem, 2.2vw, 0.85rem) !important;
-                letter-spacing: 0.2px;
-            }
             
             .homepage-form-container .input-group.flex-nowrap .form-control {
                 flex: 1 1 auto !important;
@@ -682,8 +666,8 @@
             
             .homepage-form-container .input-group.flex-nowrap .form-select {
                 flex: 0 0 auto !important;
-                min-width: 60px !important;
-                max-width: 80px !important;
+                min-width: 65px !important;
+                max-width: 85px !important;
             }
             
             .homepage-form-container #homepage-search-btn {
@@ -4846,10 +4830,6 @@
                 max-height: 244px !important; 
                 overflow: hidden !important;
                 position: relative !important;
-                width: calc(100% - 3rem) !important;
-                max-width: calc(100% - 3rem) !important;
-                margin-left: 1.5rem !important;
-                margin-right: 1.5rem !important;
             }
 
             .homepage-form-container .peek-gradient {
@@ -6550,13 +6530,15 @@
                 const heroBackground = document.querySelector('.hero-background');
                 if (heroBackground) {
                     const isMobile = window.innerWidth <= 747;
-                    const imageName = isMobile ? '1m.png' : '1.png';
-                    const imagePath = `url('/images/cars/${imageName}')`;
+                    const imagePath = isMobile
+                        ? "url('/images/cars/weter.png'), url('/images/cars/1m.png')"
+                        : "url('/images/cars/1.png')";
 
-                    const bgSize = 'cover';
+                    const bgSize = isMobile ? '100% auto, cover' : 'cover';
+                    const bgPosition = isMobile ? 'top center, center center' : 'center center';
                     heroBackground.style.setProperty('background-image', imagePath, 'important');
                     heroBackground.style.setProperty('background-size', bgSize, 'important');
-                    heroBackground.style.setProperty('background-position', 'center center', 'important');
+                    heroBackground.style.setProperty('background-position', bgPosition, 'important');
                     
                     console.log(`Background updated: ${imageName} for ${isMobile ? 'mobile' : 'desktop'}`);
                 }
@@ -6570,11 +6552,14 @@
                     const imageName = isMobile ? '1m.png' : '1.png';
                     const img = new Image();
                     img.onload = function() {
-                        const imagePath = `url('/images/cars/${imageName}')`;
-                        const bgSize = 'cover';
+                        const imagePath = isMobile
+                            ? "url('/images/cars/weter.png'), url('/images/cars/1m.png')"
+                            : "url('/images/cars/1.png')";
+                        const bgSize = isMobile ? '100% auto, cover' : 'cover';
+                        const bgPosition = isMobile ? 'top center, center center' : 'center center';
                         heroBackground.style.setProperty('background-image', imagePath, 'important');
                         heroBackground.style.setProperty('background-size', bgSize, 'important');
-                        heroBackground.style.setProperty('background-position', 'center center', 'important');
+                        heroBackground.style.setProperty('background-position', bgPosition, 'important');
                     };
                     img.src = `/images/cars/${imageName}`;
                 }
