@@ -1726,7 +1726,6 @@
                 height: 2px;
                 background: linear-gradient(90deg, transparent, #d4af37, transparent);
             }
-        }
             
             .porsche-search-row {
                 display: flex !important;
@@ -6781,8 +6780,13 @@
                 formContainer.addEventListener('click', function(e) {
                     if (topSearchBtn && topSearchBtn.contains(e.target)) return;
                     if (peekToggle && peekToggle.contains(e.target)) return;
+                    if (e.target.closest('select, input, textarea, button, .input-group, .form-control, .form-select, .custom-calendar, .flatpickr-calendar, .time-picker-container, .time-option, .qr-select')) {
+                        return;
+                    }
                     const collapsed = formContainer.classList.contains('peek-collapsed');
-                    setPeek(!collapsed);
+                    if (collapsed) {
+                        setPeek(false);
+                    }
                 });
 
                 if (peekToggle) {
