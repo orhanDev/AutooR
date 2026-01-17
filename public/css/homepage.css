@@ -846,6 +846,8 @@ body {
         padding: 0.3rem 0.45rem !important;
         font-variant-numeric: tabular-nums;
         letter-spacing: 0.2px;
+        flex: 1 1 135px !important;
+        min-width: 135px !important;
     }
 
     .homepage-form-container #qr-pickup-date::placeholder,
@@ -862,8 +864,8 @@ body {
 
     .homepage-form-container .input-group.flex-nowrap .form-select {
         flex: 0 0 auto !important;
-        min-width: 65px !important;
-        max-width: 85px !important;
+        min-width: 60px !important;
+        max-width: 80px !important;
     }
 
     .homepage-form-container #homepage-search-btn {
