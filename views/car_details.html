@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fahrzeugdetails - Premium Autovermietung</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .car-image {
+            max-width: 100%; 
+            height: auto;
+            border-radius: 8px;
+        }
+        .feature-badge {
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div id="navbar-container">
+            
+        </div>
+    </header>
+
+    <main class="container my-5">
+        <div class="card shadow-sm mb-4" style="background: linear-gradient(135deg, #2c3e50, #3b82f6); color:#fff; border:0; border-radius:18px;">
+            <div class="card-body">
+                <div class="row g-3 align-items-center">
+                    <div class="col-md-8">
+                        <div class="label" style="opacity:.85;font-size:.9rem">Fahrzeug</div>
+                        <div class="value" id="summary-title" style="font-weight:700;font-size:1.05rem">—</div>
+                    </div>
+                    <div class="col-md-4 text-md-end">
+                        <div class="label" style="opacity:.85;font-size:.9rem">Zeitraum</div>
+                        <div class="value" id="summary-dates" style="font-weight:700;font-size:1.05rem">—</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                <h1 id="car-title">Fahrzeugdetails werden geladen...</h1>
+                <img id="car-image" src="https://via.placeholder.com/800x600?text=Auto" class="img-fluid mb-4 car-image" alt="Fahrzeugbild">
+
+                <p><strong>Marke:</strong> <span id="car-make"></span></p>
+                <p><strong>Modell:</strong> <span id="car-model"></span></p>
+                <p><strong>Jahr:</strong> <span id="car-year"></span></p>
+                <p><strong>Kennzeichen:</strong> <span id="car-license-plate"></span></p>
+                <p><strong>Tägliche Rate:</strong> <span id="car-daily-rate"></span> TL</p>
+                <p><strong>Getriebeart:</strong> <span id="car-transmission-type"></span></p>
+                <p><strong>Kraftstofftyp:</strong> <span id="car-fuel-type"></span></p>
+                <p><strong>Sitzplätze:</strong> <span id="car-seating-capacity"></span></p>
+                <p><strong>Farbe:</strong> <span id="car-color"></span></p>
+                <p><strong>Standort:</strong> <span id="car-location-name"></span></p>
+                <p><strong>Beschreibung:</strong> <span id="car-description"></span></p>
+
+                <h3 class="mt-4">Eigenschaften</h3>
+                <div id="car-features-badges" class="mb-4"></div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card shadow-sm p-3">
+                    <h4 class="card-title">Reservierung buchen</h4>
+                    <form id="reservation-form">
+                        <div class="mb-3">
+                            <label for="pickup-date" class="form-label">Abholung am</label>
+                            <input type="date" class="form-control" id="pickup-date" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="pickup-time" class="form-label">Abholung um</label>
+                            <input type="time" class="form-control" id="pickup-time" value="09:00" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="dropoff-date" class="form-label">Rückgabe am</label>
+                            <input type="date" class="form-control" id="dropoff-date" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="dropoff-time" class="form-label">Rückgabe um</label>
+                            <input type="time" class="form-control" id="dropoff-time" value="09:00" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="pickup-location" class="form-label">Abholort</label>
+                            <select class="form-select" id="pickup-location" required>
+                                <option value="">Standort auswählen...</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="dropoff-location" class="form-label">Rückgabeort</label>
+                            <select class="form-select" id="dropoff-location" required>
+                                <option value="">Standort auswählen...</option>
+                            </select>
+                        </div>
+                        <p class="lead mt-3">Gesamtpreis: <strong id="total-price">0.00 TL</strong></p>
+                        <button type="submit" class="nav-link-text w-100">Jetzt reservieren</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer-section">
+        <div class="container">
+            <div class="footer-content">
+                <span class="footer-text">© 2025 Alle Rechte vorbehalten. Dies ist eine Beispiel-Website für Übungszwecke vorbereitet. Es ist keine echte Autovermietungs-Website.</span>
+                <span class="footer-separator">-</span>
+                <a href="#" class="footer-link">Datenschutz</a>
+                <span class="footer-separator">-</span>
+                <a href="#" class="footer-link">Bedingungen</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/navbar.js"></script>
+    <script src="/js/car-details.js"></script>
+    <script src="/js/auth.js"></script> 
+</body>
+</html>

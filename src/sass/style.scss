@@ -1,0 +1,115 @@
+@use "sass:color";
+
+$primary: #007bff; 
+$secondary: #6c757d; 
+$success: #28a745; 
+$danger: #dc3545; 
+$warning: #ffc107; 
+$info: #17a2b8; 
+$light: #f8f9fa; 
+$dark: #343a40; 
+
+$rentacar-blue: #2c3e50; 
+$rentacar-orange: #f39c12; 
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+    line-height: 1.6;
+    color: #333;
+    background-color: #f4f7f6; 
+}
+
+header {
+    background-color: $dark; 
+    padding: 15px 0;
+    border-bottom: 1px solid color.adjust($dark, $lightness: 10%);
+}
+
+.navbar-brand {
+    font-weight: bold;
+    font-size: 1.8rem;
+    color: $rentacar-orange !important; 
+}
+
+.navbar-nav .nav-link {
+    color: #ffffff !important; 
+    margin-right: 15px;
+    &:hover {
+        color: $rentacar-orange !important;
+    }
+}
+
+main {
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+
+#hero {
+    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('/assets/images/banner.jpg') no-repeat center center/cover;
+    color: white; 
+    padding: 100px 0;
+    margin-bottom: 30px;
+    border-radius: 10px; 
+    h1 {
+        font-size: 3.5rem;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+    .lead {
+        font-size: 1.25rem;
+    }
+
+    #car-search-form {
+        background-color: rgba(255, 255, 255, 0.95) !important; 
+        padding: 30px !important;
+        border-radius: 8px !important;
+        max-width: 900px;
+        margin: 0 auto;
+        .form-label {
+            font-weight: bold;
+            color: $dark;
+        }
+    }
+}
+
+#popular-cars .card {
+    border: none;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); 
+    transition: transform 0.2s ease-in-out;
+    &:hover {
+        transform: translateY(-5px); 
+    }
+    .card-title {
+        color: $rentacar-blue;
+        font-weight: bold;
+    }
+    .card-text strong {
+        color: $rentacar-orange;
+        font-size: 1.2rem;
+    }
+}
+
+#benefits {
+    background-color: $primary;
+    color: white;
+    padding: 60px 0;
+    border-radius: 10px;
+    h2 {
+        font-size: 2.5rem;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+}
+
+footer {
+    margin-top: 50px;
+    border-top: 1px solid $dark;
+    background-color: $dark;
+    padding: 30px 0;
+    color: #e9ecef; 
+    p {
+        margin-bottom: 0;
+    }
+}

@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Angebote - AutooR</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/navbar.css?v=202601071240">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            padding-top: 80px; 
+            min-height: 100vh;
+            color: #1a1a1a;
+        }
+        
+        .main-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+        
+        .page-header {
+            background: transparent;
+            border-radius: 0;
+            padding: 0;
+            margin-bottom: 2.5rem;
+            box-shadow: none;
+            border: none;
+            text-align: center;
+        }
+        
+        .page-title {
+            font-size: 1.75rem;
+            font-weight: 500;
+            color: #1a1a1a;
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.3px;
+            line-height: 1.4;
+        }
+        
+        .page-subtitle {
+            color: #666666;
+            font-size: 0.95rem;
+            font-weight: 400;
+            line-height: 1.5;
+        }
+        
+        .offers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .offer-card {
+            background: #ffffff;
+            border: 1px solid #e8e8e8;
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+        }
+        
+        .offer-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+            border-color: #d0d0d0;
+        }
+        
+        .offer-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: linear-gradient(135deg, #ee7600 0%, #d66800 100%);
+            color: #ffffff;
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            z-index: 2;
+            box-shadow: 0 2px 8px rgba(238, 118, 0, 0.3);
+        }
+        
+        .offer-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+        
+        .offer-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 0.75rem;
+        }
+        
+        .offer-description {
+            color: #666666;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+        
+        .offer-features {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 1.25rem;
+            flex: 1;
+        }
+        
+        .offer-features li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+            color: #666666;
+            font-size: 0.85rem;
+            line-height: 1.5;
+        }
+        
+        .offer-features li:last-child {
+            margin-bottom: 0;
+        }
+        
+        .feature-icon {
+            color: #ee7600;
+            font-size: 0.9rem;
+            margin-top: 0.1rem;
+        }
+        
+        .offer-actions {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: auto;
+            padding-top: 1rem;
+        }
+        
+        .btn-offer {
+            padding: 0.6rem 1.5rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
+        }
+        
+        .btn-primary {
+            background: #7B7668;
+            color: #ffffff;
+            border: 1px solid #7B7668;
+        }
+        
+        .btn-primary:hover {
+            background: #6f6a5f;
+            color: #ffffff;
+            border-color: #6f6a5f;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .section-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 1.25rem;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 0.85rem;
+        }
+        
+        .benefits-section {
+            background: #ffffff;
+            border: 1px solid #e8e8e8;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+        }
+        
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .benefit-item {
+            text-align: center;
+        }
+        
+        .benefit-icon {
+            font-size: 2rem;
+            color: #ee7600;
+            margin-bottom: 0.75rem;
+        }
+        
+        .benefit-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 0.5rem;
+        }
+        
+        .benefit-description {
+            color: #666666;
+            font-size: 0.85rem;
+            line-height: 1.5;
+        }
+        
+        .footer {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: rgba(255, 255, 255, 0.9);
+            padding: 2.5rem 0;
+            margin-top: 4rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-content {
+            text-align: center;
+        }
+
+        .footer-link {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            margin: 0 1rem;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .footer-link:hover {
+            color: #ee7600;
+            background: rgba(238, 118, 0, 0.1);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+        }
+        
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 1rem;
+            }
+            
+            .page-title {
+                font-size: 1.5rem;
+            }
+            
+            .offers-grid {
+                grid-template-columns: 1fr;
+                gap: 1.25rem;
+            }
+            
+            .offer-card {
+                padding: 1.25rem;
+            }
+            
+            .benefits-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1.25rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .benefits-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <div id="navbar-container"></div>
+    
+    <div class="main-container">
+        
+        <div class="page-header">
+            <h1 class="page-title">Aktuelle Angebote</h1>
+            <p class="page-subtitle">Entdecken Sie unsere besten PKW-Mietangebote</p>
+        </div>
+
+        <div id="offers-container" class="offers-grid">
+            
+        </div>
+
+        <div class="benefits-section">
+            <h2 class="section-title">Warum Autoo<span style="color: #ee7600;">R</span> wählen?</h2>
+            <div class="benefits-grid">
+                <div class="benefit-item">
+                    <div class="benefit-icon">
+                        <i class="bi bi-shield-check"></i>
+                    </div>
+                    <h3 class="benefit-title">Sicher & Zuverlässig</h3>
+                    <p class="benefit-description">Alle Fahrzeuge werden regelmäßig gewartet und sind vollversichert</p>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">
+                        <i class="bi bi-clock"></i>
+                    </div>
+                    <h3 class="benefit-title">24/7 Service</h3>
+                    <p class="benefit-description">Rund um die Uhr für Sie da - auch an Wochenenden und Feiertagen</p>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">
+                        <i class="bi bi-car-front"></i>
+                    </div>
+                    <h3 class="benefit-title">Große Auswahl</h3>
+                    <p class="benefit-description">Von Kompaktwagen bis Premium-Limousinen - für jeden Bedarf</p>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">
+                        <i class="bi bi-geo-alt"></i>
+                    </div>
+                    <h3 class="benefit-title">Überall verfügbar</h3>
+                    <p class="benefit-description">Abholung und Rückgabe an über 50 Standorten in Deutschland</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/content-protection.js"></script>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p class="mb-3">© 2025 <span style="color: #ffffff;">Aut</span><span style="color: #ff7a00;">oo</span><span style="color: #ffffff;">R</span>. Alle Rechte vorbehalten.</p>
+                <div>
+                    <a href="#" class="footer-link">Datenschutz</a>
+                    <a href="#" class="footer-link">AGB</a>
+                    <a href="#" class="footer-link">Impressum</a>
+                    <a href="#" class="footer-link">Kontakt</a>
+                </div>
+                <p class="mt-3 mb-0" style="font-size: 0.75rem; color: rgba(255, 255, 255, 0.6); text-align: center;">
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/navbar.js?v=202601071235"></script>
+    <script src="/js/angebote.js"></script>
+    <script src="/js/back-to-top.js"></script>
+</body>
+</html>

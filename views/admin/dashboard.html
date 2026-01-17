@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Dashboard</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+    <header>
+        <div id="navbar-container">
+            
+            </div>
+    </header>
+
+    <main class="container my-5">
+        <h2>Admin Panel Dashboard</h2>
+
+        <div class="row mt-4">
+            <div class="col-md-3">
+                <div class="card text-white bg-primary mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Users</h5>
+                        <p class="card-text fs-3" id="total-users">...</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-white bg-success mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Cars</h5>
+                        <p class="card-text fs-3" id="total-cars">...</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-white bg-info mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Reservations</h5>
+                        <p class="card-text fs-3" id="total-reservations">...</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-white bg-warning mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Pending Reservations</h5>
+                        <p class="card-text fs-3" id="pending-reservations">...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0"><i class="bi bi-database-gear me-2"></i>Test Data Management</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6>Add Test Reservations</h6>
+                                <p class="text-muted small">Creates example reservation history for users</p>
+                                
+                                <div class="mb-3">
+                                    <label for="test-user-id" class="form-label">User ID</label>
+                                    <input type="number" class="form-control" id="test-user-id" placeholder="1" value="1">
+                                    <small class="text-muted">For which user should test reservations be added?</small>
+                                </div>
+                                
+                                <button type="button" class="nav-link-text" id="add-test-reservations">
+                                    <i class="bi bi-plus-circle me-2"></i>Add Test Reservations
+                                </button>
+                                
+                                <div id="test-reservations-result" class="mt-3"></div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <h6>Current Test Data</h6>
+                                <p class="text-muted small">Existing test data in the system</p>
+                                
+                                <div class="list-group">
+                                    <div class="list-group-item d-flex justify-content-between align-items-center">
+                                        <span>Test Users</span>
+                                        <span class="badge bg-primary rounded-pill" id="test-users-count">0</span>
+                                    </div>
+                                    <div class="list-group-item d-flex justify-content-between align-items-center">
+                                        <span>Test Cars</span>
+                                        <span class="badge bg-success rounded-pill" id="test-cars-count">0</span>
+                                    </div>
+                                    <div class="list-group-item d-flex justify-content-between align-items-center">
+                                        <span>Test Reservations</span>
+                                        <span class="badge bg-info rounded-pill" id="test-reservations-count">0</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-md-4 mb-3">
+                <div class="card text-center h-100">
+                    <div class="card-body">
+                        <i class="bi bi-car-front text-primary mb-3" style="font-size: 2rem;"></i>
+                        <h6>Car Management</h6>
+                        <p class="text-muted small">Add, edit, and delete cars</p>
+                        <a href="/views/admin/cars.html" class="nav-link-text btn-sm">Manage Cars</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card text-center h-100">
+                    <div class="card-body">
+                        <i class="bi bi-calendar-check text-success mb-3" style="font-size: 2rem;"></i>
+                        <h6>Reservation Management</h6>
+                        <p class="text-muted small">View and manage reservations</p>
+                        <a href="/views/admin/reservations.html" class="nav-link-text btn-sm">Manage Reservations</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card text-center h-100">
+                    <div class="card-body">
+                        <i class="bi bi-people text-info mb-3" style="font-size: 2rem;"></i>
+                        <h6>User Management</h6>
+                        <p class="text-muted small">View and manage users</p>
+                        <a href="/views/admin/users.html" class="nav-link-text btn-sm">Manage Users</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card text-center h-100">
+                    <div class="card-body">
+                        <i class="bi bi-geo-alt text-warning mb-3" style="font-size: 2rem;"></i>
+                        <h6>Standortverwaltung</h6>
+                        <p class="text-muted small">Standorte hinzufügen und verwalten</p>
+                        <a href="/views/admin/locations.html" class="nav-link-text btn-sm">Standorte verwalten</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card text-center h-100">
+                    <div class="card-body">
+                        <i class="bi bi-gear text-secondary mb-3" style="font-size: 2rem;"></i>
+                        <h6>Funktionsverwaltung</h6>
+                        <p class="text-muted small">Fahrzeugfunktionen verwalten</p>
+                        <a href="/views/admin/features.html" class="nav-link-text btn-sm">Funktionen verwalten</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer-section">
+        <div class="container">
+            <div class="footer-content">
+                <span class="footer-text">© 2025 Alle Rechte vorbehalten. Dies ist eine Beispiel-Website für Übungszwecke vorbereitet. Es ist keine echte Autovermietungs-Website.</span>
+                <span class="footer-separator">-</span>
+                <a href="#" class="footer-link">Datenschutz</a>
+                <span class="footer-separator">-</span>
+                <a href="#" class="footer-link">Bedingungen</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/navbar.js"></script>
+    <script src="/js/admin/dashboard.js"></script>
+</body>
+</html>

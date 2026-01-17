@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Fahrzeugverwaltung</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+    <header>
+        <div id="navbar-container">
+            
+        </div>
+    </header>
+
+    <main class="container my-5">
+        <h2>Fahrzeugverwaltung</h2>
+                        <button class="nav-link-text mb-3" id="add-car-btn">Neues Fahrzeug hinzufügen</button>
+
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>Kennzeichen</th>
+                        <th>Marke</th>
+                        <th>Modell</th>
+                        <th>Jahr</th>
+                        <th>Tägliche Rate</th>
+                        <th>Standort</th>
+                        <th>Verfügbar</th>
+                        <th>Aktionen</th>
+                    </tr>
+                </thead>
+                <tbody id="cars-table-body">
+                    
+                    <tr><td colspan="8" class="text-center">Fahrzeuge werden geladen...</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="modal fade" id="carModal" tabindex="-1" aria-labelledby="carModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="carModalLabel">Neues Fahrzeug hinzufügen</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="car-form">
+                            <input type="hidden" id="car-id">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="make" class="form-label">Marke</label>
+                                    <input type="text" class="form-control" id="make" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="model" class="form-label">Modell</label>
+                                    <input type="text" class="form-control" id="model" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="year" class="form-label">Jahr</label>
+                                    <input type="number" class="form-control" id="year" required min="1900" max="2100">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="license-plate" class="form-label">Kennzeichen</label>
+                                    <input type="text" class="form-control" id="license-plate" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="daily-rate" class="form-label">Tägliche Rate (€)</label>
+                                    <input type="number" class="form-control" id="daily-rate" step="0.01" required min="0">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="transmission-type" class="form-label">Getriebetyp</label>
+                                    <select class="form-select" id="transmission-type" required>
+                                        <option value="">Auswählen...</option>
+                                        <option value="Otomatik">Otomatik</option>
+                                        <option value="Manuel">Manuel</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="fuel-type" class="form-label">Kraftstofftyp</label>
+                                    <select class="form-select" id="fuel-type" required>
+                                        <option value="">Auswählen...</option>
+                                        <option value="Benzin">Benzin</option>
+                                        <option value="Dizel">Dizel</option>
+                                        <option value="Elektrischer ">Elektrischer </option>
+                                        <option value="Hibrit">Hibrit</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="seating-capacity" class="form-label">Sitzplätze</label>
+                                    <input type="number" class="form-control" id="seating-capacity" required min="1">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="color" class="form-label">Farbe</label>
+                                    <input type="text" class="form-control" id="color">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="image-url" class="form-label">Bild URL</label>
+                                    <input type="url" class="form-control" id="image-url">
+                                </div>
+                                <div class="col-md-12">
+                                    <label for="location-id" class="form-label">Standort</label>
+                                    <select class="form-select" id="location-id" required>
+                                        <option value="">Standort auswählen...</option>
+                                        
+                                    </select>
+                                </div>
+                                <div class="col-md-12">
+                                    <label for="description" class="form-label">Beschreibung</label>
+                                    <textarea class="form-control" id="description" rows="3"></textarea>
+                                </div>
+                                <div class="col-md-12">
+                                    <label for="features" class="form-label">Özellikler</label>
+                                    <div id="features-checkboxes" class="form-control" style="height: auto; min-height: 100px; overflow-y: auto;">
+                                        
+                                        Yükleniyor...
+                                    </div>
+                                </div>
+                                <div class="col-md-6 form-check form-switch mt-3 ms-2">
+                                    <input class="form-check-input" type="checkbox" id="is-available" checked>
+                                    <label class="form-check-label" for="is-available">Verfügbar</label>
+                                </div>
+                            </div>
+                            <div class="modal-footer mt-4">
+                                                        <button type="button" class="nav-link-text" data-bs-dismiss="modal">Schließen</button>
+                        <button type="submit" class="nav-link-text" id="save-car-btn">Speichern</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer-section">
+        <div class="container">
+            <div class="footer-content">
+                <span class="footer-text">© 2025 Alle Rechte vorbehalten. Dies ist eine Beispiel-Website für Übungszwecke vorbereitet. Es ist keine echte Autovermietungs-Website.</span>
+                <span class="footer-separator">-</span>
+                <a href="#" class="footer-link">Datenschutz</a>
+                <span class="footer-separator">-</span>
+                <a href="#" class="footer-link">Bedingungen</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/navbar.js"></script>
+    <script src="/js/admin/cars.js"></script>
+</body>
+</html>

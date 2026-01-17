@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PayPal Zahlung abgebrochen - AutooR</title>
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/navbar.css">
+</head>
+<body style="overflow-x: hidden; background:#f7f7f7;">
+    
+    <div id="navbar-container"></div>
+
+    <section class="py-5" style="margin-top: 80px;">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-6">
+                    <div class="bg-white rounded-4 p-5 shadow-sm border text-center">
+                        <div class="mb-4">
+                            <i class="bi bi-x-circle-fill text-warning" style="font-size: 4rem;"></i>
+                        </div>
+                        
+                        <h2 class="fw-bold text-warning mb-3">PayPal Zahlung abgebrochen</h2>
+                        <p class="text-muted mb-4">Die PayPal-Zahlung wurde abgebrochen. Ihre Reservierung wurde nicht abgeschlossen.</p>
+                        
+                        <div class="alert alert-warning" role="alert">
+                            <i class="bi bi-exclamation-triangle me-2"></i>
+                            <strong>Hinweis:</strong> Sie können jederzeit eine andere Zahlungsmethode wählen.
+                        </div>
+                        
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                            <a href="/payment" class="btn btn-warning btn-lg">
+                                <i class="bi bi-arrow-left me-2"></i>
+                                Zurück zur Zahlung
+                            </a>
+                            <a href="/reservation" class="btn btn-outline-secondary btn-lg">
+                                <i class="bi bi-arrow-left me-2"></i>
+                                Zurück zur Reservierung
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script src="/js/navbar.js?v=202601071235"></script>
+    <script>
+        
+        document.addEventListener('DOMContentLoaded', async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const orderId = urlParams.get('token');
+            
+            if (orderId) {
+                try {
+                    
+                    const response = await fetch('/api/payments/paypal/cancel', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            orderId: orderId
+                        })
+                    });
+                    
+                    const result = await response.json();
+                    console.log('PayPal cancel callback result:', result);
+                } catch (error) {
+                    console.error('PayPal cancel callback error:', error);
+                }
+            }
+        });
+    </script>
+</body>
+</html>

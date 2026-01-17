@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - AutooR</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .checkout-hero {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.6) 100%), 
+                        url('../images/hero-bg.jpg') no-repeat center center;
+            background-size: cover;
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+            position: relative;
+        }
+        
+        .checkout-hero::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at center, rgba(243, 156, 18, 0.1) 0%, rgba(0, 0, 0, 0) 70%);
+            pointer-events: none;
+        }
+        
+        .checkout-hero h1 {
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .checkout-hero p {
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .checkout-content {
+            padding: 40px 0;
+        }
+        
+        .checkout-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+        }
+        
+        .checkout-card h5 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .checkout-card h5 i {
+            color: #f39c12;
+            margin-right: 10px;
+        }
+        
+        .countdown-alert {
+            background: linear-gradient(45deg, #28a745, #20c997);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            padding: 15px 20px;
+            text-align: center;
+            font-weight: 600;
+            margin-bottom: 30px;
+        }
+        
+        .vehicle-card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid #e9ecef;
+        }
+        
+        .vehicle-image {
+            width: 120px;
+            height: 80px;
+            border-radius: 10px;
+            object-fit: cover;
+            margin-right: 20px;
+        }
+        
+        .vehicle-info h4 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        
+        .vehicle-price {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: #f39c12;
+        }
+        
+        .payment-method {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid #e9ecef;
+            margin-bottom: 20px;
+        }
+        
+        .btn-payment {
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 15px 20px;
+            font-weight: 600;
+            color: #6c757d;
+            transition: all 0.3s ease;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .btn-payment:hover,
+        .btn-payment.active {
+            border-color: #f39c12;
+            color: #f39c12;
+            background: rgba(243, 156, 18, 0.1);
+        }
+        
+        .form-control {
+            border-radius: 12px;
+            border: 2px solid #e9ecef;
+            padding: 12px 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus {
+            border-color: #f39c12;
+            box-shadow: 0 0 0 0.2rem rgba(243, 156, 18, 0.25);
+        }
+        
+        .btn-primary-custom {
+            background: linear-gradient(45deg, #f39c12, #e67e22);
+            border: none;
+            border-radius: 15px;
+            padding: 15px 30px;
+            font-weight: 600;
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(243, 156, 18, 0.3);
+            background: linear-gradient(45deg, #e67e22, #f39c12);
+        }
+        
+        .summary-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 20px;
+            padding: 30px;
+            position: sticky;
+            top: 20px;
+        }
+        
+        .summary-card h4 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .summary-item:last-child {
+            border-bottom: none;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+        
+        .total-price {
+            font-size: 2rem;
+            font-weight: 900;
+            text-align: center;
+            margin-top: 20px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div id="navbar-container">
+            
+        </div>
+    </header>
+
+    <section class="checkout-hero">
+        <div class="container">
+            <h1>Checkout</h1>
+            <p>Schließen Sie Ihre Fahrzeugreservierung ab</p>
+        </div>
+    </section>
+
+    <main class="checkout-content">
+        <div class="container">
+            
+            <div class="countdown-alert">
+                <i class="bi bi-clock me-2"></i>
+                Reservierung abschließen – verbleibende Zeit: <span id="countdown">25:00</span>
+            </div>
+
+            <div class="row g-4">
+                
+                <div class="col-lg-8">
+                    
+                    <div class="checkout-card">
+                        <h5><i class="bi bi-calendar-check"></i> Reservierungsdaten</h5>
+                        <div id="reservation-summary" class="row row-cols-2 row-cols-md-4 g-3">
+                            
+                        </div>
+                    </div>
+
+                    <div class="checkout-card">
+                        <h5><i class="bi bi-car-front"></i> Fahrzeugdetails</h5>
+                        <div class="vehicle-card d-flex align-items-start" id="vehicle-card">
+                            
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-md-6">
+                                <ul class="list-unstyled mb-0">
+                                    <li><i class="bi bi-geo-alt text-primary me-2"></i>Abholung: <strong id="pickup-location"></strong></li>
+                                    <li><i class="bi bi-geo-alt-fill text-primary me-2"></i>Rückgabe: <strong id="dropoff-location"></strong></li>
+                                    <li><i class="bi bi-speedometer2 text-primary me-2"></i>Kilometer inkl.: <strong>500 km</strong></li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <ul class="list-unstyled mb-0">
+                                    <li><i class="bi bi-gear text-primary me-2"></i>Getriebe: <strong id="car-transmission"></strong></li>
+                                    <li><i class="bi bi-fuel-pump text-primary me-2"></i>Kraftstoff: <strong id="car-fuel"></strong></li>
+                                    <li><i class="bi bi-people text-primary me-2"></i>Sitze: <strong id="car-seats"></strong></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="checkout-card">
+                        <h5><i class="bi bi-credit-card"></i> Zahlungsart</h5>
+                        <div class="payment-method">
+                            <div class="d-flex flex-wrap">
+                                <input type="radio" class="btn-check" name="payment" id="pay-card" autocomplete="off" checked>
+                                <label class="btn btn-payment" for="pay-card">
+                                    <i class="bi bi-credit-card me-2"></i>Kredit-/Debitkarte
+                                </label>
+                                
+                                <input type="radio" class="btn-check" name="payment" id="pay-paypal" autocomplete="off">
+                                <label class="btn btn-payment" for="pay-paypal">
+                                    <i class="bi bi-paypal me-2"></i>PayPal
+                                </label>
+                                
+                                <input type="radio" class="btn-check" name="payment" id="pay-klarna" autocomplete="off">
+                                <label class="btn btn-payment" for="pay-klarna">
+                                    <i class="bi bi-wallet2 me-2"></i>Klarna
+                                </label>
+                            </div>
+                        </div>
+
+                        <div id="payment-forms">
+                            
+                            <div id="form-card">
+                                <div class="row g-3">
+                                    <div class="col-12">
+                                        <label class="form-label">Kartennummer</label>
+                                        <input class="form-control" placeholder="1234 5678 9012 3456" />
+                                    </div>
+                                    <div class="col-6">
+                                        <label class="form-label">Gültig bis</label>
+                                        <input class="form-control" placeholder="MM/YY" />
+                                    </div>
+                                    <div class="col-6">
+                                        <label class="form-label">CVC</label>
+                                        <input class="form-control" placeholder="123" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="form-paypal" class="d-none">
+                                <p class="mb-3">Mit PayPal fortfahren (Sandbox).</p>
+                                <div id="paypal-button-container"></div>
+                            </div>
+
+                            <div id="form-klarna" class="d-none">
+                                <p class="mb-3">Mit Klarna bezahlen (Playground).</p>
+                                <button class="nav-link-text" id="btn-klarna-pay">
+                                    <i class="bi bi-wallet2 me-2"></i>Mit Klarna bezahlen
+                                </button>
+                                <div class="small text-muted mt-2">
+                                    Hinweis: Test-Zugangsdaten sind erforderlich (.env: KLARNA_USERNAME, KLARNA_PASSWORD).
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="checkout-card">
+                        <h5><i class="bi bi-person"></i> Kontakt- und Fahrerdaten</h5>
+                        <div id="customer-forms" class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">E-Mail</label>
+                                <input class="form-control" id="email" placeholder="Ihre E-Mail" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Telefon</label>
+                                <input class="form-control" id="phone" placeholder="Telefon" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Vorname</label>
+                                <input class="form-control" id="first-name" placeholder="Vorname" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Nachname</label>
+                                <input class="form-control" id="last-name" placeholder="Nachname" />
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Adresse</label>
+                                <input class="form-control" id="address" placeholder="Straße, Hausnummer, PLZ, Stadt" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Führerschein-Nr.</label>
+                                <input class="form-control" id="license" placeholder="Führerschein-Nr." />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Gültig bis</label>
+                                <input class="form-control" id="license-valid" type="date" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="checkout-card">
+                        <h5><i class="bi bi-file-text"></i> Allgemeine Geschäftsbedingungen</h5>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="terms-accepted">
+                            <label class="form-check-label" for="terms-accepted">
+                                Ich akzeptiere die <a href="#" class="text-primary">Allgemeinen Geschäftsbedingungen</a> und 
+                                <a href="#" class="text-primary">Datenschutzerklärung</a>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="text-center">
+                        <button id="complete-reservation" class="nav-link-text btn-lg" disabled>
+                            <i class="bi bi-check-circle me-2"></i>
+                            Reservierung abschließen
+                        </button>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="summary-card">
+                        <h4><i class="bi bi-receipt me-2"></i>Zusammenfassung</h4>
+                        <div id="summary-items">
+                            
+                        </div>
+                        <div class="total-price">
+                            Gesamt: <span id="total-price">€0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer-section">
+        <div class="container">
+            <div class="footer-content">
+                <span class="footer-text">© 2025 Alle Rechte vorbehalten. Dies ist eine Beispiel-Website für Übungszwecke vorbereitet. Es ist keine echte Autovermietungs-Website.</span>
+                <span class="footer-separator">-</span>
+                <a href="#" class="footer-link">Datenschutz</a>
+                <span class="footer-separator">-</span>
+                <a href="#" class="footer-link">Bedingungen</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/navbar.js"></script>
+    <script src="../js/auth.js"></script>
+    <script>
+        
+        document.getElementById('pay-card').addEventListener('change', function() {
+            showPaymentForm('form-card');
+        });
+        
+        document.getElementById('pay-paypal').addEventListener('change', function() {
+            showPaymentForm('form-paypal');
+        });
+        
+        document.getElementById('pay-klarna').addEventListener('change', function() {
+            showPaymentForm('form-klarna');
+        });
+        
+        function showPaymentForm(formId) {
+            
+            document.querySelectorAll('#payment-forms > div').forEach(form => {
+                form.classList.add('d-none');
+            });
+
+            document.getElementById(formId).classList.remove('d-none');
+        }
+
+        document.getElementById('terms-accepted').addEventListener('change', function() {
+            document.getElementById('complete-reservation').disabled = !this.checked;
+        });
+
+        showPaymentForm('form-card');
+    </script>
+</body>
+</html>

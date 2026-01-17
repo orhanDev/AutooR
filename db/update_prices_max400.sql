@@ -1,0 +1,154 @@
+SELECT make, model, daily_rate, 
+       CASE 
+           WHEN daily_rate <= 100 THEN 'Economy'
+           WHEN daily_rate <= 150 THEN 'Kompakt'
+           WHEN daily_rate <= 200 THEN 'Mittelklasse'
+           WHEN daily_rate <= 250 THEN 'Premium Mittelklasse'
+           WHEN daily_rate <= 300 THEN 'Oberklasse'
+           WHEN daily_rate <= 350 THEN 'Luxus'
+           WHEN daily_rate <= 400 THEN 'Ultra Luxus'
+           ELSE 'Zu teuer - Korrektur erforderlich'
+       END as segment
+FROM cars 
+ORDER BY daily_rate DESC;
+
+UPDATE cars SET daily_rate = 100 WHERE make = 'Volkswagen' AND model LIKE '%Golf%';
+UPDATE cars SET daily_rate = 105 WHERE make = 'Opel' AND model LIKE '%Corsa%';
+UPDATE cars SET daily_rate = 108 WHERE make = 'Ford' AND model LIKE '%Fiesta%';
+UPDATE cars SET daily_rate = 106 WHERE make = 'Renault' AND model LIKE '%Clio%';
+UPDATE cars SET daily_rate = 110 WHERE make = 'Peugeot' AND model LIKE '%208%';
+UPDATE cars SET daily_rate = 115 WHERE make = 'Toyota' AND model LIKE '%Yaris%';
+UPDATE cars SET daily_rate = 118 WHERE make = 'Honda' AND model LIKE '%Jazz%';
+UPDATE cars SET daily_rate = 120 WHERE make = 'Kia' AND model LIKE '%Picanto%';
+
+UPDATE cars SET daily_rate = 130 WHERE make = 'Volkswagen' AND model LIKE '%Passat%';
+UPDATE cars SET daily_rate = 135 WHERE make = 'Opel' AND model LIKE '%Insignia%';
+UPDATE cars SET daily_rate = 140 WHERE make = 'Ford' AND model LIKE '%Mondeo%';
+UPDATE cars SET daily_rate = 138 WHERE make = 'Renault' AND model LIKE '%Megane%';
+UPDATE cars SET daily_rate = 145 WHERE make = 'Peugeot' AND model LIKE '%508%';
+UPDATE cars SET daily_rate = 150 WHERE make = 'Toyota' AND model LIKE '%Camry%';
+UPDATE cars SET daily_rate = 155 WHERE make = 'Honda' AND model LIKE '%Accord%';
+
+UPDATE cars SET daily_rate = 180 WHERE make = 'BMW' AND model LIKE '%3 Series%';
+UPDATE cars SET daily_rate = 185 WHERE make = 'Mercedes-Benz' AND model LIKE '%C-Class%';
+UPDATE cars SET daily_rate = 178 WHERE make = 'Audi' AND model LIKE '%A4%';
+UPDATE cars SET daily_rate = 190 WHERE make = 'Volvo' AND model LIKE '%S60%';
+UPDATE cars SET daily_rate = 200 WHERE make = 'Lexus' AND model LIKE '%IS%';
+UPDATE cars SET daily_rate = 210 WHERE make = 'Infiniti' AND model LIKE '%Q50%';
+
+UPDATE cars SET daily_rate = 230 WHERE make = 'BMW' AND model LIKE '%5 Series%';
+UPDATE cars SET daily_rate = 235 WHERE make = 'Mercedes-Benz' AND model LIKE '%E-Class%';
+UPDATE cars SET daily_rate = 232 WHERE make = 'Audi' AND model LIKE '%A6%';
+UPDATE cars SET daily_rate = 240 WHERE make = 'Volvo' AND model LIKE '%S90%';
+UPDATE cars SET daily_rate = 250 WHERE make = 'Lexus' AND model LIKE '%ES%';
+UPDATE cars SET daily_rate = 260 WHERE make = 'Jaguar' AND model LIKE '%XF%';
+
+UPDATE cars SET daily_rate = 290 WHERE make = 'BMW' AND model LIKE '%7 Series%';
+UPDATE cars SET daily_rate = 300 WHERE make = 'Mercedes-Benz' AND model LIKE '%S-Class%';
+UPDATE cars SET daily_rate = 295 WHERE make = 'Audi' AND model LIKE '%A8%';
+UPDATE cars SET daily_rate = 310 WHERE make = 'Lexus' AND model LIKE '%LS%';
+UPDATE cars SET daily_rate = 320 WHERE make = 'Maserati' AND model LIKE '%Quattroporte%';
+
+UPDATE cars SET daily_rate = 140 WHERE make = 'BMW' AND model LIKE '%X1%';
+UPDATE cars SET daily_rate = 145 WHERE make = 'Mercedes-Benz' AND model LIKE '%GLA%';
+UPDATE cars SET daily_rate = 138 WHERE make = 'Audi' AND model LIKE '%Q3%';
+UPDATE cars SET daily_rate = 150 WHERE make = 'Volkswagen' AND model LIKE '%T-Roc%';
+UPDATE cars SET daily_rate = 155 WHERE make = 'Opel' AND model LIKE '%Mokka%';
+UPDATE cars SET daily_rate = 160 WHERE make = 'Ford' AND model LIKE '%Puma%';
+UPDATE cars SET daily_rate = 165 WHERE make = 'Renault' AND model LIKE '%Captur%';
+UPDATE cars SET daily_rate = 170 WHERE make = 'Peugeot' AND model LIKE '%2008%';
+
+UPDATE cars SET daily_rate = 200 WHERE make = 'BMW' AND model LIKE '%X3%';
+UPDATE cars SET daily_rate = 205 WHERE make = 'Mercedes-Benz' AND model LIKE '%GLC%';
+UPDATE cars SET daily_rate = 202 WHERE make = 'Audi' AND model LIKE '%Q5%';
+UPDATE cars SET daily_rate = 210 WHERE make = 'Volkswagen' AND model LIKE '%Tiguan%';
+UPDATE cars SET daily_rate = 215 WHERE make = 'Opel' AND model LIKE '%Grandland%';
+UPDATE cars SET daily_rate = 220 WHERE make = 'Ford' AND model LIKE '%Kuga%';
+UPDATE cars SET daily_rate = 225 WHERE make = 'Renault' AND model LIKE '%Kadjar%';
+UPDATE cars SET daily_rate = 230 WHERE make = 'Peugeot' AND model LIKE '%3008%';
+UPDATE cars SET daily_rate = 235 WHERE make = 'Toyota' AND model LIKE '%RAV4%';
+UPDATE cars SET daily_rate = 240 WHERE make = 'Honda' AND model LIKE '%CR-V%';
+
+UPDATE cars SET daily_rate = 250 WHERE make = 'BMW' AND model LIKE '%X5%';
+UPDATE cars SET daily_rate = 255 WHERE make = 'Mercedes-Benz' AND model LIKE '%GLE%';
+UPDATE cars SET daily_rate = 252 WHERE make = 'Audi' AND model LIKE '%Q7%';
+UPDATE cars SET daily_rate = 260 WHERE make = 'Volkswagen' AND model LIKE '%Touareg%';
+UPDATE cars SET daily_rate = 270 WHERE make = 'Volvo' AND model LIKE '%XC90%';
+UPDATE cars SET daily_rate = 280 WHERE make = 'Lexus' AND model LIKE '%RX%';
+UPDATE cars SET daily_rate = 290 WHERE make = 'Range Rover' AND model LIKE '%Sport%';
+
+UPDATE cars SET daily_rate = 300 WHERE make = 'BMW' AND model LIKE '%X7%';
+UPDATE cars SET daily_rate = 310 WHERE make = 'Mercedes-Benz' AND model LIKE '%GLS%';
+UPDATE cars SET daily_rate = 305 WHERE make = 'Audi' AND model LIKE '%Q8%';
+UPDATE cars SET daily_rate = 320 WHERE make = 'Range Rover' AND model LIKE '%Vogue%';
+UPDATE cars SET daily_rate = 350 WHERE make = 'Bentley' AND model LIKE '%Bentayga%';
+UPDATE cars SET daily_rate = 380 WHERE make = 'Rolls-Royce' AND model LIKE '%Cullinan%';
+
+UPDATE cars SET daily_rate = 120 WHERE make = 'Tesla' AND model LIKE '%Model 3%';
+UPDATE cars SET daily_rate = 130 WHERE make = 'Tesla' AND model LIKE '%Model Y%';
+UPDATE cars SET daily_rate = 140 WHERE make = 'Tesla' AND model LIKE '%Model S%';
+UPDATE cars SET daily_rate = 150 WHERE make = 'Tesla' AND model LIKE '%Model X%';
+UPDATE cars SET daily_rate = 125 WHERE make = 'BMW' AND model LIKE '%i3%';
+UPDATE cars SET daily_rate = 135 WHERE make = 'BMW' AND model LIKE '%iX%';
+UPDATE cars SET daily_rate = 130 WHERE make = 'Audi' AND model LIKE '%e-tron%';
+UPDATE cars SET daily_rate = 120 WHERE make = 'Volkswagen' AND model LIKE '%ID.%';
+UPDATE cars SET daily_rate = 118 WHERE make = 'Kia' AND model LIKE '%EV%';
+UPDATE cars SET daily_rate = 116 WHERE make = 'Hyundai' AND model LIKE '%IONIQ%';
+
+UPDATE cars SET daily_rate = 110 WHERE make = 'Toyota' AND model LIKE '%Prius%';
+UPDATE cars SET daily_rate = 115 WHERE make = 'Toyota' AND model LIKE '%Corolla%' AND fuel_type LIKE '%Hybrid%';
+UPDATE cars SET daily_rate = 120 WHERE make = 'Toyota' AND model LIKE '%RAV4%' AND fuel_type LIKE '%Hybrid%';
+UPDATE cars SET daily_rate = 125 WHERE make = 'Honda' AND model LIKE '%Civic%' AND fuel_type LIKE '%Hybrid%';
+UPDATE cars SET daily_rate = 130 WHERE make = 'Honda' AND model LIKE '%CR-V%' AND fuel_type LIKE '%Hybrid%';
+UPDATE cars SET daily_rate = 135 WHERE make = 'BMW' AND model LIKE '%X5%' AND fuel_type LIKE '%Hybrid%';
+UPDATE cars SET daily_rate = 140 WHERE make = 'Mercedes-Benz' AND model LIKE '%C-Class%' AND fuel_type LIKE '%Hybrid%';
+
+UPDATE cars SET daily_rate = 180 WHERE make = 'Porsche' AND model LIKE '%911%';
+UPDATE cars SET daily_rate = 200 WHERE make = 'Porsche' AND model LIKE '%Cayman%';
+UPDATE cars SET daily_rate = 220 WHERE make = 'Porsche' AND model LIKE '%Boxster%';
+UPDATE cars SET daily_rate = 260 WHERE make = 'Porsche' AND model LIKE '%Cayenne%';
+UPDATE cars SET daily_rate = 280 WHERE make = 'Porsche' AND model LIKE '%Panamera%';
+UPDATE cars SET daily_rate = 200 WHERE make = 'Mercedes-Benz' AND model LIKE '%AMG GT%';
+UPDATE cars SET daily_rate = 220 WHERE make = 'BMW' AND model LIKE '%M3%';
+UPDATE cars SET daily_rate = 240 WHERE make = 'BMW' AND model LIKE '%M4%';
+UPDATE cars SET daily_rate = 260 WHERE make = 'BMW' AND model LIKE '%M5%';
+UPDATE cars SET daily_rate = 300 WHERE make = 'BMW' AND model LIKE '%M8%';
+UPDATE cars SET daily_rate = 210 WHERE make = 'Audi' AND model LIKE '%RS%';
+UPDATE cars SET daily_rate = 230 WHERE make = 'Audi' AND model LIKE '%R8%';
+
+UPDATE cars SET daily_rate = 300 WHERE make = 'Bentley' AND model LIKE '%Continental%';
+UPDATE cars SET daily_rate = 320 WHERE make = 'Bentley' AND model LIKE '%Flying Spur%';
+UPDATE cars SET daily_rate = 350 WHERE make = 'Rolls-Royce' AND model LIKE '%Phantom%';
+UPDATE cars SET daily_rate = 380 WHERE make = 'Rolls-Royce' AND model LIKE '%Ghost%';
+UPDATE cars SET daily_rate = 400 WHERE make = 'Rolls-Royce' AND model LIKE '%Wraith%';
+
+UPDATE cars SET daily_rate = 400 WHERE daily_rate > 400;
+
+SELECT 
+    make, 
+    model, 
+    daily_rate,
+    CASE 
+        WHEN daily_rate <= 100 THEN 'Economy'
+        WHEN daily_rate <= 150 THEN 'Kompakt'
+        WHEN daily_rate <= 200 THEN 'Mittelklasse'
+        WHEN daily_rate <= 250 THEN 'Premium Mittelklasse'
+        WHEN daily_rate <= 300 THEN 'Oberklasse'
+        WHEN daily_rate <= 350 THEN 'Luxus'
+        WHEN daily_rate <= 400 THEN 'Ultra Luxus'
+        ELSE 'Zu teuer'
+    END as segment
+FROM cars 
+ORDER BY daily_rate DESC;
+
+SELECT 
+    COUNT(*) as gesamt_fahrzeuge,
+    COUNT(CASE WHEN daily_rate <= 100 THEN 1 END) as "unter_100_eur",
+    COUNT(CASE WHEN daily_rate > 100 AND daily_rate <= 200 THEN 1 END) as "100_200_eur",
+    COUNT(CASE WHEN daily_rate > 200 AND daily_rate <= 300 THEN 1 END) as "200_300_eur",
+    COUNT(CASE WHEN daily_rate > 300 AND daily_rate <= 400 THEN 1 END) as "300_400_eur",
+    COUNT(CASE WHEN daily_rate > 400 THEN 1 END) as "ueber_400_eur",
+    ROUND(AVG(daily_rate), 2) as durchschnittspreis,
+    MIN(daily_rate) as mindestpreis,
+    MAX(daily_rate) as hoechstpreis
+FROM cars;
