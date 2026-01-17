@@ -848,8 +848,8 @@ body {
 
     .homepage-form-container .input-group.flex-nowrap .form-select {
         flex: 0 0 auto !important;
-        min-width: 58px !important;
-        max-width: 72px !important;
+        min-width: 52px !important;
+        max-width: 66px !important;
     }
 
     .homepage-form-container #homepage-search-btn {
