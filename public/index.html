@@ -6530,15 +6530,13 @@
                 const heroBackground = document.querySelector('.hero-background');
                 if (heroBackground) {
                     const isMobile = window.innerWidth <= 747;
-                    const imagePath = isMobile
-                        ? "url('/images/cars/weter.png'), url('/images/cars/1m.png')"
-                        : "url('/images/cars/1.png')";
+                    const imageName = isMobile ? '1m.png' : '1.png';
+                    const imagePath = `url('/images/cars/${imageName}')`;
 
-                    const bgSize = isMobile ? '100% auto, cover' : 'cover';
-                    const bgPosition = isMobile ? 'top center, center center' : 'center center';
+                    const bgSize = 'cover';
                     heroBackground.style.setProperty('background-image', imagePath, 'important');
                     heroBackground.style.setProperty('background-size', bgSize, 'important');
-                    heroBackground.style.setProperty('background-position', bgPosition, 'important');
+                    heroBackground.style.setProperty('background-position', 'center center', 'important');
                     
                     console.log(`Background updated: ${imageName} for ${isMobile ? 'mobile' : 'desktop'}`);
                 }
@@ -6552,14 +6550,11 @@
                     const imageName = isMobile ? '1m.png' : '1.png';
                     const img = new Image();
                     img.onload = function() {
-                        const imagePath = isMobile
-                            ? "url('/images/cars/weter.png'), url('/images/cars/1m.png')"
-                            : "url('/images/cars/1.png')";
-                        const bgSize = isMobile ? '100% auto, cover' : 'cover';
-                        const bgPosition = isMobile ? 'top center, center center' : 'center center';
+                        const imagePath = `url('/images/cars/${imageName}')`;
+                        const bgSize = 'cover';
                         heroBackground.style.setProperty('background-image', imagePath, 'important');
                         heroBackground.style.setProperty('background-size', bgSize, 'important');
-                        heroBackground.style.setProperty('background-position', bgPosition, 'important');
+                        heroBackground.style.setProperty('background-position', 'center center', 'important');
                     };
                     img.src = `/images/cars/${imageName}`;
                 }
