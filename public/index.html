@@ -24,12 +24,12 @@
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
     
-    <link rel="preload" href="css/style.css?v=202601170001" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <link rel="preload" href="/css/navbar.css?v=202601170001" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <link rel="preload" href="css/homepage.css?v=202601170001" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="css/style.css?v=202601160048" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="/css/navbar.css?v=202601160048" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="css/homepage.css?v=202601160048" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <link rel="preload" as="image" href="/images/cars/1.png" fetchpriority="high">
     <link rel="preload" as="image" href="/images/cars/1m.png" media="(max-width: 747px)" fetchpriority="high">
-    <noscript><link rel="stylesheet" href="css/style.css?v=202601170001"><link rel="stylesheet" href="/css/navbar.css?v=202601170001"><link rel="stylesheet" href="css/homepage.css?v=202601170001"></noscript>
+    <noscript><link rel="stylesheet" href="css/style.css?v=202601160048"><link rel="stylesheet" href="/css/navbar.css?v=202601160048"><link rel="stylesheet" href="css/homepage.css?v=202601160048"></noscript>
 
     <!-- CSS moved to homepage.css -->
     <style>
@@ -596,10 +596,6 @@
             .homepage-form-container .input-group-text .bi-geo-alt {
                 color: #000000 !important;
             }
-
-            .homepage-form-container .input-group-text .bi-clock {
-                transform: scale(0.8);
-            }
             
             .homepage-form-container .form-label,
             .homepage-form-container .form-label.small,
@@ -661,31 +657,31 @@
                 height: 38px !important;
                 min-height: 38px !important;
             }
+
+            .homepage-form-container #qr-pickup-date,
+            .homepage-form-container #qr-dropoff-date {
+                font-size: clamp(0.75rem, 2.6vw, 0.95rem) !important;
+                padding: 0.3rem 0.45rem !important;
+                font-variant-numeric: tabular-nums;
+                letter-spacing: 0.2px;
+            }
+
+            .homepage-form-container #qr-pickup-date::placeholder,
+            .homepage-form-container #qr-dropoff-date::placeholder {
+                font-size: clamp(0.7rem, 2.2vw, 0.85rem) !important;
+                letter-spacing: 0.2px;
+            }
             
             .homepage-form-container .input-group.flex-nowrap .form-control {
                 flex: 1 1 auto !important;
-                min-width: 160px !important;
+                min-width: 125px !important;
                 max-width: 100% !important;
             }
             
             .homepage-form-container .input-group.flex-nowrap .form-select {
                 flex: 0 0 auto !important;
-                min-width: 44px !important;
-                max-width: 56px !important;
-                font-size: 0.75rem !important;
-                padding-left: 0.3rem !important;
-                padding-right: 0.3rem !important;
-            }
-
-            .homepage-form-container #qr-pickup-date,
-            .homepage-form-container #qr-dropoff-date {
-                flex: 1 1 auto !important;
-                min-width: 0 !important;
-                width: 100% !important;
-                font-size: 0.8rem !important;
-                padding-left: 0.35rem !important;
-                padding-right: 0.35rem !important;
-                font-variant-numeric: tabular-nums;
+                min-width: 65px !important;
+                max-width: 85px !important;
             }
             
             .homepage-form-container #homepage-search-btn {
@@ -942,18 +938,17 @@
                 background: rgba(255, 255, 255, 0.95) !important;
                 color: #000 !important;
                 font-weight: 500 !important;
-                padding: 0.5rem 0.3rem !important;
-                font-size: 0.75rem !important;
+                padding: 0.5rem 0.5rem !important;
+                font-size: 0.8rem !important;
                 transition: all 0.3s ease !important;
                 appearance: none !important;
                 -webkit-appearance: none !important;
                 -moz-appearance: none !important;
                 background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23000' d='M6 9L1 4h10z'/%3E%3C/svg%3E") !important;
                 background-repeat: no-repeat !important;
-                background-position: right 0.35rem center !important;
-                background-size: 10px !important;
-                padding-right: 1.4rem !important;
-                width: 56px !important;
+                background-position: right 0.5rem center !important;
+                background-size: 12px !important;
+                padding-right: 2rem !important;
             }
             
             .homepage-form-container #qr-pickup-time:hover,
