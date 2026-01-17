@@ -183,7 +183,7 @@
     .calendar-day {
         font-size: 11px;
         width: 14px;
-        height: 14px;
+        height: 10px;
         padding: 2px;
     }
 }
@@ -1097,8 +1097,8 @@ body {
 
     .homepage-form-container .input-group.flex-nowrap .form-select {
         flex: 0 0 auto !important;
-        min-width: 90px !important;
-        max-width: 110px !important;
+        min-width: 52px !important;
+        max-width: 66px !important;
         font-size: 0.8rem !important;
         padding: 0.5rem 0.4rem !important;
     }
