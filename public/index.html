@@ -3738,6 +3738,25 @@
                 max-width: none; 
             } 
         }
+
+        @media (max-width: 747px) {
+            #qr-pickup-date,
+            #qr-dropoff-date {
+                border-color: #d60000 !important;
+                background-color: #ffe5e5 !important;
+                color: #000 !important;
+                font-size: clamp(0.72rem, 2.6vw, 1rem) !important;
+                line-height: 1.2 !important;
+                overflow: hidden !important;
+                text-overflow: ellipsis !important;
+            }
+
+            #qr-pickup-date::placeholder,
+            #qr-dropoff-date::placeholder {
+                color: #7a0000 !important;
+                font-size: clamp(0.72rem, 2.6vw, 1rem) !important;
+            }
+        }
         
         @media (min-width: 748px) { 
             .col-xl-3 { 
