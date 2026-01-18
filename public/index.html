@@ -7228,7 +7228,9 @@
             if (topSearchBtn && formContainer) {
                 topSearchBtn.addEventListener('click', function(e) {
                     e.preventDefault();
-
+                    if (isMobile) {
+                        return;
+                    }
                     formContainer.classList.remove('form-open');
                 });
             }
