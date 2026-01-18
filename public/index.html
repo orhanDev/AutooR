@@ -3731,10 +3731,6 @@
             width: calc(100px * 0.8) !important;
             flex: 0 0 calc(100px * 0.8) !important;
         }
-
-        .input-group.flex-nowrap .input-group-text .bi-clock {
-            margin-left: -8rem !important;
-        }
         
         @media (max-width: 747px) { 
             .qr-select { 
@@ -3759,6 +3755,16 @@
             #qr-dropoff-date::placeholder {
                 color: #7a0000 !important;
                 font-size: clamp(0.72rem, 2.6vw, 1rem) !important;
+            }
+
+            .time-icon-container {
+                background-color: #1e60d4 !important;
+                border-color: #1e60d4 !important;
+                color: #ffffff !important;
+            }
+
+            .time-icon-container .bi {
+                color: #ffffff !important;
             }
         }
         
@@ -5050,7 +5056,7 @@
                             <div class="input-group flex-nowrap">
                                 <span class="input-group-text bg-white"><i class="bi bi-calendar"></i></span>
                                 <input type="text" id="qr-pickup-date" class="form-control border-2 qr-select" placeholder="TT.MM.JJJJ" readonly>
-                                <span class="input-group-text bg-white"><i class="bi bi-clock"></i></span>
+                                <span class="input-group-text bg-white time-icon-container"><i class="bi bi-clock"></i></span>
                                 <select id="qr-pickup-time" class="form-select border-2 qr-select">
                                     <option value="">Zeit</option>
                                     <option>08:00</option><option>09:00</option><option>10:00</option><option>11:00</option><option>12:00</option>
@@ -5063,7 +5069,7 @@
                             <div class="input-group flex-nowrap">
                                 <span class="input-group-text bg-white"><i class="bi bi-calendar"></i></span>
                                 <input type="text" id="qr-dropoff-date" class="form-control border-2 qr-select" placeholder="TT.MM.JJJJ" readonly>
-                                <span class="input-group-text bg-white"><i class="bi bi-clock"></i></span>
+                                <span class="input-group-text bg-white time-icon-container"><i class="bi bi-clock"></i></span>
                                 <select id="qr-dropoff-time" class="form-select border-2 qr-select">
                                     <option value="">Zeit</option>
                                     <option>08:00</option><option>09:00</option><option>10:00</option><option>11:00</option><option>12:00</option>
