@@ -6741,8 +6741,10 @@
             const mobileFormToggle = document.getElementById('mobile-form-toggle');
             const formContainer = document.querySelector('.homepage-form-container');
             const peekToggle = document.getElementById('peek-toggle');
-            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
-            const isMobileCheck = isMobile;
+            const isMobileCheck = () =>
+                /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+                || window.innerWidth <= 747;
+            const isMobile = isMobileCheck();
             
             if (formContainer) {
 
@@ -6757,7 +6759,7 @@
             }
 
             function setPeek(collapsed) {
-                if (!formContainer || !isMobile) return;
+                if (!formContainer || !isMobileCheck()) return;
                 if (collapsed) {
                     formContainer.classList.add('peek-collapsed');
                     if (peekToggle) {
@@ -6774,7 +6776,7 @@
                 }
             }
 
-            if (formContainer && isMobile) {
+            if (formContainer && isMobileCheck()) {
                 setPeek(true);
                 let isFormInteracting = false;
                 let interactionTimer;
@@ -6844,7 +6846,7 @@
             }
 
             if (pDate && dDate) {
-                const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
+                const isMobile = isMobileCheck();
                 
                 if (isMobile) {
 
