@@ -4758,7 +4758,8 @@
                 text-align: center !important;
             }
             #top-homepage-search-btn {
-                pointer-events: none !important;
+                pointer-events: auto !important;
+                cursor: pointer !important;
                 background: transparent !important;
                 background-color: transparent !important;
                 border: 0 !important;
@@ -6758,9 +6759,8 @@
                 });
             }
 
-            function setPeek(collapsed, force) {
-                if (!formContainer) return;
-                if (!force && !isMobileCheck()) return;
+            function setPeek(collapsed) {
+                if (!formContainer || !isMobileCheck()) return;
                 if (collapsed) {
                     formContainer.classList.add('peek-collapsed');
                     if (peekToggle) {
@@ -6820,7 +6820,7 @@
 
                     peekToggle.addEventListener('click', function(e) {
                         e.stopPropagation();
-                        setPeek(false, true);
+                        setPeek(false);
                     });
                 }
 
@@ -6828,7 +6828,11 @@
                     topSearchBtn.addEventListener('click', function(e) {
                         e.stopPropagation();
                         const collapsed = formContainer.classList.contains('peek-collapsed');
-                        setPeek(!collapsed, true);
+                        if (collapsed) {
+                            setPeek(false);
+                        } else {
+                            setPeek(true);
+                        }
                     });
                 }
 
