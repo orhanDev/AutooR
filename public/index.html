@@ -84,7 +84,7 @@
             background-repeat: no-repeat !important;
         }
         
-        @media (max-width: 747px) {
+        @media (max-width: 747px), (min-width: 748px) {
             .hero-background {
                 background-size: cover !important;
                 background-position: center center !important;
@@ -936,6 +936,11 @@
                 background-size: 12px !important;
                 padding-right: 2rem !important;
             }
+
+            .homepage-form-container #qr-pickup-time {
+                border-color: #dc3545 !important;
+                background: #ffe5e5 !important;
+            }
             
             .homepage-form-container #qr-pickup-time:hover,
             .homepage-form-container #qr-dropoff-time:hover {
@@ -1197,11 +1202,6 @@
                 padding: 0.75rem 1.1rem !important;
                 margin: 0 auto !important;
                 display: block !important;
-                background: transparent !important;
-                background-color: transparent !important;
-                box-shadow: none !important;
-                border: 1px solid rgba(0, 0, 0, 0.06) !important;
-                color: #ffffff !important;
             }
 
             
@@ -3721,15 +3721,15 @@
         
         #qr-pickup-time,
         #qr-dropoff-time {
-            max-width: calc(100px * 0.8) !important;
-            width: calc(100px * 0.8) !important;
-            flex: 0 0 calc(100px * 0.8) !important;
+            max-width: calc(80px + 0.5rem) !important;
+            width: calc(80px + 0.5rem) !important;
+            flex: 0 0 calc(80px + 0.5rem) !important;
         }
         
         .input-group.flex-nowrap .form-select:last-child {
-            max-width: calc(100px * 0.8) !important;
-            width: calc(100px * 0.8) !important;
-            flex: 0 0 calc(100px * 0.8) !important;
+            max-width: calc(80px + 0.5rem) !important;
+            width: calc(80px + 0.5rem) !important;
+            flex: 0 0 calc(80px + 0.5rem) !important;
         }
         
         @media (max-width: 747px) { 
@@ -3737,35 +3737,6 @@
                 flex: 1 1 auto; 
                 max-width: none; 
             } 
-        }
-
-        @media (max-width: 747px) {
-            #qr-pickup-date,
-            #qr-dropoff-date {
-                border-color: #d60000 !important;
-                background-color: #ffe5e5 !important;
-                color: #000 !important;
-                font-size: clamp(0.72rem, 2.6vw, 1rem) !important;
-                line-height: 1.2 !important;
-                overflow: hidden !important;
-                text-overflow: ellipsis !important;
-            }
-
-            #qr-pickup-date::placeholder,
-            #qr-dropoff-date::placeholder {
-                color: #7a0000 !important;
-                font-size: clamp(0.72rem, 2.6vw, 1rem) !important;
-            }
-
-            .time-icon-container {
-                background-color: #1e60d4 !important;
-                border-color: #1e60d4 !important;
-                color: #ffffff !important;
-            }
-
-            .time-icon-container .bi {
-                color: #ffffff !important;
-            }
         }
         
         @media (min-width: 748px) { 
@@ -4489,6 +4460,15 @@
             font-weight: 500 !important;
             transition: all 0.3s ease !important;
         }
+
+        #qr-pickup-time {
+            border-color: #dc3545 !important;
+            background-color: #ffe5e5 !important;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23000' d='M6 9L1 4h10z'/%3E%3C/svg%3E") !important;
+            background-repeat: no-repeat !important;
+            background-position: right 0.5rem center !important;
+            background-size: 12px !important;
+        }
         
         #qr-pickup-time:hover,
         #qr-dropoff-time:hover {
@@ -4503,6 +4483,17 @@
             background-color: rgba(255, 255, 255, 1) !important;
             box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15) !important;
             outline: none !important;
+        }
+
+        #qr-pickup-time:hover,
+        #qr-pickup-time:focus {
+            border-color: #dc3545 !important;
+            background-color: #ffe5e5 !important;
+            box-shadow: 0 2px 6px rgba(220, 53, 69, 0.2) !important;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23000' d='M6 9L1 4h10z'/%3E%3C/svg%3E") !important;
+            background-repeat: no-repeat !important;
+            background-position: right 0.5rem center !important;
+            background-size: 12px !important;
         }
         
         
@@ -4556,6 +4547,14 @@
             .homepage-form-container .input-group.flex-nowrap .form-select {
                 min-width: 85px !important;
                 max-width: 100px !important;
+            }
+
+            .homepage-form-container .input-group.flex-nowrap .form-select#qr-pickup-time,
+            .homepage-form-container .input-group.flex-nowrap .form-select#qr-dropoff-time {
+                min-width: calc(85px - 1.5rem) !important;
+                max-width: calc(100px - 1.5rem) !important;
+                width: calc(100px - 1.5rem) !important;
+                flex: 0 0 calc(100px - 1.5rem) !important;
             }
             
             #qr-pickup-time,
@@ -4677,6 +4676,11 @@
                 border-width: 0 2px 2px 0;
                 padding: 4px;
                 transform: rotate(45deg); 
+            }
+
+            #top-homepage-search-btn::after,
+            #top-homepage-search-btn #top-arrow-icon {
+                display: none !important;
             }
             .homepage-form-container:not(.peek-collapsed) #top-homepage-search-btn::after {
                 transform: rotate(-135deg); 
@@ -4906,6 +4910,10 @@
                 transition: transform 0.25s ease;
             }
 
+            #peek-toggle i {
+                display: none !important;
+            }
+
             #peek-toggle.expanded i {
                 transform: rotate(180deg);
             }
@@ -4913,20 +4921,173 @@
         }
 
         
+
         @media (min-width: 748px) {
-            .ab-form-row {
-                position: relative;
+            #date-location-form,
+            .porsche-search-form,
+            .search-form,
+            .perfect-search-form,
+            .desktop-search-layout {
+                display: none !important;
             }
+        }
+
+        @media (min-width: 748px) {
             .ab-form-row::before {
-                content: '';
-                position: absolute;
-                top: 0;
-                bottom: 0;
-                left: 50%;
-                width: 1px;
-                background: rgba(255, 255, 255, 0.9);
-                transform: translateX(-0.5px);
-                pointer-events: none;
+                display: block !important;
+                content: '' !important;
+                position: absolute !important;
+                top: 0 !important;
+                bottom: 0 !important;
+                left: 50% !important;
+                width: 1px !important;
+                transform: translateX(-0.5px) !important;
+                pointer-events: none !important;
+                background: rgba(255, 255, 255, 0.9) !important;
+            }
+
+            .homepage-form-container .input-group.flex-nowrap:hover,
+            .homepage-form-container .input-group.flex-nowrap:focus-within {
+                border-color: #ffc107 !important;
+            }
+
+            .homepage-form-container .input-group.flex-nowrap:hover .input-group-text,
+            .homepage-form-container .input-group.flex-nowrap:focus-within .input-group-text {
+                border-color: #ffc107 !important;
+            }
+
+            .homepage-form-container .input-group.flex-nowrap:hover .form-control,
+            .homepage-form-container .input-group.flex-nowrap:hover .form-select,
+            .homepage-form-container .input-group.flex-nowrap:focus-within .form-control,
+            .homepage-form-container .input-group.flex-nowrap:focus-within .form-select {
+                border-color: #ffc107 !important;
+            }
+
+            .homepage-form-container .ab-form-row .input-group.flex-nowrap {
+                box-shadow: 0 6px 14px rgba(0, 0, 0, 0.18) !important;
+                position: relative !important;
+                z-index: 1 !important;
+            }
+
+            .homepage-form-container .ab-form-row .input-group.flex-nowrap,
+            .homepage-form-container .ab-form-row .input-group.flex-nowrap:hover,
+            .homepage-form-container .ab-form-row .input-group.flex-nowrap:focus-within {
+                box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22),
+                            0 3px 10px rgba(0, 0, 0, 0.16) !important;
+            }
+
+            .homepage-form-container.form-open .top-search-btn-wrapper {
+                display: block !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+            }
+
+            .hero-content-porsche {
+                padding-top: 0 !important;
+                margin-top: 0 !important;
+                justify-content: flex-start !important;
+                min-height: auto !important;
+                height: auto !important;
+            }
+
+            .hero-section-porsche .hero-content-porsche .homepage-form-container {
+                margin: -8rem auto 0 auto !important;
+                top: 0 !important;
+                transform: translateY(0) !important;
+                box-shadow: none !important;
+            }
+
+            #peek-toggle i {
+                display: none !important;
+            }
+
+            #peek-toggle {
+                display: none !important;
+            }
+
+            #top-homepage-search-btn::after,
+            #top-homepage-search-btn #top-arrow-icon {
+                display: none !important;
+            }
+
+            #top-homepage-search-btn {
+                text-transform: uppercase !important;
+                font-size: 18.2px !important;
+                font-weight: 800 !important;
+                letter-spacing: 0.22em !important;
+                color: #1b1b1b !important;
+                margin-bottom: 1rem !important;
+            }
+
+            #top-homepage-search-btn:hover {
+                margin-bottom: 1rem !important;
+            }
+
+            .homepage-form-container #homepage-search-btn,
+            .homepage-form-container #homepage-search-btn:hover,
+            .homepage-form-container #homepage-search-btn:active,
+            #scroll-arrow-container #homepage-search-btn {
+                background: linear-gradient(180deg, #f5f7fb 0%, #e6e9f0 60%, #dfe3ec 100%) !important;
+                background-color: #e6e9f0 !important;
+                border: 1px solid #cfd6e3 !important;
+                color: #2a2a2a !important;
+                border-radius: 999px !important;
+                width: 100px !important;
+                max-width: 100px !important;
+                height: 50px !important;
+                min-height: 50px !important;
+                padding: 0 0.75rem !important;
+                line-height: 50px !important;
+                box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.95),
+                            inset 0 -6px 10px rgba(0, 0, 0, 0.08),
+                            0 12px 20px rgba(0, 0, 0, 0.2),
+                            0 3px 6px rgba(0, 0, 0, 0.14) !important;
+            }
+
+            .homepage-form-container #homepage-search-btn:hover,
+            #scroll-arrow-container #homepage-search-btn:hover {
+                background: #ee7600 !important;
+                background-color: #ee7600 !important;
+                border-color: #ee7600 !important;
+                color: #ffffff !important;
+                border-radius: 999px !important;
+                width: 100px !important;
+                max-width: 100px !important;
+                height: 50px !important;
+                min-height: 50px !important;
+                padding: 0 0.75rem !important;
+                line-height: 50px !important;
+                box-shadow: inset 0 1px 0 #ee7600,
+                            inset 0 -6px 10px rgba(0, 0, 0, 0.08),
+                            0 12px 20px rgba(0, 0, 0, 0.2),
+                            0 3px 6px rgba(0, 0, 0, 0.14) !important;
+            }
+
+            #scroll-arrow-container #homepage-search-btn:hover span,
+            #homepage-search-btn:hover span,
+            #scroll-arrow-container #homepage-search-btn:active span,
+            #homepage-search-btn:active span {
+                color: #ffffff !important;
+            }
+
+            #scroll-arrow-container #homepage-search-btn span,
+            #homepage-search-btn span {
+                color: #212529 !important;
+            }
+
+            .homepage-form-container #homepage-search-btn span {
+                color: #ffffff !important;
+            }
+
+            #qr-pickup-time,
+            #qr-pickup-time:hover,
+            #qr-pickup-time:focus {
+                background-color: #ffffff !important;
+                background: #ffffff !important;
+                background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23000' d='M6 9L1 4h10z'/%3E%3C/svg%3E") !important;
+                background-repeat: no-repeat !important;
+                background-position: right 0.5rem center !important;
+                background-size: 12px !important;
             }
         }
 
@@ -4936,29 +5097,44 @@
             }
         }
 
+        @media (max-width: 747px) {
+            #peek-toggle {
+                display: flex !important;
+            }
+
+            #peek-toggle i {
+                display: inline-block !important;
+            }
+
+            .homepage-form-container:not(.peek-collapsed) #peek-toggle {
+                display: none !important;
+            }
+
+            #qr-pickup-time,
+            #qr-pickup-time:hover,
+            #qr-pickup-time:focus {
+                background-color: #ffffff !important;
+                background: #ffffff !important;
+            }
+
+            .homepage-form-container .input-group.flex-nowrap #qr-pickup-time,
+            .homepage-form-container .input-group.flex-nowrap .form-select#qr-pickup-time {
+                background-color: #ffffff !important;
+                background: #ffffff !important;
+                background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23000' d='M6 9L1 4h10z'/%3E%3C/svg%3E") !important;
+                background-repeat: no-repeat !important;
+                background-position: right 0.5rem center !important;
+                background-size: 12px !important;
+            }
+        }
+
         
         @media (min-width: 748px) {
-            .hero-content-porsche {
-                justify-content: flex-start !important;
-                padding-bottom: 10rem !important;
-                
-            }
-            .hero-content-porsche .homepage-form-container {
-                margin-top: 15rem !important;
-                
-            }
             #scroll-arrow-container {
                 margin-top: 1rem !important;
                
             }
         }
-
-    
-    @media (min-width: 748px) {
-        #peek-toggle {
-            display: none !important;
-        }
-    }
 
     
     @media (max-width: 747px) {
@@ -5056,7 +5232,7 @@
                             <div class="input-group flex-nowrap">
                                 <span class="input-group-text bg-white"><i class="bi bi-calendar"></i></span>
                                 <input type="text" id="qr-pickup-date" class="form-control border-2 qr-select" placeholder="TT.MM.JJJJ" readonly>
-                                <span class="input-group-text bg-white time-icon-container"><i class="bi bi-clock"></i></span>
+                                <span class="input-group-text bg-white"><i class="bi bi-clock"></i></span>
                                 <select id="qr-pickup-time" class="form-select border-2 qr-select">
                                     <option value="">Zeit</option>
                                     <option>08:00</option><option>09:00</option><option>10:00</option><option>11:00</option><option>12:00</option>
@@ -5069,7 +5245,7 @@
                             <div class="input-group flex-nowrap">
                                 <span class="input-group-text bg-white"><i class="bi bi-calendar"></i></span>
                                 <input type="text" id="qr-dropoff-date" class="form-control border-2 qr-select" placeholder="TT.MM.JJJJ" readonly>
-                                <span class="input-group-text bg-white time-icon-container"><i class="bi bi-clock"></i></span>
+                                <span class="input-group-text bg-white"><i class="bi bi-clock"></i></span>
                                 <select id="qr-dropoff-time" class="form-select border-2 qr-select">
                                     <option value="">Zeit</option>
                                     <option>08:00</option><option>09:00</option><option>10:00</option><option>11:00</option><option>12:00</option>
@@ -6338,7 +6514,7 @@
             <div class="row align-items-center">
                 <div class="col-lg-6">
                     <div class="about-content">
-                        <h2 class="about-title" style="color: #ffffff;">Über <span style="color: #ffffff;">Auto<span style="color: #ee7600;">oR</span></span></h2>
+                        <h2 class="about-title" style="color: #ffffff;">Über <span style="color: #ffffff;">Aut<span style="color: #ee7600;">oo</span>R</span></h2>
                         <p class="about-text" style="color: rgba(255, 255, 255, 0.9);">
                             Seit über 10 Jahren sind wir Ihr vertrauensvoller Partner für Premium-Autovermietung in Deutschland. 
                             Wir bieten Ihnen eine exklusive Auswahl an hochwertigen Fahrzeugen für jeden Anlass.
@@ -6404,9 +6580,9 @@
             width: 44px;
             height: 44px;
             border-radius: 50%;
-            border: 1px solid rgba(0, 0, 0, 0.08);
-            background: rgba(255, 255, 255, 0.92);
-            color: #2d2d2d;
+            border: 1px solid #ff7a00;
+            background: #ff7a00;
+            color: #ffffff;
             font-size: 1.05rem;
             cursor: pointer;
             opacity: 0;
@@ -6432,9 +6608,9 @@
         .scroll-down-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 10px 22px rgba(0, 0, 0, 0.16);
-            background: rgba(255, 255, 255, 0.98);
-            color: #1f1f1f;
-            border-color: rgba(0, 0, 0, 0.12);
+            background: #ffffff;
+            color: #ff7a00;
+            border-color: #ff7a00;
         }
 
         .back-to-top-btn:active,
@@ -6774,6 +6950,7 @@
             const isMobileCheck = () =>
                 /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
                 || window.innerWidth <= 747;
+            const isPeekMode = () => isMobileCheck() || window.innerWidth >= 748;
             const isMobile = isMobileCheck();
             
             if (formContainer) {
@@ -6789,7 +6966,7 @@
             }
 
             function setPeek(collapsed) {
-                if (!formContainer || !isMobileCheck()) return;
+                if (!formContainer || !isPeekMode()) return;
                 if (collapsed) {
                     formContainer.classList.add('peek-collapsed');
                     if (peekToggle) {
@@ -6806,7 +6983,7 @@
                 }
             }
 
-            if (formContainer && isMobileCheck()) {
+            if (formContainer && isPeekMode()) {
                 setPeek(true);
                 let isFormInteracting = false;
                 let interactionTimer;
@@ -7260,10 +7437,7 @@
             if (topSearchBtn && formContainer) {
                 topSearchBtn.addEventListener('click', function(e) {
                     e.preventDefault();
-                    if (isMobile) {
-                        return;
-                    }
-                    formContainer.classList.remove('form-open');
+                    formContainer.classList.add('form-open');
                 });
             }
         });
