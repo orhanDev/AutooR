@@ -12,6 +12,36 @@ if (window.navbarScriptLoaded) {
         document.head.appendChild(s);
     })();
 
+    (function registerServiceWorker() {
+        if (!('serviceWorker' in navigator)) return;
+        if (window.__autoorSwRegistered) return;
+        window.__autoorSwRegistered = true;
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw.js').then((reg) => {
+                let refreshing = false;
+                if (reg.waiting) {
+                    reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+                }
+                reg.addEventListener('updatefound', () => {
+                    const newWorker = reg.installing;
+                    if (!newWorker) return;
+                    newWorker.addEventListener('statechange', () => {
+                        if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                            newWorker.postMessage({ type: 'SKIP_WAITING' });
+                        }
+                    });
+                });
+                navigator.serviceWorker.addEventListener('controllerchange', () => {
+                    if (refreshing) return;
+                    refreshing = true;
+                    window.location.reload();
+                });
+            }).catch((err) => {
+                console.warn('Service worker registration failed:', err);
+            });
+        });
+    })();
+
 function isHomePage() {
     const path = window.location.pathname;
     return path === '/' || path === '/index.html' || path === '/fahrzeuge' || path === '/fahrzeuge.html';
