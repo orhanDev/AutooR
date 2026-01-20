@@ -78,6 +78,13 @@ body { margin-top: 0 !important; }
     max-height: calc(100px + 2rem);
 }
 
+@media (min-width: 748px) {
+    .brand-center .brand-logo {
+        position: relative;
+        top: 2px;
+    }
+}
+
 .account-btn {
     background: transparent !important;
     border: none !important;
