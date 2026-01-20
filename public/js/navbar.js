@@ -82,13 +82,9 @@ function createNavbar() {
     container.innerHTML = `
         <nav class="${navbarClass}">
             <div class="container d-flex align-items-center">
-                ${isHome && isMobile ? `
+                ${isHome ? `
                     <button class="navbar-toggler me-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-label="Menü">
                         <span class="navbar-toggler-icon"></span>
-            </button>
-            ` : isHome ? `
-                    <button class="navbar-back-btn me-2" type="button" aria-label="Zurück" style="display: none;">
-                <i class="bi bi-arrow-left" style="font-size: 1.5rem;"></i>
             </button>
             ` : `
                     <button class="navbar-back-btn me-2" type="button" aria-label="Zurück">
