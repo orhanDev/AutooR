@@ -15,18 +15,18 @@
     box-shadow: none !important;
 }
 
-/* Ana sayfa navbar - beyaz cam efekti */
+/* Ana sayfa navbar - siyah cam efekti */
 @media (min-width: 748px) {
     body.home-page .navbar {
-        background: rgba(255, 255, 255, 0.3) !important;
+        background: rgba(0, 0, 0, 0.2) !important;
         backdrop-filter: none !important;
         -webkit-backdrop-filter: none !important;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.2) !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
     }
     
     body.home-page .navbar-scrolled,
     body.home-page .navbar.fixed-top.navbar-scrolled {
-        background: rgba(255, 255, 255, 0.4) !important;
+        background: rgba(0, 0, 0, 0.25) !important;
         backdrop-filter: none !important;
         -webkit-backdrop-filter: none !important;
     }
