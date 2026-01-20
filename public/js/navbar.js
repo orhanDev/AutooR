@@ -51,7 +51,7 @@ function createNavbar() {
     const isLoginPage = window.location.pathname === '/login' || window.location.pathname === '/login.html' || window.location.pathname.includes('/login');
     const isHome = isHomePage();
     const isMobile = window.innerWidth < 748;
-    const logoSrc = '/js/autoor_logo.png';
+    const logoSrc = isMobile ? '/js/autoor_logo.png' : '/js/arkaplansizbeyaz.png';
     
     let container = document.getElementById('navbar-container');
 
