@@ -21,6 +21,13 @@ self.addEventListener('message', (event) => {
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
 
+  const url = new URL(event.request.url);
+  
+  // Skip caching for external resources (CDNs, fonts, etc.)
+  if (url.origin !== self.location.origin) {
+    return;
+  }
+
   event.respondWith((async () => {
     try {
       const networkResponse = await fetch(event.request, { cache: 'no-store' });
