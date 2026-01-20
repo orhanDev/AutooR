@@ -94,7 +94,7 @@ function createNavbar() {
                 
                 <a class="brand-center" href="/"><img src="${logoSrc}" alt="AutooR" class="brand-logo" /></a>
                 
-                <div class="collapse navbar-collapse flex-grow-1 ${!isMobile ? 'show' : ''}" id="navbarNav">
+                <div class="collapse navbar-collapse flex-grow-1" id="navbarNav">
                     <div class="side-left">
                         <div class="menu-header d-flex justify-content-between align-items-center mb-4 d-md-none">
                             <h2 class="menu-title mb-0">Menü</h2>
