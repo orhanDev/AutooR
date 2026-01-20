@@ -486,10 +486,10 @@ body.fahrzeuge-page .navbar-toggler {
     top: 0;
     left: 0;
     height: 100vh !important;
-    width: 60vw;
-    max-width: 720px;
+    width: 320px;
+    max-width: 320px;
     background: #ffffff;
-    box-shadow: none;
+    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
     border-right: none;
     padding: 0;
     overflow: hidden;
@@ -513,8 +513,8 @@ body.fahrzeuge-page .navbar-toggler {
     top: 0;
     left: 0;
     height: 100vh !important;
-    width: 60vw;
-    max-width: 720px;
+    width: 320px;
+    max-width: 320px;
     background: #ffffff;
     padding: 0;
     overflow: hidden;
@@ -523,12 +523,12 @@ body.fahrzeuge-page .navbar-toggler {
 }
 
 .navbar .collapse .side-left {
-    width: 340px;
-    flex: 0 0 340px;
+    width: 100%;
+    flex: 1;
     padding: 1.25rem 0.75rem;
     background: #ffffff;
     color: #111111;
-    border-right: 1px solid #e5e7eb;
+    border-right: none;
     overflow-y: auto;
 }
 
@@ -566,19 +566,8 @@ body.fahrzeuge-page .navbar-toggler {
 .side-left .nav-link:hover::after { right: 0.6rem; }
 
 .navbar .collapse .submenu-panel {
-    flex: 1;
-    padding: 0.2rem 0.2rem;
-    background: #ffffff;
-    color: #111111;
-    overflow-y: auto;
-    border-left: 1px solid #e5e7eb;
-    transform: translateX(8px);
-    transition: transform 0.25s 
-ease, opacity 0.25s 
-ease;
-    opacity: 0;
+    display: none;
 }
-.navbar .collapse .submenu-panel.open { transform: translateX(0); opacity: 1; }
 
 .submenu .submenu-header {
     font-weight: 800;
