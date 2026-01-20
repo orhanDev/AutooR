@@ -102,6 +102,16 @@ body { margin-top: 0 !important; }
     color: #000000 !important;
 }
 
+@media (max-width: 747px) {
+    .account-btn {
+        color: #000000 !important;
+    }
+    
+    .account-btn .account-icon {
+        color: #000000 !important;
+    }
+}
+
 .account-menu {
     position: absolute;
     top: 100%;
