@@ -457,8 +457,8 @@ body.fahrzeuge-page .navbar-toggler {
     top: 0;
     left: 0;
     height: 100vh !important;
-    width: 60vw;
-    max-width: 720px;
+    width: 23.5vw;
+    max-width: 23.5vw;
     background: #ffffff;
     box-shadow: none;
     border-right: none;
@@ -1463,4 +1463,31 @@ ease;
         left: -9999px !important;
         pointer-events: none !important;
     }
+}
+
+/* ===== DESKTOP: iki sayfa gorunumunu kaldir (sadece sol menu kalsin) ===== */
+@media (min-width: 752px) {
+
+  /* Menu konteynerini sol panel genisligine sabitle */
+  .navbar .collapse.navbar-collapse,
+  .navbar .collapsing {
+    width: 340px !important;
+    max-width: 340px !important;
+  }
+
+  /* Sag “bos sayfa” gibi duran paneli tamamen kapat */
+  .navbar .collapse.navbar-collapse .submenu-panel {
+    display: none !important;
+    width: 0 !important;
+    flex: 0 0 0 !important;
+    padding: 0 !important;
+    border-left: 0 !important;
+    opacity: 0 !important;
+    transform: none !important;
+  }
+
+  /* Ortadaki ince cizgiyi de istemiyorsan */
+  .navbar .collapse.navbar-collapse .side-left {
+    border-right: 0 !important;
+  }
 }

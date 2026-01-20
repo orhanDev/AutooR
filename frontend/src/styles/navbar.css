@@ -142,11 +142,22 @@ body { margin-top: 0 !important; }
 }
 
 .navbar-toggler {
-    border: none !important;
-    background: transparent !important;
-    border-radius: 0;
-    box-shadow: none !important;
-    color: #000000 !important;
+        border: none !important;
+        background: transparent !important;
+        border-radius: 0;
+        box-shadow: none !important;
+        color: #000000 !important;
+        display: flex !important;
+        align-items: center;
+}
+
+@media (min-width: 992px) {
+    .navbar-toggler {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+    }
 }
 
 .navbar-toggler-icon { 

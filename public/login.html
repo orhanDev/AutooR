@@ -699,7 +699,7 @@
             const isLoginPage = window.location.pathname === '/login' || window.location.pathname === '/login.html' || window.location.pathname.includes('/login');
             if (isLoginPage) {
                 let retryCount = 0;
-                const maxRetries = 20; // 2 saniye boyunca dene
+                const maxRetries = 20;
                 
                 function ensureNavbar() {
                     const container = document.getElementById('navbar-container');
