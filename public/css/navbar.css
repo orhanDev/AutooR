@@ -468,6 +468,19 @@ body { margin-top: 0 !important; }
     body.not-home-page .navbar-scrolled .account-btn .account-icon {
         color: #000000 !important;
     }
+    
+    /* Fahrzeuge sayfası - her zaman siyah */
+    body.fahrzeuge-page .navbar-toggler-icon,
+    body.fahrzeuge-page .navbar-scrolled .navbar-toggler-icon {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%280, 0, 0, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+    }
+    
+    body.fahrzeuge-page .account-btn,
+    body.fahrzeuge-page .account-btn .account-icon,
+    body.fahrzeuge-page .navbar-scrolled .account-btn,
+    body.fahrzeuge-page .navbar-scrolled .account-btn .account-icon {
+        color: #000000 !important;
+    }
 }
 
 .navbar-back-btn {

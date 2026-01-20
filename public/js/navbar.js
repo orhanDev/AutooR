@@ -479,6 +479,14 @@ function updateNavbar() {
         document.body.classList.remove('home-page');
         }
     }
+    
+    // Fahrzeuge sayfası için özel class
+    const isFahrzeugePage = window.location.pathname === '/fahrzeuge' || window.location.pathname === '/fahrzeuge.html';
+    if (isFahrzeugePage) {
+        document.body.classList.add('fahrzeuge-page');
+    } else {
+        document.body.classList.remove('fahrzeuge-page');
+    }
 
     if (currentDataPage !== lastNavbarState.dataPage) {
         if (currentDataPage) {
