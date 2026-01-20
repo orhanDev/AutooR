@@ -662,58 +662,9 @@ document.addEventListener('DOMContentLoaded', function() {
 }
 
 function addNavbarScrollEffect() {
-    const navbar = document.querySelector('.navbar.fixed-top');
-    if (!navbar) return;
-    
-    if (navbar.dataset.scrollEffectInitialized === 'true') {
-                return;
-            }
-    navbar.dataset.scrollEffectInitialized = 'true';
-    
-    let ticking = false;
-    let lastScrollTop = 0;
-    const isDesktop = window.innerWidth >= 748;
-    
-    function updateNavbarOnScroll() {
-        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        
-        if (scrollTop > 10) {
-            navbar.classList.add('navbar-scrolled');
-        } else {
-            navbar.classList.remove('navbar-scrolled');
-        }
-        
-        // Büyük ekranlarda scroll yönüne göre navbar'ı gizle/göster
-        if (isDesktop) {
-            if (scrollTop > lastScrollTop && scrollTop > 100) {
-                // Aşağı scroll - navbar'ı gizle
-                navbar.classList.add('navbar-hidden');
-                navbar.classList.remove('navbar-visible');
-            } else {
-                // Yukarı scroll veya en üstte - navbar'ı göster
-                navbar.classList.remove('navbar-hidden');
-                navbar.classList.add('navbar-visible');
-            }
-        }
-        
-        lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
-        ticking = false;
-    }
-    
-    function requestTick() {
-        if (!ticking) {
-            window.requestAnimationFrame(updateNavbarOnScroll);
-            ticking = true;
-        }
-    }
-    
-    window.addEventListener('scroll', requestTick, { passive: true });
-    updateNavbarOnScroll();
+    // Scroll efekti devre dışı - navbar artık sabit değil
+    return;
 }
-
-    setTimeout(() => {
-    addNavbarScrollEffect();
-}, 300);
 
 }
 
