@@ -23,6 +23,20 @@ body { margin-top: 0 !important; }
     display: block !important;
     visibility: visible !important;
     opacity: 1 !important;
+    transition: transform 0.3s ease, opacity 0.3s ease, background 0.3s ease !important;
+}
+
+/* Büyük ekranlarda scroll'da navbar gizlensin */
+@media (min-width: 748px) {
+    .navbar.fixed-top.navbar-hidden {
+        transform: translateY(-100%) !important;
+        opacity: 0 !important;
+    }
+    
+    .navbar.fixed-top.navbar-visible {
+        transform: translateY(0) !important;
+        opacity: 1 !important;
+    }
 }
 
 .navbar-scrolled {

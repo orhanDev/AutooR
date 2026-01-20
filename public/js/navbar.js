@@ -671,6 +671,8 @@ function addNavbarScrollEffect() {
     navbar.dataset.scrollEffectInitialized = 'true';
     
     let ticking = false;
+    let lastScrollTop = 0;
+    const isDesktop = window.innerWidth >= 748;
     
     function updateNavbarOnScroll() {
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
@@ -681,6 +683,20 @@ function addNavbarScrollEffect() {
             navbar.classList.remove('navbar-scrolled');
         }
         
+        // Büyük ekranlarda scroll yönüne göre navbar'ı gizle/göster
+        if (isDesktop) {
+            if (scrollTop > lastScrollTop && scrollTop > 100) {
+                // Aşağı scroll - navbar'ı gizle
+                navbar.classList.add('navbar-hidden');
+                navbar.classList.remove('navbar-visible');
+            } else {
+                // Yukarı scroll veya en üstte - navbar'ı göster
+                navbar.classList.remove('navbar-hidden');
+                navbar.classList.add('navbar-visible');
+            }
+        }
+        
+        lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
         ticking = false;
     }
     
