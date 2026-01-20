@@ -443,37 +443,30 @@ body { margin-top: 0 !important; }
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%2833, 37, 41, 0.8%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e"); 
 }
 
-/* Büyük ekranlarda ana sayfa dışındaki sayfalarda siyah hamburger ve kişi ikonu */
+/* Büyük ekranlarda ana sayfa - her zaman beyaz */
 @media (min-width: 748px) {
-    body.not-home-page .navbar-toggler-icon {
-        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%280, 0, 0, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+    body.home-page .navbar-toggler-icon,
+    body.home-page .navbar-scrolled .navbar-toggler-icon {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
     }
     
-    body.not-home-page .account-btn {
-        color: #000000 !important;
+    body.home-page .account-btn,
+    body.home-page .account-btn .account-icon,
+    body.home-page .navbar-scrolled .account-btn,
+    body.home-page .navbar-scrolled .account-btn .account-icon {
+        color: #ffffff !important;
     }
     
-    body.not-home-page .account-btn .account-icon {
-        color: #000000 !important;
-    }
-    
-    /* Scroll yapılınca da siyah kalmalı - diğer sayfalar */
+    /* Diğer sayfalar - her zaman siyah */
+    body.not-home-page .navbar-toggler-icon,
     body.not-home-page .navbar-scrolled .navbar-toggler-icon {
         background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%280, 0, 0, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
     }
     
+    body.not-home-page .account-btn,
+    body.not-home-page .account-btn .account-icon,
     body.not-home-page .navbar-scrolled .account-btn,
     body.not-home-page .navbar-scrolled .account-btn .account-icon {
-        color: #000000 !important;
-    }
-    
-    /* Ana sayfa scroll - beyazdan siyaha */
-    body.home-page .navbar-scrolled .navbar-toggler-icon {
-        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%280, 0, 0, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
-    }
-    
-    body.home-page .navbar-scrolled .account-btn,
-    body.home-page .navbar-scrolled .account-btn .account-icon {
         color: #000000 !important;
     }
 }
