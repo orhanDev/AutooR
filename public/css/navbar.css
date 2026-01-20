@@ -74,11 +74,10 @@ body { margin-top: 0 !important; }
     max-height: 100px;
 }
 
-
 .account-btn {
     background: transparent !important;
     border: none !important;
-    color: #ffffff !important;
+    color: #000000 !important;
     padding: 0.25rem 0.5rem;
     touch-action: manipulation;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
