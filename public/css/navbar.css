@@ -521,11 +521,13 @@ body.not-home-page .navbar-toggler {
 }
 
 body.fahrzeuge-page .navbar-back-btn {
-    display: flex !important;
+    display: none !important;
 }
 
 body.fahrzeuge-page .navbar-toggler {
-    display: none !important;
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
 }
 
 .menu-label {
