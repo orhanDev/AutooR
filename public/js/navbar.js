@@ -51,7 +51,9 @@ function createNavbar() {
     const isLoginPage = window.location.pathname === '/login' || window.location.pathname === '/login.html' || window.location.pathname.includes('/login');
     const isHome = isHomePage();
     const isMobile = window.innerWidth < 748;
-    const logoSrc = isMobile ? '/js/autoor_logo.png' : '/js/arkaplansizbeyaz.png';
+    const isDesktopHomepage = isHome && !isMobile;
+    const logoSrc = isDesktopHomepage ? '/js/arkaplansizbeyaz.png' : '/js/autoor_logo.png';
+    const logoClass = isDesktopHomepage ? 'brand-logo brand-logo-large' : 'brand-logo';
     
     let container = document.getElementById('navbar-container');
 
@@ -92,7 +94,7 @@ function createNavbar() {
             </button>
             `}
                 
-                <a class="brand-center" href="/"><img src="${logoSrc}" alt="AutooR" class="brand-logo" /></a>
+                <a class="brand-center" href="/"><img src="${logoSrc}" alt="AutooR" class="${logoClass}" /></a>
                 
                 <div class="collapse navbar-collapse flex-grow-1" id="navbarNav">
                     <div class="side-left">

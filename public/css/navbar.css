@@ -74,11 +74,9 @@ body { margin-top: 0 !important; }
     max-height: 100px;
 }
 
-@media (min-width: 748px) {
-    .brand-center .brand-logo {
-        height: 132px;
-        max-height: 132px;
-    }
+.brand-center .brand-logo-large {
+    height: calc(100px + 2rem);
+    max-height: calc(100px + 2rem);
 }
 
 .account-btn {
