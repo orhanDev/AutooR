@@ -7023,14 +7023,15 @@
             const isMobile = isMobileCheck();
             
             if (formContainer) {
-                // Desktop: peek mode (kapalı başlasın); Mobil: form açık kalacak
+                // ORIGINAL behavior for MOBILE: peek-collapsed (yarıda kapalı başlasın)
+                // DESKTOP: only desktop gets location peek
                 const isMobileView = isMobileCheck();
                 if (isMobileView) {
-                    // MOBILE: Hiç bir değişiklik yapma
-                    formContainer.classList.add('form-open');
-                    formContainer.classList.remove('peek-collapsed');
+                    // MOBILE: peek mode (eski davranış - mobile kendiliğinden peek-collapsed)
+                    formContainer.classList.remove('form-open');
+                    formContainer.classList.add('peek-collapsed');
                 } else {
-                    // DESKTOP ONLY: peek mode'u ayarla
+                    // DESKTOP: peek mode (location fields visible, date/time hidden)
                     formContainer.classList.remove('form-open');
                     formContainer.classList.add('peek-collapsed');
                     
@@ -7050,21 +7051,13 @@
                 window.addEventListener('resize', function() {
                     const currentIsMobileView = isMobileCheck();
                     if (currentIsMobileView) {
-                        // Switch to MOBILE: restore everything
-                        formContainer.classList.add('form-open');
-                        formContainer.classList.remove('peek-collapsed');
-                        // Restore visibility on mobile
-                        const dateTimeFields = formContainer.querySelectorAll('.ab-form-row > div:nth-child(3), .ab-form-row > div:nth-child(4)');
-                        const scrollArrowWrapper = document.getElementById('scroll-arrow-wrapper');
-                        const homepageSearchBtn = document.getElementById('homepage-search-btn');
-                        dateTimeFields.forEach(field => field.style.display = '');
-                        if (scrollArrowWrapper) scrollArrowWrapper.style.display = '';
-                        if (homepageSearchBtn) homepageSearchBtn.style.display = '';
-                    } else {
-                        // Switch to DESKTOP: apply peek mode
+                        // Switch to MOBILE: keep peek-collapsed
                         formContainer.classList.remove('form-open');
                         formContainer.classList.add('peek-collapsed');
-                        // Hide date/time and button on desktop
+                    } else {
+                        // Switch to DESKTOP: peek with date/time hidden
+                        formContainer.classList.remove('form-open');
+                        formContainer.classList.add('peek-collapsed');
                         const dateTimeFields = formContainer.querySelectorAll('.ab-form-row > div:nth-child(3), .ab-form-row > div:nth-child(4)');
                         const scrollArrowWrapper = document.getElementById('scroll-arrow-wrapper');
                         const homepageSearchBtn = document.getElementById('homepage-search-btn');
@@ -7076,11 +7069,10 @@
             }
 
             function setPeek(collapsed) {
-                if (!formContainer) return;
+                if (!formContainer || !isPeekMode()) return;
                 
-                // Only apply peek mode on DESKTOP (748px+)
                 const isDesktop = window.innerWidth >= 748;
-                if (!isDesktop) return;
+                const isMobileView = isMobileCheck();
                 
                 // Get date/time fields and button
                 const dateTimeFields = formContainer.querySelectorAll('.ab-form-row > div:nth-child(3), .ab-form-row > div:nth-child(4)');
@@ -7093,17 +7085,19 @@
                         peekToggle.style.display = 'flex';
                         peekToggle.classList.remove('expanded');
                     }
-                    // Hide ONLY date/time and button on DESKTOP
-                    dateTimeFields.forEach(field => field.style.display = 'none');
-                    if (scrollArrowWrapper) scrollArrowWrapper.style.display = 'none';
-                    if (homepageSearchBtn) homepageSearchBtn.style.display = 'none';
+                    // Hide date/time and button ONLY on desktop
+                    if (isDesktop) {
+                        dateTimeFields.forEach(field => field.style.display = 'none');
+                        if (scrollArrowWrapper) scrollArrowWrapper.style.display = 'none';
+                        if (homepageSearchBtn) homepageSearchBtn.style.display = 'none';
+                    }
                 } else {
                     formContainer.classList.remove('peek-collapsed');
                     if (peekToggle) {
                         peekToggle.style.display = 'none';
                         peekToggle.classList.add('expanded');
                     }
-                    // Show all fields when expanded on DESKTOP
+                    // Show all fields when expanded
                     dateTimeFields.forEach(field => field.style.display = '');
                     if (scrollArrowWrapper) scrollArrowWrapper.style.display = '';
                     if (homepageSearchBtn) homepageSearchBtn.style.display = '';
