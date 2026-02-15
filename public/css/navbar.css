@@ -8,17 +8,20 @@
 /* ===== DESKTOP NAVIGATION ===== */
 .navbar-desktop-nav {
     display: none;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
     gap: 2rem;
     align-items: center;
+    flex: 1;
+    justify-content: center;
 }
 
 @media (min-width: 748px) {
     .navbar-desktop-nav {
         display: flex !important;
+        position: relative !important;
+        left: auto !important;
+        top: auto !important;
+        transform: none !important;
+        order: 2;
     }
 }
 
@@ -117,7 +120,10 @@ body { margin-top: 0 !important; }
     position: relative !important;
     display: flex !important;
     align-items: center !important;
+    justify-content: flex-start !important;
     width: 100% !important;
+    gap: 1.5rem;
+    min-height: 64px;
 }
 
 .brand-center {
@@ -143,12 +149,13 @@ body { margin-top: 0 !important; }
         top: 0;
         transform: none;
         flex-shrink: 0;
+        order: 1;
     }
 }
 
 .brand-center .brand-logo {
     display: block;
-    height: 100px;
+    height: 90px;
     width: auto;
     max-height: 100px;
 }
@@ -161,7 +168,18 @@ body { margin-top: 0 !important; }
 @media (min-width: 748px) {
     .brand-center .brand-logo {
         position: relative;
-        top: 0.5rem;
+        top: -1rem;
+    }
+}
+
+.account {
+    flex-shrink: 0;
+    order: 3;
+}
+
+@media (min-width: 748px) {
+    .account {
+        margin-left: auto !important;
     }
 }
 
@@ -579,6 +597,8 @@ body { margin-top: 0 !important; }
     body.real-home-page .navbar-scrolled .account-btn,
     body.real-home-page .navbar-scrolled .account-btn .account-icon {
         color: #000000 !important;
+                position: relative;
+        top: -11px !important;
     }
 }
 
