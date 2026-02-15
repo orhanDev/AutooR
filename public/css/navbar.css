@@ -81,7 +81,7 @@ body { margin-top: 0 !important; }
 @media (min-width: 748px) {
     .brand-center .brand-logo {
         position: relative;
-        top: 2px;
+        top: 0.5rem;
     }
 }
 
@@ -488,6 +488,18 @@ body { margin-top: 0 !important; }
     body.fahrzeuge-page .navbar-scrolled .account-btn .account-icon {
         color: #000000 !important;
     }
+
+    /* Ana sayfa (/) – navbar /fahrzeuge ile aynı, sadece localhost:3443/ için */
+    body.real-home-page .navbar-toggler-icon,
+    body.real-home-page .navbar-scrolled .navbar-toggler-icon {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%280, 0, 0, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+    }
+    body.real-home-page .account-btn,
+    body.real-home-page .account-btn .account-icon,
+    body.real-home-page .navbar-scrolled .account-btn,
+    body.real-home-page .navbar-scrolled .account-btn .account-icon {
+        color: #000000 !important;
+    }
 }
 
 .navbar-back-btn {
@@ -532,6 +544,16 @@ body.fahrzeuge-page .navbar-back-btn {
 }
 
 body.fahrzeuge-page .navbar-toggler {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Ana sayfa (/) – navbar /fahrzeuge ile aynı */
+body.real-home-page .navbar-back-btn {
+    display: none !important;
+}
+body.real-home-page .navbar-toggler {
     display: flex !important;
     visibility: visible !important;
     opacity: 1 !important;
@@ -588,7 +610,6 @@ body.fahrzeuge-page .navbar-toggler {
 
 .navbar .collapse .side-left {
     width: 100%;
-    flex: 1;
     padding: 1.25rem 0.75rem;
     background: #ffffff;
     color: #111111;
