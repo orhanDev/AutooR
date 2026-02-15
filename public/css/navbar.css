@@ -19,7 +19,7 @@
         display: flex !important;
         position: relative !important;
         left: auto !important;
-        top: -1rem !important;
+        top: auto !important;
         transform: none !important;
         order: 2;
     }
@@ -38,6 +38,13 @@
 .nav-link-desktop:hover {
     color: #B10000 !important;
     text-decoration: underline;
+}
+
+@media (min-width: 748px) {
+    .nav-link-desktop {
+        position: relative;
+        top: -1rem;
+    }
 }
 
 /* ===== MOBILE-ONLY NAVIGATION ===== */
@@ -180,8 +187,6 @@ body { margin-top: 0 !important; }
 @media (min-width: 748px) {
     .account {
         margin-left: auto !important;
-        position: relative;
-        top: -1rem;
     }
 }
 
@@ -220,6 +225,13 @@ body { margin-top: 0 !important; }
     
     .account-btn .account-icon {
         color: #000000 !important;
+    }
+}
+
+@media (min-width: 748px) {
+    .account-btn {
+        position: relative;
+        top: -1rem;
     }
 }
 
