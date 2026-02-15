@@ -4861,9 +4861,18 @@
 
             
             .homepage-form-container.peek-collapsed {
-                max-height: 244px !important; 
+                max-height: 180px !important; 
                 overflow: hidden !important;
                 position: relative !important;
+            }
+
+            /* Hide date/time fields and Weiter button in peek mode */
+            .homepage-form-container.peek-collapsed .ab-form-row .col-lg-6:nth-child(n+3) {
+                display: none !important;
+            }
+
+            .homepage-form-container.peek-collapsed #scroll-arrow-wrapper {
+                display: none !important;
             }
 
             .homepage-form-container .peek-gradient {
