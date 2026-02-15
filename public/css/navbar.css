@@ -962,9 +962,47 @@ body.fahrzeuge-page .navbar-toggler {
      }
      
     @media (min-width: 748px) {
-        body.home-page .navbar-toggler {
+        /* DESKTOP: Hide hamburger menu completely */
+        body.home-page .navbar-toggler,
+        body.not-home-page .navbar-toggler,
+        body.fahrzeuge-page .navbar-toggler {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+        }
+        
+        /* Show navigation links inline in navbar on desktop */
+        .navbar-nav {
             display: flex !important;
-            visibility: visible !important;
+            flex-direction: row !important;
+            align-items: center !important;
+            gap: 1.5rem !important;
+            background: transparent !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
+            animation: none !important;
+            border: none !important;
+        }
+        
+        .navbar-nav .nav-link {
+            padding: 0;
+            border: none !important;
+            color: #ffffff !important;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: opacity 0.3s ease !important;
+            border-bottom: none !important;
+            margin: 0 !important;
+            background: transparent !important;
+        }
+        
+        .navbar-nav .nav-link:hover {
+            background: transparent !important;
+            opacity: 0.8 !important;
+            transform: none !important;
+            box-shadow: none !important;
         }
         
         body.home-page .navbar-back-btn {
@@ -975,11 +1013,6 @@ body.fahrzeuge-page .navbar-toggler {
         body.not-home-page .navbar-back-btn {
             display: flex !important;
             visibility: visible !important;
-        }
-        
-        body.not-home-page .navbar-toggler {
-            display: none !important;
-            visibility: hidden !important;
         }
     }
     
@@ -1130,75 +1163,13 @@ body.fahrzeuge-page .navbar-toggler {
         }
         
         body.home-page .navbar-toggler {
-            display: none !important;
-            visibility: hidden !important;
+            display: flex !important;
+            visibility: visible !important;
             order: 1 !important;
         }
         
         body.home-page .navbar .account {
             order: 3 !important;
-        }
-        
-        body.home-page .navbar .collapse.navbar-collapse {
-            position: relative !important;
-            top: auto !important;
-            left: auto !important;
-            right: auto !important;
-            bottom: auto !important;
-            height: auto !important;
-            width: auto !important;
-            max-width: none !important;
-            background: transparent !important;
-            box-shadow: none !important;
-            border: none !important;
-            padding: 0 !important;
-            overflow: visible !important;
-            transform: none !important;
-            transition: none !important;
-            z-index: auto !important;
-            display: flex !important;
-            flex-direction: row !important;
-            flex: 1 1 auto !important;
-            order: 2 !important;
-        }
-        
-        body.home-page .navbar .collapse.navbar-collapse.show {
-            display: flex !important;
-        }
-        
-        body.home-page .navbar .collapse .side-left {
-            width: 100% !important;
-            padding: 0 !important;
-            background: transparent !important;
-            color: inherit !important;
-            border: none !important;
-            display: flex !important;
-            flex-direction: row !important;
-            gap: 0 !important;
-        }
-        
-        body.home-page .navbar .collapse .navbar-nav {
-            flex-direction: row !important;
-            width: 100% !important;
-            gap: 0 !important;
-            display: flex !important;
-            margin: 0 !important;
-        }
-        
-        body.home-page .navbar .collapse .nav-item {
-            border: none !important;
-            display: flex !important;
-            align-items: center !important;
-        }
-        
-        body.home-page .navbar .collapse .nav-link {
-            padding: 0.5rem 1rem !important;
-            border: none !important;
-            color: inherit !important;
-            border-bottom: none !important;
-            border-radius: 0 !important;
-            font-size: 0.95rem !important;
-            white-space: nowrap !important;
         }
         
         body.not-home-page .navbar-back-btn {
