@@ -4844,11 +4844,6 @@
                 color: #ffffff !important;
             }
 
-            /* Mobile peek-collapsed:show form partially (form kısmen açık) */
-            .homepage-form-container.peek-collapsed {
-                max-height: 350px !important;
-            }
-
             
             #top-search-btn-wrapper,
             #scroll-arrow-container {
@@ -4866,26 +4861,9 @@
 
             
             .homepage-form-container.peek-collapsed {
-                max-height: 280px !important; 
+                max-height: 244px !important; 
                 overflow: hidden !important;
                 position: relative !important;
-            }
-
-            /* Hide date/time fields and button in peek-collapsed state on desktop */
-            .homepage-form-container.peek-collapsed .ab-form-row > div:nth-child(3),
-            .homepage-form-container.peek-collapsed .ab-form-row > div:nth-child(4) {
-                display: none !important;
-                max-height: 0 !important;
-                overflow: hidden !important;
-                padding: 0 !important;
-                margin: 0 !important;
-            }
-
-            .homepage-form-container.peek-collapsed #scroll-arrow-wrapper,
-            .homepage-form-container.peek-collapsed #scroll-arrow-container,
-            .homepage-form-container.peek-collapsed #homepage-search-btn,
-            .homepage-form-container.peek-collapsed .summary-box.mobile-form-content {
-                display: none !important;
             }
 
             .homepage-form-container .peek-gradient {
@@ -5255,7 +5233,7 @@
             <div class="hero-text-content" style="text-align: center; margin-bottom: 3rem; margin-top: 7rem; position: relative; z-index: 3; display: none;">
                     </div>
 
-            <div class="homepage-form-container form-open" style="background: transparent; background-color: transparent; backdrop-filter: none; -webkit-backdrop-filter: none; border: none; border-radius: 1.5rem; padding: 1.5rem; box-shadow: none; position: relative; z-index: 3; max-width: 1000px; margin: 29rem auto 0 auto; width: 90%; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); animation: fadeInUp 1.2s ease-out 0.2s both;">
+            <div class="homepage-form-container" style="background: transparent; background-color: transparent; backdrop-filter: none; -webkit-backdrop-filter: none; border: none; border-radius: 1.5rem; padding: 1.5rem; box-shadow: none; position: relative; z-index: 3; max-width: 1000px; margin: 29rem auto 0 auto; width: 90%; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); animation: fadeInUp 1.2s ease-out 0.2s both;">
                 
                 <div id="mobile-form-toggle" class="mobile-form-toggle" style="display: none; background: transparent; background-color: transparent; border: none; backdrop-filter: none; -webkit-backdrop-filter: none; border-radius: 1rem; padding: 0.55rem calc(1rem + 2rem); cursor: pointer; user-select: none; transition: all 0.3s ease; box-shadow: none; width: fit-content; min-width: fit-content; max-width: none; margin-left: auto; margin-right: 1rem; margin-top: -10rem;">
                     <span style="font-size: 0.82rem; font-weight: 600; font-family: 'Inter', sans-serif; letter-spacing: 0.4px; text-transform: uppercase; color: #000000; white-space: nowrap; background-color: #ffc107; background: #ffc107; backdrop-filter: blur(1px) saturate(150%); -webkit-backdrop-filter: blur(1px) saturate(150%); padding: 0.35rem 0.8rem; border-radius: 0.35rem; display: inline-flex; flex-direction: column; align-items: center; gap: 0.35rem;">
@@ -7028,84 +7006,46 @@
             const isMobile = isMobileCheck();
             
             if (formContainer) {
-                // ORIGINAL behavior for MOBILE: peek-collapsed (yarıda kapalı başlasın)
-                // DESKTOP: only desktop gets location peek
-                const isMobileView = isMobileCheck();
-                if (isMobileView) {
-                    // MOBILE: peek mode (eski davranış - mobile kendiliğinden peek-collapsed)
-                    formContainer.classList.remove('form-open');
-                    formContainer.classList.add('peek-collapsed');
+                // Only force fully-open form on mobile devices.
+                // Desktop should use peek/peek-collapsed behavior handled later.
+                if (isMobileCheck()) {
+                    formContainer.classList.add('form-open');
+                    if (mobileFormToggle) {
+                        mobileFormToggle.style.display = 'none';
+                    }
                 } else {
-                    // DESKTOP: peek mode (location fields visible, date/time hidden)
                     formContainer.classList.remove('form-open');
-                    formContainer.classList.add('peek-collapsed');
-                    
-                    // Hide ONLY date/time and button on DESKTOP peek mode
-                    const dateTimeFields = formContainer.querySelectorAll('.ab-form-row > div:nth-child(3), .ab-form-row > div:nth-child(4)');
-                    const scrollArrowWrapper = document.getElementById('scroll-arrow-wrapper');
-                    const homepageSearchBtn = document.getElementById('homepage-search-btn');
-                    
-                    dateTimeFields.forEach(field => field.style.display = 'none');
-                    if (scrollArrowWrapper) scrollArrowWrapper.style.display = 'none';
-                    if (homepageSearchBtn) homepageSearchBtn.style.display = 'none';
+                    if (mobileFormToggle) {
+                        mobileFormToggle.style.display = '';
+                    }
                 }
 
-                if (mobileFormToggle) {
-                    mobileFormToggle.style.display = 'none';
-                }
                 window.addEventListener('resize', function() {
-                    const currentIsMobileView = isMobileCheck();
-                    if (currentIsMobileView) {
-                        // Switch to MOBILE: keep peek-collapsed
-                        formContainer.classList.remove('form-open');
-                        formContainer.classList.add('peek-collapsed');
+                    if (isMobileCheck()) {
+                        formContainer.classList.add('form-open');
+                        if (mobileFormToggle) mobileFormToggle.style.display = 'none';
                     } else {
-                        // Switch to DESKTOP: peek with date/time hidden
                         formContainer.classList.remove('form-open');
-                        formContainer.classList.add('peek-collapsed');
-                        const dateTimeFields = formContainer.querySelectorAll('.ab-form-row > div:nth-child(3), .ab-form-row > div:nth-child(4)');
-                        const scrollArrowWrapper = document.getElementById('scroll-arrow-wrapper');
-                        const homepageSearchBtn = document.getElementById('homepage-search-btn');
-                        dateTimeFields.forEach(field => field.style.display = 'none');
-                        if (scrollArrowWrapper) scrollArrowWrapper.style.display = 'none';
-                        if (homepageSearchBtn) homepageSearchBtn.style.display = 'none';
+                        if (mobileFormToggle) mobileFormToggle.style.display = '';
                     }
                 });
             }
 
             function setPeek(collapsed) {
                 if (!formContainer || !isPeekMode()) return;
-                
-                const isDesktop = window.innerWidth >= 748;
-                const isMobileView = isMobileCheck();
-                
-                // Get date/time fields and button
-                const dateTimeFields = formContainer.querySelectorAll('.ab-form-row > div:nth-child(3), .ab-form-row > div:nth-child(4)');
-                const scrollArrowWrapper = document.getElementById('scroll-arrow-wrapper');
-                const homepageSearchBtn = document.getElementById('homepage-search-btn');
-                
                 if (collapsed) {
                     formContainer.classList.add('peek-collapsed');
                     if (peekToggle) {
                         peekToggle.style.display = 'flex';
                         peekToggle.classList.remove('expanded');
                     }
-                    // Hide date/time and button ONLY on desktop
-                    if (isDesktop) {
-                        dateTimeFields.forEach(field => field.style.display = 'none');
-                        if (scrollArrowWrapper) scrollArrowWrapper.style.display = 'none';
-                        if (homepageSearchBtn) homepageSearchBtn.style.display = 'none';
-                    }
                 } else {
                     formContainer.classList.remove('peek-collapsed');
                     if (peekToggle) {
+
                         peekToggle.style.display = 'none';
                         peekToggle.classList.add('expanded');
                     }
-                    // Show all fields when expanded
-                    dateTimeFields.forEach(field => field.style.display = '');
-                    if (scrollArrowWrapper) scrollArrowWrapper.style.display = '';
-                    if (homepageSearchBtn) homepageSearchBtn.style.display = '';
                 }
             }
 
