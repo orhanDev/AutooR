@@ -7010,8 +7010,10 @@
                 const isMobileView = isMobileCheck();
                 if (isMobileView) {
                     formContainer.classList.add('form-open');
+                    formContainer.classList.remove('peek-collapsed');
                 } else {
                     // Desktop başlangıçta peek-collapsed (yarıda kapalı)
+                    formContainer.classList.remove('form-open');
                     formContainer.classList.add('peek-collapsed');
                 }
 
