@@ -4861,17 +4861,12 @@
 
             
             .homepage-form-container.peek-collapsed {
-                max-height: 120px !important; 
+                max-height: 280px !important; 
                 overflow: hidden !important;
                 position: relative !important;
             }
 
             /* Hide date/time fields and button in peek-collapsed state on desktop */
-            .homepage-form-container.peek-collapsed .ab-form-row {
-                display: flex !important;
-                flex-wrap: wrap !important;
-            }
-
             .homepage-form-container.peek-collapsed .ab-form-row > div:nth-child(3),
             .homepage-form-container.peek-collapsed .ab-form-row > div:nth-child(4) {
                 display: none !important;
@@ -4886,18 +4881,6 @@
             .homepage-form-container.peek-collapsed #homepage-search-btn,
             .homepage-form-container.peek-collapsed .summary-box.mobile-form-content {
                 display: none !important;
-            }
-
-            .homepage-form-container.peek-collapsed #top-search-btn-wrapper {
-                display: block !important;
-                margin-bottom: 0 !important;
-            }
-
-            .homepage-form-container.peek-collapsed #top-homepage-search-btn {
-                display: block !important;
-                cursor: pointer !important;
-                pointer-events: auto !important;
-                user-select: none !important;
             }
 
             .homepage-form-container .peek-gradient {
@@ -7050,13 +7033,11 @@
                     formContainer.classList.remove('form-open');
                     formContainer.classList.add('peek-collapsed');
                     
-                    // Hide date/time and button in peek mode
-                    const summaryBox = formContainer.querySelector('.summary-box.mobile-form-content');
+                    // Hide ONLY date/time and button, keep location visible
                     const dateTimeFields = formContainer.querySelectorAll('.ab-form-row > div:nth-child(3), .ab-form-row > div:nth-child(4)');
                     const scrollArrowWrapper = document.getElementById('scroll-arrow-wrapper');
                     const homepageSearchBtn = document.getElementById('homepage-search-btn');
                     
-                    if (summaryBox) summaryBox.style.display = 'none';
                     dateTimeFields.forEach(field => field.style.display = 'none');
                     if (scrollArrowWrapper) scrollArrowWrapper.style.display = 'none';
                     if (homepageSearchBtn) homepageSearchBtn.style.display = 'none';
@@ -7071,23 +7052,19 @@
                         formContainer.classList.add('form-open');
                         formContainer.classList.remove('peek-collapsed');
                         // Show everything on mobile
-                        const summaryBox = formContainer.querySelector('.summary-box.mobile-form-content');
                         const dateTimeFields = formContainer.querySelectorAll('.ab-form-row > div:nth-child(3), .ab-form-row > div:nth-child(4)');
                         const scrollArrowWrapper = document.getElementById('scroll-arrow-wrapper');
                         const homepageSearchBtn = document.getElementById('homepage-search-btn');
-                        if (summaryBox) summaryBox.style.display = '';
                         dateTimeFields.forEach(field => field.style.display = '');
                         if (scrollArrowWrapper) scrollArrowWrapper.style.display = '';
                         if (homepageSearchBtn) homepageSearchBtn.style.display = '';
                     } else {
                         formContainer.classList.remove('form-open');
                         formContainer.classList.add('peek-collapsed');
-                        // Hide on desktop
-                        const summaryBox = formContainer.querySelector('.summary-box.mobile-form-content');
+                        // Hide only date/time and button on desktop
                         const dateTimeFields = formContainer.querySelectorAll('.ab-form-row > div:nth-child(3), .ab-form-row > div:nth-child(4)');
                         const scrollArrowWrapper = document.getElementById('scroll-arrow-wrapper');
                         const homepageSearchBtn = document.getElementById('homepage-search-btn');
-                        if (summaryBox) summaryBox.style.display = 'none';
                         dateTimeFields.forEach(field => field.style.display = 'none');
                         if (scrollArrowWrapper) scrollArrowWrapper.style.display = 'none';
                         if (homepageSearchBtn) homepageSearchBtn.style.display = 'none';
@@ -7099,7 +7076,6 @@
                 if (!formContainer || !isPeekMode()) return;
                 
                 // Get date/time fields and button
-                const summaryBox = formContainer.querySelector('.summary-box.mobile-form-content');
                 const dateTimeFields = formContainer.querySelectorAll('.ab-form-row > div:nth-child(3), .ab-form-row > div:nth-child(4)');
                 const scrollArrowWrapper = document.getElementById('scroll-arrow-wrapper');
                 const homepageSearchBtn = document.getElementById('homepage-search-btn');
@@ -7110,8 +7086,7 @@
                         peekToggle.style.display = 'flex';
                         peekToggle.classList.remove('expanded');
                     }
-                    // Hide date/time and button in peek mode
-                    if (summaryBox) summaryBox.style.display = 'none';
+                    // Hide ONLY date/time and button in peek mode, location stays visible
                     dateTimeFields.forEach(field => field.style.display = 'none');
                     if (scrollArrowWrapper) scrollArrowWrapper.style.display = 'none';
                     if (homepageSearchBtn) homepageSearchBtn.style.display = 'none';
@@ -7122,7 +7097,6 @@
                         peekToggle.classList.add('expanded');
                     }
                     // Show all fields when expanded
-                    if (summaryBox) summaryBox.style.display = 'block';
                     dateTimeFields.forEach(field => field.style.display = '');
                     if (scrollArrowWrapper) scrollArrowWrapper.style.display = '';
                     if (homepageSearchBtn) homepageSearchBtn.style.display = '';
