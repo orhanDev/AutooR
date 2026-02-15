@@ -83,24 +83,41 @@ function createNavbar() {
     
     const navbarClass = isLoginPage ? 'navbar' : 'navbar fixed-top';
     
+    // Desktop navigation links
+    const navLinks = `
+        <a class="nav-link-desktop" href="/fahrzeuge">Fahrzeuge</a>
+        <a class="nav-link-desktop" href="/angebote">Angebote</a>
+        <a class="nav-link-desktop" href="/self-services">Self-Services</a>
+        <a class="nav-link-desktop" href="/extras-versicherung">Extras</a>
+        <a class="nav-link-desktop" href="/geschaeftskunden">Geschäftskunden</a>
+        <a class="nav-link-desktop" href="/standorte">Standorte</a>
+        <a class="nav-link-desktop" href="/hilfe">Hilfe & Kontakt</a>
+    `;
+    
     container.innerHTML = `
         <nav class="${navbarClass}">
             <div class="container navbar-inner">
                 ${isHome ? `
-                    <button class="navbar-toggler navbar-toggler-desktop-hide me-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-label="Menü">
+                    <button class="navbar-toggler navbar-toggler-mobile-only me-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-label="Menü">
                         <span class="navbar-toggler-icon"></span>
             </button>
             ` : `
-                    <button class="navbar-back-btn navbar-back-btn-desktop-hide me-2" type="button" aria-label="Zurück">
+                    <button class="navbar-back-btn navbar-back-btn-mobile-only me-2" type="button" aria-label="Zurück">
                 <i class="bi bi-arrow-left" style="font-size: 1.5rem;"></i>
             </button>
             `}
                 
                 <a class="brand-center" href="/"><img src="${logoSrc}" alt="AutooR" class="${logoClass}" /></a>
                 
-                <div class="collapse navbar-collapse flex-grow-1" id="navbarNav">
+                <!-- Desktop Navigation (inline links) -->
+                <div class="navbar-desktop-nav" id="navbar-desktop-nav">
+                    ${navLinks}
+                </div>
+                
+                <!-- Mobile Navigation (hamburger menu) -->
+                <div class="collapse navbar-collapse flex-grow-1 navbar-mobile-nav" id="navbarNav">
                     <div class="side-left">
-                        <div class="menu-header d-flex justify-content-between align-items-center mb-4 d-md-none">
+                        <div class="menu-header d-flex justify-content-between align-items-center mb-4">
                             <h2 class="menu-title mb-0">Menü</h2>
                             <button class="btn-close-menu" type="button" aria-label="Menüyü Kapat">
                                 <span>&times;</span>
