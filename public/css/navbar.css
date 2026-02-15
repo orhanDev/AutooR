@@ -971,6 +971,22 @@ body.fahrzeuge-page .navbar-toggler {
             opacity: 0 !important;
         }
         
+        /* Show navbar collapse as inline navigation on desktop */
+        .navbar-collapse {
+            position: static !important;
+            display: flex !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            transform: translateX(0) !important;
+            background: transparent !important;
+            width: auto !important;
+            height: auto !important;
+            overflow: visible !important;
+            z-index: auto !important;
+            flex-direction: row !important;
+            align-items: center !important;
+        }
+        
         /* Show navigation links inline in navbar on desktop */
         .navbar-nav {
             display: flex !important;
@@ -979,7 +995,7 @@ body.fahrzeuge-page .navbar-toggler {
             gap: 1.5rem !important;
             background: transparent !important;
             padding: 0 !important;
-            margin: 0 !important;
+            margin: 0 0 0 auto !important;
             border-radius: 0 !important;
             box-shadow: none !important;
             animation: none !important;
@@ -987,7 +1003,7 @@ body.fahrzeuge-page .navbar-toggler {
         }
         
         .navbar-nav .nav-link {
-            padding: 0;
+            padding: 0.5rem 0.75rem !important;
             border: none !important;
             color: #ffffff !important;
             font-weight: 500;
