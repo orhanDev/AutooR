@@ -7049,6 +7049,17 @@
                     // Desktop başlangıçta peek-collapsed (yarıda kapalı)
                     formContainer.classList.remove('form-open');
                     formContainer.classList.add('peek-collapsed');
+                    
+                    // Hide date/time and button in peek mode
+                    const summaryBox = formContainer.querySelector('.summary-box.mobile-form-content');
+                    const dateTimeFields = formContainer.querySelectorAll('.ab-form-row > div:nth-child(3), .ab-form-row > div:nth-child(4)');
+                    const scrollArrowWrapper = document.getElementById('scroll-arrow-wrapper');
+                    const homepageSearchBtn = document.getElementById('homepage-search-btn');
+                    
+                    if (summaryBox) summaryBox.style.display = 'none';
+                    dateTimeFields.forEach(field => field.style.display = 'none');
+                    if (scrollArrowWrapper) scrollArrowWrapper.style.display = 'none';
+                    if (homepageSearchBtn) homepageSearchBtn.style.display = 'none';
                 }
 
                 if (mobileFormToggle) {
@@ -7059,28 +7070,62 @@
                     if (currentIsMobileView) {
                         formContainer.classList.add('form-open');
                         formContainer.classList.remove('peek-collapsed');
+                        // Show everything on mobile
+                        const summaryBox = formContainer.querySelector('.summary-box.mobile-form-content');
+                        const dateTimeFields = formContainer.querySelectorAll('.ab-form-row > div:nth-child(3), .ab-form-row > div:nth-child(4)');
+                        const scrollArrowWrapper = document.getElementById('scroll-arrow-wrapper');
+                        const homepageSearchBtn = document.getElementById('homepage-search-btn');
+                        if (summaryBox) summaryBox.style.display = '';
+                        dateTimeFields.forEach(field => field.style.display = '');
+                        if (scrollArrowWrapper) scrollArrowWrapper.style.display = '';
+                        if (homepageSearchBtn) homepageSearchBtn.style.display = '';
                     } else {
                         formContainer.classList.remove('form-open');
                         formContainer.classList.add('peek-collapsed');
+                        // Hide on desktop
+                        const summaryBox = formContainer.querySelector('.summary-box.mobile-form-content');
+                        const dateTimeFields = formContainer.querySelectorAll('.ab-form-row > div:nth-child(3), .ab-form-row > div:nth-child(4)');
+                        const scrollArrowWrapper = document.getElementById('scroll-arrow-wrapper');
+                        const homepageSearchBtn = document.getElementById('homepage-search-btn');
+                        if (summaryBox) summaryBox.style.display = 'none';
+                        dateTimeFields.forEach(field => field.style.display = 'none');
+                        if (scrollArrowWrapper) scrollArrowWrapper.style.display = 'none';
+                        if (homepageSearchBtn) homepageSearchBtn.style.display = 'none';
                     }
                 });
             }
 
             function setPeek(collapsed) {
                 if (!formContainer || !isPeekMode()) return;
+                
+                // Get date/time fields and button
+                const summaryBox = formContainer.querySelector('.summary-box.mobile-form-content');
+                const dateTimeFields = formContainer.querySelectorAll('.ab-form-row > div:nth-child(3), .ab-form-row > div:nth-child(4)');
+                const scrollArrowWrapper = document.getElementById('scroll-arrow-wrapper');
+                const homepageSearchBtn = document.getElementById('homepage-search-btn');
+                
                 if (collapsed) {
                     formContainer.classList.add('peek-collapsed');
                     if (peekToggle) {
                         peekToggle.style.display = 'flex';
                         peekToggle.classList.remove('expanded');
                     }
+                    // Hide date/time and button in peek mode
+                    if (summaryBox) summaryBox.style.display = 'none';
+                    dateTimeFields.forEach(field => field.style.display = 'none');
+                    if (scrollArrowWrapper) scrollArrowWrapper.style.display = 'none';
+                    if (homepageSearchBtn) homepageSearchBtn.style.display = 'none';
                 } else {
                     formContainer.classList.remove('peek-collapsed');
                     if (peekToggle) {
-
                         peekToggle.style.display = 'none';
                         peekToggle.classList.add('expanded');
                     }
+                    // Show all fields when expanded
+                    if (summaryBox) summaryBox.style.display = 'block';
+                    dateTimeFields.forEach(field => field.style.display = '');
+                    if (scrollArrowWrapper) scrollArrowWrapper.style.display = '';
+                    if (homepageSearchBtn) homepageSearchBtn.style.display = '';
                 }
             }
 
