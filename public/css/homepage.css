@@ -1,22 +1,4 @@
 ﻿
-/* Mobile: Show mobile form toggle "Fahrzeug mieten" text */
-@media (max-width: 747px) {
-    #mobile-form-toggle {
-        display: block !important;
-        visibility: visible !important;
-        pointer-events: auto !important;
-    }
-}
-
-/* Desktop: Hide mobile form toggle "Fahrzeug mieten" text */
-@media (min-width: 748px) {
-    #mobile-form-toggle {
-        display: none !important;
-        visibility: hidden !important;
-        pointer-events: none !important;
-    }
-}
-
 .custom-calendar {
     position: absolute;
     bottom: 100% !important;
@@ -520,6 +502,23 @@ body {
         margin: 0 !important;
         border: none !important;
         overflow: hidden !important;
+    }
+
+    /* Mobile: Always show toggle button */
+    @media (max-width: 747px) {
+        .homepage-form-container.form-open .mobile-form-toggle {
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            height: auto !important;
+            max-height: none !important;
+            padding: 0.55rem calc(1rem + 2rem) !important;
+            margin-left: auto !important;
+            margin-right: 1rem !important;
+            margin-top: -10rem !important;
+            border: none !important;
+            overflow: visible !important;
+        }
     }
 
 
