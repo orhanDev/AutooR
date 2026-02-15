@@ -3,6 +3,16 @@
     display: block !important;
     visibility: visible !important;
     opacity: 1 !important;
+    pointer-events: auto !important;
+}
+
+@media (max-width: 747px) {
+    #mobile-form-toggle {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+    }
 }
 
 @media (min-width: 748px) {
@@ -17,6 +27,18 @@
 /* ===== TOP SEARCH BUTTON WRAPPER ===== */
 #top-search-btn-wrapper {
     display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+}
+
+@media (max-width: 747px) {
+    #top-search-btn-wrapper {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+    }
 }
 
 @media (min-width: 748px) {
