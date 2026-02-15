@@ -1266,6 +1266,10 @@ body {
 
 
 @media (min-width: 748px) {
+    .hero-overlay {
+        background: rgba(0, 0, 0, 0.45) !important;
+    }
+
     .homepage-form-container,
     .homepage-form-container.form-open,
     .homepage-form-container:not(.form-open),

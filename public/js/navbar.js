@@ -54,8 +54,7 @@ function createNavbar() {
     const isRealHomepage = window.location.pathname === '/' || window.location.pathname === '/index.html';
     const isDesktopHomepage = isRealHomepage && !isMobile;
     const logoSrc = '/js/autoor_logo.png'; // Use consistent logo for all pages
-    // Ana sayfa (/) navbar'ı /fahrzeuge ile aynı olsun: logo boyutu da aynı (brand-logo, large yok)
-    const logoClass = isRealHomepage ? 'brand-logo' : (isDesktopHomepage ? 'brand-logo brand-logo-large' : 'brand-logo');
+    const logoClass = isDesktopHomepage ? 'brand-logo brand-logo-large' : 'brand-logo';
     
     let container = document.getElementById('navbar-container');
 
@@ -85,13 +84,13 @@ function createNavbar() {
     
     container.innerHTML = `
         <nav class="${navbarClass}">
-            <div class="container navbar-inner">
+            <div class="container d-flex align-items-center">
                 ${isHome ? `
-                    <button class="navbar-toggler navbar-toggler-desktop-hide me-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-label="Menü">
+                    <button class="navbar-toggler me-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-label="Menü">
                         <span class="navbar-toggler-icon"></span>
             </button>
             ` : `
-                    <button class="navbar-back-btn navbar-back-btn-desktop-hide me-2" type="button" aria-label="Zurück">
+                    <button class="navbar-back-btn me-2" type="button" aria-label="Zurück">
                 <i class="bi bi-arrow-left" style="font-size: 1.5rem;"></i>
             </button>
             `}
@@ -487,14 +486,6 @@ function updateNavbar() {
         document.body.classList.add('fahrzeuge-page');
     } else {
         document.body.classList.remove('fahrzeuge-page');
-    }
-
-    // Sadece ana sayfa (/) için: navbar /fahrzeuge ile aynı olsun
-    const isRealHomepage = window.location.pathname === '/' || window.location.pathname === '/index.html';
-    if (isRealHomepage) {
-        document.body.classList.add('real-home-page');
-    } else {
-        document.body.classList.remove('real-home-page');
     }
 
     if (currentDataPage !== lastNavbarState.dataPage) {

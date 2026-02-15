@@ -81,7 +81,7 @@ body { margin-top: 0 !important; }
 @media (min-width: 748px) {
     .brand-center .brand-logo {
         position: relative;
-        top: 0.5rem;
+        top: 2px;
     }
 }
 
@@ -488,18 +488,6 @@ body { margin-top: 0 !important; }
     body.fahrzeuge-page .navbar-scrolled .account-btn .account-icon {
         color: #000000 !important;
     }
-
-    /* Ana sayfa (/) – navbar /fahrzeuge ile aynı, sadece localhost:3443/ için */
-    body.real-home-page .navbar-toggler-icon,
-    body.real-home-page .navbar-scrolled .navbar-toggler-icon {
-        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%280, 0, 0, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
-    }
-    body.real-home-page .account-btn,
-    body.real-home-page .account-btn .account-icon,
-    body.real-home-page .navbar-scrolled .account-btn,
-    body.real-home-page .navbar-scrolled .account-btn .account-icon {
-        color: #000000 !important;
-    }
 }
 
 .navbar-back-btn {
@@ -544,16 +532,6 @@ body.fahrzeuge-page .navbar-back-btn {
 }
 
 body.fahrzeuge-page .navbar-toggler {
-    display: flex !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-}
-
-/* Ana sayfa (/) – navbar /fahrzeuge ile aynı */
-body.real-home-page .navbar-back-btn {
-    display: none !important;
-}
-body.real-home-page .navbar-toggler {
     display: flex !important;
     visibility: visible !important;
     opacity: 1 !important;
@@ -610,6 +588,7 @@ body.real-home-page .navbar-toggler {
 
 .navbar .collapse .side-left {
     width: 100%;
+    flex: 1;
     padding: 1.25rem 0.75rem;
     background: #ffffff;
     color: #111111;
@@ -983,9 +962,64 @@ body.real-home-page .navbar-toggler {
      }
      
     @media (min-width: 748px) {
-        body.home-page .navbar-toggler {
+        /* DESKTOP: Hide hamburger menu completely */
+        .navbar .navbar-toggler,
+        body.home-page .navbar-toggler,
+        body.not-home-page .navbar-toggler,
+        body.fahrzeuge-page .navbar-toggler {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+        }
+        
+        /* Show navbar collapse as inline navigation on desktop */
+        .navbar-collapse {
+            position: static !important;
             display: flex !important;
             visibility: visible !important;
+            opacity: 1 !important;
+            transform: translateX(0) !important;
+            background: transparent !important;
+            width: auto !important;
+            height: auto !important;
+            overflow: visible !important;
+            z-index: auto !important;
+            flex-direction: row !important;
+            align-items: center !important;
+        }
+        
+        /* Show navigation links inline in navbar on desktop */
+        .navbar-nav {
+            display: flex !important;
+            flex-direction: row !important;
+            align-items: center !important;
+            gap: 1.5rem !important;
+            background: transparent !important;
+            padding: 0 !important;
+            margin: 0 0 0 auto !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
+            animation: none !important;
+            border: none !important;
+        }
+        
+        .navbar-nav .nav-link {
+            padding: 0.5rem 0.75rem !important;
+            border: none !important;
+            color: #ffffff !important;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: opacity 0.3s ease !important;
+            border-bottom: none !important;
+            margin: 0 !important;
+            background: transparent !important;
+        }
+        
+        .navbar-nav .nav-link:hover {
+            background: transparent !important;
+            opacity: 0.8 !important;
+            transform: none !important;
+            box-shadow: none !important;
         }
         
         body.home-page .navbar-back-btn {
@@ -996,11 +1030,6 @@ body.real-home-page .navbar-toggler {
         body.not-home-page .navbar-back-btn {
             display: flex !important;
             visibility: visible !important;
-        }
-        
-        body.not-home-page .navbar-toggler {
-            display: none !important;
-            visibility: hidden !important;
         }
     }
     
@@ -1043,112 +1072,15 @@ body.real-home-page .navbar-toggler {
             display: block !important;
             visibility: visible !important;
             opacity: 1 !important;
-            background: #333333 !important;
-            background-color: #333333 !important;
-            backdrop-filter: none !important;
-            -webkit-backdrop-filter: none !important;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.35) !important;
-            min-height: 64px !important;
-            padding: 0.6rem 1.5rem !important;
+            background: rgba(255, 255, 255, 0.3) !important;
+            backdrop-filter: blur(10px) !important;
+            -webkit-backdrop-filter: blur(10px) !important;
         }
         
         .navbar.navbar-scrolled {
-            background: #333333 !important;
-            background-color: #333333 !important;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4) !important;
-        }
-        
-        .navbar .container.navbar-inner {
-            display: flex !important;
-            align-items: center !important;
-            justify-content: space-between !important;
-            flex-wrap: nowrap !important;
-            gap: 0 !important;
-            width: 100% !important;
-            max-width: 100% !important;
-        }
-        
-        .navbar .brand-center {
-            flex-shrink: 0 !important;
-            margin-right: 0 !important;
-        }
-        
-        .navbar .brand-center,
-        .navbar .brand-center .brand-logo {
-            filter: brightness(0) invert(1);
-        }
-        
-        .navbar .collapse.navbar-collapse {
-            flex: 1 1 auto !important;
-            min-width: 0 !important;
-            justify-content: center !important;
-            margin: 0 1.5rem !important;
-        }
-        
-        .navbar .collapse .side-left {
-            justify-content: center !important;
-        }
-        
-        .navbar .collapse .side-left .navbar-nav {
-            justify-content: center !important;
-        }
-        
-        .navbar .collapse .side-left .nav-link,
-        .navbar .collapse .side-left .navbar-nav .nav-link,
-        .navbar .collapse .side-left a.nav-link,
-        .navbar .navbar-nav .nav-link {
-            color: #ffffff !important;
-            font-size: 0.8125rem !important;
-            font-weight: 500 !important;
-            letter-spacing: 0.04em !important;
-            padding: 0.45rem 0.65rem !important;
-            text-transform: uppercase !important;
-            position: relative !important;
-        }
-        /* Hover: link altında soldan sağa hareket eden turuncu çizgi */
-        .navbar .collapse .side-left .nav-link::before,
-        .navbar .collapse .side-left .navbar-nav .nav-link::before,
-        .navbar .navbar-nav .nav-link::before {
-            content: '' !important;
-            position: absolute !important;
-            bottom: 0 !important;
-            left: 0 !important;
-            width: 0 !important;
-            height: 2px !important;
-            background: #F48B2A !important;
-            transition: width 0.28s ease !important;
-        }
-        .navbar .collapse .side-left .nav-link:hover::before,
-        .navbar .collapse .side-left .navbar-nav .nav-link:hover::before,
-        .navbar .navbar-nav .nav-link:hover::before {
-            width: 100% !important;
-        }
-        .navbar .collapse .side-left .nav-link:hover,
-        .navbar .collapse .side-left .navbar-nav .nav-link:hover,
-        .navbar .navbar-nav .nav-link:hover {
-            color: #ffffff !important;
-        }
-
-        /* Ana sayfa (/) – navbar link ve hover /fahrzeuge ile aynı (turuncu çizgi) */
-        body.real-home-page .navbar .collapse .side-left .nav-link:hover,
-        body.real-home-page .navbar .collapse .side-left .navbar-nav .nav-link:hover,
-        body.real-home-page .navbar .navbar-nav .nav-link:hover {
-            color: #ffffff !important;
-        }
-        
-        .navbar .account {
-            flex-shrink: 0 !important;
-        }
-        
-        body.home-page .account-btn,
-        body.home-page .account-btn .account-icon,
-        body.not-home-page .account-btn,
-        body.not-home-page .account-btn .account-icon,
-        body.fahrzeuge-page .account-btn,
-        body.fahrzeuge-page .account-btn .account-icon,
-        body.real-home-page .account-btn,
-        body.real-home-page .account-btn .account-icon {
-            color: #ffffff !important;
+            background: rgba(255, 255, 255, 0.95) !important;
+            backdrop-filter: blur(10px) !important;
+            -webkit-backdrop-filter: blur(10px) !important;
         }
         
         #navbar-container {
@@ -1290,21 +1222,6 @@ body.real-home-page .navbar-toggler {
         }
         
         body.fahrzeuge-page .navbar-toggler {
-            display: none !important;
-        }
-
-        body.real-home-page .navbar-back-btn {
-            display: flex !important;
-            order: 1 !important;
-            margin-left: 0 !important;
-            margin-right: auto !important;
-        }
-        body.real-home-page .navbar .account {
-            order: 3 !important;
-            margin-left: auto !important;
-            margin-right: 0 !important;
-        }
-        body.real-home-page .navbar-toggler {
             display: none !important;
         }
         
@@ -1686,102 +1603,6 @@ body.real-home-page .navbar-toggler {
         position: absolute !important;
         left: -9999px !important;
         pointer-events: none !important;
-    }
-
-    /* Desktop (≥748px): Logo sola, hamburger yok, menü linkleri logo ile kisi ikonu arasinda tek sira */
-    .navbar.fixed-top {
-        position: absolute !important;
-        top: 0 !important;
-        left: 0 !important;
-        right: 0 !important;
-        z-index: 1050 !important;
-    }
-    .navbar .container.navbar-inner {
-        display: flex !important;
-        flex-wrap: nowrap !important;
-        align-items: center !important;
-        justify-content: flex-start !important;
-        gap: 0 !important;
-        height: 5rem;
-        max-height: 4rem;
-    }
-    .navbar-toggler-desktop-hide,
-    .navbar-back-btn-desktop-hide,
-    body.home-page .navbar-toggler-desktop-hide,
-    body.not-home-page .navbar-toggler-desktop-hide,
-    body.fahrzeuge-page .navbar-toggler-desktop-hide,
-    body.real-home-page .navbar-toggler-desktop-hide,
-    body.home-page .navbar-back-btn-desktop-hide,
-    body.not-home-page .navbar-back-btn-desktop-hide,
-    body.real-home-page .navbar-back-btn-desktop-hide {
-        display: none !important;
-        visibility: hidden !important;
-        opacity: 0 !important;
-        pointer-events: none !important;
-        width: 0 !important;
-        min-width: 0 !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        overflow: hidden !important;
-    }
-    .navbar .brand-center {
-        position: static !important;
-        transform: none !important;
-        left: auto !important;
-        top: auto !important;
-        margin: 0 !important;
-        margin-right: auto !important;
-    }
-    .navbar .collapse.navbar-collapse {
-        position: static !important;
-        transform: none !important;
-        height: auto !important;
-        width: auto !important;
-        max-width: none !important;
-        flex: 1 1 auto !important;
-        display: flex !important;
-        justify-content: center !important;
-        align-items: center !important;
-        background: transparent !important;
-        box-shadow: none !important;
-        padding: 0 !important;
-    }
-    .navbar .collapse .side-left {
-        display: flex !important;
-        flex-direction: row !important;
-        width: auto !important;
-        padding: 0 !important;
-        background: transparent !important;
-    }
-    .navbar .collapse .side-left .menu-header {
-        display: none !important;
-    }
-    .navbar .collapse .side-left .navbar-nav {
-        display: flex !important;
-        flex-direction: row !important;
-        flex-wrap: nowrap !important;
-        gap: 0 !important;
-        margin: 0 !important;
-        padding: 0 !important;
-    }
-    .navbar .collapse .side-left .nav-item {
-        border-bottom: none !important;
-        margin: 0 !important;
-    }
-    .navbar .collapse .side-left .nav-link {
-        padding: 0.5rem 0.75rem !important;
-        border-bottom: none !important;
-        border: none !important;
-        margin: 0 !important;
-        font-size: 0.9rem !important;
-        white-space: nowrap !important;
-    }
-    .navbar .collapse .side-left .nav-link::after {
-        display: none !important;
-    }
-    .navbar .account {
-        margin-left: auto !important;
-        flex-shrink: 0 !important;
     }
 }
 
