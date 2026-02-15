@@ -53,7 +53,7 @@ function createNavbar() {
     const isMobile = window.innerWidth < 748;
     const isRealHomepage = window.location.pathname === '/' || window.location.pathname === '/index.html';
     const isDesktopHomepage = isRealHomepage && !isMobile;
-    const logoSrc = isDesktopHomepage ? '/js/arkaplansizbeyaz.png' : '/js/autoor_logo.png';
+    const logoSrc = '/js/autoor_logo.png'; // Use consistent logo for all pages
     const logoClass = isDesktopHomepage ? 'brand-logo brand-logo-large' : 'brand-logo';
     
     let container = document.getElementById('navbar-container');

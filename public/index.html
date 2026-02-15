@@ -7010,6 +7010,9 @@
                 const isMobileView = isMobileCheck();
                 if (isMobileView) {
                     formContainer.classList.add('form-open');
+                } else {
+                    // Desktop başlangıçta peek-collapsed (yarıda kapalı)
+                    formContainer.classList.add('peek-collapsed');
                 }
 
                 if (mobileFormToggle) {
@@ -7019,8 +7022,10 @@
                     const currentIsMobileView = isMobileCheck();
                     if (currentIsMobileView) {
                         formContainer.classList.add('form-open');
+                        formContainer.classList.remove('peek-collapsed');
                     } else {
                         formContainer.classList.remove('form-open');
+                        formContainer.classList.add('peek-collapsed');
                     }
                 });
             }
