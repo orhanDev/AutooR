@@ -4682,9 +4682,6 @@
             #top-homepage-search-btn #top-arrow-icon {
                 display: none !important;
             }
-            .homepage-form-container:not(.peek-collapsed) #top-homepage-search-btn::after {
-                transform: rotate(-135deg); 
-            }
 
             
             #top-homepage-search-btn:hover,
@@ -4859,64 +4856,7 @@
                 display: block !important;
             }
 
-            
-            .homepage-form-container.peek-collapsed {
-                max-height: 244px !important; 
-                overflow: hidden !important;
-                position: relative !important;
-            }
 
-            .homepage-form-container .peek-gradient {
-                display: none;
-                position: absolute;
-                bottom: 0;
-                left: 0;
-                right: 0;
-                height: 80px;
-                
-                background: linear-gradient(
-                    to bottom,
-                    rgba(152, 148, 119, 0) 0%,
-                    rgba(152, 148, 119, 0.25) 60%,
-                    rgba(152, 148, 119, 0.6) 100%
-                );
-                pointer-events: none;
-            }
-
-            .homepage-form-container.peek-collapsed .peek-gradient {
-                display: block;
-            }
-
-            #peek-toggle {
-                position: absolute;
-                bottom: 8px;
-                left: 50%;
-                transform: translateX(-50%);
-                background: #7B7668;
-                border: 1px solid #7B7668;
-                border-radius: 999px;
-                width: 46px;
-                height: 32px;
-                display: none;
-                align-items: center;
-                justify-content: center;
-                box-shadow: none;
-                z-index: 5;
-            }
-
-            #peek-toggle i {
-                font-size: 1.1rem;
-                color: #ffffff;
-                transition: transform 0.25s ease;
-            }
-
-            #peek-toggle i {
-                display: none !important;
-            }
-
-            #peek-toggle.expanded i {
-                transform: rotate(180deg);
-            }
 
         }
 
@@ -4997,13 +4937,7 @@
                 box-shadow: none !important;
             }
 
-            #peek-toggle i {
-                display: none !important;
-            }
 
-            #peek-toggle {
-                display: none !important;
-            }
 
             #top-homepage-search-btn::after,
             #top-homepage-search-btn #top-arrow-icon {
@@ -5121,17 +5055,6 @@
         }
 
         @media (max-width: 747px) {
-            #peek-toggle {
-                display: flex !important;
-            }
-
-            #peek-toggle i {
-                display: inline-block !important;
-            }
-
-            .homepage-form-container:not(.peek-collapsed) #peek-toggle {
-                display: none !important;
-            }
 
             #qr-pickup-time,
             #qr-pickup-time:hover,
@@ -5180,8 +5103,6 @@
         
         .homepage-form-container #top-homepage-search-btn,
         .homepage-form-container #homepage-search-btn,
-        .homepage-form-container.peek-collapsed #top-homepage-search-btn,
-        .homepage-form-container.peek-collapsed #homepage-search-btn,
         #scroll-arrow-container #homepage-search-btn {
             background: #7B7668 !important;
             background-color: #7B7668 !important;
@@ -5192,8 +5113,6 @@
 
         .homepage-form-container #homepage-search-btn:hover,
         .homepage-form-container #homepage-search-btn:active,
-        .homepage-form-container.peek-collapsed #homepage-search-btn:hover,
-        .homepage-form-container.peek-collapsed #homepage-search-btn:active,
         #scroll-arrow-container #homepage-search-btn:hover,
         #scroll-arrow-container #homepage-search-btn:active {
             background: linear-gradient(135deg, #ee7600 0%, #d66800 100%) !important;
@@ -5233,7 +5152,7 @@
             <div class="hero-text-content" style="text-align: center; margin-bottom: 3rem; margin-top: 7rem; position: relative; z-index: 3; display: none;">
                     </div>
 
-            <div class="homepage-form-container" style="background: transparent; background-color: transparent; backdrop-filter: none; -webkit-backdrop-filter: none; border: none; border-radius: 1.5rem; padding: 1.5rem; box-shadow: none; position: relative; z-index: 3; max-width: 1000px; margin: 29rem auto 0 auto; width: 90%; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); animation: fadeInUp 1.2s ease-out 0.2s both;">
+            <div class="homepage-form-container form-open" style="background: transparent; background-color: transparent; backdrop-filter: none; -webkit-backdrop-filter: none; border: none; border-radius: 1.5rem; padding: 1.5rem; box-shadow: none; position: relative; z-index: 3; max-width: 1000px; margin: 29rem auto 0 auto; width: 90%; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); animation: fadeInUp 1.2s ease-out 0.2s both;">
                 
                 <div id="mobile-form-toggle" class="mobile-form-toggle" style="display: none; background: transparent; background-color: transparent; border: none; backdrop-filter: none; -webkit-backdrop-filter: none; border-radius: 1rem; padding: 0.55rem calc(1rem + 2rem); cursor: pointer; user-select: none; transition: all 0.3s ease; box-shadow: none; width: fit-content; min-width: fit-content; max-width: none; margin-left: auto; margin-right: 1rem; margin-top: -10rem;">
                     <span style="font-size: 0.82rem; font-weight: 600; font-family: 'Inter', sans-serif; letter-spacing: 0.4px; text-transform: uppercase; color: #000000; white-space: nowrap; background-color: #ffc107; background: #ffc107; backdrop-filter: blur(1px) saturate(150%); -webkit-backdrop-filter: blur(1px) saturate(150%); padding: 0.35rem 0.8rem; border-radius: 0.35rem; display: inline-flex; flex-direction: column; align-items: center; gap: 0.35rem;">
@@ -5315,10 +5234,6 @@
                         </button>
                     </div>
                 </div>
-                <div class="peek-gradient"></div>
-                <button type="button" id="peek-toggle" aria-label="Formular öffnen/schließen">
-                    <i class="bi bi-chevron-down"></i>
-                </button>
                     </div>
 
             
@@ -6998,123 +6913,20 @@
 
             const mobileFormToggle = document.getElementById('mobile-form-toggle');
             const formContainer = document.querySelector('.homepage-form-container');
-            const peekToggle = document.getElementById('peek-toggle');
             const isMobileCheck = () =>
                 /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
                 || window.innerWidth <= 747;
-            const isPeekMode = () => isMobileCheck() || window.innerWidth >= 748;
             const isMobile = isMobileCheck();
             
             if (formContainer) {
-                // Only force fully-open form on mobile devices.
-                // Desktop should use peek/peek-collapsed behavior handled later.
-                if (isMobileCheck()) {
-                    formContainer.classList.add('form-open');
-                    if (mobileFormToggle) {
-                        mobileFormToggle.style.display = 'none';
-                    }
-                } else {
-                    formContainer.classList.remove('form-open');
-                    if (mobileFormToggle) {
-                        mobileFormToggle.style.display = '';
-                    }
-                }
 
+                formContainer.classList.add('form-open');
+
+                if (mobileFormToggle) {
+                    mobileFormToggle.style.display = 'none';
+                }
                 window.addEventListener('resize', function() {
-                    if (isMobileCheck()) {
-                        formContainer.classList.add('form-open');
-                        if (mobileFormToggle) mobileFormToggle.style.display = 'none';
-                    } else {
-                        formContainer.classList.remove('form-open');
-                        if (mobileFormToggle) mobileFormToggle.style.display = '';
-                    }
-                });
-            }
-
-            function setPeek(collapsed) {
-                if (!formContainer || !isPeekMode()) return;
-                if (collapsed) {
-                    formContainer.classList.add('peek-collapsed');
-                    if (peekToggle) {
-                        peekToggle.style.display = 'flex';
-                        peekToggle.classList.remove('expanded');
-                    }
-                } else {
-                    formContainer.classList.remove('peek-collapsed');
-                    if (peekToggle) {
-
-                        peekToggle.style.display = 'none';
-                        peekToggle.classList.add('expanded');
-                    }
-                }
-            }
-
-            if (formContainer && isPeekMode()) {
-                setPeek(true);
-                let isFormInteracting = false;
-                let interactionTimer;
-
-                const markInteracting = () => {
-                    isFormInteracting = true;
-                    if (interactionTimer) {
-                        clearTimeout(interactionTimer);
-                    }
-                    interactionTimer = setTimeout(() => {
-                        isFormInteracting = false;
-                    }, 500);
-                };
-
-                formContainer.addEventListener('focusin', function(e) {
-                    if (e.target.closest('select, input, textarea, button, .input-group, .form-control, .form-select, .custom-calendar, .flatpickr-calendar, .time-picker-container, .time-option, .qr-select')) {
-                        markInteracting();
-                    }
-                });
-
-                formContainer.addEventListener('touchstart', function(e) {
-                    if (e.target.closest('select, input, textarea, button, .input-group, .form-control, .form-select, .custom-calendar, .flatpickr-calendar, .time-picker-container, .time-option, .qr-select')) {
-                        markInteracting();
-                    }
-                }, { passive: true });
-
-                formContainer.addEventListener('click', function(e) {
-                    if (topSearchBtn && topSearchBtn.contains(e.target)) return;
-                    if (peekToggle && peekToggle.contains(e.target)) return;
-                    if (e.target.closest('select, input, textarea, button, .input-group, .form-control, .form-select, .custom-calendar, .flatpickr-calendar, .time-picker-container, .time-option, .qr-select')) {
-                        return;
-                    }
-                    const collapsed = formContainer.classList.contains('peek-collapsed');
-                    if (collapsed) {
-                        setPeek(false);
-                    }
-                });
-
-                if (peekToggle) {
-
-                    peekToggle.addEventListener('click', function(e) {
-                        e.stopPropagation();
-                        setPeek(false);
-                    });
-                }
-
-                if (topSearchBtn) {
-                    topSearchBtn.addEventListener('click', function(e) {
-                        e.stopPropagation();
-                        const collapsed = formContainer.classList.contains('peek-collapsed');
-                        if (collapsed) {
-                            setPeek(false);
-                        } else {
-                            setPeek(true);
-                        }
-                    });
-                }
-
-                document.addEventListener('click', function(e) {
-                    if (isFormInteracting) {
-                        return;
-                    }
-                    if (!formContainer.contains(e.target) && !(peekToggle && peekToggle.contains(e.target))) {
-                        setPeek(true);
-                    }
+                    formContainer.classList.add('form-open');
                 });
             }
 
