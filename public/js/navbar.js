@@ -97,15 +97,15 @@ function createNavbar() {
     container.innerHTML = `
         <nav class="${navbarClass}">
             <div class="container navbar-inner">
-                ${isHome ? `
-                    <button class="navbar-toggler navbar-toggler-mobile-only me-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-label="Menü">
+                ${isMobile ? (isHome ? `
+                    <button class="navbar-toggler me-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-label="Menü">
                         <span class="navbar-toggler-icon"></span>
             </button>
             ` : `
-                    <button class="navbar-back-btn navbar-back-btn-mobile-only me-2" type="button" aria-label="Zurück">
+                    <button class="navbar-back-btn me-2" type="button" aria-label="Zurück">
                 <i class="bi bi-arrow-left" style="font-size: 1.5rem;"></i>
             </button>
-            `}
+            `) : ''}
                 
                 <a class="brand-center" href="/"><img src="${logoSrc}" alt="AutooR" class="${logoClass}" /></a>
                 
@@ -115,6 +115,7 @@ function createNavbar() {
                 </div>
                 
                 <!-- Mobile Navigation (hamburger menu) -->
+                ${isMobile ? `
                 <div class="collapse navbar-collapse flex-grow-1 navbar-mobile-nav" id="navbarNav">
                     <div class="side-left">
                         <div class="menu-header d-flex justify-content-between align-items-center mb-4">
@@ -135,6 +136,7 @@ function createNavbar() {
                     </div>
                     <div class="side-right submenu-panel" id="submenu-panel" aria-hidden="true"></div>
                 </div>
+                ` : ''}
                 
                 <div class="account ms-auto position-relative">
                     <div class="d-flex align-items-center" id="user-info-container">
