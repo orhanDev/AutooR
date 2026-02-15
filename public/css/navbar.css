@@ -963,6 +963,7 @@ body.fahrzeuge-page .navbar-toggler {
      
     @media (min-width: 748px) {
         /* DESKTOP: Hide hamburger menu completely */
+        .navbar .navbar-toggler,
         body.home-page .navbar-toggler,
         body.not-home-page .navbar-toggler,
         body.fahrzeuge-page .navbar-toggler {
@@ -1179,9 +1180,9 @@ body.fahrzeuge-page .navbar-toggler {
         }
         
         body.home-page .navbar-toggler {
-            display: none !important;
-            visibility: hidden !important;
-            opacity: 0 !important;
+            display: flex !important;
+            visibility: visible !important;
+            order: 1 !important;
         }
         
         body.home-page .navbar .account {
