@@ -1179,9 +1179,9 @@ body.fahrzeuge-page .navbar-toggler {
         }
         
         body.home-page .navbar-toggler {
-            display: flex !important;
-            visibility: visible !important;
-            order: 1 !important;
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
         }
         
         body.home-page .navbar .account {
