@@ -1,4 +1,13 @@
 ﻿
+/* Mobile: Show mobile form toggle "Fahrzeug mieten" text */
+@media (max-width: 747px) {
+    #mobile-form-toggle {
+        display: block !important;
+        visibility: visible !important;
+        pointer-events: auto !important;
+    }
+}
+
 /* Desktop: Hide mobile form toggle "Fahrzeug mieten" text */
 @media (min-width: 748px) {
     #mobile-form-toggle {
