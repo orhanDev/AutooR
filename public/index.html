@@ -7006,14 +7006,28 @@
             const isMobile = isMobileCheck();
             
             if (formContainer) {
-
-                formContainer.classList.add('form-open');
-
-                if (mobileFormToggle) {
-                    mobileFormToggle.style.display = 'none';
-                }
-                window.addEventListener('resize', function() {
+                // Only force fully-open form on mobile devices.
+                // Desktop should use peek/peek-collapsed behavior handled later.
+                if (isMobileCheck()) {
                     formContainer.classList.add('form-open');
+                    if (mobileFormToggle) {
+                        mobileFormToggle.style.display = 'none';
+                    }
+                } else {
+                    formContainer.classList.remove('form-open');
+                    if (mobileFormToggle) {
+                        mobileFormToggle.style.display = '';
+                    }
+                }
+
+                window.addEventListener('resize', function() {
+                    if (isMobileCheck()) {
+                        formContainer.classList.add('form-open');
+                        if (mobileFormToggle) mobileFormToggle.style.display = 'none';
+                    } else {
+                        formContainer.classList.remove('form-open');
+                        if (mobileFormToggle) mobileFormToggle.style.display = '';
+                    }
                 });
             }
 
