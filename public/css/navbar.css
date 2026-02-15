@@ -19,7 +19,7 @@
         display: flex !important;
         position: relative !important;
         left: auto !important;
-        top: auto !important;
+        top: -1rem !important;
         transform: none !important;
         order: 2;
     }
@@ -180,6 +180,8 @@ body { margin-top: 0 !important; }
 @media (min-width: 748px) {
     .account {
         margin-left: auto !important;
+        position: relative;
+        top: -1rem;
     }
 }
 
