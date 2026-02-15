@@ -17,8 +17,6 @@
 /* ===== TOP SEARCH BUTTON WRAPPER ===== */
 #top-search-btn-wrapper {
     display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
 }
 
 @media (min-width: 748px) {
