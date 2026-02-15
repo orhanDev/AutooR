@@ -4861,18 +4861,25 @@
 
             
             .homepage-form-container.peek-collapsed {
-                max-height: 180px !important; 
+                max-height: 244px !important; 
                 overflow: hidden !important;
                 position: relative !important;
             }
 
-            /* Hide date/time fields and Weiter button in peek mode */
             .homepage-form-container.peek-collapsed .ab-form-row .col-lg-6:nth-child(n+3) {
                 display: none !important;
             }
 
-            .homepage-form-container.peek-collapsed #scroll-arrow-wrapper {
+            .homepage-form-container.peek-collapsed #scroll-arrow-wrapper,
+            .homepage-form-container.peek-collapsed #scroll-arrow-container,
+            .homepage-form-container.peek-collapsed #homepage-search-btn {
                 display: none !important;
+            }
+
+            .homepage-form-container.peek-collapsed #top-homepage-search-btn {
+                display: block !important;
+                cursor: pointer !important;
+                pointer-events: auto !important;
             }
 
             .homepage-form-container .peek-gradient {
