@@ -135,6 +135,17 @@ body { margin-top: 0 !important; }
     line-height: 1;
 }
 
+/* Desktop: Logo on the left */
+@media (min-width: 748px) {
+    .brand-center {
+        position: relative;
+        left: 0;
+        top: 0;
+        transform: none;
+        flex-shrink: 0;
+    }
+}
+
 .brand-center .brand-logo {
     display: block;
     height: 100px;
