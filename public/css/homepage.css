@@ -1,15 +1,9 @@
-﻿/* ===== MOBILE FORM TOGGLE ===== */
-#mobile-form-toggle {
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-}
-
+﻿
+/* Desktop: Hide mobile form toggle "Fahrzeug mieten" text */
 @media (min-width: 748px) {
     #mobile-form-toggle {
         display: none !important;
         visibility: hidden !important;
-        opacity: 0 !important;
         pointer-events: none !important;
     }
 }
