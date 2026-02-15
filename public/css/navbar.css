@@ -83,15 +83,6 @@ body { margin-top: 0 !important; }
         position: relative;
         top: 0.5rem;
     }
-    
-    /* Desktop: Hide hamburger menu and back button, show navigation links inline */
-    .navbar-toggler-desktop-hide,
-    .navbar-back-btn-desktop-hide {
-        display: none !important;
-        visibility: hidden !important;
-        opacity: 0 !important;
-        pointer-events: none !important;
-    }
 }
 
 .account-btn {
