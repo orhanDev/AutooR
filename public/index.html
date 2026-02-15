@@ -4861,25 +4861,43 @@
 
             
             .homepage-form-container.peek-collapsed {
-                max-height: 244px !important; 
+                max-height: 120px !important; 
                 overflow: hidden !important;
                 position: relative !important;
             }
 
-            .homepage-form-container.peek-collapsed .ab-form-row .col-lg-6:nth-child(n+3) {
+            /* Hide date/time fields and button in peek-collapsed state on desktop */
+            .homepage-form-container.peek-collapsed .ab-form-row {
+                display: flex !important;
+                flex-wrap: wrap !important;
+            }
+
+            .homepage-form-container.peek-collapsed .ab-form-row > div:nth-child(3),
+            .homepage-form-container.peek-collapsed .ab-form-row > div:nth-child(4) {
                 display: none !important;
+                max-height: 0 !important;
+                overflow: hidden !important;
+                padding: 0 !important;
+                margin: 0 !important;
             }
 
             .homepage-form-container.peek-collapsed #scroll-arrow-wrapper,
             .homepage-form-container.peek-collapsed #scroll-arrow-container,
-            .homepage-form-container.peek-collapsed #homepage-search-btn {
+            .homepage-form-container.peek-collapsed #homepage-search-btn,
+            .homepage-form-container.peek-collapsed .summary-box.mobile-form-content {
                 display: none !important;
+            }
+
+            .homepage-form-container.peek-collapsed #top-search-btn-wrapper {
+                display: block !important;
+                margin-bottom: 0 !important;
             }
 
             .homepage-form-container.peek-collapsed #top-homepage-search-btn {
                 display: block !important;
                 cursor: pointer !important;
                 pointer-events: auto !important;
+                user-select: none !important;
             }
 
             .homepage-form-container .peek-gradient {
