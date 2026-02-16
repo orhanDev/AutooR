@@ -14,6 +14,14 @@ html, body {
     min-height: 100vh;
 }
 
+@media (min-width: 748px) {
+    /* Desktop: her sayfada scrollbar genişliği sabit olsun, navbar sağa-sola kaymasın */
+    html,
+    body {
+        overflow-y: scroll;
+    }
+}
+
 body {
     padding-top: 80px;
 }
@@ -491,7 +499,7 @@ body {
 }
 
 .breadcrumb {
-    --bs-breadcrumb-divider: '›';
+    --bs-breadcrumb-divider: 'â€º';
     background: transparent;
     padding: 0;
     margin-bottom: 1rem;
@@ -572,7 +580,7 @@ body {
 }
 
 .car-image img[src*="default-car.jpg"]::after {
-    content: 'ðŸš—';
+    content: 'Ã°Å¸Å¡â€”';
     position: absolute;
     top: 50%;
     left: 50%;
@@ -2036,3 +2044,4 @@ body {
         letter-spacing: 0.2px;
     }
 }
+
