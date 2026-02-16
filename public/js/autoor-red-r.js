@@ -5,7 +5,7 @@
     function makeAutooROrange() {
         const processedClass = 'autoor-orange-processed';
         const black = '#000000';
-        const orange = '#ff7a00';
+        const orange = '##F84D58';
         const logoHTML = `<span style="color: ${black};">Aut</span><span style="color: ${orange};">o</span><span style="color: ${orange};">o</span><span style="color: ${black};">R</span>`;
         const footerLogoHTML = `<span style="color: #ffffff;">Aut</span><span style="color: ${orange};">o</span><span style="color: ${orange};">o</span><span style="color: #ffffff;">R</span>`;
         
@@ -21,7 +21,7 @@
                 const txt = el.textContent || '';
                 if (!txt.includes('AutooR')) return false;
                 const color = (el.style && el.style.color || '').toLowerCase();
-                return color.includes('#ff7a00') || color.includes('#7d0011') || color.includes('orange');
+                return color.includes('##F84D58') || color.includes('#7d0011') || color.includes('orange');
             });
             spans.forEach(el => {
                 el.innerHTML = el.innerHTML.replace(/AutooR/g, logoHTML);

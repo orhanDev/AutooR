@@ -547,7 +547,7 @@ body { margin-top: 0 !important; }
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%2833, 37, 41, 0.8%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e"); 
 }
 
-/* Büyük ekranlarda ana sayfa - her zaman beyaz */
+/* BÃ¼yÃ¼k ekranlarda ana sayfa - her zaman beyaz */
 @media (min-width: 748px) {
     body.home-page .navbar-toggler-icon,
     body.home-page .navbar-scrolled .navbar-toggler-icon {
@@ -561,7 +561,7 @@ body { margin-top: 0 !important; }
         color: #ffffff !important;
     }
     
-    /* Diğer sayfalar - her zaman siyah */
+    /* DiÄŸer sayfalar - her zaman siyah */
     body.not-home-page .navbar-toggler-icon,
     body.not-home-page .navbar-scrolled .navbar-toggler-icon {
         background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%280, 0, 0, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
@@ -574,7 +574,7 @@ body { margin-top: 0 !important; }
         color: #000000 !important;
     }
     
-    /* Fahrzeuge sayfası - her zaman siyah */
+    /* Fahrzeuge sayfasÄ± - her zaman siyah */
     body.fahrzeuge-page .navbar-toggler-icon,
     body.fahrzeuge-page .navbar-scrolled .navbar-toggler-icon {
         background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%280, 0, 0, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
@@ -587,7 +587,7 @@ body { margin-top: 0 !important; }
         color: #000000 !important;
     }
 
-    /* Ana sayfa (/) – navbar /fahrzeuge ile aynı, sadece localhost:3443/ için */
+    /* Ana sayfa (/) â€“ navbar /fahrzeuge ile aynÄ±, sadece localhost:3443/ iÃ§in */
     body.real-home-page .navbar-toggler-icon,
     body.real-home-page .navbar-scrolled .navbar-toggler-icon {
         background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%280, 0, 0, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
@@ -648,7 +648,7 @@ body.fahrzeuge-page .navbar-toggler {
     opacity: 1 !important;
 }
 
-/* Ana sayfa (/) – navbar /fahrzeuge ile aynı */
+/* Ana sayfa (/) â€“ navbar /fahrzeuge ile aynÄ± */
 body.real-home-page .navbar-back-btn {
     display: none !important;
 }
@@ -1725,4 +1725,32 @@ body.real-home-page .navbar-toggler {
         pointer-events: none !important;
     }
 }
+
+@media (min-width: 748px) {
+    /* Desktop navbar link hover: only red underline (left-to-right), no background box */
+    nav.navbar .navbar-nav > li.nav-item > a.nav-link {
+        position: relative !important;
+        overflow: visible !important;
+        background-color: transparent !important;
+        box-shadow: none !important;
+        transform: none !important;
+        /* kırmızı şerit için gradient arka plan */
+        background-image: linear-gradient(to right, #B10000, #B10000) !important;
+        background-size: 0 2px !important;          /* başlangıçta görünmesin */
+        background-position: 0 100% !important;     /* linkin en altında */
+        background-repeat: no-repeat !important;
+        transition: background-size 0.25s ease !important;
+    }
+    nav.navbar .navbar-nav > li.nav-item > a.nav-link:hover {
+        background-color: transparent !important;
+        box-shadow: none !important;
+        transform: none !important;
+        background-size: 100% 2px !important;       /* soldan sağa doğru dolan şerit */
+    }
+    /* Eski underline efektlerini iptal et */
+    nav.navbar .navbar-nav > li.nav-item > a.nav-link::after {
+        content: none !important;
+    }
+}
+
 

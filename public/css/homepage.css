@@ -434,7 +434,7 @@ body {
 
 
     .mobile-form-toggle #toggle-icon {
-        color: #ff7a00 !important;
+        color: ##F84D58 !important;
         font-weight: 400 !important;
         font-size: 1.35rem !important;
         display: flex !important;
@@ -573,7 +573,7 @@ body {
 
 
     #top-homepage-search-btn #top-arrow-icon {
-        color: #ff7a00 !important;
+        color: ##F84D58 !important;
         font-weight: 400 !important;
         font-size: 1.35rem !important;
         display: block !important;
@@ -738,7 +738,7 @@ body {
 
 
     #homepage-search-btn span {
-        color: #ff7a00 !important;
+        color: ##F84D58 !important;
         font-weight: 400 !important;
         font-size: 1.35rem !important;
         margin-left: 0.5rem !important;
