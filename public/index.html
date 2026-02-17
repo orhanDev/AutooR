@@ -44,11 +44,15 @@
         }
         
         html {
-            overflow: hidden !important;
+            overflow-y: auto !important;
             overflow-x: hidden !important;
-            overflow-y: hidden !important;
+            scrollbar-width: none;
             height: 100%;
             width: 100%;
+        }
+        
+        html::-webkit-scrollbar {
+            display: none;
         }
         
         * {
@@ -64,12 +68,16 @@
             width: 100%;
             color: var(--porsche-dark-gray);
             line-height: 1.6;
-            overflow: hidden !important;
             overflow-x: hidden !important;
-            overflow-y: hidden !important;
+            overflow-y: auto !important;
+            scrollbar-width: none;
             margin: 0;
             padding: 0;
             background-color: transparent !important;
+        }
+        
+        body::-webkit-scrollbar {
+            display: none;
         }
 
         .hero-section {

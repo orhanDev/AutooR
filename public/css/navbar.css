@@ -1753,14 +1753,23 @@ body.real-home-page .navbar-toggler {
 @media (min-width: 748px) {
     /* Desktop: Navbar sağa-sola kaymasın - scrollbar genişliği sabit */
     html {
-        overflow-y: hidden !important;
+        overflow-y: auto !important;
         overflow-x: hidden !important;
-        overflow: hidden !important;
+        scrollbar-width: none;
     }
+    
+    html::-webkit-scrollbar {
+        display: none;
+    }
+    
     body {
-        overflow-y: hidden !important;
+        overflow-y: auto !important;
         overflow-x: hidden !important;
-        overflow: hidden !important;
+        scrollbar-width: none;
+    }
+    
+    body::-webkit-scrollbar {
+        display: none;
     }
     .navbar {
         width: 100% !important;
