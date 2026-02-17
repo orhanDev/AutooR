@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8">
@@ -26,10 +26,10 @@
     
     <link rel="preload" href="css/style.css?v=202601160048" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <link rel="preload" href="/css/navbar.css?v=202601160048" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <link rel="preload" href="css/homepage.css?v=202601160254" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="css/homepage.css?v=202601160048" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <link rel="preload" as="image" href="/images/cars/1.png" fetchpriority="high">
     <link rel="preload" as="image" href="/images/cars/1m.png" media="(max-width: 747px)" fetchpriority="high">
-    <noscript><link rel="stylesheet" href="css/style.css?v=202601160048"><link rel="stylesheet" href="/css/navbar.css?v=202601160048"><link rel="stylesheet" href="css/homepage.css?v=202601160254"></noscript>
+    <noscript><link rel="stylesheet" href="css/style.css?v=202601160048"><link rel="stylesheet" href="/css/navbar.css?v=202601160048"><link rel="stylesheet" href="css/homepage.css?v=202601160048"></noscript>
 
     <!-- CSS moved to homepage.css -->
     <style>
@@ -84,10 +84,23 @@
             background-repeat: no-repeat !important;
         }
         
-        @media (max-width: 747px), (min-width: 748px) {
+        @media (max-width: 747px) {
             .hero-background {
                 background-size: cover !important;
                 background-position: center center !important;
+            }
+        }
+        
+        @media (min-width: 748px) {
+            .hero-background {
+                background-size: 100% auto !important;
+                background-position: center top !important;
+                max-height: 100vh !important;
+            }
+            .hero-section-porsche {
+                min-height: 100vh !important;
+                max-height: 100vh !important;
+                overflow: hidden !important;
             }
         }
         
@@ -1105,11 +1118,6 @@
         
         @media (min-width: 748px) {
             
-            .hero-section-porsche {
-                min-height: auto !important;
-                padding: 60px 0 40px !important;
-            }
-            
             .homepage-form-container,
             .homepage-form-container.form-open,
             .homepage-form-container:not(.form-open),
@@ -1118,18 +1126,17 @@
             .homepage-form-container:not(.form-open)[style] {
                 position: relative !important;
                 top: auto !important;
-                left: auto !important;
+                left: 21rem !important;
                 right: auto !important;
                 transform: none !important;
-                width: 85% !important;
-                max-width: 800px !important;
-                margin: -10rem auto 3rem auto !important;
-                padding: 2rem !important;
-                background: #B10000 !important;
-                background-color: #B10000 !important;
+                width: 90% !important;
+                max-width: 1100px !important;
+                margin: -20rem auto 0 auto !important;
+                padding: 0 !important;
+                background: transparent !important;
+                background-color: transparent !important;
                 border: none !important;
-                box-shadow: 0 8px 32px rgba(177, 0, 0, 0.2) !important;
-                border-radius: 1.5rem !important;
+                box-shadow: none !important;
                 backdrop-filter: none !important;
                 -webkit-backdrop-filter: none !important;
                 color: #000000 !important;
@@ -1231,21 +1238,34 @@
             .summary-box .form-label,
             .homepage-form-container .form-label,
             .homepage-form-container label {
-                color: #ffffff !important;
+                color: #000000 !important;
                 text-shadow: none !important;
-                font-weight: 600 !important;
             }
 
             
+            .homepage-form-container {
+                background: rgba(0, 0, 0, 0.28) !important;
+                border: 1px solid rgba(255, 255, 255, 0.18) !important;
+                box-shadow: 0 28px 80px rgba(0, 0, 0, 0.4),
+                            0 12px 32px rgba(0, 0, 0, 0.3) !important;
+                backdrop-filter: blur(12px) saturate(140%) !important;
+                -webkit-backdrop-filter: blur(12px) saturate(140%) !important;
+                transform: translateY(0) !important;
+            }
             .homepage-form-container .summary-box,
             .homepage-form-container .mobile-form-content {
-                background: transparent !important;
-                border: 1px solid rgba(255, 255, 255, 0.15) !important;
+                background: #212529b3!important;
+                border: 1px solid rgba(255, 255, 255, 0.18) !important;
                 box-shadow: none !important;
+                width: 74% !important;
+                        margin-top: 2rem;
             }
             .summary-box {
-                border: 1px solid rgba(255, 255, 255, 0.15) !important;
-                box-shadow: none !important;
+                border: 2px solid rgba(255, 255, 255, 0.3) !important;
+                box-shadow: 0 20px 64px rgba(0, 0, 0, 0.5),
+                            0 8px 24px rgba(0, 0, 0, 0.4),
+                            inset 0 2px 0 rgba(255, 255, 255, 0.2),
+                            0 0 0 1px rgba(255, 255, 255, 0.15) !important;
                 transform: translateY(0) !important;
             }
         }
@@ -1359,23 +1379,25 @@
             }
             
             .homepage-form-container {
-                margin: -10rem auto 3rem auto !important;
+                margin: 17rem auto 0 auto !important;
                 margin-left: auto !important;
                 margin-right: auto !important;
-                width: 42.5% !important;
-                max-width: 400px !important;
-                padding: 2rem !important;
+                margin-top: 17rem !important;
+                margin-bottom: 0 !important;
+                width: 90% !important;
+                max-width: 1000px !important;
+                padding: 1.5rem !important;
                 position: relative !important;
                 top: auto !important;
                 left: auto !important;
                 right: auto !important;
                 transform: none !important;
                 transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
-                background: #B10000 !important;
+                background: transparent !important;
                 backdrop-filter: none !important;
                 border: none !important;
                 border-radius: 1.5rem !important;
-                box-shadow: 0 8px 32px rgba(177, 0, 0, 0.2) !important;
+                box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.2) !important;
                 z-index: 3 !important;
                 animation: fadeInUp 1.2s ease-out 0.2s both !important;
             }
@@ -1384,23 +1406,26 @@
             .homepage-form-container.form-open {
                 top: auto !important;
                 transform: none !important;
-                margin: -10rem auto 3rem auto !important;
+                margin: 17rem auto 0 auto !important;
                 margin-left: auto !important;
                 margin-right: auto !important;
-                width: 42.5% !important;
-                max-width: 400px !important;
-                padding: 2rem !important;
-                padding-bottom: 2rem !important;
-                padding-top: 2rem !important;
+                margin-top: 17rem !important;
+                margin-bottom: 0 !important;
+                width: 90% !important;
+                max-width: 1000px !important;
+                padding: 1.5rem !important;
+                padding-bottom: 1.5rem !important;
+                padding-top: 1.5rem !important;
             }
             
             
             .homepage-form-container[style] {
-                margin: -10rem auto 3rem auto !important;
+                margin: 17rem auto 0 auto !important;
                 margin-left: auto !important;
                 margin-right: auto !important;
-                width: 42.5% !important;
-                max-width: 400px !important;
+                margin-top: 17rem !important;
+                width: 90% !important;
+                max-width: 1000px !important;
                 position: relative !important;
                 top: auto !important;
                 left: auto !important;
@@ -1476,7 +1501,8 @@
             
             .homepage-form-container[style*="box-shadow"] {
                 box-shadow: none !important;
-            }            
+            }
+            
             .homepage-form-container[style*="box-shadow"]:hover {
                 box-shadow: none !important;
             }
@@ -5138,7 +5164,7 @@
         
         @media (min-width: 748px) {
             #scroll-arrow-container {
-                margin-top: 1rem !important;
+                margin: 1rem !important;
                
             }
         }
@@ -5201,7 +5227,7 @@
     </div>
 
     <section class="hero-section-porsche" style="position: relative; z-index: 1;">
-        <div class="hero-background" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-size: cover; background-position: center center; background-repeat: no-repeat; z-index: 0; background-image: url('/images/cars/1.png');">
+        <div class="hero-background" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-repeat: no-repeat; z-index: 0; background-image: url('/images/cars/1.png');">
             <div class="hero-overlay" style="
                 background: linear-gradient(135deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.4) 50%, rgba(0, 0, 0, 0.5) 100%);
                 position: absolute;
@@ -5217,7 +5243,7 @@
             <div class="hero-text-content" style="text-align: center; margin-bottom: 3rem; margin-top: 7rem; position: relative; z-index: 3; display: none;">
                     </div>
 
-            <div class="homepage-form-container form-open" style="background: #B10000; background-color: #B10000; backdrop-filter: none; -webkit-backdrop-filter: none; border: none; border-radius: 1.5rem; padding: 2rem; box-shadow: 0 8px 32px rgba(177, 0, 0, 0.2); position: relative; z-index: 3; max-width: 400px; margin: -10rem auto 3rem auto; width: 42.5%; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); animation: fadeInUp 1.2s ease-out 0.2s both;">
+            <div class="homepage-form-container form-open" style="background: transparent; background-color: transparent; backdrop-filter: none; -webkit-backdrop-filter: none; border: none; border-radius: 1.5rem; padding: 1.5rem; box-shadow: none; position: relative; z-index: 3; max-width: 1000px; margin: 29rem auto 0 auto; width: 90%; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); animation: fadeInUp 1.2s ease-out 0.2s both;">
                 
                 <div id="mobile-form-toggle" class="mobile-form-toggle" style="display: none; background: transparent; background-color: transparent; border: none; backdrop-filter: none; -webkit-backdrop-filter: none; border-radius: 1rem; padding: 0.55rem calc(1rem + 2rem); cursor: pointer; user-select: none; transition: all 0.3s ease; box-shadow: none; width: fit-content; min-width: fit-content; max-width: none; margin-left: auto; margin-right: 1rem; margin-top: -10rem;">
                     <span style="font-size: 0.82rem; font-weight: 600; font-family: 'Inter', sans-serif; letter-spacing: 0.4px; text-transform: uppercase; color: #000000; white-space: nowrap; background-color: #ffc107; background: #ffc107; backdrop-filter: blur(1px) saturate(150%); -webkit-backdrop-filter: blur(1px) saturate(150%); padding: 0.35rem 0.8rem; border-radius: 0.35rem; display: inline-flex; flex-direction: column; align-items: center; gap: 0.35rem;">
@@ -6770,10 +6796,11 @@
                     const imageName = isMobile ? '1m.png' : '1.png';
                     const imagePath = `url('/images/cars/${imageName}')`;
 
-                    const bgSize = 'cover';
+                    const bgSize = isMobile ? 'cover' : '100% auto';
+                    const bgPosition = isMobile ? 'center center' : 'center top';
                     heroBackground.style.setProperty('background-image', imagePath, 'important');
                     heroBackground.style.setProperty('background-size', bgSize, 'important');
-                    heroBackground.style.setProperty('background-position', 'center center', 'important');
+                    heroBackground.style.setProperty('background-position', bgPosition, 'important');
                     
                     console.log(`Background updated: ${imageName} for ${isMobile ? 'mobile' : 'desktop'}`);
                 }
@@ -6788,10 +6815,11 @@
                     const img = new Image();
                     img.onload = function() {
                         const imagePath = `url('/images/cars/${imageName}')`;
-                        const bgSize = 'cover';
+                        const bgSize = isMobile ? 'cover' : '100% auto';
+                        const bgPosition = isMobile ? 'center center' : 'center top';
                         heroBackground.style.setProperty('background-image', imagePath, 'important');
                         heroBackground.style.setProperty('background-size', bgSize, 'important');
-                        heroBackground.style.setProperty('background-position', 'center center', 'important');
+                        heroBackground.style.setProperty('background-position', bgPosition, 'important');
                     };
                     img.src = `/images/cars/${imageName}`;
                 }

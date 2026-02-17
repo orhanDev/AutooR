@@ -156,10 +156,32 @@ function createNavbar() {
     initBackButton();
     initAccountMenu();
     initSideMenu();
+    initDesktopNavLinks();
             updateNavbar();
     fixFooterBranding();
     
     console.log('Navbar created');
+}
+
+function initDesktopNavLinks() {
+    const desktopLinks = document.querySelectorAll('.navbar-desktop-nav .nav-link-desktop');
+    desktopLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            const currentPath = window.location.pathname;
+            
+            // Aynı sayfaya tıklanırsa scroll pozisyonunu koru
+            if (href === currentPath || href === currentPath + '.html' || 
+                (currentPath === '/fahrzeuge' && href === '/fahrzeuge') ||
+                (currentPath === '/fahrzeuge.html' && href === '/fahrzeuge')) {
+                e.preventDefault();
+                // Scroll pozisyonunu koru
+                const scrollY = window.scrollY;
+                window.scrollTo(0, scrollY);
+                return false;
+            }
+        });
+    });
 }
 
 function fixFooterBranding() {

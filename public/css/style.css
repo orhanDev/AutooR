@@ -20,6 +20,11 @@ html, body {
     body {
         overflow-y: scroll;
     }
+    
+    /* Desktop: navbar fixed olduğu için body padding-top sabit */
+    body {
+        padding-top: 80px !important;
+    }
 }
 
 body {
