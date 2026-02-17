@@ -43,6 +43,12 @@
             --porsche-gold: #d4af37;
         }
         
+        html {
+            overflow: hidden;
+            height: 100%;
+            width: 100%;
+        }
+        
         * {
             font-family: 'Inter', sans-serif;
         }
@@ -52,10 +58,13 @@
                 background-position: center !important;
             background-attachment: fixed !important;
             background-repeat: no-repeat !important;
-            min-height: 100vh;
+            height: 100%;
+            width: 100%;
             color: var(--porsche-dark-gray);
             line-height: 1.6;
-            overflow-x: hidden;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
             background-color: transparent !important;
         }
 
@@ -8535,7 +8544,7 @@
                 }, 500);
             });
             }
-            
+
         })();
     </script>
     <script>

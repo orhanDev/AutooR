@@ -2,33 +2,41 @@
 
 * {
     box-sizing: border-box;
+    max-width: 100%;
 }
 
-html, body {
+html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
     margin: 0;
     padding: 0;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     line-height: 1.6;
     color: #242921;
     background-color: #f7f7f7; 
-    min-height: 100vh;
+    height: 100%;
+    width: 100%;
+    overflow-x: hidden !important;
+    overflow-y: hidden !important;
 }
 
 @media (min-width: 748px) {
-    /* Desktop: her sayfada scrollbar genişliği sabit olsun, navbar sağa-sola kaymasın */
-    html,
-    body {
-        overflow-y: scroll;
-    }
-    
     /* Desktop: navbar fixed olduğu için body padding-top sabit */
     body {
         padding-top: 80px !important;
+        overflow: hidden !important;
     }
 }
 
 body {
     padding-top: 80px;
+    overflow: hidden !important;
 }
 
 .btn-register, .btn-login {
