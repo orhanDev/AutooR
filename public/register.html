@@ -53,11 +53,10 @@
         }
 
         .register-container {
-            max-width: 600px;
-            margin: 1.5rem auto 0 auto;
-            padding: 2rem 1rem;
-            padding-top: 100px;
-        }
+    max-width: 600px;
+    margin: 0 auto;                 /* ekstra yukarı margin yok */
+    padding: 6rem 1rem 2rem;        /* 6rem üst → navbar yüksekliği + az boşluk */
+}
         
         .register-header {
             text-align: center;
@@ -488,31 +487,23 @@
         }
         
         @media (max-width: 750px) {
-            /* mobile overrides */
-            #navbar-container {
-                position: fixed;
-                top: 0;
-                left: 0;
-                right: 0;
-                z-index: 1050;
-                background-color: transparent !important;
-                background: transparent !important;
-            }
-            
-            .register-container {
-                padding-top: 20px !important;
-                margin-top: 0 !important;
-            }
-            
-            .register-header {
-                margin-top: 0 !important;
-            }
-            
-            .register-container {
-                padding: 1rem;
-                padding-top: 20px !important;
-            }
-            
+    /* mobile overrides */
+    #navbar-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1050;
+        background-color: transparent !important;
+        background: transparent !important;
+    }
+
+    .register-container {
+        padding-top: 4.5rem !important;
+        margin-top: 0 !important;
+    }
+}
+
             .register-card {
                 padding: 1.5rem;
             }
