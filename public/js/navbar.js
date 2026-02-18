@@ -49,6 +49,7 @@ function isHomePage() {
 
 function createNavbar() {
     const isLoginPage = window.location.pathname === '/login' || window.location.pathname === '/login.html' || window.location.pathname.includes('/login');
+    const isRegisterPage = window.location.pathname === '/register' || window.location.pathname === '/register.html' || window.location.pathname.includes('/register');
     const isHome = isHomePage();
     const isMobile = window.innerWidth < 751;
     const isRealHomepage = window.location.pathname === '/' || window.location.pathname === '/index.html';

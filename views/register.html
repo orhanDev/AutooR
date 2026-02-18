@@ -31,7 +31,7 @@
         }
         
         #navbar-container {
-            position: fixed;
+            position: absolute;
             top: 0;
             left: 0;
             right: 0;
@@ -41,13 +41,13 @@
         }
         
         #navbar-container .navbar {
-            position: fixed !important;
+            position: absolute !important;
             top: 0 !important;
             left: 0 !important;
             right: 0 !important;
+            z-index: 1050 !important;
             background-color: transparent !important;
             background: transparent !important;
-            z-index: 1050 !important;
         }
         
         .register-container {
@@ -484,7 +484,7 @@
         }
     </style>
 </head>
-<body>
+<body class="register-page">
     
         <div id="navbar-container">
             
@@ -595,6 +595,21 @@
                         </ul>
                         </div>
                         </div>
+
+                <div class="form-group">
+                    <label for="confirm-password" class="form-label">
+                        Passwort bestätigen<span class="required">*</span>
+                    </label>
+                    <input
+                        type="password"
+                        class="form-control"
+                        id="confirm-password"
+                        name="confirm_password"
+                        required
+                        autocomplete="new-password"
+                    >
+                    <div class="invalid-feedback"></div>
+                </div>
 
                 <div class="form-group">
                     <label for="email" class="form-label">

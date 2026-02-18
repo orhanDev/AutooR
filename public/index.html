@@ -47,6 +47,14 @@
             font-family: 'Inter', sans-serif;
         }
 
+        html, body {
+            width: 100% !important;
+            max-width: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            overflow-x: hidden !important;
+        }
+        
         body {
                 background-size: cover !important;
                 background-position: center !important;
@@ -76,12 +84,19 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            width: 100% !important;
+            max-width: 100% !important;
+            margin: 0 !important;
         }
         
         .hero-background {
             background-size: cover !important;
             background-position: center center !important;
             background-repeat: no-repeat !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            left: 0 !important;
+            right: 0 !important;
         }
         
         @media (max-width: 750px) {
@@ -93,11 +108,13 @@
         
         @media (min-width: 751px) {
             .hero-background {
-                /* Masaüstü: görselin TAMAMI görünsün */
-                background-size: contain !important;
+                /* Masaüstü: fotoğraf tam genişlikte olsun, sol/sağda beyaz alan olmasın */
+                background-size: cover !important;
                 background-position: center center !important;
                 background-repeat: no-repeat !important;
-                max-height: 100vh !important;
+                width: 100% !important;
+                left: 0 !important;
+                right: 0 !important;
             }
             .hero-section-porsche {
                 min-height: 100vh !important;
@@ -6869,8 +6886,8 @@
                     const imageName = isMobile ? '1m.png' : '1.png';
                     const imagePath = `url('/images/cars/${imageName}')`;
 
-                    const bgSize = isMobile ? 'cover' : 'contain';
-                    const bgPosition = isMobile ? 'center center' : 'center top';
+                    const bgSize = 'cover'; // Hem mobile hem desktop için cover kullan
+                    const bgPosition = 'center center';
                     heroBackground.style.setProperty('background-image', imagePath, 'important');
                     heroBackground.style.setProperty('background-size', bgSize, 'important');
                     heroBackground.style.setProperty('background-position', bgPosition, 'important');
@@ -6888,8 +6905,8 @@
                     const img = new Image();
                     img.onload = function() {
                         const imagePath = `url('/images/cars/${imageName}')`;
-                        const bgSize = isMobile ? 'cover' : 'contain';
-                        const bgPosition = isMobile ? 'center center' : 'center top';
+                        const bgSize = 'cover'; // Hem mobile hem desktop için cover kullan
+                        const bgPosition = 'center center';
                         heroBackground.style.setProperty('background-image', imagePath, 'important');
                         heroBackground.style.setProperty('background-size', bgSize, 'important');
                         heroBackground.style.setProperty('background-position', bgPosition, 'important');

@@ -325,6 +325,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
             passwordInput.value = strongPassword;
 
+            if (confirmPasswordInput) {
+
+                confirmPasswordInput.value = strongPassword;
+
+                confirmPasswordInput.classList.remove('is-invalid');
+
+                confirmPasswordInput.classList.add('is-valid');
+
+                const confirmFb = confirmPasswordInput.closest('.form-group')?.querySelector('.invalid-feedback');
+
+                if (confirmFb) confirmFb.style.display = 'none';
+
+            }
+
             passwordInput.type = 'text';
 
             
