@@ -93,6 +93,7 @@
     }
 
 body { margin-top: 0 !important; }
+
 .navbar.fixed-top {
     /* Yeniden: navbar sayfa ile birlikte yukarıda kalıp, kaydırınca görünümden çıksın */
     position: absolute !important;
@@ -601,6 +602,11 @@ body { margin-top: 0 !important; }
     body.fahrzeuge-page .navbar-scrolled .account-btn,
     body.fahrzeuge-page .navbar-scrolled .account-btn .account-icon {
         color: #000000 !important;
+    }
+
+    /* Fahrzeuge: navbar ile altındaki kartlar arasında boşluk */
+    body.fahrzeuge-page .main-container {
+        padding-top: 1.5rem !important;
     }
 
     /* Ana sayfa (/) â€“ navbar /fahrzeuge ile aynÄ±, sadece localhost:3443/ iÃ§in */

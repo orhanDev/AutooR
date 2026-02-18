@@ -194,11 +194,27 @@ router.post('/register', async (req, res) => {
         const saltRounds = 10;
         const passwordHash = await bcrypt.hash(password, saltRounds);
 
-        const newUser = await query(`
-            INSERT INTO users (first_name, last_name, email, password_hash, phone_number, address, is_verified)
-            VALUES ($1, $2, $3, $4, $5, $6, TRUE)
-                RETURNING user_id, first_name, last_name, email, phone_number, address, is_admin, created_at
-            `, [first_name, last_name, normalizedEmail, passwordHash, phone_number || null, address || null]);
+        // Try to insert with password_hash first, fallback to password column
+        let newUser;
+        try {
+            newUser = await query(`
+                INSERT INTO users (first_name, last_name, email, password_hash, phone_number, address, is_verified)
+                VALUES ($1, $2, $3, $4, $5, $6, TRUE)
+                    RETURNING user_id, first_name, last_name, email, phone_number, address, is_admin, created_at
+                `, [first_name, last_name, normalizedEmail, passwordHash, phone_number || null, address || null]);
+        } catch (insertError) {
+            // If password_hash column doesn't exist, try with password column
+            if (insertError.code === '42703' || insertError.message.includes('password_hash')) {
+                console.log('password_hash column not found, using password column');
+                newUser = await query(`
+                    INSERT INTO users (first_name, last_name, email, password, phone_number, address, is_verified)
+                    VALUES ($1, $2, $3, $4, $5, $6, TRUE)
+                        RETURNING user_id, first_name, last_name, email, phone_number, address, is_admin, created_at
+                    `, [first_name, last_name, normalizedEmail, passwordHash, phone_number || null, address || null]);
+            } else {
+                throw insertError;
+            }
+        }
 
         const userId = newUser.rows[0].user_id;
         const userEmail = newUser.rows[0].email;
@@ -254,15 +270,39 @@ router.post('/login', async (req, res) => {
 
         const userRecord = user.rows[0];
         
-        // Check if user has a password_hash (OAuth users might not have one)
-        if (!userRecord.password_hash) {
+        // Support both 'password_hash' and 'password' column names
+        const passwordHash = userRecord.password_hash || userRecord.password;
+        
+        // Debug logging
+        console.log('=== LOGIN DEBUG ===');
+        console.log('Email:', normalizedEmail);
+        console.log('User found:', !!userRecord);
+        console.log('password_hash column:', userRecord.password_hash ? 'exists' : 'null');
+        console.log('password column:', userRecord.password ? 'exists' : 'null');
+        console.log('passwordHash length:', passwordHash ? passwordHash.length : 0);
+        console.log('passwordHash preview:', passwordHash ? passwordHash.substring(0, 30) + '...' : 'null');
+        
+        // Check if user has a password (OAuth users might not have one)
+        if (!passwordHash) {
+            console.log('No password hash found for user');
             return res.status(401).json({ 
                 error: 'Ungültige Anmeldedaten',
                 message: 'Dieses Konto wurde mit einem Social-Login erstellt. Bitte verwenden Sie die entsprechende Anmeldemethode.'
             });
         }
 
-        const isValidPassword = await bcrypt.compare(password, userRecord.password_hash);
+        // Validate bcrypt hash format (should start with $2a$, $2b$, or $2y$)
+        if (!passwordHash.match(/^\$2[ayb]\$/)) {
+            console.error('Invalid bcrypt hash format:', passwordHash.substring(0, 30));
+            return res.status(401).json({ 
+                error: 'Ungültige Anmeldedaten',
+                message: 'Passwort-Hash-Format ungültig. Bitte kontaktieren Sie den Support.'
+            });
+        }
+
+        const isValidPassword = await bcrypt.compare(password, passwordHash);
+        console.log('Password comparison result:', isValidPassword);
+        
         if (!isValidPassword) {
             return res.status(401).json({ error: 'Ungültige Anmeldedaten' });
         }
@@ -302,7 +342,7 @@ router.post('/login', async (req, res) => {
 
 router.get('/profile', authMiddleware, async (req, res) => {
     try {
-        const userId = req.user.userId;
+        const userId = req.user.userId;
         let user;
         try {
             user = await query(`
