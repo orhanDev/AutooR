@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8">
@@ -28,7 +28,7 @@
     <link rel="preload" href="/css/navbar.css?v=202601160048" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <link rel="preload" href="css/homepage.css?v=202601160048" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <link rel="preload" as="image" href="/images/cars/1.png" fetchpriority="high">
-    <link rel="preload" as="image" href="/images/cars/1m.png" media="(max-width: 747px)" fetchpriority="high">
+    <link rel="preload" as="image" href="/images/cars/1m.png" media="(max-width: 750px)" fetchpriority="high">
     <noscript><link rel="stylesheet" href="css/style.css?v=202601160048"><link rel="stylesheet" href="/css/navbar.css?v=202601160048"><link rel="stylesheet" href="css/homepage.css?v=202601160048"></noscript>
 
     <!-- CSS moved to homepage.css -->
@@ -43,12 +43,6 @@
             --porsche-gold: #d4af37;
         }
         
-        html {
-            overflow: hidden;
-            height: 100%;
-            width: 100%;
-        }
-        
         * {
             font-family: 'Inter', sans-serif;
         }
@@ -58,13 +52,10 @@
                 background-position: center !important;
             background-attachment: fixed !important;
             background-repeat: no-repeat !important;
-            height: 100%;
-            width: 100%;
+            min-height: 100vh;
             color: var(--porsche-dark-gray);
             line-height: 1.6;
-            overflow: hidden;
-            margin: 0;
-            padding: 0;
+            overflow-x: hidden;
             background-color: transparent !important;
         }
 
@@ -93,14 +84,14 @@
             background-repeat: no-repeat !important;
         }
         
-        @media (max-width: 747px) {
+        @media (max-width: 750px) {
             .hero-background {
                 background-size: cover !important;
                 background-position: center center !important;
             }
         }
         
-        @media (min-width: 748px) {
+        @media (min-width: 751px) {
             .hero-background {
                 background-size: 100% auto !important;
                 background-position: center top !important;
@@ -110,6 +101,21 @@
                 min-height: 100vh !important;
                 max-height: 100vh !important;
                 overflow: hidden !important;
+            }
+
+            /* SADECE ANA SAYFA: navbar doğrudan hero görselinin üstünde, şeffaf olsun */
+            body .navbar {
+                background: transparent !important;
+                backdrop-filter: none !important;
+                -webkit-backdrop-filter: none !important;
+                box-shadow: none !important;
+            }
+            body #navbar-container {
+                position: absolute !important;
+                top: 0 !important;
+                left: 0 !important;
+                right: 0 !important;
+                z-index: 1050 !important;
             }
         }
         
@@ -124,7 +130,7 @@
             opacity: 0.3;
         }
 
-        @media (max-width: 747px) {
+        @media (max-width: 750px) {
             .hero-section {
                 padding: 80px 0 60px !important;
                 transform: translateY(0) !important;
@@ -311,7 +317,7 @@
                 padding-right: calc(1.25rem + 2.5rem) !important;
             }
             
-            @media (max-width: 747px) {
+            @media (max-width: 750px) {
                 .mobile-form-toggle[style] {
                     display: block !important;
                     width: fit-content !important;
@@ -801,7 +807,7 @@
             }
         }
         
-        @media (max-width: 747px) {
+        @media (max-width: 750px) {
             .hero-title {
                 font-size: 2rem !important;
             }
@@ -1125,7 +1131,7 @@
         }
 
         
-        @media (min-width: 748px) {
+        @media (min-width: 751px) {
             
             .homepage-form-container,
             .homepage-form-container.form-open,
@@ -1135,7 +1141,8 @@
             .homepage-form-container:not(.form-open)[style] {
                 position: relative !important;
                 top: auto !important;
-                left: 21rem !important;
+                /* Eski konum hissi: sağa doğru offset kalsın ama dar genişlikte taşmasın */
+                left: clamp(0rem, 10vw, 21rem) !important;
                 right: auto !important;
                 transform: none !important;
                 width: 90% !important;
@@ -1149,6 +1156,55 @@
                 backdrop-filter: none !important;
                 -webkit-backdrop-filter: none !important;
                 color: #000000 !important;
+                overflow: visible !important;
+            }
+
+            /* 751px ve üzeri: form ve içindeki her şey gizlenmeden, sadece ölçeklenerek görünsün */
+            .homepage-form-container .form-label,
+            .homepage-form-container label {
+                font-size: clamp(0.7rem, 0.9vw, 0.9rem) !important;
+            }
+            
+            .homepage-form-container .form-control,
+            .homepage-form-container .form-select {
+                font-size: clamp(0.75rem, 1vw, 0.95rem) !important;
+            }
+
+            .homepage-form-container .input-group-text {
+                font-size: clamp(0.75rem, 0.9vw, 0.9rem) !important;
+            }
+
+            /* İkon kutusu ile input/select yükseklikleri eşit kalsın */
+            .homepage-form-container .input-group {
+                align-items: stretch !important;
+            }
+            .homepage-form-container .input-group-text,
+            .homepage-form-container .form-control,
+            .homepage-form-container .form-select {
+                height: 44px !important;
+                min-height: 44px !important;
+                box-sizing: border-box !important;
+            }
+            .homepage-form-container .input-group-text {
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                line-height: 1 !important;
+                padding-top: 0 !important;
+                padding-bottom: 0 !important;
+            }
+            .homepage-form-container .input-group-text i {
+                line-height: 1 !important;
+            }
+
+            /* Büyük ekranda (751+) iki kolon düzeni sabit kalsın (Bootstrap lg kırılımına takılmasın) */
+            .homepage-form-container .ab-form-row {
+                --bs-gutter-x: clamp(0.5rem, 1.2vw, 1rem) !important;
+                --bs-gutter-y: clamp(0.5rem, 1.2vw, 1rem) !important;
+            }
+            .homepage-form-container .col-lg-6 {
+                flex: 0 0 50% !important;
+                max-width: 50% !important;
             }
 
             .homepage-form-container .summary-box,
@@ -1346,7 +1402,7 @@
             margin-bottom: 0.5rem !important;
         }
 
-        @media (min-width: 748px) {
+        @media (min-width: 751px) {
             .porsche-search-form {
                 padding: 2rem 3rem !important;
                 background: #f2f2f2 !important;
@@ -1657,7 +1713,7 @@
             }
         }
         
-        @media (max-width: 747px) {
+        @media (max-width: 750px) {
             .desktop-search-layout {
                 display: none !important;
             }
@@ -1683,7 +1739,7 @@
             }
         }
 
-        @media (max-width: 747px) {
+        @media (max-width: 750px) {
             .hero-main-title {
                 font-size: 2rem !important;
             }
@@ -1707,7 +1763,7 @@
             }
         }
 
-        @media (min-width: 748px) {
+        @media (min-width: 751px) {
             .discover-button-container {
                 margin-top: 1rem !important;
                 transform: translateY(0) !important;
@@ -1718,14 +1774,14 @@
             }
         }
 
-        @media (max-width: 747px) {
+        @media (max-width: 750px) {
             .discover-button-container {
                 margin-top: 2px !important;
                 transform: translateY(0) !important;
             }
         }
 
-        @media (max-width: 747px) {
+        @media (max-width: 750px) {
             .porsche-search-form {
                 transform: translateY(2rem) !important;
                 background: #f2f2f2 !important;
@@ -1844,7 +1900,7 @@
             }
         }
         
-        @media (min-width: 748px) {
+        @media (min-width: 751px) {
             .perfect-search-form {
                 max-width: 1400px !important;
                 gap: 2rem !important;
@@ -2066,7 +2122,7 @@
         }
         
         
-        @media (max-width: 747px) {
+        @media (max-width: 750px) {
             .search-item:nth-child(3),
             .search-item:nth-child(4),
             .search-item:nth-child(5),
@@ -2083,7 +2139,7 @@
             }
         }
         
-        @media (max-width: 747px) {
+        @media (max-width: 750px) {
             .search-item {
                 width: 100% !important;
                 flex: 1 1 100% !important;
@@ -2863,7 +2919,7 @@
             left: 100%;
         }
 
-        @media (max-width: 747px) {
+        @media (max-width: 750px) {
             .hero-content-porsche {
                 padding: 250px 30px 0 30px !important;
             }
@@ -2905,7 +2961,7 @@
             }
         }
         
-        @media (max-width: 747px) {
+        @media (max-width: 750px) {
             .btn-content {
                 padding: 15px 30px;
                 gap: 12px;
@@ -3219,14 +3275,14 @@
             max-width: 100%;
         }
         
-        @media (max-width: 747px) {
+        @media (max-width: 750px) {
             .cars-grid {
                 grid-template-columns: repeat(3, 1fr);
                 gap: 1.5rem;
             }
         }
         
-        @media (max-width: 747px) {
+        @media (max-width: 750px) {
             .cars-grid {
                 grid-template-columns: 1fr !important;
                 gap: 1.5rem !important;
@@ -3541,7 +3597,7 @@
             transform: translateY(-2px);
         }
 
-        @media (max-width: 747px) {
+        @media (max-width: 750px) {
             .hero-title {
                 font-size: 2.5rem;
             }
@@ -3683,7 +3739,7 @@
         }
 
         
-        @media (max-width: 747px) {
+        @media (max-width: 750px) {
             .desktop-search-layout {
                 grid-template-columns: 1fr !important;
                 gap: 1.5rem !important;
@@ -3752,14 +3808,14 @@
             flex: 0 0 calc(80px + 0.5rem) !important;
         }
         
-        @media (max-width: 747px) { 
+        @media (max-width: 750px) { 
             .qr-select { 
                 flex: 1 1 auto; 
                 max-width: none; 
             } 
         }
         
-        @media (min-width: 748px) { 
+        @media (min-width: 751px) { 
             .col-xl-3 { 
                 width: 50% !important; 
             } 
@@ -3888,7 +3944,7 @@
         }
         
         
-        @media (min-width: 748px) {
+        @media (min-width: 751px) {
             .summary-box {
                 border: 2px solid rgba(255, 255, 255, 0.3) !important;
                 background: rgba(0, 0, 0, 0.6) !important;
@@ -3950,7 +4006,7 @@
             
             
             
-            @media (min-width: 748px) {
+            @media (min-width: 751px) {
                 #homepage-search-btn {
                     background: linear-gradient(135deg, #ee7600 0%, #d66800 100%) !important;
                     border: none !important;
@@ -4232,7 +4288,7 @@
             }
         }
         
-        @media (max-width: 747px) {
+        @media (max-width: 750px) {
             
             .homepage-form-container.form-open .mobile-form-toggle {
                 display: none !important;
@@ -4362,7 +4418,7 @@
         }
         
         
-        @media (max-width: 747px) {
+        @media (max-width: 750px) {
             .flatpickr-calendar {
                 position: fixed !important;
                 top: auto !important;
@@ -4531,7 +4587,7 @@
         }
         
         
-        @media (max-width: 747px) {
+        @media (max-width: 750px) {
             .homepage-form-container .input-group.flex-nowrap {
                 flex-wrap: nowrap !important;
                 overflow: hidden !important;
@@ -4559,7 +4615,7 @@
             }
         }
         
-        @media (max-width: 747px) {
+        @media (max-width: 750px) {
             .homepage-form-container .input-group.flex-nowrap .form-control {
                 max-width: calc(55% - 5px) !important;
             }
@@ -4588,7 +4644,7 @@
         }
 
         
-        @media (max-width: 747px) {
+        @media (max-width: 750px) {
             
             .hero-content-porsche {
                 padding-top: 2rem !important;
@@ -4942,17 +4998,23 @@
 
         
 
-        @media (min-width: 748px) {
+        @media (min-width: 751px) {
+            /* 751px+ (Büyük ekran): Form/icerik ASLA gizlenmesin */
             #date-location-form,
             .porsche-search-form,
             .search-form,
             .perfect-search-form,
             .desktop-search-layout {
-                display: none !important;
+                display: block !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+                height: auto !important;
+                max-height: none !important;
+                overflow: visible !important;
             }
         }
 
-        @media (min-width: 748px) {
+        @media (min-width: 751px) {
             .ab-form-row::before {
                 display: block !important;
                 content: '' !important;
@@ -5133,13 +5195,13 @@
             }
         }
 
-        @media (max-width: 747px) {
+        @media (max-width: 750px) {
             .ab-form-row::before {
                 display: none;
             }
         }
 
-        @media (max-width: 747px) {
+        @media (max-width: 750px) {
             #peek-toggle {
                 display: flex !important;
             }
@@ -5171,7 +5233,7 @@
         }
 
         
-        @media (min-width: 748px) {
+        @media (min-width: 751px) {
             #scroll-arrow-container {
                 margin: 1rem !important;
                
@@ -5179,7 +5241,7 @@
         }
 
     
-    @media (max-width: 747px) {
+    @media (max-width: 750px) {
         /* Tarih placeholder siyah - mobil */
         #qr-pickup-date::placeholder,
         #qr-dropoff-date::placeholder {
@@ -5596,7 +5658,7 @@
                             text-align: left !important;
                         }
 
-                        @media (max-width: 747px) {
+                        @media (max-width: 750px) {
                             .mobile-search-layout select {
                                 text-align: left !important;
                                 padding-left: 8px !important;
@@ -5707,7 +5769,7 @@
                                 margin-bottom: 3px !important;
                             }
                             
-                            @media (max-width: 747px) {
+                            @media (max-width: 750px) {
                                 .discover-button-container {
                                     transform: translateY(-2rem) !important;
                                     margin-top: -2rem !important;
@@ -5900,7 +5962,7 @@
                             color: #000000 !important;
                         }
 
-                        @media (min-width: 748px) {
+                        @media (min-width: 751px) {
                             .desktop-search-layout {
                                 background: rgba(255, 255, 255, 0.1) !important;
                                 backdrop-filter: blur(20px) saturate(180%) !important;
@@ -6012,7 +6074,7 @@
                             top: auto !important;
                         }
 
-                            @media (min-width: 748px) {
+                            @media (min-width: 751px) {
                                 .custom-calendar {
                                     z-index: 9999 !important;
                                     position: fixed !important;
@@ -6043,7 +6105,7 @@
                                 transform: translate(-50%, -50%) !important;
                             }
 
-                            @media (min-width: 748px) {
+                            @media (min-width: 751px) {
                                 .custom-calendar .calendar-title {
                                     font-size: 13px !important;
                                     font-weight: 600 !important;
@@ -6082,7 +6144,7 @@
                             }
                         }
 
-                        @media (max-width: 747px) {
+                        @media (max-width: 750px) {
                         .custom-calendar.show {
                             position: fixed !important;
                             top: 50% !important;
@@ -6175,7 +6237,7 @@
                             overflow: visible !important;
                         }
 
-                        @media (min-width: 748px) {
+                        @media (min-width: 751px) {
                             .porsche-date-wrapper {
                                 overflow: visible !important;
                                 position: relative !important;
@@ -6249,7 +6311,7 @@
                             box-shadow: 0 2px 8px rgba(212, 175, 55, 0.3);
                         }
 
-                        @media (min-width: 748px) {
+                        @media (min-width: 751px) {
                             .discover-button {
                                 height: 50px !important;
         width: 35rem !important;
@@ -6504,7 +6566,7 @@
 
                         function scrollToPopularCars() {
                             
-                            if (window.innerWidth < 1200) {
+                            if (window.innerWidth < 751) {
                                 
                                 const heroSection = document.querySelector('.hero-section-porsche');
                                 heroSection.style.display = 'none';
@@ -6691,7 +6753,7 @@
             visibility: visible !important;
         }
 
-        @media (max-width: 747px) {
+        @media (max-width: 750px) {
             .back-to-top-btn,
             .scroll-down-btn {
                 right: 12px !important;
@@ -6746,7 +6808,7 @@
 
         backToTopBtn.addEventListener('click', function() {
             
-            if (window.innerWidth < 1200) {
+            if (window.innerWidth < 751) {
                 const heroSection = document.querySelector('.hero-section-porsche');
                 const navbar = document.getElementById('navbar-container');
                 
@@ -6801,7 +6863,7 @@
             function updateMobileBackground() {
                 const heroBackground = document.querySelector('.hero-background');
                 if (heroBackground) {
-                    const isMobile = window.innerWidth <= 747;
+                    const isMobile = window.innerWidth <= 750;
                     const imageName = isMobile ? '1m.png' : '1.png';
                     const imagePath = `url('/images/cars/${imageName}')`;
 
@@ -6819,7 +6881,7 @@
                 updateMobileBackground();
                 const heroBackground = document.querySelector('.hero-background');
                 if (heroBackground) {
-                    const isMobile = window.innerWidth <= 747;
+                    const isMobile = window.innerWidth <= 750;
                     const imageName = isMobile ? '1m.png' : '1.png';
                     const img = new Image();
                     img.onload = function() {
@@ -7017,8 +7079,8 @@
             const peekToggle = document.getElementById('peek-toggle');
             const isMobileCheck = () =>
                 /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
-                || window.innerWidth <= 747;
-            const isPeekMode = () => isMobileCheck() || window.innerWidth >= 748;
+                || window.innerWidth <= 750;
+            const isPeekMode = () => isMobileCheck() || window.innerWidth >= 751;
             const isMobile = isMobileCheck();
             
             if (formContainer) {
@@ -7205,7 +7267,7 @@
                 const today = new Date();
                 today.setHours(0, 0, 0, 0);
 
-                const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
+                const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 750;
                 
                 const opts = { 
                     dateFormat: 'd.m.Y', 
@@ -7791,7 +7853,7 @@
                         });
                     }
 
-                    const isMobile = window.matchMedia('(max-width: 747px)').matches;
+                    const isMobile = window.matchMedia('(max-width: 750px)').matches;
                     if (isMobile) {
                         const clearBtn = this.calendar.querySelector('#' + (this.calendar.id.includes('pickup') ? 'pickup-clear' : 'dropoff-clear'));
                         const todayBtn = this.calendar.querySelector('#' + (this.calendar.id.includes('pickup') ? 'pickup-today' : 'dropoff-today'));
@@ -8544,7 +8606,6 @@
                 }, 500);
             });
             }
-
         })();
     </script>
     <script>

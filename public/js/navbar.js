@@ -50,7 +50,7 @@ function isHomePage() {
 function createNavbar() {
     const isLoginPage = window.location.pathname === '/login' || window.location.pathname === '/login.html' || window.location.pathname.includes('/login');
     const isHome = isHomePage();
-    const isMobile = window.innerWidth < 748;
+    const isMobile = window.innerWidth < 751;
     const isRealHomepage = window.location.pathname === '/' || window.location.pathname === '/index.html';
     const isDesktopHomepage = isRealHomepage && !isMobile;
     const logoSrc = '/js/autoor_logo.png'; // Use consistent logo for all pages
@@ -81,7 +81,8 @@ function createNavbar() {
         }
     }
     
-    const navbarClass = isLoginPage ? 'navbar' : 'navbar fixed-top';
+    // Navbar tüm sayfalarda sayfa akışıyla birlikte yukarı çıkacak; fixed-top kullanma
+    const navbarClass = 'navbar';
     
     // Desktop navigation links
     const navLinks = `

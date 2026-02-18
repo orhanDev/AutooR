@@ -32,10 +32,9 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use((req, res, next) => {
+  // Eski Netlify domainleri kaldırıldı; yerel + yeni FRONTEND_URL için sade liste
   const allowedOrigins = [
-    'https://autoor-demo.netlify.app',
-    'https://autoor.netlify.app',
-    'http://localhost:3000',
+    process.env.FRONTEND_URL || 'http://localhost:3000',
     'http://localhost:3001',
     'https://localhost:3000'
   ];
@@ -75,8 +74,8 @@ app.use((req, res, next) => {
 
   const isDevelopment = process.env.NODE_ENV !== 'production';
   const cspPolicy = isDevelopment 
-    ? "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://code.jquery.com https://unpkg.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com https://unpkg.com; font-src 'self' https://cdn.jsdelivr.net https://fonts.gstatic.com; img-src 'self' data: https:; frame-src 'self' https://www.google.com https://maps.google.com https://*.google.com; connect-src 'self' https://*.netlify.app https://autoor-production.up.railway.app https://localhost:* http://localhost:* ws://localhost:* wss://localhost:* https://cdn.jsdelivr.net https://*.tile.openstreetmap.org; upgrade-insecure-requests; block-all-mixed-content"
-    : "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://code.jquery.com https://unpkg.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com https://unpkg.com; font-src 'self' https://cdn.jsdelivr.net https://fonts.gstatic.com; img-src 'self' data: https:; frame-src 'self' https://www.google.com https://maps.google.com https://*.google.com; connect-src 'self' https://*.netlify.app https://autoor-production.up.railway.app https://localhost:* http://localhost:* ws://localhost:* wss://localhost:* https://cdn.jsdelivr.net https://*.tile.openstreetmap.org; upgrade-insecure-requests; block-all-mixed-content"
+    ? "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://code.jquery.com https://unpkg.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com https://unpkg.com; font-src 'self' https://cdn.jsdelivr.net https://fonts.gstatic.com; img-src 'self' data: https:; frame-src 'self' https://www.google.com https://maps.google.com https://*.google.com; connect-src 'self' https://localhost:* http://localhost:* ws://localhost:* wss://localhost:* https://cdn.jsdelivr.net https://*.tile.openstreetmap.org; upgrade-insecure-requests; block-all-mixed-content"
+    : "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://code.jquery.com https://unpkg.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com https://unpkg.com; font-src 'self' https://cdn.jsdelivr.net https://fonts.gstatic.com; img-src 'self' data: https:; frame-src 'self' https://www.google.com https://maps.google.com https://*.google.com; connect-src 'self' https://localhost:* http://localhost:* ws://localhost:* wss://localhost:* https://cdn.jsdelivr.net https://*.tile.openstreetmap.org; upgrade-insecure-requests; block-all-mixed-content"
   res.setHeader('Content-Security-Policy', cspPolicy);
   next();
 });

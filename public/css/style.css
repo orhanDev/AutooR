@@ -10,22 +10,18 @@ html, body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     line-height: 1.6;
     color: #242921;
-    background-color: #f7f7f7; 
-    height: 100%;
+    background-color: #f7f7f7;
+    min-height: 100vh;
     width: 100%;
-    overflow: hidden;
     max-width: 100%;
+    /* Normal scroll: yatay gizli, dikey otomatik */
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
-@media (min-width: 748px) {
-    /* Desktop: navbar fixed olduğu için body padding-top sabit */
-    body {
-        padding-top: 80px !important;
-    }
-}
-
+/* Tüm sayfalarda: inline/page-içi padding-top:80px'leri ez (navbar aşağı kaymasın) */
 body {
-    padding-top: 80px;
+    padding-top: 0 !important;
 }
 
 .btn-register, .btn-login {
@@ -464,7 +460,7 @@ body {
     color: #ee7600;
 }
 
-@media (max-width: 747px) {
+@media (max-width: 750px) {
     .hero-title {
         font-size: 2.5rem;
     }
@@ -738,7 +734,7 @@ body {
     box-shadow: 0 8px 25px rgba(213, 0, 28, 0.3);
 }
 
-@media (max-width: 747px) {
+@media (max-width: 750px) {
     .hero-section {
         padding: 50px 0 30px;
         min-height: 40vh;
@@ -759,7 +755,7 @@ body {
     }
 }
 
-@media (max-width: 747px) {
+@media (max-width: 750px) {
     .hero-section {
         padding: 40px 0 25px;
         min-height: 35vh;
@@ -907,7 +903,7 @@ body {
     }
 }
 
-@media (max-width: 747px) {
+@media (max-width: 750px) {
     .hero-title-porsche {
         font-size: 2.5rem;
         letter-spacing: 1px;
@@ -929,7 +925,7 @@ body {
     }
 }
 
-@media (max-width: 747px) {
+@media (max-width: 750px) {
     .hero-title-porsche {
         font-size: 2rem;
         letter-spacing: 0.5px;
@@ -1146,7 +1142,7 @@ body {
     text-decoration: none;
 }
 
-@media (max-width: 747px) {
+@media (max-width: 750px) {
     .popular-cars-section {
         padding: 15px 0;
     }
@@ -1168,7 +1164,7 @@ body {
     }
 }
 
-@media (max-width: 747px) {
+@media (max-width: 750px) {
     .section-title {
         font-size: 2rem;
     }
@@ -1332,7 +1328,7 @@ body {
     box-shadow: 0 6px 16px rgba(238, 118, 0, 0.35);
 }
 
-@media (max-width: 747px) {
+@media (max-width: 750px) {
     .hero-section-porsche {
         height: 100vh;
     }
@@ -1415,7 +1411,7 @@ body {
     }
 }
 
-@media (max-width: 747px) {
+@media (max-width: 750px) {
     .popular-cars-section {
         padding: 60px 0;
     }
@@ -1469,7 +1465,7 @@ body {
     }
 }
 
-@media (max-width: 747px) {
+@media (max-width: 750px) {
     .hero-section-porsche {
         height: 80vh;
     }
@@ -1575,7 +1571,7 @@ body {
     }
 }
 
-@media (max-width: 747px) {
+@media (max-width: 750px) {
     .section-title {
         font-size: 1.5rem;
         letter-spacing: 1px;
@@ -1669,7 +1665,7 @@ body {
     }
 }
 
-@media (max-width: 747px) {
+@media (max-width: 750px) {
     .popular-cars-section {
         padding: 40px 0;
     }
@@ -1766,7 +1762,7 @@ body {
     }
 }
 
-@media (max-width: 747px) {
+@media (max-width: 750px) {
     .section-title {
         font-size: 1.1rem;
     }
@@ -1869,7 +1865,7 @@ body {
     flex: unset !important;
 }
 
-@media (max-width: 747px) {
+@media (max-width: 750px) {
     .hero-section-porsche {
         height: 100vh !important;
         min-height: 100vh !important;
@@ -1888,7 +1884,7 @@ body {
     }
 }
 
-@media (max-width: 747px) {
+@media (max-width: 750px) {
     .hero-section-porsche {
         height: 100vh !important;
         min-height: 100vh !important;
@@ -1907,7 +1903,7 @@ body {
     }
 }
 
-@media (max-width: 747px) {
+@media (max-width: 750px) {
     .hero-section-porsche {
         height: 100vh !important;
         min-height: 100vh !important;
@@ -1926,21 +1922,21 @@ body {
     }
 }
 
-@media (max-width: 747px) {
+@media (max-width: 750px) {
     #popular-cars-container {
         grid-template-columns: repeat(3, 1fr) !important;
         gap: 1.2rem !important;
     }
 }
 
-@media (max-width: 747px) {
+@media (max-width: 750px) {
     #popular-cars-container {
         grid-template-columns: repeat(2, 1fr) !important;
         gap: 1rem !important;
     }
 }
 
-@media (max-width: 747px) {
+@media (max-width: 750px) {
     #popular-cars-container {
         grid-template-columns: repeat(2, 1fr) !important;
         gap: 0.8rem !important;
@@ -1948,7 +1944,7 @@ body {
     }
 }
 
-@media (max-width: 747px) {
+@media (max-width: 750px) {
     #popular-cars-container {
         grid-template-columns: 1fr !important;
         gap: 0.6rem !important;
@@ -1956,7 +1952,7 @@ body {
     }
 }
 
-@media (max-width: 747px) {
+@media (max-width: 750px) {
     #popular-cars-container {
         grid-template-columns: 1fr !important;
         gap: 0.5rem !important;
@@ -1964,7 +1960,7 @@ body {
     }
 }
 
-@media (max-width: 747px) {
+@media (max-width: 750px) {
     #popular-cars-container {
         grid-template-columns: 1fr !important;
         gap: 0.4rem !important;
@@ -1987,7 +1983,7 @@ body {
 
 #credit-card-details .form-control.filled { border-color: #ffc107 !important; box-shadow: 0 0 0 1px rgba(255,193,7,.25); }
 
-@media (max-width: 747px) {
+@media (max-width: 750px) {
     #pickup-date-selector,
     #dropoff-date-selector,
     #qr-pickup-date,
@@ -2011,7 +2007,7 @@ body {
     }
 }
 
-@media (max-width: 747px) {
+@media (max-width: 750px) {
     #pickup-date-selector,
     #dropoff-date-selector,
     #qr-pickup-date,
@@ -2029,7 +2025,7 @@ body {
     }
 }
 
-@media (max-width: 747px) {
+@media (max-width: 750px) {
     #pickup-date-selector,
     #dropoff-date-selector,
     #qr-pickup-date,

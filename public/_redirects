@@ -1,9 +1,0 @@
-/api/*  https://autoor-production.up.railway.app/api/:splat  200
-
-/auth/*  https://autoor-production.up.railway.app/auth/:splat  200
-
-/login    /login.html   200
-/register    /register.html   200
-
-# SPA fallback - must be last
-/*    /index.html   200

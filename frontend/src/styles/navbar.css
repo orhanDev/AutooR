@@ -151,7 +151,7 @@ body { margin-top: 0 !important; }
         align-items: center;
 }
 
-@media (min-width: 992px) {
+@media (min-width: 751px) {
     .navbar-toggler {
         display: flex !important;
         visibility: visible !important;

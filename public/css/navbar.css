@@ -14,7 +14,7 @@
     justify-content: center;
 }
 
-@media (min-width: 748px) {
+@media (min-width: 751px) {
     .navbar-desktop-nav {
         display: flex !important;
         position: relative !important;
@@ -49,7 +49,7 @@
     pointer-events: auto !important;
 }
 
-@media (min-width: 748px) {
+@media (min-width: 751px) {
     .navbar-toggler-mobile-only,
     .navbar-back-btn-mobile-only {
         display: none !important;
@@ -63,7 +63,7 @@
     display: none;
 }
 
-@media (max-width: 747px) {
+@media (max-width: 750px) {
     .navbar-mobile-nav {
         display: flex !important;
     }
@@ -80,7 +80,7 @@
         box-shadow: none !important;
     }
     
-    @media (min-width: 748px) {
+    @media (min-width: 751px) {
         .navbar {
             transition: background-color 0.3s ease, backdrop-filter 0.3s ease !important;
             transform: none !important;
@@ -94,24 +94,16 @@
 
 body { margin-top: 0 !important; }
 .navbar.fixed-top {
+    /* Yeniden: navbar sayfa ile birlikte yukarıda kalıp, kaydırınca görünümden çıksın */
     position: absolute !important;
     top: 0; left: 0; right: 0;
     z-index: 1050 !important;
     display: block !important;
     visibility: visible !important;
     opacity: 1 !important;
-}
-
-@media (min-width: 748px) {
-    .navbar.fixed-top {
-        position:  absolute !important;
-        top: 0 !important;
-        left: 0 !important;
-        right: 0 !important;
-        transform: translateZ(0) !important;
-        backface-visibility: hidden !important;
-        will-change: auto !important;
-    }
+    transform: none !important;
+    backface-visibility: visible !important;
+    will-change: auto !important;
 }
 
 .navbar-scrolled {
@@ -166,7 +158,7 @@ body { margin-top: 0 !important; }
 }
 
 /* Desktop: Logo on the left */
-@media (min-width: 748px) {
+@media (min-width: 751px) {
     .brand-center {
         position: relative;
         left: 0;
@@ -189,7 +181,7 @@ body { margin-top: 0 !important; }
     max-height: calc(100px + 2rem);
 }
 
-@media (min-width: 748px) {
+@media (min-width: 751px) {
     .brand-center .brand-logo {
         position: relative;
         top: auto;
@@ -201,7 +193,7 @@ body { margin-top: 0 !important; }
     order: 3;
 }
 
-@media (min-width: 748px) {
+@media (min-width: 751px) {
     .account {
         margin-left: auto !important;
     }
@@ -235,7 +227,7 @@ body { margin-top: 0 !important; }
     color: #000000 !important;
 }
 
-@media (max-width: 747px) {
+@media (max-width: 750px) {
     .account-btn {
         color: #000000 !important;
     }
@@ -264,7 +256,7 @@ body { margin-top: 0 !important; }
     overflow: visible !important;
 }
 
-@media (max-width: 747px) {
+@media (max-width: 750px) {
     .account-menu {
         z-index: 1101 !important;
         position: fixed !important;
@@ -410,7 +402,7 @@ body { margin-top: 0 !important; }
     background-color: #e8e8e8;
 }
 
-@media (max-width: 747px) {
+@media (max-width: 750px) {
     .menu-item {
         padding: 1rem 1.25rem;
         min-height: 48px;
@@ -572,7 +564,7 @@ body { margin-top: 0 !important; }
 }
 
 /* BÃ¼yÃ¼k ekranlarda ana sayfa - her zaman beyaz */
-@media (min-width: 748px) {
+@media (min-width: 751px) {
     body.home-page .navbar-toggler-icon,
     body.home-page .navbar-scrolled .navbar-toggler-icon {
         background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
@@ -933,7 +925,7 @@ body.real-home-page .navbar-toggler {
     border-radius: 8px;
 }
 
-@media (max-width: 747px) {
+@media (max-width: 750px) {
     .navbar {
         padding: 0.5rem 0;
     }
@@ -1105,7 +1097,7 @@ body.real-home-page .navbar-toggler {
          display: none;
      }
      
-    @media (min-width: 748px) {
+    @media (min-width: 751px) {
         /* DESKTOP: Hide hamburger menu completely */
         .navbar .navbar-toggler,
         body.home-page .navbar-toggler,
@@ -1177,7 +1169,7 @@ body.real-home-page .navbar-toggler {
         }
     }
     
-    @media (min-width: 748px) {
+    @media (min-width: 751px) {
         .navbar {
             display: block !important;
             visibility: visible !important;
@@ -1211,8 +1203,8 @@ body.real-home-page .navbar-toggler {
         }
     }
     
-    @media (min-width: 748px) {
-        .navbar {
+    @media (min-width: 751px) {
+        body:not(.real-home-page) .navbar {
             display: block !important;
             visibility: visible !important;
             opacity: 1 !important;
@@ -1221,7 +1213,7 @@ body.real-home-page .navbar-toggler {
             -webkit-backdrop-filter: blur(10px) !important;
         }
         
-        .navbar.navbar-scrolled {
+        body:not(.real-home-page) .navbar.navbar-scrolled {
             background: rgba(255, 255, 255, 0.95) !important;
             backdrop-filter: blur(10px) !important;
             -webkit-backdrop-filter: blur(10px) !important;
@@ -1253,8 +1245,22 @@ body.real-home-page .navbar-toggler {
             display: none !important;
         }
     }
+
+    /* Ana sayfa (/): navbar hero görselinin üstünde dursun, arkaplan 1.png görünsün */
+    body.real-home-page #navbar-container {
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        z-index: 1050 !important;
+    }
+    body.real-home-page .navbar {
+        background: transparent !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+    }
     
-    @media (max-width: 747px) {
+    @media (max-width: 750px) {
         .brand-center {
             display: none !important;
         }
@@ -1400,14 +1406,14 @@ body.real-home-page .navbar-toggler {
         }
         
         .navbar .collapse.navbar-collapse {
-            width: 100% !important;
-            max-width: 100% !important;
+            width: 100vw !important;
+            max-width: 100vw !important;
             left: 0 !important;
             right: 0 !important;
         }
         
         .navbar .collapsing {
-            width: 100% !important;
+            width: 100vw !important;
             max-width: 100vw !important;
             left: 0 !important;
             right: 0 !important;
@@ -1732,7 +1738,7 @@ body.real-home-page .navbar-toggler {
      }
 }
 
-@media (min-width: 748px) {
+@media (min-width: 751px) {
     .mobile-menu-backdrop {
         display: none !important;
     }
@@ -1750,17 +1756,17 @@ body.real-home-page .navbar-toggler {
     }
 }
 
-@media (min-width: 748px) {
-    /* Desktop: Navbar sağa-sola kaymasın - scrollbar genişliği sabit */
+@media (min-width: 751px) {
+    /* Desktop: Navbar sağa-sola kaymasın - tarayıcının varsayılan scrollbar'ını kullan */
     html {
-        overflow-y: scroll !important;
+        overflow-y: auto !important;
     }
     body {
-        overflow-y: scroll !important;
+        overflow-y: auto !important;
     }
     .navbar {
-        width: 100% !important;
-        max-width: 100% !important;
+        width: 100vw !important;
+        max-width: 100vw !important;
         box-sizing: border-box !important;
     }
     .navbar .container,
@@ -1778,8 +1784,8 @@ body.real-home-page .navbar-toggler {
         gap: 1rem !important;
     }
     #navbar-container {
-        width: 100% !important;
-        max-width: 100% !important;
+        width: 100vw !important;
+        max-width: 100vw !important;
         box-sizing: border-box !important;
     }
     
@@ -1798,16 +1804,19 @@ body.real-home-page .navbar-toggler {
         display: flex !important;
         justify-content: center !important;
         align-items: center !important;
-        gap: 0.75rem !important;
+        /* Küçük masaüstü genişliklerinde aralığı küçült, büyükte büyüt */
+        gap: clamp(0.25rem, 1vw, 0.85rem) !important;
         flex-wrap: nowrap !important;
         min-width: 0 !important;
-        overflow: hidden !important;
+        /* Linkler asla kesilmesin, gizlenmesin */
+        overflow: visible !important;
     }
     .navbar-desktop-nav .nav-link-desktop {
         white-space: nowrap !important;
         flex-shrink: 0 !important;
-        font-size: 0.85rem !important;
-        padding: 0.5rem 0.5rem !important;
+        /* Desktop linkler daha okunaklı olsun */
+        font-size: clamp(0.9rem, 1.02vw, 1.05rem) !important;
+        padding: 0.4rem clamp(0.4rem, 0.7vw, 0.9rem) !important;
     }
     .navbar .account {
         flex-shrink: 0 !important;

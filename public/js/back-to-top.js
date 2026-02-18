@@ -52,7 +52,7 @@
             visibility: visible !important;
         }
 
-        @media (max-width: 1199px) {
+        @media (max-width: 750px) {
             .back-to-top-btn {
                 width: 60px !important;
                 height: 60px !important;
