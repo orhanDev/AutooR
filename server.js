@@ -32,29 +32,24 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use((req, res, next) => {
-  // Eski Netlify domainleri kaldırıldı; yerel + yeni FRONTEND_URL için sade liste
   const allowedOrigins = [
     process.env.FRONTEND_URL || 'http://localhost:3000',
     'http://localhost:3001',
-    'https://localhost:3000'
+    'https://localhost:3000',
+    'https://autoor-demo.netlify.app'   // Netlify frontend
   ];
   
   const origin = req.headers.origin;
-  if (allowedOrigins.some(allowed => {
-    if (allowed.includes('*')) {
-      return origin && origin.includes(allowed.replace('*.', ''));
-    }
-    return origin === allowed;
-  })) {
-    res.setHeader('Access-Control-Allow-Origin', origin || '*');
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
   } else if (process.env.NODE_ENV !== 'production') {
     res.setHeader('Access-Control-Allow-Origin', '*');
   }
-  
+
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
   res.setHeader('Access-Control-Allow-Credentials', 'true');
-  
+
   if (req.method === 'OPTIONS') {
     return res.sendStatus(200);
   }
