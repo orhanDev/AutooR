@@ -252,7 +252,17 @@ router.post('/login', async (req, res) => {
             return res.status(401).json({ error: 'Ungültige Anmeldedaten' });
         }
 
-        const isValidPassword = await bcrypt.compare(password, user.rows[0].password_hash);
+        const userRecord = user.rows[0];
+        
+        // Check if user has a password_hash (OAuth users might not have one)
+        if (!userRecord.password_hash) {
+            return res.status(401).json({ 
+                error: 'Ungültige Anmeldedaten',
+                message: 'Dieses Konto wurde mit einem Social-Login erstellt. Bitte verwenden Sie die entsprechende Anmeldemethode.'
+            });
+        }
+
+        const isValidPassword = await bcrypt.compare(password, userRecord.password_hash);
         if (!isValidPassword) {
             return res.status(401).json({ error: 'Ungültige Anmeldedaten' });
         }
@@ -292,7 +302,7 @@ router.post('/login', async (req, res) => {
 
 router.get('/profile', authMiddleware, async (req, res) => {
     try {
-        const userId = req.user.userId;
+        const userId = req.user.userId;
         let user;
         try {
             user = await query(`
@@ -302,7 +312,7 @@ router.get('/profile', authMiddleware, async (req, res) => {
                        is_admin, created_at, updated_at
                 FROM users WHERE user_id = $1
             `, [userId]);
-        } catch (columnError) {
+        } catch (columnError) {
             console.log('Some columns may not exist, using basic query:', columnError.message);
             user = await query(`
             SELECT user_id, first_name, last_name, email, phone_number, address, 
@@ -314,7 +324,7 @@ router.get('/profile', authMiddleware, async (req, res) => {
 
         if (user.rows.length === 0) {
             return res.status(404).json({ error: 'Benutzer nicht gefunden' });
-        }
+        }
         console.log('GET /profile - User data:', JSON.stringify(user.rows[0], null, 2));
         console.log('GET /profile - Gender value:', user.rows[0].gender);
 
@@ -368,10 +378,10 @@ router.get('/user', authMiddleware, async (req, res) => {
 router.put('/profile', authMiddleware, async (req, res) => {
     try {
         const userId = req.user.userId;
-        const { first_name, last_name, phone_number, address, date_of_birth, gender, city, postal_code, country, payment_card_json, payment_paypal_json, payment_klarna_json } = req.body;
-        console.log('PUT /profile - Received gender:', gender);
+        const { first_name, last_name, phone_number, address, date_of_birth, gender, city, postal_code, country, payment_card_json, payment_paypal_json, payment_klarna_json } = req.body;
+        console.log('PUT /profile - Received gender:', gender);
         let updatedUser;
-        try {
+        try {
             updatedUser = await query(`
                 UPDATE users 
                 SET first_name = $1, 
@@ -407,7 +417,7 @@ router.put('/profile', authMiddleware, async (req, res) => {
                 payment_klarna_json || null, 
                 userId
             ]);
-        } catch (columnError) {
+        } catch (columnError) {
             console.log('Some columns may not exist, using basic update. Run migration: npm run db:migrate');
             console.log('Error:', columnError.message);
             updatedUser = await query(`
@@ -453,7 +463,7 @@ router.put('/profile', authMiddleware, async (req, res) => {
 
 router.delete('/account', authMiddleware, async (req, res) => {
     try {
-        const userId = req.user.userId;
+        const userId = req.user.userId;
         const deletedUser = await query(
             'DELETE FROM users WHERE user_id = $1 RETURNING user_id, email, first_name, last_name',
             [userId]
@@ -478,7 +488,7 @@ router.get('/statistics', authMiddleware, async (req, res) => {
         const userId = req.user.userId;
         const userEmail = req.user.email;
         
-        console.log('GET /statistics - userId:', userId, 'userEmail:', userEmail);
+        console.log('GET /statistics - userId:', userId, 'userEmail:', userEmail);
         let actualUserId = userId;
         try {
             const userCheck = await query(
@@ -491,19 +501,19 @@ router.get('/statistics', authMiddleware, async (req, res) => {
             }
         } catch (err) {
             console.log('GET /statistics - Error checking user_id, using provided userId:', err.message);
-        }
+        }
         let bookingsResult;
         let totalBookings = 0;
         let totalSpent = 0;
         
-        try {
+        try {
             bookingsResult = await query(
                 'SELECT COUNT(*) as total FROM reservations WHERE user_id = $1',
                 [actualUserId]
             );
             totalBookings = parseInt(bookingsResult.rows[0]?.total || 0);
             
-            if (totalBookings === 0) {
+            if (totalBookings === 0) {
                 try {
                     bookingsResult = await query(
                         'SELECT COUNT(*) as total FROM reservations WHERE id = $1',
@@ -513,7 +523,7 @@ router.get('/statistics', authMiddleware, async (req, res) => {
                 } catch (e) {
                     console.log('GET /statistics - Error with id column:', e.message);
                 }
-            }
+            }
             try {
                 const totalPriceResult = await query(
                     'SELECT COALESCE(SUM(total_price), 0) as total FROM reservations WHERE user_id = $1',
@@ -521,7 +531,7 @@ router.get('/statistics', authMiddleware, async (req, res) => {
                 );
                 totalSpent = parseFloat(totalPriceResult.rows[0]?.total || 0);
             } catch (e) {
-                console.log('GET /statistics - Error getting total_price:', e.message);
+                console.log('GET /statistics - Error getting total_price:', e.message);
                 try {
                     const totalPriceResult = await query(
                         'SELECT COALESCE(SUM(price), 0) as total FROM reservations WHERE user_id = $1',
@@ -533,12 +543,12 @@ router.get('/statistics', authMiddleware, async (req, res) => {
                 }
             }
         } catch (error) {
-            console.error('GET /statistics - Error querying reservations:', error);
+            console.error('GET /statistics - Error querying reservations:', error);
             totalBookings = 0;
             totalSpent = 0;
-        }
-        const totalDistance = totalBookings * 200;
-        const totalSavings = Math.round(totalSpent * 0.1);
+        }
+        const totalDistance = totalBookings * 200;
+        const totalSavings = Math.round(totalSpent * 0.1);
         const loyaltyPoints = totalBookings * 100;
         
         console.log('GET /statistics - Results:', {
@@ -570,29 +580,29 @@ router.post('/forgot-password', async (req, res) => {
         
         if (!email) {
             return res.status(400).json({ error: 'E-Mail-Adresse ist erforderlich' });
-        }
+        }
         const userResult = await query(
             'SELECT user_id, email, first_name, last_name FROM users WHERE LOWER(TRIM(email)) = $1',
             [email.trim().toLowerCase()]
-        );
+        );
         if (userResult.rows.length === 0) {
             return res.json({
                 message: 'Wenn diese E-Mail-Adresse registriert ist, erhalten Sie eine E-Mail mit Anweisungen zum Zurücksetzen Ihres Passworts.'
             });
         }
         
-        const user = userResult.rows[0];
+        const user = userResult.rows[0];
         const resetToken = crypto.randomBytes(32).toString('hex');
         const expiresAt = new Date();
-        expiresAt.setHours(expiresAt.getHours() + 1); // Token expires in 1 hour
+        expiresAt.setHours(expiresAt.getHours() + 1); // Token expires in 1 hour
         await query(
             'DELETE FROM password_reset_tokens WHERE email = $1',
             [email.trim().toLowerCase()]
-        );
+        );
         await query(
             'INSERT INTO password_reset_tokens (email, token, expires_at) VALUES ($1, $2, $3)',
             [email.trim().toLowerCase(), resetToken, expiresAt]
-        );
+        );
         const transporter = createEmailTransporter();
         if (transporter) {
             const resetUrl = `${req.protocol}://${req.get('host')}/reset-password?token=${resetToken}`;
