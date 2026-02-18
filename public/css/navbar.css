@@ -1282,7 +1282,7 @@ body.real-home-page .navbar-toggler {
         transform: none !important;
     }
     
-    /* Mobile için de aynı */
+    /* Mobile için de aynı - navbar sayfa ile birlikte scroll olsun */
     @media (max-width: 750px) {
         body.register-page #navbar-container,
         body.login-page #navbar-container {
@@ -1291,6 +1291,8 @@ body.real-home-page .navbar-toggler {
             left: 0 !important;
             right: 0 !important;
             z-index: 1050 !important;
+            width: 100% !important;
+            max-width: 100% !important;
         }
         body.register-page #navbar-container .navbar,
         body.login-page #navbar-container .navbar,
@@ -1301,6 +1303,8 @@ body.real-home-page .navbar-toggler {
             left: 0 !important;
             right: 0 !important;
             z-index: 1050 !important;
+            width: 100% !important;
+            max-width: 100% !important;
         }
     }
     
