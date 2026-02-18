@@ -27,26 +27,27 @@
             padding: 0;
         }
         
+        /* Navbar bu sayfada sabit (fixed) olmasın; sayfa aşağı kayınca yukarıda kaybolsun */
         #navbar-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
+            position: relative;
+            top: auto;
+            left: auto;
+            right: auto;
             z-index: 1050;
             background-color: transparent !important;
             background: transparent !important;
         }
         
         #navbar-container .navbar {
-            position: fixed !important;
-            top: 0 !important;
-            left: 0 !important;
-            right: 0 !important;
+            position: relative !important;
+            top: auto !important;
+            left: auto !important;
+            right: auto !important;
             z-index: 1050 !important;
             background-color: transparent !important;
             background: transparent !important;
             margin: 0 auto;
-            padding: 2rem 1rem;
+            padding: 1rem 1rem;
             padding-top: 0;
             margin-top: 0;
         }
@@ -487,10 +488,7 @@
         }
         
         @media (max-width: 750px) {
-            body {
-                
-            }
-            
+            /* mobile overrides */
             #navbar-container {
                 position: fixed;
                 top: 0;
@@ -790,6 +788,21 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="form-group">
+                    <label for="confirm-password" class="form-label">
+                        Passwort bestätigen<span class="required">*</span>
+                    </label>
+                    <input
+                        type="password"
+                        class="form-control"
+                        id="confirm-password"
+                        name="confirm_password"
+                        required
+                        autocomplete="new-password"
+                    >
+                    <div class="invalid-feedback"></div>
+                </div>
             </div>
 
                 <div class="hcaptcha-note">
@@ -809,7 +822,7 @@
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
-                <p class="mb-3">© 2025 <span style="color: #ffffff;">Aut</span><span style="color: ##F84D58;">oo</span><span style="color: #ffffff;">R</span>. Alle Rechte vorbehalten.</p>
+                <p class="mb-3">© 2025 <span style="color: #ffffff;">Aut</span><span style="color: #F84D58;">oo</span><span style="color: #ffffff;">R</span>. Alle Rechte vorbehalten.</p>
                 <div>
                     <a href="#" class="footer-link">Datenschutz</a>
                     <a href="#" class="footer-link">AGB</a>

@@ -93,8 +93,10 @@
         
         @media (min-width: 751px) {
             .hero-background {
-                background-size: 100% auto !important;
-                background-position: center top !important;
+                /* Masaüstü: görselin TAMAMI görünsün */
+                background-size: contain !important;
+                background-position: center center !important;
+                background-repeat: no-repeat !important;
                 max-height: 100vh !important;
             }
             .hero-section-porsche {
@@ -6867,7 +6869,7 @@
                     const imageName = isMobile ? '1m.png' : '1.png';
                     const imagePath = `url('/images/cars/${imageName}')`;
 
-                    const bgSize = isMobile ? 'cover' : '100% auto';
+                    const bgSize = isMobile ? 'cover' : 'contain';
                     const bgPosition = isMobile ? 'center center' : 'center top';
                     heroBackground.style.setProperty('background-image', imagePath, 'important');
                     heroBackground.style.setProperty('background-size', bgSize, 'important');
@@ -6886,7 +6888,7 @@
                     const img = new Image();
                     img.onload = function() {
                         const imagePath = `url('/images/cars/${imageName}')`;
-                        const bgSize = isMobile ? 'cover' : '100% auto';
+                        const bgSize = isMobile ? 'cover' : 'contain';
                         const bgPosition = isMobile ? 'center center' : 'center top';
                         heroBackground.style.setProperty('background-image', imagePath, 'important');
                         heroBackground.style.setProperty('background-size', bgSize, 'important');
