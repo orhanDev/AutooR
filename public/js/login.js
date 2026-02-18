@@ -1,3 +1,13 @@
+// API base URL: local'de boş (aynı origin), Netlify/Render'da backend URL'i
+const API_BASE = (function () {
+    const host = window.location.hostname || '';
+    if (host.endsWith('netlify.app') || host.endsWith('onrender.com')) {
+        // Statik frontend (Netlify vs.) → Render backend
+        return 'https://autoor-api.onrender.com';
+    }
+    // Yerelde node server ile çalışırken aynı origin
+    return '';
+})();
 
 let passwordToggleInitialized = false;
 
@@ -110,7 +120,7 @@ function setupPasswordToggle() {
     }
 
     if (document.readyState === 'loading') {
-document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', () => {
             console.log('Login page loaded (DOMContentLoaded)');
             if (!initPasswordToggle()) {
 
@@ -193,7 +203,6 @@ setupPasswordToggle();
             console.log('OAuth - existingUserData keys:', Object.keys(existingUserData));
             console.log('OAuth - existingCurrentUser keys:', Object.keys(existingCurrentUser));
 
-
             const userDataToStore = shouldPreserveData ? {
                 ...existingUserData,
                 firstName: userInfo.firstName || existingUserData.firstName,
@@ -209,12 +218,11 @@ setupPasswordToggle();
                 name: `${userInfo.firstName} ${userInfo.lastName}`.trim()
             };
 
-
             let currentUserToStore;
             if (shouldPreserveData) {
 
                 currentUserToStore = {
-                    ...existingCurrentUser, // This preserves ALL existing fields (phone, birthDate, gender, street, postalCode, city, country, etc.)
+                    ...existingCurrentUser,
                     firstName: userInfo.firstName || existingCurrentUser.firstName,
                     lastName: userInfo.lastName || existingCurrentUser.lastName,
                     email: userInfo.email
@@ -222,7 +230,7 @@ setupPasswordToggle();
             } else if (hasLocalStorageData && existingEmail && existingEmail.toLowerCase() === loginEmail.toLowerCase()) {
 
                 currentUserToStore = {
-                ...existingCurrentUser,
+                    ...existingCurrentUser,
                     firstName: userInfo.firstName || existingCurrentUser.firstName,
                     lastName: userInfo.lastName || existingCurrentUser.lastName,
                     email: userInfo.email
@@ -230,10 +238,10 @@ setupPasswordToggle();
             } else {
 
                 currentUserToStore = {
-                firstName: userInfo.firstName,
-                lastName: userInfo.lastName,
-                email: userInfo.email
-            };
+                    firstName: userInfo.firstName,
+                    lastName: userInfo.lastName,
+                    email: userInfo.email
+                };
             }
             
             sessionStorage.setItem('userData', JSON.stringify(userDataToStore));
@@ -298,8 +306,8 @@ setupPasswordToggle();
     
     function setupLoginForm() {
         console.log('setupLoginForm() called');
-    const loginForm = document.getElementById('login-form');
-    const alertContainer = document.getElementById('alert-container');
+        const loginForm = document.getElementById('login-form');
+        const alertContainer = document.getElementById('alert-container');
         
         console.log('Login form element:', loginForm);
         console.log('Alert container element:', alertContainer);
@@ -316,50 +324,50 @@ setupPasswordToggle();
         
         console.log('Login form found, setting up event listener...');
     
-    const error = urlParams.get('error');
-    const provider = urlParams.get('provider');
-    if (error) {
-        let errorMessage = 'Ein Fehler ist aufgetreten.';
-        if (error === 'google_not_configured' || error === 'facebook_not_configured' || error === 'apple_not_configured') {
-            const providerName = provider || 'Diese Anmeldemethode';
-            errorMessage = `${providerName} ist derzeit nicht konfiguriert. Bitte verwenden Sie E-Mail/Passwort oder kontaktieren Sie den Administrator.`;
-        } else if (error === 'oauth_error') {
-            errorMessage = 'OAuth-Fehler. Bitte versuchen Sie es erneut.';
-        } else if (error === 'no_code') {
-            errorMessage = 'AutooRisierung fehlgeschlagen. Bitte versuchen Sie es erneut.';
-        } else if (error === 'email_not_provided') {
-            errorMessage = 'E-Mail-Adresse konnte nicht abgerufen werden.';
-        } else if (error === 'database_error') {
-            errorMessage = 'Datenbankverbindung fehlgeschlagen. Bitte versuchen Sie es später erneut.';
-        } else if (error === 'server_error') {
-            errorMessage = 'Serverfehler. Bitte versuchen Sie es später erneut.';
+        const error = urlParams.get('error');
+        const provider = urlParams.get('provider');
+        if (error) {
+            let errorMessage = 'Ein Fehler ist aufgetreten.';
+            if (error === 'google_not_configured' || error === 'facebook_not_configured' || error === 'apple_not_configured') {
+                const providerName = provider || 'Diese Anmeldemethode';
+                errorMessage = `${providerName} ist derzeit nicht konfiguriert. Bitte verwenden Sie E-Mail/Passwort oder kontaktieren Sie den Administrator.`;
+            } else if (error === 'oauth_error') {
+                errorMessage = 'OAuth-Fehler. Bitte versuchen Sie es erneut.';
+            } else if (error === 'no_code') {
+                errorMessage = 'AutooRisierung fehlgeschlagen. Bitte versuchen Sie es erneut.';
+            } else if (error === 'email_not_provided') {
+                errorMessage = 'E-Mail-Adresse konnte nicht abgerufen werden.';
+            } else if (error === 'database_error') {
+                errorMessage = 'Datenbankverbindung fehlgeschlagen. Bitte versuchen Sie es später erneut.';
+            } else if (error === 'server_error') {
+                errorMessage = 'Serverfehler. Bitte versuchen Sie es später erneut.';
+            }
+            
+            if (alertContainer) {
+                alertContainer.innerHTML = `
+                    <div class="alert alert-info alert-dismissible fade show" role="alert">
+                        <i class="bi bi-info-circle me-2"></i>${errorMessage}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                `;
+            }
+            
+            window.history.replaceState({}, document.title, window.location.pathname);
         }
         
-        if (alertContainer) {
-            alertContainer.innerHTML = `
-                <div class="alert alert-info alert-dismissible fade show" role="alert">
-                    <i class="bi bi-info-circle me-2"></i>${errorMessage}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            `;
-        }
+        const submitBtn = loginForm.querySelector('button[type="submit"]');
         
-        window.history.replaceState({}, document.title, window.location.pathname);
-    }
-    
-    const submitBtn = loginForm.querySelector('button[type="submit"]');
-    
-    if (submitBtn) {
-        submitBtn.addEventListener('touchend', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            console.log('Submit button touched (mobile)');
+        if (submitBtn) {
+            submitBtn.addEventListener('touchend', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('Submit button touched (mobile)');
                 if (!submitBtn.disabled) {
-            loginForm.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+                    loginForm.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
                 }
-        }, { passive: false });
-        
-        submitBtn.addEventListener('click', function(e) {
+            }, { passive: false });
+            
+            submitBtn.addEventListener('click', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
                 console.log('Submit button clicked, dispatching submit event');
@@ -368,23 +376,13 @@ setupPasswordToggle();
                     loginForm.dispatchEvent(submitEvent);
                 } else {
                     console.warn('Submit button disabled or form not found');
-            }
-        });
-    }
-    
-    const registerLink = document.querySelector('.btn-register');
-    if (registerLink) {
-        registerLink.addEventListener('touchend', function(e) {
+                }
+            });
+        }
+        
+        loginForm.addEventListener('submit', async function(e) {
             e.preventDefault();
             e.stopPropagation();
-            console.log('Register link touched (mobile)');
-            window.location.href = registerLink.href || '/register';
-        }, { passive: false });
-    }
-
-        loginForm.addEventListener('submit', async function(e) {
-        e.preventDefault();
-        e.stopPropagation();
             e.stopImmediatePropagation();
             console.log('Login form submit event received');
         
@@ -399,52 +397,52 @@ setupPasswordToggle();
             const email = emailInput.value.trim();
             const password = passwordInput.value;
         
-        if (!email || !password) {
-            showAlert('Bitte füllen Sie alle Felder aus.', 'danger');
-            return;
-        }
-        
-        console.log('Email and password provided, proceeding with login...');
-        
-        const submitBtn = loginForm.querySelector('button[type="submit"]');
+            if (!email || !password) {
+                showAlert('Bitte füllen Sie alle Felder aus.', 'danger');
+                return;
+            }
+            
+            console.log('Email and password provided, proceeding with login...');
+            
+            const submitBtn = loginForm.querySelector('button[type="submit"]');
             if (!submitBtn) {
                 console.error('Submit button not found');
                 return;
             }
             
-        const originalText = submitBtn.innerHTML;
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = '<i class="bi bi-hourglass-split me-2"></i>Wird angemeldet...';
-        
-        try {
-            const response = await fetch('/api/auth/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ email, password })
-            });
+            const originalText = submitBtn.innerHTML;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="bi bi-hourglass-split me-2"></i>Wird angemeldet...';
             
-            const result = await response.json();
-            
-            if (response.ok && result.token) {
-                console.log('Login successful:', result);
+            try {
+                const response = await fetch(`${API_BASE}/api/auth/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email, password })
+                });
                 
-                sessionStorage.setItem('token', result.token);
-                localStorage.setItem('token', result.token);
+                const result = await response.json();
                 
-                try {
-                    const userResponse = await fetch('/api/auth/user', {
-                        headers: {
-                            'x-auth-token': result.token
-                        }
-                    });
+                if (response.ok && result.token) {
+                    console.log('Login successful:', result);
                     
-                    if (userResponse.ok) {
-                        const userData = await userResponse.json();
-                        const user = userData.user;
+                    sessionStorage.setItem('token', result.token);
+                    localStorage.setItem('token', result.token);
+                    
+                    try {
+                        const userResponse = await fetch(`${API_BASE}/api/auth/user`, {
+                            headers: {
+                                'x-auth-token': result.token
+                            }
+                        });
                         
-                        console.log('User data received:', user);
+                        if (userResponse.ok) {
+                            const userData = await userResponse.json();
+                            const user = userData.user;
+                            
+                            console.log('User data received:', user);
 
                             const existingUserData = JSON.parse(localStorage.getItem('userData') || '{}');
                             const existingCurrentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
@@ -454,7 +452,6 @@ setupPasswordToggle();
                             
                             const loginEmail = user.email;
                             const existingEmail = existingUserData.email || existingCurrentUser.email;
-
 
                             const shouldPreserveData = existingEmail && existingEmail.toLowerCase() === loginEmail.toLowerCase();
                             const hasLocalStorageData = Object.keys(existingUserData).length > 0 || Object.keys(existingCurrentUser).length > 0;
@@ -466,29 +463,26 @@ setupPasswordToggle();
                             console.log('Form Login - existingUserData keys:', Object.keys(existingUserData));
                             console.log('Form Login - existingCurrentUser keys:', Object.keys(existingCurrentUser));
 
-
                             const userDataToStore = shouldPreserveData ? {
-                            ...existingUserData,
+                                ...existingUserData,
                                 firstName: user.first_name || existingUserData.firstName,
                                 lastName: user.last_name || existingUserData.lastName,
                                 email: user.email,
                                 id: user.user_id || user.id || existingUserData.id,
                                 name: `${user.first_name || existingUserData.firstName} ${user.last_name || existingUserData.lastName}`.trim() || existingUserData.name
                             } : {
-                            firstName: user.first_name,
-                            lastName: user.last_name,
-                            email: user.email,
+                                firstName: user.first_name,
+                                lastName: user.last_name,
+                                email: user.email,
                                 id: user.user_id || user.id,
-                            name: `${user.first_name} ${user.last_name}`.trim()
-                        };
-
-
+                                name: `${user.first_name} ${user.last_name}`.trim()
+                            };
 
                             let currentUserToStore;
                             if (shouldPreserveData) {
 
                                 currentUserToStore = {
-                                    ...existingCurrentUser, // This preserves ALL existing fields (phone, birthDate, gender, street, postalCode, city, country, etc.)
+                                    ...existingCurrentUser,
                                     firstName: user.first_name || existingCurrentUser.firstName,
                                     lastName: user.last_name || existingCurrentUser.lastName,
                                     email: user.email
@@ -496,7 +490,7 @@ setupPasswordToggle();
                             } else if (hasLocalStorageData && existingEmail && existingEmail.toLowerCase() === loginEmail.toLowerCase()) {
 
                                 currentUserToStore = {
-                            ...existingCurrentUser,
+                                    ...existingCurrentUser,
                                     firstName: user.first_name || existingCurrentUser.firstName,
                                     lastName: user.last_name || existingCurrentUser.lastName,
                                     email: user.email
@@ -504,45 +498,60 @@ setupPasswordToggle();
                             } else {
 
                                 currentUserToStore = {
-                            firstName: user.first_name,
-                            lastName: user.last_name,
-                            email: user.email
-                        };
+                                    firstName: user.first_name,
+                                    lastName: user.last_name,
+                                    email: user.email
+                                };
                             }
-                        
-                        sessionStorage.setItem('userData', JSON.stringify(userDataToStore));
-                        sessionStorage.setItem('isLoggedIn', 'true');
-                        sessionStorage.setItem('currentUser', JSON.stringify(currentUserToStore));
-                        
-                        localStorage.setItem('userData', JSON.stringify(userDataToStore));
-                        localStorage.setItem('isLoggedIn', 'true');
-                        localStorage.setItem('currentUser', JSON.stringify(currentUserToStore));
-                        
+                            
+                            sessionStorage.setItem('userData', JSON.stringify(userDataToStore));
+                            sessionStorage.setItem('isLoggedIn', 'true');
+                            sessionStorage.setItem('currentUser', JSON.stringify(currentUserToStore));
+                            
+                            localStorage.setItem('userData', JSON.stringify(userDataToStore));
+                            localStorage.setItem('isLoggedIn', 'true');
+                            localStorage.setItem('currentUser', JSON.stringify(currentUserToStore));
+                            
                             console.log('Form Login - Saved userDataToStore:', userDataToStore);
                             console.log('Form Login - Saved currentUserToStore:', currentUserToStore);
                             console.log('Form Login - Saved phone:', currentUserToStore.phone);
                             console.log('Form Login - Saved birthDate:', currentUserToStore.birthDate);
                             console.log('Form Login - Saved gender:', currentUserToStore.gender);
                             console.log('Form Login - Saved street:', currentUserToStore.street);
-                        console.log('User data stored in both sessionStorage and localStorage');
-                        
-                        const pendingReservationData = localStorage.getItem('pendingReservationData');
-                        if (pendingReservationData) {
-                            console.log('Pending reservation found, redirecting to payment');
-                            localStorage.setItem('userData', JSON.stringify(userDataToStore));
-                            showAlert('Erfolgreich angemeldet! Weiterleitung zur Zahlung...', 'success');
-                            setTimeout(() => {
-                                window.location.href = '/zahlungsinformationen';
-                            }, 1000);
-                        } else {
-                            showAlert('Erfolgreich angemeldet! Weiterleitung...', 'success');
+                            console.log('User data stored in both sessionStorage and localStorage');
                             
-                            setTimeout(() => {
-                                window.location.href = '/';
-                            }, 1000);
+                            const pendingReservationData = localStorage.getItem('pendingReservationData');
+                            if (pendingReservationData) {
+                                console.log('Pending reservation found, redirecting to payment');
+                                localStorage.setItem('userData', JSON.stringify(userDataToStore));
+                                showAlert('Erfolgreich angemeldet! Weiterleitung zur Zahlung...', 'success');
+                                setTimeout(() => {
+                                    window.location.href = '/zahlungsinformationen';
+                                }, 1000);
+                            } else {
+                                showAlert('Erfolgreich angemeldet! Weiterleitung...', 'success');
+                                
+                                setTimeout(() => {
+                                    window.location.href = '/';
+                                }, 1000);
+                            }
+                        } else {
+                            console.warn('User data fetch failed, but token is stored');
+                            const pendingReservationData = localStorage.getItem('pendingReservationData');
+                            if (pendingReservationData) {
+                                showAlert('Anmeldung erfolgreich! Weiterleitung zur Zahlung...', 'success');
+                                setTimeout(() => {
+                                    window.location.href = '/zahlungsinformationen';
+                                }, 1000);
+                            } else {
+                                showAlert('Anmeldung erfolgreich! Weiterleitung...', 'success');
+                                setTimeout(() => {
+                                    window.location.href = '/';
+                                }, 1000);
+                            }
                         }
-                    } else {
-                        console.warn('User data fetch failed, but token is stored');
+                    } catch (userError) {
+                        console.error('Error fetching user data:', userError);
                         const pendingReservationData = localStorage.getItem('pendingReservationData');
                         if (pendingReservationData) {
                             showAlert('Anmeldung erfolgreich! Weiterleitung zur Zahlung...', 'success');
@@ -556,38 +565,23 @@ setupPasswordToggle();
                             }, 1000);
                         }
                     }
-                } catch (userError) {
-                    console.error('Error fetching user data:', userError);
-                    const pendingReservationData = localStorage.getItem('pendingReservationData');
-                    if (pendingReservationData) {
-                        showAlert('Anmeldung erfolgreich! Weiterleitung zur Zahlung...', 'success');
-                        setTimeout(() => {
-                            window.location.href = '/zahlungsinformationen';
-                        }, 1000);
-                    } else {
-                        showAlert('Anmeldung erfolgreich! Weiterleitung...', 'success');
-                        setTimeout(() => {
-                            window.location.href = '/';
-                        }, 1000);
-                    }
+                } else {
+                    console.error('Login failed:', result);
+                    console.error('Response status:', response.status);
+                    console.error('Full error object:', JSON.stringify(result, null, 2));
+                    const errorMessage = result.error || result.message || 'Anmeldung fehlgeschlagen. Bitte versuchen Sie es erneut.';
+                    showAlert(errorMessage, 'danger');
+                    
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalText;
                 }
-            } else {
-                console.error('Login failed:', result);
-                console.error('Response status:', response.status);
-                console.error('Full error object:', JSON.stringify(result, null, 2));
-                const errorMessage = result.error || result.message || 'Anmeldung fehlgeschlagen. Bitte versuchen Sie es erneut.';
-                showAlert(errorMessage, 'danger');
+            } catch (error) {
+                console.error('Login error:', error);
+                showAlert('Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.', 'danger');
                 
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = originalText;
             }
-        } catch (error) {
-            console.error('Login error:', error);
-            showAlert('Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.', 'danger');
-            
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = originalText;
-        }
         }, { capture: true, once: false, passive: false });
         
         loginForm.dataset.listenerAdded = 'true';
@@ -620,7 +614,7 @@ setupPasswordToggle();
         if (token) {
             console.log('User already logged in, redirecting...');
             try {
-                const userResponse = await fetch('/api/auth/user', {
+                const userResponse = await fetch(`${API_BASE}/api/auth/user`, {
                     headers: {
                         'x-auth-token': token
                     }
@@ -633,15 +627,13 @@ setupPasswordToggle();
                     sessionStorage.removeItem('userData');
                     sessionStorage.removeItem('currentUser');
                     localStorage.removeItem('token');
-
-
                 }
             } catch (error) {
                 console.error('Error checking login status:', error);
             }
         }
     }
-
+    
     console.log('IIFE executing, attempting to set up login form...');
     console.log('Document ready state:', document.readyState);
     console.log('Login form exists?', !!document.getElementById('login-form'));
@@ -668,19 +660,19 @@ setupPasswordToggle();
             return false;
         }
     }
-
+    
     if (document.readyState === 'complete' || document.readyState === 'interactive') {
         console.log('DOM already ready, trying immediately');
         trySetupLoginForm();
     } else {
         console.log('DOM not ready, waiting for DOMContentLoaded');
-
+    
         document.addEventListener('DOMContentLoaded', () => {
             console.log('DOMContentLoaded fired, retrying login form setup');
             trySetupLoginForm();
         });
     }
-
+    
     window.addEventListener('load', () => {
         console.log('Window loaded, retrying login form setup');
         trySetupLoginForm();
