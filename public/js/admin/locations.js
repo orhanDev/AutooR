@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', async () => {
+﻿document.addEventListener('DOMContentLoaded', async () => {
     const token = localStorage.getItem('token');
     const locationsTableBody = document.getElementById('locations-table-body');
     const locationModal = new bootstrap.Modal(document.getElementById('locationModal'));

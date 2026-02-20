@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', async () => {
+﻿document.addEventListener('DOMContentLoaded', async () => {
     const token = localStorage.getItem('token');
     const featuresTableBody = document.getElementById('features-table-body');
     const featureModal = new bootstrap.Modal(document.getElementById('featureModal'));

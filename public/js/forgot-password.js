@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+﻿document.addEventListener('DOMContentLoaded', () => {
     console.log('Forgot password page loaded');
     
     const forgotPasswordForm = document.getElementById('forgot-password-form');

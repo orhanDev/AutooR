@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+﻿document.addEventListener('DOMContentLoaded', () => {
     const contactForm = document.getElementById('contact-form');
     const phoneInput = document.getElementById('phone');
     

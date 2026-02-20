@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+﻿document.addEventListener('DOMContentLoaded', () => {
     console.log('=== Auth.js funktioniert ===');
     const authLinksContainer = document.getElementById('auth-links');
     console.log('auth-links container:', authLinksContainer);

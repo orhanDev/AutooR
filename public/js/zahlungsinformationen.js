@@ -1,4 +1,4 @@
-function formatPrice(amount) {
+﻿function formatPrice(amount) {
     return Math.floor(amount).toLocaleString('de-DE');
 }
 

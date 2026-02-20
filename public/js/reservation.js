@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+﻿document.addEventListener('DOMContentLoaded', () => {
     const container = document.getElementById('reservation-container');
     
     function updateSubmitEnabled() {

@@ -1,4 +1,4 @@
-
+﻿
 (function() {
 
     if (document.getElementById('back-to-top')) {

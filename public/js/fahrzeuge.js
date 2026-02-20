@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+﻿document.addEventListener('DOMContentLoaded', () => {
 
     window.addEventListener('beforeunload', function() {
         sessionStorage.setItem('pageUnloading', 'true');

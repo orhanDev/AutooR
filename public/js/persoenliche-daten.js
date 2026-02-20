@@ -1,4 +1,4 @@
-
+﻿
 function validateName(name) {
 
     return /^[A-Za-zÄÖÜäöüß\s]+$/.test(name);

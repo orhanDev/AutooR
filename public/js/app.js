@@ -1,4 +1,4 @@
-if (typeof window.appScriptLoaded === 'undefined') {
+﻿if (typeof window.appScriptLoaded === 'undefined') {
     window.appScriptLoaded = true;
     
     let popularCarsContainer;

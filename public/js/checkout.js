@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', async () => {
+﻿document.addEventListener('DOMContentLoaded', async () => {
   try {
     const countdownEl = document.getElementById('countdown');
     let remaining = 5 * 60; 

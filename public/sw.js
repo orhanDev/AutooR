@@ -1,4 +1,4 @@
-const CACHE_NAME = 'autoor-runtime-v1';
+﻿const CACHE_NAME = 'autoor-runtime-v1';
 
 self.addEventListener('install', () => {
   self.skipWaiting();

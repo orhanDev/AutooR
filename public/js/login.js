@@ -1,4 +1,4 @@
-// API base URL: local'de boş (aynı origin), Netlify/Render'da backend URL'i
+﻿// API base URL: local'de boş (aynı origin), Netlify/Render'da backend URL'i
 const API_BASE = (function () {
     const host = window.location.hostname || '';
     if (host.endsWith('netlify.app') || host.endsWith('onrender.com')) {

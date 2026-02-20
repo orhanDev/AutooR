@@ -59,6 +59,19 @@ app.use((req, res, next) => {
 app.use(express.json()); 
 app.use(express.urlencoded({ extended: true })); 
 
+// Ensure UTF-8 charset for all responses
+app.use((req, res, next) => {
+  res.setHeader('Charset', 'utf-8');
+  const originalSetHeader = res.setHeader;
+  res.setHeader = function(name, value) {
+    if (name.toLowerCase() === 'content-type' && value && !value.includes('charset')) {
+      value = value + '; charset=utf-8';
+    }
+    return originalSetHeader.call(this, name, value);
+  };
+  next();
+});
+
 app.use((req, res, next) => {
   
   res.setHeader('X-Frame-Options', 'SAMEORIGIN');

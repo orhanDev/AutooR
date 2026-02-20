@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+﻿document.addEventListener('DOMContentLoaded', () => {
     const container = document.getElementById('vehicle-details-container');
 
     const pathParts = window.location.pathname.split('/');

@@ -1,4 +1,4 @@
-window.LOCAL_LOCATIONS = [
+﻿window.LOCAL_LOCATIONS = [
 	{ location_id: 'berlin', name: 'Berlin Zentrum' },
 	{ location_id: 'hamburg', name: 'Hamburg Zentrum' },
 	{ location_id: 'münchen', name: 'München Zentrum' },

@@ -1,4 +1,4 @@
-window.CAR_CATALOG = [
+﻿window.CAR_CATALOG = [
   
   { id: 1, brand: 'Volkswagen', model: 'T-Roc', type: 'Kompaktklasse SUV', price: 59.24, image: 'images/cars/vw-t-roc.png', seats: 5, transmission: 'Manuell', fuel: 'Benzin', bags: 2, handBags: 2, doors: 5, minAge: 18 },
   { id: 2, brand: 'Volkswagen', model: 'Golf Variant', type: 'Kompaktklasse Kombi', price: 59.74, image: 'images/cars/vw-golf-variant.png', seats: 5, transmission: 'Manuell', fuel: 'Benzin', bags: 3, handBags: 1, doors: 5, minAge: 18 },
