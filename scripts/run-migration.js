@@ -24,10 +24,10 @@ async function runMigration() {
         console.log('Starting migration: Add personal data columns to users table...');
         
         // Read migration files
-        const migrationPath1 = path.join(__dirname, '../db/migrate_add_personal_data_columns.sql');
+        const migrationPath1 = path.join(__dirname, '../db/migrations/migrate_add_personal_data_columns.sql');
         const migrationSQL1 = fs.readFileSync(migrationPath1, 'utf8');
         
-        const migrationPath2 = path.join(__dirname, '../db/migrate_add_gender_column.sql');
+        const migrationPath2 = path.join(__dirname, '../db/migrations/migrate_add_gender_column.sql');
         const migrationSQL2 = fs.readFileSync(migrationPath2, 'utf8');
         
         // Execute migrations

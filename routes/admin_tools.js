@@ -29,8 +29,8 @@ router.get('/seed', async (req, res) => {
       } catch (e) {
         
       }
-      const initSql = fs.readFileSync(path.join(__dirname, '..', 'db', 'init.sql'), 'utf8');
-      const seedSql = fs.readFileSync(path.join(__dirname, '..', 'db', 'seed.sql'), 'utf8');
+      const initSql = fs.readFileSync(path.join(__dirname, '..', 'db', 'migrations', 'init.sql'), 'utf8');
+      const seedSql = fs.readFileSync(path.join(__dirname, '..', 'db', 'seeds', 'seed.sql'), 'utf8');
       if (initSql.trim()) await client.query(initSql);
       if (seedSql.trim()) await client.query(seedSql);
       res.json({ ok: true, message: 'Seed completed' });

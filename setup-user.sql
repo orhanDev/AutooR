@@ -21,6 +21,6 @@ GRANT ALL ON SCHEMA public TO AutooR_user;
 ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO AutooR_user;
 ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON SEQUENCES TO AutooR_user;
 
-\i db/init.sql
+\\i db/migrations/init.sql
 
 SELECT 'Benutzer und Datenbank wurden erfolgreich erstellt!' AS message;

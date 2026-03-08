@@ -66,7 +66,7 @@
 
             /* Remove column paddings completely so there is no grey gap between left/right halves */
             body .homepage-form-container .summary-box.mobile-form-content .ab-form-row > [class*="col-"] {
-                padding-left: 0 !important;
+               
                 padding-right: 0 !important;
             }
 
@@ -232,7 +232,7 @@
             background-repeat: no-repeat !important;
             min-height: 100vh;
             color: var(--porsche-dark-gray);
-            line-height: 1;
+            line-height: 1.6;
             overflow-x: hidden;
             background-color: transparent !important;
         }
@@ -1455,7 +1455,7 @@
 
             
             #scroll-arrow-container {
-                max-width: 700px !important;
+                max-width: 788px !important;
                 margin-left: auto !important;
                 margin-right: auto !important;
             }
@@ -1508,12 +1508,12 @@
             }
             .homepage-form-container .summary-box,
             .homepage-form-container .mobile-form-content {
-                background: #2125292b!important;
-                border: 1px solid rgba(255, 255, 255, 0.18) !important;
-                box-shadow: none !important;
-                width: 70% !important;
-                        margin-top: 2rem;
-            }
+        background: #21252969 !important;
+        border: 1px solid rgba(255, 255, 255, 0.18) !important;
+        box-shadow: none !important;
+        width: 74% !important;
+        margin-top: 15rem;
+    }
             .summary-box {
                 border: 2px solid rgba(255, 255, 255, 0.3) !important;
                 box-shadow: 0 20px 64px rgba(0, 0, 0, 0.5),
@@ -5250,7 +5250,8 @@
             }
 
             .hero-section-porsche .hero-content-porsche .homepage-form-container {
-                margin-bottom: 10rem !important;
+                margin-bottom: 25rem !important;
+                margin-right: 7rem !important;
                 transform: translateY(0) !important;
                 box-shadow: none !important;
             }
@@ -5308,7 +5309,7 @@
             .homepage-form-container #homepage-search-btn:hover,
             .homepage-form-container #homepage-search-btn:active,
             #scroll-arrow-container #homepage-search-btn {
-                background: linear-gradient(180deg, #f5f7fb 0%, #e6e9f0 60%, #dfe3ec 100%) !important;
+                background: linear-gradient(180deg, #f5f7fb 0%, #ee7600 60%, #ee7600 100%) !important;
                 background-color: #e6e9f0 !important;
                 border: 1px solid #cfd6e3 !important;
                 color: #2a2a2a !important;
@@ -5412,7 +5413,7 @@
         
         @media (min-width: 751px) {
             #scroll-arrow-container {
-                margin: 1rem !important;
+                margin: 1rem 0 0 0 !important;
                
             }
         }
@@ -5475,7 +5476,7 @@
         @media (min-width: 751px) {
             /* No padding gap between left/right halves */
             .homepage-form-container .summary-box.mobile-form-content .ab-form-row > [class*="col-"] {
-                padding-left: 0 !important;
+               
                 padding-right: 0 !important;
             }
 
@@ -5746,15 +5747,16 @@
                             </div>
                             </div>
                         </div>
+                        <div id="scroll-arrow-wrapper" style="text-align: center; margin-top: 0.5rem; box-shadow: none !important;">
+                            <div id="scroll-arrow-container" style="text-align: center; margin-top: 0; box-shadow: none !important;">
+                                <button type="button" id="homepage-search-btn" class="btn-search">
+                                    ARA
+                                </button>
+                            </div>
+                        </div>
                     </div>
 
-                <div id="scroll-arrow-wrapper" style="text-align: center; margin-top: 0.5rem; box-shadow: none !important;">
-                    <div id="scroll-arrow-container" style="text-align: center; margin-top: 0; box-shadow: none !important;">
-                        <button type="button" id="homepage-search-btn" class="btn-search">
-                           Suchen
-                        </button>
-                    </div>
-                </div>
+                
                 <div class="peek-gradient"></div>
                 <button type="button" id="peek-toggle" aria-label="Formular öffnen/schließen">
                     <i class="bi bi-chevron-down"></i>
@@ -9023,7 +9025,7 @@
 
             .hero-section-porsche .homepage-form-container .ab-form-row {
                 --bs-gutter-x: 0;
-                
+                row-gap: 0.75rem;
             }
 
             .hero-section-porsche .homepage-form-container .hp-pickup-loc,
@@ -9046,7 +9048,7 @@
             .hero-section-porsche .homepage-form-container .hp-label-desktop {
                 font-weight: 700;
                 font-size: 0.9rem;
-                color: #000000;
+                color: #ffffff;
             }
 
             .hero-section-porsche .homepage-form-container .input-group-text {

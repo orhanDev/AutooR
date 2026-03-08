@@ -1,4 +1,4 @@
-﻿:root {
+:root {
     --porsche-black: #B10000;
     --porsche-white: #ffffff;
     --navbar-padding-y: 0.5rem;
@@ -1879,11 +1879,8 @@ body.real-home-page .navbar-toggler {
         display: flex !important;
         justify-content: center !important;
         align-items: center !important;
-        /* Küçük masaüstü genişliklerinde aralığı küçült, büyükte büyüt */
-        gap: clamp(0.25rem, 1vw, 0.85rem) !important;
         flex-wrap: nowrap !important;
         min-width: 0 !important;
-        /* Linkler asla kesilmesin, gizlenmesin */
         overflow: visible !important;
     }
     .navbar-desktop-nav .nav-link-desktop {

@@ -1,4 +1,4 @@
-﻿if (window.navbarScriptLoaded) {
+if (window.navbarScriptLoaded) {
     console.warn('navbar.js already loaded, preventing duplicate execution');
 } else {
     window.navbarScriptLoaded = true;

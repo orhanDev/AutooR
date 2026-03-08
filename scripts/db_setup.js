@@ -24,8 +24,8 @@ async function run() {
       console.warn('Warning: pgcrypto extension could not be created (continuing):', e.message);
     }
 
-    const initSqlPath = path.join(__dirname, '..', 'db', 'init.sql');
-    const seedSqlPath = path.join(__dirname, '..', 'db', 'seed.sql');
+    const initSqlPath = path.join(__dirname, '..', 'db', 'migrations', 'init.sql');
+    const seedSqlPath = path.join(__dirname, '..', 'db', 'seeds', 'seed.sql');
 
     console.log('Running init.sql:', initSqlPath);
     const initSql = fs.readFileSync(initSqlPath, 'utf8');
