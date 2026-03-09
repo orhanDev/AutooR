@@ -622,7 +622,7 @@ async function completeMultipleCheckIn(pendingBookings) {
 
     const selectedCheckboxes = document.querySelectorAll('.booking-checkbox:checked');
     if (selectedCheckboxes.length === 0) {
-        showMessage('Bitte wählen Sie mindestens eine Reservierung aus.', 'warning');
+        showMessage('Bitte wählen Sie mindestens eine Reservierung aus wählen.', 'warning');
         return;
     }
     
@@ -820,7 +820,7 @@ function startCheckOut(booking) {
                 <div class="mb-3">
                     <label class="form-label">Treibstoffstand</label>
                     <select class="form-select" required>
-                        <option value="">Bitte wählen</option>
+                        <option value="">Treibstoffstand wählen</option>
                         <option value="full">Voll</option>
                         <option value="3/4">3/4</option>
                         <option value="1/2">1/2</option>

@@ -190,7 +190,7 @@ function handleRequestConsultation() {
             <div class="mb-3">
                 <label for="preferred-time" class="form-label">Bevorzugte Uhrzeit *</label>
                 <select class="form-select" id="preferred-time" required>
-                    <option value="">Bitte wählen</option>
+                    <option value="">Uhrzeit wählen</option>
                     <option value="09:00">09:00</option>
                     <option value="10:00">10:00</option>
                     <option value="11:00">11:00</option>
@@ -646,7 +646,7 @@ function setupAdvancedValidation(formId, fieldIds) {
                 } else if (field.tagName === 'SELECT') {
                     if (!field.value || field.value === '') {
                         isValid = false;
-                        errorMessage = 'Bitte wählen Sie eine Option';
+                        errorMessage = 'Bitte wählen Sie eine Option wählen';
                     }
                 } else {
                     if (!value) {
@@ -703,7 +703,7 @@ function setupAdvancedValidation(formId, fieldIds) {
 
                     if (!value || value === '') {
                         isValid = false;
-                        errorMessage = 'Bitte wählen Sie eine Uhrzeit';
+                        errorMessage = 'Bitte wählen Sie eine Uhrzeit wählen';
                     }
                 }
             }

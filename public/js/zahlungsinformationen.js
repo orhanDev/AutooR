@@ -807,7 +807,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.processPayment = function() {
         if (!selectedPaymentMethod) {
-            alert('Bitte wählen Sie eine Zahlungsmethode aus.');
+            alert('Bitte wählen Sie eine Zahlungsmethode aus wählen.');
             return;
         }
 

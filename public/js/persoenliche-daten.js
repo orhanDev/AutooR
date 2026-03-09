@@ -957,7 +957,7 @@ function populateForm(userData, currentUser) {
         console.log('populateForm - Loaded gender:', genderValue);
     } else {
         console.log('populateForm - No gender found, resetting to default');
-        document.getElementById('gender').value = ''; // Reset to default "Bitte wählen"
+        document.getElementById('gender').value = ''; // Reset to default "Geschlecht wählen"
     }
 
     if (currentUser && currentUser.street) {
