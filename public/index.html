@@ -25,166 +25,15 @@
         body { opacity: 1; visibility: visible; transition: opacity 0.2s ease-out; }
     </style>
 
-    <!-- Homepage form: desktop-only layout (mobile unchanged) -->
+    <!-- Homepage form: unified layout for mobile & desktop -->
     <style id="homepage-desktop-form-layout">
-        .hp-label-desktop { display: none; }
-        .hp-label-mobile { display: inline; }
-
-        /* "Mobile" in this project is <= 750px. Apply desktop layout from 751px+ */
+        .hp-label-desktop { display: inline; }
+        .hp-label-mobile { display: none; }
+        /* Desktop: formu 50% daralt; mobil dokunulmaz */
         @media (min-width: 751px) {
-            .hp-label-desktop { display: inline; }
-            .hp-label-mobile { display: none; }
-            .hp-label-datetime { display: none !important; }
-
-            /* Ensure ordering works (force flex layout) */
-            body .homepage-form-container .summary-box.mobile-form-content .ab-form-row {
-                display: flex !important;
-                flex-wrap: wrap !important;
-                align-items: flex-end !important;
-            }
-
-            /* Force 2 columns on desktop regardless of other overrides */
-            .ab-form-row .hp-pickup-loc,
-            .ab-form-row .hp-pickup-dt,
-            .ab-form-row .hp-dropoff-loc,
-            .ab-form-row .hp-dropoff-dt {
-                flex: 0 0 50% !important;
-                max-width: 50% !important;
-            }
-
-            /* Reorder fields to: pickup (loc + datetime), then dropoff (loc + datetime) */
-            .ab-form-row .hp-pickup-loc { order: 1; }
-            .ab-form-row .hp-pickup-dt { order: 2; }
-            .ab-form-row .hp-dropoff-loc { order: 3; }
-            .ab-form-row .hp-dropoff-dt { order: 4; }
-
-            /* Make each pair look like a single bar (location + date + time) */
-            body .homepage-form-container .summary-box.mobile-form-content .ab-form-row {
-                --bs-gutter-x: 0 !important;
-                --bs-gutter-y: clamp(0.6rem, 1.2vw, 1rem) !important;
-            }
-
-            /* Remove column paddings completely so there is no grey gap between left/right halves */
-            body .homepage-form-container .summary-box.mobile-form-content .ab-form-row > [class*="col-"] {
-               
-                padding-right: 0 !important;
-            }
-
-            .hp-pickup-loc, .hp-dropoff-loc { padding-right: 0 !important; }
-            .hp-pickup-dt, .hp-dropoff-dt { padding-left: 0 !important; }
-
-            /* Bring location select and date group visually together (no gap) */
-            body .homepage-form-container .hp-pickup-dt,
-            body .homepage-form-container .hp-dropoff-dt {
-                margin-left: -2px !important; /* overlap outer borders so they look stuck together */
-            }
-
-            /* Reference-like "single bar": no shadow, one outer border */
-            body .homepage-form-container .hp-pickup-loc .input-group,
-            body .homepage-form-container .hp-pickup-dt .input-group,
-            body .homepage-form-container .hp-dropoff-loc .input-group,
-            body .homepage-form-container .hp-dropoff-dt .input-group {
-                background: rgba(242, 242, 242, 0.92) !important;
-                box-shadow: none !important;
-                
-            }
-
-            /* Outer border only (left half + right half combine into one) */
-            body .homepage-form-container .hp-pickup-loc .input-group,
-            body .homepage-form-container .hp-dropoff-loc .input-group {
-             
-                border-top-left-radius: 12px !important;
-                border-bottom-left-radius: 12px !important;
-                
-            /*body .homepage-form-container .hp-pickup-dt .input-group,
-            body .homepage-form-container .hp-dropoff-dt .input-group {
-                border-top: 2px solid rgba(0, 0, 0, 0.85) !important;
-                border-right: 2px solid rgba(0, 0, 0, 0.85) !important;
-                border-bottom: 2px solid rgba(0, 0, 0, 0.85) !important;
-                border-left: 0 !important;
-                border-top-right-radius: 12px !important;
-                border-bottom-right-radius: 12px !important;
-                border-top-left-radius: 0 !important;
-                border-bottom-left-radius: 0 !important;
-            }*/
-
-            /* Everything inside: borderless + transparent (elements stick together) */
-            body .homepage-form-container .hp-pickup-loc .input-group-text,
-            body .homepage-form-container .hp-pickup-dt .input-group-text,
-            body .homepage-form-container .hp-dropoff-loc .input-group-text,
-            body .homepage-form-container .hp-dropoff-dt .input-group-text,
-            body .homepage-form-container .hp-pickup-loc select,
-            body .homepage-form-container .hp-pickup-dt select,
-            body .homepage-form-container .hp-dropoff-loc select,
-            body .homepage-form-container .hp-dropoff-dt select,
-            body .homepage-form-container .hp-pickup-dt input.form-control,
-            body .homepage-form-container .hp-dropoff-dt input.form-control {
-                border: 0 !important;
-                background: #ffffff !important;
-                box-shadow: none !important;
-            }
-
-            /* Remove any visible center divider + make all controls "stuck together" */
-            body .homepage-form-container .hp-pickup-loc .input-group-text,
-            body .homepage-form-container .hp-dropoff-loc .input-group-text {
-                border-right: 0 !important;
-            }
-            body .homepage-form-container .hp-pickup-loc .form-select,
-            body .homepage-form-container .hp-dropoff-loc .form-select {
-                border-left: 0 !important;
-            }
-
-            body .homepage-form-container .hp-pickup-dt .input-group-text,
-            body .homepage-form-container .hp-dropoff-dt .input-group-text {
-                border-left: 0 !important;
-                border-right: 0 !important;
-            }
-            body .homepage-form-container .hp-pickup-dt input.form-control,
-            body .homepage-form-container .hp-dropoff-dt input.form-control {
-                border-left: 0 !important;
-                border-right: 0 !important;
-            }
-            body .homepage-form-container .hp-pickup-dt .form-select,
-            body .homepage-form-container .hp-dropoff-dt .form-select {
-                border-left: 0 !important;
-            }
-
-            .hp-pickup-loc .form-select,
-            .hp-dropoff-loc .form-select {
-                border-top-right-radius: 0 !important;
-                border-bottom-right-radius: 0 !important;
-                border-right: 0 !important;
-            }
-
-            .hp-pickup-dt .input-group-text:first-child,
-            .hp-dropoff-dt .input-group-text:first-child {
-                border-top-left-radius: 0 !important;
-                border-bottom-left-radius: 0 !important;
-                border-left: 0 !important;
-            }
-
-            .hp-pickup-dt input.form-control,
-            .hp-dropoff-dt input.form-control {
-                border-radius: 0 !important;
-            }
-
-            .hp-pickup-dt .input-group-text,
-            .hp-dropoff-dt .input-group-text {
-                border-radius: 0 !important;
-            }
-
-            .hp-pickup-dt .form-select,
-            .hp-dropoff-dt .form-select {
-                border-top-left-radius: 0 !important;
-                border-bottom-left-radius: 0 !important;
-                border-top-right-radius: 14px !important;
-                border-bottom-right-radius: 14px !important;
-            }
-
-            .hp-pickup-loc .input-group-text,
-            .hp-dropoff-loc .input-group-text {
-                border-top-left-radius: 14px !important;
-                border-bottom-left-radius: 14px !important;
+            .homepage-form-container {
+                max-width: 500px !important;
+                width: 45% !important;
             }
         }
     </style>
@@ -1191,7 +1040,7 @@
             .homepage-form-container #homepage-search-btn {
                 padding: 0.55rem 1.1rem !important;
                 font-size: 0.85rem !important;
-                margin-top: 0 !important;
+                margin: 0 0 1rem 0 !important;
                 border-radius: 0 0 0.9rem 0.9rem !important;
                 border-top: 1px solid rgba(0, 0, 0, 0.06) !important;
                 border-left: 1px solid rgba(0, 0, 0, 0.06) !important;
@@ -1508,11 +1357,12 @@
             }
             .homepage-form-container .summary-box,
             .homepage-form-container .mobile-form-content {
-        background: #21252969 !important;
-        border: 1px solid rgba(255, 255, 255, 0.18) !important;
+                background: #00000066 !important;
+        /* border: 1px solid rgba(255, 255, 255, 0.18) !important; */
         box-shadow: none !important;
-        width: 74% !important;
-        margin-top: 15rem;
+        width: 40% !important;
+        margin-top: 17rem;
+        margin-left: 38rem !important;
     }
             .summary-box {
                 border: 2px solid rgba(255, 255, 255, 0.3) !important;
@@ -4010,14 +3860,6 @@
             } 
         }
         
-        .qr-select:hover, 
-        .qr-select:focus { 
-            border-color: #ffc107 !important; 
-            background-color: #14140b0f !important;
-            box-shadow: none !important; 
-            outline: none !important; 
-        }
-        
         .qr-select.selected { 
             border-color: #ffc107 !important; 
             box-shadow: 0 0 0 1px rgba(255,193,7,.35) !important; 
@@ -4032,29 +3874,14 @@
         }
         
         
-        .input-group:hover .input-group-text,
-        .input-group:hover .input-group-text.bg-white,
-        .homepage-form-container .input-group:hover .input-group-text,
-        .homepage-form-container .input-group:hover .input-group-text.bg-white {
-            border-color: #ffc107 !important;
-            background-color: #ffffff !important;
-            background: #ffffff !important;
-            color: #000 !important; 
-        }
-        
-        
-        .input-group.qr-loc:hover .input-group-text,
-        .input-group.qr-loc:hover .input-group-text.bg-white,
         .input-group.qr-loc:focus-within .input-group-text,
         .input-group.qr-loc:focus-within .input-group-text.bg-white,
-        .input-group.qr-loc:hover .form-select,
         .input-group.qr-loc:focus-within .form-select {
             border-color: #ffc107 !important;
             background-color: #ffffff !important; 
             background: #ffffff !important;
         }
         
-        .input-group.qr-loc .form-select:hover,
         .input-group.qr-loc .form-select:focus {
             border-color: #ffc107 !important;
             background-color: #ffffff !important; 
@@ -4062,33 +3889,10 @@
             outline: none !important; 
         }
         
-        .input-group.qr-loc .form-select:hover ~ .input-group-text,
         .input-group.qr-loc .form-select:focus ~ .input-group-text,
-        .input-group.qr-loc .form-select:hover + .input-group-text,
         .input-group.qr-loc .form-select:focus + .input-group-text {
             border-color: #ffc107 !important;
             background-color: #ffffff !important; 
-        }
-        
-        
-        .input-group.qr-loc .input-group-text:hover ~ .form-select,
-        .input-group.qr-loc .input-group-text:hover + .form-select {
-            border-color: #ffc107 !important;
-            background-color: #ffffff !important; 
-        }
-        
-        
-        .input-group.qr-loc .input-group-text:hover {
-            background-color: #ffffff !important;
-            background: #ffffff !important;
-        }
-        
-        
-        .input-group-text:hover,
-        .input-group-text.bg-white:hover,
-        .homepage-form-container .input-group-text:hover {
-            background-color: #ffffff !important;
-            background: #ffffff !important;
         }
         
         .input-group .input-group-text { 
@@ -4105,6 +3909,46 @@
             background-color: #14140b0f !important; 
             color: #000 !important; 
             border-color: #ffc107 !important; 
+        }
+
+        /* Homepage checkbox görünürlüğü */
+        .homepage-form-container .form-check-input {
+            width: 18px;
+            height: 18px;
+            border-width: 2px;
+            border-radius: 4px;
+            border-color: #000000 !important;
+            background-color: #ffffff !important;
+            box-shadow: none !important;
+            background-image: none !important;
+            position: relative;
+        }
+
+        .homepage-form-container .form-check-input::after {
+            content: '';
+            position: absolute;
+            inset: 2px;
+            border-right: 2px solid #000000;
+            border-bottom: 2px solid #000000;
+            transform: rotate(45deg) scale(0);
+            transform-origin: center;
+        }
+
+        .homepage-form-container .form-check-input:checked {
+            background-color: #ffffff !important;
+            border-color: #000000 !important;
+        }
+
+        .homepage-form-container .form-check-input:checked::after {
+            transform: rotate(45deg) scale(1);
+        }
+
+        .homepage-form-container .form-check-label {
+            color: #ffffff !important;
+            font-size: 0.9rem !important;
+            font-weight: 400 !important;
+            letter-spacing: 0.02em !important;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.7) !important;
         }
 
         .summary-box { 
@@ -4125,13 +3969,6 @@
             transition: all 0.3s ease !important;
         }
         
-        .summary-box:hover {
-            border-color: rgba(255, 255, 255, 0.35) !important;
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35), 
-                        0 4px 12px rgba(0, 0, 0, 0.25),
-                        inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
-        }
-        
         
         @media (min-width: 751px) {
             .summary-box {
@@ -4145,22 +3982,6 @@
                             0 0 0 1px rgba(255, 255, 255, 0.1) !important;
                 transform: translateY(0) !important;
                 transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
-            }
-            
-            .summary-box:hover {
-                border-color: rgba(255, 255, 255, 0.5) !important;
-                box-shadow: 0 20px 64px rgba(0, 0, 0, 0.5), 
-                            0 8px 24px rgba(0, 0, 0, 0.4),
-                            inset 0 2px 0 rgba(255, 255, 255, 0.2),
-                            0 0 0 1px rgba(255, 255, 255, 0.15) !important;
-                transform: translateY(-4px) !important;
-            }
-            
-            
-            .homepage-form-container:hover {
-                box-shadow: 0 28px 80px rgba(0, 0, 0, 0.4), 
-                           0 12px 32px rgba(0, 0, 0, 0.3) !important;
-                transform: translateY(-8px) !important;
             }
             
             
@@ -4185,15 +4006,6 @@
             }
             
             
-            .summary-box .input-group:hover .input-group-text,
-            .summary-box .input-group:hover .input-group-text.bg-white {
-                background-color: #ffffff !important;
-                background: #ffffff !important;
-                border-color: #ffc107 !important;
-                transform: scale(1.02) !important;
-            }
-            
-            
             
             @media (min-width: 751px) {
                 #homepage-search-btn {
@@ -4203,8 +4015,10 @@
                     font-weight: 700 !important;
                     letter-spacing: 1px !important;
                     text-transform: uppercase !important;
-                    padding: 1.1rem 2.5rem !important;
-                    font-size: 0.95rem !important;
+                    padding: 0 2.5rem !important;
+                    font-size: 1.125rem !important; /* ~18px */
+                    height: 60px !important;
+                    min-width: 260px !important;
                     box-shadow: 0 6px 20px rgba(238, 118, 0, 0.4),
                                0 2px 8px rgba(238, 118, 0, 0.3),
                                inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
@@ -5443,9 +5257,9 @@
         .homepage-form-container.peek-collapsed #homepage-search-btn,
         #scroll-arrow-container #homepage-search-btn {
             background: #7B7668 !important;
-            background-color: #7B7668 !important;
+            background: linear-gradient(180deg, #f5f7fb 0%, #ee7600 60%, #ee7600 100%) !important;
             border-color: #7B7668 !important;
-            color: #ffffff !important;
+            color: #000000 !important;
             transition: all 0.3s ease !important;
         }
 
@@ -5558,7 +5372,7 @@
             .homepage-form-container .summary-box.mobile-form-content .form-label,
             .homepage-form-container .summary-box.mobile-form-content label {
                 
-                color: #000000 !important;
+                color: #ffffff !important;
                 border-color: transparent !important;
                 box-shadow: none !important;
                 transition: none !important;
@@ -5673,7 +5487,7 @@
             <div class="hero-text-content" style="text-align: center; margin-bottom: 3rem; margin-top: 7rem; position: relative; z-index: 3; display: none;">
                     </div>
 
-            <div class="homepage-form-container form-open" style="background: transparent; background-color: transparent; backdrop-filter: none; -webkit-backdrop-filter: none; border: none; border-radius: 1.5rem; padding: 1.5rem; box-shadow: none; position: relative; z-index: 3; max-width: 1000px; margin: 29rem auto 0 auto; width: 90%; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
+            <div class="homepage-form-container form-open" style="background: rgba(0,0,0,0.35); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: none; border-radius: 1.5rem; padding: 2.5rem; box-shadow: none; position: relative; z-index: 3; max-width: 1000px; margin: 22rem auto 0 auto; width: 90%; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
                 
                 <div id="mobile-form-toggle" class="mobile-form-toggle" style="display: none; background: transparent; background-color: transparent; border: none; backdrop-filter: none; -webkit-backdrop-filter: none; border-radius: 1rem; padding: 0.55rem calc(1rem + 2rem); cursor: pointer; user-select: none; transition: all 0.3s ease; box-shadow: none; width: fit-content; min-width: fit-content; max-width: none; margin-left: auto; margin-right: 1rem; margin-top: -10rem;">
                     <span style="font-size: 0.82rem; font-weight: 600; font-family: 'Inter', sans-serif; letter-spacing: 0.4px; text-transform: uppercase; color: #000000; white-space: nowrap; background-color: #ffc107; background: #ffc107; backdrop-filter: blur(1px) saturate(150%); -webkit-backdrop-filter: blur(1px) saturate(150%); padding: 0.35rem 0.8rem; border-radius: 0.35rem; display: inline-flex; flex-direction: column; align-items: center; gap: 0.35rem;">
@@ -5684,10 +5498,10 @@
                 
                 <div class="rounded-4 p-3 mb-4 summary-box mobile-form-content">
                     <div class="row g-3 align-items-end ab-form-row" style="--bs-gutter-x: 1rem; --bs-gutter-y: 1rem;">
-                        <div class="col-lg-6 family-a hp-pickup-loc">
-                            <label class="form-label small text-muted mb-1">
-                                <span class="hp-label-mobile">Abholung</span>
-                                <span class="hp-label-desktop"><i class="bi bi-geo-alt"></i> Abholort</span>
+                        <div class="col-12 family-a hp-pickup-loc">
+                            <label class="form-label small text-muted mb-1 text-uppercase">
+                                <span class="hp-label-mobile">Abholort</span>
+                                <span class="hp-label-desktop"><i class="bi bi-geo-alt me-1"></i>Abholort</span>
                             </label>
                             <div class="input-group qr-loc">
                                 <span class="input-group-text bg-white"><i class="bi bi-geo-alt"></i></span>
@@ -5699,13 +5513,34 @@
                                     <option value="köln">Köln Zentrum</option>
                                     <option value="frankfurt">Frankfurt Am Main Zentrum</option>
                                     <option value="stuttgart">Stuttgart Zentrum</option>
-                        </select>
-            </div>
-            </div>
-                        <div class="col-lg-6 family-b hp-dropoff-loc">
-                            <label class="form-label small text-muted mb-1">
-                                <span class="hp-label-mobile">Rückgabe</span>
-                                <span class="hp-label-desktop"><i class="bi bi-geo-alt"></i> Rückgabeort</span>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-12 family-a hp-pickup-dt">
+                            <label class="form-label small text-muted mb-1 hp-label-datetime text-uppercase">Abholzeit</label>
+                            <div class="input-group flex-nowrap">
+                                <span class="input-group-text bg-white"><i class="bi bi-calendar"></i></span>
+                                <input type="text" id="qr-pickup-date" class="form-control border-2 qr-select" placeholder="12 Mär 2026" readonly>
+                                <span class="input-group-text bg-white"><i class="bi bi-clock"></i></span>
+                                <select id="qr-pickup-time" class="form-select border-2 qr-select">
+                                    <option value="">Zeit</option>
+                                    <option>08:00</option><option>09:00</option><option>10:00</option><option>11:00</option><option>12:00</option>
+                                    <option>13:00</option><option>14:00</option><option>15:00</option><option>16:00</option><option>17:00</option><option>18:00</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-12 hp-same-location-row">
+                            <div class="form-check mt-2">
+                                <input class="form-check-input" type="checkbox" id="hp-same-location" checked>
+                                <label class="form-check-label" for="hp-same-location">
+                                    Rückgabe am gleichen Ort
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-12 family-b hp-dropoff-loc">
+                            <label class="form-label small text-muted mb-1 text-uppercase">
+                                <span class="hp-label-mobile">Rückgabeort</span>
+                                <span class="hp-label-desktop"><i class="bi bi-geo-alt me-1"></i>Rückgabeort</span>
                             </label>
                             <div class="input-group qr-loc">
                                 <span class="input-group-text bg-white"><i class="bi bi-geo-alt"></i></span>
@@ -5717,27 +5552,14 @@
                                     <option value="köln">Köln Zentrum</option>
                                     <option value="frankfurt">Frankfurt Am Main Zentrum</option>
                                     <option value="stuttgart">Stuttgart Zentrum</option>
-                        </select>
-            </div>
-                    </div>
-                        <div class="col-lg-6 family-a hp-pickup-dt">
-                            <label class="form-label small text-muted mb-1 hp-label-datetime">Abholdatum+Zeit</label>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-12 family-b hp-dropoff-dt">
+                            <label class="form-label small text-muted mb-1 hp-label-datetime text-uppercase">Rückgabezeit</label>
                             <div class="input-group flex-nowrap">
                                 <span class="input-group-text bg-white"><i class="bi bi-calendar"></i></span>
-                                <input type="text" id="qr-pickup-date" class="form-control border-2 qr-select" placeholder="TT.MM.JJJJ" readonly>
-                                <span class="input-group-text bg-white"><i class="bi bi-clock"></i></span>
-                                <select id="qr-pickup-time" class="form-select border-2 qr-select">
-                                    <option value="">Zeit</option>
-                                    <option>08:00</option><option>09:00</option><option>10:00</option><option>11:00</option><option>12:00</option>
-                                    <option>13:00</option><option>14:00</option><option>15:00</option><option>16:00</option><option>17:00</option><option>18:00</option>
-                        </select>
-                    </div>
-                </div>
-                        <div class="col-lg-6 family-b hp-dropoff-dt">
-                            <label class="form-label small text-muted mb-1 hp-label-datetime">Rückgabedatum+Zeit</label>
-                            <div class="input-group flex-nowrap">
-                                <span class="input-group-text bg-white"><i class="bi bi-calendar"></i></span>
-                                <input type="text" id="qr-dropoff-date" class="form-control border-2 qr-select" placeholder="TT.MM.JJJJ" readonly>
+                                <input type="text" id="qr-dropoff-date" class="form-control border-2 qr-select" placeholder="19 Mär 2026" readonly>
                                 <span class="input-group-text bg-white"><i class="bi bi-clock"></i></span>
                                 <select id="qr-dropoff-time" class="form-select border-2 qr-select">
                                     <option value="">Zeit</option>
@@ -7057,9 +6879,7 @@
         </div>
     </footer>
 
-    <button id="scroll-down" class="scroll-down-btn">
-        <i class="bi bi-arrow-down"></i>
-    </button>
+ 
 
     <button id="back-to-top" class="back-to-top-btn">
         <i class="bi bi-arrow-up"></i>
@@ -7436,6 +7256,7 @@
             const dTime = document.getElementById('qr-dropoff-time');
             const pickupLoc = document.getElementById('qr-pickup-location');
             const dropoffLoc = document.getElementById('qr-dropoff-location');
+            const sameLocationCheckbox = document.getElementById('hp-same-location');
             const searchBtn = document.getElementById('homepage-search-btn');
             const topSearchBtn = document.getElementById('top-homepage-search-btn');
 
@@ -7576,7 +7397,9 @@
             function saveFormDataToLocalStorage() {
                 const formData = {
                     pickupLocation: pickupLoc ? pickupLoc.value : '',
-                    dropoffLocation: dropoffLoc ? dropoffLoc.value : '',
+                    dropoffLocation: (sameLocationCheckbox && sameLocationCheckbox.checked && pickupLoc)
+                        ? pickupLoc.value
+                        : (dropoffLoc ? dropoffLoc.value : ''),
                     pickupDate: pDate ? pDate.value : '',
                     dropoffDate: dDate ? dDate.value : '',
                     pickupTime: pTime ? pTime.value : '',
@@ -7635,7 +7458,7 @@
                 const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 750;
                 
                 const opts = { 
-                    dateFormat: 'd.m.Y', 
+                    dateFormat: 'd M Y', 
                     minDate: today, 
                     locale: flatpickr.l10ns.de, 
                     disableMobile: true,
@@ -7737,9 +7560,18 @@
             }
 
             function parseDotted(dotted) {
-                const m = (dotted||'').match(/(\d{2})\.(\d{2})\.(\d{4})/);
-                if (!m) return null;
-                return new Date(Number(m[3]), Number(m[2]) - 1, Number(m[1]));
+                if (!dotted) return null;
+                // Eski format: 09.03.2026
+                const m = dotted.match(/(\d{2})\.(\d{2})\.(\d{4})/);
+                if (m) {
+                    return new Date(Number(m[3]), Number(m[2]) - 1, Number(m[1]));
+                }
+                // Yeni format: 09 Mär 2026
+                if (window.flatpickr && flatpickr.parseDate) {
+                    const d = flatpickr.parseDate(dotted, 'd M Y');
+                    if (d) return d;
+                }
+                return null;
             }
             
             function toMinutes(hhmm) {
@@ -7839,7 +7671,89 @@
                 }
             }
 
-            if (pTime) {
+            function applySameLocationBehavior() {
+                if (!pickupLoc || !dropoffLoc || !sameLocationCheckbox) return;
+                if (sameLocationCheckbox.checked) {
+                    dropoffLoc.value = pickupLoc.value;
+                    dropoffLoc.disabled = true;
+                    dropoffLoc.classList.add('bg-light');
+                } else {
+                    dropoffLoc.disabled = false;
+                    dropoffLoc.classList.remove('bg-light');
+                }
+            }
+
+            if (sameLocationCheckbox) {
+                sameLocationCheckbox.addEventListener('change', function() {
+                    applySameLocationBehavior();
+                    saveFormDataToLocalStorage();
+                });
+            }
+
+            if (pickupLoc) {
+                pickupLoc.addEventListener('change', function() {
+                    if (sameLocationCheckbox && sameLocationCheckbox.checked) {
+                        applySameLocationBehavior();
+                    }
+                    saveFormDataToLocalStorage();
+                });
+            }
+
+            if (dropoffLoc) {
+                dropoffLoc.addEventListener('change', function() {
+                    saveFormDataToLocalStorage();
+                });
+            }
+
+                // Varsayılan tarih ve saat (sadece ilk girişte, kayıt yoksa)
+                const hasSavedData = !!sessionStorage.getItem('homepageFormData');
+                if (!hasSavedData) {
+                    const now = new Date();
+                    let baseDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                    let currentHour = now.getHours();
+                    let nextHour = currentHour + 1;
+
+                    // 18:00'dan sonra gelen kullanıcılar için: ertesi gün 08:00
+                    if (nextHour >= 18) {
+                        baseDate.setDate(baseDate.getDate() + 1);
+                        nextHour = 8;
+                    }
+
+                    const displayDate = (window.flatpickr && flatpickr.formatDate)
+                        ? flatpickr.formatDate(baseDate, 'd M Y')
+                        : `${String(baseDate.getDate()).padStart(2,'0')} ${baseDate.toLocaleString('de-DE', { month: 'short' })} ${baseDate.getFullYear()}`;
+
+                    if (pDate) {
+                        pDate.value = displayDate;
+                        if (fpPick) {
+                            fpPick.setDate(baseDate, false);
+                        }
+                    }
+                    if (dDate) {
+                        dDate.value = displayDate;
+                        if (fpDrop) {
+                            fpDrop.setDate(baseDate, false);
+                        }
+                    }
+
+                    const targetTime = `${String(nextHour).padStart(2, '0')}:00`;
+
+                    const setClosestTime = (selectEl) => {
+                        if (!selectEl) return;
+                        const options = Array.from(selectEl.options).map(o => o.value).filter(Boolean);
+                        const match = options.find(v => v >= targetTime);
+                        if (match) {
+                            selectEl.value = match;
+                        }
+                    };
+
+                    setClosestTime(pTime);
+                    setClosestTime(dTime);
+
+                    saveFormDataToLocalStorage();
+                }
+
+                if (pTime) {
                 pTime.addEventListener('change', function() {
                     updateTimeConstraints();
                     saveFormDataToLocalStorage();
@@ -7855,11 +7769,19 @@
             if (pDate && dDate) {
                 setTimeout(function() {
                     loadFormDataFromLocalStorage();
+                    if (sameLocationCheckbox) {
+                        sameLocationCheckbox.checked = !dropoffLoc || !dropoffLoc.value || dropoffLoc.value === pickupLoc?.value;
+                    }
+                    applySameLocationBehavior();
                     updateTimeConstraints();
                 }, 100);
             } else {
 
                 loadFormDataFromLocalStorage();
+                if (sameLocationCheckbox) {
+                    sameLocationCheckbox.checked = !dropoffLoc || !dropoffLoc.value || dropoffLoc.value === pickupLoc?.value;
+                }
+                applySameLocationBehavior();
                 setTimeout(function() {
                     updateTimeConstraints();
                 }, 50);
@@ -7898,9 +7820,23 @@
 
                     function convertToISO(dateStr) {
                         if (!dateStr) return '';
-                        const parts = dateStr.split('.');
-                        if (parts.length === 3) {
-                            return `${parts[2]}-${parts[1]}-${parts[0]}`;
+                        const dotParts = dateStr.split('.');
+                        if (dotParts.length === 3) {
+                            return `${dotParts[2]}-${dotParts[1]}-${dotParts[0]}`;
+                        }
+                        const match = dateStr.match(/^(\d{1,2})\s+([A-Za-zÄÖÜäöüß]{3})\s+(\d{4})$/);
+                        if (match) {
+                            const day = match[1].padStart(2, '0');
+                            const monthShort = match[2].toLowerCase();
+                            const year = match[3];
+                            const months = {
+                                'jan': '01','feb': '02','mär': '03','mar': '03','apr': '04',
+                                'mai': '05','jun': '06','jul': '07','aug': '08',
+                                'sep': '09','okt': '10','nov': '11','dez': '12'
+                            };
+                            const key = monthShort.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+                            const month = months[key] || months[monthShort] || '01';
+                            return `${year}-${month}-${day}`;
                         }
                         return dateStr;
                     }
@@ -9030,10 +8966,11 @@
 
             .hero-section-porsche .homepage-form-container .hp-pickup-loc,
             .hero-section-porsche .homepage-form-container .hp-pickup-dt,
+            .hero-section-porsche .homepage-form-container .hp-same-location-row,
             .hero-section-porsche .homepage-form-container .hp-dropoff-loc,
             .hero-section-porsche .homepage-form-container .hp-dropoff-dt {
-                flex: 0 0 50%;
-                max-width: 50%;
+                flex: 0 0 100%;
+                max-width: 100%;
             }
 
             .hero-section-porsche .homepage-form-container .hp-pickup-loc .input-group,

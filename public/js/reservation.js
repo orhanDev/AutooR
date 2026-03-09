@@ -1,4 +1,4 @@
-﻿document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => {
     const container = document.getElementById('reservation-container');
     
     function updateSubmitEnabled() {
@@ -11,6 +11,7 @@
         const dDate = document.getElementById('qr-dropoff-date');
         const pTime = document.getElementById('qr-pickup-time');
         const dTime = document.getElementById('qr-dropoff-time');
+        const sameLocationCheckbox = document.getElementById('qr-same-location');
         const hasInsurance = !!document.querySelector('.insurance-card.selected');
         const terms = document.getElementById('terms');
         const termsChecked = !!(terms && terms.checked);
@@ -445,14 +446,22 @@
                                         <span class="input-group-text bg-white"><i class="bi bi-geo-alt"></i></span>
                                         <select id="qr-dropoff-location" class="form-select border-2 qr-select">
                                             <option value="">Rückgabeort wählen</option>
-                                        <option value="berlin">Berlin Zentrum</option>
-                                        <option value="hamburg">Hamburg Zentrum</option>
-                                        <option value="münchen">München Zentrum</option>
-                                        <option value="köln">Köln Zentrum</option>
-                                        <option value="frankfurt">Frankfurt Am Main Zentrum</option>
-                                        <option value="stuttgart">Stuttgart Zentrum</option>
-                                    </select>
+                                            <option value="berlin">Berlin Zentrum</option>
+                                            <option value="hamburg">Hamburg Zentrum</option>
+                                            <option value="münchen">München Zentrum</option>
+                                            <option value="köln">Köln Zentrum</option>
+                                            <option value="frankfurt">Frankfurt Am Main Zentrum</option>
+                                            <option value="stuttgart">Stuttgart Zentrum</option>
+                                        </select>
+                                    </div>
                                 </div>
+                                <div class="col-12">
+                                    <div class="form-check mt-2">
+                                        <input class="form-check-input" type="checkbox" id="qr-same-location" checked>
+                                        <label class="form-check-label" for="qr-same-location">
+                                            Rückgabe am gleichen Ort
+                                        </label>
+                                    </div>
                                 </div>
                                 <div class="col-md-6 col-xl-3">
                                     <label class="form-label small text-muted mb-1">Abholdatum</label>
@@ -814,9 +823,24 @@
             }
         }
         
+        function applySameLocationBehavior() {
+            if (!pickupLoc || !dropoffLoc || !sameLocationCheckbox) return;
+            if (sameLocationCheckbox.checked) {
+                dropoffLoc.value = pickupLoc.value;
+                dropoffLoc.disabled = true;
+                dropoffLoc.classList.add('bg-light');
+            } else {
+                dropoffLoc.disabled = false;
+                dropoffLoc.classList.remove('bg-light');
+            }
+        }
+
         function sync() {
             if (pickupLoc && fPickupLoc) fPickupLoc.value = pickupLoc.value;
-            if (dropoffLoc && fDropoffLoc) fDropoffLoc.value = dropoffLoc.value || pickupLoc.value;
+            if (dropoffLoc && fDropoffLoc) {
+                const sameLoc = sameLocationCheckbox && sameLocationCheckbox.checked;
+                fDropoffLoc.value = sameLoc && pickupLoc ? pickupLoc.value : (dropoffLoc.value || pickupLoc?.value || '');
+            }
             if (pDate && fPickupDate) fPickupDate.value = formatISO(pDate.value);
             if (dDate && fDropoffDate) fDropoffDate.value = formatISO(dDate.value);
             if (pTime && fPickupTime) fPickupTime.value = pTime.value;
@@ -915,9 +939,22 @@
             }
         }
 
+        if (sameLocationCheckbox) {
+            sameLocationCheckbox.addEventListener('change', () => {
+                applySameLocationBehavior();
+                sync();
+                updateSubmitEnabled();
+            });
+        }
+
         ;[pickupLoc, dropoffLoc, pDate, dDate, pTime, dTime].forEach(el => {
             if (el) el.addEventListener('change', () => { sync(); updateSubmitEnabled(); });
         });
+
+        if (sameLocationCheckbox) {
+            sameLocationCheckbox.checked = !dropoffLoc || !dropoffLoc.value || dropoffLoc.value === pickupLoc?.value;
+        }
+        applySameLocationBehavior();
 
         sync();
         markSelections();
