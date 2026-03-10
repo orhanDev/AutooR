@@ -6,13 +6,17 @@ AutooR is a modern car rental web application that allows users to easily rent v
 
 🔗 Live Demo
 https://autoor-demo.netlify.app
+
 ---
+
 ✨ Features
 Responsive user interface
 Multi-step booking process
 Form validation
 Dynamic user interaction
+
 ---
+
 🛠 Tech Stack
 Frontend
 React
@@ -30,5 +34,7 @@ https://github.com/orhanDev/AutooR
 👨‍💻 Author
 Orhan Yilmaz
 Full-Stack Java Developer
+---
 Email: orhancodes@gmail.com
+---
 LinkedIn: https://linkedin.com/in/orhan-yilmaz-codes
