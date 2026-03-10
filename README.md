@@ -1,4 +1,4 @@
-![AutooR Banner](autoor_banner.png)
+![AutooR Banner](autoorbanner.png)
 
 🚗 AutooR – Premium Car Rental Web Application
 ---
