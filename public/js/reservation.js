@@ -457,7 +457,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 </div>
                                 <div class="col-12">
                                     <div class="form-check mt-2">
-                                        <input class="form-check-input" type="checkbox" id="qr-same-location" checked>
+                                        <input class="form-check-input" type="checkbox" id="qr-same-location">
                                         <label class="form-check-label" for="qr-same-location">
                                             Rückgabe am gleichen Ort
                                         </label>
@@ -663,6 +663,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const pTime = document.getElementById('qr-pickup-time');
         const dTime = document.getElementById('qr-dropoff-time');
         const showBtn = document.getElementById('qr-show-cars');
+        const sameLocationCheckbox = document.getElementById('qr-same-location');
 
         const fPickupLoc = document.getElementById('pickupLocation');
         const fDropoffLoc = document.getElementById('dropoffLocation');
@@ -825,13 +826,16 @@ document.addEventListener('DOMContentLoaded', () => {
         
         function applySameLocationBehavior() {
             if (!pickupLoc || !dropoffLoc || !sameLocationCheckbox) return;
+            const dropoffWrapper = dropoffLoc.closest('.col-lg-6');
             if (sameLocationCheckbox.checked) {
                 dropoffLoc.value = pickupLoc.value;
                 dropoffLoc.disabled = true;
                 dropoffLoc.classList.add('bg-light');
+                if (dropoffWrapper) dropoffWrapper.style.display = 'none';
             } else {
                 dropoffLoc.disabled = false;
                 dropoffLoc.classList.remove('bg-light');
+                if (dropoffWrapper) dropoffWrapper.style.display = '';
             }
         }
 

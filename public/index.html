@@ -551,16 +551,13 @@
                 margin-right: 0 !important;
                 margin-top: 0 !important;
                 margin-bottom: 0 !important;
-                padding: 0 !important;
-                padding-top: 1.5rem !important;
-                padding-bottom: 0 !important;
-                border-radius: 0 !important;
-                background: rgba(255, 255, 255, 0.12) !important;
-                border: 1px solid rgba(255, 255, 255, 0.2) !important;
-                border-top: none !important;
-                backdrop-filter: blur(20px) saturate(180%) !important;
-                -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
-                box-shadow: none !important;
+                padding: 1.5rem 1.5rem 1.2rem !important;
+                border-radius: 1.6rem !important;
+                background: rgba(255, 255, 255, 0.88) !important;
+                border: 1px solid rgba(0, 0, 0, 0.06) !important;
+                backdrop-filter: blur(22px) saturate(160%) !important;
+                -webkit-backdrop-filter: blur(22px) saturate(160%) !important;
+                box-shadow: 0 18px 45px rgba(0, 0, 0, 0.35) !important;
             }
             
             
@@ -637,30 +634,34 @@
             
             .homepage-form-container .form-control,
             .homepage-form-container .form-select {
-                background: rgba(255, 255, 255, 0.08) !important;
-                border: 1px solid rgba(255, 255, 255, 0.15) !important;
-                color: #ffffff !important;
-                transition: all 0.3s ease !important;
+                background: rgba(255, 255, 255, 0.96) !important;
+                border: 1px solid rgba(0, 0, 0, 0.08) !important;
+                color: #000000 !important;
+                font-size: 0.9rem !important;
+                font-weight: 400 !important;
+                transition: all 0.2s ease !important;
             }
             
             .homepage-form-container .form-control:focus,
             .homepage-form-container .form-select:focus {
-                background: rgba(255, 255, 255, 0.12) !important;
-                border-color: rgba(255, 255, 255, 0.25) !important;
-                box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.1) !important;
+                background: rgba(255, 255, 255, 1) !important;
+                border-color: #ff7a00 !important;
+                box-shadow: 0 0 0 0.12rem rgba(255, 122, 0, 0.25) !important;
             }
             
             .homepage-form-container .input-group-text {
-                background: rgba(255, 255, 255, 0.08) !important;
-                border: 1px solid rgba(255, 255, 255, 0.15) !important;
-                color: rgba(255, 255, 255, 0.9) !important;
+                background: rgba(255, 255, 255, 0.96) !important;
+                border: 1px solid rgba(0, 0, 0, 0.08) !important;
+                color: #000000 !important;
             }
             
             
             .homepage-form-container .input-group-text .bi-calendar,
             .homepage-form-container .input-group-text .bi-clock,
             .homepage-form-container .input-group-text .bi-geo-alt {
-                color: #000000 !important;
+                color: #ff7a00 !important;
+                opacity: 1 !important;
+                font-size: 1rem !important;
             }
             
             .homepage-form-container .form-label,
@@ -668,7 +669,19 @@
             .homepage-form-container .form-label.small.text-muted,
             .homepage-form-container label {
                 color: #000000 !important;
-                font-weight: 600 !important;
+                font-weight: 500 !important;
+                font-size: 0.8rem !important;
+                letter-spacing: 0.03em !important;
+                text-transform: uppercase !important;
+            }
+
+            /* Abholort / Rückgabeort labels: match .form-label.small.text-muted */
+            .homepage-form-container .hp-pickup-loc .form-label,
+            .homepage-form-container .hp-dropoff-loc .form-label {
+                font-weight: 400 !important;
+                font-size: 0.875rem !important;
+                letter-spacing: 0 !important;
+                text-transform: none !important;
             }
             
             
@@ -5499,9 +5512,9 @@
                 <div class="rounded-4 p-3 mb-4 summary-box mobile-form-content">
                     <div class="row g-3 align-items-end ab-form-row" style="--bs-gutter-x: 1rem; --bs-gutter-y: 1rem;">
                         <div class="col-12 family-a hp-pickup-loc">
-                            <label class="form-label small text-muted mb-1 text-uppercase">
+                            <label class="form-label small text-muted mb-1">
                                 <span class="hp-label-mobile">Abholort</span>
-                                <span class="hp-label-desktop"><i class="bi bi-geo-alt me-1"></i>Abholort</span>
+                                <span class="hp-label-desktop">Abholort</span>
                             </label>
                             <div class="input-group qr-loc">
                                 <span class="input-group-text bg-white"><i class="bi bi-geo-alt"></i></span>
@@ -5519,9 +5532,9 @@
                         <div class="col-12 family-a hp-pickup-dt">
                             <label class="form-label small text-muted mb-1 hp-label-datetime text-uppercase">Abholzeit</label>
                             <div class="input-group flex-nowrap">
-                                <span class="input-group-text bg-white"><i class="bi bi-calendar"></i></span>
+                                <span class="input-group-text bg-white"><i class="bi bi-calendar" style="color:#000000 !important;"></i></span>
                                 <input type="text" id="qr-pickup-date" class="form-control border-2 qr-select" placeholder="12 Mär 2026" readonly>
-                                <span class="input-group-text bg-white"><i class="bi bi-clock"></i></span>
+                                <span class="input-group-text bg-white"><i class="bi bi-clock" style="color:#000000 !important;"></i></span>
                                 <select id="qr-pickup-time" class="form-select border-2 qr-select">
                                     <option value="">Zeit</option>
                                     <option>08:00</option><option>09:00</option><option>10:00</option><option>11:00</option><option>12:00</option>
@@ -5531,16 +5544,16 @@
                         </div>
                         <div class="col-12 hp-same-location-row">
                             <div class="form-check mt-2">
-                                <input class="form-check-input" type="checkbox" id="hp-same-location" checked>
+                                <input class="form-check-input" type="checkbox" id="hp-same-location">
                                 <label class="form-check-label" for="hp-same-location">
                                     Rückgabe am gleichen Ort
                                 </label>
                             </div>
                         </div>
                         <div class="col-12 family-b hp-dropoff-loc">
-                            <label class="form-label small text-muted mb-1 text-uppercase">
+                            <label class="form-label small text-muted mb-1">
                                 <span class="hp-label-mobile">Rückgabeort</span>
-                                <span class="hp-label-desktop"><i class="bi bi-geo-alt me-1"></i>Rückgabeort</span>
+                                <span class="hp-label-desktop">Rückgabeort</span>
                             </label>
                             <div class="input-group qr-loc">
                                 <span class="input-group-text bg-white"><i class="bi bi-geo-alt"></i></span>
@@ -5558,9 +5571,9 @@
                         <div class="col-12 family-b hp-dropoff-dt">
                             <label class="form-label small text-muted mb-1 hp-label-datetime text-uppercase">Rückgabezeit</label>
                             <div class="input-group flex-nowrap">
-                                <span class="input-group-text bg-white"><i class="bi bi-calendar"></i></span>
+                                <span class="input-group-text bg-white"><i class="bi bi-calendar" style="color:#000000 !important;"></i></span>
                                 <input type="text" id="qr-dropoff-date" class="form-control border-2 qr-select" placeholder="19 Mär 2026" readonly>
-                                <span class="input-group-text bg-white"><i class="bi bi-clock"></i></span>
+                                <span class="input-group-text bg-white"><i class="bi bi-clock" style="color:#000000 !important;"></i></span>
                                 <select id="qr-dropoff-time" class="form-select border-2 qr-select">
                                     <option value="">Zeit</option>
                                     <option>08:00</option><option>09:00</option><option>10:00</option><option>11:00</option><option>12:00</option>
@@ -7673,13 +7686,16 @@
 
             function applySameLocationBehavior() {
                 if (!pickupLoc || !dropoffLoc || !sameLocationCheckbox) return;
+                const dropoffWrapper = dropoffLoc.closest('.hp-dropoff-loc');
                 if (sameLocationCheckbox.checked) {
                     dropoffLoc.value = pickupLoc.value;
                     dropoffLoc.disabled = true;
                     dropoffLoc.classList.add('bg-light');
+                    if (dropoffWrapper) dropoffWrapper.style.display = 'none';
                 } else {
                     dropoffLoc.disabled = false;
                     dropoffLoc.classList.remove('bg-light');
+                    if (dropoffWrapper) dropoffWrapper.style.display = '';
                 }
             }
 
@@ -7769,18 +7785,12 @@
             if (pDate && dDate) {
                 setTimeout(function() {
                     loadFormDataFromLocalStorage();
-                    if (sameLocationCheckbox) {
-                        sameLocationCheckbox.checked = !dropoffLoc || !dropoffLoc.value || dropoffLoc.value === pickupLoc?.value;
-                    }
                     applySameLocationBehavior();
                     updateTimeConstraints();
                 }, 100);
             } else {
 
                 loadFormDataFromLocalStorage();
-                if (sameLocationCheckbox) {
-                    sameLocationCheckbox.checked = !dropoffLoc || !dropoffLoc.value || dropoffLoc.value === pickupLoc?.value;
-                }
                 applySameLocationBehavior();
                 setTimeout(function() {
                     updateTimeConstraints();
