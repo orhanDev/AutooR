@@ -1,4 +1,4 @@
-:root {
+﻿:root {
     --porsche-black: #B10000;
     --porsche-white: #ffffff;
     --navbar-padding-y: 0.5rem;
@@ -778,7 +778,7 @@ body.real-home-page .navbar-toggler {
 .submenu .submenu-header {
     font-weight: 800;
     font-size: 1.05rem;
-    text-transform: uppercase;
+    text-transform: none;
     letter-spacing: 0.08rem;
     margin-bottom: 1rem;
     color: #6b7280;

@@ -34,7 +34,7 @@ body {
     font-size: 0.9rem;
     font-weight: 300;
     letter-spacing: 1px;
-    text-transform: uppercase;
+    text-transform: none;
     transition: all 0.3s ease;
     margin-left: 0.5rem;
     position: relative;
@@ -708,7 +708,7 @@ body {
     color: white;
     font-weight: 300;
     letter-spacing: 1px;
-    text-transform: uppercase;
+    text-transform: none;
     transition: all 0.3s ease;
 }
 
@@ -724,7 +724,7 @@ body {
     color: white;
     font-weight: 300;
     letter-spacing: 1px;
-    text-transform: uppercase;
+    text-transform: none;
     transition: all 0.3s ease;
 }
 
@@ -832,7 +832,7 @@ body {
     font-weight: 300;
     margin-bottom: 1rem;
     letter-spacing: 2px;
-    text-transform: uppercase;
+    text-transform: none;
     line-height: 1.1;
 }
 
@@ -858,7 +858,7 @@ body {
     font-size: 1rem;
     font-weight: 400;
     text-decoration: none;
-    text-transform: uppercase;
+    text-transform: none;
     letter-spacing: 1px;
     transition: all 0.3s ease;
     position: relative;
@@ -971,7 +971,7 @@ body {
     color: #1a1a1a;
     margin-bottom: 1rem;
     letter-spacing: 2px;
-    text-transform: uppercase;
+    text-transform: none;
 }
 
 .section-subtitle {
@@ -1126,7 +1126,7 @@ body {
     font-size: 0.9rem;
     font-weight: 600;
     letter-spacing: 1px;
-    text-transform: uppercase;
+    text-transform: none;
     transition: all 0.3s ease;
     text-decoration: none;
     display: inline-block;
@@ -1195,7 +1195,7 @@ body {
     color: #1a1a1a;
     margin-bottom: 1rem;
     letter-spacing: 3px;
-    text-transform: uppercase;
+    text-transform: none;
 }
 
 .section-subtitle {
@@ -1313,7 +1313,7 @@ body {
     font-size: 0.8rem;
     font-weight: 600;
     letter-spacing: 1px;
-    text-transform: uppercase;
+    text-transform: none;
     transition: all 0.3s ease;
     text-decoration: none;
     display: inline-block;

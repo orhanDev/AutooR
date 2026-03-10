@@ -385,18 +385,18 @@ function showCheckInListModal(checkedInBookings, pendingBookings) {
                                 <i class="bi bi-calendar-check"></i>
                             </div>
                             <div style="flex: 1; min-width: 0;">
-                                <div style="font-size: 0.75rem; color: #6c757d; margin-bottom: 0.25rem; text-transform: uppercase; letter-spacing: 0.5px;">Reservierung</div>
+                                <div style="font-size: 0.75rem; color: #6c757d; margin-bottom: 0.25rem; text-transform: none; letter-spacing: 0.5px;">Reservierung</div>
                                 <div style="font-weight: 600; color: #212529; font-size: 1.125rem; line-height: 1.3;">${booking.car || 'Fahrzeug'}</div>
                             </div>
                         </div>
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; padding-top: 0.75rem; border-top: 1px solid #e9ecef;">
                             <div>
-                                <div style="font-size: 0.6875rem; color: #6c757d; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 500;">Abholung</div>
+                                <div style="font-size: 0.6875rem; color: #6c757d; margin-bottom: 0.5rem; text-transform: none; letter-spacing: 0.5px; font-weight: 500;">Abholung</div>
                                 <div style="font-weight: 600; color: #212529; font-size: 0.9375rem; margin-bottom: 0.25rem;">${formatDate(booking.pickupDate)}</div>
                                 <div style="font-size: 0.8125rem; color: #6c757d;">${booking.pickupTime || '08:00'} Uhr</div>
                             </div>
                             <div>
-                                <div style="font-size: 0.6875rem; color: #6c757d; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 500;">Standort</div>
+                                <div style="font-size: 0.6875rem; color: #6c757d; margin-bottom: 0.5rem; text-transform: none; letter-spacing: 0.5px; font-weight: 500;">Standort</div>
                                 <div style="font-weight: 600; color: #212529; font-size: 0.9375rem;">${booking.pickupLocation || 'Nicht angegeben'}</div>
                             </div>
                         </div>
@@ -417,7 +417,7 @@ function showCheckInListModal(checkedInBookings, pendingBookings) {
                     <div style="flex: 1; min-width: 0;">
                         <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem;">
                             <div>
-                                <div style="font-size: 0.75rem; color: #6c757d; margin-bottom: 0.25rem; text-transform: uppercase; letter-spacing: 0.5px;">Reservierung</div>
+                                <div style="font-size: 0.75rem; color: #6c757d; margin-bottom: 0.25rem; text-transform: none; letter-spacing: 0.5px;">Reservierung</div>
                                 <div style="font-weight: 600; color: #212529; font-size: 1.125rem; line-height: 1.3;">${booking.car || 'Fahrzeug'}</div>
                             </div>
                             <div style="background: #28a745; color: white; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600; white-space: nowrap;">
@@ -426,12 +426,12 @@ function showCheckInListModal(checkedInBookings, pendingBookings) {
                         </div>
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; padding-top: 0.75rem; border-top: 1px solid #e9ecef;">
                             <div>
-                                <div style="font-size: 0.6875rem; color: #6c757d; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 500;">Abholung</div>
+                                <div style="font-size: 0.6875rem; color: #6c757d; margin-bottom: 0.5rem; text-transform: none; letter-spacing: 0.5px; font-weight: 500;">Abholung</div>
                                 <div style="font-weight: 600; color: #212529; font-size: 0.9375rem; margin-bottom: 0.25rem;">${formatDate(booking.pickupDate)}</div>
                                 <div style="font-size: 0.8125rem; color: #6c757d;">${booking.pickupTime || '08:00'} Uhr</div>
                             </div>
                             <div>
-                                <div style="font-size: 0.6875rem; color: #6c757d; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 500;">Check-in Datum</div>
+                                <div style="font-size: 0.6875rem; color: #6c757d; margin-bottom: 0.5rem; text-transform: none; letter-spacing: 0.5px; font-weight: 500;">Check-in Datum</div>
                                 <div style="font-weight: 600; color: #212529; font-size: 0.9375rem;">${checkInDate}</div>
                             </div>
                         </div>
@@ -445,13 +445,13 @@ function showCheckInListModal(checkedInBookings, pendingBookings) {
         <div class="check-in-list-content" style="font-family: 'Inter', sans-serif;">
             ${pendingBookings.length > 0 ? `
                 <div style="margin-bottom: 2rem;">
-                    <h6 style="font-size: 0.875rem; color: #6c757d; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600;">Check-in ausstehend</h6>
+                    <h6 style="font-size: 0.875rem; color: #6c757d; margin-bottom: 1rem; text-transform: none; letter-spacing: 0.5px; font-weight: 600;">Check-in ausstehend</h6>
                     ${pendingList}
                 </div>
             ` : ''}
             ${checkedInBookings.length > 0 ? `
                 <div>
-                    <h6 style="font-size: 0.875rem; color: #6c757d; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600;">Check-in abgeschlossen</h6>
+                    <h6 style="font-size: 0.875rem; color: #6c757d; margin-bottom: 1rem; text-transform: none; letter-spacing: 0.5px; font-weight: 600;">Check-in abgeschlossen</h6>
                     ${checkedInList}
                 </div>
             ` : ''}
@@ -548,18 +548,18 @@ function startCheckIn(booking) {
                         <i class="bi bi-calendar-check"></i>
                     </div>
                     <div style="flex: 1; min-width: 0;">
-                        <div style="font-size: 0.75rem; color: #6c757d; margin-bottom: 0.25rem; text-transform: uppercase; letter-spacing: 0.5px;">Reservierung</div>
+                        <div style="font-size: 0.75rem; color: #6c757d; margin-bottom: 0.25rem; text-transform: none; letter-spacing: 0.5px;">Reservierung</div>
                         <div style="font-weight: 600; color: #212529; font-size: 1.125rem; line-height: 1.3;">${booking.car || 'Fahrzeug'}</div>
                     </div>
                 </div>
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; padding-top: 1.5rem; border-top: 1px solid #e9ecef;">
                     <div>
-                        <div style="font-size: 0.6875rem; color: #6c757d; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 500;">Abholung</div>
+                        <div style="font-size: 0.6875rem; color: #6c757d; margin-bottom: 0.5rem; text-transform: none; letter-spacing: 0.5px; font-weight: 500;">Abholung</div>
                         <div style="font-weight: 600; color: #212529; font-size: 0.9375rem; margin-bottom: 0.25rem;">${formatDate(booking.pickupDate)}</div>
                         <div style="font-size: 0.8125rem; color: #6c757d;">${booking.pickupTime || '08:00'} Uhr</div>
                     </div>
                     <div>
-                        <div style="font-size: 0.6875rem; color: #6c757d; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 500;">Standort</div>
+                        <div style="font-size: 0.6875rem; color: #6c757d; margin-bottom: 0.5rem; text-transform: none; letter-spacing: 0.5px; font-weight: 500;">Standort</div>
                         <div style="font-weight: 600; color: #212529; font-size: 0.9375rem;">${booking.pickupLocation || 'Nicht angegeben'}</div>
                     </div>
                 </div>
