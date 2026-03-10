@@ -1,8 +1,8 @@
 # 🚗 AutoOR – Premium Car Rental Web Application
 
-![AutoOR Screenshot](autoor.png)
+![AutooR Screenshot](autoor.jpg)
 
-AutoOR is a modern car rental web application that allows users to easily rent vehicles through a simple and intuitive booking process.
+AutooR is a modern car rental web application that allows users to easily rent vehicles through a simple and intuitive booking process.
 
 ---
 
