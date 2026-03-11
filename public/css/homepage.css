@@ -79,6 +79,28 @@
     pointer-events: auto !important;
 }
 
+/* Fluid, synchronized scaling for homepage form (desktop → mobile breakpoint) */
+@media (min-width: 751px) {
+    .homepage-form-container {
+        --hp-scale: clamp(0.84, calc(0.35 + 0.065vw), 1);
+        transform-origin: top right !important;
+        will-change: transform;
+    }
+
+    /* homepage.css uses transform for positioning; append scale to those transforms */
+    .homepage-form-container.form-open {
+        transform: translateY(0) scale(var(--hp-scale)) !important;
+    }
+
+    .homepage-form-container:not(.form-open)[style] {
+        transform: translateY(-50%) scale(var(--hp-scale)) !important;
+    }
+
+    .homepage-form-container.form-open[style] {
+        transform: translateY(0) scale(var(--hp-scale)) !important;
+    }
+}
+
 .calendar-header {
     display: flex;
     justify-content: space-between;
@@ -1209,6 +1231,8 @@ body {
         margin: 0 !important;
     }
 
+    /* Mobile: single column – .cars-grid is now the real grid container */
+    .cars-grid,
     #popular-cars-container .cars-grid {
         grid-template-columns: 1fr !important;
         gap: 1.5rem !important;
@@ -1222,9 +1246,8 @@ body {
     #popular-cars-section .vehicle-card {
         width: 100% !important;
         max-width: 100% !important;
-        min-width: 100% !important;
+        min-width: unset !important;
         margin: 0 !important;
-        margin-bottom: 1.5rem !important;
     }
 
     #popular-cars-section .container {

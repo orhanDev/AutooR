@@ -34,6 +34,14 @@
             .homepage-form-container {
                 max-width: 500px !important;
                 width: 45% !important;
+                /*
+                  Fluid, synchronized scaling from desktop → mobile breakpoint.
+                  Keeps the form on the right; everything inside scales together.
+                */
+                --hp-scale: clamp(0.84, calc(0.35 + 0.065vw), 1);
+                transform: scale(var(--hp-scale));
+                transform-origin: top right;
+                will-change: transform;
             }
         }
     </style>
@@ -302,7 +310,7 @@
                 font-size: 0.85rem !important;
                 font-weight: 600 !important;
                 letter-spacing: 0.5px !important;
-                text-transform: none !important;
+                text-transform: uppercase !important;
                 white-space: nowrap !important;
                 background-color: #ffc107 !important;
                 background: #00000001 !important;
@@ -430,7 +438,7 @@
                 font-size: 0.85rem !important;
                 font-weight: 600 !important;
                 letter-spacing: 0.5px !important;
-                text-transform: none !important;
+                text-transform: uppercase !important;
                 transition: all 0.3s ease !important;
                 display: flex !important;
                 flex-direction: column !important;
@@ -590,7 +598,7 @@
                 font-size: 0.85rem !important;
                 font-weight: 600 !important;
                 letter-spacing: 0.5px !important;
-                text-transform: none !important;
+                text-transform: uppercase !important;
                 transition: all 0.3s ease !important;
             }
             
@@ -659,9 +667,9 @@
             .homepage-form-container .input-group-text .bi-calendar,
             .homepage-form-container .input-group-text .bi-clock,
             .homepage-form-container .input-group-text .bi-geo-alt {
-                color: #000000 !important;
+                color: #ff7a00 !important;
                 opacity: 1 !important;
-                
+                font-size: 1rem !important;
             }
             
             .homepage-form-container .form-label,
@@ -672,7 +680,7 @@
                 font-weight: 500 !important;
                 font-size: 0.8rem !important;
                 letter-spacing: 0.03em !important;
-                text-transform: none !important;
+                text-transform: uppercase !important;
             }
 
             /* Abholort / Rückgabeort labels: match .form-label.small.text-muted */
@@ -1067,7 +1075,7 @@
                 color: #000000 !important;
                 font-weight: 600 !important;
                 letter-spacing: 0.5px !important;
-                text-transform: none !important;
+                text-transform: uppercase !important;
                 transition: all 0.3s ease !important;
             }
             
@@ -1373,9 +1381,10 @@
                 background: #00000066 !important;
         /* border: 1px solid rgba(255, 255, 255, 0.18) !important; */
         box-shadow: none !important;
-        width: 40% !important;
+        width: clamp(300px, 40%, 480px) !important;
         margin-top: 17rem;
-        margin-left: 38rem !important;
+        margin-left: auto !important;
+        margin-right: 0 !important;
     }
             .summary-box {
                 border: 2px solid rgba(255, 255, 255, 0.3) !important;
@@ -1672,7 +1681,7 @@
                 color: #d4af37 !important;
                 font-weight: 700 !important;
                 display: block !important;
-                text-transform: none !important;
+                text-transform: uppercase !important;
                 letter-spacing: 1px !important;
                 text-shadow: none !important;
                 font-family: 'Inter', sans-serif !important;
@@ -2222,7 +2231,7 @@
             font-size: 0.75rem;
             font-weight: 500;
             margin-bottom: 0.5rem;
-            text-transform: none;
+            text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
@@ -2926,7 +2935,7 @@
             font-size: 14px;
             font-weight: 500;
             letter-spacing: 2px;
-            text-transform: none;
+            text-transform: uppercase;
             white-space: nowrap;
         }
         
@@ -3293,7 +3302,7 @@
             font-size: 0.9rem;
             transition: all 0.3s ease;
             cursor: pointer;
-            text-transform: none;
+            text-transform: uppercase;
             letter-spacing: 0.3px;
             width: 100%;
             height: 40px;
@@ -3314,7 +3323,7 @@
         
         .cars-grid {
             display: grid;
-            grid-template-columns: repeat(4, minmax(260px, 1fr));
+            grid-template-columns: repeat(4, 1fr);
             gap: 1.25rem;
             margin-bottom: 3rem;
             margin-left: 0 !important; 
@@ -3957,11 +3966,11 @@
         }
 
         .homepage-form-container .form-check-label {
-            color: #000000 !important;
-            font-size: 0.8rem !important;
+            color: #ffffff !important;
+            font-size: 0.9rem !important;
             font-weight: 400 !important;
             letter-spacing: 0.02em !important;
-            
+            text-shadow: 0 1px 2px rgba(0,0,0,0.7) !important;
         }
 
         .summary-box { 
@@ -4003,7 +4012,7 @@
                 font-weight: 600 !important;
                 font-size: 0.9rem !important;
                 letter-spacing: 0.5px !important;
-                text-transform: none !important;
+                text-transform: uppercase !important;
                 margin-bottom: 0.75rem !important;
                 text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
             }
@@ -4027,7 +4036,7 @@
                     color: #ffffff !important;
                     font-weight: 700 !important;
                     letter-spacing: 1px !important;
-                    text-transform: none !important;
+                    text-transform: uppercase !important;
                     padding: 0 2.5rem !important;
                     font-size: 1.125rem !important; /* ~18px */
                     height: 60px !important;
@@ -4271,7 +4280,7 @@
             border-radius: 8px !important; 
             font-weight: 400 !important;
             letter-spacing: 0.5px !important;
-            text-transform: none !important;
+            text-transform: uppercase !important;
             margin: 0 auto !important;
             display: block !important;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06) !important; 
@@ -4368,7 +4377,7 @@
                 font-size: 0.85rem !important;
                 font-weight: 600 !important;
                 letter-spacing: 0.5px !important;
-                text-transform: none !important;
+                text-transform: uppercase !important;
                 transition: all 0.3s ease !important;
                 display: flex !important;
                 flex-direction: column !important;
@@ -4745,7 +4754,7 @@
                 border-radius: 0 !important;
                 font-weight: 700 !important;
                 letter-spacing: 0.08em !important;
-                text-transform: none !important;
+                text-transform: uppercase !important;
                 color: #111111 !important;
                 border-bottom: none !important;
                 width: 100% !important;
@@ -4900,7 +4909,7 @@
                 appearance: none !important;
                 font-weight: 700 !important;
                 letter-spacing: 0.08em !important;
-                text-transform: none !important;
+                text-transform: uppercase !important;
                 color: #111111 !important;
                 transform: none !important;
             }
@@ -5097,7 +5106,7 @@
             }
 
             #top-homepage-search-btn {
-                text-transform: none !important;
+                text-transform: uppercase !important;
                 font-size: 18.2px !important;
                 font-weight: 800 !important;
                 letter-spacing: 0.22em !important;
@@ -5503,7 +5512,7 @@
             <div class="homepage-form-container form-open" style="background: rgba(0,0,0,0.35); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: none; border-radius: 1.5rem; padding: 2.5rem; box-shadow: none; position: relative; z-index: 3; max-width: 1000px; margin: 22rem auto 0 auto; width: 90%; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
                 
                 <div id="mobile-form-toggle" class="mobile-form-toggle" style="display: none; background: transparent; background-color: transparent; border: none; backdrop-filter: none; -webkit-backdrop-filter: none; border-radius: 1rem; padding: 0.55rem calc(1rem + 2rem); cursor: pointer; user-select: none; transition: all 0.3s ease; box-shadow: none; width: fit-content; min-width: fit-content; max-width: none; margin-left: auto; margin-right: 1rem; margin-top: -10rem;">
-                    <span style="font-size: 0.82rem; font-weight: 600; font-family: 'Inter', sans-serif; letter-spacing: 0.4px; text-transform: none; color: #000000; white-space: nowrap; background-color: #ffc107; background: #ffc107; backdrop-filter: blur(1px) saturate(150%); -webkit-backdrop-filter: blur(1px) saturate(150%); padding: 0.35rem 0.8rem; border-radius: 0.35rem; display: inline-flex; flex-direction: column; align-items: center; gap: 0.35rem;">
+                    <span style="font-size: 0.82rem; font-weight: 600; font-family: 'Inter', sans-serif; letter-spacing: 0.4px; text-transform: uppercase; color: #000000; white-space: nowrap; background-color: #ffc107; background: #ffc107; backdrop-filter: blur(1px) saturate(150%); -webkit-backdrop-filter: blur(1px) saturate(150%); padding: 0.35rem 0.8rem; border-radius: 0.35rem; display: inline-flex; flex-direction: column; align-items: center; gap: 0.35rem;">
                         <i class="bi bi-chevron-up" id="toggle-icon" style="color: #000000; font-weight: 400; font-size: 1.35rem; display: flex; align-items: center; justify-content: center; opacity: 1; line-height: 1; background-color: transparent; background: transparent; padding: 0; border-radius: 0; width: auto; height: auto; margin: 0;"></i>
                         Fahrzeug mieten
                     </span>
@@ -5530,7 +5539,7 @@
                             </div>
                         </div>
                         <div class="col-12 family-a hp-pickup-dt">
-                            <label class="form-label small text-muted mb-1 hp-label-datetime">Abholzeit</label>
+                            <label class="form-label small text-muted mb-1 hp-label-datetime text-uppercase">Abholzeit</label>
                             <div class="input-group flex-nowrap">
                                 <span class="input-group-text bg-white"><i class="bi bi-calendar" style="color:#000000 !important;"></i></span>
                                 <input type="text" id="qr-pickup-date" class="form-control border-2 qr-select" placeholder="12 Mär 2026" readonly>
@@ -5569,7 +5578,7 @@
                             </div>
                         </div>
                         <div class="col-12 family-b hp-dropoff-dt">
-                            <label class="form-label small text-muted mb-1 hp-label-datetime">Rückgabezeit</label>
+                            <label class="form-label small text-muted mb-1 hp-label-datetime text-uppercase">Rückgabezeit</label>
                             <div class="input-group flex-nowrap">
                                 <span class="input-group-text bg-white"><i class="bi bi-calendar" style="color:#000000 !important;"></i></span>
                                 <input type="text" id="qr-dropoff-date" class="form-control border-2 qr-select" placeholder="19 Mär 2026" readonly>
@@ -6487,7 +6496,7 @@
                             font-size: 0.9rem;
                             transition: all 0.3s ease;
                             cursor: pointer;
-                            text-transform: none;
+                            text-transform: uppercase;
                             letter-spacing: 0.3px;
                             width: 100%;
                             height: 40px;
@@ -6827,7 +6836,7 @@
                           <div class="container" style="padding-top: 1.5rem; padding-bottom: 0; padding-left: 4rem; padding-right: 2rem; background: transparent !important;">
                   <div class="row mb-0" style="margin-top: 0;">
                     <div class="col-12 text-center">
-                        <h2 class="section-title" style="font-size: 2.25rem; font-weight: 500; color: #ffffff; margin-bottom: 1rem; font-family: 'Inter', sans-serif; letter-spacing: 1.5px; line-height: 1.3; text-transform: none; opacity: 0.95;">
+                        <h2 class="section-title" style="font-size: 2.25rem; font-weight: 500; color: #ffffff; margin-bottom: 1rem; font-family: 'Inter', sans-serif; letter-spacing: 1.5px; line-height: 1.3; text-transform: uppercase; opacity: 0.95;">
                             Beliebte Fahrzeugangebote
                         </h2>
                     </div>
@@ -8993,8 +9002,8 @@
 
             .hero-section-porsche .homepage-form-container label.form-label,
             .hero-section-porsche .homepage-form-container .hp-label-desktop {
-               font-weight: 400;
-        font-size: 0.8rem;
+                font-weight: 700;
+                font-size: 0.9rem;
                 color: #ffffff;
             }
 

@@ -1,4 +1,4 @@
-﻿:root {
+:root {
     --porsche-black: #B10000;
     --porsche-white: #ffffff;
     --navbar-padding-y: 0.5rem;
@@ -1849,14 +1849,15 @@ body.real-home-page .navbar-toggler {
         width: 100% !important;
         max-width: 100% !important;
         box-sizing: border-box !important;
-        padding-left: 1.5rem !important;
-        padding-right: 1.5rem !important;
+        /* Match #popular-cars-section > .container spacing */
+        padding-left: 4rem !important;
+        padding-right: 4rem !important;
         display: flex !important;
         flex-direction: row !important;
         align-items: center !important;
         justify-content: space-between !important;
         flex-wrap: nowrap !important;
-        gap: 1rem !important;
+        gap: clamp(0.5rem, 1.2vw, 1rem) !important;
     }
     #navbar-container {
         width: 100vw !important;
@@ -1868,10 +1869,10 @@ body.real-home-page .navbar-toggler {
     .navbar .brand-center {
         flex-shrink: 0 !important;
         min-width: auto !important;
-        max-width: 150px !important;
+        max-width: clamp(110px, 12vw, 150px) !important;
     }
     .navbar .brand-center img {
-        max-width: 100% !important;
+        
         height: auto !important;
     }
     .navbar-desktop-nav {
@@ -1882,18 +1883,26 @@ body.real-home-page .navbar-toggler {
         flex-wrap: nowrap !important;
         min-width: 0 !important;
         overflow: visible !important;
+        gap: clamp(0.6rem, 1.6vw, 2rem) !important;
     }
     .navbar-desktop-nav .nav-link-desktop {
         white-space: nowrap !important;
         flex-shrink: 0 !important;
         /* Desktop linkler daha okunaklı olsun */
-        font-size: clamp(0.9rem, 1.02vw, 1.05rem) !important;
-        padding: 0.4rem clamp(0.4rem, 0.7vw, 0.9rem) !important;
+        font-size: clamp(0.78rem, 1.05vw, 0.98rem) !important;
+        padding: 0.35rem clamp(0.25rem, 0.7vw, 0.75rem) !important;
     }
     .navbar .account {
         flex-shrink: 0 !important;
         min-width: auto !important;
         margin-left: auto !important;
+    }
+
+    /* Account/person icon should scale with width (until 750px) */
+    .account-btn .account-icon,
+    .account-btn i {
+        font-size: 1.3rem!important;
+        line-height: 1 !important;
     }
     
     /* Desktop navbar link hover: kırmızı çizgi soldan sağa */
@@ -1929,5 +1938,44 @@ body.real-home-page .navbar-toggler {
     .navbar .navbar-nav .nav-link::after,
     .navbar-desktop-nav .nav-link-desktop::after {
         content: none !important;
+    }
+}
+
+/* Narrow-desktop band: keep single-line navbar until mobile */
+@media (min-width: 751px) and (max-width: 1199px) {
+    .navbar .container,
+    .navbar .container.navbar-inner {
+        gap: 0.4rem !important;
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+    }
+
+    .navbar-desktop-nav {
+        gap: 0.5rem !important;
+    }
+
+    .navbar-desktop-nav .nav-link-desktop {
+        font-size: 0.75rem !important;
+        padding: 0.3rem 0.3rem !important;
+        letter-spacing: 0 !important;
+    }
+
+    .navbar .brand-center {
+        max-width: 90px !important;
+    }
+
+    .navbar .brand-center img {
+        max-height: 62px !important;
+        width: auto !important;
+    }
+
+    .account-btn {
+        padding: 0.2rem 0.25rem !important;
+        min-width: 36px !important;
+        min-height: 36px !important;
+    }
+    .account-btn .account-icon,
+    .account-btn i {
+        font-size: 1.3rem !important;
     }
 }
