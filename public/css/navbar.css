@@ -1851,7 +1851,7 @@ body.real-home-page .navbar-toggler {
         box-sizing: border-box !important;
         /* Match #popular-cars-section > .container spacing */
         padding-left: 4rem !important;
-        padding-right: 4rem !important;
+        padding-right: 5rem !important;
         display: flex !important;
         flex-direction: row !important;
         align-items: center !important;

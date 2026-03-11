@@ -1,4 +1,4 @@
-require('dotenv').config();
+require('dotenv').config({ override: true });
 const express = require('express');
 
 if (!process.env.JWT_SECRET) {
@@ -313,210 +313,108 @@ app.get('/hilfe', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'hilfe.html'));
 });
 
-function isPortAvailable(port) {
-  try {
-    const { execSync } = require('child_process');
-    if (process.platform === 'win32') {
-      const result = execSync(`netstat -ano | findstr :${port} | findstr LISTENING`, { encoding: 'utf8', stdio: 'pipe' });
-      return result.trim().length === 0;
-    } else {
-      const result = execSync(`lsof -i :${port}`, { encoding: 'utf8', stdio: 'pipe' });
-      return result.trim().length === 0;
-    }
-  } catch (e) {
-    
-    return true;
-  }
+function openBrowser(url) {
+  const { exec } = require('child_process');
+  const cmd = process.platform === 'win32' ? `start "" "${url}"`
+            : process.platform === 'darwin' ? `open "${url}"`
+            : `xdg-open "${url}"`;
+  exec(cmd, (err) => {
+    if (err) console.warn('⚠️ Browser konnte nicht geöffnet werden:', err.message);
+    else console.log(`🌐 Browser geöffnet: ${url}`);
+  });
 }
 
-function findAvailablePort(startPort, maxAttempts = 10) {
+function isPortAvailable(port) {
+  const net = require('net');
+  return new Promise((resolve) => {
+    const tester = net.createServer();
+    tester.once('error', () => resolve(false));
+    tester.once('listening', () => tester.close(() => resolve(true)));
+    tester.listen(port, '0.0.0.0');
+  });
+}
+
+async function findAvailablePort(startPort, maxAttempts = 10) {
   for (let i = 0; i < maxAttempts; i++) {
     const port = startPort + i;
-    if (isPortAvailable(port)) {
-      return port;
-    }
+    if (await isPortAvailable(port)) return port;
   }
   return null;
 }
 
-let server;
+function listenAsync(serverInstance, port, host) {
+  return new Promise((resolve, reject) => {
+    serverInstance.once('error', reject);
+    const args = host ? [port, host, resolve] : [port, resolve];
+    serverInstance.listen(...args);
+  });
+}
 
+let server;
 const isProduction = process.env.NODE_ENV === 'production';
 
-try {
+async function startServer() {
   const https = require('https');
   const certDir = path.join(__dirname, 'certs');
   const keyPath = process.env.SSL_KEY_PATH || path.join(certDir, 'localhost-key.pem');
   const certPath = process.env.SSL_CERT_PATH || path.join(certDir, 'localhost-cert.pem');
 
   if (isProduction) {
-    
     server = app.listen(PORT, '0.0.0.0', () => {
       console.log(`HTTP läuft auf http://localhost:${PORT}`);
+      openBrowser(`http://localhost:${PORT}`);
     });
-  } else if (fs.existsSync(keyPath) && fs.existsSync(certPath)) {
-    const httpsOptions = {
-      key: fs.readFileSync(keyPath),
-      cert: fs.readFileSync(certPath),
-    };
+    return;
+  }
+
+  // --- HTTPS branch ---
+  if (fs.existsSync(keyPath) && fs.existsSync(certPath)) {
     let HTTPS_PORT = parseInt(process.env.HTTPS_PORT) || 3443;
-
-    if (!isPortAvailable(HTTPS_PORT)) {
-      console.log(`⚠️ Port ${HTTPS_PORT} ist in Verwendung...`);
-
-      if (process.platform === 'win32') {
-        try {
-          const { execSync } = require('child_process');
-          const result = execSync(`netstat -ano | findstr :${HTTPS_PORT} | findstr LISTENING`, { encoding: 'utf8', stdio: 'pipe' });
-          const lines = result.trim().split('\n').filter(line => line.trim());
-          
-          for (const line of lines) {
-            const parts = line.trim().split(/\s+/);
-            const pid = parts[parts.length - 1];
-            if (pid && !isNaN(pid) && pid !== '0' && pid !== process.pid.toString()) {
-              try {
-                const processInfo = execSync(`tasklist /FI "PID eq ${pid}" /FO CSV`, { encoding: 'utf8', stdio: 'pipe' });
-                if (processInfo.includes('node.exe')) {
-                  console.log(`🔄 Node.js-Prozess (PID: ${pid}), der Port ${HTTPS_PORT} verwendet, wird beendet...`);
-                  execSync(`taskkill /PID ${pid} /F`, { stdio: 'ignore' });
-                  require('child_process').execSync('timeout /t 1 /nobreak >nul 2>&1', { stdio: 'ignore' });
-                  console.log(`✅ Port ${HTTPS_PORT} wurde freigegeben`);
-                  break;
-                }
-              } catch (e) {
-                
-              }
-            }
-          }
-        } catch (e) {
-          
-        }
-      }
-
-      if (!isPortAvailable(HTTPS_PORT)) {
-        console.log(`⚠️ Port ${HTTPS_PORT} ist immer noch in Verwendung, alternativer Port wird gesucht...`);
-        const altPort = findAvailablePort(HTTPS_PORT);
-        if (altPort) {
-          HTTPS_PORT = altPort;
-          console.log(`✅ Port ${HTTPS_PORT} wird verwendet`);
-          console.log(`⚠️ ACHTUNG: Fügen Sie folgende Redirect-URI zu Google Cloud Console hinzu:`);
-          console.log(`   https://localhost:${HTTPS_PORT}/auth/google/callback`);
-        } else {
-          console.error(`❌ Port ${HTTPS_PORT} und folgende Ports sind in Verwendung!`);
-          process.exit(1);
-        }
-      }
+    if (!await isPortAvailable(HTTPS_PORT)) {
+      console.log(`⚠️ Port ${HTTPS_PORT} ist in Verwendung, alternativer Port wird gesucht...`);
+      const altPort = await findAvailablePort(HTTPS_PORT + 1);
+      if (!altPort) { console.error('❌ Kein freier HTTPS-Port gefunden!'); process.exit(1); }
+      HTTPS_PORT = altPort;
+      console.log(`✅ Port ${HTTPS_PORT} wird verwendet`);
     }
-
     process.env.ACTUAL_HTTPS_PORT = HTTPS_PORT.toString();
-    
-    server = https.createServer(httpsOptions, app);
-    server.on('error', (err) => {
-      if (err.code === 'EADDRINUSE') {
-        console.log(`\n⚠️ Port ${HTTPS_PORT} ist in Verwendung, alternativer Port wird gesucht...`);
-        const altPort = findAvailablePort(HTTPS_PORT);
-        if (altPort) {
-          HTTPS_PORT = altPort;
-          console.log(`✅ Port ${HTTPS_PORT} wird verwendet`);
-          server.listen(HTTPS_PORT, () => {
-            console.log(`🔒 HTTPS läuft auf https://localhost:${HTTPS_PORT}`);
-          });
-        } else {
-          console.error(`❌ Port ${HTTPS_PORT} und nachfolgende Ports sind belegt!`);
-          process.exit(1);
-        }
-      } else {
-        console.error('Server error:', err);
-        throw err;
-      }
-    });
-    server.listen(HTTPS_PORT, () => {
-      console.log(`🔒 HTTPS läuft auf https://localhost:${HTTPS_PORT}`);
-    });
-  } else {
-    
-    let httpPort = PORT;
-    if (!isPortAvailable(httpPort)) {
-      console.log(`⚠️ Port ${httpPort} ist in Verwendung, alternativer Port wird gesucht...`);
-        const altPort = findAvailablePort(httpPort);
-        if (altPort) {
-          httpPort = altPort;
-          console.log(`✅ Port ${httpPort} wird verwendet`);
-      }
-    }
-    server = app.listen(httpPort, () => {
-      console.log(`HTTP läuft auf http://localhost:${httpPort}`);
-    });
-  }
-} catch (e) {
-  if (e.code === 'EADDRINUSE') {
-    let port = parseInt(process.env.HTTPS_PORT) || 3443;
-    console.log(`\n⚠️ Port ${port} ist in Verwendung, alternativer Port wird gesucht...`);
-        const altPort = findAvailablePort(port);
-        if (altPort) {
-          port = altPort;
-          console.log(`✅ Port ${port} wird verwendet`);
-      try {
-        const https = require('https');
-        const certDir = path.join(__dirname, 'certs');
-        const keyPath = process.env.SSL_KEY_PATH || path.join(certDir, 'localhost-key.pem');
-        const certPath = process.env.SSL_CERT_PATH || path.join(certDir, 'localhost-cert.pem');
-        if (fs.existsSync(keyPath) && fs.existsSync(certPath)) {
-          const httpsOptions = {
-            key: fs.readFileSync(keyPath),
-            cert: fs.readFileSync(certPath),
-          };
-          server = https.createServer(httpsOptions, app);
-          server.listen(port, () => {
-            console.log(`🔒 HTTPS läuft auf https://localhost:${port}`);
-          });
-        }
-      } catch (retryErr) {
-        console.error(`❌ Port ${port} konnte nicht gestartet werden!`);
-        process.exit(1);
-      }
-    } else {
-      console.error(`❌ Port ${port} und nachfolgende Ports sind belegt!`);
-      process.exit(1);
-    }
-  } else {
-    console.warn('HTTPS initialisierung fehlgeschlagen, falle auf HTTP zurück:', e.message);
-    let httpPort = PORT;
-    if (!isPortAvailable(httpPort)) {
-      console.log(`⚠️ Port ${httpPort} ist in Verwendung, alternativer Port wird gesucht...`);
-        const altPort = findAvailablePort(httpPort);
-        if (altPort) {
-          httpPort = altPort;
-          console.log(`✅ Port ${httpPort} wird verwendet`);
-      }
-    }
     try {
-      server = app.listen(httpPort, () => {
-        console.log(`HTTP läuft auf http://localhost:${httpPort}`);
-      });
-    } catch (httpErr) {
-      if (httpErr.code === 'EADDRINUSE') {
-        console.log(`\n⚠️ Port ${httpPort} wird verwendet, suche nach alternativem Port...`);
-        const altPort = findAvailablePort(httpPort);
-        if (altPort) {
-          httpPort = altPort;
-          console.log(`✅ Port ${httpPort} wird verwendet`);
-          server = app.listen(httpPort, () => {
-            console.log(`HTTP läuft auf http://localhost:${httpPort}`);
-          });
-        } else {
-          console.error(`❌ Port ${httpPort} und nachfolgende Ports sind belegt!`);
-          process.exit(1);
-        }
-      } else {
-        throw httpErr;
-      }
+      const httpsOptions = { key: fs.readFileSync(keyPath), cert: fs.readFileSync(certPath) };
+      server = https.createServer(httpsOptions, app);
+      await listenAsync(server, HTTPS_PORT);
+      console.log(`🔒 HTTPS läuft auf https://localhost:${HTTPS_PORT}`);
+      openBrowser(`https://localhost:${HTTPS_PORT}`);
+      return;
+    } catch (e) {
+      console.warn(`⚠️ HTTPS fehlgeschlagen (${e.message}), falle auf HTTP zurück...`);
+      if (server) { try { server.close(); } catch (_) {} }
     }
   }
+
+  // --- HTTP branch ---
+  let httpPort = PORT;
+  if (!await isPortAvailable(httpPort)) {
+    console.log(`⚠️ Port ${httpPort} ist in Verwendung, alternativer Port wird gesucht...`);
+    const altPort = await findAvailablePort(httpPort + 1);
+    if (!altPort) { console.error('❌ Kein freier HTTP-Port gefunden!'); process.exit(1); }
+    httpPort = altPort;
+    console.log(`✅ Port ${httpPort} wird verwendet`);
+  }
+  server = require('http').createServer(app);
+  await listenAsync(server, httpPort);
+  console.log(`HTTP läuft auf http://localhost:${httpPort}`);
+  openBrowser(`http://localhost:${httpPort}`);
 }
 
-server.keepAliveTimeout = 1000; 
-server.headersTimeout = 2000; 
+startServer()
+  .then(() => {
+    server.keepAliveTimeout = 1000;
+    server.headersTimeout = 2000;
+  })
+  .catch(err => {
+    console.error('❌ Server konnte nicht gestartet werden:', err);
+    process.exit(1);
+  });
 
 try {
   if (process.platform === 'win32') {

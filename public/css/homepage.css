@@ -1323,7 +1323,8 @@ body {
         transform: none !important;
         width: 90% !important;
         max-width: 1100px !important;
-        margin: -20rem auto 0 auto !important;
+        /* sağ kenara 2rem yaklaşması için sağdaki auto yerine sabit boşluk */
+        margin: -20rem 2rem 0 auto !important;
         padding: 0 !important;
         background: transparent !important;
         background-color: transparent !important;
@@ -1382,7 +1383,8 @@ body {
         min-height: 52px !important;
         max-width: 788px !important;
         width: 100% !important;
-        margin: 0 auto !important;
+        /* SUCHE altında fazladan boşluğu azalt */
+        margin: 0 auto 0.3rem auto !important;
         border-radius: 10px !important;
     }
 
@@ -1471,6 +1473,258 @@ body {
         }
 }
 
+
+/* =====================================================
+   PREMIUM VISUAL REDESIGN — Desktop (≥ 751px)
+   ===================================================== */
+@media (min-width: 751px) {
+
+    /* 1 ─ Hero overlay: deeper vignette, car stays bright center-left */
+    .hero-overlay {
+        background: linear-gradient(
+            to right,
+            rgba(0,0,0,0.30) 0%,
+            rgba(0,0,0,0.18) 38%,
+            rgba(0,0,0,0.55) 68%,
+            rgba(0,0,0,0.70) 100%
+        ) !important;
+    }
+
+    /* 2 ─ Form container: rich dark glass */
+    .homepage-form-container {
+        background: rgba(6, 6, 10, 0.80) !important;
+        backdrop-filter: blur(26px) saturate(180%) !important;
+        -webkit-backdrop-filter: blur(26px) saturate(180%) !important;
+        border: 1px solid rgba(255, 255, 255, 0.11) !important;
+        border-top: none !important;
+        border-radius: 1.25rem !important;
+        box-shadow:
+            0 40px 90px rgba(0, 0, 0, 0.65),
+            0 12px 36px rgba(0, 0, 0, 0.45),
+            inset 0 0 0 1px rgba(255, 255, 255, 0.07) !important;
+        overflow: hidden !important;
+    }
+
+    /* 3 ─ Orange accent stripe at top */
+    .homepage-form-container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #c95e00 0%, #f5a020 50%, #c95e00 100%);
+        border-radius: 1.25rem 1.25rem 0 0;
+        z-index: 10;
+    }
+
+    /* 4 ─ summary-box inner card: fully transparent (parent already is glass) */
+    .homepage-form-container .summary-box,
+    .homepage-form-container .summary-box.mobile-form-content {
+        background: transparent !important;
+        background-color: #171717ab!important;
+        border: none !important;
+        box-shadow: none !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+    }
+
+    /* 5 ─ Section divider between pickup / dropoff */
+    .homepage-form-container .family-b.hp-dropoff-loc {
+        border-top: 1px solid rgba(255, 255, 255, 0.09) !important;
+        padding-top: 1rem !important;
+        margin-top: 0.25rem !important;
+    }
+
+    /* 6 ─ Labels: muted white, uppercase, letter-spaced */
+    .homepage-form-container .form-label,
+    .homepage-form-container .summary-box .form-label,
+    .homepage-form-container label {
+        color: rgba(255, 255, 255, 0.48) !important;
+        font-size: 0.67rem !important;
+        font-weight: 600 !important;
+        letter-spacing: 0.11em !important;
+        text-transform: uppercase !important;
+        text-shadow: none !important;
+    }
+
+    /* 7 ─ Input groups: dark glass surface with subtle border */
+    .homepage-form-container .hp-pickup-loc .input-group,
+    .homepage-form-container .hp-pickup-dt .input-group,
+    .homepage-form-container .hp-dropoff-loc .input-group,
+    .homepage-form-container .hp-dropoff-dt .input-group {
+        background: rgba(255, 255, 255, 0.07) !important;
+        border: 1px solid rgba(255, 255, 255, 0.13) !important;
+        border-radius: 10px !important;
+        overflow: hidden !important;
+        box-shadow: none !important;
+        transition: border-color 0.22s ease, box-shadow 0.22s ease !important;
+    }
+
+    .homepage-form-container .hp-pickup-loc .input-group:focus-within,
+    .homepage-form-container .hp-pickup-dt .input-group:focus-within,
+    .homepage-form-container .hp-dropoff-loc .input-group:focus-within,
+    .homepage-form-container .hp-dropoff-dt .input-group:focus-within {
+        border-color: rgba(220, 100, 10, 0.55) !important;
+        box-shadow: 0 0 0 3px rgba(220, 100, 10, 0.12) !important;
+    }
+
+    /* 8 ─ Icon adornments */
+    .homepage-form-container .hp-pickup-loc .input-group-text,
+    .homepage-form-container .hp-dropoff-loc .input-group-text,
+    .homepage-form-container .hp-pickup-dt .input-group-text,
+    .homepage-form-container .hp-dropoff-dt .input-group-text {
+        background: transparent !important;
+        background-color: transparent !important;
+        border: none !important;
+        color: rgba(255, 255, 255, 0.48) !important;
+    }
+
+    .homepage-form-container .hp-pickup-loc .input-group-text .bi,
+    .homepage-form-container .hp-dropoff-loc .input-group-text .bi,
+    .homepage-form-container .hp-pickup-dt .input-group-text .bi,
+    .homepage-form-container .hp-dropoff-dt .input-group-text .bi {
+        color: rgba(255, 255, 255, 0.48) !important;
+    }
+
+    /* 9 ─ Selects & inputs: dark glass, white text */
+    .homepage-form-container .hp-pickup-loc .form-select,
+    .homepage-form-container .hp-dropoff-loc .form-select,
+    .homepage-form-container .hp-pickup-dt .form-select,
+    .homepage-form-container .hp-dropoff-dt .form-select,
+    .homepage-form-container .hp-pickup-dt input.form-control,
+    .homepage-form-container .hp-dropoff-dt input.form-control,
+    #qr-pickup-date, #qr-dropoff-date,
+    #qr-pickup-time, #qr-dropoff-time {
+        background: transparent !important;
+        background-color: transparent !important;
+        color: rgba(255, 255, 255, 0.9) !important;
+        border: none !important;
+        box-shadow: none !important;
+        outline: none !important;
+        transition: none !important;
+    }
+
+    /* hover/focus same */
+    .homepage-form-container .hp-pickup-loc .form-select:hover,
+    .homepage-form-container .hp-dropoff-loc .form-select:hover,
+    .homepage-form-container .hp-pickup-dt .form-select:hover,
+    .homepage-form-container .hp-dropoff-dt .form-select:hover,
+    .homepage-form-container .hp-pickup-dt input.form-control:hover,
+    .homepage-form-container .hp-dropoff-dt input.form-control:hover,
+    .homepage-form-container .hp-pickup-loc .form-select:focus,
+    .homepage-form-container .hp-dropoff-loc .form-select:focus,
+    .homepage-form-container .hp-pickup-dt .form-select:focus,
+    .homepage-form-container .hp-dropoff-dt .form-select:focus,
+    .homepage-form-container .hp-pickup-dt input.form-control:focus,
+    .homepage-form-container .hp-dropoff-dt input.form-control:focus,
+    #qr-pickup-date:hover, #qr-dropoff-date:hover,
+    #qr-pickup-time:hover, #qr-dropoff-time:hover,
+    #qr-pickup-date:focus, #qr-dropoff-date:focus,
+    #qr-pickup-time:focus, #qr-dropoff-time:focus {
+        background: transparent !important;
+        background-color: transparent !important;
+        color: rgba(255, 255, 255, 0.9) !important;
+        border: none !important;
+        box-shadow: none !important;
+        outline: none !important;
+        transform: none !important;
+    }
+
+    /* Dropdown options readable */
+    .homepage-form-container .form-select option,
+    #qr-pickup-location option,
+    #qr-dropoff-location option,
+    #qr-pickup-time option,
+    #qr-dropoff-time option {
+        background: #1a1a24 !important;
+        color: #ffffff !important;
+    }
+
+    /* Placeholder text */
+    .homepage-form-container input::placeholder,
+    .homepage-form-container input::-webkit-input-placeholder {
+        color: rgba(255, 255, 255, 0.38) !important;
+    }
+
+    /* Select arrow: white caret */
+    .homepage-form-container .form-select,
+    #qr-pickup-time, #qr-dropoff-time {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='rgba(255,255,255,0.55)' d='M6 9L1 4h10z'/%3E%3C/svg%3E") !important;
+        background-repeat: no-repeat !important;
+        background-position: right 0.65rem center !important;
+        background-size: 11px !important;
+    }
+
+    /* 10 ─ Checkbox row */
+    .homepage-form-container .form-check-label {
+        color: rgba(255, 255, 255, 0.45) !important;
+        font-size: 0.78rem !important;
+        font-weight: 400 !important;
+        letter-spacing: 0 !important;
+        text-transform: none !important;
+    }
+
+    .homepage-form-container .form-check-input {
+        background-color: rgba(255, 255, 255, 0.08) !important;
+        border-color: rgba(255, 255, 255, 0.2) !important;
+    }
+
+    .homepage-form-container .form-check-input:checked {
+        background-color: #e07010 !important;
+        border-color: #e07010 !important;
+    }
+
+    /* 11 ─ SUCHE button: solid premium amber */
+    #scroll-arrow-container #homepage-search-btn,
+    #homepage-search-btn,
+    .homepage-form-container #homepage-search-btn {
+        background: linear-gradient(135deg, #e07010 0%, #b85a00 100%) !important;
+        background-color: #e07010 !important;
+        background-image: linear-gradient(135deg, #e07010 0%, #b85a00 100%) !important;
+        background-size: 100% 100% !important;
+        border: none !important;
+        color: #ffffff !important;
+        font-weight: 700 !important;
+        letter-spacing: 0.18em !important;
+        font-size: 0.85rem !important;
+        border-radius: 10px !important;
+        box-shadow:
+            0 6px 28px rgba(224, 112, 16, 0.45),
+            0 2px 8px rgba(0, 0, 0, 0.35) !important;
+        transition: transform 0.22s ease, box-shadow 0.22s ease, background 0.22s ease !important;
+    }
+
+    #scroll-arrow-container #homepage-search-btn:hover,
+    #homepage-search-btn:hover,
+    .homepage-form-container #homepage-search-btn:hover {
+        background: linear-gradient(135deg, #f08020 0%, #c96500 100%) !important;
+        background-image: linear-gradient(135deg, #f08020 0%, #c96500 100%) !important;
+        transform: translateY(-3px) !important;
+        box-shadow:
+            0 14px 44px rgba(224, 112, 16, 0.55),
+            0 4px 16px rgba(0, 0, 0, 0.35) !important;
+    }
+
+    #scroll-arrow-container #homepage-search-btn:active,
+    #homepage-search-btn:active,
+    .homepage-form-container #homepage-search-btn:active {
+        transform: translateY(-1px) !important;
+        box-shadow:
+            0 6px 20px rgba(224, 112, 16, 0.4),
+            0 2px 8px rgba(0, 0, 0, 0.3) !important;
+    }
+
+    #scroll-arrow-container #homepage-search-btn span,
+    #homepage-search-btn span,
+    .homepage-form-container #homepage-search-btn span {
+        color: #ffffff !important;
+    }
+
+}
+
+/* ===================================================== */
+
 .hero-section::before {
     content: '';
     position: absolute;
@@ -1538,4 +1792,18 @@ body {
     margin-bottom: 0.5rem !important;
 }
 
+
+/* Desktop fine-tuning override (placed LAST so it always wins) */
+@media (min-width: 751px) {
+    /* Formu sağ kenara 2rem yaklaştır */
+    body .hero-section-porsche .homepage-form-container {
+        margin-right: 2rem !important;
+        margin-left: auto !important;
+    }
+
+    /* SUCHE butonu altındaki fazladan boşluğu azalt */
+    body .hero-section-porsche .homepage-form-container #homepage-search-btn {
+        margin-bottom: 0.2rem !important;
+    }
+}
 
